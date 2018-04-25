@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "Geometry\Geometry.csproj", "{A617D647-1075-4BBB-9B9C-17971D56FE1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLCore", "GLCore\GLCore.csproj", "{8DD11590-79E3-4D93-83DB-8B2DD19CD3F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadSafety", "ThreadSafety\ThreadSafety.csproj", "{68031E26-F58A-4F5A-8552-E5BC30CE97FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLStyle", "GLStyle\GLStyle.csproj", "{67EDE669-FF71-41EC-BA78-0D167FB5D989}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IniFiles", "IniFiles\IniFiles.csproj", "{D2ECE031-6105-402B-BC01-8E2E1C9B469D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLUI", "GLUI\GLUI.csproj", "{390DC0BB-01D8-48B3-A7C3-84C5B3355DEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLUITest", "GLUITest\GLUITest.csproj", "{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A617D647-1075-4BBB-9B9C-17971D56FE1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A617D647-1075-4BBB-9B9C-17971D56FE1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A617D647-1075-4BBB-9B9C-17971D56FE1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A617D647-1075-4BBB-9B9C-17971D56FE1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD11590-79E3-4D93-83DB-8B2DD19CD3F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD11590-79E3-4D93-83DB-8B2DD19CD3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD11590-79E3-4D93-83DB-8B2DD19CD3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD11590-79E3-4D93-83DB-8B2DD19CD3F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68031E26-F58A-4F5A-8552-E5BC30CE97FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68031E26-F58A-4F5A-8552-E5BC30CE97FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68031E26-F58A-4F5A-8552-E5BC30CE97FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68031E26-F58A-4F5A-8552-E5BC30CE97FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67EDE669-FF71-41EC-BA78-0D167FB5D989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67EDE669-FF71-41EC-BA78-0D167FB5D989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67EDE669-FF71-41EC-BA78-0D167FB5D989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67EDE669-FF71-41EC-BA78-0D167FB5D989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2ECE031-6105-402B-BC01-8E2E1C9B469D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2ECE031-6105-402B-BC01-8E2E1C9B469D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2ECE031-6105-402B-BC01-8E2E1C9B469D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2ECE031-6105-402B-BC01-8E2E1C9B469D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{390DC0BB-01D8-48B3-A7C3-84C5B3355DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{390DC0BB-01D8-48B3-A7C3-84C5B3355DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{390DC0BB-01D8-48B3-A7C3-84C5B3355DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{390DC0BB-01D8-48B3-A7C3-84C5B3355DEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44F82E87-1AD7-4303-B123-E6A74B69BA6F}
+	EndGlobalSection
+EndGlobal
