@@ -127,9 +127,73 @@ namespace GLCore
         private static History History { get; } = new History(20);
 
         /// <summary>
+        /// 複合物件列表
+        /// </summary>
+        private static Dictionary<int, IMulti> MultiObject { get; set; } = new Dictionary<int, IMulti>();
+
+        /// <summary>
         /// 上一筆移動指令
         /// </summary>
         private static string PreMoveCommand { get; set; } = string.Empty;
+
+        #region 複合物件操作
+
+        /// <summary>
+        /// 加入複合面。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
+        /// </summary>
+        public static int AddMultiArea(string style, IEnumerable<IArea> area)
+        {
+            lock (key)
+            {
+                var multi = new MultiArea(style, area);
+                int id = SerialNumber.Next();
+                MultiObject.Add(id, multi);
+                return id;
+            }
+        }
+
+        /// <summary>
+        /// 加入複合點。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
+        /// </summary>
+        public static int AddMultiPair(string style, IEnumerable<IPair> pair)
+        {
+            lock (key)
+            {
+                var multi = new MultiPair(style, pair);
+                int id = SerialNumber.Next();
+                MultiObject.Add(id, multi);
+                return id;
+            }
+        }
+
+        /// <summary>
+        /// 加入複合線。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
+        /// </summary>
+        public static int AddMultiStripLine(string style, IEnumerable<IPair> pair)
+        {
+            lock (key)
+            {
+                var multi = new MultiStripLine(style, pair);
+                int id = SerialNumber.Next();
+                MultiObject.Add(id, multi);
+                return id;
+            }
+        }
+
+        /// <summary>
+        /// 刪除複合物件。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
+        /// </summary>
+        public static int DeleteMulti(int id)
+        {
+            lock (key)
+            {
+                if (!MultiObject.Keys.Contains(id)) return -1;
+                MultiObject.Remove(id);
+                return id;
+            }
+        }
+
+        #endregion 複合物件操作
 
         /// <summary>
         /// 執行命令。執行失敗回傳 -1，執行成功則回傳控制對象的 id
@@ -461,9 +525,17 @@ namespace GLCore
                 {
                     obj.Draw(gl);
                 }
+                foreach (var obj in MultiObject.Values.Where(o => !o.Transparent))
+                {
+                    obj.Draw(gl);
+                }
 
                 // 透明
                 foreach (var obj in CurrentObject.Values.Where(o => o.Transparent))
+                {
+                    obj.Draw(gl);
+                }
+                foreach (var obj in MultiObject.Values.Where(o => o.Transparent))
                 {
                     obj.Draw(gl);
                 }
