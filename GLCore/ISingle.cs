@@ -180,6 +180,7 @@ namespace GLCore
         /// </summary>
         public void Draw(OpenGL gl)
         {
+            if (Style == null) return;
             gl.Color(Style.BackgroundColor.GetFloats());
             gl.Begin(OpenGL.GL_QUADS);
             {
@@ -332,6 +333,7 @@ namespace GLCore
         /// </summary>
         public void Draw(OpenGL gl)
         {
+            if (Style == null) return;
             if (Style.Width > 0) gl.LineWidth(Style.Width);
             gl.Color(Style.BackgroundColor.GetFloats());
             gl.BeginStippleLine(Style.Pattern);
@@ -486,6 +488,7 @@ namespace GLCore
         /// </summary>
         public void Draw(OpenGL gl)
         {
+            if (Style == null) return;
             if (Style.Size > 0) gl.PointSize(Style.Size);
             gl.Color(Style.BackgroundColor.GetFloats());
             gl.Begin(OpenGL.GL_POINTS);
@@ -648,6 +651,7 @@ namespace GLCore
         /// </summary>
         public void Draw(OpenGL gl)
         {
+            if (Style == null) return;
             if (Style.LineLength != 0)
                 DrawWithLineLength(gl);
             else
