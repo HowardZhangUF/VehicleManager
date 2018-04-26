@@ -186,11 +186,14 @@ namespace GLCore
         {
             Pen.SaftyEdit(false, pen =>
             {
-                PenDrawing = false;
-                SaftyEditMultiGeometry<IPair>(id, true, list =>
+                if (PenDrawing)
                 {
-                    list.AddRange(pen.Geometry.ToPairs());
-                });
+                    PenDrawing = false;
+                    SaftyEditMultiGeometry<IPair>(id, true, list =>
+                    {
+                        list.AddRange(pen.Geometry.ToPairs());
+                    });
+                }
             });
         }
 
