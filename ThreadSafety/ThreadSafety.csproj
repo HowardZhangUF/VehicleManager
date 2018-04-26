@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ISaftyList.cs" />
+    <Compile Include="ISafty.cs" />
     <Compile Include="IThreadSafety.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Safty.cs" />
