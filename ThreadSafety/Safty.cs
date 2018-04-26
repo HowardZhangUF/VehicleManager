@@ -9,7 +9,7 @@ namespace ThreadSafety
     {
         private T data = default(T);
         private object mKey = new object();
-        private DateTime mLastEditTime = default(DateTime);
+        private DateTime mLastEditTime = DateTime.Now;
 
         /// <summary>
         /// 建構具執行緒安全的操作物件
