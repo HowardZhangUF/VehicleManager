@@ -159,4 +159,7 @@
   <data name="Eraser" xml:space="preserve">
     <value>清除障礙點</value>
   </data>
+  <data name="Pen" xml:space="preserve">
+    <value>畫筆</value>
+  </data>
 </root>

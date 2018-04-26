@@ -139,4 +139,7 @@
   <data name="Eraser" xml:space="preserve">
     <value>Eraser</value>
   </data>
+  <data name="Pen" xml:space="preserve">
+    <value>Pen</value>
+  </data>
 </root>

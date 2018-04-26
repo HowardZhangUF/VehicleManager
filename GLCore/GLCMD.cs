@@ -137,7 +137,7 @@ namespace GLCore
         /// </summary>
         private static string PreMoveCommand { get; set; } = string.Empty;
 
-        #region 擦子
+        #region 擦子、畫筆
 
         /// <summary>
         /// 擦子大小
@@ -145,9 +145,19 @@ namespace GLCore
         public static int EraserSize { get { return Eraser.SaftyEdit(eraser => eraser.Geometry.Max.X - eraser.Geometry.Min.X); } }
 
         /// <summary>
+        /// 畫線中
+        /// </summary>
+        public static bool PenDrawing { get; private set; }
+
+        /// <summary>
         /// 擦子
         /// </summary>
         private static ISafty<SingleArea> Eraser { get; } = new Safty<SingleArea>(new SingleArea(nameof(Eraser)));
+
+        /// <summary>
+        /// 畫筆
+        /// </summary>
+        private static ISafty<SingleLine> Pen { get; } = new Safty<SingleLine>(new SingleLine(nameof(Pen)));
 
         /// <summary>
         /// 根據 ID 擦掉障礙點
@@ -158,6 +168,30 @@ namespace GLCore
             Eraser.SaftyEdit(false, eraser =>
             SaftyEditMultiGeometry<IPair>(id, true, list => list.RemoveAll(pair => eraser.Geometry.Contain(pair)))
             );
+        }
+
+        /// <summary>
+        /// 取消畫筆
+        /// </summary>
+        public static void PenCancel()
+        {
+            Pen.SaftyEdit(false, pen => { PenDrawing = false; });
+        }
+
+        /// <summary>
+        /// 完成畫筆
+        /// </summary>
+        /// <param name="id">類型為 <see cref="MultiPair"/> 的識別碼</param>
+        public static void PenFinish(int id)
+        {
+            Pen.SaftyEdit(false, pen =>
+            {
+                PenDrawing = false;
+                SaftyEditMultiGeometry<IPair>(id, true, list =>
+                {
+                    list.AddRange(pen.Geometry.ToPairs());
+                });
+            });
         }
 
         /// <summary>
@@ -176,7 +210,25 @@ namespace GLCore
             Eraser.SaftyEdit(true, eraser => eraser.Move(EMoveType.Center, pos.X, pos.Y));
         }
 
-        #endregion 擦子
+        /// <summary>
+        /// 設定畫筆起點和終點
+        /// </summary>
+        /// <param name="pos"></param>
+        public static void SetPenBeginAndEnd(IPair pos)
+        {
+            Pen.SaftyEdit(true, pen => { pen.Geometry.Begin = new Pair(pos); pen.Geometry.End = new Pair(pos); PenDrawing = true; });
+        }
+
+        /// <summary>
+        /// 設定畫筆終點
+        /// </summary>
+        /// <param name="pos"></param>
+        public static void SetPenEnd(IPair pos)
+        {
+            Pen.SaftyEdit(true, pen => { pen.Geometry.End = new Pair(pos); });
+        }
+
+        #endregion 擦子、畫筆
 
         #region 複合物件操作
 
@@ -598,6 +650,7 @@ namespace GLCore
 
                 // 特殊物件
                 Eraser?.SaftyEdit(false, eraser => eraser?.Draw(gl));
+                Pen?.SaftyEdit(false, pen => { if (PenDrawing) pen.Draw(gl); });
 
                 // 選擇邊界
                 if (CurrentObject.Keys.Contains(SelectTargetID))

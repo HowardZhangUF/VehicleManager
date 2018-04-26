@@ -23,6 +23,7 @@ namespace GLUI
         private System.Drawing.Image LineImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Line");
         private System.Drawing.Image MoveImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Move");
         private System.Drawing.Image PairImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Pair");
+        private System.Drawing.Image PenImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Pen");
         private System.Drawing.Image RenameImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Rename");
         private System.Drawing.Image SelectImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Select");
         private System.Drawing.Image TowardPairImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("TowardPair");
@@ -261,6 +262,14 @@ namespace GLUI
         }
 
         /// <summary>
+        /// 畫障礙點右鍵選單觸發
+        /// </summary>
+        private void MenuPenOnClik(object sender, EventArgs e)
+        {
+            GLCMD.SetPenBeginAndEnd(PreGLPosition);
+        }
+
+        /// <summary>
         /// 編輯物件右鍵選單觸發
         /// </summary>
         private void MenuRenameOnClik(object sender, EventArgs e)
@@ -401,6 +410,9 @@ namespace GLUI
                 eraser.DropDownItems.Add(item);
             }
             menu.Items.Add(eraser);
+
+            // 畫障礙點
+            menu.Items.Add(Lang.Pen, PenImage, MenuPenOnClik);
 
             // 加入
             ToolStripMenuItem add = new ToolStripMenuItem(Lang.Add) { Image = AddImage };
@@ -715,6 +727,16 @@ namespace GLUI
                 if (mouse.Button == MouseButtons.Left) GLCMD.EraserObstaclePoints(ObstaclePointsID);
                 if (mouse.Button == MouseButtons.Right) GLCMD.SetEraser(PreGLPosition, 0);
             }
+
+            // 左鍵完成畫筆、右鍵取消畫筆
+            if (mouse.Button == MouseButtons.Left)
+            {
+                GLCMD.PenFinish(ObstaclePointsID);
+            }
+            else if (mouse.Button == MouseButtons.Right)
+            {
+                GLCMD.PenCancel();
+            }
         }
 
         private void SharpGLCtrl_MouseMove(object sender, MouseEventArgs e)
@@ -755,6 +777,7 @@ namespace GLUI
             }
 
             GLCMD.SetEraser(PreGLPosition);
+            GLCMD.SetPenEnd(PreGLPosition);
         }
 
         /// <summary>

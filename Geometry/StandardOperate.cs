@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Geometry
 {
@@ -7,6 +8,22 @@ namespace Geometry
     /// </summary>
     public static class StandardOperate
     {
+        /// <summary>
+        /// 加法
+        /// </summary>
+        public static IPair Add(this IPair lhs, IPair rhs)
+        {
+            return new Pair(lhs.X + rhs.X, lhs.Y + rhs.Y);
+        }
+
+        /// <summary>
+        /// 加法
+        /// </summary>
+        public static IPair Add(this IPair lhs, int x, int y)
+        {
+            return new Pair(lhs.X + x, lhs.Y + y);
+        }
+
         /// <summary>
         /// 圖形中心點
         /// </summary>
@@ -129,6 +146,37 @@ namespace Geometry
         public static IPair Subtraction(this IPair lhs, IPair rhs)
         {
             return new Pair(lhs.X - rhs.X, lhs.Y - rhs.Y);
+        }
+
+        /// <summary>
+        /// 將線段轉為點集合
+        /// </summary>
+        public static IEnumerable<IPair> ToPairs(this ILine line, int delta = 10)
+        {
+            List<IPair> res = new List<IPair>();
+            int dx = line.End.X - line.Begin.X;
+            int dy = line.End.Y - line.Begin.Y;
+            int sx = Math.Sign(dx) * delta;
+            int sy = Math.Sign(dy) * delta;
+            if (dx == 0 && dy == 0) return res;
+            if (Math.Abs(dx) >= Math.Abs(dy))
+            {
+                for (int tx = 0; Math.Abs(tx) < Math.Abs(dx + sx); tx += sx)
+                {
+                    int ty = (int)(((double)tx) / dx * dy);
+                    res.Add(line.Begin.Add(tx, ty));
+                }
+                return res;
+            }
+            else
+            {
+                for (int ty = 0; Math.Abs(ty) < Math.Abs(dy + sy); ty += sy)
+                {
+                    int tx = (int)(((double)ty) / dy * dx);
+                    res.Add(line.Begin.Add(tx, ty));
+                }
+                return res;
+            }
         }
     }
 }

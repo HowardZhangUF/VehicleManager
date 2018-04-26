@@ -160,6 +160,15 @@ namespace GLUI.Language {
         }
         
         /// <summary>
+        ///   查詢類似 Pen 的當地語系化字串。
+        /// </summary>
+        public static string Pen {
+            get {
+                return ResourceManager.GetString("Pen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 Rename 的當地語系化字串。
         /// </summary>
         public static string Rename {

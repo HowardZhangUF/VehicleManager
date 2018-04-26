@@ -163,6 +163,16 @@ namespace GLUI.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
+        internal static System.Drawing.Bitmap Pen {
+            get {
+                object obj = ResourceManager.GetObject("Pen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
         internal static System.Drawing.Bitmap Rename {
             get {
                 object obj = ResourceManager.GetObject("Rename", resourceCulture);
