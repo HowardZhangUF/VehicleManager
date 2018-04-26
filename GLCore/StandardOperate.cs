@@ -21,6 +21,20 @@ namespace GLCore
         private static IColor TextColor { get; } = new Color(Color.Black);
 
         /// <summary>
+        /// <para>提供使用頂點數據組繪製 2D 物件的操作方法</para>
+        /// <para><paramref name="mode"/> 表示繪圖模式，<paramref name="count"/> 為資料組數量</para>
+        /// <para>繪圖模式參考 OpenGL 原生的 DrawArray() 函式</para>
+        /// </summary>
+        public static void DrawArrays(this OpenGL gl, uint mode, int count, int[] array)
+        {
+            if (count <= 0 || array == null) return;
+            gl.EnableClientState(OpenGL.GL_VERTEX_ARRAY);
+            gl.VertexPointer(2, 0, array);
+            gl.DrawArrays(mode, 0, count);
+            gl.DisableClientState(OpenGL.GL_VERTEX_ARRAY);
+        }
+
+        /// <summary>
         /// 印出所有的 Text 資訊
         /// </summary>
         public static void DrawText(this OpenGL gl, string text, IPair glPosition, Func<IPair, IPair> convert)

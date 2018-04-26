@@ -1,6 +1,7 @@
 ﻿using Geometry;
 using GLStyle;
 using SharpGL;
+using System;
 using System.Collections.Generic;
 using ThreadSafety;
 
@@ -70,6 +71,11 @@ namespace GLCore
     public class MultiArea : IMultiArea
     {
         /// <summary>
+        /// 執行緒鎖
+        /// </summary>
+        private readonly object key = new object();
+
+        /// <summary>
         /// 建立一個空物件集合
         /// </summary>
         public MultiArea(string styleName) { StyleName = styleName; }
@@ -104,22 +110,67 @@ namespace GLCore
         public bool Transparent { get { return Style.BackgroundColor.A != 255; } }
 
         /// <summary>
+        /// 最後一次產生頂點陣列的時間
+        /// </summary>
+        private DateTime LastGenVertexArrayTime { get; set; } = DateTime.MinValue;
+
+        /// <summary>
+        /// 頂點陣列
+        /// </summary>
+        private int[] VertexArray { get; set; } = null;
+
+        /// <summary>
         /// 繪圖
         /// </summary>
         public void Draw(OpenGL gl)
         {
-            gl.Color(Style.BackgroundColor.GetFloats());
-            gl.Begin(OpenGL.GL_QUADS);
+            lock (key)
             {
+                GenVertexArray();
+
+                if (VertexArray == null) return;
+
+                gl.Color(Style.BackgroundColor.GetFloats());
+
+                gl.DrawArrays(OpenGL.GL_QUADS, VertexArray.Length / 2, VertexArray);
+            }
+        }
+
+        /// <summary>
+        /// 產生頂點陣列，加速繪圖
+        /// </summary>
+        private void GenVertexArray()
+        {
+            lock (key)
+            {
+                // 若已經產生頂點陣列，則返回
+                if (VertexArray != null && LastGenVertexArrayTime >= Geometry.LastEditTime) return;
+
+                LastGenVertexArrayTime = Geometry.LastEditTime;
+
+                VertexArray = new int[Geometry.SaftyEdit(list => list.Count * 8)];
+                int index = 0;
+
                 Geometry.SaftyEdit(false, list => list.ForEach(area =>
                 {
-                    gl.Vertex(area.Min.X, area.Min.Y, Style.Layer);
-                    gl.Vertex(area.Max.X, area.Min.Y, Style.Layer);
-                    gl.Vertex(area.Max.X, area.Max.Y, Style.Layer);
-                    gl.Vertex(area.Min.X, area.Max.Y, Style.Layer);
+                    VertexArray[index] = area.Min.X;
+                    index++;
+                    VertexArray[index] = area.Min.Y;
+                    index++;
+                    VertexArray[index] = area.Max.X;
+                    index++;
+                    VertexArray[index] = area.Min.Y;
+                    index++;
+                    VertexArray[index] = area.Max.X;
+                    index++;
+                    VertexArray[index] = area.Max.Y;
+                    index++;
+                    VertexArray[index] = area.Min.X;
+                    index++;
+                    VertexArray[index] = area.Max.Y;
+                    index++;
                 }));
             }
-            gl.End();
         }
     }
 
@@ -128,6 +179,11 @@ namespace GLCore
     /// </summary>
     public class MultiPair : IMultiPair
     {
+        /// <summary>
+        /// 執行緒鎖
+        /// </summary>
+        private readonly object key = new object();
+
         /// <summary>
         /// 建立一個空物件集合
         /// </summary>
@@ -163,17 +219,56 @@ namespace GLCore
         public bool Transparent { get { return Style.BackgroundColor.A != 255; } }
 
         /// <summary>
+        /// 最後一次產生頂點陣列的時間
+        /// </summary>
+        private DateTime LastGenVertexArrayTime { get; set; } = DateTime.MinValue;
+
+        /// <summary>
+        /// 頂點陣列
+        /// </summary>
+        private int[] VertexArray { get; set; } = null;
+
+        /// <summary>
         /// 繪圖
         /// </summary>
         public void Draw(OpenGL gl)
         {
-            if (Style.Size > 0) gl.PointSize(Style.Size);
-            gl.Color(Style.BackgroundColor.GetFloats());
-            gl.Begin(OpenGL.GL_POINTS);
+            lock (key)
             {
-                Geometry.SaftyEdit(false, list => list.ForEach(pair => gl.Vertex(pair.X, pair.Y, Style.Layer)));
+                GenVertexArray();
+
+                if (VertexArray == null) return;
+
+                if (Style.Size > 0) gl.PointSize(Style.Size);
+                gl.Color(Style.BackgroundColor.GetFloats());
+
+                gl.DrawArrays(OpenGL.GL_POINTS, VertexArray.Length / 2, VertexArray);
             }
-            gl.End();
+        }
+
+        /// <summary>
+        /// 產生頂點陣列，加速繪圖
+        /// </summary>
+        private void GenVertexArray()
+        {
+            lock (key)
+            {
+                // 若已經產生頂點陣列，則返回
+                if (VertexArray != null && LastGenVertexArrayTime >= Geometry.LastEditTime) return;
+
+                LastGenVertexArrayTime = Geometry.LastEditTime;
+
+                VertexArray = new int[Geometry.SaftyEdit(list => list.Count * 2)];
+                int index = 0;
+
+                Geometry.SaftyEdit(false, list => list.ForEach(pair =>
+                {
+                    VertexArray[index] = pair.X;
+                    index++;
+                    VertexArray[index] = pair.Y;
+                    index++;
+                }));
+            }
         }
     }
 
@@ -182,6 +277,11 @@ namespace GLCore
     /// </summary>
     public class MultiStripLine : IMultiStripLine
     {
+        /// <summary>
+        /// 執行緒鎖
+        /// </summary>
+        private readonly object key = new object();
+
         /// <summary>
         /// 建立一個空物件集合
         /// </summary>
@@ -217,21 +317,56 @@ namespace GLCore
         public bool Transparent { get { return Style.BackgroundColor.A != 255; } }
 
         /// <summary>
+        /// 最後一次產生頂點陣列的時間
+        /// </summary>
+        private DateTime LastGenVertexArrayTime { get; set; } = DateTime.MinValue;
+
+        /// <summary>
+        /// 頂點陣列
+        /// </summary>
+        private int[] VertexArray { get; set; } = null;
+
+        /// <summary>
         /// 繪圖
         /// </summary>
         public void Draw(OpenGL gl)
         {
-            if (Style.Width > 0) gl.LineWidth(Style.Width);
-            gl.Color(Style.BackgroundColor.GetFloats());
-            gl.BeginStippleLine(Style.Pattern);
+            lock (key)
             {
-                gl.Begin(OpenGL.GL_LINE_STRIP);
-                {
-                    Geometry.SaftyEdit(false, list => list.ForEach(pair => gl.Vertex(pair.X, pair.Y, Style.Layer)));
-                }
-                gl.End();
+                GenVertexArray();
+
+                if (VertexArray == null) return;
+
+                if (Style.Width > 0) gl.LineWidth(Style.Width);
+                gl.Color(Style.BackgroundColor.GetFloats());
+
+                gl.DrawArrays(OpenGL.GL_LINE_STRIP, VertexArray.Length / 2, VertexArray);
             }
-            gl.EndStippleLine();
+        }
+
+        /// <summary>
+        /// 產生頂點陣列，加速繪圖
+        /// </summary>
+        private void GenVertexArray()
+        {
+            lock (key)
+            {
+                // 若已經產生頂點陣列，則返回
+                if (VertexArray != null && LastGenVertexArrayTime >= Geometry.LastEditTime) return;
+
+                LastGenVertexArrayTime = Geometry.LastEditTime;
+
+                VertexArray = new int[Geometry.SaftyEdit(list => list.Count * 2)];
+                int index = 0;
+
+                Geometry.SaftyEdit(false, list => list.ForEach(pair =>
+                {
+                    VertexArray[index] = pair.X;
+                    index++;
+                    VertexArray[index] = pair.Y;
+                    index++;
+                }));
+            }
         }
     }
 }
