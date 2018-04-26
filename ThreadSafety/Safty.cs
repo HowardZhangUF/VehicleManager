@@ -5,17 +5,18 @@ namespace ThreadSafety
     /// <summary>
     /// 提供執行緒安全的操作物件
     /// </summary>
-    public class Safty<T> : ISafty<T> where T : new()
+    public class Safty<T> : ISafty<T>
     {
-        private T data = new T();
+        private T data = default(T);
         private object mKey = new object();
         private DateTime mLastEditTime = default(DateTime);
 
         /// <summary>
         /// 建構具執行緒安全的操作物件
         /// </summary>
-        public Safty()
+        public Safty(T newData)
         {
+            data = newData;
         }
 
         /// <summary>

@@ -5,7 +5,7 @@ namespace ThreadSafety
     /// <summary>
     /// 提供執行緒安全的操作介面
     /// </summary>
-    public interface ISafty<T> : IThreadSafety where T : new()
+    public interface ISafty<T> : IThreadSafety
     {
         /// <summary>
         /// 最後修改時間

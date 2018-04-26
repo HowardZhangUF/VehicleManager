@@ -98,7 +98,7 @@ namespace GLCore
         /// <summary>
         /// 幾何座標集合
         /// </summary>
-        public ISafty<List<IArea>> Geometry { get; } = new Safty<List<IArea>>();
+        public ISafty<List<IArea>> Geometry { get; } = new Safty<List<IArea>>(new List<IArea>());
 
         /// <summary>
         /// 樣式
@@ -207,7 +207,7 @@ namespace GLCore
         /// <summary>
         /// 幾何座標集合
         /// </summary>
-        public ISafty<List<IPair>> Geometry { get; } = new Safty<List<IPair>>();
+        public ISafty<List<IPair>> Geometry { get; } = new Safty<List<IPair>>(new List<IPair>());
 
         /// <summary>
         /// 樣式
@@ -305,7 +305,7 @@ namespace GLCore
         /// <summary>
         /// 幾何座標集合
         /// </summary>
-        public ISafty<List<IPair>> Geometry { get; } = new Safty<List<IPair>>();
+        public ISafty<List<IPair>> Geometry { get; } = new Safty<List<IPair>>(new List<IPair>());
 
         /// <summary>
         /// 樣式

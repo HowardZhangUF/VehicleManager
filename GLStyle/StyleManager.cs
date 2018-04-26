@@ -13,7 +13,7 @@ namespace GLStyle
         /// <summary>
         /// 樣式列表，key = 樣式名稱, vakue = 樣式
         /// </summary>
-        private static ISafty<Dictionary<string, IStyle>> StyleTable { get; } = new Safty<Dictionary<string, IStyle>>();
+        private static ISafty<Dictionary<string, IStyle>> StyleTable { get; } = new Safty<Dictionary<string, IStyle>>(new Dictionary<string, IStyle>());
 
         /// <summary>
         /// 依據名稱從樣式列表(<see cref="StyleTable"/>)中選擇對應的樣式，若樣式不存在，則返回 null
