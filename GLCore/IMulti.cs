@@ -31,13 +31,19 @@ namespace GLCore
     /// <summary>
     /// 複合物介面
     /// </summary>
-    public interface IMulti<TGeometry, TStyle> : IGLCore, IMulti where TGeometry : IGeometry where TStyle : IStyle
+    public interface IMulti<TGeometry> : IGLCore, IMulti where TGeometry : IGeometry
     {
         /// <summary>
         /// 幾何座標集合
         /// </summary>
         ISafty<List<TGeometry>> Geometry { get; }
+    }
 
+    /// <summary>
+    /// 複合物介面
+    /// </summary>
+    public interface IMulti<TGeometry, TStyle> : IGLCore, IMulti<TGeometry>, IMulti where TGeometry : IGeometry where TStyle : IStyle
+    {
         /// <summary>
         /// 樣式
         /// </summary>

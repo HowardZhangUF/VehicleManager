@@ -193,6 +193,20 @@ namespace GLCore
             }
         }
 
+        /// <summary>
+        /// 執行緒安全操作複合物件的幾何座標集合，若操作過程中會改變資料，請將 <paramref name="isDataChange"/> 設為 True
+        /// </summary>
+        public static void SaftyEditMultiGeometry<TGeometry>(int id, bool isDataChange, Action<List<TGeometry>> action) where TGeometry : IGeometry
+        {
+            lock (key)
+            {
+                if (!MultiObject.Keys.Contains(id)) return;
+                if (!(MultiObject[id] is IMulti<TGeometry>)) return;
+
+                (MultiObject[id] as IMulti<TGeometry>).Geometry.SaftyEdit(isDataChange, list => action(list));
+            }
+        }
+
         #endregion 複合物件操作
 
         /// <summary>

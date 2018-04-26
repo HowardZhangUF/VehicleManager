@@ -30,7 +30,9 @@ namespace GLUITest
             {
                 list.Add(new Pair(random.Next(-10000,10000), random.Next(-10000, 10000)));
             }
-            GLCMD.AddMultiPair("ObstaclePoints", list);
+            int id = GLCMD.AddMultiPair("ObstaclePoints", list);
+
+            GLCMD.SaftyEditMultiGeometry<IPair>(id, true, o => o.RemoveAll(pair => pair.X > 0));
         }
     }
 }
