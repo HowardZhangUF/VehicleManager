@@ -88,6 +88,15 @@ namespace GLUI.Language {
         }
         
         /// <summary>
+        ///   查詢類似 Eraser 的當地語系化字串。
+        /// </summary>
+        public static string Eraser {
+            get {
+                return ResourceManager.GetString("Eraser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 Move 的當地語系化字串。
         /// </summary>
         public static string Move {

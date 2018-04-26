@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using ThreadSafety;
 
 namespace GLCore
 {
@@ -135,6 +136,47 @@ namespace GLCore
         /// 上一筆移動指令
         /// </summary>
         private static string PreMoveCommand { get; set; } = string.Empty;
+
+        #region 擦子
+
+        /// <summary>
+        /// 擦子大小
+        /// </summary>
+        public static int EraserSize { get { return Eraser.SaftyEdit(eraser => eraser.Geometry.Max.X - eraser.Geometry.Min.X); } }
+
+        /// <summary>
+        /// 擦子
+        /// </summary>
+        private static ISafty<SingleArea> Eraser { get; } = new Safty<SingleArea>(new SingleArea(nameof(Eraser)));
+
+        /// <summary>
+        /// 根據 ID 擦掉障礙點
+        /// </summary>
+        /// <param name="id">類型為 <see cref="MultiPair"/> 的識別碼</param>
+        public static void EraserObstaclePoints(int id)
+        {
+            Eraser.SaftyEdit(false, eraser =>
+            SaftyEditMultiGeometry<IPair>(id, true, list => list.RemoveAll(pair => eraser.Geometry.Contain(pair)))
+            );
+        }
+
+        /// <summary>
+        /// 設定擦子大小及位置
+        /// </summary>
+        public static void SetEraser(IPair pos, int size)
+        {
+            Eraser.SaftyEdit(true, eraser => eraser.Geometry.Set(pos.X - size / 2, pos.Y - size / 2, pos.X + size / 2, pos.Y + size / 2));
+        }
+
+        /// <summary>
+        /// 設定擦子位置
+        /// </summary>
+        public static void SetEraser(IPair pos)
+        {
+            Eraser.SaftyEdit(true, eraser => eraser.Move(EMoveType.Center, pos.X, pos.Y));
+        }
+
+        #endregion 擦子
 
         #region 複合物件操作
 
@@ -553,6 +595,9 @@ namespace GLCore
                 {
                     obj.Draw(gl);
                 }
+
+                // 特殊物件
+                Eraser?.SaftyEdit(false, eraser => eraser?.Draw(gl));
 
                 // 選擇邊界
                 if (CurrentObject.Keys.Contains(SelectTargetID))

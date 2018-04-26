@@ -156,4 +156,7 @@
   <data name="Undo" xml:space="preserve">
     <value>復原</value>
   </data>
+  <data name="Eraser" xml:space="preserve">
+    <value>清除障礙點</value>
+  </data>
 </root>

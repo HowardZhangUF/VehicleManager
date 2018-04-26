@@ -131,6 +131,7 @@
     <Content Include="Image\Power.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Eraser.png" />
     <None Include="Resources\Rename.png" />
     <None Include="Resources\TowardPair.png" />
     <None Include="Resources\Pair.png" />

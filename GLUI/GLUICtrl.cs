@@ -19,6 +19,7 @@ namespace GLUI
         private System.Drawing.Image AreaImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Area");
         private System.Drawing.Image ChangeStyleImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("ChangeStyle");
         private System.Drawing.Image DeleteImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Delete");
+        private System.Drawing.Image EraserImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Eraser");
         private System.Drawing.Image LineImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Line");
         private System.Drawing.Image MoveImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Move");
         private System.Drawing.Image PairImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Pair");
@@ -203,6 +204,15 @@ namespace GLUI
         }
 
         /// <summary>
+        /// 清除障礙點右鍵選單觸發
+        /// </summary>
+        private void MenuEraserOnClik(object sender, EventArgs e)
+        {
+            int size = (int)(sender as ToolStripItem).Tag;
+            GLCMD.SetEraser(PreGLPosition, size);
+        }
+
+        /// <summary>
         /// 移動起點座標右鍵選單觸發
         /// </summary>
         private void MenuMoveBeginOnClik(object sender, EventArgs e)
@@ -381,8 +391,18 @@ namespace GLUI
 
             if (!AllowUndoMenu) return;
 
-            // 加入
+            // 清除障礙點
             var menu = new ContextMenuStrip();
+            ToolStripMenuItem eraser = new ToolStripMenuItem(Lang.Eraser) { Image = EraserImage };
+            foreach (var size in new int[] { 10, 50, 100, 500, 1000 })
+            {
+                ToolStripItem item = new ToolStripButton() { Text = size.ToString(), Tag = size, Width = 30 };
+                item.Click += MenuEraserOnClik;
+                eraser.DropDownItems.Add(item);
+            }
+            menu.Items.Add(eraser);
+
+            // 加入
             ToolStripMenuItem add = new ToolStripMenuItem(Lang.Add) { Image = AddImage };
             foreach (var typename in StyleManager.GetStyleNames())
             {
@@ -438,7 +458,13 @@ namespace GLUI
             SharpGLCtrl.MouseWheel += SharpGLCtrl_MouseWheel; ;
             SharpGLCtrl.Click += SharpGLCtrl_Click;
             SharpGLCtrl.MouseMove += SharpGLCtrl_MouseMove;
+            SharpGLCtrl.MouseDown += SharpGLCtrl_MouseDown;
         }
+
+        /// <summary>
+        /// 障礙點識別碼
+        /// </summary>
+        public int ObstaclePointsID { get; set; }
 
         private OpenGL GL { get { return SharpGLCtrl.OpenGL; } }
 
@@ -680,6 +706,17 @@ namespace GLUI
             }
         }
 
+        private void SharpGLCtrl_MouseDown(object sender, MouseEventArgs e)
+        {
+            // 左鍵擦子功能、右鍵取消擦子
+            MouseEventArgs mouse = (MouseEventArgs)e;
+            if (GLCMD.EraserSize != 0)
+            {
+                if (mouse.Button == MouseButtons.Left) GLCMD.EraserObstaclePoints(ObstaclePointsID);
+                if (mouse.Button == MouseButtons.Right) GLCMD.SetEraser(PreGLPosition, 0);
+            }
+        }
+
         private void SharpGLCtrl_MouseMove(object sender, MouseEventArgs e)
         {
             var newGLPosition = ScreenToGL(e.X, e.Y);
@@ -716,6 +753,8 @@ namespace GLUI
                     GLCMD.DoMoveToward(SelectTargetID, x, y);
                     break;
             }
+
+            GLCMD.SetEraser(PreGLPosition);
         }
 
         /// <summary>
