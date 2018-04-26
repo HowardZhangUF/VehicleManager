@@ -16,6 +16,11 @@
         int Layer { get; }
 
         /// <summary>
+        /// 是否在選單中顯示給使用者看
+        /// </summary>
+        bool ShowOnTheMenu { get; }
+
+        /// <summary>
         /// 樣式種類
         /// </summary>
         string StyleType { get; }

@@ -14,6 +14,7 @@ namespace GLStyle
         {
             BackgroundColor = new Color(INI.Read(filePath, section, nameof(BackgroundColor), Color.GreenYellow128));
             Layer = INI.Read(filePath, section, nameof(Layer), 0);
+            ShowOnTheMenu = INI.Read(filePath, section, nameof(ShowOnTheMenu), false);
         }
 
         /// <summary>
@@ -30,6 +31,11 @@ namespace GLStyle
         /// 圖層位置
         /// </summary>
         public int Layer { get; }
+
+        /// <summary>
+        /// 是否在選單中顯示給使用者看
+        /// </summary>
+        public bool ShowOnTheMenu { get; }
 
         /// <summary>
         /// 樣式名稱

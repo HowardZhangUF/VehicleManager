@@ -28,19 +28,19 @@ namespace GLStyle
         }
 
         /// <summary>
-        /// 讀取所有樣式名稱
+        /// 讀取所有除了不顯示在右鍵選單的樣式名稱
         /// </summary>
         public static IEnumerable<string> GetStyleNames()
         {
-            return StyleTable.SaftyEdit(table => table.Keys);
+            return StyleTable.SaftyEdit(table => table.Where(item => item.Value.ShowOnTheMenu).Select(item => item.Key));
         }
 
         /// <summary>
-        /// 讀取所有指定的樣式名稱
+        /// 讀取所有除了不顯示在右鍵選單的指定樣式名稱
         /// </summary>
         public static IEnumerable<string> GetStyleNames(string styleType)
         {
-            return StyleTable.SaftyEdit(table => table.Where(item => item.Value.StyleType == styleType).Select(item => item.Key));
+            return StyleTable.SaftyEdit(table => table.Where(item => item.Value.ShowOnTheMenu && item.Value.StyleType == styleType).Select(item => item.Key));
         }
 
         /// <summary>

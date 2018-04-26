@@ -15,6 +15,7 @@ namespace GLStyle
             BackgroundColor = new Color(INI.Read(filePath, section, nameof(BackgroundColor), Color.GreenYellow128));
             Layer = INI.Read(filePath, section, nameof(Layer), 0);
             Pattern = (ELinePattern)INI.Read(filePath, section, nameof(Pattern), 0);
+            ShowOnTheMenu = INI.Read(filePath, section, nameof(ShowOnTheMenu), false);
             Width = INI.Read(filePath, section, nameof(Width), 1.0f);
         }
 
@@ -32,6 +33,11 @@ namespace GLStyle
         /// 線段樣式
         /// </summary>
         public ELinePattern Pattern { get; }
+
+        /// <summary>
+        /// 是否在選單中顯示給使用者看
+        /// </summary>
+        public bool ShowOnTheMenu { get; }
 
         /// <summary>
         /// 樣式名稱

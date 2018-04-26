@@ -20,6 +20,7 @@ namespace GLStyle
             LineLength = INI.Read(filePath, section, nameof(LineLength), 1000.0f);
             LinePattern = (ELinePattern)INI.Read(filePath, section, nameof(LinePattern), 0);
             LineWidth = INI.Read(filePath, section, nameof(LineWidth), 1.0f);
+            ShowOnTheMenu = INI.Read(filePath, section, nameof(ShowOnTheMenu), false);
             Width = INI.Read(filePath, section, nameof(Width), 1500.0f);
         }
 
@@ -62,6 +63,11 @@ namespace GLStyle
         /// 線條寬
         /// </summary>
         public float LineWidth { get; }
+
+        /// <summary>
+        /// 是否在選單中顯示給使用者看
+        /// </summary>
+        public bool ShowOnTheMenu { get; }
 
         /// <summary>
         /// 樣式名稱
