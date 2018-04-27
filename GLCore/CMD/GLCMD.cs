@@ -259,6 +259,57 @@ namespace GLCore
 
         #endregion 載入地圖
 
+        #region 儲存地圖
+        /// <summary>
+        /// 儲存地圖
+        /// </summary>
+        public static void SaveMap(string file)
+        {
+            lock (key)
+            {
+                List<string> data = new List<string>();
+                data.Add("Goal List");
+                data.AddRange(GetGoalList());
+                data.Add("Obstacle Points");
+                data.AddRange(GetObstaclePointsList());
+
+                File.WriteAllLines(file, data);
+            }
+        }
+
+        /// <summary>
+        /// <para>以 *.map 目標點字串格式回傳 <see cref="CurrentMultiObject"/> of <see cref="ObstaclePointsID"/> 中所有點</para>
+        /// <para>資料格式如：-12794,3803</para>
+        /// </summary>
+        private static IEnumerable<string> GetObstaclePointsList()
+        {
+            return (CurrentMultiObject[ObstaclePointsID] as IMulti<IPair>).Geometry.SaftyEdit(list => ToString(list));
+        }
+
+        /// <summary>
+        /// 將集合中的元素一一轉為字串
+        /// </summary>
+        private static IEnumerable<string> ToString<T>(IEnumerable<T> collection)
+        {
+            foreach (var item in collection)
+            {
+                yield return item.ToString();
+            }
+        }
+
+        /// <summary>
+        /// <para>以 *.map 目標點字串格式回傳 <see cref="CurrentSingleObject"/> 中所有 <see cref="ITowardPairStyle"/> 的圖示 </para>
+        /// <para>資料格式如：Goal 2,8421,2264,0,MagneticTracking</para>
+        /// </summary>
+        private static IEnumerable<string> GetGoalList()
+        {
+            foreach (var goal in CurrentSingleObject.Where(o => StyleManager.GetStyleType(o.Value.StyleName) == nameof(ITowardPairStyle)).Select(o => o.Value as ISingleTowardPair))
+            {
+                yield return $"{goal.Name},{goal.Geometry.Position.X},{goal.Geometry.Position.Y},{goal.Geometry.Toward.Theta},{goal.StyleName}";
+            }
+        }
+        #endregion
+
         /// <summary>
         /// 執行命令。執行失敗回傳 -1，執行成功則回傳控制對象的 id
         /// <para>加入物件：Add,id,style,x,y,toward...</para>

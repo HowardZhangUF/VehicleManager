@@ -531,6 +531,14 @@ namespace GLUI
         }
 
         /// <summary>
+        /// 儲存地圖
+        /// </summary>
+        public void SaveMap(string file)
+        {
+            GLCMD.SaveMap(file);
+        }
+
+        /// <summary>
         /// 載入地圖
         /// </summary>
         public void LoadMap()
@@ -542,6 +550,21 @@ namespace GLUI
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     LoadMap(ofd.FileName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 載入地圖
+        /// </summary>
+        public void SaveMap()
+        {
+            using (var sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "map files (*.map)|*.map";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    SaveMap(sfd.FileName);
                 }
             }
         }
@@ -779,6 +802,9 @@ namespace GLUI
 
             // Ctrl+O 載入地圖
             if (e.Control == true && e.KeyCode == Keys.O) LoadMap();
+
+            // Ctrl+S 儲存地圖
+            if (e.Control == true && e.KeyCode == Keys.S) SaveMap();
         }
 
         private void SharpGLCtrl_MouseDown(object sender, MouseEventArgs e)
