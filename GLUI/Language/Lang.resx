@@ -142,4 +142,7 @@
   <data name="Pen" xml:space="preserve">
     <value>Pen</value>
   </data>
+  <data name="Redo" xml:space="preserve">
+    <value>Redo</value>
+  </data>
 </root>

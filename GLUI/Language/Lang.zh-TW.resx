@@ -162,4 +162,7 @@
   <data name="Pen" xml:space="preserve">
     <value>畫筆</value>
   </data>
+  <data name="Redo" xml:space="preserve">
+    <value>重做</value>
+  </data>
 </root>

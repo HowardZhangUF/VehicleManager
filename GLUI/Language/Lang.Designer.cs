@@ -169,6 +169,15 @@ namespace GLUI.Language {
         }
         
         /// <summary>
+        ///   查詢類似 Redo 的當地語系化字串。
+        /// </summary>
+        public static string Redo {
+            get {
+                return ResourceManager.GetString("Redo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 Rename 的當地語系化字串。
         /// </summary>
         public static string Rename {

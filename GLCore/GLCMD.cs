@@ -125,7 +125,7 @@ namespace GLCore
         /// <summary>
         /// 歷史紀錄
         /// </summary>
-        private static History History { get; } = new History(20);
+        private static History History { get; } = new History(10);
 
         /// <summary>
         /// 複合物件列表
@@ -713,24 +713,13 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 取得歷史指令
+        /// 獲得已做的歷史紀錄
         /// </summary>
-        public static IEnumerable<string> GetHistory()
+        public static IEnumerable<string> GetDoHistory()
         {
             lock (key)
             {
-                return History.GetLines();
-            }
-        }
-
-        /// <summary>
-        /// 取得歷史指令數目
-        /// </summary>
-        public static int GetHistoryCount()
-        {
-            lock (key)
-            {
-                return History.Count;
+                return History.GetDoHistory();
             }
         }
 
@@ -748,16 +737,45 @@ namespace GLCore
         }
 
         /// <summary>
+        /// 獲得已復原的歷史紀錄
+        /// </summary>
+        public static IEnumerable<string> GetUndoHistory()
+        {
+            lock (key)
+            {
+                return History.GetUndoHistory();
+            }
+        }
+
+        /// <summary>
         /// 復原
         /// </summary>
         public static void Undo(int step)
         {
             lock (key)
             {
-                if (History.Pop(step))
+                if (History.Forward(step))
                 {
                     CurrentObject = BackupObject.DeepClone();
-                    foreach (var cmd in History.GetLines())
+                    foreach (var cmd in History.GetDoHistory())
+                    {
+                        Do(CurrentObject, cmd, false);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 重做
+        /// </summary>
+        public static void Redo(int step)
+        {
+            lock (key)
+            {
+                if (History.Backward(step))
+                {
+                    CurrentObject = BackupObject.DeepClone();
+                    foreach (var cmd in History.GetDoHistory())
                     {
                         Do(CurrentObject, cmd, false);
                     }
@@ -1000,17 +1018,12 @@ namespace GLCore
     public class History
     {
         /// <summary>
-        /// 歷史資料
-        /// </summary>
-        private List<string> data = new List<string>();
-
-        /// <summary>
         /// 執行緒鎖
         /// </summary>
         private object key = new object();
 
         /// <summary>
-        /// 建立歷史紀錄。 <paramref name="maxLine"/> 為紀錄最大筆數
+        /// 建立歷史紀錄。 <paramref name="maxLine"/> 為最大記錄筆數
         /// </summary>
         public History(int maxLine)
         {
@@ -1018,9 +1031,9 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 紀錄總數
+        /// 旗標，從 0 ~ Flag-1 表示已經做的步驟，從 Flag ~ Data.Count-1 表示復原的總數
         /// </summary>
-        public int Count { get { lock (key) return data.Count; } }
+        public int Flag { get; private set; }
 
         /// <summary>
         /// 紀錄最大筆數
@@ -1028,61 +1041,76 @@ namespace GLCore
         public int MaxLine { get; }
 
         /// <summary>
+        /// 歷史資料
+        /// </summary>
+        private List<string> Data { get; } = new List<string>();
+
+        /// <summary>
         /// 清除紀錄
         /// </summary>
         public void Clear()
         {
-            lock (key) data.Clear();
+            lock (key)
+            {
+                Flag = 0;
+                Data.Clear();
+            }
         }
 
         /// <summary>
-        /// 獲得紀錄
+        /// 獲得已做的歷史紀錄
         /// </summary>
-        public IEnumerable<string> GetLines()
+        public IEnumerable<string> GetDoHistory()
         {
             lock (key)
             {
-                for (int ii = 0; ii < MaxLine && ii < data.Count; ii++)
+                for (int ii = 0; ii < Flag; ii++)
                 {
-                    yield return data[ii];
+                    yield return Data[ii];
                 }
             }
         }
 
         /// <summary>
-        /// 獲得最新一筆紀錄。若紀錄不存在，則回傳 <see cref="string.Empty"/>
+        /// 獲得已復原的歷史紀錄
         /// </summary>
-        public string Pop()
+        public IEnumerable<string> GetUndoHistory()
         {
             lock (key)
             {
-                if (data.Count > 0)
+                for (int ii = Flag; ii < Data.Count; ii++)
                 {
-                    var last = data[data.Count - 1];
-                    data.RemoveAt(data.Count - 1);
-                    return last;
+                    yield return Data[ii];
                 }
-                return string.Empty;
             }
         }
 
         /// <summary>
-        /// 盡量消除指定行數。若沒有資料可消除，則回傳 false，其餘回傳 true
+        /// 將 <see cref="Flag"/> 向前移
         /// </summary>
-        public bool Pop(int count)
+        public bool Forward(int step)
         {
             lock (key)
             {
-                if (data.Count > 0)
+                if (Flag > 0)
                 {
-                    if (data.Count <= count)
-                    {
-                        data.Clear();
-                    }
-                    else
-                    {
-                        data.RemoveRange(data.Count - count, count);
-                    }
+                    Flag = Math.Max(Flag - step, 0);
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 將 <see cref="Flag"/> 向後移
+        /// </summary>
+        public bool Backward(int step)
+        {
+            lock (key)
+            {
+                if (Flag < MaxLine)
+                {
+                    Flag = Math.Min(Flag + step, Data.Count);
                     return true;
                 }
                 return false;
@@ -1092,17 +1120,20 @@ namespace GLCore
         /// <summary>
         /// 加入一筆紀錄。若紀錄已滿，則回傳第一筆紀錄，否則回傳 <see cref="string.Empty"/>
         /// </summary>
-        public string Push(string line)
+        public string Push(string newData)
         {
             lock (key)
             {
-                data.Add(line);
-                if (data.Count >= MaxLine)
+                Data.RemoveRange(Flag, Data.Count - Flag);
+                Data.Add(newData);
+                if (Data.Count > MaxLine)
                 {
-                    var overflow = data[0];
-                    data.RemoveAt(0);
+                    var overflow = Data[0];
+                    Data.RemoveAt(0);
+                    Flag = Data.Count;
                     return overflow;
                 }
+                Flag = Data.Count;
                 return string.Empty;
             }
         }

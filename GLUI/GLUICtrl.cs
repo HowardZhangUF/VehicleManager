@@ -24,6 +24,7 @@ namespace GLUI
         private System.Drawing.Image MoveImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Move");
         private System.Drawing.Image PairImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Pair");
         private System.Drawing.Image PenImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Pen");
+        private System.Drawing.Image RedoImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Redo");
         private System.Drawing.Image RenameImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Rename");
         private System.Drawing.Image SelectImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Select");
         private System.Drawing.Image TowardPairImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("TowardPair");
@@ -266,7 +267,17 @@ namespace GLUI
         /// </summary>
         private void MenuPenOnClik(object sender, EventArgs e)
         {
-            GLCMD.SetPenBeginAndEnd(PreGLPosition);
+            int step = int.Parse((sender as ToolStripItem).Tag.ToString());
+            GLCMD.Redo(step);
+        }
+
+        /// <summary>
+        /// 重做右鍵選單觸發
+        /// </summary>
+        private void MenuRedoOnClik(object sender, EventArgs e)
+        {
+            int step = int.Parse((sender as ToolStripItem).Tag.ToString());
+            GLCMD.Redo(step);
         }
 
         /// <summary>
@@ -448,13 +459,27 @@ namespace GLUI
 
             // 復原
             int step = 0;
-            foreach (var cmd in GLCMD.GetHistory().Reverse())
+            ToolStripMenuItem undo = new ToolStripMenuItem(Lang.Undo) { Image = UndoImage };
+            foreach (var cmd in GLCMD.GetDoHistory().Reverse())
             {
                 ++step;
-                ToolStripItem item = new ToolStripButton() { Text = $"{Lang.Undo} - {cmd}", Tag = step, Image = UndoImage };
+                ToolStripItem item = new ToolStripButton() { Text = cmd, Tag = step, Width = 250 };
                 item.Click += MenuUndoOnClik;
-                menu.Items.Add(item);
+                undo.DropDownItems.Add(item);
             }
+            menu.Items.Add(undo);
+
+            // 重做
+            step = 0;
+            ToolStripMenuItem redo = new ToolStripMenuItem(Lang.Redo) { Image = RedoImage };
+            foreach (var cmd in GLCMD.GetUndoHistory())
+            {
+                ++step;
+                ToolStripItem item = new ToolStripButton() { Text = cmd, Tag = step , Width = 250 };
+                item.Click += MenuRedoOnClik;
+                redo.DropDownItems.Add(item);
+            }
+            menu.Items.Add(redo);
 
             menu.Show(MousePosition);
         }
@@ -714,7 +739,8 @@ namespace GLUI
         {
             if (e.KeyCode == Keys.Z && e.Control == true)
             {
-                GLCMD.Undo(1);
+                if (e.Shift) GLCMD.Redo(1);
+                else GLCMD.Undo(1);
             }
         }
 
