@@ -612,30 +612,30 @@ namespace GLCore
         {
             lock (key)
             {
+                // 特殊物件
+                Eraser?.SaftyEdit(false, eraser => eraser?.Draw(gl));
+                Pen?.SaftyEdit(false, pen => { if (PenDrawing) pen.Draw(gl); });
+
                 // 先畫不透明再畫透明
                 // 不透明
-                foreach (var obj in CurrentObject.Values.Where(o => !o.Transparent))
+                foreach (var obj in MultiObject.Values.Where(o => !o.Transparent))
                 {
                     obj.Draw(gl);
                 }
-                foreach (var obj in MultiObject.Values.Where(o => !o.Transparent))
+                foreach (var obj in CurrentObject.Values.Where(o => !o.Transparent))
                 {
                     obj.Draw(gl);
                 }
 
                 // 透明
-                foreach (var obj in CurrentObject.Values.Where(o => o.Transparent))
-                {
-                    obj.Draw(gl);
-                }
                 foreach (var obj in MultiObject.Values.Where(o => o.Transparent))
                 {
                     obj.Draw(gl);
                 }
-
-                // 特殊物件
-                Eraser?.SaftyEdit(false, eraser => eraser?.Draw(gl));
-                Pen?.SaftyEdit(false, pen => { if (PenDrawing) pen.Draw(gl); });
+                foreach (var obj in CurrentObject.Values.Where(o => o.Transparent))
+                {
+                    obj.Draw(gl);
+                }
 
                 // 選擇邊界
                 if (CurrentObject.Keys.Contains(SelectTargetID))
