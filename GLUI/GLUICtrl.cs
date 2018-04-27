@@ -475,7 +475,7 @@ namespace GLUI
             foreach (var cmd in GLCMD.GetUndoHistory())
             {
                 ++step;
-                ToolStripItem item = new ToolStripButton() { Text = cmd, Tag = step , Width = 250 };
+                ToolStripItem item = new ToolStripButton() { Text = cmd, Tag = step, Width = 250 };
                 item.Click += MenuRedoOnClik;
                 redo.DropDownItems.Add(item);
             }
@@ -746,6 +746,11 @@ namespace GLUI
                 if (e.Shift) GLCMD.Redo(1);
                 else GLCMD.Undo(1);
             }
+
+            if (e.Control == true && e.KeyCode == Keys.Up) Translate.Y += 100;
+            if (e.Control == true && e.KeyCode == Keys.Down) Translate.Y -= 100;
+            if (e.Control == true && e.KeyCode == Keys.Left) Translate.X -= 100;
+            if (e.Control == true && e.KeyCode == Keys.Right) Translate.X += 100;
         }
 
         private void SharpGLCtrl_MouseDown(object sender, MouseEventArgs e)
