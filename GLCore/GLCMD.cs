@@ -41,11 +41,6 @@ namespace GLCore
         Undo,
 
         /// <summary>
-        /// 選擇
-        /// </summary>
-        Select,
-
-        /// <summary>
         /// 重新命名
         /// </summary>
         Rename,
@@ -312,7 +307,6 @@ namespace GLCore
         /// <para>刪除物件：Delete,id</para>
         /// <para>移動物件：Move,id,n,x,y</para>
         /// <para>修改樣式：ChangeStyle,id,newStyle</para>
-        /// <para>選擇物件：Select,id(不記錄步驟)</para>
         /// <para>重新命名：Rename,id,newName</para>
         /// </summary>
         public static int Do(string cmd)
@@ -612,18 +606,6 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 選擇物件。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
-        /// </summary>
-        public static int DoSelect(int id)
-        {
-            lock (key)
-            {
-                string cmd = $"{nameof(ECMDType.Select)},{id}";
-                return Do(cmd);
-            }
-        }
-
-        /// <summary>
         /// 繪圖
         /// </summary>
         public static void Draw(OpenGL gl)
@@ -748,13 +730,13 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 復原
+        /// 重做
         /// </summary>
-        public static void Undo(int step)
+        public static void Redo(int step)
         {
             lock (key)
             {
-                if (History.Forward(step))
+                if (History.Backward(step))
                 {
                     CurrentObject = BackupObject.DeepClone();
                     foreach (var cmd in History.GetDoHistory())
@@ -766,13 +748,31 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 重做
+        /// 選擇物件。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static void Redo(int step)
+        public static int Select(int id)
         {
             lock (key)
             {
-                if (History.Backward(step))
+                if (CurrentObject.Keys.Contains(id))
+                {
+                    SelectTargetID = id;
+                    return id;
+                }
+
+                SelectTargetID = -1;
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// 復原
+        /// </summary>
+        public static void Undo(int step)
+        {
+            lock (key)
+            {
+                if (History.Forward(step))
                 {
                     CurrentObject = BackupObject.DeepClone();
                     foreach (var cmd in History.GetDoHistory())
@@ -862,7 +862,6 @@ namespace GLCore
         /// <para>刪除物件：Delete,id</para>
         /// <para>移動物件：Move,id,n,x,y</para>
         /// <para>修改樣式：ChangeStyle,id,newStyle</para>
-        /// <para>選擇物件：Select,id(不記錄步驟)</para>
         /// <para>重新命名：Rename,id,newName</para>
         /// </summary>
         private static int Do(Dictionary<int, ISingle> dic, string cmd, bool pushHistory)
@@ -890,10 +889,6 @@ namespace GLCore
                         res = SetStyle(dic, para.Skip(1));
                         break;
 
-                    case nameof(ECMDType.Select):
-                        res = Select(dic, int.Parse(para[1]));
-                        break;
-
                     case nameof(ECMDType.Rename):
                         res = Rename(dic, int.Parse(para[1]), para[2]);
                         break;
@@ -906,7 +901,7 @@ namespace GLCore
                 }
 
                 if (res == -1 || !pushHistory) return res;
-                if (para[0] == nameof(ECMDType.Select) || para[0] == nameof(ECMDType.Move)) return res;
+                if (para[0] == nameof(ECMDType.Move)) return res;
 
                 PushHistory(cmd);
 
@@ -972,24 +967,6 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 根據 id 選擇對象
-        /// </summary>
-        private static int Select(Dictionary<int, ISingle> dic, int id)
-        {
-            lock (key)
-            {
-                if (dic.Keys.Contains(id))
-                {
-                    SelectTargetID = id;
-                    return id;
-                }
-
-                SelectTargetID = -1;
-                return -1;
-            }
-        }
-
-        /// <summary>
         /// 修改樣式。執行失敗回傳 -1
         /// </summary>
         /// <param name="para">id,newStyle</param>
@@ -1046,6 +1023,22 @@ namespace GLCore
         private List<string> Data { get; } = new List<string>();
 
         /// <summary>
+        /// 將 <see cref="Flag"/> 向後移
+        /// </summary>
+        public bool Backward(int step)
+        {
+            lock (key)
+            {
+                if (Flag < MaxLine)
+                {
+                    Flag = Math.Min(Flag + step, Data.Count);
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 清除紀錄
         /// </summary>
         public void Clear()
@@ -1054,6 +1047,22 @@ namespace GLCore
             {
                 Flag = 0;
                 Data.Clear();
+            }
+        }
+
+        /// <summary>
+        /// 將 <see cref="Flag"/> 向前移
+        /// </summary>
+        public bool Forward(int step)
+        {
+            lock (key)
+            {
+                if (Flag > 0)
+                {
+                    Flag = Math.Max(Flag - step, 0);
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -1082,38 +1091,6 @@ namespace GLCore
                 {
                     yield return Data[ii];
                 }
-            }
-        }
-
-        /// <summary>
-        /// 將 <see cref="Flag"/> 向前移
-        /// </summary>
-        public bool Forward(int step)
-        {
-            lock (key)
-            {
-                if (Flag > 0)
-                {
-                    Flag = Math.Max(Flag - step, 0);
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 將 <see cref="Flag"/> 向後移
-        /// </summary>
-        public bool Backward(int step)
-        {
-            lock (key)
-            {
-                if (Flag < MaxLine)
-                {
-                    Flag = Math.Min(Flag + step, Data.Count);
-                    return true;
-                }
-                return false;
             }
         }
 

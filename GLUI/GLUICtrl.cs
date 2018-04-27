@@ -146,7 +146,7 @@ namespace GLUI
         /// <summary>
         /// 滑鼠控制目標
         /// </summary>
-        public int SelectTargetID { get { return selectTarget; } private set { selectTarget = value; GLCMD.DoSelect(value); } }
+        public int SelectTargetID { get { return selectTarget; } private set { selectTarget = value; GLCMD.Select(value); } }
 
         /// <summary>
         /// 滑鼠的前一筆位置
