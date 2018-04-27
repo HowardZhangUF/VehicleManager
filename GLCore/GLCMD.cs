@@ -308,7 +308,7 @@ namespace GLCore
 
         /// <summary>
         /// 執行命令。執行失敗回傳 -1，執行成功則回傳控制對象的 id
-        /// <para>加入物件：Add,id,type,style,x,y,toward...</para>
+        /// <para>加入物件：Add,id,style,x,y,toward...</para>
         /// <para>刪除物件：Delete,id</para>
         /// <para>移動物件：Move,id,n,x,y</para>
         /// <para>修改樣式：ChangeStyle,id,newStyle</para>
@@ -330,7 +330,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleArea)},{style},{minX},{minY},{maxX},{maxY}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{minX},{minY},{maxX},{maxY}";
                 return Do(cmd);
             }
         }
@@ -342,7 +342,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleArea)},{style},{minX},{minY},{maxX},{maxY}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{minX},{minY},{maxX},{maxY}";
                 return Do(cmd);
             }
         }
@@ -354,7 +354,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleArea)},{style},{min.X},{min.Y},{max.X},{max.Y}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{min.X},{min.Y},{max.X},{max.Y}";
                 return Do(cmd);
             }
         }
@@ -366,7 +366,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleArea)},{style},{area.Min.X},{area.Min.Y},{area.Max.X},{area.Max.Y}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{area.Min.X},{area.Min.Y},{area.Max.X},{area.Max.Y}";
                 return Do(cmd);
             }
         }
@@ -378,7 +378,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleLine)},{style},{x0},{y0},{x1},{y1}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{x0},{y0},{x1},{y1}";
                 return Do(cmd);
             }
         }
@@ -390,7 +390,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleLine)},{style},{x0},{y0},{x1},{y1}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{x0},{y0},{x1},{y1}";
                 return Do(cmd);
             }
         }
@@ -402,7 +402,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleLine)},{style},{begin.X},{begin.Y},{end.X},{end.Y}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{begin.X},{begin.Y},{end.X},{end.Y}";
                 return Do(cmd);
             }
         }
@@ -414,7 +414,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleLine)},{style},{line.Begin.X},{line.Begin.Y},{line.End.X},{line.End.Y}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{line.Begin.X},{line.Begin.Y},{line.End.X},{line.End.Y}";
                 return Do(cmd);
             }
         }
@@ -426,7 +426,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SinglePair)},{style},{x},{y}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{x},{y}";
                 return Do(cmd);
             }
         }
@@ -438,7 +438,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SinglePair)},{style},{x},{y}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{x},{y}";
                 return Do(cmd);
             }
         }
@@ -450,7 +450,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SinglePair)},{style},{pair.X},{pair.Y}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{pair.X},{pair.Y}";
                 return Do(cmd);
             }
         }
@@ -462,7 +462,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleTowardPair)},{style},{x},{y},{toward}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{x},{y},{toward}";
                 return Do(cmd);
             }
         }
@@ -474,7 +474,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleTowardPair)},{style},{x},{y},{toward}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{x},{y},{toward}";
                 return Do(cmd);
             }
         }
@@ -486,7 +486,7 @@ namespace GLCore
         {
             lock (key)
             {
-                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{nameof(SingleTowardPair)},{style},{pos.Position.X},{pos.Position.Y},{pos.Toward.Theta}";
+                string cmd = $"{nameof(ECMDType.Add)},{SerialNumber.Next()},{style},{pos.Position.X},{pos.Position.Y},{pos.Toward.Theta}";
                 return Do(cmd);
             }
         }
@@ -768,34 +768,30 @@ namespace GLCore
         /// <summary>
         /// 加入物件。執行失敗回傳 -1
         /// </summary>
-        /// <param name="para">id,type,style,x,y,toward...</param>
+        /// <param name="para">id,style,x,y,toward...</param>
         private static int Add(Dictionary<int, ISingle> dic, IEnumerable<string> para)
         {
-            string style = StyleManager.GetStyleType(para.ElementAt(2));
+            string style = para.ElementAt(1);
 
             lock (key)
             {
                 ISingle single = null;
-                switch (para.ElementAt(1))
+                switch (StyleManager.GetStyleType(style))
                 {
-                    case nameof(SinglePair):
-                        if (style != nameof(IPairStyle) && "I" + style != nameof(IPairStyle)) break;
-                        single = new SinglePair(para.ElementAt(2), double.Parse(para.ElementAt(3)), double.Parse(para.ElementAt(4)));
+                    case nameof(IPairStyle):
+                        single = new SinglePair(style, double.Parse(para.ElementAt(2)), double.Parse(para.ElementAt(3)));
                         break;
 
-                    case nameof(SingleLine):
-                        if (style != nameof(ILineStyle) && "I" + style != nameof(ILineStyle)) break;
-                        single = new SingleLine(para.ElementAt(2), double.Parse(para.ElementAt(3)), double.Parse(para.ElementAt(4)), double.Parse(para.ElementAt(5)), double.Parse(para.ElementAt(6)));
+                    case nameof(ILineStyle):
+                        single = new SingleLine(style, double.Parse(para.ElementAt(2)), double.Parse(para.ElementAt(3)), double.Parse(para.ElementAt(4)), double.Parse(para.ElementAt(5)));
                         break;
 
-                    case nameof(SingleArea):
-                        if (style != nameof(IAreaStyle) && "I" + style != nameof(IAreaStyle)) break;
-                        single = new SingleArea(para.ElementAt(2), double.Parse(para.ElementAt(3)), double.Parse(para.ElementAt(4)), double.Parse(para.ElementAt(5)), double.Parse(para.ElementAt(6)));
+                    case nameof(IAreaStyle):
+                        single = new SingleArea(style, double.Parse(para.ElementAt(2)), double.Parse(para.ElementAt(3)), double.Parse(para.ElementAt(4)), double.Parse(para.ElementAt(5)));
                         break;
 
-                    case nameof(SingleTowardPair):
-                        if (style != nameof(ITowardPairStyle) && "I" + style != nameof(ITowardPairStyle)) break;
-                        single = new SingleTowardPair(para.ElementAt(2), double.Parse(para.ElementAt(3)), double.Parse(para.ElementAt(4)), double.Parse(para.ElementAt(5)));
+                    case nameof(ITowardPairStyle):
+                        single = new SingleTowardPair(style, double.Parse(para.ElementAt(2)), double.Parse(para.ElementAt(3)), double.Parse(para.ElementAt(4)));
                         break;
                 }
 
@@ -844,7 +840,7 @@ namespace GLCore
 
         /// <summary>
         /// 執行命令。執行失敗回傳 -1，執行成功則回傳控制對象的 id
-        /// <para>加入物件：Add,id,type,style,x,y,toward...</para>
+        /// <para>加入物件：Add,id,style,x,y,toward...</para>
         /// <para>刪除物件：Delete,id</para>
         /// <para>移動物件：Move,id,n,x,y</para>
         /// <para>修改樣式：ChangeStyle,id,newStyle</para>
