@@ -730,6 +730,10 @@ namespace GLUI
                 else if (selects.Count() > 1) ShowMultItemSelectMenu(selects);
                 else ShowNoItemSelectMenu(); // selects.Count() == 0
             }
+            else // 其他按鍵釋放控制目標
+            {
+                SelectTargetID = -1;
+            }
         }
 
         /// <summary>
