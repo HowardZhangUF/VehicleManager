@@ -500,7 +500,7 @@ namespace GLUI
         /// <summary>
         /// 障礙點識別碼
         /// </summary>
-        public int ObstaclePointsID { get; set; }
+        public int ObstaclePointsID { get { return GLCMD.ObstaclePointsID; } set { GLCMD.ObstaclePointsID = value; } }
 
         private OpenGL GL { get { return SharpGLCtrl.OpenGL; } }
 
@@ -520,6 +520,30 @@ namespace GLUI
         public IPair GLToScreen(IPair glPosition)
         {
             return GLToScreen(glPosition.X, glPosition.Y);
+        }
+
+        /// <summary>
+        /// 載入地圖
+        /// </summary>
+        public void LoadMap(string file)
+        {
+            GLCMD.LoadMap(file);
+        }
+
+        /// <summary>
+        /// 載入地圖
+        /// </summary>
+        public void LoadMap()
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "map files (*.map)|*.map";
+                ofd.Multiselect = false;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    LoadMap(ofd.FileName);
+                }
+            }
         }
 
         /// <summary>
@@ -740,16 +764,21 @@ namespace GLUI
         /// </summary>
         private void SharpGLCtrl_KeyDown(object sender, KeyEventArgs e)
         {
+            // Ctrl+Z 復原，Ctrl+Shift+Z 重做
             if (e.KeyCode == Keys.Z && e.Control == true)
             {
                 if (e.Shift) GLCMD.Redo(1);
                 else GLCMD.Undo(1);
             }
 
+            // Ctrl+方向鍵 移動畫面
             if (e.Control == true && e.KeyCode == Keys.Up) Translate.Y += 100;
             if (e.Control == true && e.KeyCode == Keys.Down) Translate.Y -= 100;
             if (e.Control == true && e.KeyCode == Keys.Left) Translate.X -= 100;
             if (e.Control == true && e.KeyCode == Keys.Right) Translate.X += 100;
+
+            // Ctrl+O 載入地圖
+            if (e.Control == true && e.KeyCode == Keys.O) LoadMap();
         }
 
         private void SharpGLCtrl_MouseDown(object sender, MouseEventArgs e)

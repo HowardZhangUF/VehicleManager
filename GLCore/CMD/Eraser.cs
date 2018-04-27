@@ -1,9 +1,4 @@
 ﻿using Geometry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GLCore
 {
@@ -23,6 +18,14 @@ namespace GLCore
         /// 大小
         /// </summary>
         public int Size { get { return Geometry.Max.X - Geometry.Min.X; } }
+
+        /// <summary>
+        /// 取消
+        /// </summary>
+        public void Cancel()
+        {
+            Geometry.Set(0, 0, 0, 0);
+        }
 
         /// <summary>
         /// 根據 ID 擦掉障礙點

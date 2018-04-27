@@ -16,14 +16,24 @@ namespace GLCore
     public static class GLCMD
     {
         /// <summary>
+        /// 障礙點樣式名稱，Style.ini 中必須要有這個設定
+        /// </summary>
+        public const string ObstaclePointsStyleName = "ObstaclePoints";
+
+        /// <summary>
         /// 執行緒鎖
         /// </summary>
         private static object key = new object();
 
         /// <summary>
+        /// 障礙點識別碼
+        /// </summary>
+        public static int ObstaclePointsID { get; set; } = -1;
+
+        /// <summary>
         /// 目前所選擇的 ID
         /// </summary>
-        public static int SelectTargetID { get; private set; }
+        public static int SelectTargetID { get; private set; } = -1;
 
         /// <summary>
         /// 序號管理器
@@ -141,6 +151,113 @@ namespace GLCore
         }
 
         #endregion 複合物件操作
+
+        #region 載入地圖
+
+        /// <summary>
+        /// 載入地圖
+        /// </summary>
+        public static void LoadMap(string file)
+        {
+            lock (key)
+            {
+                ClearAll();
+                var lines = File.ReadAllLines(file);
+
+                for (int ii = 0; ii < lines.Length; ii++)
+                {
+                    switch (lines[ii])
+                    {
+                        case "Goal List":
+                            ii = ReadGoalList(lines, ii);
+                            CurrentSingleObject = DuplicateSingleObject.DeepClone();
+                            break;
+
+                        case "Obstacle Points":
+                            ii = ReadObstaclePoints(lines, ii);
+                            break;
+
+                        case "Minimum Position":
+                            break;
+
+                        case "Maximum Position":
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 清除所有資料
+        /// </summary>
+        private static void ClearAll()
+        {
+            lock (key)
+            {
+                ObstaclePointsID = -1;
+                SelectTargetID = -1;
+                CommandHistory.Clear();
+                CurrentMultiObject.Clear();
+                CurrentSingleObject.Clear();
+                DuplicateSingleObject.Clear();
+                Eraser.SaftyEdit(true, eraser => eraser.Cancel());
+                Pen.SaftyEdit(true, pen => pen.Cancel());
+            }
+        }
+
+        /// <summary>
+        /// <para>讀取目標點列表至  <see cref="DuplicateSingleObject"/>，並回傳結束的資料行數</para>
+        /// <para>資料格式如：Goal 2,8421,2264,0,MagneticTracking</para>
+        /// </summary>
+        private static int ReadGoalList(string[] lines, int begin)
+        {
+            for (int ii = begin + 1; ii < lines.Length; ii++)
+            {
+                var para = lines[ii].Split(',');
+                if (para.Length == 5 && int.TryParse(para[1], out int x) && int.TryParse(para[2], out int y) && double.TryParse(para[3], out double toward))
+                {
+                    var goal = new SingleTowardPair(para[4], x, y, toward) { Name = para[0] };
+                    DuplicateSingleObject.Add(SerialNumber.Next(), goal);
+                    begin = ii;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return begin;
+        }
+
+        /// <summary>
+        /// <para>讀取障礙點至  <see cref="CurrentMultiObject"/> 及寫入 <see cref="ObstaclePointsID"/>，並回傳結束的資料行數</para>
+        /// <para>資料格式如：-12794,3803</para>
+        /// </summary>
+        private static int ReadObstaclePoints(string[] lines, int begin)
+        {
+            var data = new List<IPair>();
+            for (int ii = begin + 1; ii < lines.Length; ii++)
+            {
+                var para = lines[ii].Split(',');
+                if (para.Length == 2 && int.TryParse(para[0], out int x) && int.TryParse(para[1], out int y))
+                {
+                    data.Add(new Pair(x, y));
+                    begin = ii;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (data.Count != 0)
+            {
+                ObstaclePointsID = SerialNumber.Next();
+                CurrentMultiObject.Add(ObstaclePointsID, new MultiPair(ObstaclePointsStyleName, data));
+            }
+            return begin;
+        }
+
+        #endregion 載入地圖
 
         /// <summary>
         /// 執行命令。執行失敗回傳 -1，執行成功則回傳控制對象的 id
