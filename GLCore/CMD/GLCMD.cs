@@ -31,16 +31,6 @@ namespace GLCore
         public static SerialNumberManager SerialNumber { get; } = new SerialNumberManager();
 
         /// <summary>
-        /// 背景暫存單一物件列表
-        /// </summary>
-        private static Dictionary<int, ISingle> DuplicateSingleObject { get; } = new Dictionary<int, ISingle>();
-
-        /// <summary>
-        /// 當下單一物件列表
-        /// </summary>
-        private static Dictionary<int, ISingle> CurrentSingleObject { get; set; } = new Dictionary<int, ISingle>();
-
-        /// <summary>
         /// 命令紀錄
         /// </summary>
         private static History CommandHistory { get; } = new History(10);
@@ -51,16 +41,21 @@ namespace GLCore
         private static Dictionary<int, IMulti> CurrentMultiObject { get; set; } = new Dictionary<int, IMulti>();
 
         /// <summary>
+        /// 當下單一物件列表
+        /// </summary>
+        private static Dictionary<int, ISingle> CurrentSingleObject { get; set; } = new Dictionary<int, ISingle>();
+
+        /// <summary>
+        /// 背景暫存單一物件列表
+        /// </summary>
+        private static Dictionary<int, ISingle> DuplicateSingleObject { get; } = new Dictionary<int, ISingle>();
+
+        /// <summary>
         /// 上一筆移動指令
         /// </summary>
         private static string PreMoveCommand { get; set; } = string.Empty;
 
         #region 擦子、畫筆
-
-        /// <summary>
-        /// 畫線中
-        /// </summary>
-        public static bool PenDrawing { get; private set; }
 
         /// <summary>
         /// 擦子
@@ -70,52 +65,7 @@ namespace GLCore
         /// <summary>
         /// 畫筆
         /// </summary>
-        private static ISafty<SingleLine> Pen { get; } = new Safty<SingleLine>(new SingleLine(nameof(Pen)));
-
-        /// <summary>
-        /// 取消畫筆
-        /// </summary>
-        public static void PenCancel()
-        {
-            Pen.SaftyEdit(false, pen => { PenDrawing = false; });
-        }
-
-        /// <summary>
-        /// 完成畫筆
-        /// </summary>
-        /// <param name="id">類型為 <see cref="MultiPair"/> 的識別碼</param>
-        public static void PenFinish(int id)
-        {
-            Pen.SaftyEdit(false, pen =>
-            {
-                if (PenDrawing)
-                {
-                    PenDrawing = false;
-                    SaftyEditMultiGeometry<IPair>(id, true, list =>
-                    {
-                        list.AddRange(pen.Geometry.ToPairs());
-                    });
-                }
-            });
-        }
-
-        /// <summary>
-        /// 設定畫筆起點和終點
-        /// </summary>
-        /// <param name="pos"></param>
-        public static void SetPenBeginAndEnd(IPair pos)
-        {
-            Pen.SaftyEdit(true, pen => { pen.Geometry.Begin = new Pair(pos); pen.Geometry.End = new Pair(pos); PenDrawing = true; });
-        }
-
-        /// <summary>
-        /// 設定畫筆終點
-        /// </summary>
-        /// <param name="pos"></param>
-        public static void SetPenEnd(IPair pos)
-        {
-            Pen.SaftyEdit(true, pen => { pen.Geometry.End = new Pair(pos); });
-        }
+        public static ISafty<Pen> Pen { get; } = new Safty<Pen>(new Pen(nameof(Pen)));
 
         #endregion 擦子、畫筆
 
@@ -505,7 +455,7 @@ namespace GLCore
             {
                 // 特殊物件
                 Eraser?.SaftyEdit(false, eraser => eraser?.Draw(gl));
-                Pen?.SaftyEdit(false, pen => { if (PenDrawing) pen.Draw(gl); });
+                Pen?.SaftyEdit(false, pen => { pen.Draw(gl); });
 
                 // 先畫不透明再畫透明
                 // 不透明
