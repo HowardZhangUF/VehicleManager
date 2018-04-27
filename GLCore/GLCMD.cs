@@ -754,6 +754,13 @@ namespace GLCore
         {
             lock (key)
             {
+                // 儲存移動指令
+                if (!string.IsNullOrEmpty(PreMoveCommand))
+                {
+                    PushHistory(PreMoveCommand);
+                    PreMoveCommand = string.Empty;
+                }
+
                 if (CurrentObject.Keys.Contains(id))
                 {
                     SelectTargetID = id;
@@ -894,6 +901,7 @@ namespace GLCore
                         break;
                 }
 
+                // 儲存移動指令
                 if (para[0] != nameof(ECMDType.Move) && !string.IsNullOrEmpty(PreMoveCommand))
                 {
                     PushHistory(PreMoveCommand);
