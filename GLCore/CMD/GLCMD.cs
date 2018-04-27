@@ -31,24 +31,24 @@ namespace GLCore
         public static SerialNumberManager SerialNumber { get; } = new SerialNumberManager();
 
         /// <summary>
-        /// 背景暫存
+        /// 背景暫存單一物件列表
         /// </summary>
-        private static Dictionary<int, ISingle> BackupObject { get; } = new Dictionary<int, ISingle>();
+        private static Dictionary<int, ISingle> DuplicateSingleObject { get; } = new Dictionary<int, ISingle>();
 
         /// <summary>
-        /// 當下物件列表
+        /// 當下單一物件列表
         /// </summary>
-        private static Dictionary<int, ISingle> CurrentObject { get; set; } = new Dictionary<int, ISingle>();
+        private static Dictionary<int, ISingle> CurrentSingleObject { get; set; } = new Dictionary<int, ISingle>();
 
         /// <summary>
-        /// 歷史紀錄
+        /// 命令紀錄
         /// </summary>
-        private static History History { get; } = new History(10);
+        private static History CommandHistory { get; } = new History(10);
 
         /// <summary>
-        /// 複合物件列表
+        /// 當下複合物件列表
         /// </summary>
-        private static Dictionary<int, IMulti> MultiObject { get; set; } = new Dictionary<int, IMulti>();
+        private static Dictionary<int, IMulti> CurrentMultiObject { get; set; } = new Dictionary<int, IMulti>();
 
         /// <summary>
         /// 上一筆移動指令
@@ -162,7 +162,7 @@ namespace GLCore
             {
                 var multi = new MultiArea(style, area);
                 int id = SerialNumber.Next();
-                MultiObject.Add(id, multi);
+                CurrentMultiObject.Add(id, multi);
                 return id;
             }
         }
@@ -176,7 +176,7 @@ namespace GLCore
             {
                 var multi = new MultiPair(style, pair);
                 int id = SerialNumber.Next();
-                MultiObject.Add(id, multi);
+                CurrentMultiObject.Add(id, multi);
                 return id;
             }
         }
@@ -190,7 +190,7 @@ namespace GLCore
             {
                 var multi = new MultiStripLine(style, pair);
                 int id = SerialNumber.Next();
-                MultiObject.Add(id, multi);
+                CurrentMultiObject.Add(id, multi);
                 return id;
             }
         }
@@ -202,8 +202,8 @@ namespace GLCore
         {
             lock (key)
             {
-                if (!MultiObject.Keys.Contains(id)) return -1;
-                MultiObject.Remove(id);
+                if (!CurrentMultiObject.Keys.Contains(id)) return -1;
+                CurrentMultiObject.Remove(id);
                 return id;
             }
         }
@@ -215,10 +215,10 @@ namespace GLCore
         {
             lock (key)
             {
-                if (!MultiObject.Keys.Contains(id)) return;
-                if (!(MultiObject[id] is IMulti<TGeometry>)) return;
+                if (!CurrentMultiObject.Keys.Contains(id)) return;
+                if (!(CurrentMultiObject[id] is IMulti<TGeometry>)) return;
 
-                (MultiObject[id] as IMulti<TGeometry>).Geometry.SaftyEdit(isDataChange, list => action(list));
+                (CurrentMultiObject[id] as IMulti<TGeometry>).Geometry.SaftyEdit(isDataChange, list => action(list));
             }
         }
 
@@ -236,7 +236,7 @@ namespace GLCore
         {
             lock (key)
             {
-                return Do(CurrentObject, cmd, true);
+                return Do(CurrentSingleObject, cmd, true);
             }
         }
 
@@ -541,29 +541,29 @@ namespace GLCore
 
                 // 先畫不透明再畫透明
                 // 不透明
-                foreach (var obj in MultiObject.Values.Where(o => !o.Transparent))
+                foreach (var obj in CurrentMultiObject.Values.Where(o => !o.Transparent))
                 {
                     obj.Draw(gl);
                 }
-                foreach (var obj in CurrentObject.Values.Where(o => !o.Transparent))
+                foreach (var obj in CurrentSingleObject.Values.Where(o => !o.Transparent))
                 {
                     obj.Draw(gl);
                 }
 
                 // 透明
-                foreach (var obj in MultiObject.Values.Where(o => o.Transparent))
+                foreach (var obj in CurrentMultiObject.Values.Where(o => o.Transparent))
                 {
                     obj.Draw(gl);
                 }
-                foreach (var obj in CurrentObject.Values.Where(o => o.Transparent))
+                foreach (var obj in CurrentSingleObject.Values.Where(o => o.Transparent))
                 {
                     obj.Draw(gl);
                 }
 
                 // 選擇邊界
-                if (CurrentObject.Keys.Contains(SelectTargetID))
+                if (CurrentSingleObject.Keys.Contains(SelectTargetID))
                 {
-                    CurrentObject[SelectTargetID].DrawBound(gl);
+                    CurrentSingleObject[SelectTargetID].DrawBound(gl);
                 }
             }
         }
@@ -575,7 +575,7 @@ namespace GLCore
         {
             lock (key)
             {
-                foreach (var obj in CurrentObject.Values)
+                foreach (var obj in CurrentSingleObject.Values)
                 {
                     obj.DrawText(gl, convert);
                 }
@@ -591,7 +591,7 @@ namespace GLCore
 
             lock (key)
             {
-                foreach (var item in CurrentObject)
+                foreach (var item in CurrentSingleObject)
                 {
                     if (item.Value is ISinglePair)
                     {
@@ -624,7 +624,7 @@ namespace GLCore
         {
             lock (key)
             {
-                return History.GetDoHistory();
+                return CommandHistory.GetDoHistory();
             }
         }
 
@@ -635,9 +635,9 @@ namespace GLCore
         {
             lock (key)
             {
-                if (!CurrentObject.Keys.Contains(id)) return string.Empty;
+                if (!CurrentSingleObject.Keys.Contains(id)) return string.Empty;
 
-                return StyleManager.GetStyleType(CurrentObject[id].StyleName);
+                return StyleManager.GetStyleType(CurrentSingleObject[id].StyleName);
             }
         }
 
@@ -648,7 +648,7 @@ namespace GLCore
         {
             lock (key)
             {
-                return History.GetUndoHistory();
+                return CommandHistory.GetUndoHistory();
             }
         }
 
@@ -659,12 +659,12 @@ namespace GLCore
         {
             lock (key)
             {
-                if (History.Backward(step))
+                if (CommandHistory.Backward(step))
                 {
-                    CurrentObject = BackupObject.DeepClone();
-                    foreach (var cmd in History.GetDoHistory())
+                    CurrentSingleObject = DuplicateSingleObject.DeepClone();
+                    foreach (var cmd in CommandHistory.GetDoHistory())
                     {
-                        Do(CurrentObject, cmd, false);
+                        Do(CurrentSingleObject, cmd, false);
                     }
                 }
             }
@@ -684,7 +684,7 @@ namespace GLCore
                     PreMoveCommand = string.Empty;
                 }
 
-                if (CurrentObject.Keys.Contains(id))
+                if (CurrentSingleObject.Keys.Contains(id))
                 {
                     SelectTargetID = id;
                     return id;
@@ -702,12 +702,12 @@ namespace GLCore
         {
             lock (key)
             {
-                if (History.Forward(step))
+                if (CommandHistory.Forward(step))
                 {
-                    CurrentObject = BackupObject.DeepClone();
-                    foreach (var cmd in History.GetDoHistory())
+                    CurrentSingleObject = DuplicateSingleObject.DeepClone();
+                    foreach (var cmd in CommandHistory.GetDoHistory())
                     {
-                        Do(CurrentObject, cmd, false);
+                        Do(CurrentSingleObject, cmd, false);
                     }
                 }
             }
@@ -873,8 +873,8 @@ namespace GLCore
         {
             lock (key)
             {
-                var overflow = History.Push(cmd);
-                if (overflow != string.Empty) Do(BackupObject, overflow, false);
+                var overflow = CommandHistory.Push(cmd);
+                if (overflow != string.Empty) Do(DuplicateSingleObject, overflow, false);
             }
         }
 
