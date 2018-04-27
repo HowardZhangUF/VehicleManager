@@ -267,8 +267,7 @@ namespace GLUI
         /// </summary>
         private void MenuPenOnClik(object sender, EventArgs e)
         {
-            int step = int.Parse((sender as ToolStripItem).Tag.ToString());
-            GLCMD.Redo(step);
+            GLCMD.SetPenBeginAndEnd(PreGLPosition);
         }
 
         /// <summary>
