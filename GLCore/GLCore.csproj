@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="CMD\ECMDType.cs" />
     <Compile Include="CMD\EMoveType.cs" />
+    <Compile Include="CMD\Eraser.cs" />
     <Compile Include="CMD\History.cs" />
     <Compile Include="CMD\SerialNumberManager.cs" />
     <Compile Include="GLTexture.cs" />

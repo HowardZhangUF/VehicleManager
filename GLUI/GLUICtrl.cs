@@ -211,7 +211,7 @@ namespace GLUI
         private void MenuEraserOnClik(object sender, EventArgs e)
         {
             int size = (int)(sender as ToolStripItem).Tag;
-            GLCMD.SetEraser(PreGLPosition, size);
+            GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition, size));
         }
 
         /// <summary>
@@ -756,10 +756,10 @@ namespace GLUI
         {
             // 左鍵擦子功能、右鍵取消擦子
             MouseEventArgs mouse = (MouseEventArgs)e;
-            if (GLCMD.EraserSize != 0)
+            if (GLCMD.Eraser.SaftyEdit(eraser => eraser.Size) != 0)
             {
-                if (mouse.Button == MouseButtons.Left) GLCMD.EraserObstaclePoints(ObstaclePointsID);
-                if (mouse.Button == MouseButtons.Right) GLCMD.SetEraser(PreGLPosition, 0);
+                if (mouse.Button == MouseButtons.Left) GLCMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(ObstaclePointsID));
+                if (mouse.Button == MouseButtons.Right) GLCMD.Eraser.SaftyEdit(true,eraser=>eraser.Set(PreGLPosition, 0));
             }
 
             // 左鍵完成畫筆、右鍵取消畫筆
@@ -810,7 +810,7 @@ namespace GLUI
                     break;
             }
 
-            GLCMD.SetEraser(PreGLPosition);
+            GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition));
             GLCMD.SetPenEnd(PreGLPosition);
         }
 

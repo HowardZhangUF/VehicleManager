@@ -58,11 +58,6 @@ namespace GLCore
         #region 擦子、畫筆
 
         /// <summary>
-        /// 擦子大小
-        /// </summary>
-        public static int EraserSize { get { return Eraser.SaftyEdit(eraser => eraser.Geometry.Max.X - eraser.Geometry.Min.X); } }
-
-        /// <summary>
         /// 畫線中
         /// </summary>
         public static bool PenDrawing { get; private set; }
@@ -70,23 +65,12 @@ namespace GLCore
         /// <summary>
         /// 擦子
         /// </summary>
-        private static ISafty<SingleArea> Eraser { get; } = new Safty<SingleArea>(new SingleArea(nameof(Eraser)));
+        public static ISafty<Eraser> Eraser { get; } = new Safty<Eraser>(new Eraser(nameof(Eraser)));
 
         /// <summary>
         /// 畫筆
         /// </summary>
         private static ISafty<SingleLine> Pen { get; } = new Safty<SingleLine>(new SingleLine(nameof(Pen)));
-
-        /// <summary>
-        /// 根據 ID 擦掉障礙點
-        /// </summary>
-        /// <param name="id">類型為 <see cref="MultiPair"/> 的識別碼</param>
-        public static void EraserObstaclePoints(int id)
-        {
-            Eraser.SaftyEdit(false, eraser =>
-            SaftyEditMultiGeometry<IPair>(id, true, list => list.RemoveAll(pair => eraser.Geometry.Contain(pair)))
-            );
-        }
 
         /// <summary>
         /// 取消畫筆
@@ -113,22 +97,6 @@ namespace GLCore
                     });
                 }
             });
-        }
-
-        /// <summary>
-        /// 設定擦子大小及位置
-        /// </summary>
-        public static void SetEraser(IPair pos, int size)
-        {
-            Eraser.SaftyEdit(true, eraser => eraser.Geometry.Set(pos.X - size / 2, pos.Y - size / 2, pos.X + size / 2, pos.Y + size / 2));
-        }
-
-        /// <summary>
-        /// 設定擦子位置
-        /// </summary>
-        public static void SetEraser(IPair pos)
-        {
-            Eraser.SaftyEdit(true, eraser => eraser.Move(EMoveType.Center, pos.X, pos.Y));
         }
 
         /// <summary>
