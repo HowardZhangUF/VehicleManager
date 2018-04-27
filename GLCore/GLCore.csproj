@@ -59,11 +59,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GLTexture.cs" />
+    <Compile Include="Graphic\IMultiArea.cs" />
+    <Compile Include="Graphic\IMultiPair.cs" />
+    <Compile Include="Graphic\IMultiStripLine.cs" />
+    <Compile Include="Graphic\ISingleArea.cs" />
+    <Compile Include="Graphic\ISingleLine.cs" />
+    <Compile Include="Graphic\ISinglePair.cs" />
+    <Compile Include="Graphic\ISingleTowardPair.cs" />
+    <Compile Include="Graphic\MultiArea.cs" />
+    <Compile Include="Graphic\MultiPair.cs" />
+    <Compile Include="Graphic\MultiStripLine.cs" />
+    <Compile Include="Graphic\SingleArea.cs" />
+    <Compile Include="Graphic\SingleLine.cs" />
+    <Compile Include="Graphic\SinglePair.cs" />
+    <Compile Include="Graphic\SingleTowardPair.cs" />
     <Compile Include="IDragable.cs" />
     <Compile Include="GLCMD.cs" />
     <Compile Include="IGLCore.cs" />
-    <Compile Include="IMulti.cs" />
-    <Compile Include="ISingle.cs" />
+    <Compile Include="Graphic\IMulti.cs" />
+    <Compile Include="Graphic\ISingle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StandardOperate.cs" />
   </ItemGroup>
