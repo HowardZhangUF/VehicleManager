@@ -759,7 +759,7 @@ namespace GLUI
             if (GLCMD.Eraser.SaftyEdit(eraser => eraser.Size) != 0)
             {
                 if (mouse.Button == MouseButtons.Left) GLCMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(ObstaclePointsID));
-                if (mouse.Button == MouseButtons.Right) GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition, 0));
+                if (mouse.Button == MouseButtons.Right) GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Cancel());
             }
 
             // 左鍵完成畫筆、右鍵取消畫筆
