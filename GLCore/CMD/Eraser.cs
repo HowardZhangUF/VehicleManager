@@ -1,4 +1,5 @@
 ﻿using Geometry;
+using SharpGL;
 
 namespace GLCore
 {
@@ -20,11 +21,24 @@ namespace GLCore
         public int Size { get { return Geometry.Max.X - Geometry.Min.X; } }
 
         /// <summary>
+        /// 畫線中(可見)
+        /// </summary>
+        public bool InUse { get; private set; }
+
+        /// <summary>
         /// 取消
         /// </summary>
         public void Cancel()
         {
-            Geometry.Set(0, 0, 0, 0);
+            InUse = false;
+        }
+
+        /// <summary>
+        /// 根據 <see cref="InUse"/> 決定是否繪圖
+        /// </summary>
+        public new void Draw(OpenGL gl)
+        {
+            if (InUse) base.Draw(gl);
         }
 
         /// <summary>
@@ -33,23 +47,28 @@ namespace GLCore
         /// <param name="id">為 <see cref="MultiPair"/> 的識別碼</param>
         public void ClearObstaclePoints(int id)
         {
-            GLCMD.SaftyEditMultiGeometry<IPair>(id, true, list => list.RemoveAll(pair => Geometry.Contain(pair)));
+            if (InUse)
+            {
+                GLCMD.SaftyEditMultiGeometry<IPair>(id, true, list => list.RemoveAll(pair => Geometry.Contain(pair)));
+            }
         }
 
         /// <summary>
-        /// 設定大小及位置
+        /// 設定大小及位置，並設為可見
         /// </summary>
         public void Set(IPair pos, int size)
         {
             Geometry.Set(pos.X - size / 2, pos.Y - size / 2, pos.X + size / 2, pos.Y + size / 2);
+            InUse = true;
         }
 
         /// <summary>
-        /// 設定位置
+        /// 設定位置，並設為可見
         /// </summary>
         public void Set(IPair pos)
         {
             Move(EMoveType.Center, pos.X, pos.Y);
+            InUse = true;
         }
     }
 }

@@ -811,21 +811,12 @@ namespace GLUI
         {
             // 左鍵擦子功能、右鍵取消擦子
             MouseEventArgs mouse = (MouseEventArgs)e;
-            if (GLCMD.Eraser.SaftyEdit(eraser => eraser.Size) != 0)
-            {
-                if (mouse.Button == MouseButtons.Left) GLCMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(ObstaclePointsID));
-                if (mouse.Button == MouseButtons.Right) GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Cancel());
-            }
+            if (mouse.Button == MouseButtons.Left && GLCMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(ObstaclePointsID));
+            if (mouse.Button == MouseButtons.Right) GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Cancel());
 
             // 左鍵完成畫筆、右鍵取消畫筆
-            if (mouse.Button == MouseButtons.Left)
-            {
-                GLCMD.Pen.SaftyEdit(false, pen => pen.Finish(ObstaclePointsID));
-            }
-            else if (mouse.Button == MouseButtons.Right)
-            {
-                GLCMD.Pen.SaftyEdit(false, pen => pen.Cancel());
-            }
+            if (mouse.Button == MouseButtons.Left && GLCMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.Pen.SaftyEdit(false, pen => pen.Finish(ObstaclePointsID));
+            if (mouse.Button == MouseButtons.Right) GLCMD.Pen.SaftyEdit(false, pen => pen.Cancel());
         }
 
         private void SharpGLCtrl_MouseMove(object sender, MouseEventArgs e)
@@ -865,8 +856,8 @@ namespace GLUI
                     break;
             }
 
-            GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition));
-            GLCMD.Pen.SaftyEdit(false, pen => pen.SetEnd(PreGLPosition));
+            if (GLCMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition));
+            if (GLCMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.Pen.SaftyEdit(false, pen => pen.SetEnd(PreGLPosition));
         }
 
         /// <summary>

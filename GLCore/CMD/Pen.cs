@@ -16,32 +16,24 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 可見(畫線中)
+        /// 畫線中(可見)
         /// </summary>
-        private static bool Visible { get; set; }
-
-        /// <summary>
-        /// 取消
-        /// </summary>
-        public static void PenCancel()
-        {
-            Visible = false;
-        }
+        public bool InUse { get; private set; }
 
         /// <summary>
         /// 取消
         /// </summary>
         public void Cancel()
         {
-            Visible = false;
+            InUse = false;
         }
 
         /// <summary>
-        /// 根據 <see cref="Visible"/> 決定是否繪圖
+        /// 根據 <see cref="InUse"/> 決定是否繪圖
         /// </summary>
         public new void Draw(OpenGL gl)
         {
-            if (Visible) base.Draw(gl);
+            if (InUse) base.Draw(gl);
         }
 
         /// <summary>
@@ -50,9 +42,9 @@ namespace GLCore
         /// <param name="id">為 <see cref="MultiPair"/> 的識別碼</param>
         public void Finish(int id)
         {
-            if (Visible)
+            if (InUse)
             {
-                Visible = false;
+                InUse = false;
                 GLCMD.SaftyEditMultiGeometry<IPair>(id, true, list =>
                 {
                     list.AddRange(Geometry.ToPairs());
@@ -68,16 +60,17 @@ namespace GLCore
         {
             Geometry.Begin = new Pair(pos);
             Geometry.End = new Pair(pos);
-            Visible = true;
+            InUse = true;
         }
 
         /// <summary>
-        /// 設定畫筆終點
+        /// 設定畫筆終點，並將畫筆設為可見
         /// </summary>
         /// <param name="pos"></param>
         public void SetEnd(IPair pos)
         {
             Geometry.End = new Pair(pos);
+            InUse = true;
         }
     }
 }
