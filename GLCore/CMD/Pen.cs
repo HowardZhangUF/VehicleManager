@@ -29,14 +29,6 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 根據 <see cref="InUse"/> 決定是否繪圖
-        /// </summary>
-        public new void Draw(OpenGL gl)
-        {
-            if (InUse) base.Draw(gl);
-        }
-
-        /// <summary>
         /// 完成，並將線段加入障礙點集合中
         /// </summary>
         /// <param name="id">為 <see cref="MultiPair"/> 的識別碼</param>

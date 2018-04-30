@@ -629,9 +629,9 @@ namespace GLCore
             lock (key)
             {
                 // 特殊物件
-                Eraser?.SaftyEdit(false, eraser => eraser?.Draw(gl));
-                Pen?.SaftyEdit(false, pen => { pen.Draw(gl); });
-                Join?.SaftyEdit(false, join => { join.Draw(gl); });
+                Eraser?.SaftyEdit(false, eraser => { if (eraser.InUse) eraser?.Draw(gl); });
+                Pen?.SaftyEdit(false, pen => { if (pen.InUse) pen.Draw(gl); });
+                Join?.SaftyEdit(false, join => { if (join.InUse) join.Draw(gl); });
 
                 // 先畫不透明再畫透明
                 // 不透明

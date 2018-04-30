@@ -63,22 +63,19 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 根據 <see cref="InUse"/> 決定是否繪圖
+        /// 繪圖
         /// </summary>
         public void Draw(OpenGL gl)
         {
-            if (InUse)
+            gl.PushMatrix();
             {
-                gl.PushMatrix();
-                {
-                    gl.Translate(Translate.X, Translate.Y, 0);
-                    gl.Rotate(0, 0, -(float)Rotate.Theta);
-                    ObstaclePoints.Draw(gl);
-                }
-                gl.PopMatrix();
-
-                if (EnableSelectRange) SelectRange.Draw(gl);
+                gl.Translate(Translate.X, Translate.Y, 0);
+                gl.Rotate(0, 0, -(float)Rotate.Theta);
+                ObstaclePoints.Draw(gl);
             }
+            gl.PopMatrix();
+
+            if (EnableSelectRange) SelectRange.Draw(gl);
         }
 
         /// <summary>
