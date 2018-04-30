@@ -165,4 +165,16 @@
   <data name="Redo" xml:space="preserve">
     <value>重做</value>
   </data>
+  <data name="MoveStop" xml:space="preserve">
+    <value>停止移動</value>
+  </data>
+  <data name="Rotate" xml:space="preserve">
+    <value>旋轉</value>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>平移</value>
+  </data>
+  <data name="SelectRange" xml:space="preserve">
+    <value>選擇區域</value>
+  </data>
 </root>

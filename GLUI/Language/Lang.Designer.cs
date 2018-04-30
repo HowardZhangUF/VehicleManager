@@ -151,6 +151,15 @@ namespace GLUI.Language {
         }
         
         /// <summary>
+        ///   查詢類似 Stop Move 的當地語系化字串。
+        /// </summary>
+        public static string MoveStop {
+            get {
+                return ResourceManager.GetString("MoveStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 Move Toward 的當地語系化字串。
         /// </summary>
         public static string MoveToward {
@@ -187,11 +196,38 @@ namespace GLUI.Language {
         }
         
         /// <summary>
+        ///   查詢類似 Rotate 的當地語系化字串。
+        /// </summary>
+        public static string Rotate {
+            get {
+                return ResourceManager.GetString("Rotate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 Select 的當地語系化字串。
         /// </summary>
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 SelectRange 的當地語系化字串。
+        /// </summary>
+        public static string SelectRange {
+            get {
+                return ResourceManager.GetString("SelectRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 Translate 的當地語系化字串。
+        /// </summary>
+        public static string Translate {
+            get {
+                return ResourceManager.GetString("Translate", resourceCulture);
             }
         }
         

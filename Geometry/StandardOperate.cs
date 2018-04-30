@@ -122,6 +122,17 @@ namespace Geometry
         }
 
         /// <summary>
+        /// 沿著(0,0)旋轉
+        /// </summary>
+        public static IPair Rotate(this IPair lhs, IAngle angle)
+        {
+            double theta = angle.Theta * Math.PI / 180.0;
+            double x = lhs.X * Math.Cos(theta) + lhs.Y * Math.Sin(theta);
+            double y = -lhs.X * Math.Sin(theta) + lhs.Y * Math.Cos(theta);
+            return new Pair(x, y);
+        }
+
+        /// <summary>
         /// 重設座標，並自動依照座標大小分配給 Min/Max
         /// </summary>
         public static void Set(this IArea area, IPair p0, IPair p1)

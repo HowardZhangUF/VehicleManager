@@ -60,6 +60,12 @@
     <Compile Include="GLUICtrl.Designer.cs">
       <DependentUpon>GLUICtrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="JoinMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="JoinMap.Designer.cs">
+      <DependentUpon>JoinMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="Language\Lang.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -103,6 +109,9 @@
   <ItemGroup>
     <EmbeddedResource Include="GLUICtrl.resx">
       <DependentUpon>GLUICtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JoinMap.resx">
+      <DependentUpon>JoinMap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Language\Lang.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -153,6 +162,15 @@
     <Content Include="Image\MagneticTracking.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\ArrowRight.png" />
+    <None Include="Resources\ArrowLeft.png" />
+    <None Include="Resources\ArrowDown.png" />
+    <None Include="Resources\ArrowUp.png" />
+    <None Include="Resources\RotateLeft.png" />
+    <None Include="Resources\RotateRight.png" />
+    <None Include="Resources\SelectRange.png" />
+    <None Include="Resources\Open.png" />
+    <None Include="Resources\JoinObstaclePoints.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -145,4 +145,16 @@
   <data name="Redo" xml:space="preserve">
     <value>Redo</value>
   </data>
+  <data name="MoveStop" xml:space="preserve">
+    <value>Stop Move</value>
+  </data>
+  <data name="Rotate" xml:space="preserve">
+    <value>Rotate</value>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>Translate</value>
+  </data>
+  <data name="SelectRange" xml:space="preserve">
+    <value>SelectRange</value>
+  </data>
 </root>

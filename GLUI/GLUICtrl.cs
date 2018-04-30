@@ -555,6 +555,23 @@ namespace GLUI
         }
 
         /// <summary>
+        /// 插入地圖
+        /// </summary>
+        private void JoinMap()
+        {
+            new JoinMap(JoinMapDone).Show();
+        }
+
+        /// <summary>
+        /// 完成插入地圖
+        /// </summary>
+        private void JoinMapDone(IEnumerable<IPair> data)
+        {
+            if (data != null && data.Count() != 0)
+                GLCMD.SaftyEditMultiGeometry<IPair>(ObstaclePointsID, true, o => o.AddRange(data));
+        }
+
+        /// <summary>
         /// 載入地圖
         /// </summary>
         public void SaveMap()
@@ -805,6 +822,9 @@ namespace GLUI
 
             // Ctrl+S 儲存地圖
             if (e.Control == true && e.KeyCode == Keys.S) SaveMap();
+
+            // Ctrl+J 插入地圖
+            if (e.Control == true && e.KeyCode == Keys.J) JoinMap();
         }
 
         private void SharpGLCtrl_MouseDown(object sender, MouseEventArgs e)

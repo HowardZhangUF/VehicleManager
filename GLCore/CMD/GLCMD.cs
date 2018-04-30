@@ -65,7 +65,7 @@ namespace GLCore
         /// </summary>
         private static string PreMoveCommand { get; set; } = string.Empty;
 
-        #region 擦子、畫筆
+        #region 擦子、畫筆等工具
 
         /// <summary>
         /// 擦子
@@ -77,6 +77,10 @@ namespace GLCore
         /// </summary>
         public static ISafty<Pen> Pen { get; } = new Safty<Pen>(new Pen(nameof(Pen)));
 
+        /// <summary>
+        /// 插入工具
+        /// </summary>
+        public static ISafty<Join> Join { get; } = new Safty<Join>(new Join());
         #endregion 擦子、畫筆
 
         #region 複合物件操作
@@ -624,6 +628,7 @@ namespace GLCore
                 // 特殊物件
                 Eraser?.SaftyEdit(false, eraser => eraser?.Draw(gl));
                 Pen?.SaftyEdit(false, pen => { pen.Draw(gl); });
+                Join?.SaftyEdit(false, join => { join.Draw(gl); });
 
                 // 先畫不透明再畫透明
                 // 不透明
