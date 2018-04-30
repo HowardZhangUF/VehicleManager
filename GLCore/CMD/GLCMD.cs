@@ -307,7 +307,10 @@ namespace GLCore
         /// </summary>
         private static IEnumerable<string> GetGoalList()
         {
-            foreach (var goal in CurrentSingleObject.Where(o => StyleManager.GetStyleType(o.Value.StyleName) == nameof(ITowardPairStyle)).Select(o => o.Value as ISingleTowardPair))
+            var query = CurrentSingleObject
+                .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(ITowardPairStyle))
+                .Select(item => item.Value as ISingleTowardPair);
+            foreach (var goal in query)
             {
                 yield return $"{goal.Name},{goal.Geometry.Position.X},{goal.Geometry.Position.Y},{goal.Geometry.Toward.Theta},{goal.StyleName}";
             }
@@ -632,21 +635,21 @@ namespace GLCore
 
                 // 先畫不透明再畫透明
                 // 不透明
-                foreach (var obj in CurrentMultiObject.Values.Where(o => !o.Transparent))
+                foreach (var obj in CurrentMultiObject.Values.Where(obj => !obj.Transparent))
                 {
                     obj.Draw(gl);
                 }
-                foreach (var obj in CurrentSingleObject.Values.Where(o => !o.Transparent))
+                foreach (var obj in CurrentSingleObject.Values.Where(obj => !obj.Transparent))
                 {
                     obj.Draw(gl);
                 }
 
                 // 透明
-                foreach (var obj in CurrentMultiObject.Values.Where(o => o.Transparent))
+                foreach (var obj in CurrentMultiObject.Values.Where(obj => obj.Transparent))
                 {
                     obj.Draw(gl);
                 }
-                foreach (var obj in CurrentSingleObject.Values.Where(o => o.Transparent))
+                foreach (var obj in CurrentSingleObject.Values.Where(obj => obj.Transparent))
                 {
                     obj.Draw(gl);
                 }

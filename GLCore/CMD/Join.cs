@@ -88,9 +88,16 @@ namespace GLCore
         {
             if (!InUse) return null;
             if (EnableSelectRange)
-                return ObstaclePoints.Geometry.SaftyEdit(list => list.Select(pair => pair.Rotate(Rotate).Add(Translate)).Where(pair => SelectRange.Geometry.Contain(pair)));
+            {
+                return ObstaclePoints.Geometry.SaftyEdit(list => list
+                .Select(pair => pair.Rotate(Rotate).Add(Translate))
+                .Where(pair => SelectRange.Geometry.Contain(pair)));
+            }
             else
-                return ObstaclePoints.Geometry.SaftyEdit(list => list.Select(pair => pair.Rotate(Rotate).Add(Translate)));
+            {
+                return ObstaclePoints.Geometry.SaftyEdit(list => list
+                .Select(pair => pair.Rotate(Rotate).Add(Translate)));
+            }
         }
 
         /// <summary>

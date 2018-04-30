@@ -18,13 +18,11 @@ namespace GLStyle
         /// <summary>
         /// 依據名稱從樣式列表(<see cref="StyleTable"/>)中選擇對應的樣式，若樣式不存在，則返回 null
         /// </summary>
-        public static IStyle GetStyle(string name)
+        public static IStyle GetStyle(string styleName)
         {
-            return StyleTable.SaftyEdit(table =>
-             {
-                 if (table.Keys.Contains(name)) return table[name];
-                 return null;
-             });
+            return StyleTable.SaftyEdit(dic => dic
+            .Where(item => item.Key == styleName)
+            .Select(item => item.Value)).FirstOrDefault() ?? null;
         }
 
         /// <summary>
@@ -32,7 +30,9 @@ namespace GLStyle
         /// </summary>
         public static IEnumerable<string> GetStyleNames()
         {
-            return StyleTable.SaftyEdit(table => table.Where(item => item.Value.ShowOnTheMenu).Select(item => item.Key));
+            return StyleTable.SaftyEdit(dic => dic
+            .Where(item => item.Value.ShowOnTheMenu)
+            .Select(item => item.Key));
         }
 
         /// <summary>
@@ -40,7 +40,9 @@ namespace GLStyle
         /// </summary>
         public static IEnumerable<string> GetStyleNames(string styleType)
         {
-            return StyleTable.SaftyEdit(table => table.Where(item => item.Value.ShowOnTheMenu && item.Value.StyleType == styleType).Select(item => item.Key));
+            return StyleTable.SaftyEdit(dic => dic
+            .Where(item => item.Value.ShowOnTheMenu && item.Value.StyleType == styleType)
+            .Select(item => item.Key));
         }
 
         /// <summary>
@@ -48,14 +50,9 @@ namespace GLStyle
         /// </summary>
         public static string GetStyleType(string styleName)
         {
-            return StyleTable.SaftyEdit(table =>
-            {
-                if (table.Keys.Contains(styleName))
-                {
-                    return table[styleName].StyleType;
-                }
-                return string.Empty;
-            });
+            return StyleTable.SaftyEdit(dic => dic
+            .Where(item => item.Key == styleName)
+            .Select(item => item.Value.StyleType)).FirstOrDefault() ?? string.Empty;
         }
 
         /// <summary>
@@ -71,8 +68,7 @@ namespace GLStyle
                 var names = File.ReadAllLines(filePath)
                     .Select(line => line.Trim())
                     .Where(line => line.StartsWith("[") && line.EndsWith("]"))
-                    .Select(line => line.Substring(1, line.Length - 2))
-                    .ToList();
+                    .Select(line => line.Substring(1, line.Length - 2));
 
                 table.Clear();
                 foreach (var name in names)

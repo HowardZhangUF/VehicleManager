@@ -73,7 +73,8 @@ namespace GLStyle
         /// </summary>
         public Color(string rgba)
         {
-            var elements = rgba.Split(',').Select(o => Convert.ToByte(o)).ToList();
+            var elements = rgba.Split(',')
+                .Select(elm => Convert.ToByte(elm));
 
             R = elements.ElementAt(0);
             G = elements.ElementAt(1);
