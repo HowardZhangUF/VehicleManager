@@ -36,12 +36,31 @@ namespace GLStyle
         }
 
         /// <summary>
+        /// 讀取所有的樣式名稱
+        /// </summary>
+        public static IEnumerable<string> GetAllStyleNames()
+        {
+            return StyleTable.SaftyEdit(dic => dic
+            .Select(item => item.Key));
+        }
+
+        /// <summary>
         /// 讀取所有除了不顯示在右鍵選單的指定樣式名稱
         /// </summary>
         public static IEnumerable<string> GetStyleNames(string styleType)
         {
             return StyleTable.SaftyEdit(dic => dic
             .Where(item => item.Value.ShowOnTheMenu && item.Value.StyleType == styleType)
+            .Select(item => item.Key));
+        }
+
+        /// <summary>
+        /// 讀取所有的指定樣式名稱
+        /// </summary>
+        public static IEnumerable<string> GetAllStyleNames(string styleType)
+        {
+            return StyleTable.SaftyEdit(dic => dic
+            .Where(item => item.Value.StyleType == styleType)
             .Select(item => item.Key));
         }
 
