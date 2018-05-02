@@ -15,10 +15,39 @@ namespace GLCore
     /// </summary>
     public static class GLCMD
     {
+        #region 樣式設定
+
+        /// <summary>
+        /// 車輛樣式名稱，Style.ini 中必須要有這個設定
+        /// </summary>
+        public const string AGVStyleName = "@AGV";
+
+        /// <summary>
+        /// 擦子樣式名稱，Style.ini 中必須要有這個設定
+        /// </summary>
+        public const string EraserStyleName = "@Eraser";
+
+        /// <summary>
+        /// 插入的選擇範圍樣式名稱，Style.ini 中必須要有這個設定
+        /// </summary>
+        public const string JoinObstaclePointsSelectRangeStyleName = "@JoinObstaclePointsSelectRange";
+
+        /// <summary>
+        /// 插入的障礙點樣式名稱，Style.ini 中必須要有這個設定
+        /// </summary>
+        public const string JoinObstaclePointsStyleName = "@JoinObstaclePoints";
+
         /// <summary>
         /// 障礙點樣式名稱，Style.ini 中必須要有這個設定
         /// </summary>
-        public const string ObstaclePointsStyleName = "ObstaclePoints";
+        public const string ObstaclePointsStyleName = "@ObstaclePoints";
+
+        /// <summary>
+        /// 畫筆樣式名稱，Style.ini 中必須要有這個設定
+        /// </summary>
+        public const string PenStyleName = "@Pen";
+
+        #endregion 樣式設定
 
         /// <summary>
         /// 執行緒鎖
@@ -70,18 +99,19 @@ namespace GLCore
         /// <summary>
         /// 擦子
         /// </summary>
-        public static ISafty<Eraser> Eraser { get; } = new Safty<Eraser>(new Eraser(nameof(Eraser)));
-
-        /// <summary>
-        /// 畫筆
-        /// </summary>
-        public static ISafty<Pen> Pen { get; } = new Safty<Pen>(new Pen(nameof(Pen)));
+        public static ISafty<Eraser> Eraser { get; } = new Safty<Eraser>(new Eraser(EraserStyleName));
 
         /// <summary>
         /// 插入工具
         /// </summary>
-        public static ISafty<Join> Join { get; } = new Safty<Join>(new Join());
-        #endregion 擦子、畫筆
+        public static ISafty<Join> Join { get; } = new Safty<Join>(new Join(JoinObstaclePointsSelectRangeStyleName, JoinObstaclePointsStyleName));
+
+        /// <summary>
+        /// 畫筆
+        /// </summary>
+        public static ISafty<Pen> Pen { get; } = new Safty<Pen>(new Pen(PenStyleName));
+
+        #endregion 擦子、畫筆等工具
 
         #region 複合物件操作
 
@@ -264,6 +294,7 @@ namespace GLCore
         #endregion 載入地圖
 
         #region 儲存地圖
+
         /// <summary>
         /// 儲存地圖
         /// </summary>
@@ -278,6 +309,21 @@ namespace GLCore
                 data.AddRange(GetObstaclePointsList());
 
                 File.WriteAllLines(file, data);
+            }
+        }
+
+        /// <summary>
+        /// <para>以 *.map 目標點字串格式回傳 <see cref="CurrentSingleObject"/> 中所有 <see cref="ITowardPairStyle"/> 的圖示 </para>
+        /// <para>資料格式如：Goal 2,8421,2264,0,MagneticTracking</para>
+        /// </summary>
+        private static IEnumerable<string> GetGoalList()
+        {
+            var query = CurrentSingleObject
+                .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(ITowardPairStyle))
+                .Select(item => item.Value as ISingleTowardPair);
+            foreach (var goal in query)
+            {
+                yield return $"{goal.Name},{goal.Geometry.Position.X},{goal.Geometry.Position.Y},{goal.Geometry.Toward.Theta},{goal.StyleName}";
             }
         }
 
@@ -301,21 +347,7 @@ namespace GLCore
             }
         }
 
-        /// <summary>
-        /// <para>以 *.map 目標點字串格式回傳 <see cref="CurrentSingleObject"/> 中所有 <see cref="ITowardPairStyle"/> 的圖示 </para>
-        /// <para>資料格式如：Goal 2,8421,2264,0,MagneticTracking</para>
-        /// </summary>
-        private static IEnumerable<string> GetGoalList()
-        {
-            var query = CurrentSingleObject
-                .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(ITowardPairStyle))
-                .Select(item => item.Value as ISingleTowardPair);
-            foreach (var goal in query)
-            {
-                yield return $"{goal.Name},{goal.Geometry.Position.X},{goal.Geometry.Position.Y},{goal.Geometry.Toward.Theta},{goal.StyleName}";
-            }
-        }
-        #endregion
+        #endregion 儲存地圖
 
         /// <summary>
         /// 執行命令。執行失敗回傳 -1，執行成功則回傳控制對象的 id

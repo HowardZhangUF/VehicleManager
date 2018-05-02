@@ -30,7 +30,7 @@ namespace GLUITest
             {
                 list.Add(new Pair(random.Next(-10000,10000), random.Next(-10000, 10000)));
             }
-            GLUI.ObstaclePointsID = GLCMD.AddMultiPair("ObstaclePoints", list);
+            GLUI.ObstaclePointsID = GLCMD.AddMultiPair("@ObstaclePoints", list);
         }
     }
 }

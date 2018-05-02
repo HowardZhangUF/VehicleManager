@@ -12,14 +12,13 @@ namespace GLCore
     public class Join : IGLCore
     {
         /// <summary>
-        /// 插入的選擇範圍樣式名稱，Style.ini 中必須要有這個設定
+        /// 建構子
         /// </summary>
-        public const string JoinObstaclePointsSelectRangeStyleName = "JoinObstaclePointsSelectRange";
-
-        /// <summary>
-        /// 插入的障礙點樣式名稱，Style.ini 中必須要有這個設定
-        /// </summary>
-        public const string JoinObstaclePointsStyleName = "JoinObstaclePoints";
+        public Join(string selectRangeStyleName, string obstaclePointsStyleName)
+        {
+            SelectRange = new SingleArea(selectRangeStyleName, -5000, -5000, 5000, 5000);
+            ObstaclePoints = new MultiPair(obstaclePointsStyleName);
+        }
 
         /// <summary>
         /// 使用選擇範圍
@@ -39,7 +38,7 @@ namespace GLCore
         /// <summary>
         /// 選擇範圍
         /// </summary>
-        public ISingleArea SelectRange { get; private set; } = new SingleArea(JoinObstaclePointsSelectRangeStyleName, -5000, -5000, 5000, 5000);
+        public ISingleArea SelectRange { get; private set; }
 
         /// <summary>
         /// 平移
@@ -49,7 +48,7 @@ namespace GLCore
         /// <summary>
         /// 插入的障礙點
         /// </summary>
-        private IMultiPair ObstaclePoints { get; } = new MultiPair(JoinObstaclePointsStyleName);
+        private IMultiPair ObstaclePoints { get; }
 
         /// <summary>
         /// 清除所有資料
