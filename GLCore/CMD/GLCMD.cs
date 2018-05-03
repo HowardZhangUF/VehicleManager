@@ -21,6 +21,26 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示面資訊
         /// </summary>
+        private static readonly BindingList<ISingleAreaInfo> singleAreaInfo = new BindingList<ISingleAreaInfo>();
+
+        /// <summary>
+        /// 獲得所有標示線資訊
+        /// </summary>
+        private static readonly BindingList<ISingleLineInfo> singleLineInfo = new BindingList<ISingleLineInfo>();
+
+        /// <summary>
+        /// 獲得所有標示點資訊
+        /// </summary>
+        private static readonly BindingList<ISinglePairInfo> singlePairInfo = new BindingList<ISinglePairInfo>();
+
+        /// <summary>
+        /// 獲得所有標示物資訊
+        /// </summary>
+        private static readonly BindingList<ISingleTowerPairInfo> singleTowerPairInfo = new BindingList<ISingleTowerPairInfo>();
+
+        /// <summary>
+        /// 獲得所有標示面資訊
+        /// </summary>
         public static BindingList<ISingleAreaInfo> SingleAreaInfo
         {
             get
@@ -152,26 +172,6 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 獲得所有標示面資訊
-        /// </summary>
-        private static BindingList<ISingleAreaInfo> singleAreaInfo { get; } = new BindingList<ISingleAreaInfo>();
-
-        /// <summary>
-        /// 獲得所有標示線資訊
-        /// </summary>
-        private static BindingList<ISingleLineInfo> singleLineInfo { get; } = new BindingList<ISingleLineInfo>();
-
-        /// <summary>
-        /// 獲得所有標示點資訊
-        /// </summary>
-        private static BindingList<ISinglePairInfo> singlePairInfo { get; } = new BindingList<ISinglePairInfo>();
-
-        /// <summary>
-        /// 獲得所有標示物資訊
-        /// </summary>
-        private static BindingList<ISingleTowerPairInfo> singleTowerPairInfo { get; } = new BindingList<ISingleTowerPairInfo>();
-
-        /// <summary>
         /// 刷新所有綁定資訊
         /// </summary>
         public static void ResetBindings()
@@ -221,7 +221,7 @@ namespace GLCore
         /// <summary>
         /// 執行緒鎖
         /// </summary>
-        private static object key = new object();
+        private readonly static object key = new object();
 
         /// <summary>
         /// 障礙點識別碼
@@ -475,8 +475,7 @@ namespace GLCore
         {
             lock (key)
             {
-                List<string> data = new List<string>();
-                data.Add("Goal List");
+                List<string> data = new List<string> { "Goal List" };
                 data.AddRange(GetGoalList());
                 data.Add("Obstacle Points");
                 data.AddRange(GetObstaclePointsList());
