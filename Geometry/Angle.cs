@@ -35,24 +35,24 @@ namespace Geometry
         }
 
         /// <summary>
-        /// 角度值
+        /// 角度值(取到小數點下兩位)
         /// </summary>
-        public double Theta { get { return mValue; } set { mValue = Normalization(value); } }
+        public double Theta { get { return mValue; } set { mValue = Normalization(((int)(value * 100)) / 100.0); } }
 
         /// <summary>
         /// 比較是否相等
         /// </summary>
         public bool Equals(IAngle other)
         {
-            return ((int)(1000 * Theta)) == ((int)(1000 * other.Theta));
+            return ((int)(100 * Theta)) == ((int)(100 * other.Theta));
         }
 
         /// <summary>
-        /// 回傳湊雜碼 (int)(1000 * Theta)
+        /// 回傳湊雜碼 (int)(100 * Theta)
         /// </summary>
         public override int GetHashCode()
         {
-            return (int)(1000 * Theta);
+            return (int)(100 * Theta);
         }
 
         /// <summary>

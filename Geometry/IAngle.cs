@@ -8,7 +8,7 @@ namespace Geometry
     public interface IAngle : IGeometry, IEquatable<IAngle>
     {
         /// <summary>
-        /// 角度值
+        /// 角度值(取到小數點下兩位)
         /// </summary>
         double Theta { get; set; }
 
