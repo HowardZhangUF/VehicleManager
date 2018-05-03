@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using static IniFiles.NativeMethods;
 
@@ -14,8 +15,9 @@ namespace IniFiles
         /// </summary>
         public static string Read(string filePath, string section, string key, string @default, int stringLength = 512)
         {
+            var fullPath = Path.GetFullPath(filePath);
             StringBuilder val = new StringBuilder(stringLength);
-            int bufLen = GetPrivateProfileString(section, key, @default, val, stringLength, filePath);
+            int bufLen = GetPrivateProfileString(section, key, @default, val, stringLength, fullPath);
             return val.ToString();
         }
 
@@ -88,7 +90,8 @@ namespace IniFiles
         /// </summary>
         public static bool Write(string filePath, string section, string key, string value)
         {
-            return WritePrivateProfileString(section, key, value, filePath);
+            var fullPath = Path.GetFullPath(filePath);
+            return WritePrivateProfileString(section, key, value, fullPath);
         }
 
         /// <summary>
@@ -96,7 +99,7 @@ namespace IniFiles
         /// </summary>
         public static bool Write(string filePath, string section, string key, int value)
         {
-            return WritePrivateProfileString(section, key, value.ToString(), filePath);
+            return Write(filePath, section, key, value.ToString());
         }
 
         /// <summary>
@@ -104,7 +107,7 @@ namespace IniFiles
         /// </summary>
         public static bool Write(string filePath, string section, string key, double value)
         {
-            return WritePrivateProfileString(section, key, value.ToString(), filePath);
+            return Write(filePath, section, key, value.ToString());
         }
 
         /// <summary>
@@ -112,7 +115,7 @@ namespace IniFiles
         /// </summary>
         public static bool Write(string filePath, string section, string key, bool value)
         {
-            return WritePrivateProfileString(section, key, value.ToString(), filePath);
+            return Write(filePath, section, key, value.ToString());
         }
     }
 }
