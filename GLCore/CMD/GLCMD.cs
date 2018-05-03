@@ -3,6 +3,7 @@ using GLStyle;
 using SharpGL;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -15,6 +16,174 @@ namespace GLCore
     /// </summary>
     public static class GLCMD
     {
+        #region 公開資訊
+
+        /// <summary>
+        /// 獲得所有標示面資訊
+        /// </summary>
+        public static BindingList<ISingleAreaInfo> SingleAreaInfo
+        {
+            get
+            {
+                lock (key)
+                {
+                    singleAreaInfo.Clear();
+
+                    var collection = CurrentSingleObject
+                          .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(IAreaStyle))
+                          .Select(item => new SingleAreaInfo()
+                          {
+                              ID = item.Key,
+                              StyleName = item.Value.StyleName,
+                              Name = item.Value.Name,
+                              MinX = (item.Value as ISingleArea).Geometry.Min.X,
+                              MinY = (item.Value as ISingleArea).Geometry.Min.Y,
+                              MaxX = (item.Value as ISingleArea).Geometry.Max.X,
+                              MaxY = (item.Value as ISingleArea).Geometry.Max.Y,
+                          });
+
+                    foreach (var item in collection)
+                    {
+                        singleAreaInfo.Add(item);
+                    }
+
+                    return singleAreaInfo;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 獲得所有標示線資訊
+        /// </summary>
+        public static BindingList<ISingleLineInfo> SingleLineInfo
+        {
+            get
+            {
+                lock (key)
+                {
+                    singleLineInfo.Clear();
+
+                    var collection = CurrentSingleObject
+                          .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(ILineStyle))
+                          .Select(item => new SingleLineInfo()
+                          {
+                              ID = item.Key,
+                              StyleName = item.Value.StyleName,
+                              Name = item.Value.Name,
+                              X0 = (item.Value as ISingleLine).Geometry.Begin.X,
+                              Y0 = (item.Value as ISingleLine).Geometry.Begin.Y,
+                              X1 = (item.Value as ISingleLine).Geometry.End.X,
+                              Y1 = (item.Value as ISingleLine).Geometry.End.Y,
+                          });
+
+                    foreach (var item in collection)
+                    {
+                        singleLineInfo.Add(item);
+                    }
+
+                    return singleLineInfo;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 獲得所有標示點資訊
+        /// </summary>
+        public static BindingList<ISinglePairInfo> SinglePairInfo
+        {
+            get
+            {
+                lock (key)
+                {
+                    singlePairInfo.Clear();
+
+                    var collection = CurrentSingleObject
+                          .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(IPairStyle))
+                          .Select(item => new SinglePairInfo()
+                          {
+                              ID = item.Key,
+                              StyleName = item.Value.StyleName,
+                              Name = item.Value.Name,
+                              X = (item.Value as ISinglePair).Geometry.X,
+                              Y = (item.Value as ISinglePair).Geometry.Y,
+                          });
+
+                    foreach (var item in collection)
+                    {
+                        singlePairInfo.Add(item);
+                    }
+
+                    return singlePairInfo;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 獲得所有標示物資訊
+        /// </summary>
+        public static BindingList<ISingleTowerPairInfo> SingleTowerPairInfo
+        {
+            get
+            {
+                lock (key)
+                {
+                    singleTowerPairInfo.Clear();
+
+                    var collection = CurrentSingleObject
+                          .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(ITowardPairStyle))
+                          .Select(item => new SingleTowerPairInfo()
+                          {
+                              ID = item.Key,
+                              StyleName = item.Value.StyleName,
+                              Name = item.Value.Name,
+                              X = (item.Value as ISingleTowardPair).Geometry.Position.X,
+                              Y = (item.Value as ISingleTowardPair).Geometry.Position.Y,
+                              Toward = (item.Value as ISingleTowardPair).Geometry.Toward.Theta,
+                          });
+
+                    foreach (var item in collection)
+                    {
+                        singleTowerPairInfo.Add(item);
+                    }
+
+                    return singleTowerPairInfo;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 獲得所有標示面資訊
+        /// </summary>
+        private static BindingList<ISingleAreaInfo> singleAreaInfo { get; } = new BindingList<ISingleAreaInfo>();
+
+        /// <summary>
+        /// 獲得所有標示線資訊
+        /// </summary>
+        private static BindingList<ISingleLineInfo> singleLineInfo { get; } = new BindingList<ISingleLineInfo>();
+
+        /// <summary>
+        /// 獲得所有標示點資訊
+        /// </summary>
+        private static BindingList<ISinglePairInfo> singlePairInfo { get; } = new BindingList<ISinglePairInfo>();
+
+        /// <summary>
+        /// 獲得所有標示物資訊
+        /// </summary>
+        private static BindingList<ISingleTowerPairInfo> singleTowerPairInfo { get; } = new BindingList<ISingleTowerPairInfo>();
+
+        /// <summary>
+        /// 刷新所有綁定資訊
+        /// </summary>
+        public static void ResetBindings()
+        {
+            SingleTowerPairInfo.ResetBindings();
+            SinglePairInfo.ResetBindings();
+            SingleLineInfo.ResetBindings();
+            SingleAreaInfo.ResetBindings();
+        }
+
+        #endregion 公開資訊
+
         #region 樣式設定
 
         /// <summary>
@@ -218,6 +387,8 @@ namespace GLCore
                             break;
                     }
                 }
+
+                ResetBindings();
             }
         }
 
@@ -236,6 +407,8 @@ namespace GLCore
                 DuplicateSingleObject.Clear();
                 Eraser.SaftyEdit(true, eraser => eraser.Cancel());
                 Pen.SaftyEdit(true, pen => pen.Cancel());
+
+                ResetBindings();
             }
         }
 
@@ -737,7 +910,7 @@ namespace GLCore
                     else if (item.Value is ISingleTowardPair)
                     {
                         var obj = item.Value as ISingleTowardPair;
-                        if (obj.CanDrag && obj.Geometry.Position.Distance(pos) <= Math.Max((obj.Style.Width + obj.Style.Height) / 2, MinAllowableError)) yield return item.Key;
+                        if (obj.CanDrag && obj.Geometry.Position.Distance(pos) <= Math.Max((obj.Style.Width / 2 + obj.Style.Height / 2) / 2, MinAllowableError)) yield return item.Key;
                     }
                 }
             }
@@ -835,6 +1008,7 @@ namespace GLCore
                     {
                         Do(CurrentSingleObject, cmd, false);
                     }
+                    ResetBindings();
                 }
             }
         }
@@ -999,6 +1173,7 @@ namespace GLCore
         {
             lock (key)
             {
+                ResetBindings();
                 var overflow = CommandHistory.Push(cmd);
                 if (overflow != string.Empty) Do(DuplicateSingleObject, overflow, false);
             }
