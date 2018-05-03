@@ -1,9 +1,9 @@
 ﻿namespace GLCore
 {
     /// <summary>
-    /// 標示物資訊介面
+    /// 標示點資訊介面
     /// </summary>
-    public interface ISingleTowerPairInfo : IGLCore
+    public interface ISinglePairInfo : IGLCore
     {
         /// <summary>
         /// 序號
@@ -19,11 +19,6 @@
         /// 樣式名稱
         /// </summary>
         string StyleName { get; set; }
-
-        /// <summary>
-        /// 方向
-        /// </summary>
-        double Toward { get; set; }
 
         /// <summary>
         /// X 座標

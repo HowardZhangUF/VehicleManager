@@ -1,9 +1,9 @@
 ﻿namespace GLCore
 {
     /// <summary>
-    /// 標示物資訊介面
+    /// 標示線資訊介面
     /// </summary>
-    public interface ISingleTowerPairInfo : IGLCore
+    public interface ISingleLineInfo : IGLCore
     {
         /// <summary>
         /// 序號
@@ -21,18 +21,23 @@
         string StyleName { get; set; }
 
         /// <summary>
-        /// 方向
+        /// 起點 X 座標
         /// </summary>
-        double Toward { get; set; }
+        int X0 { get; set; }
 
         /// <summary>
-        /// X 座標
+        /// 起點 Y 座標
         /// </summary>
-        int X { get; set; }
+        int Y0 { get; set; }
 
         /// <summary>
-        /// Y 座標
+        /// 終點 X 座標
         /// </summary>
-        int Y { get; set; }
+        int X1 { get; set; }
+
+        /// <summary>
+        /// 終點 Y 座標
+        /// </summary>
+        int Y1 { get; set; }
     }
 }

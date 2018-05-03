@@ -1,9 +1,9 @@
 ﻿namespace GLCore
 {
     /// <summary>
-    /// 標示物資訊介面
+    /// 標示面資訊介面
     /// </summary>
-    public interface ISingleTowerPairInfo : IGLCore
+    public interface ISingleAreaInfo : IGLCore
     {
         /// <summary>
         /// 序號
@@ -21,18 +21,23 @@
         string StyleName { get; set; }
 
         /// <summary>
-        /// 方向
+        /// 最小 X 座標
         /// </summary>
-        double Toward { get; set; }
+        int MinX { get; set; }
 
         /// <summary>
-        /// X 座標
+        /// 最小 Y 座標
         /// </summary>
-        int X { get; set; }
+        int MinY { get; set; }
 
         /// <summary>
-        /// Y 座標
+        /// 最大 X 座標
         /// </summary>
-        int Y { get; set; }
+        int MaxX { get; set; }
+
+        /// <summary>
+        /// 最大 Y 座標
+        /// </summary>
+        int MaxY { get; set; }
     }
 }
