@@ -258,6 +258,7 @@ namespace GLUITest
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MinY)));
                         GLCMD.DoMoveMin(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -266,6 +267,7 @@ namespace GLUITest
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MinX)));
                         int y = int.Parse(newValue);
                         GLCMD.DoMoveMin(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -274,6 +276,7 @@ namespace GLUITest
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MaxY)));
                         GLCMD.DoMoveMax(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -282,6 +285,7 @@ namespace GLUITest
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MaxX)));
                         int y = int.Parse(newValue);
                         GLCMD.DoMoveMax(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -309,6 +313,7 @@ namespace GLUITest
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.Y0)));
                         GLCMD.DoMoveBegin(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -317,6 +322,7 @@ namespace GLUITest
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.X0)));
                         int y = int.Parse(newValue);
                         GLCMD.DoMoveBegin(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -325,6 +331,7 @@ namespace GLUITest
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.Y1)));
                         GLCMD.DoMoveEnd(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -333,6 +340,7 @@ namespace GLUITest
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.X1)));
                         int y = int.Parse(newValue);
                         GLCMD.DoMoveEnd(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -360,6 +368,7 @@ namespace GLUITest
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SinglePairInfo.Y)));
                         GLCMD.DoMoveCenter(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -368,6 +377,7 @@ namespace GLUITest
                         int x = int.Parse(GetValue(rowIndex, nameof(SinglePairInfo.X)));
                         int y = int.Parse(newValue);
                         GLCMD.DoMoveCenter(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -395,6 +405,7 @@ namespace GLUITest
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleTowerPairInfo.Y)));
                         GLCMD.DoMoveCenter(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -403,6 +414,7 @@ namespace GLUITest
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleTowerPairInfo.X)));
                         int y = int.Parse(newValue);
                         GLCMD.DoMoveCenter(id, x, y);
+                        GLCMD.MoveFinish();
                     }
                     break;
 
@@ -414,6 +426,7 @@ namespace GLUITest
                         int dx = (int)(Math.Cos(theta) * 10000);
                         int dy = (int)(Math.Cos(theta) * 10000);
                         GLCMD.DoMoveToward(id, x + dx, y + dy);
+                        GLCMD.MoveFinish();
                     }
                     break;
 

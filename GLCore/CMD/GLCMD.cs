@@ -939,6 +939,21 @@ namespace GLCore
         }
 
         /// <summary>
+        /// 結束移動，儲存移動指令
+        /// </summary>
+        public static void MoveFinish()
+        {
+            lock (key)
+            {
+                if (!string.IsNullOrEmpty(PreMoveCommand))
+                {
+                    PushHistory(PreMoveCommand);
+                    PreMoveCommand = string.Empty;
+                }
+            }
+        }
+
+        /// <summary>
         /// 重做
         /// </summary>
         public static void Redo(int step)
@@ -963,12 +978,7 @@ namespace GLCore
         {
             lock (key)
             {
-                // 儲存移動指令
-                if (!string.IsNullOrEmpty(PreMoveCommand))
-                {
-                    PushHistory(PreMoveCommand);
-                    PreMoveCommand = string.Empty;
-                }
+                MoveFinish();
 
                 if (CurrentSingleObject.Keys.Contains(id))
                 {
@@ -1112,10 +1122,9 @@ namespace GLCore
                 }
 
                 // 儲存移動指令
-                if (para[0] != nameof(ECMDType.Move) && !string.IsNullOrEmpty(PreMoveCommand))
+                if (para[0] != nameof(ECMDType.Move))
                 {
-                    PushHistory(PreMoveCommand);
-                    PreMoveCommand = string.Empty;
+                    MoveFinish();
                 }
 
                 if (res == -1 || !pushHistory) return res;
