@@ -803,18 +803,6 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 移動方向角。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
-        /// </summary>
-        public static int DoMoveToward(int id, double theta)
-        {
-            lock (key)
-            {
-                string cmd = $"{nameof(ECMDType.Move)},{id},{nameof(EMoveType.Toward)},{Math.Cos(theta * Math.PI / 180.0)},{Math.Sin(theta * Math.PI / 180.0)}";
-                return Do(cmd);
-            }
-        }
-
-        /// <summary>
         /// 重新命名。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
         public static int DoRename(int id, string newName)
