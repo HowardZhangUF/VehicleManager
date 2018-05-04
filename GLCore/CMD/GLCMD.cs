@@ -967,6 +967,8 @@ namespace GLCore
                     {
                         Do(CurrentSingleObject, cmd, false);
                     }
+
+                    ResetBindings();
                 }
             }
         }
