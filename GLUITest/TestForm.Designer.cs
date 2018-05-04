@@ -65,7 +65,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GLUI.Location = new System.Drawing.Point(520, 12);
             this.GLUI.Name = "GLUI";
-            this.GLUI.ObstaclePointsID = -1;
             this.GLUI.ShowAxis = true;
             this.GLUI.ShowGrid = true;
             this.GLUI.Size = new System.Drawing.Size(435, 237);

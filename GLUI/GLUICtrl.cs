@@ -497,11 +497,6 @@ namespace GLUI
             SharpGLCtrl.MouseDown += SharpGLCtrl_MouseDown;
         }
 
-        /// <summary>
-        /// 障礙點識別碼
-        /// </summary>
-        public int ObstaclePointsID { get { return GLCMD.ObstaclePointsID; } set { GLCMD.ObstaclePointsID = value; } }
-
         private OpenGL GL { get { return SharpGLCtrl.OpenGL; } }
 
         /// <summary>
@@ -568,7 +563,7 @@ namespace GLUI
         private void JoinMapDone(IEnumerable<IPair> data)
         {
             if (data != null && data.Count() != 0)
-                GLCMD.SaftyEditMultiGeometry<IPair>(ObstaclePointsID, true, o => o.AddRangeIfNotNull(data));
+                GLCMD.SaftyEditMultiGeometry<IPair>(GLCMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(data));
         }
 
         /// <summary>
@@ -831,11 +826,11 @@ namespace GLUI
         {
             // 左鍵擦子功能、右鍵取消擦子
             MouseEventArgs mouse = (MouseEventArgs)e;
-            if (mouse.Button == MouseButtons.Left && GLCMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(ObstaclePointsID));
+            if (mouse.Button == MouseButtons.Left && GLCMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(GLCMD.ObstaclePointsID));
             if (mouse.Button == MouseButtons.Right) GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Cancel());
 
             // 左鍵完成畫筆、右鍵取消畫筆
-            if (mouse.Button == MouseButtons.Left && GLCMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.Pen.SaftyEdit(false, pen => pen.Finish(ObstaclePointsID));
+            if (mouse.Button == MouseButtons.Left && GLCMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.Pen.SaftyEdit(false, pen => pen.Finish(GLCMD.ObstaclePointsID));
             if (mouse.Button == MouseButtons.Right) GLCMD.Pen.SaftyEdit(false, pen => pen.Cancel());
         }
 

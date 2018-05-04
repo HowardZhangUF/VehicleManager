@@ -214,7 +214,7 @@ namespace GLCore
         /// <summary>
         /// 障礙點識別碼
         /// </summary>
-        public static int ObstaclePointsID { get; set; } = -1;
+        public static int ObstaclePointsID { get; private set; } = -1;
 
         /// <summary>
         /// 目前所選擇的 ID
@@ -346,13 +346,38 @@ namespace GLCore
         #region 載入地圖
 
         /// <summary>
+        /// 初始化繪圖區
+        /// </summary>
+        public static void Initial()
+        {
+            lock (key)
+            {
+                // 清除資料
+                SelectTargetID = -1;
+                ObstaclePointsID = SerialNumber.Next();
+                CommandHistory.Clear();
+                CurrentMultiObject.Clear();
+                CurrentSingleObject.Clear();
+                DuplicateSingleObject.Clear();
+                Eraser.SaftyEdit(true, eraser => eraser.Cancel());
+                Pen.SaftyEdit(true, pen => pen.Cancel());
+
+                // 將必要資訊先加入顯示物件中
+                CurrentMultiObject.Add(ObstaclePointsID, new MultiPair(ObstaclePointsStyleName));
+
+                // 通知 UI 層重新顯示
+                ResetBindings();
+            }
+        }
+
+        /// <summary>
         /// 載入地圖
         /// </summary>
         public static void LoadMap(string file)
         {
             lock (key)
             {
-                ClearAll();
+                Initial();
                 var lines = File.ReadAllLines(file);
 
                 for (int ii = 0; ii < lines.Length; ii++)
@@ -375,26 +400,6 @@ namespace GLCore
                             break;
                     }
                 }
-
-                ResetBindings();
-            }
-        }
-
-        /// <summary>
-        /// 清除所有資料
-        /// </summary>
-        private static void ClearAll()
-        {
-            lock (key)
-            {
-                ObstaclePointsID = -1;
-                SelectTargetID = -1;
-                CommandHistory.Clear();
-                CurrentMultiObject.Clear();
-                CurrentSingleObject.Clear();
-                DuplicateSingleObject.Clear();
-                Eraser.SaftyEdit(true, eraser => eraser.Cancel());
-                Pen.SaftyEdit(true, pen => pen.Cancel());
 
                 ResetBindings();
             }
@@ -444,11 +449,8 @@ namespace GLCore
                 }
             }
 
-            if (data.Count != 0)
-            {
-                ObstaclePointsID = SerialNumber.Next();
-                CurrentMultiObject.Add(ObstaclePointsID, new MultiPair(ObstaclePointsStyleName, data));
-            }
+            SaftyEditMultiGeometry<IPair>(ObstaclePointsID, true, o => o.AddRangeIfNotNull(data));
+
             return begin;
         }
 

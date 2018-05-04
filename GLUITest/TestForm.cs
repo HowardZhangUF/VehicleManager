@@ -14,6 +14,7 @@ namespace GLUITest
             InitializeComponent();
 
             StyleManager.LoadStyle("Style.ini");
+            GLCMD.Initial();
 
             cmbSelectType.Items.Add(nameof(SinglePairInfo));
             cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
@@ -73,7 +74,7 @@ namespace GLUITest
             GLCMD.Do($"Add,{GLCMD.SerialNumber.Next()},ForbiddenArea,4000,4000,7000,7000");
 
             // 使用者用函式加入圖形(可復原)
-            GLCMD.DoAddSingleTowardPair("Goal", 0, 2000, 45);
+            GLCMD.DoAddSingleTowardPair("General", 0, 2000, 45);
 
             // 使用者用函式加入複合圖形(不可復原)
             Random random = new Random();
@@ -82,7 +83,7 @@ namespace GLUITest
             {
                 list.Add(new Pair(random.Next(-10000, 10000), random.Next(-10000, 10000)));
             }
-            GLUI.ObstaclePointsID = GLCMD.AddMultiPair("@ObstaclePoints", list);
+            GLCMD.SaftyEditMultiGeometry<IPair>(GLCMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
         }
 
         /// <summary>
