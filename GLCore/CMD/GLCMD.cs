@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using ThreadSafety;
 
 namespace GLCore
@@ -14,7 +15,7 @@ namespace GLCore
     /// <summary>
     /// GL 物件命令管理器
     /// </summary>
-    public class GLCMD
+    public class GLCMD : IGLCore, INotifyPropertyChanged
     {
         #region 設定成唯一物件
 
@@ -33,7 +34,7 @@ namespace GLCore
 
         #endregion 設定成唯一物件
 
-        #region 公開資訊
+        #region 公開資訊(資料綁定)
 
         /// <summary>
         /// 獲得所有標示面資訊
@@ -54,6 +55,21 @@ namespace GLCore
         /// 獲得所有標示物資訊
         /// </summary>
         private readonly BindingList<ISingleTowardPairInfo> singleTowerPairInfo = new BindingList<ISingleTowardPairInfo>();
+
+        /// <summary>
+        /// 地圖檔雜湊值
+        /// </summary>
+        private string mapHash = string.Empty;
+
+        /// <summary>
+        /// 資料改變事件
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// 地圖檔雜湊值
+        /// </summary>
+        public string MapHash { get { return mapHash; } private set { mapHash = value; NotifyPropertyChanged(); } }
 
         /// <summary>
         /// 獲得所有標示面資訊
@@ -187,7 +203,15 @@ namespace GLCore
             SingleAreaInfo.ResetBindings();
         }
 
-        #endregion 公開資訊
+        /// <summary>
+        /// 發佈資料改變事件
+        /// </summary>
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion 公開資訊(資料綁定)
 
         #region 樣式設定
 
@@ -361,11 +385,6 @@ namespace GLCore
         #endregion 複合物件操作
 
         #region 載入地圖
-
-        /// <summary>
-        /// 地圖檔雜湊值
-        /// </summary>
-        public string MapHash { get; private set; }
 
         /// <summary>
         /// 初始化繪圖區
@@ -1154,10 +1173,7 @@ namespace GLCore
                 }
 
                 // 儲存移動指令
-                if (para[0] != nameof(ECMDType.Move))
-                {
-                    MoveFinish();
-                }
+                if (para[0] != nameof(ECMDType.Move)) MoveFinish();
 
                 if (res == -1 || !pushHistory) return res;
                 if (para[0] == nameof(ECMDType.Move)) return res;

@@ -13,12 +13,19 @@ namespace GLUITest
         {
             InitializeComponent();
 
+            // 載入設定檔
             StyleManager.LoadStyle("Style.ini");
 
+            // 加入選單
             cmbSelectType.Items.Add(nameof(SinglePairInfo));
             cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
             cmbSelectType.Items.Add(nameof(SingleLineInfo));
             cmbSelectType.Items.Add(nameof(SingleAreaInfo));
+
+            // 資料綁定
+            var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
+            binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
+            DataBindings.Add(binding);
         }
 
         /// <summary>
