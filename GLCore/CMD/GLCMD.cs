@@ -956,7 +956,7 @@ namespace GLCore
                     else if (item.Value is ISingleArea)
                     {
                         var obj = item.Value as ISingleArea;
-                        if (obj.CanDrag && obj.Geometry.Contain(pos)) yield return item.Key;
+                        if (obj.CanDrag && obj.Geometry.Contain(pos, MinAllowableError)) yield return item.Key;
                     }
                     else if (item.Value is ISingleTowardPair)
                     {

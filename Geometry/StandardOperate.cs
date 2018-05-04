@@ -43,6 +43,14 @@ namespace Geometry
         /// <summary>
         /// 是否包含點
         /// </summary>
+        public static bool Contain(this IArea area, IPair pair, double delta)
+        {
+            return area.Min.X <= pair.X + delta && area.Max.X >= pair.X - delta && area.Min.Y <= pair.Y + delta && area.Max.Y >= pair.Y - delta;
+        }
+
+        /// <summary>
+        /// 是否包含點
+        /// </summary>
         public static bool Contain(this IArea area, IPair pair)
         {
             return area.Min.X <= pair.X && area.Max.X >= pair.X && area.Min.Y <= pair.Y && area.Max.Y >= pair.Y;

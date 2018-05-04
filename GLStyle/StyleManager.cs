@@ -133,7 +133,7 @@ namespace GLStyle
             /// <summary>
             /// 線條樣式
             /// </summary>
-            public static ELinePattern Pattern { get; } = ELinePattern._1111000011110000;
+            public static ELinePattern Pattern { get; } = ELinePattern._1111111111111111;
 
             /// <summary>
             /// 寬度

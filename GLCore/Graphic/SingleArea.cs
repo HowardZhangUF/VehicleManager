@@ -160,11 +160,11 @@ namespace GLCore
                     return true;
 
                 case EMoveType.Min:
-                    Geometry.Set(x, y, Geometry.Max.X, Geometry.Max.Y);
+                    Geometry.Set(Math.Min(x, Geometry.Max.X), Math.Min(y, Geometry.Max.Y), Geometry.Max.X, Geometry.Max.Y);
                     return true;
 
                 case EMoveType.Max:
-                    Geometry.Set(Geometry.Min.X, Geometry.Min.Y, x, y);
+                    Geometry.Set(Geometry.Min.X, Geometry.Min.Y, Math.Max(x, Geometry.Min.X), Math.Max(y, Geometry.Min.Y));
                     return true;
 
                 default:
