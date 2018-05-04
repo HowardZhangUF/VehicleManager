@@ -1,5 +1,6 @@
 ﻿using Geometry;
 using GLStyle;
+using MD5Hash;
 using SharpGL;
 using System;
 using System.Collections.Generic;
@@ -346,6 +347,11 @@ namespace GLCore
         #region 載入地圖
 
         /// <summary>
+        /// 地圖檔雜湊值
+        /// </summary>
+        public static string MapHash { get; private set; }
+
+        /// <summary>
         /// 初始化繪圖區
         /// </summary>
         public static void Initial()
@@ -353,6 +359,7 @@ namespace GLCore
             lock (key)
             {
                 // 清除資料
+                MapHash = string.Empty;
                 SelectTargetID = -1;
                 ObstaclePointsID = SerialNumber.Next();
                 CommandHistory.Clear();
@@ -378,6 +385,7 @@ namespace GLCore
             lock (key)
             {
                 Initial();
+                MapHash = MD5.GetFileHash(file);
                 var lines = File.ReadAllLines(file);
 
                 for (int ii = 0; ii < lines.Length; ii++)

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLUI", "GLUI\GLUI.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLUITest", "GLUITest\GLUITest.csproj", "{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MD5Hash", "MD5Hash\MD5Hash.csproj", "{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

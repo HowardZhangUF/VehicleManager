@@ -111,6 +111,10 @@
       <Project>{67EDE669-FF71-41EC-BA78-0D167FB5D989}</Project>
       <Name>GLStyle</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MD5Hash\MD5Hash.csproj">
+      <Project>{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}</Project>
+      <Name>MD5Hash</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ThreadSafety\ThreadSafety.csproj">
       <Project>{68031e26-f58a-4f5a-8552-e5bc30ce97fc}</Project>
       <Name>ThreadSafety</Name>
