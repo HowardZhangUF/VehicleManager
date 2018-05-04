@@ -2,6 +2,8 @@
 using GLStyle;
 using SharpGL;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace GLCore
 {
@@ -19,6 +21,17 @@ namespace GLCore
         /// 文字顏色
         /// </summary>
         private static IColor TextColor { get; } = new Color(Color.Black);
+
+        /// <summary>
+        /// 將 <paramref name="collection"/> 加入 <paramref name="bindingList"/> 中
+        /// </summary>
+        public static void AddRange<T>(this BindingList<T> bindingList, IEnumerable<T> collection)
+        {
+            foreach (var item in collection)
+            {
+                bindingList.Add(item);
+            }
+        }
 
         /// <summary>
         /// <para>提供使用頂點數據組繪製 2D 物件的操作方法</para>

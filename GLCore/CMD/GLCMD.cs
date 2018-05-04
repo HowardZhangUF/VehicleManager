@@ -62,10 +62,7 @@ namespace GLCore
                               MaxY = (item.Value as ISingleArea).Geometry.Max.Y,
                           });
 
-                    foreach (var item in collection)
-                    {
-                        singleAreaInfo.Add(item);
-                    }
+                    singleAreaInfo.AddRange(collection);
 
                     return singleAreaInfo;
                 }
@@ -96,10 +93,7 @@ namespace GLCore
                               Y1 = (item.Value as ISingleLine).Geometry.End.Y,
                           });
 
-                    foreach (var item in collection)
-                    {
-                        singleLineInfo.Add(item);
-                    }
+                    singleLineInfo.AddRange(collection);
 
                     return singleLineInfo;
                 }
@@ -128,10 +122,7 @@ namespace GLCore
                               Y = (item.Value as ISinglePair).Geometry.Y,
                           });
 
-                    foreach (var item in collection)
-                    {
-                        singlePairInfo.Add(item);
-                    }
+                    singlePairInfo.AddRange(collection);
 
                     return singlePairInfo;
                 }
@@ -161,10 +152,7 @@ namespace GLCore
                               Toward = (item.Value as ISingleTowardPair).Geometry.Toward.Theta,
                           });
 
-                    foreach (var item in collection)
-                    {
-                        singleTowerPairInfo.Add(item);
-                    }
+                    singleTowerPairInfo.AddRange(collection);
 
                     return singleTowerPairInfo;
                 }
