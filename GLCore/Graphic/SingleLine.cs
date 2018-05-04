@@ -78,7 +78,7 @@ namespace GLCore
         /// <summary>
         /// 透明的
         /// </summary>
-        public bool Transparent { get { return Style.BackgroundColor.A != 255; } }
+        public bool Transparent { get { return Style?.BackgroundColor.A != 255; } }
 
         /// <summary>
         /// 繪圖

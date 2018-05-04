@@ -49,7 +49,7 @@ namespace GLCore
         /// <summary>
         /// 透明的
         /// </summary>
-        public bool Transparent { get { return Style.BackgroundColor.A != 255; } }
+        public bool Transparent { get { return Style?.BackgroundColor.A != 255; } }
 
         /// <summary>
         /// 最後一次產生頂點陣列的時間
@@ -68,6 +68,7 @@ namespace GLCore
         {
             lock (key)
             {
+                if (Style == null) return;
                 GenVertexArray();
 
                 if (VertexArray == null) return;
