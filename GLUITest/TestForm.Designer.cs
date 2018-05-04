@@ -44,8 +44,8 @@
             this.dgvInfo.RowTemplate.Height = 24;
             this.dgvInfo.Size = new System.Drawing.Size(502, 211);
             this.dgvInfo.TabIndex = 1;
+            this.dgvInfo.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvInfo_CellValueChanged);
             this.dgvInfo.DoubleClick += new System.EventHandler(this.DgvInfo_DoubleClick);
-            this.dgvInfo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DgvInfo_KeyDown);
             // 
             // cmbSelectType
             // 

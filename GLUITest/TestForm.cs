@@ -86,6 +86,14 @@ namespace GLUITest
         }
 
         /// <summary>
+        /// 輸入資料，修改 <see cref="GLCMD"/> 內容
+        /// </summary>
+        private void DgvInfo_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) UpdateGLCMD(e.RowIndex, e.ColumnIndex);
+        }
+
+        /// <summary>
         /// 移動視角
         /// </summary>
         private void DgvInfo_DoubleClick(object sender, EventArgs e)
@@ -137,19 +145,6 @@ namespace GLUITest
 
                 default:
                     break;
-            }
-        }
-
-        /// <summary>
-        /// 輸入資料，修改 <see cref="GLCMD"/> 內容
-        /// </summary>
-        private void DgvInfo_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                int rowIndex = (sender as DataGridView).CurrentRow?.Index ?? -1;
-                int colIndex = (sender as DataGridView).CurrentCell?.ColumnIndex ?? -1;
-                if (rowIndex >= 0) UpdateGLCMD(rowIndex, colIndex);
             }
         }
 
@@ -424,7 +419,7 @@ namespace GLUITest
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleTowerPairInfo.X)));
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleTowerPairInfo.Y)));
                         int dx = (int)(Math.Cos(theta) * 10000);
-                        int dy = (int)(Math.Cos(theta) * 10000);
+                        int dy = (int)(Math.Sin(theta) * 10000);
                         GLCMD.DoMoveToward(id, x + dx, y + dy);
                         GLCMD.MoveFinish();
                     }
