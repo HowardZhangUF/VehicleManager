@@ -4,7 +4,9 @@ using SharpGL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace GLCore
 {
@@ -45,6 +47,21 @@ namespace GLCore
             if (collection != null && collection.Any())
             {
                 list.AddRange(collection);
+            }
+        }
+
+        /// <summary>
+        /// 利用 <see cref="Serializable"/> 方式複製
+        /// </summary>
+        public static T DeepClone<T>(this T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
             }
         }
 

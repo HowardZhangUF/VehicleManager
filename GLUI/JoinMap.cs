@@ -52,20 +52,20 @@ namespace GLUI
         /// </summary>
         public void LoadJoinMap(string file)
         {
-            GLCMD.Join.SaftyEdit(true, join => join.LoadJoinMap(file));
+            GLCMD.CMD.Join.SaftyEdit(true, join => join.LoadJoinMap(file));
             UpdateControlPanel();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            GLCMD.Join.SaftyEdit(true, join => join.ClearAll());
+            GLCMD.CMD.Join.SaftyEdit(true, join => join.ClearAll());
             Close();
         }
 
         private void btnDone_Click(object sender, EventArgs e)
         {
-            Done?.Invoke(GLCMD.Join.SaftyEdit(join => join.GetObstaclePoints()));
-            GLCMD.Join.SaftyEdit(true, join => join.ClearAll());
+            Done?.Invoke(GLCMD.CMD.Join.SaftyEdit(join => join.GetObstaclePoints()));
+            GLCMD.CMD.Join.SaftyEdit(true, join => join.ClearAll());
             Close();
         }
 
@@ -76,7 +76,7 @@ namespace GLUI
 
         private void btnSelectRange_Click(object sender, EventArgs e)
         {
-            GLCMD.Join.SaftyEdit(true, join => join.EnableSelectRange = !join.EnableSelectRange);
+            GLCMD.CMD.Join.SaftyEdit(true, join => join.EnableSelectRange = !join.EnableSelectRange);
             UpdateControlPanel();
         }
 
@@ -126,10 +126,10 @@ namespace GLUI
 
             double angle = GetRotateStep();
 
-            if (GLCMD.Join.SaftyEdit(join => !join.EnableSelectRange))
+            if (GLCMD.CMD.Join.SaftyEdit(join => !join.EnableSelectRange))
             {
                 // 移動障礙點
-                GLCMD.Join.SaftyEdit(true, join =>
+                GLCMD.CMD.Join.SaftyEdit(true, join =>
                 {
                     join.Rotate.Theta -= dir * angle;
                 });
@@ -187,10 +187,10 @@ namespace GLUI
             int length = GetTranslateStep();
 
             // 移動
-            if (GLCMD.Join.SaftyEdit(join => !join.EnableSelectRange))
+            if (GLCMD.CMD.Join.SaftyEdit(join => !join.EnableSelectRange))
             {
                 // 移動障礙點
-                GLCMD.Join.SaftyEdit(true, join =>
+                GLCMD.CMD.Join.SaftyEdit(true, join =>
                  {
                      join.Translate.X += sx * length;
                      join.Translate.Y += sy * length;
@@ -199,7 +199,7 @@ namespace GLUI
             else
             {
                 // 移動選擇區域
-                GLCMD.Join.SaftyEdit(true, join =>
+                GLCMD.CMD.Join.SaftyEdit(true, join =>
                 {
                     var range = join.SelectRange;
 
@@ -237,7 +237,7 @@ namespace GLUI
         /// </summary>
         private void UpdateControlPanel()
         {
-            if (GLCMD.Join.SaftyEdit(join => !join.InUse))
+            if (GLCMD.CMD.Join.SaftyEdit(join => !join.InUse))
             {
                 RotateButton(false);
                 TranslateButton(false);
@@ -245,7 +245,7 @@ namespace GLUI
             }
             else
             {
-                if (GLCMD.Join.SaftyEdit(join => join.EnableSelectRange))
+                if (GLCMD.CMD.Join.SaftyEdit(join => join.EnableSelectRange))
                 {
                     RotateButton(false);
                     TranslateButton(true);

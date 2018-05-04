@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using ThreadSafety;
 
 namespace GLCore
@@ -15,34 +14,51 @@ namespace GLCore
     /// <summary>
     /// GL 物件命令管理器
     /// </summary>
-    public static class GLCMD
+    public class GLCMD
     {
+        #region 設定成唯一物件
+
+        /// <summary>
+        /// 私有建構子(避免外部 new)
+        /// </summary>
+        private GLCMD()
+        {
+            Initial();
+        }
+
+        /// <summary>
+        /// 命令管理器
+        /// </summary>
+        public static GLCMD CMD { get; } = new GLCMD();
+
+        #endregion 設定成唯一物件
+
         #region 公開資訊
 
         /// <summary>
         /// 獲得所有標示面資訊
         /// </summary>
-        private static readonly BindingList<ISingleAreaInfo> singleAreaInfo = new BindingList<ISingleAreaInfo>();
+        private readonly BindingList<ISingleAreaInfo> singleAreaInfo = new BindingList<ISingleAreaInfo>();
 
         /// <summary>
         /// 獲得所有標示線資訊
         /// </summary>
-        private static readonly BindingList<ISingleLineInfo> singleLineInfo = new BindingList<ISingleLineInfo>();
+        private readonly BindingList<ISingleLineInfo> singleLineInfo = new BindingList<ISingleLineInfo>();
 
         /// <summary>
         /// 獲得所有標示點資訊
         /// </summary>
-        private static readonly BindingList<ISinglePairInfo> singlePairInfo = new BindingList<ISinglePairInfo>();
+        private readonly BindingList<ISinglePairInfo> singlePairInfo = new BindingList<ISinglePairInfo>();
 
         /// <summary>
         /// 獲得所有標示物資訊
         /// </summary>
-        private static readonly BindingList<ISingleTowardPairInfo> singleTowerPairInfo = new BindingList<ISingleTowardPairInfo>();
+        private readonly BindingList<ISingleTowardPairInfo> singleTowerPairInfo = new BindingList<ISingleTowardPairInfo>();
 
         /// <summary>
         /// 獲得所有標示面資訊
         /// </summary>
-        public static BindingList<ISingleAreaInfo> SingleAreaInfo
+        public BindingList<ISingleAreaInfo> SingleAreaInfo
         {
             get
             {
@@ -73,7 +89,7 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示線資訊
         /// </summary>
-        public static BindingList<ISingleLineInfo> SingleLineInfo
+        public BindingList<ISingleLineInfo> SingleLineInfo
         {
             get
             {
@@ -104,7 +120,7 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示點資訊
         /// </summary>
-        public static BindingList<ISinglePairInfo> SinglePairInfo
+        public BindingList<ISinglePairInfo> SinglePairInfo
         {
             get
             {
@@ -133,7 +149,7 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示物資訊
         /// </summary>
-        public static BindingList<ISingleTowardPairInfo> SingleTowerPairInfo
+        public BindingList<ISingleTowardPairInfo> SingleTowerPairInfo
         {
             get
             {
@@ -163,7 +179,7 @@ namespace GLCore
         /// <summary>
         /// 刷新所有綁定資訊
         /// </summary>
-        public static void ResetBindings()
+        public void ResetBindings()
         {
             SingleTowerPairInfo.ResetBindings();
             SinglePairInfo.ResetBindings();
@@ -210,64 +226,64 @@ namespace GLCore
         /// <summary>
         /// 執行緒鎖
         /// </summary>
-        private readonly static object key = new object();
+        private readonly object key = new object();
 
         /// <summary>
         /// 障礙點識別碼
         /// </summary>
-        public static int ObstaclePointsID { get; private set; } = -1;
+        public int ObstaclePointsID { get; private set; } = -1;
 
         /// <summary>
         /// 目前所選擇的 ID
         /// </summary>
-        public static int SelectTargetID { get; private set; } = -1;
+        public int SelectTargetID { get; private set; } = -1;
 
         /// <summary>
         /// 序號管理器
         /// </summary>
-        public static SerialNumberManager SerialNumber { get; } = new SerialNumberManager();
+        public SerialNumberManager SerialNumber { get; } = new SerialNumberManager();
 
         /// <summary>
         /// 命令紀錄
         /// </summary>
-        private static History CommandHistory { get; } = new History(10);
+        private History CommandHistory { get; } = new History(10);
 
         /// <summary>
         /// 當下複合物件列表
         /// </summary>
-        private static Dictionary<int, IMulti> CurrentMultiObject { get; set; } = new Dictionary<int, IMulti>();
+        private Dictionary<int, IMulti> CurrentMultiObject { get; set; } = new Dictionary<int, IMulti>();
 
         /// <summary>
         /// 當下單一物件列表
         /// </summary>
-        private static Dictionary<int, ISingle> CurrentSingleObject { get; set; } = new Dictionary<int, ISingle>();
+        private Dictionary<int, ISingle> CurrentSingleObject { get; set; } = new Dictionary<int, ISingle>();
 
         /// <summary>
         /// 背景暫存單一物件列表
         /// </summary>
-        private static Dictionary<int, ISingle> DuplicateSingleObject { get; } = new Dictionary<int, ISingle>();
+        private Dictionary<int, ISingle> DuplicateSingleObject { get; } = new Dictionary<int, ISingle>();
 
         /// <summary>
         /// 上一筆移動指令
         /// </summary>
-        private static string PreMoveCommand { get; set; } = string.Empty;
+        private string PreMoveCommand { get; set; } = string.Empty;
 
         #region 擦子、畫筆等工具
 
         /// <summary>
         /// 擦子
         /// </summary>
-        public static ISafty<Eraser> Eraser { get; } = new Safty<Eraser>(new Eraser(EraserStyleName));
+        public ISafty<Eraser> Eraser { get; } = new Safty<Eraser>(new Eraser(EraserStyleName));
 
         /// <summary>
         /// 插入工具
         /// </summary>
-        public static ISafty<Join> Join { get; } = new Safty<Join>(new Join(JoinObstaclePointsSelectRangeStyleName, JoinObstaclePointsStyleName));
+        public ISafty<Join> Join { get; } = new Safty<Join>(new Join(JoinObstaclePointsSelectRangeStyleName, JoinObstaclePointsStyleName));
 
         /// <summary>
         /// 畫筆
         /// </summary>
-        public static ISafty<Pen> Pen { get; } = new Safty<Pen>(new Pen(PenStyleName));
+        public ISafty<Pen> Pen { get; } = new Safty<Pen>(new Pen(PenStyleName));
 
         #endregion 擦子、畫筆等工具
 
@@ -276,7 +292,7 @@ namespace GLCore
         /// <summary>
         /// 加入複合面。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int AddMultiArea(string style, IEnumerable<IArea> area)
+        public int AddMultiArea(string style, IEnumerable<IArea> area)
         {
             lock (key)
             {
@@ -290,7 +306,7 @@ namespace GLCore
         /// <summary>
         /// 加入複合點。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int AddMultiPair(string style, IEnumerable<IPair> pair)
+        public int AddMultiPair(string style, IEnumerable<IPair> pair)
         {
             lock (key)
             {
@@ -304,7 +320,7 @@ namespace GLCore
         /// <summary>
         /// 加入複合線。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int AddMultiStripLine(string style, IEnumerable<IPair> pair)
+        public int AddMultiStripLine(string style, IEnumerable<IPair> pair)
         {
             lock (key)
             {
@@ -318,7 +334,7 @@ namespace GLCore
         /// <summary>
         /// 刪除複合物件。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DeleteMulti(int id)
+        public int DeleteMulti(int id)
         {
             lock (key)
             {
@@ -331,7 +347,7 @@ namespace GLCore
         /// <summary>
         /// 執行緒安全操作複合物件的幾何座標集合，若操作過程中會改變資料，請將 <paramref name="isDataChange"/> 設為 True
         /// </summary>
-        public static void SaftyEditMultiGeometry<TGeometry>(int id, bool isDataChange, Action<List<TGeometry>> action) where TGeometry : IGeometry
+        public void SaftyEditMultiGeometry<TGeometry>(int id, bool isDataChange, Action<List<TGeometry>> action) where TGeometry : IGeometry
         {
             lock (key)
             {
@@ -349,12 +365,12 @@ namespace GLCore
         /// <summary>
         /// 地圖檔雜湊值
         /// </summary>
-        public static string MapHash { get; private set; }
+        public string MapHash { get; private set; }
 
         /// <summary>
         /// 初始化繪圖區
         /// </summary>
-        public static void Initial()
+        public void Initial()
         {
             lock (key)
             {
@@ -380,7 +396,7 @@ namespace GLCore
         /// <summary>
         /// 載入地圖
         /// </summary>
-        public static void LoadMap(string file)
+        public void LoadMap(string file)
         {
             lock (key)
             {
@@ -417,7 +433,7 @@ namespace GLCore
         /// <para>讀取目標點列表至  <see cref="DuplicateSingleObject"/>，並回傳結束的資料行數</para>
         /// <para>資料格式如：Goal 2,8421,2264,0,MagneticTracking</para>
         /// </summary>
-        private static int ReadGoalList(string[] lines, int begin)
+        private int ReadGoalList(string[] lines, int begin)
         {
             for (int ii = begin + 1; ii < lines.Length; ii++)
             {
@@ -440,7 +456,7 @@ namespace GLCore
         /// <para>讀取障礙點至  <see cref="CurrentMultiObject"/> 及寫入 <see cref="ObstaclePointsID"/>，並回傳結束的資料行數</para>
         /// <para>資料格式如：-12794,3803</para>
         /// </summary>
-        private static int ReadObstaclePoints(string[] lines, int begin)
+        private int ReadObstaclePoints(string[] lines, int begin)
         {
             var data = new List<IPair>();
             for (int ii = begin + 1; ii < lines.Length; ii++)
@@ -469,7 +485,7 @@ namespace GLCore
         /// <summary>
         /// 儲存地圖
         /// </summary>
-        public static void SaveMap(string file)
+        public void SaveMap(string file)
         {
             lock (key)
             {
@@ -491,7 +507,7 @@ namespace GLCore
         /// <para>以 *.map 目標點字串格式回傳 <see cref="CurrentSingleObject"/> 中所有 <see cref="ITowardPairStyle"/> 的圖示 </para>
         /// <para>資料格式如：Goal 2,8421,2264,0,MagneticTracking</para>
         /// </summary>
-        private static IEnumerable<string> GetGoalList()
+        private IEnumerable<string> GetGoalList()
         {
             var query = CurrentSingleObject
                 .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(ITowardPairStyle))
@@ -505,7 +521,7 @@ namespace GLCore
         /// <summary>
         /// 獲得地圖障礙點組成的邊界。若地圖為空，則回傳 Area(0,0,0,0)
         /// </summary>
-        private static IArea GetObstaclePointsBound()
+        private IArea GetObstaclePointsBound()
         {
             var geometry = (CurrentMultiObject.FirstOrDefault(dic => dic.Key == ObstaclePointsID).Value as IMulti<IPair>)?.Geometry;
             if (geometry == null || geometry.SaftyEdit(list => !list.Any())) return new Area(0, 0, 0, 0);
@@ -530,7 +546,7 @@ namespace GLCore
         /// <para>以 *.map 目標點字串格式回傳 <see cref="CurrentMultiObject"/> of <see cref="ObstaclePointsID"/> 中所有點</para>
         /// <para>資料格式如：-12794,3803</para>
         /// </summary>
-        private static IEnumerable<string> GetObstaclePointsList()
+        private IEnumerable<string> GetObstaclePointsList()
         {
             return (CurrentMultiObject.FirstOrDefault(dic => dic.Key == ObstaclePointsID).Value as IMulti<IPair>)?
                 .Geometry
@@ -540,7 +556,7 @@ namespace GLCore
         /// <summary>
         /// 將集合中的元素一一轉為字串
         /// </summary>
-        private static IEnumerable<string> ToString<T>(IEnumerable<T> collection)
+        private IEnumerable<string> ToString<T>(IEnumerable<T> collection)
         {
             foreach (var item in collection)
             {
@@ -558,7 +574,7 @@ namespace GLCore
         /// <para>修改樣式：ChangeStyle,id,newStyle</para>
         /// <para>重新命名：Rename,id,newName</para>
         /// </summary>
-        public static int Do(string cmd)
+        public int Do(string cmd)
         {
             lock (key)
             {
@@ -569,7 +585,7 @@ namespace GLCore
         /// <summary>
         /// 加入面。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleArea(string style, int minX, int minY, int maxX, int maxY)
+        public int DoAddSingleArea(string style, int minX, int minY, int maxX, int maxY)
         {
             lock (key)
             {
@@ -581,7 +597,7 @@ namespace GLCore
         /// <summary>
         /// 加入面。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleArea(string style, double minX, double minY, double maxX, double maxY)
+        public int DoAddSingleArea(string style, double minX, double minY, double maxX, double maxY)
         {
             lock (key)
             {
@@ -593,7 +609,7 @@ namespace GLCore
         /// <summary>
         /// 加入面。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleArea(string style, IPair min, IPair max)
+        public int DoAddSingleArea(string style, IPair min, IPair max)
         {
             lock (key)
             {
@@ -605,7 +621,7 @@ namespace GLCore
         /// <summary>
         /// 加入面。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleArea(string style, IArea area)
+        public int DoAddSingleArea(string style, IArea area)
         {
             lock (key)
             {
@@ -617,7 +633,7 @@ namespace GLCore
         /// <summary>
         /// 加入線段。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleLine(string style, int x0, int y0, int x1, int y1)
+        public int DoAddSingleLine(string style, int x0, int y0, int x1, int y1)
         {
             lock (key)
             {
@@ -629,7 +645,7 @@ namespace GLCore
         /// <summary>
         /// 加入線段。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleLine(string style, double x0, double y0, double x1, double y1)
+        public int DoAddSingleLine(string style, double x0, double y0, double x1, double y1)
         {
             lock (key)
             {
@@ -641,7 +657,7 @@ namespace GLCore
         /// <summary>
         /// 加入線段。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleLine(string style, IPair begin, IPair end)
+        public int DoAddSingleLine(string style, IPair begin, IPair end)
         {
             lock (key)
             {
@@ -653,7 +669,7 @@ namespace GLCore
         /// <summary>
         /// 加入線段。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleLine(string style, ILine line)
+        public int DoAddSingleLine(string style, ILine line)
         {
             lock (key)
             {
@@ -665,7 +681,7 @@ namespace GLCore
         /// <summary>
         /// 加入座標點。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSinglePair(string style, int x, int y)
+        public int DoAddSinglePair(string style, int x, int y)
         {
             lock (key)
             {
@@ -677,7 +693,7 @@ namespace GLCore
         /// <summary>
         /// 加入座標點。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSinglePair(string style, double x, double y)
+        public int DoAddSinglePair(string style, double x, double y)
         {
             lock (key)
             {
@@ -689,7 +705,7 @@ namespace GLCore
         /// <summary>
         /// 加入座標點。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSinglePair(string style, IPair pair)
+        public int DoAddSinglePair(string style, IPair pair)
         {
             lock (key)
             {
@@ -701,7 +717,7 @@ namespace GLCore
         /// <summary>
         /// 加入標示物。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleTowardPair(string style, int x, int y, double toward)
+        public int DoAddSingleTowardPair(string style, int x, int y, double toward)
         {
             lock (key)
             {
@@ -713,7 +729,7 @@ namespace GLCore
         /// <summary>
         /// 加入標示物。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleTowardPair(string style, double x, double y, double toward)
+        public int DoAddSingleTowardPair(string style, double x, double y, double toward)
         {
             lock (key)
             {
@@ -725,7 +741,7 @@ namespace GLCore
         /// <summary>
         /// 加入標示物。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="style"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoAddSingleTowardPair(string style, ITowardPair pos)
+        public int DoAddSingleTowardPair(string style, ITowardPair pos)
         {
             lock (key)
             {
@@ -737,7 +753,7 @@ namespace GLCore
         /// <summary>
         /// 修改樣式。執行失敗回傳 -1，執行成功則回傳控制對象的 id。<paramref name="newStyle"/> 為 *.ini 定義的樣式名稱
         /// </summary>
-        public static int DoChangeStyle(int id, string newStyle)
+        public int DoChangeStyle(int id, string newStyle)
         {
             lock (key)
             {
@@ -749,7 +765,7 @@ namespace GLCore
         /// <summary>
         /// 刪除物件。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DoDelete(int id)
+        public int DoDelete(int id)
         {
             lock (key)
             {
@@ -761,7 +777,7 @@ namespace GLCore
         /// <summary>
         /// 移動起點座標。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DoMoveBegin(int id, int x, int y)
+        public int DoMoveBegin(int id, int x, int y)
         {
             lock (key)
             {
@@ -773,7 +789,7 @@ namespace GLCore
         /// <summary>
         /// 移動物件。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DoMoveCenter(int id, int x, int y)
+        public int DoMoveCenter(int id, int x, int y)
         {
             lock (key)
             {
@@ -785,7 +801,7 @@ namespace GLCore
         /// <summary>
         /// 移動終點座標。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DoMoveEnd(int id, int x, int y)
+        public int DoMoveEnd(int id, int x, int y)
         {
             lock (key)
             {
@@ -797,7 +813,7 @@ namespace GLCore
         /// <summary>
         /// 移動最大值座標。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DoMoveMax(int id, int x, int y)
+        public int DoMoveMax(int id, int x, int y)
         {
             lock (key)
             {
@@ -809,7 +825,7 @@ namespace GLCore
         /// <summary>
         /// 移動最小值座標。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DoMoveMin(int id, int x, int y)
+        public int DoMoveMin(int id, int x, int y)
         {
             lock (key)
             {
@@ -821,7 +837,7 @@ namespace GLCore
         /// <summary>
         /// 移動方向角。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DoMoveToward(int id, int x, int y)
+        public int DoMoveToward(int id, int x, int y)
         {
             lock (key)
             {
@@ -833,7 +849,7 @@ namespace GLCore
         /// <summary>
         /// 重新命名。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int DoRename(int id, string newName)
+        public int DoRename(int id, string newName)
         {
             lock (key)
             {
@@ -845,7 +861,7 @@ namespace GLCore
         /// <summary>
         /// 繪圖
         /// </summary>
-        public static void Draw(OpenGL gl)
+        public void Draw(OpenGL gl)
         {
             lock (key)
             {
@@ -886,7 +902,7 @@ namespace GLCore
         /// <summary>
         /// 顯示文字
         /// </summary>
-        public static void DrawText(OpenGL gl, Func<IPair, IPair> convert)
+        public void DrawText(OpenGL gl, Func<IPair, IPair> convert)
         {
             lock (key)
             {
@@ -900,7 +916,7 @@ namespace GLCore
         /// <summary>
         /// 根據座標獲得物件所有對應的 id
         /// </summary>
-        public static IEnumerable<int> GetAllTargetID(IPair pos)
+        public IEnumerable<int> GetAllTargetID(IPair pos)
         {
             const float MinAllowableError = 50.0f;
 
@@ -935,7 +951,7 @@ namespace GLCore
         /// <summary>
         /// 獲得已做的歷史紀錄
         /// </summary>
-        public static IEnumerable<string> GetDoHistory()
+        public IEnumerable<string> GetDoHistory()
         {
             lock (key)
             {
@@ -946,7 +962,7 @@ namespace GLCore
         /// <summary>
         /// 根據 id 取得樣式種類。若 id 不存在則回傳 <see cref="string.Empty"/>
         /// </summary>
-        public static string GetStyleType(int id)
+        public string GetStyleType(int id)
         {
             lock (key)
             {
@@ -959,7 +975,7 @@ namespace GLCore
         /// <summary>
         /// 獲得已復原的歷史紀錄
         /// </summary>
-        public static IEnumerable<string> GetUndoHistory()
+        public IEnumerable<string> GetUndoHistory()
         {
             lock (key)
             {
@@ -970,7 +986,7 @@ namespace GLCore
         /// <summary>
         /// 結束移動，儲存移動指令
         /// </summary>
-        public static void MoveFinish()
+        public void MoveFinish()
         {
             lock (key)
             {
@@ -985,7 +1001,7 @@ namespace GLCore
         /// <summary>
         /// 重做
         /// </summary>
-        public static void Redo(int step)
+        public void Redo(int step)
         {
             lock (key)
             {
@@ -1005,7 +1021,7 @@ namespace GLCore
         /// <summary>
         /// 選擇物件。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
         /// </summary>
-        public static int Select(int id)
+        public int Select(int id)
         {
             lock (key)
             {
@@ -1025,7 +1041,7 @@ namespace GLCore
         /// <summary>
         /// 復原
         /// </summary>
-        public static void Undo(int step)
+        public void Undo(int step)
         {
             lock (key)
             {
@@ -1045,7 +1061,7 @@ namespace GLCore
         /// 加入物件。執行失敗回傳 -1
         /// </summary>
         /// <param name="para">id,style,x,y,toward...</param>
-        private static int Add(Dictionary<int, ISingle> dic, IEnumerable<string> para)
+        private int Add(Dictionary<int, ISingle> dic, IEnumerable<string> para)
         {
             string style = para.ElementAt(1);
 
@@ -1083,24 +1099,9 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 利用 <see cref="Serializable"/> 方式複製
-        /// </summary>
-        private static T DeepClone<T>(this T obj)
-        {
-            using (var ms = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(ms, obj);
-                ms.Position = 0;
-
-                return (T)formatter.Deserialize(ms);
-            }
-        }
-
-        /// <summary>
         /// 根據 id 移除對象
         /// </summary>
-        private static int Delete(Dictionary<int, ISingle> dic, int id)
+        private int Delete(Dictionary<int, ISingle> dic, int id)
         {
             lock (key)
             {
@@ -1122,7 +1123,7 @@ namespace GLCore
         /// <para>修改樣式：ChangeStyle,id,newStyle</para>
         /// <para>重新命名：Rename,id,newName</para>
         /// </summary>
-        private static int Do(Dictionary<int, ISingle> dic, string cmd, bool pushHistory)
+        private int Do(Dictionary<int, ISingle> dic, string cmd, bool pushHistory)
         {
             lock (key)
             {
@@ -1171,7 +1172,7 @@ namespace GLCore
         /// 移動物件。執行失敗回傳 -1
         /// </summary>
         /// <param name="para">id,n,dx,dy</param>
-        private static int Move(Dictionary<int, ISingle> dic, IEnumerable<string> para)
+        private int Move(Dictionary<int, ISingle> dic, IEnumerable<string> para)
         {
             lock (key)
             {
@@ -1196,7 +1197,7 @@ namespace GLCore
         /// <summary>
         /// 加入歷史紀錄
         /// </summary>
-        private static void PushHistory(string cmd)
+        private void PushHistory(string cmd)
         {
             lock (key)
             {
@@ -1209,7 +1210,7 @@ namespace GLCore
         /// <summary>
         /// 根據 id 重新命名物件
         /// </summary>
-        private static int Rename(Dictionary<int, ISingle> dic, int id, string newName)
+        private int Rename(Dictionary<int, ISingle> dic, int id, string newName)
         {
             lock (key)
             {
@@ -1229,7 +1230,7 @@ namespace GLCore
         /// 修改樣式。執行失敗回傳 -1
         /// </summary>
         /// <param name="para">id,newStyle</param>
-        private static int SetStyle(Dictionary<int, ISingle> dic, IEnumerable<string> para)
+        private int SetStyle(Dictionary<int, ISingle> dic, IEnumerable<string> para)
         {
             lock (key)
             {

@@ -146,7 +146,7 @@ namespace GLUI
         /// <summary>
         /// 滑鼠控制目標
         /// </summary>
-        public int SelectTargetID { get { return selectTarget; } private set { selectTarget = value; GLCMD.Select(value); } }
+        public int SelectTargetID { get { return selectTarget; } private set { selectTarget = value; GLCMD.CMD.Select(value); } }
 
         /// <summary>
         /// 滑鼠的前一筆位置
@@ -168,19 +168,19 @@ namespace GLUI
             switch (StyleManager.GetStyleType(style))
             {
                 case nameof(IPairStyle):
-                    GLCMD.DoAddSinglePair(style, center.X, center.Y);
+                    GLCMD.CMD.DoAddSinglePair(style, center.X, center.Y);
                     break;
 
                 case nameof(ITowardPairStyle):
-                    GLCMD.DoAddSingleTowardPair(style, center.X, center.Y, 0);
+                    GLCMD.CMD.DoAddSingleTowardPair(style, center.X, center.Y, 0);
                     break;
 
                 case nameof(ILineStyle):
-                    GLCMD.DoAddSingleLine(style, center.X - 500, center.Y, center.X + 500, center.Y);
+                    GLCMD.CMD.DoAddSingleLine(style, center.X - 500, center.Y, center.X + 500, center.Y);
                     break;
 
                 case nameof(IAreaStyle):
-                    GLCMD.DoAddSingleArea(style, center.X - 500, center.Y - 500, center.X + 500, center.Y + 500);
+                    GLCMD.CMD.DoAddSingleArea(style, center.X - 500, center.Y - 500, center.X + 500, center.Y + 500);
                     break;
 
                 default:
@@ -194,7 +194,7 @@ namespace GLUI
         private void MenuChangeStyleOnClik(object sender, EventArgs e)
         {
             string style = (sender as ToolStripItem).Text;
-            GLCMD.DoChangeStyle(SelectTargetID, style);
+            GLCMD.CMD.DoChangeStyle(SelectTargetID, style);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace GLUI
         /// </summary>
         private void MenuDeleteOnClick(object sender, EventArgs e)
         {
-            GLCMD.DoDelete(SelectTargetID);
+            GLCMD.CMD.DoDelete(SelectTargetID);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace GLUI
         private void MenuEraserOnClik(object sender, EventArgs e)
         {
             int size = (int)(sender as ToolStripItem).Tag;
-            GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition, size));
+            GLCMD.CMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition, size));
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace GLUI
         /// </summary>
         private void MenuPenOnClik(object sender, EventArgs e)
         {
-            GLCMD.Pen.SaftyEdit(true, pen => pen.SetBeginAndEnd(PreGLPosition));
+            GLCMD.CMD.Pen.SaftyEdit(true, pen => pen.SetBeginAndEnd(PreGLPosition));
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace GLUI
         private void MenuRedoOnClik(object sender, EventArgs e)
         {
             int step = int.Parse((sender as ToolStripItem).Tag.ToString());
-            GLCMD.Redo(step);
+            GLCMD.CMD.Redo(step);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace GLUI
         private void MenuUndoOnClik(object sender, EventArgs e)
         {
             int step = int.Parse((sender as ToolStripItem).Tag.ToString());
-            GLCMD.Undo(step);
+            GLCMD.CMD.Undo(step);
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace GLUI
         /// </summary>
         private void RenameDone(string newName)
         {
-            GLCMD.DoRename(SelectTargetID, newName);
+            GLCMD.CMD.DoRename(SelectTargetID, newName);
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace GLUI
             menu.Items.Add(Lang.Delete, DeleteImage, MenuDeleteOnClick);
 
             // 移動
-            string styleType = GLCMD.GetStyleType(SelectTargetID);
+            string styleType = GLCMD.CMD.GetStyleType(SelectTargetID);
             var move = new ToolStripMenuItem(Lang.Move) { Image = MoveImage };
             switch (styleType)
             {
@@ -459,7 +459,7 @@ namespace GLUI
             // 復原
             int step = 0;
             ToolStripMenuItem undo = new ToolStripMenuItem(Lang.Undo) { Image = UndoImage };
-            foreach (var cmd in GLCMD.GetDoHistory().Reverse())
+            foreach (var cmd in GLCMD.CMD.GetDoHistory().Reverse())
             {
                 ++step;
                 ToolStripItem item = new ToolStripButton() { Text = cmd, Tag = step, Width = 250 };
@@ -471,7 +471,7 @@ namespace GLUI
             // 重做
             step = 0;
             ToolStripMenuItem redo = new ToolStripMenuItem(Lang.Redo) { Image = RedoImage };
-            foreach (var cmd in GLCMD.GetUndoHistory())
+            foreach (var cmd in GLCMD.CMD.GetUndoHistory())
             {
                 ++step;
                 ToolStripItem item = new ToolStripButton() { Text = cmd, Tag = step, Width = 250 };
@@ -522,7 +522,7 @@ namespace GLUI
         /// </summary>
         public void LoadMap(string file)
         {
-            GLCMD.LoadMap(file);
+            GLCMD.CMD.LoadMap(file);
         }
 
         /// <summary>
@@ -530,7 +530,7 @@ namespace GLUI
         /// </summary>
         public void SaveMap(string file)
         {
-            GLCMD.SaveMap(file);
+            GLCMD.CMD.SaveMap(file);
         }
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace GLUI
         private void JoinMapDone(IEnumerable<IPair> data)
         {
             if (data != null && data.Count() != 0)
-                GLCMD.SaftyEditMultiGeometry<IPair>(GLCMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(data));
+                GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(data));
         }
 
         /// <summary>
@@ -663,8 +663,8 @@ namespace GLUI
             InitialDraw();
             if (ShowGrid) DrawGrid();
             if (ShowAxis) DrawAxis();
-            GLCMD.Draw(GL);
-            GLCMD.DrawText(GL, GLToText);
+            GLCMD.CMD.Draw(GL);
+            GLCMD.CMD.DrawText(GL, GLToText);
         }
 
         /// <summary>
@@ -783,7 +783,7 @@ namespace GLUI
             MouseEventArgs mouse = (MouseEventArgs)e;
             if (mouse.Button == MouseButtons.Right)
             {
-                var selects = GLCMD.GetAllTargetID(ScreenToGL(mouse.X, mouse.Y));
+                var selects = GLCMD.CMD.GetAllTargetID(ScreenToGL(mouse.X, mouse.Y));
                 if (selects.Count() == 1) ShowEditMenu(selects.ElementAt(0));
                 else if (selects.Count() > 1) ShowMultItemSelectMenu(selects);
                 else ShowNoItemSelectMenu(); // selects.Count() == 0
@@ -802,8 +802,8 @@ namespace GLUI
             // Ctrl+Z 復原，Ctrl+Shift+Z 重做
             if (e.KeyCode == Keys.Z && e.Control == true)
             {
-                if (e.Shift) GLCMD.Redo(1);
-                else GLCMD.Undo(1);
+                if (e.Shift) GLCMD.CMD.Redo(1);
+                else GLCMD.CMD.Undo(1);
             }
 
             // Ctrl+方向鍵 移動畫面
@@ -826,12 +826,12 @@ namespace GLUI
         {
             // 左鍵擦子功能、右鍵取消擦子
             MouseEventArgs mouse = (MouseEventArgs)e;
-            if (mouse.Button == MouseButtons.Left && GLCMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(GLCMD.ObstaclePointsID));
-            if (mouse.Button == MouseButtons.Right) GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Cancel());
+            if (mouse.Button == MouseButtons.Left && GLCMD.CMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.CMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(GLCMD.CMD.ObstaclePointsID));
+            if (mouse.Button == MouseButtons.Right) GLCMD.CMD.Eraser.SaftyEdit(true, eraser => eraser.Cancel());
 
             // 左鍵完成畫筆、右鍵取消畫筆
-            if (mouse.Button == MouseButtons.Left && GLCMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.Pen.SaftyEdit(false, pen => pen.Finish(GLCMD.ObstaclePointsID));
-            if (mouse.Button == MouseButtons.Right) GLCMD.Pen.SaftyEdit(false, pen => pen.Cancel());
+            if (mouse.Button == MouseButtons.Left && GLCMD.CMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.CMD.Pen.SaftyEdit(false, pen => pen.Finish(GLCMD.CMD.ObstaclePointsID));
+            if (mouse.Button == MouseButtons.Right) GLCMD.CMD.Pen.SaftyEdit(false, pen => pen.Cancel());
         }
 
         private void SharpGLCtrl_MouseMove(object sender, MouseEventArgs e)
@@ -847,32 +847,32 @@ namespace GLUI
             switch (MoveType)
             {
                 case EMoveType.Center:
-                    GLCMD.DoMoveCenter(SelectTargetID, x, y);
+                    GLCMD.CMD.DoMoveCenter(SelectTargetID, x, y);
                     break;
 
                 case EMoveType.Max:
-                    GLCMD.DoMoveMax(SelectTargetID, x, y);
+                    GLCMD.CMD.DoMoveMax(SelectTargetID, x, y);
                     break;
 
                 case EMoveType.Min:
-                    GLCMD.DoMoveMin(SelectTargetID, x, y);
+                    GLCMD.CMD.DoMoveMin(SelectTargetID, x, y);
                     break;
 
                 case EMoveType.Begin:
-                    GLCMD.DoMoveBegin(SelectTargetID, x, y);
+                    GLCMD.CMD.DoMoveBegin(SelectTargetID, x, y);
                     break;
 
                 case EMoveType.End:
-                    GLCMD.DoMoveEnd(SelectTargetID, x, y);
+                    GLCMD.CMD.DoMoveEnd(SelectTargetID, x, y);
                     break;
 
                 case EMoveType.Toward:
-                    GLCMD.DoMoveToward(SelectTargetID, x, y);
+                    GLCMD.CMD.DoMoveToward(SelectTargetID, x, y);
                     break;
             }
 
-            if (GLCMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition));
-            if (GLCMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.Pen.SaftyEdit(false, pen => pen.SetEnd(PreGLPosition));
+            if (GLCMD.CMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.CMD.Eraser.SaftyEdit(true, eraser => eraser.Set(PreGLPosition));
+            if (GLCMD.CMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.CMD.Pen.SaftyEdit(false, pen => pen.SetEnd(PreGLPosition));
         }
 
         /// <summary>

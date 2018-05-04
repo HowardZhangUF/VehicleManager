@@ -14,7 +14,6 @@ namespace GLUITest
             InitializeComponent();
 
             StyleManager.LoadStyle("Style.ini");
-            GLCMD.Initial();
 
             cmbSelectType.Items.Add(nameof(SinglePairInfo));
             cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
@@ -32,28 +31,28 @@ namespace GLUITest
             {
                 case nameof(SinglePairInfo):
                     {
-                        BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.SinglePairInfo, null);
+                        BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.CMD.SinglePairInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
                     }
                     break;
 
                 case nameof(SingleTowardPairInfo):
                     {
-                        BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.SingleTowerPairInfo, null);
+                        BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.CMD.SingleTowerPairInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
                     }
                     break;
 
                 case nameof(SingleLineInfo):
                     {
-                        BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.SingleLineInfo, null);
+                        BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.CMD.SingleLineInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
                     }
                     break;
 
                 case nameof(SingleAreaInfo):
                     {
-                        BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.SingleAreaInfo, null);
+                        BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.CMD.SingleAreaInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
                     }
                     break;
@@ -69,12 +68,12 @@ namespace GLUITest
         private void CMDDemo()
         {
             // 使用者用指令加入圖形(可復原)
-            GLCMD.Do($"Add,{GLCMD.SerialNumber.Next()},ChargingDocking,-2000,0,0");
-            GLCMD.Do($"Add,{GLCMD.SerialNumber.Next()},ForbiddenArea2,0,0,3000,3000");
-            GLCMD.Do($"Add,{GLCMD.SerialNumber.Next()},ForbiddenArea,4000,4000,7000,7000");
+            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ChargingDocking,-2000,0,0");
+            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea2,0,0,3000,3000");
+            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea,4000,4000,7000,7000");
 
             // 使用者用函式加入圖形(可復原)
-            GLCMD.DoAddSingleTowardPair("General", 0, 2000, 45);
+            GLCMD.CMD.DoAddSingleTowardPair("General", 0, 2000, 45);
 
             // 使用者用函式加入複合圖形(不可復原)
             Random random = new Random();
@@ -83,7 +82,7 @@ namespace GLUITest
             {
                 list.Add(new Pair(random.Next(-10000, 10000), random.Next(-10000, 10000)));
             }
-            GLCMD.SaftyEditMultiGeometry<IPair>(GLCMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
+            GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
         }
 
         /// <summary>
@@ -245,7 +244,7 @@ namespace GLUITest
             {
                 case nameof(SingleAreaInfo.Name):
                     {
-                        GLCMD.DoRename(id, newValue);
+                        GLCMD.CMD.DoRename(id, newValue);
                     }
                     break;
 
@@ -253,8 +252,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MinY)));
-                        GLCMD.DoMoveMin(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveMin(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -262,8 +261,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MinX)));
                         int y = int.Parse(newValue);
-                        GLCMD.DoMoveMin(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveMin(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -271,8 +270,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MaxY)));
-                        GLCMD.DoMoveMax(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveMax(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -280,8 +279,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MaxX)));
                         int y = int.Parse(newValue);
-                        GLCMD.DoMoveMax(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveMax(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -300,7 +299,7 @@ namespace GLUITest
             {
                 case nameof(SingleLineInfo.Name):
                     {
-                        GLCMD.DoRename(id, newValue);
+                        GLCMD.CMD.DoRename(id, newValue);
                     }
                     break;
 
@@ -308,8 +307,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.Y0)));
-                        GLCMD.DoMoveBegin(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveBegin(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -317,8 +316,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.X0)));
                         int y = int.Parse(newValue);
-                        GLCMD.DoMoveBegin(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveBegin(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -326,8 +325,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.Y1)));
-                        GLCMD.DoMoveEnd(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveEnd(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -335,8 +334,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.X1)));
                         int y = int.Parse(newValue);
-                        GLCMD.DoMoveEnd(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveEnd(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -355,7 +354,7 @@ namespace GLUITest
             {
                 case nameof(SinglePairInfo.Name):
                     {
-                        GLCMD.DoRename(id, newValue);
+                        GLCMD.CMD.DoRename(id, newValue);
                     }
                     break;
 
@@ -363,8 +362,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SinglePairInfo.Y)));
-                        GLCMD.DoMoveCenter(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveCenter(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -372,8 +371,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(GetValue(rowIndex, nameof(SinglePairInfo.X)));
                         int y = int.Parse(newValue);
-                        GLCMD.DoMoveCenter(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveCenter(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -392,7 +391,7 @@ namespace GLUITest
             {
                 case nameof(SingleTowardPairInfo.Name):
                     {
-                        GLCMD.DoRename(id, newValue);
+                        GLCMD.CMD.DoRename(id, newValue);
                     }
                     break;
 
@@ -400,8 +399,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(newValue);
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.Y)));
-                        GLCMD.DoMoveCenter(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveCenter(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -409,8 +408,8 @@ namespace GLUITest
                     {
                         int x = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.X)));
                         int y = int.Parse(newValue);
-                        GLCMD.DoMoveCenter(id, x, y);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveCenter(id, x, y);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 
@@ -421,8 +420,8 @@ namespace GLUITest
                         int y = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.Y)));
                         int dx = (int)(Math.Cos(theta) * 10000);
                         int dy = (int)(Math.Sin(theta) * 10000);
-                        GLCMD.DoMoveToward(id, x + dx, y + dy);
-                        GLCMD.MoveFinish();
+                        GLCMD.CMD.DoMoveToward(id, x + dx, y + dy);
+                        GLCMD.CMD.MoveFinish();
                     }
                     break;
 

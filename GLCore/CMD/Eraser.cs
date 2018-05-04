@@ -41,7 +41,7 @@ namespace GLCore
         {
             if (InUse)
             {
-                GLCMD.SaftyEditMultiGeometry<IPair>(id, true, list => list.RemoveAll(pair => Geometry.Contain(pair)));
+                GLCMD.CMD.SaftyEditMultiGeometry<IPair>(id, true, list => list.RemoveAll(pair => Geometry.Contain(pair)));
             }
         }
 
