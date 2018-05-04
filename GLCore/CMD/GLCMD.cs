@@ -62,7 +62,7 @@ namespace GLCore
                               MaxY = (item.Value as ISingleArea).Geometry.Max.Y,
                           });
 
-                    singleAreaInfo.AddRange(collection);
+                    singleAreaInfo.AddRangeIfNotNull(collection);
 
                     return singleAreaInfo;
                 }
@@ -93,7 +93,7 @@ namespace GLCore
                               Y1 = (item.Value as ISingleLine).Geometry.End.Y,
                           });
 
-                    singleLineInfo.AddRange(collection);
+                    singleLineInfo.AddRangeIfNotNull(collection);
 
                     return singleLineInfo;
                 }
@@ -122,7 +122,7 @@ namespace GLCore
                               Y = (item.Value as ISinglePair).Geometry.Y,
                           });
 
-                    singlePairInfo.AddRange(collection);
+                    singlePairInfo.AddRangeIfNotNull(collection);
 
                     return singlePairInfo;
                 }
@@ -152,7 +152,7 @@ namespace GLCore
                               Toward = (item.Value as ISingleTowardPair).Geometry.Toward.Theta,
                           });
 
-                    singleTowerPairInfo.AddRange(collection);
+                    singleTowerPairInfo.AddRangeIfNotNull(collection);
 
                     return singleTowerPairInfo;
                 }
@@ -464,9 +464,9 @@ namespace GLCore
             lock (key)
             {
                 List<string> data = new List<string> { "Goal List" };
-                data.AddRange(GetGoalList());
+                data.AddRangeIfNotNull(GetGoalList());
                 data.Add("Obstacle Points");
-                data.AddRange(GetObstaclePointsList());
+                data.AddRangeIfNotNull(GetObstaclePointsList());
 
                 File.WriteAllLines(file, data);
             }
@@ -493,7 +493,9 @@ namespace GLCore
         /// </summary>
         private static IEnumerable<string> GetObstaclePointsList()
         {
-            return (CurrentMultiObject[ObstaclePointsID] as IMulti<IPair>).Geometry.SaftyEdit(list => ToString(list));
+            return (CurrentMultiObject.FirstOrDefault(dic =>dic.Key == ObstaclePointsID).Value as IMulti<IPair>)?
+                .Geometry
+                .SaftyEdit(list => ToString(list));
         }
 
         /// <summary>

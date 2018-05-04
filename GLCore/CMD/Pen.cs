@@ -39,7 +39,7 @@ namespace GLCore
                 InUse = false;
                 GLCMD.SaftyEditMultiGeometry<IPair>(id, true, list =>
                 {
-                    list.AddRange(Geometry.ToPairs());
+                    list.AddRangeIfNotNull(Geometry.ToPairs());
                 });
             }
         }

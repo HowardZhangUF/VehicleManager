@@ -28,7 +28,7 @@ namespace GLCore
         public MultiStripLine(string styleName, IEnumerable<IPair> pair)
         {
             StyleName = styleName;
-            Geometry.SaftyEdit(true, list => list.AddRange(pair));
+            Geometry.SaftyEdit(true, list => list.AddRangeIfNotNull(pair));
         }
 
         /// <summary>

@@ -148,7 +148,7 @@ namespace GLCore
 
             if (data.Count != 0)
             {
-                ObstaclePoints.Geometry.SaftyEdit(true, o => o.AddRange(data));
+                ObstaclePoints.Geometry.SaftyEdit(true, o => o.AddRangeIfNotNull(data));
             }
             return begin;
         }

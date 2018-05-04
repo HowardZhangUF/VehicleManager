@@ -4,6 +4,7 @@ using SharpGL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace GLCore
 {
@@ -25,11 +26,25 @@ namespace GLCore
         /// <summary>
         /// 將 <paramref name="collection"/> 加入 <paramref name="bindingList"/> 中
         /// </summary>
-        public static void AddRange<T>(this BindingList<T> bindingList, IEnumerable<T> collection)
+        public static void AddRangeIfNotNull<T>(this BindingList<T> bindingList, IEnumerable<T> collection)
         {
-            foreach (var item in collection)
+            if (collection != null && collection.Any())
             {
-                bindingList.Add(item);
+                foreach (var item in collection)
+                {
+                    bindingList.Add(item);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 將 <paramref name="collection"/> 加入 <paramref name="list"/> 中
+        /// </summary>
+        public static void AddRangeIfNotNull<T>(this List<T> list, IEnumerable<T> collection)
+        {
+            if (collection != null && collection.Any())
+            {
+                list.AddRange(collection);
             }
         }
 

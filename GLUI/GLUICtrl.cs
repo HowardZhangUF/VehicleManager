@@ -568,7 +568,7 @@ namespace GLUI
         private void JoinMapDone(IEnumerable<IPair> data)
         {
             if (data != null && data.Count() != 0)
-                GLCMD.SaftyEditMultiGeometry<IPair>(ObstaclePointsID, true, o => o.AddRange(data));
+                GLCMD.SaftyEditMultiGeometry<IPair>(ObstaclePointsID, true, o => o.AddRangeIfNotNull(data));
         }
 
         /// <summary>

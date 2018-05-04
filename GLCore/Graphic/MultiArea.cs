@@ -28,7 +28,7 @@ namespace GLCore
         public MultiArea(string styleName, IEnumerable<IArea> area)
         {
             StyleName = styleName;
-            Geometry.SaftyEdit(true, list => list.AddRange(area));
+            Geometry.SaftyEdit(true, list => list.AddRangeIfNotNull(area));
         }
 
         /// <summary>
