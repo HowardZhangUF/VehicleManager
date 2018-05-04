@@ -88,11 +88,11 @@
     <Compile Include="Info\ISingleAreaInfo.cs" />
     <Compile Include="Info\ISingleLineInfo.cs" />
     <Compile Include="Info\ISinglePairInfo.cs" />
-    <Compile Include="Info\ISingleTowerPairInfo.cs" />
+    <Compile Include="Info\ISingleTowardPairInfo.cs" />
     <Compile Include="Info\SingleAreaInfo.cs" />
     <Compile Include="Info\SingleLineInfo.cs" />
     <Compile Include="Info\SinglePairInfo.cs" />
-    <Compile Include="Info\SingleTowerPairInfo.cs" />
+    <Compile Include="Info\SingleTowardPairInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StandardOperate.cs" />
   </ItemGroup>

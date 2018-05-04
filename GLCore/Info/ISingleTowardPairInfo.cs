@@ -1,38 +1,38 @@
 ﻿namespace GLCore
 {
     /// <summary>
-    /// 標示物資訊
+    /// 標示物資訊介面
     /// </summary>
-    public class SingleTowerPairInfo : ISingleTowerPairInfo
+    public interface ISingleTowardPairInfo : IGLCore
     {
         /// <summary>
         /// 序號
         /// </summary>
-        public int ID { get; set; }
+        int ID { get; set; }
 
         /// <summary>
         /// 名稱
         /// </summary>
-        public string Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// 樣式名稱
         /// </summary>
-        public string StyleName { get; set; }
+        string StyleName { get; set; }
 
         /// <summary>
         /// 方向
         /// </summary>
-        public double Toward { get; set; }
+        double Toward { get; set; }
 
         /// <summary>
         /// X 座標
         /// </summary>
-        public int X { get; set; }
+        int X { get; set; }
 
         /// <summary>
         /// Y 座標
         /// </summary>
-        public int Y { get; set; }
+        int Y { get; set; }
     }
 }

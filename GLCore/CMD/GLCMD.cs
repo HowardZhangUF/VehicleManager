@@ -36,7 +36,7 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示物資訊
         /// </summary>
-        private static readonly BindingList<ISingleTowerPairInfo> singleTowerPairInfo = new BindingList<ISingleTowerPairInfo>();
+        private static readonly BindingList<ISingleTowardPairInfo> singleTowerPairInfo = new BindingList<ISingleTowardPairInfo>();
 
         /// <summary>
         /// 獲得所有標示面資訊
@@ -132,7 +132,7 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示物資訊
         /// </summary>
-        public static BindingList<ISingleTowerPairInfo> SingleTowerPairInfo
+        public static BindingList<ISingleTowardPairInfo> SingleTowerPairInfo
         {
             get
             {
@@ -142,7 +142,7 @@ namespace GLCore
 
                     var collection = CurrentSingleObject
                           .Where(item => StyleManager.GetStyleType(item.Value.StyleName) == nameof(ITowardPairStyle))
-                          .Select(item => new SingleTowerPairInfo()
+                          .Select(item => new SingleTowardPairInfo()
                           {
                               ID = item.Key,
                               StyleName = item.Value.StyleName,

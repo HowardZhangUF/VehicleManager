@@ -16,7 +16,7 @@ namespace GLUITest
             StyleManager.LoadStyle("Style.ini");
 
             cmbSelectType.Items.Add(nameof(SinglePairInfo));
-            cmbSelectType.Items.Add(nameof(SingleTowerPairInfo));
+            cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
             cmbSelectType.Items.Add(nameof(SingleLineInfo));
             cmbSelectType.Items.Add(nameof(SingleAreaInfo));
         }
@@ -36,7 +36,7 @@ namespace GLUITest
                     }
                     break;
 
-                case nameof(SingleTowerPairInfo):
+                case nameof(SingleTowardPairInfo):
                     {
                         BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.SingleTowerPairInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
@@ -112,10 +112,10 @@ namespace GLUITest
                     }
                     break;
 
-                case nameof(SingleTowerPairInfo):
+                case nameof(SingleTowardPairInfo):
                     {
-                        int x = (int)(dgvInfo[nameof(SingleTowerPairInfo.X), rowIndex].Value);
-                        int y = (int)(dgvInfo[nameof(SingleTowerPairInfo.Y), rowIndex].Value);
+                        int x = (int)(dgvInfo[nameof(SingleTowardPairInfo.X), rowIndex].Value);
+                        int y = (int)(dgvInfo[nameof(SingleTowardPairInfo.Y), rowIndex].Value);
 
                         GLUI.Focus(x, y);
                     }
@@ -162,9 +162,9 @@ namespace GLUITest
                         return (int)(dgvInfo[nameof(SinglePairInfo.ID), rowIndex].Value);
                     }
 
-                case nameof(SingleTowerPairInfo):
+                case nameof(SingleTowardPairInfo):
                     {
-                        return (int)(dgvInfo[nameof(SingleTowerPairInfo.ID), rowIndex].Value);
+                        return (int)(dgvInfo[nameof(SingleTowardPairInfo.ID), rowIndex].Value);
                     }
 
                 case nameof(SingleLineInfo):
@@ -211,7 +211,7 @@ namespace GLUITest
                     }
                     break;
 
-                case nameof(SingleTowerPairInfo):
+                case nameof(SingleTowardPairInfo):
                     {
                         UpdateSingleTowardPairInfo(rowIndex, colName, newValue);
                     }
@@ -389,35 +389,35 @@ namespace GLUITest
             int id = GetTargetID(rowIndex);
             switch (elementName)
             {
-                case nameof(SingleTowerPairInfo.Name):
+                case nameof(SingleTowardPairInfo.Name):
                     {
                         GLCMD.DoRename(id, newValue);
                     }
                     break;
 
-                case nameof(SingleTowerPairInfo.X):
+                case nameof(SingleTowardPairInfo.X):
                     {
                         int x = int.Parse(newValue);
-                        int y = int.Parse(GetValue(rowIndex, nameof(SingleTowerPairInfo.Y)));
+                        int y = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.Y)));
                         GLCMD.DoMoveCenter(id, x, y);
                         GLCMD.MoveFinish();
                     }
                     break;
 
-                case nameof(SingleTowerPairInfo.Y):
+                case nameof(SingleTowardPairInfo.Y):
                     {
-                        int x = int.Parse(GetValue(rowIndex, nameof(SingleTowerPairInfo.X)));
+                        int x = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.X)));
                         int y = int.Parse(newValue);
                         GLCMD.DoMoveCenter(id, x, y);
                         GLCMD.MoveFinish();
                     }
                     break;
 
-                case nameof(SingleTowerPairInfo.Toward):
+                case nameof(SingleTowardPairInfo.Toward):
                     {
                         double theta = double.Parse(newValue) * Math.PI / 180.0;
-                        int x = int.Parse(GetValue(rowIndex, nameof(SingleTowerPairInfo.X)));
-                        int y = int.Parse(GetValue(rowIndex, nameof(SingleTowerPairInfo.Y)));
+                        int x = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.X)));
+                        int y = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.Y)));
                         int dx = (int)(Math.Cos(theta) * 10000);
                         int dy = (int)(Math.Sin(theta) * 10000);
                         GLCMD.DoMoveToward(id, x + dx, y + dy);
