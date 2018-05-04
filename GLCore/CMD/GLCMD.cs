@@ -465,8 +465,13 @@ namespace GLCore
             {
                 List<string> data = new List<string> { "Goal List" };
                 data.AddRangeIfNotNull(GetGoalList());
+
                 data.Add("Obstacle Points");
                 data.AddRangeIfNotNull(GetObstaclePointsList());
+
+                IArea bound = GetObstaclePointsBound();
+                data.Add($"Minimum Position:{bound.Min.ToString()}");
+                data.Add($"Maximum Position:{bound.Max.ToString()}");
 
                 File.WriteAllLines(file, data);
             }
@@ -488,12 +493,36 @@ namespace GLCore
         }
 
         /// <summary>
+        /// 獲得地圖障礙點組成的邊界。若地圖為空，則回傳 Area(0,0,0,0)
+        /// </summary>
+        private static IArea GetObstaclePointsBound()
+        {
+            var geometry = (CurrentMultiObject.FirstOrDefault(dic => dic.Key == ObstaclePointsID).Value as IMulti<IPair>)?.Geometry;
+            if (geometry == null || geometry.SaftyEdit(list => !list.Any())) return new Area(0, 0, 0, 0);
+
+            int maxX = 0;
+            int maxY = 0;
+            int minX = 0;
+            int minY = 0;
+
+            geometry.SaftyEdit(false, list =>
+            {
+                maxX = list.Max(pair => pair.X);
+                maxY = list.Max(pair => pair.Y);
+                minX = list.Min(pair => pair.X);
+                minY = list.Min(pair => pair.Y);
+            });
+
+            return new Area(minX, minY, maxX, maxY);
+        }
+
+        /// <summary>
         /// <para>以 *.map 目標點字串格式回傳 <see cref="CurrentMultiObject"/> of <see cref="ObstaclePointsID"/> 中所有點</para>
         /// <para>資料格式如：-12794,3803</para>
         /// </summary>
         private static IEnumerable<string> GetObstaclePointsList()
         {
-            return (CurrentMultiObject.FirstOrDefault(dic =>dic.Key == ObstaclePointsID).Value as IMulti<IPair>)?
+            return (CurrentMultiObject.FirstOrDefault(dic => dic.Key == ObstaclePointsID).Value as IMulti<IPair>)?
                 .Geometry
                 .SaftyEdit(list => ToString(list));
         }
