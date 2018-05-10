@@ -66,6 +66,8 @@
     <Compile Include="CMD\Pen.cs" />
     <Compile Include="CMD\SerialNumberManager.cs" />
     <Compile Include="GLTexture.cs" />
+    <Compile Include="Graphic\AGV.cs" />
+    <Compile Include="Graphic\IAGV.cs" />
     <Compile Include="Graphic\IMultiArea.cs" />
     <Compile Include="Graphic\IMultiPair.cs" />
     <Compile Include="Graphic\IMultiStripLine.cs" />

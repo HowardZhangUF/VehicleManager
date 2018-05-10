@@ -16,6 +16,25 @@ namespace GLStyle
         private static ISafty<Dictionary<string, IStyle>> StyleTable { get; } = new Safty<Dictionary<string, IStyle>>(new Dictionary<string, IStyle>());
 
         /// <summary>
+        /// 讀取所有的樣式名稱
+        /// </summary>
+        public static IEnumerable<string> GetAllStyleNames()
+        {
+            return StyleTable.SaftyEdit(dic => dic
+            .Select(item => item.Key));
+        }
+
+        /// <summary>
+        /// 讀取所有的指定樣式名稱
+        /// </summary>
+        public static IEnumerable<string> GetAllStyleNames(string styleType)
+        {
+            return StyleTable.SaftyEdit(dic => dic
+            .Where(item => item.Value.StyleType == styleType)
+            .Select(item => item.Key));
+        }
+
+        /// <summary>
         /// 依據名稱從樣式列表(<see cref="StyleTable"/>)中選擇對應的樣式，若樣式不存在，則返回 null
         /// </summary>
         public static IStyle GetStyle(string styleName)
@@ -36,31 +55,12 @@ namespace GLStyle
         }
 
         /// <summary>
-        /// 讀取所有的樣式名稱
-        /// </summary>
-        public static IEnumerable<string> GetAllStyleNames()
-        {
-            return StyleTable.SaftyEdit(dic => dic
-            .Select(item => item.Key));
-        }
-
-        /// <summary>
         /// 讀取所有除了不顯示在右鍵選單的指定樣式名稱
         /// </summary>
         public static IEnumerable<string> GetStyleNames(string styleType)
         {
             return StyleTable.SaftyEdit(dic => dic
             .Where(item => item.Value.ShowOnTheMenu && item.Value.StyleType == styleType)
-            .Select(item => item.Key));
-        }
-
-        /// <summary>
-        /// 讀取所有的指定樣式名稱
-        /// </summary>
-        public static IEnumerable<string> GetAllStyleNames(string styleType)
-        {
-            return StyleTable.SaftyEdit(dic => dic
-            .Where(item => item.Value.StyleType == styleType)
             .Select(item => item.Key));
         }
 
@@ -109,6 +109,10 @@ namespace GLStyle
 
                         case nameof(ITowardPairStyle):
                             table.Add(name, new TowardPairStyle(filePath, name));
+                            break;
+
+                        case nameof(IAGVStyle):
+                            table.Add(name, new AGVStyle(filePath, name));
                             break;
                     }
                 }

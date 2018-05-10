@@ -3,6 +3,7 @@ using GLCore;
 using GLStyle;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace GLUITest
@@ -26,6 +27,8 @@ namespace GLUITest
             var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
             binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
             DataBindings.Add(binding);
+
+            AGVDemo();
         }
 
         /// <summary>
@@ -90,6 +93,28 @@ namespace GLUITest
                 list.Add(new Pair(random.Next(-10000, 10000), random.Next(-10000, 10000)));
             }
             GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
+        }
+
+        /// <summary>
+        /// AGV 範例
+        /// </summary>
+        private void AGVDemo()
+        {
+            int agv1 = GLCMD.CMD.SerialNumber.Next();
+            int agv2 = GLCMD.CMD.SerialNumber.Next();
+            Random random = new Random();
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    GLCMD.CMD.AddAGV(agv1, "AGV-1", random.Next(0, 5000), random.Next(0, 5000), random.Next(0, 360));
+                    GLCMD.CMD.AddAGV(agv2, random.Next(-5000, 0), random.Next(-5000, 0), random.Next(0, 360));
+                    Thread.Sleep(1000);
+                }
+            })
+            {
+                IsBackground = true
+            }.Start();
         }
 
         /// <summary>

@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AGVStyle.cs" />
     <Compile Include="AreaStyle.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="ELinePattern.cs" />
+    <Compile Include="IAGVStyle.cs" />
     <Compile Include="IAreaStyle.cs" />
     <Compile Include="IColor.cs" />
     <Compile Include="IGLStyle.cs" />

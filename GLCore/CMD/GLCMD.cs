@@ -311,6 +311,124 @@ namespace GLCore
 
         #endregion 擦子、畫筆等工具
 
+        #region AGV
+
+        /// <summary>
+        /// 當下 AGV 列表
+        /// </summary>
+        private Dictionary<int, IAGV> CurrentAGV { get; set; } = new Dictionary<int, IAGV>();
+
+        /// <summary>
+        /// 加入 AGV。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
+        /// </summary>
+        public int AddAGV(int id, string name, double x, double y, double toward)
+        {
+            lock (key)
+            {
+                return AddAGV(id, name, (int)x, (int)y, toward);
+            }
+        }
+
+        /// <summary>
+        /// 加入 AGV。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
+        /// </summary>
+        public int AddAGV(int id, string name, int x, int y, double toward)
+        {
+            lock (key)
+            {
+                if (CurrentAGV.Keys.Contains(id))
+                {
+                    CurrentAGV[id].Geometry.Position = new Pair(x, y);
+                    CurrentAGV[id].Geometry.Toward.Theta = toward;
+                    CurrentAGV[id].Name = name;
+                    return id;
+                }
+                else
+                {
+                    CurrentAGV.Add(id,
+                        new AGV(AGVStyleName, x, y, toward)
+                        {
+                            Name = name
+                        });
+                    return id;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 加入 AGV。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
+        /// </summary>
+        public int AddAGV(int id, double x, double y, double toward)
+        {
+            lock (key)
+            {
+                return AddAGV(id, (int)x, (int)y, toward);
+            }
+        }
+
+        /// <summary>
+        /// 加入 AGV。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
+        /// </summary>
+        public int AddAGV(int id, int x, int y, double toward)
+        {
+            lock (key)
+            {
+                if (CurrentAGV.Keys.Contains(id))
+                {
+                    CurrentAGV[id].Geometry.Position = new Pair(x, y);
+                    CurrentAGV[id].Geometry.Toward.Theta = toward;
+                    return id;
+                }
+                else
+                {
+                    CurrentAGV.Add(id, new AGV(AGVStyleName, x, y, toward));
+                    return id;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 加入 AGV。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
+        /// </summary>
+        public int AddAGV(int id, string name)
+        {
+            lock (key)
+            {
+                if (CurrentAGV.Keys.Contains(id))
+                {
+                    CurrentAGV[id].Name = name;
+                    return id;
+                }
+                else
+                {
+                    CurrentAGV.Add(id, 
+                        new AGV(AGVStyleName)
+                        {
+                            Name = name
+                        });
+                    return id;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 刪除 AGV。執行失敗回傳 -1，執行成功則回傳控制對象的 id。
+        /// </summary>
+        public int DeleteAGV(int id)
+        {
+            lock (key)
+            {
+                if (CurrentAGV.Keys.Contains(id))
+                {
+                    CurrentAGV.Remove(id);
+                    return id;
+                }
+                return -1;
+            }
+        }
+
+        #endregion AGV
+
         #region 複合物件操作
 
         /// <summary>
@@ -889,6 +1007,12 @@ namespace GLCore
                 Pen?.SaftyEdit(false, pen => { if (pen.InUse) pen.Draw(gl); });
                 Join?.SaftyEdit(false, join => { if (join.InUse) join.Draw(gl); });
 
+                // AGV
+                foreach (var obj in CurrentAGV.Values)
+                {
+                    obj.Draw(gl);
+                }
+
                 // 先畫不透明再畫透明
                 // 不透明
                 foreach (var obj in CurrentMultiObject.Values.Where(obj => !obj.Transparent))
@@ -925,6 +1049,11 @@ namespace GLCore
         {
             lock (key)
             {
+                foreach (var obj in CurrentAGV.Values)
+                {
+                    obj.DrawText(gl, convert);
+                }
+
                 foreach (var obj in CurrentSingleObject.Values)
                 {
                     obj.DrawText(gl, convert);
