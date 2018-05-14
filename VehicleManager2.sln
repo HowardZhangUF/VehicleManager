@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "Geometry\Geometry.csproj", "{A617D647-1075-4BBB-9B9C-17971D56FE1E}"
 EndProject
@@ -18,6 +18,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLUITest", "GLUITest\GLUITest.csproj", "{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MD5Hash", "MD5Hash\MD5Hash.csproj", "{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Socket", "Socket", "{A0856F6A-A367-40E9-8170-22547C9BA96D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncSocket", "AsyncSocket\AsyncSocket.csproj", "{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LittleGhost", "LittleGhost\LittleGhost.csproj", "{6086472B-1061-42B0-A442-B4D2FBB3E863}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,9 +63,21 @@ Global
 		{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6086472B-1061-42B0-A442-B4D2FBB3E863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6086472B-1061-42B0-A442-B4D2FBB3E863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6086472B-1061-42B0-A442-B4D2FBB3E863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6086472B-1061-42B0-A442-B4D2FBB3E863}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE} = {A0856F6A-A367-40E9-8170-22547C9BA96D}
+		{6086472B-1061-42B0-A442-B4D2FBB3E863} = {A0856F6A-A367-40E9-8170-22547C9BA96D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44F82E87-1AD7-4303-B123-E6A74B69BA6F}
