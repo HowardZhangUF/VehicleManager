@@ -575,7 +575,9 @@ namespace GLCore
             for (int ii = begin + 1; ii < lines.Length; ii++)
             {
                 var para = lines[ii].Split(',');
-                if (para.Length == 5 && int.TryParse(para[1], out int x) && int.TryParse(para[2], out int y) && double.TryParse(para[3], out double toward))
+				int x = 0, y = 0;
+				double toward = 0.0f;
+                if (para.Length == 5 && int.TryParse(para[1], out x) && int.TryParse(para[2], out y) && double.TryParse(para[3], out toward))
                 {
                     var goal = new SingleTowardPair(para[4], x, y, toward) { Name = para[0] };
                     DuplicateSingleObject.Add(SerialNumber.Next(), goal);
@@ -599,7 +601,8 @@ namespace GLCore
             for (int ii = begin + 1; ii < lines.Length; ii++)
             {
                 var para = lines[ii].Split(',');
-                if (para.Length == 2 && int.TryParse(para[0], out int x) && int.TryParse(para[1], out int y))
+				int x = 0, y = 0;
+                if (para.Length == 2 && int.TryParse(para[0], out x) && int.TryParse(para[1], out y))
                 {
                     data.Add(new Pair(x, y));
                     begin = ii;

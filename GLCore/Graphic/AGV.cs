@@ -76,7 +76,7 @@ namespace GLCore
         /// <summary>
         /// 名稱
         /// </summary>
-        public string Name { get => @base.Name; set => @base.Name = value; }
+        public string Name { get { return @base.Name; } set { @base.Name = value; } }
 
         /// <summary>
         /// 樣式
@@ -86,7 +86,7 @@ namespace GLCore
         /// <summary>
         /// 樣式名稱
         /// </summary>
-        public string StyleName { get => @base.StyleName; set => @base.StyleName = value; }
+        public string StyleName { get { return @base.StyleName; } set { @base.StyleName = value; } }
 
         /// <summary>
         /// 是否可拖曳
