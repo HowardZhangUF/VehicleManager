@@ -100,14 +100,6 @@ namespace Algorithm
         }
 
         /// <summary>
-        /// 檢查兩個物件值是否相等
-        /// </summary>
-        private bool IsEqual(T lhs, T rhs)
-        {
-            return ComparerWithX(lhs, rhs) == 0 && ComparerWithY(lhs, rhs) == 0;
-        }
-
-        /// <summary>
         /// 是否存在與 <paramref name="data"/> 座標值相同的資料
         /// </summary>
         private bool IsExist(Node root, T data, int layer = 0)
@@ -239,6 +231,14 @@ namespace Algorithm
                 if (Insert(data)) ++success;
             }
             return success;
+        }
+
+        /// <summary>
+        /// 檢查兩個物件值是否相等
+        /// </summary>
+        public bool IsEqual(T lhs, T rhs)
+        {
+            return ComparerWithX(lhs, rhs) == 0 && ComparerWithY(lhs, rhs) == 0;
         }
 
         /// <summary>
