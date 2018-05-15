@@ -39,10 +39,11 @@
             this.dgvInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.dgvInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvInfo.Location = new System.Drawing.Point(12, 38);
+            this.dgvInfo.Location = new System.Drawing.Point(16, 48);
+            this.dgvInfo.Margin = new System.Windows.Forms.Padding(4);
             this.dgvInfo.Name = "dgvInfo";
             this.dgvInfo.RowTemplate.Height = 24;
-            this.dgvInfo.Size = new System.Drawing.Size(502, 211);
+            this.dgvInfo.Size = new System.Drawing.Size(669, 155);
             this.dgvInfo.TabIndex = 1;
             this.dgvInfo.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvInfo_CellValueChanged);
             this.dgvInfo.DoubleClick += new System.EventHandler(this.DgvInfo_DoubleClick);
@@ -50,9 +51,10 @@
             // cmbSelectType
             // 
             this.cmbSelectType.FormattingEnabled = true;
-            this.cmbSelectType.Location = new System.Drawing.Point(12, 12);
+            this.cmbSelectType.Location = new System.Drawing.Point(16, 15);
+            this.cmbSelectType.Margin = new System.Windows.Forms.Padding(4);
             this.cmbSelectType.Name = "cmbSelectType";
-            this.cmbSelectType.Size = new System.Drawing.Size(502, 20);
+            this.cmbSelectType.Size = new System.Drawing.Size(668, 23);
             this.cmbSelectType.TabIndex = 2;
             this.cmbSelectType.SelectedValueChanged += new System.EventHandler(this.CmbSelectType_SelectedValueChanged);
             // 
@@ -63,22 +65,25 @@
             this.GLUI.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GLUI.Location = new System.Drawing.Point(520, 12);
+            this.GLUI.Location = new System.Drawing.Point(693, 15);
+            this.GLUI.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GLUI.Name = "GLUI";
             this.GLUI.ShowAxis = true;
             this.GLUI.ShowGrid = true;
-            this.GLUI.Size = new System.Drawing.Size(435, 237);
-            this.GLUI.TabIndex = 0;
+            this.GLUI.Size = new System.Drawing.Size(200, 188);
+            this.GLUI.TabIndex = 3;
             this.GLUI.Zoom = 10D;
+            this.GLUI.GLDoubleClick += new System.EventHandler(this.GLUI_GLDoubleClick);
             // 
             // frmTest
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(967, 261);
+            this.ClientSize = new System.Drawing.Size(906, 244);
+            this.Controls.Add(this.GLUI);
             this.Controls.Add(this.cmbSelectType);
             this.Controls.Add(this.dgvInfo);
-            this.Controls.Add(this.GLUI);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmTest";
             this.Text = "GLUITest";
             ((System.ComponentModel.ISupportInitialize)(this.dgvInfo)).EndInit();
@@ -87,10 +92,9 @@
         }
 
         #endregion
-
-        private GLUI.GLUICtrl GLUI;
         private System.Windows.Forms.DataGridView dgvInfo;
         private System.Windows.Forms.ComboBox cmbSelectType;
+        private GLUI.GLUICtrl GLUI;
     }
 }
 

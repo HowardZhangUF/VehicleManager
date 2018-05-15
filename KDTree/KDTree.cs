@@ -7,7 +7,7 @@ namespace Algorithm
     /// <para>2D Tree</para>
     /// <para>提供插入、搜尋、範圍搜尋等功能</para>
     /// </summary>
-    public class KDTree<T> where T : new()
+    public class KDTree<T>
     {
         #region Node
 
@@ -35,6 +35,11 @@ namespace Algorithm
         #endregion Node
 
         /// <summary>
+        /// 執行緒鎖
+        /// </summary>
+        private readonly object key = new object();
+
+        /// <summary>
         /// 根
         /// </summary>
         private readonly Node root = new Node();
@@ -48,7 +53,7 @@ namespace Algorithm
         }
 
         /// <summary>
-        /// 插入，若資料重則不新增。成功插入則回傳 True
+        /// 插入，若資料重複則不新增。成功插入則回傳 True
         /// </summary>
         private bool Insert(Node root, T data, int layer = 0)
         {
@@ -225,12 +230,15 @@ namespace Algorithm
         /// </summary>
         public int Insert(IEnumerable<T> collection)
         {
-            int success = 0;
-            foreach (var data in collection)
+            lock (key)
             {
-                if (Insert(data)) ++success;
+                int success = 0;
+                foreach (var data in collection)
+                {
+                    if (Insert(data)) ++success;
+                }
+                return success;
             }
-            return success;
         }
 
         /// <summary>
@@ -238,7 +246,10 @@ namespace Algorithm
         /// </summary>
         public bool IsEqual(T lhs, T rhs)
         {
-            return ComparerWithX(lhs, rhs) == 0 && ComparerWithY(lhs, rhs) == 0;
+            lock (key)
+            {
+                return ComparerWithX(lhs, rhs) == 0 && ComparerWithY(lhs, rhs) == 0;
+            }
         }
 
         /// <summary>
@@ -246,7 +257,10 @@ namespace Algorithm
         /// </summary>
         public bool IsExist(T data)
         {
-            return IsExist(root, data);
+            lock (key)
+            {
+                return IsExist(root, data);
+            }
         }
 
         /// <summary>
@@ -254,7 +268,10 @@ namespace Algorithm
         /// </summary>
         public bool IsExist(T min, T max)
         {
-            return IsExist(root, min, max);
+            lock (key)
+            {
+                return IsExist(root, min, max);
+            }
         }
 
         /// <summary>
@@ -262,7 +279,10 @@ namespace Algorithm
         /// </summary>
         public string ToString(Func<T, string> convertToString)
         {
-            return ToString(root, convertToString);
+            lock (key)
+            {
+                return ToString(root, convertToString);
+            }
         }
     }
 }

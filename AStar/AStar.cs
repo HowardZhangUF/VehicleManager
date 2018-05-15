@@ -7,7 +7,7 @@ namespace Algorithm
     /// <summary>
     /// 計算兩點距離
     /// </summary>
-    public delegate double Distance<T>(T lhs, T rhs) where T : new();
+    public delegate double Distance<T>(T lhs, T rhs);
 
     /// <summary>
     /// 給定 <paramref name="center"/> ，回傳邊界範圍
@@ -15,7 +15,7 @@ namespace Algorithm
     /// <param name="center">中心座標</param>
     /// <param name="min">邊界最小座標</param>
     /// <param name="max">邊界最大座標</param>
-    public delegate void GetBound<T>(T center, out T min, out T max) where T : new();
+    public delegate void GetBound<T>(T center, out T min, out T max);
 
     /// <summary>
     /// 由使用者決定要如何移動
@@ -23,12 +23,12 @@ namespace Algorithm
     /// <param name="current">現在座標</param>
     /// <param name="target">目標座標</param>
     /// <param name="direction">移動方向</param>
-    public delegate IEnumerable<T> Move<T>(T current, T target) where T : new();
+    public delegate IEnumerable<T> Move<T>(T current, T target);
 
     /// <summary>
     /// A 星路徑搜尋
     /// </summary>
-    public class AStar<T> where T : new()
+    public class AStar<T>
     {
         #region Node
 
@@ -40,7 +40,7 @@ namespace Algorithm
             /// <summary>
             /// 總成本
             /// </summary>
-            public double F { get { return G + F; } }
+            public double F { get { return G + H; } }
 
             /// <summary>
             /// A 星路徑搜尋走至該點的成本
@@ -64,6 +64,11 @@ namespace Algorithm
         }
 
         #endregion Node
+
+        /// <summary>
+        /// 執行緒鎖
+        /// </summary>
+        private readonly object key = new object();
 
         /// <summary>
         /// 2D Tree
@@ -108,6 +113,7 @@ namespace Algorithm
 
                 // 檢查移動列表是否可以走
                 nextList = nextList.Where(o => IsClear(o));
+                nextList = nextList.Where(o => !closeList.Any(close => tree.IsEqual(close.Value, o)));
                 if (nextList == null || !nextList.Any()) continue;
 
                 // 檢查移動列表中是否有包含終點
@@ -125,33 +131,39 @@ namespace Algorithm
                     path.Reverse();
                     return path;
                 }
-
-                // 將移動列表加入開啟列表
-                foreach (var next in nextList)
+                else
                 {
-                    // 在開啟列表中找找看有沒有一樣的點
-                    var same = openList.FirstOrDefault(o => tree.IsEqual(o.Value, next));
+                    // 將移動列表加入開啟列表
+                    foreach (var next in nextList)
+                    {
+                        // 在開啟列表中找找看有沒有一樣的點
+                        var same = openList.FirstOrDefault(o => tree.IsEqual(o.Value, next));
 
-                    if (same != null)
-                    {
-                        // 在開啟列表中找到相同的點，計算 G 值，決定是否要更新 G 值
-                        double newG = open.G + Distance(open.Value, next);
-                        same.G = Math.Min(same.G, newG);
-                    }
-                    else
-                    {
-                        // 沒有在開啟中找到相同的點，直接把該點加入開啟列表
-                        openList.Add(new Node()
+                        if (same != null)
                         {
-                            Parent = open,
-                            H = Distance(next, end),
-                            G = open.G + Distance(open.Value, next)
-                        });
+                            // 在開啟列表中找到相同的點，計算 G 值，決定是否要更新 G 值
+                            double newG = open.G + 0.01 * Distance(open.Value, next);
+                            same.G = Math.Min(same.G, newG);
+                        }
+                        else
+                        {
+                            // 沒有在開啟中找到相同的點，直接把該點加入開啟列表
+                            openList.Add(new Node()
+                            {
+                                Parent = open,
+                                H = Distance(next, end),
+                                G = open.G + 0.01 * Distance(open.Value, next),
+                                Value = next,
+                            });
+                        }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// 以 <paramref name="center"/> 為中心的特定範圍內是否可行走 
+        /// </summary>
         private bool IsClear(T center)
         {
             T min, max;
@@ -192,17 +204,42 @@ namespace Algorithm
         /// </summary>
         public IEnumerable<T> FindPath(T start, T end)
         {
-            if (!IsClear(start) || !IsClear(end)) return null;
-            if (tree.IsEqual(start, end)) return null;
-
-            List<Node> openList = new List<Node>();
-            openList.Add(new Node()
+            lock (key)
             {
-                Value = start,
-                H = Distance(start, end)
-            });
+                if (!IsClear(start) || !IsClear(end)) return null;
+                if (tree.IsEqual(start, end)) return null;
 
-            return FindPath(openList, end);
+                List<Node> openList = new List<Node>();
+                openList.Add(new Node()
+                {
+                    Value = start,
+                    H = Distance(start, end)
+                });
+
+                return FindPath(openList, end);
+            }
+        }
+
+        /// <summary>
+        /// 插入，若資料重則不新增。成功插入則回傳 True
+        /// </summary>
+        public bool Insert(T data)
+        {
+            lock (key)
+            {
+                return tree.Insert(data);
+            }
+        }
+
+        /// <summary>
+        /// 插入，若資料重則不新增。回傳成功插入資料個數
+        /// </summary>
+        public int Insert(IEnumerable<T> collection)
+        {
+            lock (key)
+            {
+                return tree.Insert(collection);
+            }
         }
     }
 }

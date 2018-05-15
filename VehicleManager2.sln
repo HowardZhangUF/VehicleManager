@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDTreeTest", "KDTreeTest\KD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar", "AStar\AStar.csproj", "{3306C8F2-A0C8-4DF6-A8F7-86A58647F3AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PairStar", "PairStar\PairStar.csproj", "{23B2D01C-73A9-412E-8C44-30F53D2003A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{3306C8F2-A0C8-4DF6-A8F7-86A58647F3AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3306C8F2-A0C8-4DF6-A8F7-86A58647F3AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3306C8F2-A0C8-4DF6-A8F7-86A58647F3AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B2D01C-73A9-412E-8C44-30F53D2003A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B2D01C-73A9-412E-8C44-30F53D2003A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B2D01C-73A9-412E-8C44-30F53D2003A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B2D01C-73A9-412E-8C44-30F53D2003A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

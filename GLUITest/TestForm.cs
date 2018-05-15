@@ -1,8 +1,11 @@
 ﻿using Geometry;
 using GLCore;
 using GLStyle;
+using GLUI;
+using PairAStar;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -10,25 +13,26 @@ namespace GLUITest
 {
     public partial class frmTest : Form
     {
-        public frmTest()
+        /// <summary>
+        /// AGV 範例
+        /// </summary>
+        private void AGVDemo()
         {
-            InitializeComponent();
-
-            // 載入設定檔
-            StyleManager.LoadStyle("Style.ini");
-
-            // 加入選單
-            cmbSelectType.Items.Add(nameof(SinglePairInfo));
-            cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
-            cmbSelectType.Items.Add(nameof(SingleLineInfo));
-            cmbSelectType.Items.Add(nameof(SingleAreaInfo));
-
-            // 資料綁定
-            var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
-            binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
-            DataBindings.Add(binding);
-
-            AGVDemo();
+            int agv1 = GLCMD.CMD.SerialNumber.Next();
+            int agv2 = GLCMD.CMD.SerialNumber.Next();
+            Random random = new Random();
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    GLCMD.CMD.AddAGV(agv1, "AGV-1", random.Next(0, 5000), random.Next(0, 5000), random.Next(0, 360));
+                    GLCMD.CMD.AddAGV(agv2, random.Next(-5000, 0), random.Next(-5000, 0), random.Next(0, 360));
+                    Thread.Sleep(1000);
+                }
+            })
+            {
+                IsBackground = true
+            }.Start();
         }
 
         /// <summary>
@@ -93,28 +97,6 @@ namespace GLUITest
                 list.Add(new Pair(random.Next(-10000, 10000), random.Next(-10000, 10000)));
             }
             GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
-        }
-
-        /// <summary>
-        /// AGV 範例
-        /// </summary>
-        private void AGVDemo()
-        {
-            int agv1 = GLCMD.CMD.SerialNumber.Next();
-            int agv2 = GLCMD.CMD.SerialNumber.Next();
-            Random random = new Random();
-            new Thread(() =>
-            {
-                while (true)
-                {
-                    GLCMD.CMD.AddAGV(agv1, "AGV-1", random.Next(0, 5000), random.Next(0, 5000), random.Next(0, 360));
-                    GLCMD.CMD.AddAGV(agv2, random.Next(-5000, 0), random.Next(-5000, 0), random.Next(0, 360));
-                    Thread.Sleep(1000);
-                }
-            })
-            {
-                IsBackground = true
-            }.Start();
         }
 
         /// <summary>
@@ -461,5 +443,65 @@ namespace GLUITest
                     break;
             }
         }
+
+        public frmTest()
+        {
+            InitializeComponent();
+
+            // 載入設定檔
+            StyleManager.LoadStyle("Style.ini");
+
+            // 加入選單
+            cmbSelectType.Items.Add(nameof(SinglePairInfo));
+            cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
+            cmbSelectType.Items.Add(nameof(SingleLineInfo));
+            cmbSelectType.Items.Add(nameof(SingleAreaInfo));
+
+            // 資料綁定
+            var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
+            binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
+            DataBindings.Add(binding);
+
+            // 加入事件
+            GLUI.LoadMapEvent += GLUI_LoadMapEvent;
+        }
+
+        #region 路徑搜尋
+
+        /// <summary>
+        /// 路徑 ID
+        /// </summary>
+        private int pathID = -1;
+
+        /// <summary>
+        /// A星路徑搜尋
+        /// </summary>
+        private readonly PairStar aStar = new PairStar();
+
+        /// <summary>
+        /// 起點座標
+        /// </summary>
+        private IPair start = new Pair();
+
+        private void GLUI_GLDoubleClick(object sender, EventArgs e)
+        {
+            MouseEventArgs mouse = (MouseEventArgs)e;
+            var end = GLUI.ScreenToGL(mouse.X, mouse.Y);
+            var path = aStar.FindPath(start, end)?.ToList();
+
+            if (path != null)
+            {
+                GLCMD.CMD.SaftyEditMultiGeometry<IPair>(pathID, true, o => { o.Clear(); o.AddRange(path); });
+                start = end;
+            }
+        }
+
+        private void GLUI_LoadMapEvent(object sender, LoadMapEventArgs e)
+        {
+            aStar.LoadMap(e.MapPath);
+            pathID = GLCMD.CMD.AddMultiStripLine("Path", null);
+        }
+
+        #endregion 路徑搜尋
     }
 }

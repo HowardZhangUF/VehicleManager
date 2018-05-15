@@ -168,6 +168,14 @@ namespace Geometry
         }
 
         /// <summary>
+        /// 減法
+        /// </summary>
+        public static IPair Subtraction(this IPair lhs, int x, int y)
+        {
+            return new Pair(lhs.X - x, lhs.Y - y);
+        }
+
+        /// <summary>
         /// 將線段轉為點集合
         /// </summary>
         public static IEnumerable<IPair> ToPairs(this ILine line, int delta = 10)
