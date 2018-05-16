@@ -10,13 +10,13 @@ namespace GLStyle
         /// <summary>
         /// 從 *.ini 檔案讀取樣式設定
         /// </summary>
-        public LineStyle(string filePath, string section)
+        public LineStyle(string path, string section)
         {
-            BackgroundColor = new Color(INI.Read(filePath, section, nameof(BackgroundColor), Color.GreenYellow128));
-            Layer = INI.Read(filePath, section, nameof(Layer), 0);
-            Pattern = (ELinePattern)INI.Read(filePath, section, nameof(Pattern), 0);
-            ShowOnTheMenu = INI.Read(filePath, section, nameof(ShowOnTheMenu), false);
-            Width = INI.Read(filePath, section, nameof(Width), 1.0f);
+            BackgroundColor = new Color(INI.Read(path, section, nameof(BackgroundColor), Color.GreenYellow128));
+            Layer = INI.Read(path, section, nameof(Layer), 0);
+            Pattern = (ELinePattern)INI.Read(path, section, nameof(Pattern), 0);
+            ShowOnTheMenu = INI.Read(path, section, nameof(ShowOnTheMenu), false);
+            Width = INI.Read(path, section, nameof(Width), 1.0f);
         }
 
         /// <summary>

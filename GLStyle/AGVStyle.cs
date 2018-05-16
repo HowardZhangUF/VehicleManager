@@ -15,14 +15,14 @@ namespace GLStyle
         /// <summary>
         /// 從 *.ini 檔案讀取樣式設定
         /// </summary>
-        public AGVStyle(string filePath, string section)
+        public AGVStyle(string path, string section)
         {
-            @base = new TowardPairStyle(filePath, section);
-            SafetyWidth = INI.Read(filePath, section, nameof(SafetyWidth), 1000);
-            SafetyHeight = INI.Read(filePath, section, nameof(SafetyHeight), 1000);
-            SafetyColor = new Color(INI.Read(filePath, section, nameof(SafetyColor), Color.Red));
-            SafetyLineWidth = INI.Read(filePath, section, nameof(SafetyLineWidth), 1.0f);
-            SafetyLinePattern = (ELinePattern)INI.Read(filePath, section, nameof(SafetyLinePattern), 0);
+            @base = new TowardPairStyle(path, section);
+            SafetyWidth = INI.Read(path, section, nameof(SafetyWidth), 1000);
+            SafetyHeight = INI.Read(path, section, nameof(SafetyHeight), 1000);
+            SafetyColor = new Color(INI.Read(path, section, nameof(SafetyColor), Color.Red));
+            SafetyLineWidth = INI.Read(path, section, nameof(SafetyLineWidth), 1.0f);
+            SafetyLinePattern = (ELinePattern)INI.Read(path, section, nameof(SafetyLinePattern), 0);
         }
 
         /// <summary>

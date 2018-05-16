@@ -1,5 +1,6 @@
 ﻿using Geometry;
 using GLStyle;
+using MapReader;
 using MD5Hash;
 using SharpGL;
 using System;
@@ -74,10 +75,8 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示面資訊
         /// </summary>
-        public BindingList<ISingleAreaInfo> SingleAreaInfo
-        {
-            get
-            {
+        public BindingList<ISingleAreaInfo> SingleAreaInfo {
+            get {
                 lock (key)
                 {
                     singleAreaInfo.Clear();
@@ -105,10 +104,8 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示線資訊
         /// </summary>
-        public BindingList<ISingleLineInfo> SingleLineInfo
-        {
-            get
-            {
+        public BindingList<ISingleLineInfo> SingleLineInfo {
+            get {
                 lock (key)
                 {
                     singleLineInfo.Clear();
@@ -136,10 +133,8 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示點資訊
         /// </summary>
-        public BindingList<ISinglePairInfo> SinglePairInfo
-        {
-            get
-            {
+        public BindingList<ISinglePairInfo> SinglePairInfo {
+            get {
                 lock (key)
                 {
                     singlePairInfo.Clear();
@@ -165,10 +160,8 @@ namespace GLCore
         /// <summary>
         /// 獲得所有標示物資訊
         /// </summary>
-        public BindingList<ISingleTowardPairInfo> SingleTowerPairInfo
-        {
-            get
-            {
+        public BindingList<ISingleTowardPairInfo> SingleTowerPairInfo {
+            get {
                 lock (key)
                 {
                     singleTowerPairInfo.Clear();
@@ -401,7 +394,7 @@ namespace GLCore
                 }
                 else
                 {
-                    CurrentAGV.Add(id, 
+                    CurrentAGV.Add(id,
                         new AGV(AGVStyleName)
                         {
                             Name = name
@@ -533,89 +526,37 @@ namespace GLCore
         /// <summary>
         /// 載入地圖
         /// </summary>
-        public void LoadMap(string file)
+        public void LoadMap(string path)
         {
             lock (key)
             {
                 Initial();
-                MapHash = MD5.GetFileHash(file);
-                var lines = File.ReadAllLines(file);
 
-                for (int ii = 0; ii < lines.Length; ii++)
+                // 使用讀取器讀取
+                var reader = new Reader(path);
+
+                // Hash
+                MapHash = reader.MapHash;
+
+                // 將 Goal 點加入背景暫存集合
+                foreach (var goal in reader.GoalList)
                 {
-                    switch (lines[ii])
+                    var single = new SingleTowardPair(goal.TypeName, goal.TowardPair)
                     {
-                        case "Goal List":
-                            ii = ReadGoalList(lines, ii);
-                            CurrentSingleObject = DuplicateSingleObject.DeepClone();
-                            break;
-
-                        case "Obstacle Points":
-                            ii = ReadObstaclePoints(lines, ii);
-                            break;
-
-                        case "Minimum Position":
-                            break;
-
-                        case "Maximum Position":
-                            break;
-                    }
+                        Name = goal.Name,
+                    };
+                    DuplicateSingleObject.Add(SerialNumber.Next(), single);
                 }
+                
+                // 將 Goal 點加入當下顯示列表
+                CurrentSingleObject = DuplicateSingleObject.DeepClone();
 
+                // 將障礙點加入當下顯示列表
+                SaftyEditMultiGeometry<IPair>(ObstaclePointsID, true, o => o.AddRangeIfNotNull(reader.ObstaclePointsList));
+
+                // 更新綁定
                 ResetBindings();
             }
-        }
-
-        /// <summary>
-        /// <para>讀取目標點列表至  <see cref="DuplicateSingleObject"/>，並回傳結束的資料行數</para>
-        /// <para>資料格式如：Goal 2,8421,2264,0,MagneticTracking</para>
-        /// </summary>
-        private int ReadGoalList(string[] lines, int begin)
-        {
-            for (int ii = begin + 1; ii < lines.Length; ii++)
-            {
-                var para = lines[ii].Split(',');
-				int x = 0, y = 0;
-				double toward = 0.0f;
-                if (para.Length == 5 && int.TryParse(para[1], out x) && int.TryParse(para[2], out y) && double.TryParse(para[3], out toward))
-                {
-                    var goal = new SingleTowardPair(para[4], x, y, toward) { Name = para[0] };
-                    DuplicateSingleObject.Add(SerialNumber.Next(), goal);
-                    begin = ii;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            return begin;
-        }
-
-        /// <summary>
-        /// <para>讀取障礙點至  <see cref="CurrentMultiObject"/> 及寫入 <see cref="ObstaclePointsID"/>，並回傳結束的資料行數</para>
-        /// <para>資料格式如：-12794,3803</para>
-        /// </summary>
-        private int ReadObstaclePoints(string[] lines, int begin)
-        {
-            var data = new List<IPair>();
-            for (int ii = begin + 1; ii < lines.Length; ii++)
-            {
-                var para = lines[ii].Split(',');
-				int x = 0, y = 0;
-                if (para.Length == 2 && int.TryParse(para[0], out x) && int.TryParse(para[1], out y))
-                {
-                    data.Add(new Pair(x, y));
-                    begin = ii;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            SaftyEditMultiGeometry<IPair>(ObstaclePointsID, true, o => o.AddRangeIfNotNull(data));
-
-            return begin;
         }
 
         #endregion 載入地圖
@@ -625,7 +566,7 @@ namespace GLCore
         /// <summary>
         /// 儲存地圖
         /// </summary>
-        public void SaveMap(string file)
+        public void SaveMap(string path)
         {
             lock (key)
             {
@@ -639,7 +580,7 @@ namespace GLCore
                 data.Add($"Minimum Position:{bound.Min.ToString()}");
                 data.Add($"Maximum Position:{bound.Max.ToString()}");
 
-                File.WriteAllLines(file, data);
+                File.WriteAllLines(path, data);
             }
         }
 

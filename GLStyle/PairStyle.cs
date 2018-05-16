@@ -10,12 +10,12 @@ namespace GLStyle
         /// <summary>
         /// 從 *.ini 檔案讀取樣式設定
         /// </summary>
-        public PairStyle(string filePath, string section)
+        public PairStyle(string path, string section)
         {
-            BackgroundColor = new Color(INI.Read(filePath, section, nameof(BackgroundColor), Color.GreenYellow128));
-            Layer = INI.Read(filePath, section, nameof(Layer), 0);
-            Size = INI.Read(filePath, section, nameof(Size), 1.0f);
-            ShowOnTheMenu = INI.Read(filePath, section, nameof(ShowOnTheMenu), false);
+            BackgroundColor = new Color(INI.Read(path, section, nameof(BackgroundColor), Color.GreenYellow128));
+            Layer = INI.Read(path, section, nameof(Layer), 0);
+            Size = INI.Read(path, section, nameof(Size), 1.0f);
+            ShowOnTheMenu = INI.Read(path, section, nameof(ShowOnTheMenu), false);
         }
 
         /// <summary>

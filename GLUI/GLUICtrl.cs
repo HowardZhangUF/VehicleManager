@@ -860,13 +860,13 @@ namespace GLUI
         /// <summary>
         /// 載入地圖
         /// </summary>
-        public void LoadMap(string file)
+        public void LoadMap(string path)
         {
-            GLCMD.CMD.LoadMap(file);
+            GLCMD.CMD.LoadMap(path);
 
             var args = new LoadMapEventArgs()
             {
-                MapPath = file,
+                MapPath = path,
             };
             new Task(() => LoadMapEvent?.Invoke(this, args)).Start();
         }
@@ -890,9 +890,9 @@ namespace GLUI
         /// <summary>
         /// 儲存地圖
         /// </summary>
-        public void SaveMap(string file)
+        public void SaveMap(string path)
         {
-            GLCMD.CMD.SaveMap(file);
+            GLCMD.CMD.SaveMap(path);
         }
 
         /// <summary>

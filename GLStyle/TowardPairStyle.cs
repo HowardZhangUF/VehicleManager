@@ -10,18 +10,18 @@ namespace GLStyle
         /// <summary>
         /// 從 *.ini 檔案讀取樣式設定
         /// </summary>
-        public TowardPairStyle(string filePath, string section)
+        public TowardPairStyle(string path, string section)
         {
-            BackgroundColor = new Color(INI.Read(filePath, section, nameof(BackgroundColor), Color.GreenYellow128));
-            Height = INI.Read(filePath, section, nameof(Height), 1000.0f);
-            ImagePath = INI.Read(filePath, section, nameof(ImagePath), "");
-            Layer = INI.Read(filePath, section, nameof(Layer), 0);
-            LineColor = new Color(INI.Read(filePath, section, nameof(LineColor), Color.Firebrick128));
-            LineLength = INI.Read(filePath, section, nameof(LineLength), 1000.0f);
-            LinePattern = (ELinePattern)INI.Read(filePath, section, nameof(LinePattern), 0);
-            LineWidth = INI.Read(filePath, section, nameof(LineWidth), 1.0f);
-            ShowOnTheMenu = INI.Read(filePath, section, nameof(ShowOnTheMenu), false);
-            Width = INI.Read(filePath, section, nameof(Width), 1500.0f);
+            BackgroundColor = new Color(INI.Read(path, section, nameof(BackgroundColor), Color.GreenYellow128));
+            Height = INI.Read(path, section, nameof(Height), 1000.0f);
+            ImagePath = INI.Read(path, section, nameof(ImagePath), "");
+            Layer = INI.Read(path, section, nameof(Layer), 0);
+            LineColor = new Color(INI.Read(path, section, nameof(LineColor), Color.Firebrick128));
+            LineLength = INI.Read(path, section, nameof(LineLength), 1000.0f);
+            LinePattern = (ELinePattern)INI.Read(path, section, nameof(LinePattern), 0);
+            LineWidth = INI.Read(path, section, nameof(LineWidth), 1.0f);
+            ShowOnTheMenu = INI.Read(path, section, nameof(ShowOnTheMenu), false);
+            Width = INI.Read(path, section, nameof(Width), 1500.0f);
         }
 
         /// <summary>

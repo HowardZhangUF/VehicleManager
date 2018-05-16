@@ -1,5 +1,6 @@
 ﻿using Algorithm;
 using Geometry;
+using MapReader;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -89,46 +90,16 @@ namespace PairAStar
         /// <summary>
         /// 載入地圖
         /// </summary>
-        private IEnumerable<IPair> ReadObstaclePoints(string path)
-        {
-            var lines = File.ReadAllLines(path);
-            int index = 0;
-
-            // 找到標頭
-            for (; index < lines.Length; index++)
-            {
-                if (lines[index] == "Obstacle Points") break;
-            }
-
-            index++;
-            List<IPair> res = new List<IPair>();
-            for (; index < lines.Length; index++)
-            {
-                var para = lines[index].Split(',');
-                int x = 0, y = 0;
-                if (para.Length == 2 && int.TryParse(para[0], out x) && int.TryParse(para[1], out y))
-                {
-                    res.Add(new Pair(x, y));
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            return res;
-        }
-
-        /// <summary>
-        /// 載入地圖
-        /// </summary>
         public void LoadMap(string path)
         {
             lock (key)
             {
                 @base = new AStar<IPair>(GetBound, Move, Distance, Direction, ComparerWithX, ComparerWithY);
-                var points = ReadObstaclePoints(path);
-                @base.Insert(points);
+
+                // 使用讀取器讀取
+                var reader = new Reader(path);
+
+                @base.Insert(reader.ObstaclePointsList);
             }
         }
 

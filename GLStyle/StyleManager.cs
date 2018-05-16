@@ -78,13 +78,13 @@ namespace GLStyle
         /// <para>從 *.ini 檔案讀取樣式設定</para>
         /// <para>只能讀取一次</para>
         /// </summary>
-        public static void LoadStyle(string filePath)
+        public static void LoadStyle(string path)
         {
             StyleTable.SaftyEdit(true, table =>
             {
                 if (table.Count != 0) return;
 
-                var names = File.ReadAllLines(filePath)
+                var names = File.ReadAllLines(path)
                     .Select(line => line.Trim())
                     .Where(line => line.StartsWith("[") && line.EndsWith("]"))
                     .Select(line => line.Substring(1, line.Length - 2));
@@ -92,27 +92,27 @@ namespace GLStyle
                 table.Clear();
                 foreach (var name in names)
                 {
-                    var type = IniFiles.INI.Read(filePath, name, "Type", "");
+                    var type = IniFiles.INI.Read(path, name, "Type", "");
                     switch (type)
                     {
                         case nameof(IPairStyle):
-                            table.Add(name, new PairStyle(filePath, name));
+                            table.Add(name, new PairStyle(path, name));
                             break;
 
                         case nameof(ILineStyle):
-                            table.Add(name, new LineStyle(filePath, name));
+                            table.Add(name, new LineStyle(path, name));
                             break;
 
                         case nameof(IAreaStyle):
-                            table.Add(name, new AreaStyle(filePath, name));
+                            table.Add(name, new AreaStyle(path, name));
                             break;
 
                         case nameof(ITowardPairStyle):
-                            table.Add(name, new TowardPairStyle(filePath, name));
+                            table.Add(name, new TowardPairStyle(path, name));
                             break;
 
                         case nameof(IAGVStyle):
-                            table.Add(name, new AGVStyle(filePath, name));
+                            table.Add(name, new AGVStyle(path, name));
                             break;
                     }
                 }

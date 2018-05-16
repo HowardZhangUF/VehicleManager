@@ -43,6 +43,14 @@ namespace GLCore
         {
         }
 
+
+        /// <summary>
+        /// 建構具有方向的標示物
+        /// </summary>
+        public SingleTowardPair(string styleName, ITowardPair towardPair) : this(styleName, towardPair.Position.X, towardPair.Position.Y, towardPair.Toward)
+        {
+        }
+
         /// <summary>
         /// 建構具有方向的標示物
         /// </summary>

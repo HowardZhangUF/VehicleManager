@@ -24,11 +24,11 @@ namespace MD5Hash
         /// <summary>
         /// 計算檔案的雜湊值，並回傳十六進位字串(字串長度 12)
         /// </summary>
-        public static string GetFileHash(string file)
+        public static string GetFileHash(string path)
         {
             using (var md5 = System.Security.Cryptography.MD5.Create())
             {
-                using (var stream = File.OpenRead(file))
+                using (var stream = File.OpenRead(path))
                 {
                     return ToBase16String(md5.ComputeHash(stream).Take(6));
                 }

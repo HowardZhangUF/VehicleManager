@@ -50,9 +50,9 @@ namespace GLUI
         /// <summary>
         /// 插入地圖
         /// </summary>
-        public void LoadJoinMap(string file)
+        public void LoadJoinMap(string path)
         {
-            GLCMD.CMD.Join.SaftyEdit(true, join => join.LoadJoinMap(file));
+            GLCMD.CMD.Join.SaftyEdit(true, join => join.LoadJoinMap(path));
             UpdateControlPanel();
         }
 
