@@ -7,34 +7,6 @@ using System.Linq;
 namespace MapReader
 {
     /// <summary>
-    /// 地圖讀取器基底類別
-    /// </summary>
-    public interface IMapReader
-    {
-    }
-
-    /// <summary>
-    /// 目標點
-    /// </summary>
-    public class Goal : IMapReader
-    {
-        /// <summary>
-        /// 目標點名稱
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 幾何座標
-        /// </summary>
-        public ITowardPair TowardPair { get; set; }
-
-        /// <summary>
-        /// 種類
-        /// </summary>
-        public string TypeName { get; set; }
-    }
-
-    /// <summary>
     /// 地圖讀取器
     /// </summary>
     public class Reader : IMapReader
@@ -112,7 +84,7 @@ namespace MapReader
         /// <summary>
         /// 地圖檔雜湊值
         /// </summary>
-        public string MapHash { get; set; } = string.Empty;
+        public string MapHash { get; } = string.Empty;
 
         /// <summary>
         /// 最大座標
