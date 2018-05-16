@@ -5,6 +5,11 @@ using System.Linq;
 namespace Algorithm
 {
     /// <summary>
+    /// 計算兩點夾角，回傳 [0~360)
+    /// </summary>
+    public delegate double Direction<T>(T lhs, T rhs);
+
+    /// <summary>
     /// 計算兩點距離
     /// </summary>
     public delegate double Distance<T>(T lhs, T rhs);
@@ -37,6 +42,11 @@ namespace Algorithm
         /// </summary>
         private class Node
         {
+            /// <summary>
+            /// 方向角
+            /// </summary>
+            public double Direction { get; set; } = 0;
+
             /// <summary>
             /// 總成本
             /// </summary>
@@ -74,6 +84,15 @@ namespace Algorithm
         /// 2D Tree
         /// </summary>
         private readonly KDTree<T> tree;
+
+        /// <summary>
+        /// 計算 A星演算法中的 G 值
+        /// </summary>
+        private double CalculateG(Node open, T next)
+        {
+            double angle = Math.Abs((open.Direction - Direction(open.Value, next))) % 180.0;
+            return 0.7 * open.G + 0.4 * Distance(open.Value, next) + 0.1 * angle;
+        }
 
         /// <summary>
         /// 根據 <see cref="Node.F"/> 回傳列表中成本最小的點。假設至少包含一筆資料
@@ -142,7 +161,7 @@ namespace Algorithm
                         if (same != null)
                         {
                             // 在開啟列表中找到相同的點，計算 G 值，決定是否要更新 G 值
-                            double newG = open.G + 0.01 * Distance(open.Value, next);
+                            double newG = CalculateG(open, next);
                             same.G = Math.Min(same.G, newG);
                         }
                         else
@@ -152,8 +171,9 @@ namespace Algorithm
                             {
                                 Parent = open,
                                 H = Distance(next, end),
-                                G = open.G + 0.01 * Distance(open.Value, next),
+                                G = CalculateG(open, next),
                                 Value = next,
+                                Direction = Direction(open.Value, next),
                             });
                         }
                     }
@@ -174,15 +194,24 @@ namespace Algorithm
         /// <summary>
         /// <para>A 星路徑搜尋</para>
         /// </summary>
-        /// <param name="comparerWithX">X 座標比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1</param>
-        /// <param name="comparerWithY">Y 座標比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1</param>
-        public AStar(Comparison<T> comparerWithX, Comparison<T> comparerWithY, GetBound<T> getBound, Move<T> move, Distance<T> distance)
+        /// <param name="getBound">給定 <paramref name="center"/> ，回傳邊界範圍</param>
+        /// <param name="move">由使用者決定要如何移動</param>
+        /// <param name="distance">計算兩點距離</param>
+        /// <param name="direction">計算兩點夾角，回傳 [0~360)</param>
+        /// <param name="comparerWith">各個座標元素比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1</param>
+        public AStar(GetBound<T> getBound, Move<T> move, Distance<T> distance, Direction<T> direction, params Comparison<T>[] comparerWith)
         {
-            tree = new KDTree<T>(comparerWithX, comparerWithY);
+            tree = new KDTree<T>(comparerWith);
             GetBound = getBound;
             Move = move;
             Distance = distance;
+            Direction = direction;
         }
+
+        /// <summary>
+        /// 計算兩點夾角，回傳 [0~360)
+        /// </summary>
+        public Direction<T> Direction { get; }
 
         /// <summary>
         /// 計算兩點距離
@@ -213,7 +242,7 @@ namespace Algorithm
                 openList.Add(new Node()
                 {
                     Value = start,
-                    H = Distance(start, end)
+                    H = Distance(start, end),
                 });
 
                 return FindPath(openList, end);

@@ -51,7 +51,7 @@ namespace PairAStar
         /// </summary>
         private double Distance(IPair lhs, IPair rhs)
         {
-            return lhs.Distance2(rhs);
+            return lhs.Distance(rhs);
         }
 
         /// <summary>
@@ -68,8 +68,9 @@ namespace PairAStar
         /// </summary>
         private IEnumerable<IPair> Move(IPair current, IPair target)
         {
+            double theta = Math.Atan2(target.Y - current.Y, target.X - current.X);
             int step = (int)current.Distance(target);
-            if (step > Width) step = Width;
+            if (step > Width / 2) step = Width / 2;
             if (step == 0) step = 1;
             return new List<IPair>()
             {
@@ -81,7 +82,8 @@ namespace PairAStar
                 current.Add(step,-step),
                 current.Add(-step,step),
                 current.Add(-step,-step),
-            };
+                current.Add((int)(step*Math.Cos(theta)),(int)(step*Math.Sin(theta))),
+        };
         }
 
         /// <summary>
@@ -124,10 +126,18 @@ namespace PairAStar
         {
             lock (key)
             {
-                @base = new AStar<IPair>(ComparerWithX, ComparerWithY, GetBound, Move, Distance);
+                @base = new AStar<IPair>(GetBound, Move, Distance, Direction, ComparerWithX, ComparerWithY);
                 var points = ReadObstaclePoints(path);
                 @base.Insert(points);
             }
+        }
+
+        /// <summary>
+        /// 計算兩點夾角，回傳 [0~360)
+        /// </summary>
+        private double Direction(IPair lhs, IPair rhs)
+        {
+            return Math.Atan2(rhs.Y - lhs.Y, rhs.X - lhs.X) * 180 / Math.PI;
         }
 
         /// <summary>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Algorithm
 {
     /// <summary>
-    /// <para>2D Tree</para>
+    /// <para>KD Tree</para>
     /// <para>提供插入、搜尋、範圍搜尋等功能</para>
     /// </summary>
     public class KDTree<T>
@@ -49,7 +49,7 @@ namespace Algorithm
         /// </summary>
         private Comparison<T> GetComparer(int layer)
         {
-            return (layer % 2) == 0 ? ComparerWithX : ComparerWithY;
+            return ComparerWith[layer % ComparerWith.Length];
         }
 
         /// <summary>
@@ -160,11 +160,13 @@ namespace Algorithm
         /// </summary>
         private bool IsInTheBound(T data, T min, T max)
         {
-            return
-                ComparerWithX(data, min) >= 0 &&
-                ComparerWithY(data, min) >= 0 &&
-                ComparerWithX(data, max) <= 0 &&
-                ComparerWithY(data, max) <= 0;
+            foreach (var comparer in ComparerWith)
+            {
+                if (comparer(data, min) < 0) return false;
+                if (comparer(data, max) > 0) return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -199,23 +201,16 @@ namespace Algorithm
         /// <para>2D Tree</para>
         /// <para>提供插入、刪除、搜尋、範圍搜尋等功能</para>
         /// </summary>
-        /// <param name="comparerWithX">X 座標比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1</param>
-        /// <param name="comparerWithY">Y 座標比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1</param>
-        public KDTree(Comparison<T> comparerWithX, Comparison<T> comparerWithY)
+        /// <param name="comparerWith">各個座標元素比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1</param>
+        public KDTree(params Comparison<T>[] comparerWith)
         {
-            ComparerWithX = comparerWithX;
-            ComparerWithY = comparerWithY;
+            ComparerWith = comparerWith;
         }
 
         /// <summary>
-        /// X 座標比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1
+        /// 各個座標元素比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1
         /// </summary>
-        public Comparison<T> ComparerWithX { get; }
-
-        /// <summary>
-        /// Y 座標比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1
-        /// </summary>
-        public Comparison<T> ComparerWithY { get; }
+        public Comparison<T>[] ComparerWith { get; }
 
         /// <summary>
         /// 插入，若資料重則不新增。成功插入則回傳 True
@@ -248,7 +243,12 @@ namespace Algorithm
         {
             lock (key)
             {
-                return ComparerWithX(lhs, rhs) == 0 && ComparerWithY(lhs, rhs) == 0;
+                foreach (var comparer in ComparerWith)
+                {
+                    if (comparer(lhs, rhs) != 0) return false;
+                }
+
+                return true;
             }
         }
 
