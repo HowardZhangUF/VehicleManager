@@ -257,7 +257,10 @@ namespace Algorithm
         /// </summary>
         public bool Insert(T data)
         {
-            return Insert(root, data);
+            lock (key)
+            {
+                return Insert(root, data);
+            }
         }
 
         /// <summary>
