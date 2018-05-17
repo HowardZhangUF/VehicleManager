@@ -179,23 +179,17 @@ namespace Algorithm
             if (IsInTheBound(root.Value, min, max) && root.IsExist) return true;
 
             // 判斷左子樹是否在邊界內
-            if (IsElementMoreOrEqual(root.Value, min, layer))
+            if (root.Left != null && IsElementMoreOrEqual(root.Value, min, layer))
             {
-                if (root.Left != null)
-                {
-                    bool exist = IsExist(root.Left, min, max, layer + 1);
-                    if (exist) return true;
-                }
+                bool exist = IsExist(root.Left, min, max, layer + 1);
+                if (exist) return true;
             }
 
             // 判斷右子樹是否在邊界內
-            if (IsElementLessOrEqual(root.Value, max, layer))
+            if (root.Right != null && IsElementLessOrEqual(root.Value, max, layer))
             {
-                if (root.Right != null)
-                {
-                    bool exist = IsExist(root.Right, min, max, layer + 1);
-                    if (exist) return true;
-                }
+                bool exist = IsExist(root.Right, min, max, layer + 1);
+                if (exist) return true;
             }
 
             return false;
