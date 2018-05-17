@@ -735,11 +735,31 @@ namespace GLUI
         {
             // 左鍵擦子功能、右鍵取消擦子
             MouseEventArgs mouse = (MouseEventArgs)e;
-            if (mouse.Button == MouseButtons.Left && GLCMD.CMD.Eraser.SaftyEdit(eraser => eraser.InUse)) GLCMD.CMD.Eraser.SaftyEdit(false, eraser => eraser.ClearObstaclePoints(GLCMD.CMD.ObstaclePointsID));
+            if (mouse.Button == MouseButtons.Left && GLCMD.CMD.Eraser.SaftyEdit(eraser => eraser.InUse))
+            {
+                var range = new Area(GLCMD.CMD.Eraser.SaftyEdit(eraser => eraser.Geometry));
+                GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, list => list.RemoveAll(pair => range.Contain(pair)));
+                var args = new EraserMapEventArgs()
+                {
+                    Range = range,
+                };
+                new Task(() => EraserMapEvent?.Invoke(this, args)).Start();
+            }
             if (mouse.Button == MouseButtons.Right) GLCMD.CMD.Eraser.SaftyEdit(true, eraser => eraser.Cancel());
 
             // 左鍵完成畫筆、右鍵取消畫筆
-            if (mouse.Button == MouseButtons.Left && GLCMD.CMD.Pen.SaftyEdit(pen => pen.InUse)) GLCMD.CMD.Pen.SaftyEdit(false, pen => pen.Finish(GLCMD.CMD.ObstaclePointsID));
+            if (mouse.Button == MouseButtons.Left && GLCMD.CMD.Pen.SaftyEdit(pen => pen.InUse))
+            {
+                GLCMD.CMD.Pen.SaftyEdit(false, pen => pen.Cancel());
+
+                var data = GLCMD.CMD.Pen.SaftyEdit(pen => pen.Geometry.ToPairs());
+                GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, list => list.AddRangeIfNotNull(data));
+                var args = new PenMapEventArgs()
+                {
+                    Data = data,
+                };
+                new Task(() => PenMapEvent?.Invoke(this, args)).Start();
+            }
             if (mouse.Button == MouseButtons.Right) GLCMD.CMD.Pen.SaftyEdit(false, pen => pen.Cancel());
 
             if (mouse.Button == MouseButtons.Middle) PreGLPosition = ScreenToGL(e.X, e.Y);
@@ -838,6 +858,16 @@ namespace GLUI
         /// 地圖載入事件，使用 Task 發布
         /// </summary>
         public event LoadMapEvent LoadMapEvent;
+
+        /// <summary>
+        /// 擦障礙點事件，使用 Task 發布
+        /// </summary>
+        public event EraserMapEvent EraserMapEvent;
+
+        /// <summary>
+        /// 加入障礙點事件，使用 Task 發布
+        /// </summary>
+        public event PenMapEvent PenMapEvent;
 
         /// <summary>
         /// 實際座標轉螢幕座標

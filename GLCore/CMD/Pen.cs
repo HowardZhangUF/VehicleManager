@@ -29,22 +29,6 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 完成，並將線段加入障礙點集合中
-        /// </summary>
-        /// <param name="id">為 <see cref="MultiPair"/> 的識別碼</param>
-        public void Finish(int id)
-        {
-            if (InUse)
-            {
-                InUse = false;
-                GLCMD.CMD.SaftyEditMultiGeometry<IPair>(id, true, list =>
-                {
-                    list.AddRangeIfNotNull(Geometry.ToPairs());
-                });
-            }
-        }
-
-        /// <summary>
         /// 設定起點和終點，並將畫筆設為可見
         /// </summary>
         /// <param name="pos"></param>

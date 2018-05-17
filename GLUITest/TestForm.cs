@@ -13,6 +13,30 @@ namespace GLUITest
 {
     public partial class frmTest : Form
     {
+        public frmTest()
+        {
+            InitializeComponent();
+
+            // 載入設定檔
+            StyleManager.LoadStyle("Style.ini");
+
+            // 加入選單
+            cmbSelectType.Items.Add(nameof(SinglePairInfo));
+            cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
+            cmbSelectType.Items.Add(nameof(SingleLineInfo));
+            cmbSelectType.Items.Add(nameof(SingleAreaInfo));
+
+            // 資料綁定
+            var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
+            binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
+            DataBindings.Add(binding);
+
+            // 加入事件
+            GLUI.LoadMapEvent += GLUI_LoadMapEvent;
+            GLUI.PenMapEvent += GLUI_PenMapEvent;
+            GLUI.EraserMapEvent += GLUI_EraserMapEvent;
+        }
+
         /// <summary>
         /// AGV 範例
         /// </summary>
@@ -444,39 +468,17 @@ namespace GLUITest
             }
         }
 
-        public frmTest()
-        {
-            InitializeComponent();
-
-            // 載入設定檔
-            StyleManager.LoadStyle("Style.ini");
-
-            // 加入選單
-            cmbSelectType.Items.Add(nameof(SinglePairInfo));
-            cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
-            cmbSelectType.Items.Add(nameof(SingleLineInfo));
-            cmbSelectType.Items.Add(nameof(SingleAreaInfo));
-
-            // 資料綁定
-            var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
-            binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
-            DataBindings.Add(binding);
-
-            // 加入事件
-            GLUI.LoadMapEvent += GLUI_LoadMapEvent;
-        }
-
         #region 路徑搜尋
-
-        /// <summary>
-        /// 路徑 ID
-        /// </summary>
-        private int pathID = -1;
 
         /// <summary>
         /// A星路徑搜尋
         /// </summary>
         private readonly PairStar aStar = new PairStar();
+
+        /// <summary>
+        /// 路徑 ID
+        /// </summary>
+        private int pathID = -1;
 
         /// <summary>
         /// 起點座標
@@ -500,6 +502,16 @@ namespace GLUITest
         {
             aStar.LoadMap(e.MapPath);
             pathID = GLCMD.CMD.AddMultiStripLine("Path", null);
+        }
+
+        private void GLUI_PenMapEvent(object sender, PenMapEventArgs e)
+        {
+            aStar.Insert(e.Data);
+        }
+
+        private void GLUI_EraserMapEvent(object sender, EraserMapEventArgs e)
+        {
+            aStar.Remove(e.Range.Min, e.Range.Max);
         }
 
         #endregion 路徑搜尋
