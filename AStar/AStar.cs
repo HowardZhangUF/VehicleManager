@@ -182,6 +182,17 @@ namespace Algorithm
         }
 
         /// <summary>
+        /// 移除指定範圍內的所有資料
+        /// </summary>
+        public void Remove(T min, T max)
+        {
+            lock (key)
+            {
+                tree?.Remove(min, max);
+            }
+        }
+
+        /// <summary>
         /// 以 <paramref name="center"/> 為中心的特定範圍內是否可行走 
         /// </summary>
         private bool IsClear(T center)

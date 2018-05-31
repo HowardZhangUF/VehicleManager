@@ -34,18 +34,6 @@ namespace GLCore
         }
 
         /// <summary>
-        /// 根據 ID 擦掉障礙點
-        /// </summary>
-        /// <param name="id">為 <see cref="MultiPair"/> 的識別碼</param>
-        public void ClearObstaclePoints(int id)
-        {
-            if (InUse)
-            {
-                GLCMD.CMD.SaftyEditMultiGeometry<IPair>(id, true, list => list.RemoveAll(pair => Geometry.Contain(pair)));
-            }
-        }
-
-        /// <summary>
         /// 設定大小及位置，並設為可見
         /// </summary>
         public void Set(IPair pos, int size)

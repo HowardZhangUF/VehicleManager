@@ -30,6 +30,11 @@ namespace Algorithm
             /// 值，預設 null
             /// </summary>
             public T Value { get; set; } = default(T);
+
+            /// <summary>
+            /// 資料是否存在(當此變數變為 false，表示被刪除)
+            /// </summary>
+            public bool IsExist { get; set; } = true;
         }
 
         #endregion Node
@@ -64,9 +69,15 @@ namespace Algorithm
                 return true;
             }
 
-            // 不插入
+            // 找到相同資料
             if (IsEqual(data, root.Value))
             {
+                if (!root.IsExist)
+                {
+                    // 將上一個被刪除的資料重新啟用
+                    root.IsExist = true;
+                    return true;
+                }
                 return false;
             }
 
@@ -80,6 +91,41 @@ namespace Algorithm
             // 插入右子樹
             if (root.Right == null) root.Right = new Node();
             return Insert(root.Right, data, layer + 1);
+        }
+
+        /// <summary>
+        /// 移除指定範圍內的所有資料
+        /// </summary>
+        public void Remove(T min, T max)
+        {
+            lock (key)
+            {
+                Remove(root, min, max);
+            }
+        }
+
+        /// <summary>
+        /// 移除指定範圍內的所有資料
+        /// </summary>
+        private void Remove(Node root, T min, T max, int layer = 0)
+        {
+            // 判斷自己是否在邊界內
+            if (IsInTheBound(root.Value, min, max))
+            {
+                root.IsExist = false;
+            }
+
+            // 判斷左子樹是否在邊界內
+            if (root.Left != null && IsElementMoreOrEqual(root.Value, min, layer))
+            {
+                Remove(root.Left, min, max, layer + 1);
+            }
+
+            // 判斷右子樹是否在邊界內
+            if (root.Right != null && IsElementLessOrEqual(root.Value, max, layer))
+            {
+                Remove(root.Right, min, max, layer + 1);
+            }
         }
 
         /// <summary>
@@ -110,7 +156,7 @@ namespace Algorithm
         private bool IsExist(Node root, T data, int layer = 0)
         {
             // 是否剛好等於自己
-            if (IsEqual(data, root.Value)) return true;
+            if (IsEqual(data, root.Value)) return root.IsExist;
 
             // 資料有可能在左子樹
             if (IsElementLessOrEqual(data, root.Value, layer))
@@ -130,26 +176,20 @@ namespace Algorithm
         private bool IsExist(Node root, T min, T max, int layer = 0)
         {
             // 判斷自己是否在邊界內
-            if (IsInTheBound(root.Value, min, max)) return true;
+            if (IsInTheBound(root.Value, min, max) && root.IsExist) return true;
 
             // 判斷左子樹是否在邊界內
-            if (IsElementMoreOrEqual(root.Value, min, layer))
+            if (root.Left != null && IsElementMoreOrEqual(root.Value, min, layer))
             {
-                if (root.Left != null)
-                {
-                    bool exist = IsExist(root.Left, min, max, layer + 1);
-                    if (exist) return true;
-                }
+                bool exist = IsExist(root.Left, min, max, layer + 1);
+                if (exist) return true;
             }
 
             // 判斷右子樹是否在邊界內
-            if (IsElementLessOrEqual(root.Value, max, layer))
+            if (root.Right != null && IsElementLessOrEqual(root.Value, max, layer))
             {
-                if (root.Right != null)
-                {
-                    bool exist = IsExist(root.Right, min, max, layer + 1);
-                    if (exist) return true;
-                }
+                bool exist = IsExist(root.Right, min, max, layer + 1);
+                if (exist) return true;
             }
 
             return false;
@@ -210,14 +250,17 @@ namespace Algorithm
         /// <summary>
         /// 各個座標元素比較，若 lhs 大於 rhs 則回傳 +1；若 lhs 等於 rhs 則回傳 0；若 lhs 小於 rhs 則回傳 -1
         /// </summary>
-        public Comparison<T>[] ComparerWith { get; }
+        private Comparison<T>[] ComparerWith { get; }
 
         /// <summary>
         /// 插入，若資料重則不新增。成功插入則回傳 True
         /// </summary>
         public bool Insert(T data)
         {
-            return Insert(root, data);
+            lock (key)
+            {
+                return Insert(root, data);
+            }
         }
 
         /// <summary>

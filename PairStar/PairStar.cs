@@ -121,5 +121,28 @@ namespace PairAStar
                 return @base?.FindPath(start, end);
             }
         }
+
+        /// <summary>
+        /// 插入，若資料重則不新增。回傳成功插入資料個數
+        /// </summary>
+        public int Insert(IEnumerable<IPair> data)
+        {
+            lock (key)
+            {
+                if (@base == null) @base = new AStar<IPair>(GetBound, Move, Distance, Direction, ComparerWithX, ComparerWithY);
+                return @base?.Insert(data) ?? 0;
+            }
+        }
+
+        /// <summary>
+        /// 移除指定範圍內的所有資料
+        /// </summary>
+        public void Remove(IPair min, IPair max)
+        {
+            lock (key)
+            {
+                @base?.Remove(min, max);
+            }
+        }
     }
 }
