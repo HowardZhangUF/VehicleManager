@@ -162,7 +162,11 @@ namespace Algorithm
                         {
                             // 在開啟列表中找到相同的點，計算 G 值，決定是否要更新 G 值
                             double newG = CalculateG(open, next);
-                            same.G = Math.Min(same.G, newG);
+                            if (newG < same.G)
+                            {
+                                same.G = newG;
+                                same.Parent = same;
+                            }
                         }
                         else
                         {
