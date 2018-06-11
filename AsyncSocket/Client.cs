@@ -8,7 +8,7 @@ namespace AsyncSocket
     /// <summary>
     /// 非同步通訊用戶端
     /// </summary>
-    public class Client
+    public class Client : IClient
     {
         /// <summary>
         /// 執行緒鎖

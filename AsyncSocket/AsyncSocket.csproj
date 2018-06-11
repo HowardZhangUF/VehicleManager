@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="IClient.cs" />
+    <Compile Include="IServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="StandardOperate.cs" />

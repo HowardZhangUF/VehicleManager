@@ -10,7 +10,7 @@ namespace AsyncSocket
     /// <summary>
     /// 非同步通訊伺服端
     /// </summary>
-    public class Server
+    public class Server : IServer
     {
         /// <summary>
         /// 監聽事件服務器字典集合
