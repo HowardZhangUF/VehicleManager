@@ -277,9 +277,17 @@ namespace AsyncSocket
 
                 ListenStatus = EListenStatus.Listening;
 
-                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
-                socket.Listen(100);
+                try
+                {
+                    socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
+                    socket.Listen(100);
+                }
+                catch
+                {
+                    StopListen();
+                    return;
+                }
                 socket.IOControl(IOControlCode.KeepAliveValues, StandardOperate.GetKeepAliveSetting(), null);
 
                 var res = socket.TryBeginAccept(new AsyncCallback(AsyncAcceptCallback), socket);
