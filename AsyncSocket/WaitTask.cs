@@ -8,7 +8,7 @@ namespace AsyncSocket
     /// <para>非同步作業執行緒。</para>
     /// <para>當呼叫 <see cref="Start"/> 函式時，此物件會確保執行緒已經啟動才離開 <see cref="Start"/> 函式</para>
     /// </summary>
-    internal class WaitTask
+    public class WaitTask
     {
         /// <summary>
         /// 基底類別

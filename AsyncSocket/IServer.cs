@@ -18,11 +18,6 @@ namespace AsyncSocket
         event ListenStatusChangedEvent ListenStatusChangedEvent;
 
         /// <summary>
-        /// 從遠端接收到資料的事件，使用 Task 發布
-        /// </summary>
-        event ReceivedDataEvent ReceivedDataEvent;
-
-        /// <summary>
         /// 監聽狀態
         /// </summary>
         EListenStatus ListenStatus { get; }

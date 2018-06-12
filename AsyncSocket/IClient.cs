@@ -11,11 +11,6 @@
         event ConnectStatusChangedEvent ConnectStatusChangedEvent;
 
         /// <summary>
-        /// 從遠端接收到資料的事件，使用 Task 發布
-        /// </summary>
-        event ReceivedDataEvent ReceivedDataEvent;
-
-        /// <summary>
         /// 連線狀態
         /// </summary>
         EConnectStatus ConnectStatus { get; }
