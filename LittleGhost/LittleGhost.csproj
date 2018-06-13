@@ -85,6 +85,10 @@
       <Project>{96aebce3-fc5e-4f3f-b8f9-b4ba0bbac2be}</Project>
       <Name>AsyncSocket</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Serialization\Serialization.csproj">
+      <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
+      <Name>Serialization</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

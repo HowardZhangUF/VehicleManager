@@ -1,4 +1,5 @@
 ﻿using AsyncSocket;
+using Serialization;
 using System;
 using System.Text;
 using System.Windows.Forms;
@@ -32,15 +33,27 @@ namespace LittleGhost
             InitializeComponent();
             server.ConnectStatusChangedEvent += Server_ConnectStatusChangedEvent;
             server.ListenStatusChangedEvent += Server_ListenStatusChangedEvent;
-            server.ReceivedDataEvent += Server_ReceivedDataEvent;
+            server.ReceivedSerialDataEvent += Server_ReceivedSerialDataEvent; ;
 
             client.ConnectStatusChangedEvent += Client_ConnectStatusChangedEvent;
-            client.ReceivedDataEvent += Client_ReceivedDataEvent;
+            client.ReceivedSerialDataEvent += Client_ReceivedSerialDataEvent; ;
+        }
+
+        private void Client_ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
+        {
+            if (e.Data is StringMessage)
+                AddMessage(e.ReceivedTime, $"{e.RemoteInfo} >> {(e.Data as StringMessage).Message}");
+        }
+
+        private void Server_ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
+        {
+            if (e.Data is StringMessage)
+                AddMessage(e.ReceivedTime, $"{e.RemoteInfo} >> {(e.Data as StringMessage).Message}");
         }
 
         #region Server
 
-        private readonly Server server = new Server();
+        private readonly SerialServer server = new SerialServer();
 
         private void btnListening_Click(object sender, EventArgs e)
         {
@@ -90,16 +103,11 @@ namespace LittleGhost
             btnListening.InvokeIfNecessary(() => btnListening.Text = e.ListenStatus.ToString());
         }
 
-        private void Server_ReceivedDataEvent(object sender, ReceivedDataEventArgs e)
-        {
-            AddMessage(e.ReceivedTime, $"{e.RemoteInfo} >> {Encoding.ASCII.GetString(e.Data)}");
-        }
-
         #endregion Server
 
         #region Client
 
-        private readonly Client client = new Client();
+        private readonly SerialClient client = new SerialClient();
 
         private void btnClientSend_Click(object sender, EventArgs e)
         {
@@ -129,11 +137,6 @@ namespace LittleGhost
         {
             AddMessage(e.StatusChangedTime, $"Client >> {e.ConnectStatus}");
             btnConnect.InvokeIfNecessary(() => btnConnect.Text = e.ConnectStatus.ToString());
-        }
-
-        private void Client_ReceivedDataEvent(object sender, ReceivedDataEventArgs e)
-        {
-            AddMessage(e.ReceivedTime, $"{e.RemoteInfo} >> {Encoding.ASCII.GetString(e.Data)}");
         }
 
         #endregion Client
