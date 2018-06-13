@@ -12,6 +12,11 @@ namespace Serialization
     public interface ISerializable
     {
         /// <summary>
+        /// 訊息時間戳
+        /// </summary>
+        DateTime TimeStamp { get; set; }
+
+        /// <summary>
         /// 流水號，用來識別遠端訊息回應的對象
         /// </summary>
         uint TxID { get; set; }
@@ -123,6 +128,11 @@ namespace Serialization
         public byte[] Message { get; set; }
 
         /// <summary>
+        /// 訊息時間戳
+        /// </summary>
+        public DateTime TimeStamp { get; set; } = DateTime.Now;
+
+        /// <summary>
         /// 流水號，用來識別遠端訊息回應的對象
         /// </summary>
         public uint TxID { get; set; }
@@ -138,6 +148,11 @@ namespace Serialization
         /// 訊息內容
         /// </summary>
         public string Message { get; set; }
+
+        /// <summary>
+        /// 訊息時間戳
+        /// </summary>
+        public DateTime TimeStamp { get; set; } = DateTime.Now;
 
         /// <summary>
         /// 流水號，用來識別遠端訊息回應的對象
