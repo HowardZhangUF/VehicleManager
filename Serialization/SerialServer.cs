@@ -1,6 +1,7 @@
 ﻿using AsyncSocket;
 using System;
 using System.Net.Sockets;
+using WaitTask;
 using static Serialization.StandardOperate;
 
 namespace Serialization
@@ -72,7 +73,7 @@ namespace Serialization
                         RemoteInfo = e.RemoteInfo,
                         ReceivedTime = DateTime.Now,
                     };
-                    new WaitTask(() => ReceivedSerialDataEvent?.Invoke(this, arg)).Start();
+                    new WaitTask.WaitTask(() => ReceivedSerialDataEvent?.Invoke(this, arg)).Start();
                 }
             }
         }

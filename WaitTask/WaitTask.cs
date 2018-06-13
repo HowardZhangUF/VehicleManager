@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AsyncSocket
+namespace WaitTask
 {
     /// <summary>
     /// <para>非同步作業執行緒。</para>

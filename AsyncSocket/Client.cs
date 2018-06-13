@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using WaitTask;
 
 namespace AsyncSocket
 {
@@ -61,7 +62,7 @@ namespace AsyncSocket
                     ReceivedTime = DateTime.Now,
                 };
 
-                new WaitTask(() => ReceivedDataEvent?.Invoke(this, arg)).Start();
+                new WaitTask.WaitTask(() => ReceivedDataEvent?.Invoke(this, arg)).Start();
                 var res = handler.TryBeginReceive(state.buffer, 0, StateObject.BUFFER_SIZE, 0, new AsyncCallback(AsyncReceiveCallback), state);
                 if (res == null) Disconnect();
             }
@@ -132,7 +133,7 @@ namespace AsyncSocket
                     StatusChangedTime = DateTime.Now,
                 };
 
-                new WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
+                new WaitTask.WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
             }
         }
 
@@ -147,7 +148,7 @@ namespace AsyncSocket
 
                 ConnectStatus = EConnectStatus.Disconnect;
 
-                socket?.Close();
+                socket?.TryClose();
                 socket = null;
 
                 var arg = new ConnectStatusChangedEventArgs()
@@ -157,7 +158,7 @@ namespace AsyncSocket
                     StatusChangedTime = DateTime.Now,
                 };
 
-                new WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
+                new WaitTask.WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
             }
         }
 

@@ -16,6 +16,14 @@ namespace AsyncSocket
         {
             try
             {
+                socket.Shutdown(SocketShutdown.Both);
+            }
+            catch (Exception)
+            {
+            }
+
+            try
+            {
                 socket.Close();
             }
             catch (Exception)

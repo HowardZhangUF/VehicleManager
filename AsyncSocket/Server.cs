@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using WaitTask;
 
 namespace AsyncSocket
 {
@@ -55,7 +56,7 @@ namespace AsyncSocket
                     StatusChangedTime = DateTime.Now,
                 };
 
-                new WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
+                new WaitTask.WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
             }
         }
 
@@ -102,7 +103,7 @@ namespace AsyncSocket
                     ReceivedTime = DateTime.Now,
                 };
 
-                new WaitTask(() => ReceivedDataEvent?.Invoke(this, arg)).Start();
+                new WaitTask.WaitTask(() => ReceivedDataEvent?.Invoke(this, arg)).Start();
                 var res = handler.TryBeginReceive(state.buffer, 0, StateObject.BUFFER_SIZE, 0, new AsyncCallback(AsyncReceiveCallback), state);
                 if (res == null) Disconnect(handler);
             }
@@ -184,11 +185,10 @@ namespace AsyncSocket
                         StatusChangedTime = DateTime.Now,
                     };
 
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
+                    handler.TryClose();
                     handlerDic.Remove(ipport);
 
-                    new WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
+                    new WaitTask.WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
                 }
             }
         }
@@ -299,7 +299,7 @@ namespace AsyncSocket
                     StatusChangedTime = DateTime.Now,
                 };
 
-                new WaitTask(() => ListenStatusChangedEvent?.Invoke(this, arg)).Start();
+                new WaitTask.WaitTask(() => ListenStatusChangedEvent?.Invoke(this, arg)).Start();
             }
         }
 
@@ -315,7 +315,7 @@ namespace AsyncSocket
                 ListenStatus = EListenStatus.Idle;
 
                 Disconnect();
-                socket?.Close();
+                socket?.TryClose();
                 socket = null;
 
                 var arg = new ListenStatusChangedEventArgs()
@@ -324,7 +324,7 @@ namespace AsyncSocket
                     StatusChangedTime = DateTime.Now,
                 };
 
-                new WaitTask(() => ListenStatusChangedEvent?.Invoke(this, arg)).Start();
+                new WaitTask.WaitTask(() => ListenStatusChangedEvent?.Invoke(this, arg)).Start();
             }
         }
 
