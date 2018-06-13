@@ -80,18 +80,12 @@ namespace Serialization
         /// <summary>
         /// 產生可支援序列化通訊的陣列
         /// </summary>
-        public static ByteArray GenByteArray(byte[] message)
-        {
-            return new ByteArray() { Message = message };
-        }
+        public static ByteArray GenByteArray(byte[] message) => new ByteArray() { Message = message };
 
         /// <summary>
         /// 產生可支援序列化通訊的字串訊息
         /// </summary>
-        public static StringMessage GenStringMessage(string message)
-        {
-            return new StringMessage() { Message = message };
-        }
+        public static StringMessage GenStringMessage(string message) => new StringMessage() { Message = message };
 
         /// <summary>
         /// <para>將資料序列化，並回傳序列化之後的結果 </para>
