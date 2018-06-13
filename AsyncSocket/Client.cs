@@ -8,7 +8,7 @@ namespace AsyncSocket
     /// <summary>
     /// 非同步通訊用戶端
     /// </summary>
-    public class Client : IClient
+    public class Client : IClient, IDisposable
     {
         /// <summary>
         /// 執行緒鎖
@@ -187,5 +187,41 @@ namespace AsyncSocket
                 Send(Encoding.ASCII.GetBytes(data));
             }
         }
+
+        #region Dispose
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (socket != null)
+                {
+                    socket.Dispose();
+                }
+
+                disposed = true;
+                if (disposing)
+                {
+                    GC.SuppressFinalize(this);
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                Dispose(true);
+            }
+        }
+
+        ~Client()
+        {
+            Dispose(false);
+        }
+
+        #endregion Dispose
     }
 }

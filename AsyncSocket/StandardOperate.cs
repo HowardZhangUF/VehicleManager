@@ -10,6 +10,20 @@ namespace AsyncSocket
     public static class StandardOperate
     {
         /// <summary>
+        /// 嘗試關閉 <see cref="Socket"/> 連接並釋放所有相關資源。
+        /// </summary>
+        public static void TryClose(this Socket socket)
+        {
+            try
+            {
+                socket.Close();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        /// <summary>
         /// 嘗試結束非同步連線要求，若失敗則回傳 null
         /// </summary>
         public static IAsyncResult TryEndConnect(this Socket handler, IAsyncResult ar)

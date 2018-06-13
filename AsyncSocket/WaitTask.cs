@@ -8,17 +8,17 @@ namespace AsyncSocket
     /// <para>非同步作業執行緒。</para>
     /// <para>當呼叫 <see cref="Start"/> 函式時，此物件會確保執行緒已經啟動才離開 <see cref="Start"/> 函式</para>
     /// </summary>
-    public class WaitTask
+    public class WaitTask : IDisposable
     {
         /// <summary>
         /// 基底類別
         /// </summary>
-        private Task @base;
+        private Task @base { get; set; }
 
         /// <summary>
         /// 等待開始事件鎖
         /// </summary>
-        private ManualResetEvent waitStart;
+        private ManualResetEvent waitStart { get; set; }
 
         /// <summary>
         /// <para>建立非同步作業執行緒。</para>
@@ -49,5 +49,41 @@ namespace AsyncSocket
             // 等待解鎖
             waitStart.WaitOne();
         }
+
+        #region Dispose
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (waitStart != null)
+                    waitStart.Dispose();
+                if (@base != null)
+                    @base.Dispose();
+
+                disposed = true;
+                if (disposing)
+                {
+                    GC.SuppressFinalize(this);
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                Dispose(true);
+            }
+        }
+
+        ~WaitTask()
+        {
+            Dispose(false);
+        }
+
+        #endregion Dispose
     }
 }

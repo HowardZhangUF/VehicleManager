@@ -38,7 +38,7 @@ namespace Serialization
     /// <summary>
     /// 非同步通訊伺服端
     /// </summary>
-    internal class SerialServer : IServer
+    public class SerialServer : IServer, IDisposable
     {
         /// <summary>
         /// 執行緒鎖
@@ -156,5 +156,39 @@ namespace Serialization
         /// 停止監聽
         /// </summary>
         public void StopListen() => @base.StopListen();
+
+        #region IDisposable Support
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (@base != null)
+                {
+                    @base.Dispose();
+                }
+
+                disposed = true;
+                if (disposing)
+                {
+                    GC.SuppressFinalize(this);
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                Dispose(true);
+            }
+        }
+
+        ~SerialServer()
+        {
+            Dispose(false);
+        }
+        #endregion
     }
 }

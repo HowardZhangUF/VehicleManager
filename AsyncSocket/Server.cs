@@ -10,7 +10,7 @@ namespace AsyncSocket
     /// <summary>
     /// 非同步通訊伺服端
     /// </summary>
-    public class Server : IServer
+    public class Server : IServer, IDisposable
     {
         /// <summary>
         /// 監聽事件服務器字典集合
@@ -327,5 +327,41 @@ namespace AsyncSocket
                 new WaitTask(() => ListenStatusChangedEvent?.Invoke(this, arg)).Start();
             }
         }
+
+        #region Dispose
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (socket != null)
+                {
+                    socket.Dispose();
+                }
+
+                disposed = true;
+                if (disposing)
+                {
+                    GC.SuppressFinalize(this);
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                Dispose(true);
+            }
+        }
+
+        ~Server()
+        {
+            Dispose(false);
+        }
+
+        #endregion Dispose
     }
 }

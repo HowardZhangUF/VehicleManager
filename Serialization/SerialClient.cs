@@ -7,7 +7,7 @@ namespace Serialization
     /// <summary>
     /// 非同步通訊用戶端
     /// </summary>
-    internal class SerialClient : IClient
+    public class SerialClient : IClient, IDisposable
     {
         /// <summary>
         /// 執行緒鎖
@@ -100,5 +100,39 @@ namespace Serialization
         /// 發送資料至遠端(使用序列化傳輸)
         /// </summary>
         public void Send(ISerializable data) => @base.Send(data.Serialize());
+
+        #region Dispose
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (@base != null)
+                {
+                    @base.Dispose();
+                }
+
+                disposed = true;
+                if (disposing)
+                {
+                    GC.SuppressFinalize(this);
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                Dispose(true);
+            }
+        }
+
+        ~SerialClient()
+        {
+            Dispose(false);
+        }
+        #endregion Dispose
     }
 }
