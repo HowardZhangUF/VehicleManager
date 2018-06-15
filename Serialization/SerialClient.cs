@@ -32,8 +32,10 @@ namespace Serialization
         {
             lock (key)
             {
-                Array.Resize(ref rxBuffer, rxBuffer.Length + e.Data.Length);
-                ISerializable obj = Deserialize(ref rxBuffer);
+				var oriLength = rxBuffer.Length;
+				Array.Resize(ref rxBuffer, rxBuffer.Length + e.Data.Length);
+				Array.Copy(e.Data, 0, rxBuffer, oriLength, e.Data.Length);
+				ISerializable obj = Deserialize(ref rxBuffer);
                 if (obj != null)
                 {
                     var arg = new ReceivedSerialDataEventArgs
