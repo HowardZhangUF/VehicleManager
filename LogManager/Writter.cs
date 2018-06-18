@@ -5,7 +5,7 @@ using System.IO;
 namespace LogManager
 {
     /// <summary>
-    /// Log 紀錄器
+    /// 紀錄器
     /// </summary>
     public class Writter
     {
@@ -33,7 +33,7 @@ namespace LogManager
         public int Count { get { lock (key) return data.Count; } }
 
         /// <summary>
-        /// 存檔
+        /// 存檔，檔案名稱會自動加上"-yyMMdd.txt"
         /// </summary>
         internal void Save()
         {

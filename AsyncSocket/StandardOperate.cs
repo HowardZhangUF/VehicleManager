@@ -5,7 +5,7 @@ using System.Net.Sockets;
 namespace AsyncSocket
 {
     /// <summary>
-    /// 標準操作錯
+    /// 標準操作
     /// </summary>
     public static class StandardOperate
     {

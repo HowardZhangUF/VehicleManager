@@ -5,35 +5,35 @@ using System.Threading;
 namespace LogManager
 {
     /// <summary>
-    /// Log 紀錄器管理器
+    /// 紀錄管理器
     /// </summary>
     public class LogManager
     {
         /// <summary>
-        /// 狀態改變 Log 紀錄
+        /// 狀態改變之紀錄
         /// </summary>
-        public Writter StatusChange { get; } = new Writter("StatusChange");
+        public Writter StatusChangeLog { get; } = new Writter("StatusChange");
 
         /// <summary>
-        /// 例外狀況 Log 紀錄
+        /// 例外狀況之紀錄
         /// </summary>
-        public Writter Exception { get; } = new Writter("Exception");
+        public Writter ExceptionLog { get; } = new Writter("Exception");
 
         /// <summary>
-        /// Log 集合
+        /// 紀錄器集合
         /// </summary>
         private readonly List<Writter> writterList;
 
         /// <summary>
-        /// <para>Log 紀錄器管理器</para>
-        /// <para>範例：<see cref="Log"/>.StatusChange.Add("Message");</para>
+        /// <para>紀錄管理器</para>
+        /// <para>使用範例：<see cref="Log"/>.StatusChangeLog.Add("Message");</para>
         /// </summary>
         public static LogManager Log { get; } = new LogManager();
 
         /// <summary>
         /// 儲存檔案用的執行緒
         /// </summary>
-        private Thread thread { get; set; }
+        private Thread save { get; set; }
 
         /// <summary>
         /// 不公開建構子，不讓外部使用者 new
@@ -42,20 +42,20 @@ namespace LogManager
         {
             writterList = new List<Writter>()
             {
-                StatusChange,Exception
+                StatusChangeLog,ExceptionLog
             };
 
-            thread = new Thread(SaveLog)
+            save = new Thread(Save)
             {
                 IsBackground = true
             };
-            thread.Start();
+            save.Start();
         }
 
         /// <summary>
-        /// 儲存 Log 資料
+        /// 儲存 <see cref="writterList"/> 無窮迴圈
         /// </summary>
-        private void SaveLog()
+        private void Save()
         {
             while (true)
             {
@@ -71,7 +71,8 @@ namespace LogManager
         }
 
         /// <summary>
-        /// 儲存全部
+        /// 儲存全部紀錄，此函式會將 <see cref="writterList"/> 中資料逐一儲存後才離開，
+        /// 可能會耗上一些時間。
         /// </summary>
         public void SaveAll()
         {

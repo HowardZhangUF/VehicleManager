@@ -18,7 +18,7 @@ namespace LittleGhost
             lock (key)
             {
                 message = $"{timeMark.ToString("hh:mm:ss.fff")}: {str}\r\n" + message;
-                Log.StatusChange.Add(str);
+                Log.StatusChangeLog.Add(str);
             }
         }
 

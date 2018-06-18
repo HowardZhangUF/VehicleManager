@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LogManager.cs" />
+    <Compile Include="StandardOperate.cs" />
     <Compile Include="Writter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
