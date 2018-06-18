@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogManager;
+using System;
 using System.Net;
 using System.Net.Sockets;
 
@@ -18,16 +19,18 @@ namespace AsyncSocket
             {
                 socket.Shutdown(SocketShutdown.Both);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
             }
 
             try
             {
                 socket.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
             }
         }
 
@@ -41,8 +44,9 @@ namespace AsyncSocket
                 handler.EndConnect(ar);
                 return ar;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
                 return null;
             }
         }
@@ -129,8 +133,9 @@ namespace AsyncSocket
             {
                 return socket.BeginAccept(callback, state);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
                 return null;
             }
         }
@@ -144,8 +149,9 @@ namespace AsyncSocket
             {
                 return handler.BeginConnect(remoteEP, callback, state);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
                 return null;
             }
         }
@@ -159,8 +165,9 @@ namespace AsyncSocket
             {
                 return socket.BeginReceive(buffer, offset, size, socketFlags, callback, state);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
                 return null;
             }
         }
@@ -174,8 +181,9 @@ namespace AsyncSocket
             {
                 return socket.BeginSend(buffer, offset, size, socketFlags, callback, state);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
                 return null;
             }
         }
@@ -189,8 +197,9 @@ namespace AsyncSocket
             {
                 return listener.EndAccept(ar);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
                 return null;
             }
         }
@@ -204,8 +213,9 @@ namespace AsyncSocket
             {
                 return handler.EndReceive(ar);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
                 return 0;
             }
         }
@@ -219,8 +229,9 @@ namespace AsyncSocket
             {
                 return handler.EndSend(ar);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ex.WriteLog();
                 return 0;
             }
         }

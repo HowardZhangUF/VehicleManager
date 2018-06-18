@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace LogManager
 {
@@ -10,17 +11,17 @@ namespace LogManager
         /// <summary>
         /// 儲存例外狀況
         /// </summary>
-        public static void WriteLog(this Exception ex)
+        public static void WriteLog(this Exception ex, [CallerLineNumber] int line = 0, [CallerMemberName] string member = "", [CallerFilePath] string path = "")
         {
-            LogManager.Log.ExceptionLog.Add(ex);
+            LogManager.Log.ExceptionLog.Add(ex, line, member, path);
         }
 
         /// <summary>
         /// 儲存例外狀況
         /// </summary>
-        public static void WriteLog(this Exception ex, string data)
+        public static void WriteLog(this Exception ex, string message, [CallerLineNumber] int line = 0, [CallerMemberName] string member = "", [CallerFilePath] string path = "")
         {
-            LogManager.Log.ExceptionLog.Add(ex, data);
+            LogManager.Log.ExceptionLog.Add(ex, message, line, member, path);
         }
     }
 }

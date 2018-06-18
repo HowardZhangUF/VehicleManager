@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace LogManager
 {
@@ -67,11 +68,19 @@ namespace LogManager
         }
 
         /// <summary>
+        /// 格式化紀錄：[yyMMdd hh:mm:ss.fff path(member,line)] msg=message
+        /// </summary>
+        private string Format(string message, int line, string member, string path)
+        {
+            return $"[{Now} {System.IO.Path.GetFileName(path)}({member},{line})] msg={message}";
+        }
+
+        /// <summary>
         /// 加入新資料
         /// </summary>
-        public void Add(string data)
+        public void Add(string message, [CallerLineNumber] int line = 0, [CallerMemberName] string member = "", [CallerFilePath] string path = "")
         {
-            string newLine = $"[{Now}]:{data}";
+            string newLine = Format(message, line, member, path);
             lock (key)
             {
                 this.data.Add(newLine);
@@ -81,9 +90,9 @@ namespace LogManager
         /// <summary>
         /// 加入新資料
         /// </summary>
-        public void Add(Exception ex)
+        public void Add(Exception ex, [CallerLineNumber] int line = 0, [CallerMemberName] string member = "", [CallerFilePath] string path = "")
         {
-            string newLine = $"[{Now}]:src={ex.Source};msg={ex.Message}";
+            string newLine = Format(ex.Message, line, member, path);
             lock (key)
             {
                 this.data.Add(newLine);
@@ -93,9 +102,9 @@ namespace LogManager
         /// <summary>
         /// 加入新資料
         /// </summary>
-        public void Add(Exception ex, string data)
+        public void Add(Exception ex, string message, [CallerLineNumber] int line = 0, [CallerMemberName] string member = "", [CallerFilePath] string path = "")
         {
-            string newLine = $"[{Now}]:src={ex.Source};msg={ex.Message};data={data}";
+            string newLine = Format($"{ex.Message}--{message}", line, member, path);
             lock (key)
             {
                 this.data.Add(newLine);
