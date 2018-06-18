@@ -1,6 +1,8 @@
 ﻿using Geometry;
+using IniFiles;
 using SharpGL;
 using System;
+using System.Collections.Generic;
 
 namespace GLStyle
 {
@@ -68,6 +70,23 @@ namespace GLStyle
         public static void EndStippleLine(this OpenGL gl)
         {
             gl.Disable(OpenGL.GL_LINE_STIPPLE);
+        }
+
+        /// <summary>
+        /// 從INI設定檔中讀取右鍵選單中命令
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<string> ReadCommandFromINI(string path, string section)
+        {
+            for (int ii = 0; true; ii++)
+            {
+                string cmd = INI.Read(path, section, $"Command{ii}", string.Empty);
+
+                if (string.IsNullOrEmpty(cmd)) yield break;
+
+                // cmd not null
+                yield return cmd;
+            }
         }
     }
 }

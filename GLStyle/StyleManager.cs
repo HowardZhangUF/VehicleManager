@@ -65,6 +65,16 @@ namespace GLStyle
         }
 
         /// <summary>
+        /// 取得右鍵文字命令。
+        /// </summary>
+        public static IEnumerable<string> GetCommand(string styleName)
+        {
+            return StyleTable.SaftyEdit(dic => dic
+            .Where(item => item.Key == styleName)
+            .Select(item => item.Value.Command)).FirstOrDefault() ?? new List<string>();
+        }
+
+        /// <summary>
         /// 取得樣式種類。若 <paramref name="styleName"/> 不存在則回傳 <see cref="string.Empty"/>
         /// </summary>
         public static string GetStyleType(string styleName)

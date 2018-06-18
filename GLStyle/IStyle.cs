@@ -1,4 +1,6 @@
-﻿namespace GLStyle
+﻿using System.Collections.Generic;
+
+namespace GLStyle
 {
     /// <summary>
     /// 樣式介面
@@ -24,5 +26,10 @@
         /// 樣式種類
         /// </summary>
         string StyleType { get; }
+
+        /// <summary>
+        /// 右鍵選單中命令
+        /// </summary>
+        List<string> Command { get; }
     }
 }

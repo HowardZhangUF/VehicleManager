@@ -1,4 +1,5 @@
 ﻿using IniFiles;
+using System.Collections.Generic;
 
 namespace GLStyle
 {
@@ -104,5 +105,10 @@ namespace GLStyle
         /// 寬
         /// </summary>
         public float Width => @base.Width;
+
+        /// <summary>
+        /// 右鍵選單中命令
+        /// </summary>
+        public List<string> Command => @base.Command;
     }
 }

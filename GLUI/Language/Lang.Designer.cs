@@ -79,6 +79,15 @@ namespace GLUI.Language {
         }
         
         /// <summary>
+        ///   查詢類似 Command 的當地語系化字串。
+        /// </summary>
+        public static string Command {
+            get {
+                return ResourceManager.GetString("Command", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 Delete 的當地語系化字串。
         /// </summary>
         public static string Delete {

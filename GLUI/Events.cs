@@ -4,6 +4,26 @@ using System.Collections.Generic;
 
 namespace GLUI
 {
+    #region 右鍵命令事件
+
+    /// <summary>
+    /// 右鍵命令事件委派
+    /// </summary>
+    public delegate void CommandOnClickEvent(object sender, CommandOnClickEventArgs e);
+
+    /// <summary>
+    /// 右鍵命令事件參數
+    /// </summary>
+    public class CommandOnClickEventArgs : EventArgs
+    {
+        /// <summary>
+        /// 命令
+        /// </summary>
+        public string Command { get; set; }
+    }
+
+    #endregion 右鍵命令事件
+
     #region 地圖載入
 
     /// <summary>

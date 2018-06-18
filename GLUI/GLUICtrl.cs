@@ -19,6 +19,7 @@ namespace GLUI
         private System.Drawing.Image AddImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Add");
         private System.Drawing.Image AreaImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Area");
         private System.Drawing.Image ChangeStyleImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("ChangeStyle");
+        private System.Drawing.Image CommandImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Command");
         private System.Drawing.Image DeleteImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Delete");
         private System.Drawing.Image EraserImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Eraser");
         private System.Drawing.Image LineImage { get; } = (System.Drawing.Image)Resources.ResourceManager.GetObject("Line");
@@ -176,6 +177,18 @@ namespace GLUI
         {
             string style = (sender as ToolStripItem).Text;
             GLCMD.CMD.DoChangeStyle(SelectTargetID, style);
+        }
+
+        /// <summary>
+        /// 右鍵文字命令選單觸發
+        /// </summary>
+        private void MenuCommandOnClick(object sender, EventArgs e)
+        {
+            var args = new CommandOnClickEventArgs()
+            {
+                Command = (sender as ToolStripItem).Text,
+            };
+            new Task(() => CommandOnClick?.Invoke(this, args)).Start();
         }
 
         /// <summary>
@@ -345,6 +358,19 @@ namespace GLUI
                 style.DropDownItems.Add(name, ChangeStyleImage, MenuChangeStyleOnClik);
             }
             menu.Items.Add(style);
+
+            // 文字命令
+            var command = GLCMD.CMD.GetCommand(SelectTargetID);
+            string targetName = GLCMD.CMD.GetName(SelectTargetID);
+            if (command.Any())
+            {
+                ToolStripMenuItem cmdTool = new ToolStripMenuItem(Lang.Command) { Image = CommandImage };
+                foreach (var cmd in command)
+                {
+                    cmdTool.DropDownItems.Add(string.Format(cmd, targetName), CommandImage, MenuCommandOnClick);
+                }
+                menu.Items.Add(cmdTool);
+            }
 
             menu.Show(MousePosition);
         }
@@ -853,6 +879,11 @@ namespace GLUI
         /// 發生於按兩下控制項時
         /// </summary>
         public event EventHandler GLDoubleClick { add { SharpGLCtrl.DoubleClick += value; } remove { SharpGLCtrl.DoubleClick -= value; } }
+
+        /// <summary>
+        /// 右鍵命令事件，使用 Task 發布
+        /// </summary>
+        public event CommandOnClickEvent CommandOnClick;
 
         /// <summary>
         /// 地圖載入事件，使用 Task 發布

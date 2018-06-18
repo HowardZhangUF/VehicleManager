@@ -1,4 +1,6 @@
 ﻿using IniFiles;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GLStyle
 {
@@ -17,6 +19,7 @@ namespace GLStyle
             Pattern = (ELinePattern)INI.Read(path, section, nameof(Pattern), 0);
             ShowOnTheMenu = INI.Read(path, section, nameof(ShowOnTheMenu), false);
             Width = INI.Read(path, section, nameof(Width), 1.0f);
+            Command = StandardOperate.ReadCommandFromINI(path, section).ToList();
         }
 
         /// <summary>
@@ -48,5 +51,10 @@ namespace GLStyle
         /// 線條寬
         /// </summary>
         public float Width { get; }
+
+        /// <summary>
+        /// 右鍵選單中命令
+        /// </summary>
+        public List<string> Command { get; }
     }
 }

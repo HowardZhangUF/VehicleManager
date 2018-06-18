@@ -163,6 +163,7 @@
     <Content Include="Image\MagneticTracking.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Command.png" />
     <None Include="Resources\ArrowRight.png" />
     <None Include="Resources\ArrowLeft.png" />
     <None Include="Resources\ArrowDown.png" />

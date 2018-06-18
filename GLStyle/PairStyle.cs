@@ -1,4 +1,6 @@
 ﻿using IniFiles;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GLStyle
 {
@@ -16,6 +18,7 @@ namespace GLStyle
             Layer = INI.Read(path, section, nameof(Layer), 0);
             Size = INI.Read(path, section, nameof(Size), 1.0f);
             ShowOnTheMenu = INI.Read(path, section, nameof(ShowOnTheMenu), false);
+            Command = StandardOperate.ReadCommandFromINI(path, section).ToList();
         }
 
         /// <summary>
@@ -42,5 +45,10 @@ namespace GLStyle
         /// 樣式名稱
         /// </summary>
         public string StyleType { get { return nameof(IPairStyle); } }
+
+        /// <summary>
+        /// 右鍵選單中命令
+        /// </summary>
+        public List<string> Command { get; }
     }
 }

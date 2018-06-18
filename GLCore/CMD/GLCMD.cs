@@ -1065,6 +1065,32 @@ namespace GLCore
         }
 
         /// <summary>
+        /// 根據 id 取得名稱。若 id 不存在則回傳 <see cref="string.Empty"/>
+        /// </summary>
+        public string GetName(int id)
+        {
+            lock (key)
+            {
+                if (!CurrentSingleObject.Keys.Contains(id)) return string.Empty;
+
+                return CurrentSingleObject[id].Name;
+            }
+        }
+
+        /// <summary>
+        /// 根據 id 取得右鍵文字命令
+        /// </summary>
+        public IEnumerable<string> GetCommand(int id)
+        {
+            lock (key)
+            {
+                if (!CurrentSingleObject.Keys.Contains(id)) return new List<string>();
+
+                return StyleManager.GetCommand(CurrentSingleObject[id].StyleName);
+            }
+        }
+
+        /// <summary>
         /// 獲得已復原的歷史紀錄
         /// </summary>
         public IEnumerable<string> GetUndoHistory()

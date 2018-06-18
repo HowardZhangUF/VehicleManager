@@ -35,6 +35,7 @@ namespace GLUITest
             GLUI.LoadMapEvent += GLUI_LoadMapEvent;
             GLUI.PenMapEvent += GLUI_PenMapEvent;
             GLUI.EraserMapEvent += GLUI_EraserMapEvent;
+            GLUI.CommandOnClick += GLUI_CommandOnClick;
         }
 
         /// <summary>
@@ -513,7 +514,11 @@ namespace GLUITest
         {
             aStar.Remove(e.Range.Min, e.Range.Max);
         }
-
         #endregion 路徑搜尋
+
+        private void GLUI_CommandOnClick(object sender, CommandOnClickEventArgs e)
+        {
+            MessageBox.Show($"這裡向 iM 發送命令:\r\n{e.Command}");
+        }
     }
 }

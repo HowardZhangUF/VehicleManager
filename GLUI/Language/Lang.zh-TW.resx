@@ -177,4 +177,7 @@
   <data name="SelectRange" xml:space="preserve">
     <value>選擇區域</value>
   </data>
+  <data name="Command" xml:space="preserve">
+    <value>命令</value>
+  </data>
 </root>
