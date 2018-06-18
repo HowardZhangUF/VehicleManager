@@ -37,24 +37,31 @@ namespace LogManager
         /// </summary>
         internal void Save()
         {
-            lock (key)
+            lock (sKey)
             {
-                try
+                lock (key)
                 {
-                    if (data.Count > 0)
+                    try
                     {
-                        var file = new StreamWriter($"{Path}-{DateTime.Today.ToString("yyMMdd")}.txt", true);
-                        foreach (var item in data)
+                        if (data.Count > 0)
                         {
-                            file.WriteLine(item);
+                            // 將來改為 DB 版本，也是將資料庫儲存方法寫在這裡
+                            // 儲存時由於 static readonly object sKey 執行緒鎖
+                            // 可以保證同一個時間只有一個人在寫資料庫
+                            // 避免發生不可預期的錯誤
+                            var file = new StreamWriter($"{Path}-{DateTime.Today.ToString("yyMMdd")}.txt", true);
+                            foreach (var item in data)
+                            {
+                                file.WriteLine(item);
+                            }
+                            file.Close();
+                            data.Clear();
                         }
-                        data.Clear();
-                        file.Close();
                     }
-                }
-                finally
-                {
-                    LastSaveTime = DateTime.Now;
+                    finally
+                    {
+                        LastSaveTime = DateTime.Now;
+                    }
                 }
             }
         }
@@ -101,9 +108,14 @@ namespace LogManager
         public string Now { get { return DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff"); } }
 
         /// <summary>
-        /// 執行緒鎖
+        /// 執行緒鎖，用來鎖自身的 <see cref="Add"/>, <see cref="Count"/>, <see cref="Save"/> 等函式
         /// </summary>
         private readonly object key = new object();
+
+        /// <summary>
+        /// 執行緒鎖，用 static 來保證同一個時間只會有一個檔案被寫入
+        /// </summary>
+        private static readonly object sKey = new object();
 
         /// <summary>
         /// 最後存檔時間
