@@ -11,18 +11,18 @@ namespace MD5Hash
     public static class MD5
     {
         /// <summary>
-        /// 計算陣列的雜湊值，並回傳十六進位字串(字串長度 12)
+        /// 計算陣列的雜湊值，並回傳十六進位字串
         /// </summary>
         public static string GetByteArrayHash(byte[] bytes)
         {
             using (var md5 = System.Security.Cryptography.MD5.Create())
             {
-                return ToBase16String(md5.ComputeHash(bytes).Take(6));
+                return ToBase16String(md5.ComputeHash(bytes));
             }
         }
 
         /// <summary>
-        /// 計算檔案的雜湊值，並回傳十六進位字串(字串長度 12)
+        /// 計算檔案的雜湊值，並回傳十六進位字串
         /// </summary>
         public static string GetFileHash(string path)
         {
@@ -30,7 +30,7 @@ namespace MD5Hash
             {
                 using (var stream = File.OpenRead(path))
                 {
-                    return ToBase16String(md5.ComputeHash(stream).Take(6));
+                    return ToBase16String(md5.ComputeHash(stream));
                 }
             }
         }
