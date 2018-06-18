@@ -36,6 +36,7 @@
             this.components = new System.ComponentModel.Container();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.pageServer = new System.Windows.Forms.TabPage();
+            this.chkServerSendByBytes = new System.Windows.Forms.CheckBox();
             this.txtServerSendData = new System.Windows.Forms.TextBox();
             this.btnServerSend = new System.Windows.Forms.Button();
             this.cmbRemoteList = new System.Windows.Forms.ComboBox();
@@ -43,6 +44,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.nmrServerPort = new System.Windows.Forms.NumericUpDown();
             this.pageClient = new System.Windows.Forms.TabPage();
+            this.chkClientSendByBytes = new System.Windows.Forms.CheckBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.txtClientSendData = new System.Windows.Forms.TextBox();
             this.btnClientSend = new System.Windows.Forms.Button();
@@ -50,8 +52,6 @@
             this.nmrClientPort = new System.Windows.Forms.NumericUpDown();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.tUpdateMessage = new System.Windows.Forms.Timer(this.components);
-            this.chkServerSendByBytes = new System.Windows.Forms.CheckBox();
-            this.chkClientSendByBytes = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.pageServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmrServerPort)).BeginInit();
@@ -89,6 +89,16 @@
             this.pageServer.TabIndex = 0;
             this.pageServer.Text = "Server";
             this.pageServer.UseVisualStyleBackColor = true;
+            // 
+            // chkServerSendByBytes
+            // 
+            this.chkServerSendByBytes.AutoSize = true;
+            this.chkServerSendByBytes.Location = new System.Drawing.Point(565, 101);
+            this.chkServerSendByBytes.Name = "chkServerSendByBytes";
+            this.chkServerSendByBytes.Size = new System.Drawing.Size(192, 32);
+            this.chkServerSendByBytes.TabIndex = 6;
+            this.chkServerSendByBytes.Text = "Send By Bytes";
+            this.chkServerSendByBytes.UseVisualStyleBackColor = true;
             // 
             // txtServerSendData
             // 
@@ -172,6 +182,16 @@
             this.pageClient.Text = "Client";
             this.pageClient.UseVisualStyleBackColor = true;
             // 
+            // chkClientSendByBytes
+            // 
+            this.chkClientSendByBytes.AutoSize = true;
+            this.chkClientSendByBytes.Location = new System.Drawing.Point(560, 60);
+            this.chkClientSendByBytes.Name = "chkClientSendByBytes";
+            this.chkClientSendByBytes.Size = new System.Drawing.Size(192, 32);
+            this.chkClientSendByBytes.TabIndex = 10;
+            this.chkClientSendByBytes.Text = "Send By Bytes";
+            this.chkClientSendByBytes.UseVisualStyleBackColor = true;
+            // 
             // btnConnect
             // 
             this.btnConnect.Location = new System.Drawing.Point(390, 7);
@@ -249,26 +269,6 @@
             this.tUpdateMessage.Interval = 20;
             this.tUpdateMessage.Tick += new System.EventHandler(this.tUpdateMessage_Tick);
             // 
-            // chkServerSendByBytes
-            // 
-            this.chkServerSendByBytes.AutoSize = true;
-            this.chkServerSendByBytes.Location = new System.Drawing.Point(565, 101);
-            this.chkServerSendByBytes.Name = "chkServerSendByBytes";
-            this.chkServerSendByBytes.Size = new System.Drawing.Size(192, 32);
-            this.chkServerSendByBytes.TabIndex = 6;
-            this.chkServerSendByBytes.Text = "Send By Bytes";
-            this.chkServerSendByBytes.UseVisualStyleBackColor = true;
-            // 
-            // chkClientSendByBytes
-            // 
-            this.chkClientSendByBytes.AutoSize = true;
-            this.chkClientSendByBytes.Location = new System.Drawing.Point(560, 60);
-            this.chkClientSendByBytes.Name = "chkClientSendByBytes";
-            this.chkClientSendByBytes.Size = new System.Drawing.Size(192, 32);
-            this.chkClientSendByBytes.TabIndex = 10;
-            this.chkClientSendByBytes.Text = "Send By Bytes";
-            this.chkClientSendByBytes.UseVisualStyleBackColor = true;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -278,6 +278,7 @@
             this.Controls.Add(this.tabControl);
             this.Name = "frmMain";
             this.Text = "Little Ghost";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.tabControl.ResumeLayout(false);
             this.pageServer.ResumeLayout(false);
             this.pageServer.PerformLayout();

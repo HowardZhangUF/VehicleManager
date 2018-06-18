@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE}</ProjectGuid>
+    <ProjectGuid>{6F05D782-1F88-491A-984D-8359CF296CB3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AsyncSocket</RootNamespace>
-    <AssemblyName>AsyncSocket</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>LogManager</RootNamespace>
+    <AssemblyName>LogManager</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,31 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
-    <Compile Include="Events.cs" />
-    <Compile Include="IClient.cs" />
-    <Compile Include="IServer.cs" />
+    <Compile Include="LogManager.cs" />
+    <Compile Include="Writter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server.cs" />
-    <Compile Include="StandardOperate.cs" />
-    <Compile Include="StateObject.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LogManager\LogManager.csproj">
-      <Project>{6f05d782-1f88-491a-984d-8359cf296cb3}</Project>
-      <Name>LogManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WaitTask\WaitTask.csproj">
-      <Project>{4E127BFA-A42C-4CCE-8256-9ED51C8D8656}</Project>
-      <Name>WaitTask</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

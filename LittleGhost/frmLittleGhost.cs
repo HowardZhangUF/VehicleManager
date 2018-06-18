@@ -3,6 +3,7 @@ using Serialization;
 using System;
 using System.Text;
 using System.Windows.Forms;
+using static LogManager.LogManager;
 
 namespace LittleGhost
 {
@@ -17,6 +18,7 @@ namespace LittleGhost
             lock (key)
             {
                 message = $"{timeMark.ToString("hh:mm:ss.fff")}: {str}\r\n" + message;
+                Log.StatusChange.Add(str);
             }
         }
 
@@ -150,5 +152,10 @@ namespace LittleGhost
         }
 
         #endregion Client
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.SaveAll();
+        }
     }
 }

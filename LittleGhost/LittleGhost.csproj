@@ -85,6 +85,10 @@
       <Project>{96aebce3-fc5e-4f3f-b8f9-b4ba0bbac2be}</Project>
       <Name>AsyncSocket</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogManager\LogManager.csproj">
+      <Project>{6f05d782-1f88-491a-984d-8359cf296cb3}</Project>
+      <Name>LogManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Serialization\Serialization.csproj">
       <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
       <Name>Serialization</Name>
