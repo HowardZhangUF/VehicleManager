@@ -33,22 +33,18 @@ namespace LittleGhost
             InitializeComponent();
             server.ConnectStatusChangedEvent += Server_ConnectStatusChangedEvent;
             server.ListenStatusChangedEvent += Server_ListenStatusChangedEvent;
-            server.ReceivedSerialDataEvent += Server_ReceivedSerialDataEvent; ;
+            server.ReceivedSerialDataEvent += ReceivedSerialDataEvent; ;
 
             client.ConnectStatusChangedEvent += Client_ConnectStatusChangedEvent;
-            client.ReceivedSerialDataEvent += Client_ReceivedSerialDataEvent; ;
+            client.ReceivedSerialDataEvent += ReceivedSerialDataEvent; ;
         }
 
-        private void Client_ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
+        private void ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
         {
             if (e.Data is StringMessage)
-                AddMessage(e.ReceivedTime, $"{e.RemoteInfo} >> {(e.Data as StringMessage).Message}");
-        }
-
-        private void Server_ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
-        {
-            if (e.Data is StringMessage)
-                AddMessage(e.ReceivedTime, $"{e.RemoteInfo} >> {(e.Data as StringMessage).Message}");
+                AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送字串過來 >> {(e.Data as StringMessage).Message}");
+            if (e.Data is ByteArray)
+                AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送陣列過來 >> {Encoding.Unicode.GetString((e.Data as ByteArray).Message)}");
         }
 
         #region Server
@@ -76,12 +72,19 @@ namespace LittleGhost
         {
             string remote = cmbRemoteList.Text;
             string data = txtServerSendData.Text;
-            server.Send(remote, data);
+            if (chkServerSendByBytes.Checked)
+            {
+                server.Send(remote, Encoding.Unicode.GetBytes(data));
+            }
+            else // send by string
+            {
+                server.Send(remote, data);
+            }
         }
 
         private void Server_ConnectStatusChangedEvent(object sender, ConnectStatusChangedEventArgs e)
         {
-            AddMessage(e.StatusChangedTime, $"{e.RemoteInfo} >> {e.ConnectStatus}");
+            AddMessage(e.StatusChangedTime, $"和 {e.RemoteInfo} 的連線狀態改變 >> {e.ConnectStatus}");
             switch (e.ConnectStatus)
             {
                 case EConnectStatus.Disconnect:
@@ -99,7 +102,7 @@ namespace LittleGhost
 
         private void Server_ListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)
         {
-            AddMessage(e.StatusChangedTime, $"Server >> {e.ListenStatus}");
+            AddMessage(e.StatusChangedTime, $"監聽狀態改變 >> {e.ListenStatus}");
             btnListening.InvokeIfNecessary(() => btnListening.Text = e.ListenStatus.ToString());
         }
 
@@ -112,7 +115,14 @@ namespace LittleGhost
         private void btnClientSend_Click(object sender, EventArgs e)
         {
             string data = txtClientSendData.Text;
-            client.Send(data);
+            if (chkClientSendByBytes.Checked)
+            {
+                client.Send(Encoding.Unicode.GetBytes(data));
+            }
+            else // send by string
+            {
+                client.Send(data);
+            }
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -135,7 +145,7 @@ namespace LittleGhost
 
         private void Client_ConnectStatusChangedEvent(object sender, ConnectStatusChangedEventArgs e)
         {
-            AddMessage(e.StatusChangedTime, $"Client >> {e.ConnectStatus}");
+            AddMessage(e.StatusChangedTime, $"連線狀態改變 >> {e.ConnectStatus}");
             btnConnect.InvokeIfNecessary(() => btnConnect.Text = e.ConnectStatus.ToString());
         }
 

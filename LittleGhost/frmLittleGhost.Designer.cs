@@ -50,6 +50,8 @@
             this.nmrClientPort = new System.Windows.Forms.NumericUpDown();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.tUpdateMessage = new System.Windows.Forms.Timer(this.components);
+            this.chkServerSendByBytes = new System.Windows.Forms.CheckBox();
+            this.chkClientSendByBytes = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.pageServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmrServerPort)).BeginInit();
@@ -59,7 +61,7 @@
             // 
             // tabControl
             // 
-            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.pageServer);
             this.tabControl.Controls.Add(this.pageClient);
@@ -72,6 +74,7 @@
             // 
             // pageServer
             // 
+            this.pageServer.Controls.Add(this.chkServerSendByBytes);
             this.pageServer.Controls.Add(this.txtServerSendData);
             this.pageServer.Controls.Add(this.btnServerSend);
             this.pageServer.Controls.Add(this.cmbRemoteList);
@@ -154,6 +157,7 @@
             // 
             // pageClient
             // 
+            this.pageClient.Controls.Add(this.chkClientSendByBytes);
             this.pageClient.Controls.Add(this.btnConnect);
             this.pageClient.Controls.Add(this.txtClientSendData);
             this.pageClient.Controls.Add(this.btnClientSend);
@@ -226,8 +230,8 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMessage.BackColor = System.Drawing.SystemColors.InfoText;
             this.txtMessage.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -244,6 +248,26 @@
             this.tUpdateMessage.Enabled = true;
             this.tUpdateMessage.Interval = 20;
             this.tUpdateMessage.Tick += new System.EventHandler(this.tUpdateMessage_Tick);
+            // 
+            // chkServerSendByBytes
+            // 
+            this.chkServerSendByBytes.AutoSize = true;
+            this.chkServerSendByBytes.Location = new System.Drawing.Point(565, 101);
+            this.chkServerSendByBytes.Name = "chkServerSendByBytes";
+            this.chkServerSendByBytes.Size = new System.Drawing.Size(192, 32);
+            this.chkServerSendByBytes.TabIndex = 6;
+            this.chkServerSendByBytes.Text = "Send By Bytes";
+            this.chkServerSendByBytes.UseVisualStyleBackColor = true;
+            // 
+            // chkClientSendByBytes
+            // 
+            this.chkClientSendByBytes.AutoSize = true;
+            this.chkClientSendByBytes.Location = new System.Drawing.Point(560, 60);
+            this.chkClientSendByBytes.Name = "chkClientSendByBytes";
+            this.chkClientSendByBytes.Size = new System.Drawing.Size(192, 32);
+            this.chkClientSendByBytes.TabIndex = 10;
+            this.chkClientSendByBytes.Text = "Send By Bytes";
+            this.chkClientSendByBytes.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
@@ -284,6 +308,8 @@
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.TextBox txtClientSendData;
         private System.Windows.Forms.Button btnClientSend;
+        private System.Windows.Forms.CheckBox chkServerSendByBytes;
+        private System.Windows.Forms.CheckBox chkClientSendByBytes;
     }
 }
 
