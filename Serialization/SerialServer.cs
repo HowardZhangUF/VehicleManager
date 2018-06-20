@@ -118,7 +118,7 @@ namespace Serialization
         /// <summary>
         /// 發送資料至指定遠端(使用序列化傳輸)
         /// </summary>
-        public void Send(string ipport, ISerializable data) => @base.Send(data.Serialize());
+        public void Send(string ipport, ISerializable data) => @base.Send(ipport, data.Serialize());
 
         /// <summary>
         /// 開始監聽連線
