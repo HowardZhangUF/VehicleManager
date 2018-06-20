@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AGVPath.cs" />
+    <Compile Include="AGVStatus.cs" />
     <Compile Include="ByteArray.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="ISerializable.cs" />
@@ -53,6 +55,10 @@
     <ProjectReference Include="..\AsyncSocket\AsyncSocket.csproj">
       <Project>{96aebce3-fc5e-4f3f-b8f9-b4ba0bbac2be}</Project>
       <Name>AsyncSocket</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Geometry\Geometry.csproj">
+      <Project>{A617D647-1075-4BBB-9B9C-17971D56FE1E}</Project>
+      <Name>Geometry</Name>
     </ProjectReference>
     <ProjectReference Include="..\WaitTask\WaitTask.csproj">
       <Project>{4E127BFA-A42C-4CCE-8256-9ED51C8D8656}</Project>
