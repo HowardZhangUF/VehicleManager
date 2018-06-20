@@ -17,7 +17,7 @@ namespace LittleGhost
         {
             lock (key)
             {
-                message = $"{timeMark.ToString("hh:mm:ss.fff")}: {str}\r\n" + message;
+                message = $"{timeMark.ToString("HH:mm:ss.fff")}: {str}\r\n" + message;
                 Log.StatusChangeLog.Add(str);
             }
         }
@@ -42,16 +42,25 @@ namespace LittleGhost
         }
 
         private void ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
-        {
-            if (e.Data is StringMessage)
+		{
+			if (e.Data is AGVStatus)
+				AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVStatus 過來");
+			else if (e.Data is AGVPath)
+				AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVPath 過來");
+			else if (e.Data is StringMessage)
                 AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送字串過來 >> {(e.Data as StringMessage).Message}");
-            if (e.Data is ByteArray)
+            else if (e.Data is ByteArray)
                 AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送陣列過來 >> {Encoding.Unicode.GetString((e.Data as ByteArray).Message)}");
-        }
+		}
 
-        #region Server
+		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			Log.SaveAll();
+		}
 
-        private readonly SerialServer server = new SerialServer();
+		#region Server
+
+		private readonly SerialServer server = new SerialServer();
 
         private void btnListening_Click(object sender, EventArgs e)
         {
@@ -74,6 +83,18 @@ namespace LittleGhost
         {
             string remote = cmbRemoteList.Text;
             string data = txtServerSendData.Text;
+
+			if (data == "FakeAGVStatus")
+			{
+				server.Send(remote, AGVStatus.CreateFakeData());
+				return;
+			}
+			else if (data == "FakeAGVPath")
+			{
+				server.Send(remote, AGVPath.CreateFakeData());
+				return;
+			}
+
             if (chkServerSendByBytes.Checked)
             {
                 server.Send(remote, Encoding.Unicode.GetBytes(data));
@@ -117,7 +138,19 @@ namespace LittleGhost
         private void btnClientSend_Click(object sender, EventArgs e)
         {
             string data = txtClientSendData.Text;
-            if (chkClientSendByBytes.Checked)
+
+			if (data == "FakeAGVStatus")
+			{
+				client.Send(AGVStatus.CreateFakeData());
+				return;
+			}
+			else if (data == "FakeAGVPath")
+			{
+				client.Send(AGVPath.CreateFakeData());
+				return;
+			}
+
+			if (chkClientSendByBytes.Checked)
             {
                 client.Send(Encoding.Unicode.GetBytes(data));
             }
@@ -152,10 +185,5 @@ namespace LittleGhost
         }
 
         #endregion Client
-
-        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Log.SaveAll();
-        }
     }
 }
