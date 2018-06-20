@@ -36,28 +36,10 @@ namespace GLUITest
             GLUI.PenMapEvent += GLUI_PenMapEvent;
             GLUI.EraserMapEvent += GLUI_EraserMapEvent;
             GLUI.CommandOnClick += GLUI_CommandOnClick;
-        }
 
-        /// <summary>
-        /// AGV 範例
-        /// </summary>
-        private void AGVDemo()
-        {
-            int agv1 = GLCMD.CMD.SerialNumber.Next();
-            int agv2 = GLCMD.CMD.SerialNumber.Next();
-            Random random = new Random();
-            new Thread(() =>
-            {
-                while (true)
-                {
-                    GLCMD.CMD.AddAGV(agv1, "AGV-1", random.Next(0, 5000), random.Next(0, 5000), random.Next(0, 360));
-                    GLCMD.CMD.AddAGV(agv2, random.Next(-5000, 0), random.Next(-5000, 0), random.Next(0, 360));
-                    Thread.Sleep(1000);
-                }
-            })
-            {
-                IsBackground = true
-            }.Start();
+			// 加入範例 / 測試
+			CMDDemo();
+			AGVDemo();
         }
 
         /// <summary>
@@ -99,29 +81,6 @@ namespace GLUITest
                 default:
                     break;
             }
-        }
-
-        /// <summary>
-        /// 命令範例
-        /// </summary>
-        private void CMDDemo()
-        {
-            // 使用者用指令加入圖形(可復原)
-            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ChargingDocking,-2000,0,0");
-            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea2,0,0,3000,3000");
-            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea,4000,4000,7000,7000");
-
-            // 使用者用函式加入圖形(可復原)
-            GLCMD.CMD.DoAddSingleTowardPair("General", 0, 2000, 45);
-
-            // 使用者用函式加入複合圖形(不可復原)
-            Random random = new Random();
-            List<IPair> list = new List<IPair>();
-            for (int ii = 0; ii < 100000; ++ii)
-            {
-                list.Add(new Pair(random.Next(-10000, 10000), random.Next(-10000, 10000)));
-            }
-            GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
         }
 
         /// <summary>
@@ -185,12 +144,20 @@ namespace GLUITest
                 default:
                     break;
             }
-        }
+		}
 
-        /// <summary>
-        /// 回傳表格中對應的 ID。若 ID 不存在，則回傳 -1
-        /// </summary>
-        private int GetTargetID(int rowIndex)
+		/// <summary>
+		/// 傳送命令
+		/// </summary>
+		private void GLUI_CommandOnClick(object sender, CommandOnClickEventArgs e)
+		{
+			MessageBox.Show($"這裡向 iM 發送命令:\r\n{e.Command}");
+		}
+
+		/// <summary>
+		/// 回傳表格中對應的 ID。若 ID 不存在，則回傳 -1
+		/// </summary>
+		private int GetTargetID(int rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= dgvInfo.RowCount) return -1;
 
@@ -514,11 +481,55 @@ namespace GLUITest
         {
             aStar.Remove(e.Range.Min, e.Range.Max);
         }
-        #endregion 路徑搜尋
+		#endregion 路徑搜尋
 
-        private void GLUI_CommandOnClick(object sender, CommandOnClickEventArgs e)
-        {
-            MessageBox.Show($"這裡向 iM 發送命令:\r\n{e.Command}");
-        }
-    }
+		#region 範例 / 測試
+
+		/// <summary>
+		/// 命令範例
+		/// </summary>
+		private void CMDDemo()
+		{
+			// 使用者用指令加入圖形(可復原)
+			GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ChargingDocking,-2000,0,0");
+			GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea2,0,0,3000,3000");
+			GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea,4000,4000,7000,7000");
+
+			// 使用者用函式加入圖形(可復原)
+			GLCMD.CMD.DoAddSingleTowardPair("General", 0, 2000, 45);
+
+			// 使用者用函式加入複合圖形(不可復原)
+			Random random = new Random();
+			List<IPair> list = new List<IPair>();
+			for (int ii = 0; ii < 100000; ++ii)
+			{
+				list.Add(new Pair(random.Next(-10000, 10000), random.Next(-10000, 10000)));
+			}
+			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
+		}
+
+		/// <summary>
+		/// AGV 範例
+		/// </summary>
+		private void AGVDemo()
+		{
+			int agv1 = GLCMD.CMD.SerialNumber.Next();
+			int agv2 = GLCMD.CMD.SerialNumber.Next();
+			Random random = new Random();
+			new Thread(() =>
+			{
+				while (true)
+				{
+					GLCMD.CMD.AddAGV(agv1, "AGV-1", random.Next(0, 5000), random.Next(0, 5000), random.Next(0, 360));
+					GLCMD.CMD.AddAGV(agv2, random.Next(-5000, 0), random.Next(-5000, 0), random.Next(0, 360));
+					Thread.Sleep(1000);
+				}
+			})
+			{
+				IsBackground = true
+			}.Start();
+		}
+
+		#endregion
+	}
 }
