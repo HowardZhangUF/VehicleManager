@@ -121,7 +121,9 @@ namespace AsyncSocket
                 RemoteIP = ip;
                 RemotePort = port;
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socket.IOControl(IOControlCode.KeepAliveValues, StandardOperate.GetKeepAliveSetting(), null);
+				socket.SendBufferSize = StateObject.BUFFER_SIZE;
+				socket.ReceiveBufferSize = StateObject.BUFFER_SIZE;
+				socket.IOControl(IOControlCode.KeepAliveValues, StandardOperate.GetKeepAliveSetting(), null);
 
                 var res = socket.TryBeginConnect(new IPEndPoint(IPAddress.Parse(ip), port), new AsyncCallback(AsyncConnectCallback), socket);
                 if (res == null) { Disconnect(); return; }

@@ -15,7 +15,7 @@ namespace AsyncSocket
         /// <summary>
         /// 資料長度
         /// </summary>
-        public const int BUFFER_SIZE = 1024;
+        public const int BUFFER_SIZE = 8192;
 
         /// <summary>
         /// 存放資料陣列

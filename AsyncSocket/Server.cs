@@ -280,6 +280,8 @@ namespace AsyncSocket
                 try
                 {
                     socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+					socket.SendBufferSize = StateObject.BUFFER_SIZE;
+					socket.ReceiveBufferSize = StateObject.BUFFER_SIZE;
                     socket.Bind(new IPEndPoint(IPAddress.Any, port));
                     socket.Listen(100);
                 }
