@@ -280,7 +280,7 @@ namespace AsyncSocket
                 try
                 {
                     socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
+                    socket.Bind(new IPEndPoint(IPAddress.Any, port));
                     socket.Listen(100);
                 }
                 catch
