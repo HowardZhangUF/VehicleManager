@@ -1,8 +1,10 @@
-﻿using Geometry;
+﻿using AsyncSocket;
+using Geometry;
 using GLCore;
 using GLStyle;
 using GLUI;
 using PairAStar;
+using Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,8 +40,9 @@ namespace GLUITest
             GLUI.CommandOnClick += GLUI_CommandOnClick;
 
 			// 加入範例 / 測試
-			CMDDemo();
-			AGVDemo();
+			//CMDDemo();
+			//AGVDemo();
+			SocketTest();
         }
 
         /// <summary>
@@ -530,6 +533,157 @@ namespace GLUITest
 			}.Start();
 		}
 
+		#region Socket 測試
+
+		/// <summary>
+		/// 通訊用伺服器端
+		/// </summary>
+		private SerialServer server;
+
+		/// <summary>
+		/// 紀錄 AGV 的名稱與對應的 AGV 資訊包
+		/// </summary>
+		private Dictionary<string, AGVInfo> agvs;
+
+		/// <summary>
+		/// Socket 範例
+		/// </summary>
+		private void SocketTest()
+		{
+			server = new SerialServer();
+			server.StartListening("127.0.0.1", 8000);
+
+			server.ConnectStatusChangedEvent += Server_ConnectStatusChangedEvent;
+			server.ListenStatusChangedEvent += Server_ListenStatusChangedEvent;
+			server.ReceivedSerialDataEvent += ReceivedSerialDataEvent;
+
+			agvs = new Dictionary<string, AGVInfo>();
+		}
+
+		private void Server_ConnectStatusChangedEvent(object sender, ConnectStatusChangedEventArgs e)
+		{
+			MessageBox.Show($"{e.StatusChangedTime} 和 {e.RemoteInfo} 的連線狀態改變 >> {e.ConnectStatus}");
+
+			// 當有 AGV 中斷連線時，清除該圖像
+			if (e.ConnectStatus == EConnectStatus.Disconnect)
+			{
+				string leavedAGVName = string.Empty;
+				foreach (KeyValuePair<string, AGVInfo> data in agvs)
+				{
+					if (data.Value.IPPort == e.RemoteInfo.ToString())
+						leavedAGVName = data.Key;
+				}
+
+				if (leavedAGVName != string.Empty)
+				{
+					// 刪除 AGV 圖像
+					GLCMD.CMD.DeleteAGV(agvs[leavedAGVName].AGVID);
+					// 刪除 AGV 路徑圖像
+					for (int i = 0; i < agvs[leavedAGVName].PathIDs.Count; ++i)
+					{
+						GLCMD.CMD.DoDelete(agvs[leavedAGVName].PathIDs.ElementAt(i));
+					}
+					agvs.Remove(leavedAGVName);
+				}
+			}
+		}
+
+		private void Server_ListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)
+		{
+			MessageBox.Show($"{e.StatusChangedTime} 監聽狀態改變 >> {e.ListenStatus}");
+		}
+
+		private void ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
+		{
+			if (e.Data is AGVStatus)
+			{
+				AGVStatus status = (AGVStatus)e.Data;
+				// 確認是新增還是更新項目
+				if (agvs.Keys.Contains(status.Name))
+				{
+					// 字典更新原有項目
+					agvs[status.Name].Status = status;
+				}
+				else
+				{
+					// 字典新增項目並記錄 AGV 圖像識別碼
+					AGVInfo tmp = new AGVInfo();
+					tmp.Status = status;
+					tmp.AGVID = GLCMD.CMD.SerialNumber.Next();
+					tmp.IPPort = e.RemoteInfo.ToString();
+					agvs.Add(status.Name, tmp);
+				}
+
+				// 繪製 AGV
+				GLCMD.CMD.AddAGV(agvs[status.Name].AGVID, agvs[status.Name].Status.Name, agvs[status.Name].Status.Data.Position.X, agvs[status.Name].Status.Data.Position.Y, agvs[status.Name].Status.Data.Toward.Theta);
+			}
+			else if (e.Data is AGVPath)
+			{
+				AGVPath path = (AGVPath)e.Data;
+				// 確認是新增還是更新項目
+				if (agvs.Keys.Contains(path.Name))
+				{
+					// 刪除舊有路徑
+					for(int i = 0; i < agvs[path.Name].PathIDs.Count; ++i)
+					{
+						GLCMD.CMD.DoDelete(agvs[path.Name].PathIDs.ElementAt(i));
+					}
+					// 字典更新原有項目
+					agvs[path.Name].Path = path;
+				}
+				else
+				{
+					// 字典新增項目
+					AGVInfo tmp = new AGVInfo();
+					tmp.Path = path;
+					tmp.IPPort = e.RemoteInfo.ToString();
+					agvs.Add(path.Name, tmp);
+				}
+
+				// 繪製路徑並記錄 AGV 路徑圖像識別碼
+				for(int i = 0; i < path.Path.Count - 1; ++i)
+				{
+					int id = GLCMD.CMD.DoAddSingleLine("Path", path.Path.ElementAt(i), path.Path.ElementAt(i + 1));
+					if (id != -1) agvs[path.Name].PathIDs.Add(id);
+				}
+			}
+		}
+
 		#endregion
+
+		#endregion
+	}
+
+	/// <summary>
+	/// AGV 資訊包
+	/// </summary>
+	/// <remarks>一個 AGV 狀態對應到一個 AGV 路徑</remarks>
+	public class AGVInfo
+	{
+		/// <summary>
+		/// AGV 狀態
+		/// </summary>
+		public AGVStatus Status;
+
+		/// <summary>
+		/// AGV 路徑
+		/// </summary>
+		public AGVPath Path;
+
+		/// <summary>
+		/// AGV 圖像識別碼
+		/// </summary>
+		public int AGVID;
+
+		/// <summary>
+		/// AGV 路徑圖像識別碼
+		/// </summary>
+		public List<int> PathIDs = new List<int>();
+
+		/// <summary>
+		/// 遠端的 IP 與 Port
+		/// </summary>
+		/// <remarks>格式為 IP:Port</remarks>
+		public string IPPort;
 	}
 }
