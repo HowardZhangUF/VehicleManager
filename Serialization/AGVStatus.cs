@@ -150,7 +150,7 @@ namespace Serialization
 		/// </summary>
 		public static double NextDouble(this Random rnd, int minValue, int maxValue)
 		{
-			return (double)rnd.Next(minValue * 1000, maxValue * 1000) / 1000;
+			return rnd.Next(minValue * 1000, maxValue * 1000) / 1000.0;
 		}
 	}
 }
