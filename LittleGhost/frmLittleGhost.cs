@@ -67,7 +67,7 @@ namespace LittleGhost
             switch (server.ListenStatus)
             {
                 case EListenStatus.Idle:
-                    server.StartListening("127.0.0.1", (int)nmrServerPort.Value);
+                    server.StartListening((int)nmrServerPort.Value);
                     break;
 
                 case EListenStatus.Listening:

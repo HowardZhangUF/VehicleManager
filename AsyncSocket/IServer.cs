@@ -60,7 +60,7 @@ namespace AsyncSocket
         /// <summary>
         /// 開始監聽連線
         /// </summary>
-        void StartListening(string ip, int port);
+        void StartListening(int port);
 
         /// <summary>
         /// 停止監聽

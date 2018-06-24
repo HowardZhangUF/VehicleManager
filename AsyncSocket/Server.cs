@@ -269,7 +269,7 @@ namespace AsyncSocket
         /// <summary>
         /// 開始監聽連線
         /// </summary>
-        public void StartListening(string ip, int port)
+        public void StartListening(int port)
         {
             lock (key)
             {

@@ -551,7 +551,7 @@ namespace GLUITest
 		private void SocketTest()
 		{
 			server = new SerialServer();
-			server.StartListening("127.0.0.1", 8000);
+			server.StartListening(8000);
 
 			server.ConnectStatusChangedEvent += Server_ConnectStatusChangedEvent;
 			server.ListenStatusChangedEvent += Server_ListenStatusChangedEvent;

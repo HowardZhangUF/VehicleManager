@@ -123,7 +123,7 @@ namespace Serialization
         /// <summary>
         /// 開始監聽連線
         /// </summary>
-        public void StartListening(string ip, int port) => @base.StartListening(ip, port);
+        public void StartListening(int port) => @base.StartListening(port);
 
         /// <summary>
         /// 停止監聽
