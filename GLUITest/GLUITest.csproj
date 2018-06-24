@@ -111,6 +111,10 @@
       <Project>{23B2D01C-73A9-412E-8C44-30F53D2003A5}</Project>
       <Name>PairStar</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SerialData\SerialData.csproj">
+      <Project>{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}</Project>
+      <Name>SerialData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Serialization\Serialization.csproj">
       <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
       <Name>Serialization</Name>

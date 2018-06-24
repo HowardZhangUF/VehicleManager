@@ -1,4 +1,5 @@
 ﻿using AsyncSocket;
+using SerialData;
 using Serialization;
 using System;
 using System.Text;
