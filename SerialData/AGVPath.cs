@@ -2,6 +2,7 @@
 using Serialization;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace SerialData
 {
@@ -14,21 +15,25 @@ namespace SerialData
         /// <summary>
         /// AGV 名稱
         /// </summary>
+        [DisplayName("Name")]
         public string Name { get; set; }
 
         /// <summary>
         /// AGV 路徑
         /// </summary>
+        [DisplayName("Path")]
         public List<IPair> Path { get; set; }
 
         /// <summary>
         /// 訊息時間戳
         /// </summary>
+        [DisplayName("Time Stamp")]
         public DateTime TimeStamp { get; set; } = DateTime.Now;
 
         /// <summary>
         /// 流水號，用來識別遠端訊息回應的對象
         /// </summary>
+        [DisplayName("TxID")]
         public uint TxID { get; set; }
 
         /// <summary>
@@ -49,6 +54,14 @@ namespace SerialData
             path.TimeStamp = DateTime.Now;
             path.TxID = 666;
             return path;
+        }
+
+        /// <summary>
+        /// 使用 <see cref="DisplayNameAttribute"/> 組合資料
+        /// </summary>
+        public override string ToString()
+        {
+            return this.ToString("|");
         }
     }
 }

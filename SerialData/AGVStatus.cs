@@ -1,7 +1,9 @@
 ﻿using Geometry;
 using Serialization;
 using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,56 +18,67 @@ namespace SerialData
         /// <summary>
         /// 錯誤訊息
         /// </summary>
+        [DisplayName("Alarm Message")]
         public string AlarmMessage { get; set; }
 
         /// <summary>
         /// 電池電量(%)
         /// </summary>
+        [DisplayName("Battery(%)")]
         public double Battery { get; set; }
 
         /// <summary>
         /// 當下位置，單位 mm、deg
         /// </summary>
+        [DisplayName("Position(mm,deg)")]
         public ITowardPair Data { get; set; } = new TowardPair();
 
         /// <summary>
         /// AGV 狀態描述
         /// </summary>
+        [DisplayName("Description")]
         public EDescription Description { get; set; }
 
         /// <summary>
         /// 目標點
         /// </summary>
+        [DisplayName("Goal")]
         public string GoalName { get; set; }
 
         /// <summary>
         /// 地圖匹配度(%)
         /// </summary>
+        [DisplayName("Match(%)")]
         public double MapMatch { get; set; }
 
         /// <summary>
         /// AGV 名稱
         /// </summary>
+        [DisplayName("Name")]
         public string Name { get; set; }
 
         /// <summary>
         /// <para>安全框(mm)</para>
         /// </summary>
+        [DisplayName("Safety Area(mm)")]
         public IArea SafetyArea { get; set; } = new Area(-400, -300, 400, 300);
 
         /// <summary>
         /// 訊息時間戳
         /// </summary>
+        [DisplayName("Time Stamp")]
         public DateTime TimeStamp { get; set; } = DateTime.Now;
 
         /// <summary>
         /// 流水號，用來識別遠端訊息回應的對象
         /// </summary>
+        [DisplayName("TxID")]
         public uint TxID { get; set; }
 
         /// <summary>
         /// 當下實際速度(mm/s)
         /// </summary>
+        [DisplayName("Velocity(mm/s)")]
         public double Velocity { get; set; }
 
         /// <summary>
@@ -87,6 +100,14 @@ namespace SerialData
             status.TxID = 666;
             status.Velocity = rnd.NextDouble(0, 100);
             return status;
+        }
+
+        /// <summary>
+        /// 使用 <see cref="DisplayNameAttribute"/> 組合資料
+        /// </summary>
+        public override string ToString()
+        {
+            return this.ToString("|");
         }
     }
 }

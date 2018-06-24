@@ -45,9 +45,9 @@ namespace LittleGhost
         private void ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
 		{
 			if (e.Data is AGVStatus)
-				AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVStatus 過來");
+				AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVStatus 過來 : {(e.Data as AGVStatus).ToString()}");
 			else if (e.Data is AGVPath)
-				AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVPath 過來");
+				AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVPath 過來 : {(e.Data as AGVPath).ToString()}");
 			else if (e.Data is StringMessage)
                 AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送字串過來 >> {(e.Data as StringMessage).Message}");
             else if (e.Data is ByteArray)
