@@ -8,7 +8,7 @@ namespace SerialData
     /// <summary>
     /// 自訂擴充方法
     /// </summary>
-    public static class Extensions
+    public static class Extension
     {
         /// <summary>
         /// 傳回 minValue 和 maxValue 之間的隨機浮點數。
