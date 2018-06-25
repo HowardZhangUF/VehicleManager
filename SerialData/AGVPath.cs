@@ -1,5 +1,4 @@
-﻿using Geometry;
-using Serialization;
+﻿using Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,15 +18,21 @@ namespace SerialData
         public string Name { get; set; }
 
         /// <summary>
-        /// AGV 路徑
+        /// AGV 路徑， X
         /// </summary>
-        [DisplayName("Path")]
-        public List<IPair> Path { get; set; }
+        [DisplayName("PathX")]
+        public List<double> PathX { get; set; }
 
-        /// <summary>
-        /// 訊息時間戳
-        /// </summary>
-        [DisplayName("Time Stamp")]
+		/// <summary>
+		/// AGV 路徑， Y
+		/// </summary>
+		[DisplayName("PathY")]
+		public List<double> PathY { get; set; }
+
+		/// <summary>
+		/// 訊息時間戳
+		/// </summary>
+		[DisplayName("Time Stamp")]
         public DateTime TimeStamp { get; set; } = DateTime.Now;
 
         /// <summary>
@@ -43,13 +48,16 @@ namespace SerialData
         {
             Random rnd = new Random(int.Parse(DateTime.Now.ToString("HHmmssfff")));
             AGVPath path = new AGVPath();
-            path.Path = new List<IPair>();
-            path.Path.Add(new Pair(rnd.Next(0, 100), rnd.Next(0, 100)));
-            path.Path.Add(new Pair(rnd.Next(0, 100), rnd.Next(0, 100)));
-            path.Path.Add(new Pair(rnd.Next(0, 100), rnd.Next(0, 100)));
-            path.Path.Add(new Pair(rnd.Next(0, 100), rnd.Next(0, 100)));
-            path.Path.Add(new Pair(rnd.Next(0, 100), rnd.Next(0, 100)));
-            path.Path.Add(new Pair(rnd.Next(0, 100), rnd.Next(0, 100)));
+			path.PathX = new List<double>();
+			path.PathX.Add(rnd.NextDouble(0, 1000));
+			path.PathX.Add(rnd.NextDouble(0, 1000));
+			path.PathX.Add(rnd.NextDouble(0, 1000));
+			path.PathX.Add(rnd.NextDouble(0, 1000));
+			path.PathY = new List<double>();
+			path.PathY.Add(rnd.NextDouble(0, 1000));
+			path.PathY.Add(rnd.NextDouble(0, 1000));
+			path.PathY.Add(rnd.NextDouble(0, 1000));
+			path.PathY.Add(rnd.NextDouble(0, 1000));
             path.Name = "AGV01";
             path.TimeStamp = DateTime.Now;
             path.TxID = 666;

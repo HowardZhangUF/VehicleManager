@@ -48,10 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Geometry\Geometry.csproj">
-      <Project>{a617d647-1075-4bbb-9b9c-17971d56fe1e}</Project>
-      <Name>Geometry</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Serialization\Serialization.csproj">
       <Project>{3719d19b-9168-4d0d-a761-92c583a6d07f}</Project>
       <Name>Serialization</Name>

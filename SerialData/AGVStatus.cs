@@ -1,5 +1,4 @@
-﻿using Geometry;
-using Serialization;
+﻿using Serialization;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -9,29 +8,41 @@ using System.Threading.Tasks;
 
 namespace SerialData
 {
-    /// <summary>
+	/// <summary>
 	/// AGV 狀態
 	/// </summary>
 	[Serializable]
-    public class AGVStatus : ISerializable
-    {
-        /// <summary>
-        /// 錯誤訊息
-        /// </summary>
-        [DisplayName("Alarm Message")]
-        public string AlarmMessage { get; set; }
+	public class AGVStatus : ISerializable
+	{
+		/// <summary>
+		/// 錯誤訊息
+		/// </summary>
+		[DisplayName("Alarm Message")]
+		public string AlarmMessage { get; set; }
 
-        /// <summary>
-        /// 電池電量(%)
-        /// </summary>
-        [DisplayName("Battery(%)")]
-        public double Battery { get; set; }
+		/// <summary>
+		/// 電池電量(%)
+		/// </summary>
+		[DisplayName("Battery(%)")]
+		public double Battery { get; set; }
 
-        /// <summary>
-        /// 當下位置，單位 mm、deg
-        /// </summary>
-        [DisplayName("Position(mm,deg)")]
-        public ITowardPair Data { get; set; } = new TowardPair();
+		/// <summary>
+		/// 當前位置， X (mm)
+		/// </summary>
+		[DisplayName("X(mm)")]
+		public double X { get; set; }
+
+		/// <summary>
+		/// 當前位置， Y (mm)
+		/// </summary>
+		[DisplayName("Y(mm)")]
+		public double Y { get; set; }
+
+		/// <summary>
+		/// 當前位置，面向 (degree)
+		/// </summary>
+		[DisplayName("Toward(degree)")]
+		public double Toward { get; set; }
 
         /// <summary>
         /// AGV 狀態描述
@@ -56,12 +67,6 @@ namespace SerialData
         /// </summary>
         [DisplayName("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// <para>安全框(mm)</para>
-        /// </summary>
-        [DisplayName("Safety Area(mm)")]
-        public IArea SafetyArea { get; set; } = new Area(-400, -300, 400, 300);
 
         /// <summary>
         /// 訊息時間戳
@@ -90,12 +95,13 @@ namespace SerialData
             AGVStatus status = new AGVStatus();
             status.AlarmMessage = "No Alarm";
             status.Battery = rnd.NextDouble(0, 100);
-            status.Data = new TowardPair(rnd.NextDouble(0, 1000), rnd.NextDouble(0, 1000), rnd.NextDouble(0, 360));
-            status.Description = EDescription.Idle;
+			status.X = rnd.NextDouble(0, 1000);
+			status.Y = rnd.NextDouble(0, 1000);
+			status.Toward = rnd.NextDouble(0, 360);
+			status.Description = EDescription.Idle;
             status.GoalName = "Castec";
             status.MapMatch = rnd.NextDouble(0, 100);
             status.Name = "AGV01";
-            status.SafetyArea = new Area(-400, -300, 400, 300);
             status.TimeStamp = DateTime.Now;
             status.TxID = 666;
             status.Velocity = rnd.NextDouble(0, 100);
