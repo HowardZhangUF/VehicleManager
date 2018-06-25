@@ -22,7 +22,7 @@ namespace GitInfo
                     {
                         contents[i] = $"[assembly: AssemblyProduct(\"{description}\")]";
                         File.WriteAllText(file.FullName, string.Join("\r\n", contents), System.Text.Encoding.UTF8);
-                        return;
+                        break;
                     }
                 }
             }
