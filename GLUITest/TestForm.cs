@@ -616,7 +616,7 @@ namespace GLUITest
 				}
 
 				// 繪製 AGV
-				GLCMD.CMD.AddAGV(agvs[status.Name].AGVID, agvs[status.Name].Status.Name, agvs[status.Name].Status.Data.Position.X, agvs[status.Name].Status.Data.Position.Y, agvs[status.Name].Status.Data.Toward.Theta);
+				GLCMD.CMD.AddAGV(agvs[status.Name].AGVID, agvs[status.Name].Status.Name, agvs[status.Name].Status.X, agvs[status.Name].Status.Y, agvs[status.Name].Status.Toward);
 			}
 			else if (e.Data is AGVPath)
 			{
@@ -642,9 +642,9 @@ namespace GLUITest
 				}
 
 				// 繪製路徑並記錄 AGV 路徑圖像識別碼
-				for(int i = 0; i < path.Path.Count - 1; ++i)
+				for(int i = 0; i < path.PathX.Count - 1; ++i)
 				{
-					int id = GLCMD.CMD.DoAddSingleLine("Path", path.Path.ElementAt(i), path.Path.ElementAt(i + 1));
+					int id = GLCMD.CMD.DoAddSingleLine("Path", path.PathX.ElementAt(i), path.PathY.ElementAt(i), path.PathX.ElementAt(i + 1), path.PathY.ElementAt(i + 1));
 					if (id != -1) agvs[path.Name].PathIDs.Add(id);
 				}
 			}
