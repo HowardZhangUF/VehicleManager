@@ -48,7 +48,7 @@ namespace GitInfo
             {
                 var commit = repository.Commits.FirstOrDefault();
                 var message = commit.MessageShort.Replace("\"", "'");
-                return $"{commit.Author.When.ToString("yyyy/MM/dd hh:mm")},{commit.Author.Name}-{commit.Id.Sha.Remove(8)}-{message}";
+                return $"{commit.Author.When.ToString("yy/MM/dd")},{commit.Author.Name}-{commit.Id.Sha.Remove(8)}-{message}";
             }
         }
 
