@@ -551,7 +551,7 @@ namespace GLUITest
         /// <summary>
         /// 紀錄 AGV 名稱與對應 AGV 資訊包的字典
         /// </summary>
-        private Dictionary<string, AGVInfo> agvs;
+        private readonly Dictionary<string, AGVInfo> agvs = new Dictionary<string, AGVInfo>();
 
         /// <summary>
         /// 紀錄 Socket 事件資訊的佇列
@@ -576,8 +576,6 @@ namespace GLUITest
             server.ListenStatusChangedEvent += Server_ListenStatusChangedEvent;
             server.ReceivedSerialDataEvent += ReceivedSerialDataEvent;
             server.StartListening(8000);
-
-            agvs = new Dictionary<string, AGVInfo>();
 
             socketEventHandler = new Thread(HandleSocketEventArgs);
             socketEventHandler.IsBackground = true;
@@ -653,6 +651,17 @@ namespace GLUITest
         }
 
         /// <summary>
+        /// 從 <see cref="agvs"/> 中根據 IP:Port 找出所有應的車子名稱。若 IP:Port 不存在則回傳 <see cref="string.Empty"/>
+        /// </summary>
+        private IEnumerable<string> FindAGVNameByIPPort(string ipport)
+        {
+            lock (agvs)
+            {
+                return agvs.Where((agv) => agv.Value.IPPort == ipport).Select((agv) => agv.Key);
+            }
+        }
+
+        /// <summary>
         /// 處理 Socket 連線狀態變化事件
         /// </summary>
         private void HandleSocketEventArgs(ConnectStatusChangedEventArgs e)
@@ -660,38 +669,35 @@ namespace GLUITest
             // 當有 AGV 中斷連線時
             if (e.ConnectStatus == EConnectStatus.Disconnect)
             {
-                // 使用巡覽方式，透過 IP 找出對應的 AGV Name
-                string leavedAGVName = string.Empty;
-                foreach (KeyValuePair<string, AGVInfo> data in agvs)
+                lock (agvs)
                 {
-                    if (data.Value.IPPort == e.RemoteInfo.ToString())
-                        leavedAGVName = data.Key;
-                }
-
-                // 若有找到對應的 AGV Name
-                if (leavedAGVName != string.Empty)
-                {
-                    // 刪除 AGV 圖像
-                    GLCMD.CMD.DeleteAGV(agvs[leavedAGVName].AGVID);
-                    // 刪除 AGV 路徑圖像
-                    for (int i = 0; i < agvs[leavedAGVName].PathIDs.Count; ++i)
-                        GLCMD.CMD.DoDelete(agvs[leavedAGVName].PathIDs.ElementAt(i));
-                    // 刪除 AGV 資訊
-                    agvs.Remove(leavedAGVName);
+                    // 此行最末端 .ToList() 確保 FindAGVNameByIPPort 展開結果
+                    // 避免邊刪除(agvs.Remove)邊查(FindAGVNameByIPPort)
+                    foreach (var leave in FindAGVNameByIPPort(e.RemoteInfo.ToString()).ToList())
+                    {
+                        // 刪除 AGV 圖像
+                        GLCMD.CMD.DeleteAGV(agvs[leave].AGVID);
+                        // 刪除 AGV 路徑圖像
+                        // 順帶一提 SingleLine 這個類別不是拿來畫路徑用的
+                        // 請參考 MultiLine
+                        for (int i = 0; i < agvs[leave].PathIDs.Count; ++i)
+                            GLCMD.CMD.DoDelete(agvs[leave].PathIDs.ElementAt(i));
+                        // 刪除 AGV 資訊
+                        agvs.Remove(leave);
+                    }
                 }
             }
 
             // 更新連線狀態
-            if (agvs.Count == 0)
+            if (agvs.Any())
             {
                 statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_yellow);
-                statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = "0");
             }
             else
             {
                 statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_green);
-                statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = agvs.Count.ToString());
             }
+            statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = agvs.Count.ToString());
         }
 
         /// <summary>
@@ -713,31 +719,45 @@ namespace GLUITest
         }
 
         /// <summary>
+        /// 根據 AGV 名稱更新 <see cref="agvs"/> 狀態，若對象不存在則改為新增
+        /// </summary>
+        private void UpdateAGV(string ipport, AGVStatus status)
+        {
+            lock (agvs)
+            {
+                // 確認是新增還是更新項目
+                if (agvs.Keys.Contains(status.Name))
+                {
+                    // 更新原有項目
+                    agvs[status.Name].Status = status;
+                    agvs[status.Name].IPPort = ipport;
+                }
+                else
+                {
+                    // 新增項目並記錄 AGV 圖像識別碼
+                    AGVInfo agv = new AGVInfo();
+                    agv.Status = status;
+                    agv.AGVID = GLCMD.CMD.SerialNumber.Next();
+                    agv.IPPort = ipport;
+                    agvs.Add(status.Name, agv);
+                }
+            }
+        }
+
+        /// <summary>
         /// 處理 Socket 接收資料事件
         /// </summary>
         private void HandleSocketEventArgs(ReceivedSerialDataEventArgs e)
         {
             if (e.Data is AGVStatus)
             {
-                AGVStatus status = (AGVStatus)e.Data;
-                // 確認是新增還是更新項目
-                if (agvs.Keys.Contains(status.Name))
+                var status = e.Data as AGVStatus;
+                lock (agvs)
                 {
-                    // 更新原有項目
-                    agvs[status.Name].Status = status;
+                    UpdateAGV(e.RemoteInfo.ToString(), status);
+                    // 繪製 AGV
+                    GLCMD.CMD.AddAGV(agvs[status.Name].AGVID, agvs[status.Name].Status.Name, agvs[status.Name].Status.X, agvs[status.Name].Status.Y, agvs[status.Name].Status.Toward);
                 }
-                else
-                {
-                    // 新增項目並記錄 AGV 圖像識別碼
-                    AGVInfo tmp = new AGVInfo();
-                    tmp.Status = status;
-                    tmp.AGVID = GLCMD.CMD.SerialNumber.Next();
-                    tmp.IPPort = e.RemoteInfo.ToString();
-                    agvs.Add(status.Name, tmp);
-                }
-
-                // 繪製 AGV
-                GLCMD.CMD.AddAGV(agvs[status.Name].AGVID, agvs[status.Name].Status.Name, agvs[status.Name].Status.X, agvs[status.Name].Status.Y, agvs[status.Name].Status.Toward);
             }
             else if (e.Data is AGVPath)
             {
