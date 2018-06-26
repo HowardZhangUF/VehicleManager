@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using ThreadSafety;
 
 namespace GLCore
@@ -16,7 +17,7 @@ namespace GLCore
     /// <summary>
     /// GL 物件命令管理器
     /// </summary>
-    public class GLCMD : IGLCore, INotifyPropertyChanged
+    public class GLCMD : Control, IGLCore, INotifyPropertyChanged
     {
         #region 設定成唯一物件
 
@@ -188,7 +189,7 @@ namespace GLCore
         /// <summary>
         /// 刷新所有綁定資訊
         /// </summary>
-        public void ResetBindings()
+        public void ResetAllBindings()
         {
             SingleTowerPairInfo.ResetBindings();
             SinglePairInfo.ResetBindings();
@@ -519,7 +520,7 @@ namespace GLCore
                 CurrentMultiObject.Add(ObstaclePointsID, new MultiPair(ObstaclePointsStyleName));
 
                 // 通知 UI 層重新顯示
-                ResetBindings();
+                ResetAllBindings();
             }
         }
 
@@ -547,7 +548,7 @@ namespace GLCore
                     };
                     DuplicateSingleObject.Add(SerialNumber.Next(), single);
                 }
-                
+
                 // 將 Goal 點加入當下顯示列表
                 CurrentSingleObject = DuplicateSingleObject.DeepClone();
 
@@ -555,7 +556,7 @@ namespace GLCore
                 SaftyEditMultiGeometry<IPair>(ObstaclePointsID, true, o => o.AddRangeIfNotNull(reader.ObstaclePointsList));
 
                 // 更新綁定
-                ResetBindings();
+                ResetAllBindings();
             }
         }
 
@@ -1131,7 +1132,7 @@ namespace GLCore
                         Do(CurrentSingleObject, cmd, false);
                     }
 
-                    ResetBindings();
+                    ResetAllBindings();
                 }
             }
         }
@@ -1170,7 +1171,7 @@ namespace GLCore
                     {
                         Do(CurrentSingleObject, cmd, false);
                     }
-                    ResetBindings();
+                    ResetAllBindings();
                 }
             }
         }
@@ -1316,7 +1317,7 @@ namespace GLCore
         {
             lock (key)
             {
-                ResetBindings();
+                ResetAllBindings();
                 var overflow = CommandHistory.Push(cmd);
                 if (overflow != string.Empty) Do(DuplicateSingleObject, overflow, false);
             }

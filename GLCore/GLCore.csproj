@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -83,7 +84,9 @@
     <Compile Include="Graphic\SinglePair.cs" />
     <Compile Include="Graphic\SingleTowardPair.cs" />
     <Compile Include="IDragable.cs" />
-    <Compile Include="CMD\GLCMD.cs" />
+    <Compile Include="CMD\GLCMD.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="IGLCore.cs" />
     <Compile Include="Graphic\IMulti.cs" />
     <Compile Include="Graphic\ISingle.cs" />
