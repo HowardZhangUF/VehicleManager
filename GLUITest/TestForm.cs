@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using LittleGhost;
+using GLUITest.Properties;
+using System.Collections.Concurrent;
 
 namespace GLUITest
 {
@@ -43,13 +46,17 @@ namespace GLUITest
 			// 加入範例 / 測試
 			//CMDDemo();
 			//AGVDemo();
-			SocketTest();
-        }
+		}
 
-        /// <summary>
-        /// 重新綁定資料
-        /// </summary>
-        private void CmbSelectType_SelectedValueChanged(object sender, EventArgs e)
+		private void frmTest_Load(object sender, EventArgs e)
+		{
+			SocketTest();
+		}
+
+		/// <summary>
+		/// 重新綁定資料
+		/// </summary>
+		private void CmbSelectType_SelectedValueChanged(object sender, EventArgs e)
         {
             // 綁資料
             switch ((sender as ComboBox).Text)
@@ -542,9 +549,19 @@ namespace GLUITest
 		private SerialServer server;
 
 		/// <summary>
-		/// 紀錄 AGV 的名稱與對應的 AGV 資訊包
+		/// 紀錄 AGV 名稱與對應 AGV 資訊包的字典
 		/// </summary>
 		private Dictionary<string, AGVInfo> agvs;
+
+		/// <summary>
+		/// 紀錄 Socket 事件資訊的佇列
+		/// </summary>
+		private ConcurrentQueue<EventArgs> socketEventQueue;
+
+		/// <summary>
+		/// 處理 Socket 事件的執行緒
+		/// </summary>
+		private Thread socketEventHandler;
 
 		/// <summary>
 		/// Socket 範例
@@ -552,22 +569,80 @@ namespace GLUITest
 		private void SocketTest()
 		{
 			server = new SerialServer();
-			server.StartListening(8000);
-
 			server.ConnectStatusChangedEvent += Server_ConnectStatusChangedEvent;
 			server.ListenStatusChangedEvent += Server_ListenStatusChangedEvent;
 			server.ReceivedSerialDataEvent += ReceivedSerialDataEvent;
+			server.StartListening(8000);
 
 			agvs = new Dictionary<string, AGVInfo>();
+			socketEventQueue = new ConcurrentQueue<EventArgs>();
+
+			socketEventHandler = new Thread(HandleSocketEventArgs);
+			socketEventHandler.IsBackground = true;
+			socketEventHandler.Start();
 		}
 
 		private void Server_ConnectStatusChangedEvent(object sender, ConnectStatusChangedEventArgs e)
 		{
-			MessageBox.Show($"{e.StatusChangedTime} 和 {e.RemoteInfo} 的連線狀態改變 >> {e.ConnectStatus}");
+			Console.WriteLine($"{e.StatusChangedTime} 和 {e.RemoteInfo} 的連線狀態改變 >> {e.ConnectStatus}");
+			socketEventQueue.Enqueue(e);
+		}
 
-			// 當有 AGV 中斷連線時，清除該圖像
+		private void Server_ListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)
+		{
+			Console.WriteLine($"{e.StatusChangedTime} 監聽狀態改變 >> {e.ListenStatus}");
+			socketEventQueue.Enqueue(e);
+		}
+
+		private void ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
+		{
+			Console.WriteLine($"{e.ReceivedTime.ToString()} 收到來自 {e.RemoteInfo.ToString()} 的訊息 >> {e.Data.GetType()}");
+			socketEventQueue.Enqueue(e);
+		}
+
+		/// <summary>
+		/// Socket 事件處理區
+		/// </summary>
+		private void HandleSocketEventArgs()
+		{
+			while(true)
+			{
+				if (socketEventQueue.Count > 0)
+				{
+					EventArgs tmp;
+					if (socketEventQueue.TryDequeue(out tmp))
+					{
+						if (tmp is ConnectStatusChangedEventArgs)
+						{
+							HandleSocketEventArgs(tmp as ConnectStatusChangedEventArgs);
+						}
+						else if (tmp is ListenStatusChangedEventArgs)
+						{
+							HandleSocketEventArgs(tmp as ListenStatusChangedEventArgs);
+						}
+						else if (tmp is ReceivedSerialDataEventArgs)
+						{
+							HandleSocketEventArgs(tmp as ReceivedSerialDataEventArgs);
+						}
+						else
+						{
+
+						}
+					}
+				}
+				Thread.Sleep(10);
+			}
+		}
+
+		/// <summary>
+		/// 處理 Socket 連線狀態變化事件
+		/// </summary>
+		private void HandleSocketEventArgs(ConnectStatusChangedEventArgs e)
+		{
+			// 當有 AGV 中斷連線時
 			if (e.ConnectStatus == EConnectStatus.Disconnect)
 			{
+				// 使用巡覽方式，透過 IP 找出對應的 AGV Name
 				string leavedAGVName = string.Empty;
 				foreach (KeyValuePair<string, AGVInfo> data in agvs)
 				{
@@ -575,26 +650,54 @@ namespace GLUITest
 						leavedAGVName = data.Key;
 				}
 
+				// 若有找到對應的 AGV Name
 				if (leavedAGVName != string.Empty)
 				{
 					// 刪除 AGV 圖像
 					GLCMD.CMD.DeleteAGV(agvs[leavedAGVName].AGVID);
 					// 刪除 AGV 路徑圖像
 					for (int i = 0; i < agvs[leavedAGVName].PathIDs.Count; ++i)
-					{
 						GLCMD.CMD.DoDelete(agvs[leavedAGVName].PathIDs.ElementAt(i));
-					}
+					// 刪除 AGV 資訊
 					agvs.Remove(leavedAGVName);
 				}
 			}
+
+			// 更新連線狀態
+			if (agvs.Count == 0)
+			{
+				statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_yellow);
+				statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = "0");
+			}
+			else
+			{
+				statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_green);
+				statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = agvs.Count.ToString());
+			}
 		}
 
-		private void Server_ListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)
+		/// <summary>
+		/// 處理 Socket 監聽狀態變化事件
+		/// </summary>
+		private void HandleSocketEventArgs(ListenStatusChangedEventArgs e)
 		{
-			MessageBox.Show($"{e.StatusChangedTime} 監聽狀態改變 >> {e.ListenStatus}");
+			// 更新連線狀態
+			if (e.ListenStatus == EListenStatus.Idle)
+			{
+				statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_red);
+				statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = "0");
+			}
+			else
+			{
+				statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_yellow);
+				statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = "0");
+			}
 		}
 
-		private void ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
+		/// <summary>
+		/// 處理 Socket 接收資料事件
+		/// </summary>
+		private void HandleSocketEventArgs(ReceivedSerialDataEventArgs e)
 		{
 			if (e.Data is AGVStatus)
 			{
@@ -602,12 +705,12 @@ namespace GLUITest
 				// 確認是新增還是更新項目
 				if (agvs.Keys.Contains(status.Name))
 				{
-					// 字典更新原有項目
+					// 更新原有項目
 					agvs[status.Name].Status = status;
 				}
 				else
 				{
-					// 字典新增項目並記錄 AGV 圖像識別碼
+					// 新增項目並記錄 AGV 圖像識別碼
 					AGVInfo tmp = new AGVInfo();
 					tmp.Status = status;
 					tmp.AGVID = GLCMD.CMD.SerialNumber.Next();
@@ -625,11 +728,9 @@ namespace GLUITest
 				if (agvs.Keys.Contains(path.Name))
 				{
 					// 刪除舊有路徑
-					for(int i = 0; i < agvs[path.Name].PathIDs.Count; ++i)
-					{
+					for (int i = 0; i < agvs[path.Name].PathIDs.Count; ++i)
 						GLCMD.CMD.DoDelete(agvs[path.Name].PathIDs.ElementAt(i));
-					}
-					// 字典更新原有項目
+					// 更新原有項目
 					agvs[path.Name].Path = path;
 				}
 				else
@@ -642,12 +743,16 @@ namespace GLUITest
 				}
 
 				// 繪製路徑並記錄 AGV 路徑圖像識別碼
-				for(int i = 0; i < path.PathX.Count - 1; ++i)
+				for (int i = 0; i < path.PathX.Count - 1; ++i)
 				{
 					int id = GLCMD.CMD.DoAddSingleLine("Path", path.PathX.ElementAt(i), path.PathY.ElementAt(i), path.PathX.ElementAt(i + 1), path.PathY.ElementAt(i + 1));
 					if (id != -1) agvs[path.Name].PathIDs.Add(id);
 				}
 			}
+
+			// 更新連線狀態
+			statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_green);
+			statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = agvs.Count.ToString());
 		}
 
 		#endregion
@@ -656,7 +761,7 @@ namespace GLUITest
 	}
 
 	/// <summary>
-	/// AGV 資訊包
+	/// AGV 資訊
 	/// </summary>
 	/// <remarks>一個 AGV 狀態對應到一個 AGV 路徑</remarks>
 	public class AGVInfo
