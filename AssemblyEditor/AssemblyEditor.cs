@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AssemblyEditor
 {
@@ -14,7 +12,7 @@ namespace AssemblyEditor
     /// <para>並將其寫入各專案的 AssemblyInfo.cs 對應的組件欄位中，</para>
     /// <para>方便作為版本控管的手段</para>
     /// </summary>
-    class AssemblyEditor
+    internal class AssemblyEditor
     {
         /// <summary>
         /// 更改資訊設定中的 Assembly
@@ -58,7 +56,8 @@ namespace AssemblyEditor
             using (var repository = new Repository(dircName))
             {
                 var commit = repository.Commits.FirstOrDefault();
-                when = $"{ commit.Author.When.UtcDateTime.Year}.{ commit.Author.When.UtcDateTime.Month}.{ commit.Author.When.UtcDateTime.Day}.{commit.Author.When.UtcDateTime.Hour * 100 + commit.Author.When.UtcDateTime.Minute }";
+                var time = commit.Author.When.DateTime;
+                when = $"{time.Year}.{time.Month}.{time.Day}.{time.Hour * 100 + time.Minute }";
                 author = commit.Author.Name;
                 sha = commit.Id.Sha.Remove(8);
                 message = commit.MessageShort.Replace("\"", "'");
@@ -80,6 +79,7 @@ namespace AssemblyEditor
                             Console.WriteLine("處理完成");
                         }
                         break;
+
                     case ConsoleKey.G:
                         {
                             string when = string.Empty, author = string.Empty, sha = string.Empty, message = string.Empty;
@@ -88,6 +88,7 @@ namespace AssemblyEditor
                             Console.WriteLine("處理完成");
                         }
                         break;
+
                     default:
                         {
                             Console.WriteLine("不處理");
