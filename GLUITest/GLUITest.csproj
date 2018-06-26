@@ -64,6 +64,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -107,6 +108,10 @@
       <Project>{d2ece031-6105-402b-bc01-8e2e1c9b469d}</Project>
       <Name>IniFiles</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LittleGhost\LittleGhost.csproj">
+      <Project>{6086472b-1061-42b0-a442-b4d2fbb3e863}</Project>
+      <Name>LittleGhost</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PairStar\PairStar.csproj">
       <Project>{23B2D01C-73A9-412E-8C44-30F53D2003A5}</Project>
       <Name>PairStar</Name>
@@ -123,6 +128,15 @@
       <Project>{68031e26-f58a-4f5a-8552-e5bc30ce97fc}</Project>
       <Name>ThreadSafety</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\circle green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\circle red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\circle yellow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
