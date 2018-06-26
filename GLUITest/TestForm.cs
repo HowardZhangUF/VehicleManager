@@ -680,8 +680,7 @@ namespace GLUITest
                         // 刪除 AGV 路徑圖像
                         // 順帶一提 SingleLine 這個類別不是拿來畫路徑用的
                         // 請參考 MultiLine
-                        for (int i = 0; i < agvs[leave].PathIDs.Count; ++i)
-                            GLCMD.CMD.DoDelete(agvs[leave].PathIDs.ElementAt(i));
+                        GLCMD.CMD.DeleteMulti(agvs[leave].PathID);
                         // 刪除 AGV 資訊
                         agvs.Remove(leave);
                     }
@@ -719,7 +718,7 @@ namespace GLUITest
         }
 
         /// <summary>
-        /// 根據 AGV 名稱更新 <see cref="agvs"/> 狀態，若對象不存在則改為新增
+        /// 根據 AGV 名稱更新 <see cref="agvs"/> 狀態。若對象不存在則改為新增，並在 <see cref="GLCMD"/> 中註冊一個路徑 ID
         /// </summary>
         private void UpdateAGV(string ipport, AGVStatus status)
         {
@@ -739,8 +738,40 @@ namespace GLUITest
                     agv.Status = status;
                     agv.AGVID = GLCMD.CMD.SerialNumber.Next();
                     agv.IPPort = ipport;
+                    agv.PathID = GLCMD.CMD.AddMultiStripLine("Path", null);
                     agvs.Add(status.Name, agv);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 根據 AGV 名稱更新路徑，若成功更新則回傳 <see cref="AGVInfo.PathID"/> ，若 AGV 名稱不存在 <see cref="agvs"/> 則不更新並回傳 -1
+        /// </summary>
+        private int UpdateAGVPath(string agvName, AGVPath path)
+        {
+            lock (agvs)
+            {
+                if (agvs.Keys.Contains(path.Name))
+                {
+                    // 更新原有項目
+                    agvs[path.Name].Path = path;
+                    return agvs[path.Name].PathID;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 將 <see cref="AGVPath"/> 轉為 <see cref="IPair"/> 集合
+        /// </summary>
+        private IEnumerable<IPair> PathToPaircollection(AGVPath path)
+        {
+            for (int ii = 0; ii < path.PathX.Count; ii++)
+            {
+                yield return new Pair(path.PathX[ii], path.PathY[ii]);
             }
         }
 
@@ -761,30 +792,16 @@ namespace GLUITest
             }
             else if (e.Data is AGVPath)
             {
-                AGVPath path = (AGVPath)e.Data;
-                // 確認是新增還是更新項目
-                if (agvs.Keys.Contains(path.Name))
-                {
-                    // 刪除舊有路徑
-                    for (int i = 0; i < agvs[path.Name].PathIDs.Count; ++i)
-                        GLCMD.CMD.DoDelete(agvs[path.Name].PathIDs.ElementAt(i));
-                    // 更新原有項目
-                    agvs[path.Name].Path = path;
-                }
-                else
-                {
-                    // 字典新增項目
-                    AGVInfo tmp = new AGVInfo();
-                    tmp.Path = path;
-                    tmp.IPPort = e.RemoteInfo.ToString();
-                    agvs.Add(path.Name, tmp);
-                }
+                var path = e.Data as AGVPath;
 
-                // 繪製路徑並記錄 AGV 路徑圖像識別碼
-                for (int i = 0; i < path.PathX.Count - 1; ++i)
+                int pathID = UpdateAGVPath(path.Name, path);
+                if (pathID != -1)
                 {
-                    int id = GLCMD.CMD.DoAddSingleLine("Path", path.PathX.ElementAt(i), path.PathY.ElementAt(i), path.PathX.ElementAt(i + 1), path.PathY.ElementAt(i + 1));
-                    if (id != -1) agvs[path.Name].PathIDs.Add(id);
+                    GLCMD.CMD.SaftyEditMultiGeometry<IPair>(pathID, true, (line) =>
+                    {
+                        line.Clear();
+                        line.AddRangeIfNotNull(PathToPaircollection(path));
+                    });
                 }
             }
 
@@ -822,7 +839,7 @@ namespace GLUITest
         /// <summary>
         /// AGV 路徑圖像識別碼
         /// </summary>
-        public List<int> PathIDs = new List<int>();
+        public int PathID;
 
         /// <summary>
         /// 遠端的 IP 與 Port
