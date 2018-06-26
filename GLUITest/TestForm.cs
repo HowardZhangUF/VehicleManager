@@ -767,7 +767,7 @@ namespace GLUITest
         /// <summary>
         /// 將 <see cref="AGVPath"/> 轉為 <see cref="IPair"/> 集合
         /// </summary>
-        private IEnumerable<IPair> PathToPaircollection(AGVPath path)
+        private IEnumerable<IPair> PathToPairCollection(AGVPath path)
         {
             for (int ii = 0; ii < path.PathX.Count; ii++)
             {
@@ -800,7 +800,7 @@ namespace GLUITest
                     GLCMD.CMD.SaftyEditMultiGeometry<IPair>(pathID, true, (line) =>
                     {
                         line.Clear();
-                        line.AddRangeIfNotNull(PathToPaircollection(path));
+                        line.AddRangeIfNotNull(PathToPairCollection(path));
                     });
                 }
             }
