@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogManager", "LogManager\Lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialData", "SerialData\SerialData.csproj", "{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitInfo", "GitInfo\GitInfo.csproj", "{7D5F1EE8-85EF-4262-BA64-2F0C0C74FC58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyEditor", "AssemblyEditor\AssemblyEditor.csproj", "{905303E8-0198-4596-8BFD-62AC0EA9847C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,10 +131,10 @@ Global
 		{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D5F1EE8-85EF-4262-BA64-2F0C0C74FC58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D5F1EE8-85EF-4262-BA64-2F0C0C74FC58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D5F1EE8-85EF-4262-BA64-2F0C0C74FC58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D5F1EE8-85EF-4262-BA64-2F0C0C74FC58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{905303E8-0198-4596-8BFD-62AC0EA9847C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{905303E8-0198-4596-8BFD-62AC0EA9847C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{905303E8-0198-4596-8BFD-62AC0EA9847C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{905303E8-0198-4596-8BFD-62AC0EA9847C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
