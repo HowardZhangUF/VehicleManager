@@ -651,17 +651,6 @@ namespace GLUITest
         }
 
         /// <summary>
-        /// 從 <see cref="agvs"/> 中根據 IP:Port 找出所有應的車子名稱。若 IP:Port 不存在則回傳 <see cref="string.Empty"/>
-        /// </summary>
-        private IEnumerable<string> FindAGVNameByIPPort(string ipport)
-        {
-            lock (agvs)
-            {
-                return agvs.Where((agv) => agv.Value.IPPort == ipport).Select((agv) => agv.Key);
-            }
-        }
-
-        /// <summary>
         /// 處理 Socket 連線狀態變化事件
         /// </summary>
         private void HandleSocketEventArgs(ConnectStatusChangedEventArgs e)
@@ -718,64 +707,6 @@ namespace GLUITest
         }
 
         /// <summary>
-        /// 根據 AGV 名稱更新 <see cref="agvs"/> 狀態。若對象不存在則改為新增，並在 <see cref="GLCMD"/> 中註冊一個路徑 ID
-        /// </summary>
-        private void UpdateAGV(string ipport, AGVStatus status)
-        {
-            lock (agvs)
-            {
-                // 確認是新增還是更新項目
-                if (agvs.Keys.Contains(status.Name))
-                {
-                    // 更新原有項目
-                    agvs[status.Name].Status = status;
-                    agvs[status.Name].IPPort = ipport;
-                }
-                else
-                {
-                    // 新增項目並記錄 AGV 圖像識別碼
-                    AGVInfo agv = new AGVInfo();
-                    agv.Status = status;
-                    agv.AGVID = GLCMD.CMD.SerialNumber.Next();
-                    agv.IPPort = ipport;
-                    agv.PathID = GLCMD.CMD.AddMultiStripLine("Path", null);
-                    agvs.Add(status.Name, agv);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 根據 AGV 名稱更新路徑，若成功更新則回傳 <see cref="AGVInfo.PathID"/> ，若 AGV 名稱不存在 <see cref="agvs"/> 則不更新並回傳 -1
-        /// </summary>
-        private int UpdateAGVPath(string agvName, AGVPath path)
-        {
-            lock (agvs)
-            {
-                if (agvs.Keys.Contains(path.Name))
-                {
-                    // 更新原有項目
-                    agvs[path.Name].Path = path;
-                    return agvs[path.Name].PathID;
-                }
-                else
-                {
-                    return -1;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 將 <see cref="AGVPath"/> 轉為 <see cref="IPair"/> 集合
-        /// </summary>
-        private IEnumerable<IPair> PathToPairCollection(AGVPath path)
-        {
-            for (int ii = 0; ii < path.PathX.Count; ii++)
-            {
-                yield return new Pair(path.PathX[ii], path.PathY[ii]);
-            }
-        }
-
-        /// <summary>
         /// 處理 Socket 接收資料事件
         /// </summary>
         private void HandleSocketEventArgs(ReceivedSerialDataEventArgs e)
@@ -810,16 +741,89 @@ namespace GLUITest
             statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = agvs.Count.ToString());
         }
 
-        #endregion
+		#region AGV 資訊處理
 
-        #endregion
-    }
+		/// <summary>
+		/// 從 <see cref="agvs"/> 中根據 IP:Port 找出所有應的車子名稱。若 IP:Port 不存在則回傳 <see cref="string.Empty"/>
+		/// </summary>
+		private IEnumerable<string> FindAGVNameByIPPort(string ipport)
+		{
+			lock (agvs)
+			{
+				return agvs.Where((agv) => agv.Value.IPPort == ipport).Select((agv) => agv.Key);
+			}
+		}
 
-    /// <summary>
-    /// AGV 資訊
-    /// </summary>
-    /// <remarks>一個 AGV 狀態對應到一個 AGV 路徑</remarks>
-    public class AGVInfo
+		/// <summary>
+		/// 根據 AGV 名稱更新 <see cref="agvs"/> 狀態。若對象不存在則改為新增，並在 <see cref="GLCMD"/> 中註冊一個路徑 ID
+		/// </summary>
+		private void UpdateAGV(string ipport, AGVStatus status)
+		{
+			lock (agvs)
+			{
+				// 確認是新增還是更新項目
+				if (agvs.Keys.Contains(status.Name))
+				{
+					// 更新原有項目
+					agvs[status.Name].Status = status;
+					agvs[status.Name].IPPort = ipport;
+				}
+				else
+				{
+					// 新增項目並記錄 AGV 圖像識別碼
+					AGVInfo agv = new AGVInfo();
+					agv.Status = status;
+					agv.AGVID = GLCMD.CMD.SerialNumber.Next();
+					agv.IPPort = ipport;
+					agv.PathID = GLCMD.CMD.AddMultiStripLine("Path", null);
+					agvs.Add(status.Name, agv);
+				}
+			}
+		}
+
+		/// <summary>
+		/// 根據 AGV 名稱更新路徑，若成功更新則回傳 <see cref="AGVInfo.PathID"/> ，若 AGV 名稱不存在 <see cref="agvs"/> 則不更新並回傳 -1
+		/// </summary>
+		private int UpdateAGVPath(string agvName, AGVPath path)
+		{
+			lock (agvs)
+			{
+				if (agvs.Keys.Contains(path.Name))
+				{
+					// 更新原有項目
+					agvs[path.Name].Path = path;
+					return agvs[path.Name].PathID;
+				}
+				else
+				{
+					return -1;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 將 <see cref="AGVPath"/> 轉為 <see cref="IPair"/> 集合
+		/// </summary>
+		private IEnumerable<IPair> PathToPairCollection(AGVPath path)
+		{
+			for (int ii = 0; ii < path.PathX.Count; ii++)
+			{
+				yield return new Pair(path.PathX[ii], path.PathY[ii]);
+			}
+		}
+
+		#endregion
+
+		#endregion
+
+		#endregion
+	}
+
+	/// <summary>
+	/// AGV 資訊
+	/// </summary>
+	/// <remarks>一個 AGV 狀態對應到一個 AGV 路徑</remarks>
+	public class AGVInfo
     {
         /// <summary>
         /// AGV 狀態
