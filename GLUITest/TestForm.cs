@@ -566,6 +566,11 @@ namespace GLUITest
         /// </summary>
         private Thread socketEventHandler;
 
+		/// <summary>
+		/// 處理 Socket 事件的執行緒鎖
+		/// </summary>
+		private ManualResetEvent mreSocketEventTask = new ManualResetEvent(false);
+
         /// <summary>
         /// Socket 範例
         /// </summary>
@@ -588,8 +593,9 @@ namespace GLUITest
             lock (socketEventQueue)
             {
                 socketEventQueue.Enqueue(e);
-            }
-        }
+			}
+			mreSocketEventTask.Set();
+		}
 
         private void Server_ListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)
         {
@@ -597,8 +603,9 @@ namespace GLUITest
             lock (socketEventQueue)
             {
                 socketEventQueue.Enqueue(e);
-            }
-        }
+			}
+			mreSocketEventTask.Set();
+		}
 
         private void ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
         {
@@ -606,8 +613,9 @@ namespace GLUITest
             lock (socketEventQueue)
             {
                 socketEventQueue.Enqueue(e);
-            }
-        }
+			}
+			mreSocketEventTask.Set();
+		}
 
         /// <summary>
         /// Socket 事件處理區
@@ -622,8 +630,8 @@ namespace GLUITest
                     if (!socketEventQueue.Any() || !socketEventQueue.TryDequeue(out eventArgs))
                     {
                         eventArgs = null;
-                    }
-                }
+					}
+				}
 
                 // 把 eventArgs 從 socketEventQueue 拿出來後，就跟 socketEventQueue 無關了
                 // 於是不再繼續鎖住
@@ -646,7 +654,11 @@ namespace GLUITest
 
                     }
                 }
-                Thread.Sleep(0);
+				else
+				{
+					mreSocketEventTask.WaitOne();
+					mreSocketEventTask.Reset();
+				}
             }
         }
 
@@ -729,10 +741,10 @@ namespace GLUITest
                 if (pathID != -1)
                 {
                     GLCMD.CMD.SaftyEditMultiGeometry<IPair>(pathID, true, (line) =>
-                    {
-                        line.Clear();
-                        line.AddRangeIfNotNull(PathToPairCollection(path));
-                    });
+					{
+						line.Clear();
+						line.AddRangeIfNotNull(PathToPairCollection(path));
+					});
                 }
             }
 
