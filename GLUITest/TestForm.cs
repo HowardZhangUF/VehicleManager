@@ -677,7 +677,7 @@ namespace GLUITest
             }
 
             // 更新連線狀態
-            if (agvs.Any())
+            if (!agvs.Any())
             {
                 statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_yellow);
             }
