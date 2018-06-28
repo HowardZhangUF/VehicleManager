@@ -50,13 +50,34 @@ namespace GLUITest
 
         private void frmTest_Load(object sender, EventArgs e)
         {
-            SocketTest();
-        }
+			GUI_InitializeAGVInfoMonitor();
 
-        /// <summary>
-        /// 重新綁定資料
-        /// </summary>
-        private void CmbSelectType_SelectedValueChanged(object sender, EventArgs e)
+			SocketTest();
+		}
+
+		/// <summary>
+		/// 停用顯示 AGV 狀態的 DataGridView 的選取功能
+		/// </summary>
+		private void dgvAGVInfo_SelectionChanged(object sender, EventArgs e)
+		{
+			dgvAGVInfo.ClearSelection();
+		}
+
+		/// <summary>
+		/// 若清單選擇改變時，則更新顯示 AGV 狀態的 DataGridView
+		/// </summary>
+		private void cbAGVList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			lock (agvs)
+			{
+				GUI_UpdateAGVInfoMonitor(agvs[cbAGVList.InvokeIfNecessary((a) => a.SelectedItem.ToString())].Status);
+			}
+		}
+
+		/// <summary>
+		/// 重新綁定資料
+		/// </summary>
+		private void CmbSelectType_SelectedValueChanged(object sender, EventArgs e)
         {
             // 綁資料
             switch ((sender as ComboBox).Text)
@@ -447,12 +468,100 @@ namespace GLUITest
             }
         }
 
-        #region 路徑搜尋
+		#region 介面操作
 
-        /// <summary>
-        /// A星路徑搜尋
-        /// </summary>
-        private readonly PairStar aStar = new PairStar();
+		/// <summary>
+		/// 初始化顯示 AGV 狀態的 DataGridView
+		/// </summary>
+		private void GUI_InitializeAGVInfoMonitor()
+		{
+			// 允許使用者新增列
+			dgvAGVInfo.AllowUserToAddRows = false;
+			// 允許使用者調整攔寬
+			dgvAGVInfo.AllowUserToResizeColumns = false;
+			// 允許使用者調整列高
+			dgvAGVInfo.AllowUserToResizeRows = false;
+			// 首欄是否顯示
+			dgvAGVInfo.RowHeadersVisible = false;
+			// 首列是否顯示
+			dgvAGVInfo.ColumnHeadersVisible = false;
+			// 唯讀
+			dgvAGVInfo.ReadOnly = true;
+			// 選取模式
+			dgvAGVInfo.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+			dgvAGVInfo.Columns.Add("key", "key");
+			dgvAGVInfo.Columns.Add("value", "value");
+			dgvAGVInfo.Columns["key"].Width = 80;
+			dgvAGVInfo.Columns["key"].DefaultCellStyle.BackColor = System.Drawing.Color.LightBlue;
+			dgvAGVInfo.Columns["value"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+			dgvAGVInfo.Columns["value"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+			dgvAGVInfo.Rows.Add(9);
+			dgvAGVInfo.Rows[0].Cells[0].Value = "Name";
+			dgvAGVInfo.Rows[1].Cells[0].Value = "Status";
+			dgvAGVInfo.Rows[2].Cells[0].Value = "Battery (%)";
+			dgvAGVInfo.Rows[3].Cells[0].Value = "X (mm)";
+			dgvAGVInfo.Rows[4].Cells[0].Value = "Y (mm)";
+			dgvAGVInfo.Rows[5].Cells[0].Value = "Toward (deg)";
+			dgvAGVInfo.Rows[6].Cells[0].Value = "Target";
+			dgvAGVInfo.Rows[7].Cells[0].Value = "Match (%)";
+			dgvAGVInfo.Rows[8].Cells[0].Value = "Last Update";
+
+			// 調整 DataGridView 高度
+			int Height = 0;
+			for (int i = 0; i < dgvAGVInfo.Rows.Count; ++i)
+				Height += dgvAGVInfo.Rows[i].Height;
+			dgvAGVInfo.Height = (int)(Height * 1.015);
+		}
+
+		/// <summary>
+		/// 更新顯示 AGV 狀態的 DataGridView ， status 參數給 null 可清空 DataGridView
+		/// </summary>
+		private void GUI_UpdateAGVInfoMonitor(AGVStatus status)
+		{
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[0].Cells[1].Value?.ToString() != status?.Name.ToString())									dgvAGVInfo.Rows[0].Cells[1].Value = status?.Name.ToString();								});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[1].Cells[1].Value?.ToString() != status?.Description.ToString())							dgvAGVInfo.Rows[1].Cells[1].Value = status?.Description.ToString();							});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[2].Cells[1].Value?.ToString() != status?.Battery.ToString())								dgvAGVInfo.Rows[2].Cells[1].Value = status?.Battery.ToString();								});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[3].Cells[1].Value?.ToString() != status?.X.ToString())										dgvAGVInfo.Rows[3].Cells[1].Value = status?.X.ToString();									});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[4].Cells[1].Value?.ToString() != status?.Y.ToString())										dgvAGVInfo.Rows[4].Cells[1].Value = status?.Y.ToString();									});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[5].Cells[1].Value?.ToString() != status?.Toward.ToString())								dgvAGVInfo.Rows[5].Cells[1].Value = status?.Toward.ToString();								});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[6].Cells[1].Value?.ToString() != status?.GoalName.ToString())								dgvAGVInfo.Rows[6].Cells[1].Value = status?.GoalName.ToString();							});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[7].Cells[1].Value?.ToString() != status?.MapMatch.ToString())								dgvAGVInfo.Rows[7].Cells[1].Value = status?.MapMatch.ToString();							});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[8].Cells[1].Value?.ToString() != status?.TimeStamp.ToString("yyyy/MM/dd HH:mm:ss.fff"))	dgvAGVInfo.Rows[8].Cells[1].Value = status?.TimeStamp.ToString("yyyy/MM/dd HH:mm:ss.fff");	});
+		}
+
+		/// <summary>
+		/// 更新顯示 AGV 清單的 ComboBox ，使用 add 參數決定為新增或移除
+		/// </summary>
+		private void GUI_UpdateAGVList(string agvName, bool add = true)
+		{
+			cbAGVList.InvokeIfNecessary(() => 
+			{ 
+			if (add & !cbAGVList.Items.Contains(agvName))
+				cbAGVList.Items.Add(agvName);
+			if (!add & cbAGVList.Items.Contains(agvName))
+				cbAGVList.Items.Remove(agvName);
+			});
+		}
+
+		/// <summary>
+		/// 更新顯示 AGV 連線狀態與數量的 ToolStripStatusLabel
+		/// </summary>
+		private void GUI_UpdateConnectStatusMonitor(System.Drawing.Image img, string text)
+		{
+			statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = img);
+			statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = text);
+		}
+
+		#endregion
+
+		#region 路徑搜尋
+
+		/// <summary>
+		/// A星路徑搜尋
+		/// </summary>
+		private readonly PairStar aStar = new PairStar();
 
         /// <summary>
         /// 路徑 ID
@@ -675,9 +784,14 @@ namespace GLUITest
                     // 此行最末端 .ToList() 確保 FindAGVNameByIPPort 展開結果
                     // 避免邊刪除(agvs.Remove)邊查(FindAGVNameByIPPort)
                     foreach (var leave in FindAGVNameByIPPort(e.RemoteInfo.ToString()).ToList())
-                    {
-                        // 刪除 AGV 圖像
-                        GLCMD.CMD.DeleteAGV(agvs[leave].AGVID);
+					{
+						// 若離開的 AGV 正好為清單選擇中的 AGV ，則清空顯示 AGV 狀態的 DataGridView
+						if (cbAGVList.InvokeIfNecessary((a) => a.SelectedItem?.ToString()) == leave)
+							GUI_UpdateAGVInfoMonitor(null);
+						// 更新 AGV 清單
+						GUI_UpdateAGVList(leave, false);
+						// 刪除 AGV 圖像
+						GLCMD.CMD.DeleteAGV(agvs[leave].AGVID);
                         // 刪除 AGV 路徑圖像
                         // 順帶一提 SingleLine 這個類別不是拿來畫路徑用的
                         // 請參考 MultiLine
@@ -688,16 +802,18 @@ namespace GLUITest
                 }
             }
 
-            // 更新連線狀態
-            if (!agvs.Any())
-            {
-                statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_yellow);
-            }
-            else
-            {
-                statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_green);
-            }
-            statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = agvs.Count.ToString());
+			// 更新連線狀態
+			lock (agvs)
+			{
+				if (!agvs.Any())
+				{
+					GUI_UpdateConnectStatusMonitor(Resources.circle_yellow, agvs.Count.ToString());
+				}
+				else
+				{
+					GUI_UpdateConnectStatusMonitor(Resources.circle_green, agvs.Count.ToString());
+				}
+			}
         }
 
         /// <summary>
@@ -705,16 +821,14 @@ namespace GLUITest
         /// </summary>
         private void HandleSocketEventArgs(ListenStatusChangedEventArgs e)
         {
-            // 更新連線狀態
-            if (e.ListenStatus == EListenStatus.Idle)
-            {
-                statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_red);
-                statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = "0");
-            }
-            else
-            {
-                statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_yellow);
-                statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = "0");
+			// 更新連線狀態
+			if (e.ListenStatus == EListenStatus.Idle)
+			{
+				GUI_UpdateConnectStatusMonitor(Resources.circle_red, "0");
+			}
+			else
+			{
+				GUI_UpdateConnectStatusMonitor(Resources.circle_yellow, "0");
             }
         }
 
@@ -732,8 +846,22 @@ namespace GLUITest
                     // 繪製 AGV
                     GLCMD.CMD.AddAGV(agvs[status.Name].AGVID, agvs[status.Name].Status.Name, agvs[status.Name].Status.X, agvs[status.Name].Status.Y, agvs[status.Name].Status.Toward);
                 }
-            }
-            else if (e.Data is AGVPath)
+				// 更新 AGV 清單
+				GUI_UpdateAGVList(status.Name);
+				// 若更新中的 AGV 為清單選擇中的，則更新顯示 AGV 狀態的 DataGridView
+				if (cbAGVList.InvokeIfNecessary((a) => a.SelectedItem?.ToString()) == status.Name)
+					GUI_UpdateAGVInfoMonitor(status);
+				// 若清單選擇為空，則自動選擇正在更新的 AGV
+				else if (cbAGVList.InvokeIfNecessary((a) => a.SelectedIndex < 0))
+					cbAGVList.InvokeIfNecessary(() => cbAGVList.SelectedItem = status.Name);
+
+				// 更新連線狀態
+				lock (agvs)
+				{
+					GUI_UpdateConnectStatusMonitor(Resources.circle_green, agvs.Count.ToString());
+				}
+			}
+			else if (e.Data is AGVPath)
             {
                 var path = e.Data as AGVPath;
 
@@ -747,11 +875,7 @@ namespace GLUITest
 					});
                 }
             }
-
-            // 更新連線狀態
-            statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Image = Resources.circle_green);
-            statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = agvs.Count.ToString());
-        }
+		}
 
 		#region AGV 資訊處理
 

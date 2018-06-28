@@ -35,15 +35,15 @@
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.cbAGVList = new System.Windows.Forms.ComboBox();
 			this.dgvAGVInfo = new System.Windows.Forms.DataGridView();
+			this.cbAGVList = new System.Windows.Forms.ComboBox();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
 			((System.ComponentModel.ISupportInitialize)(this.dgvInfo)).BeginInit();
 			this.statusStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvAGVInfo)).BeginInit();
+			this.tabPage2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// dgvInfo
@@ -131,6 +131,27 @@
 			this.tabPage1.Text = "AGVs";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
+			// dgvAGVInfo
+			// 
+			this.dgvAGVInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvAGVInfo.Location = new System.Drawing.Point(6, 50);
+			this.dgvAGVInfo.Name = "dgvAGVInfo";
+			this.dgvAGVInfo.RowTemplate.Height = 27;
+			this.dgvAGVInfo.Size = new System.Drawing.Size(303, 311);
+			this.dgvAGVInfo.TabIndex = 1;
+			this.dgvAGVInfo.SelectionChanged += new System.EventHandler(this.dgvAGVInfo_SelectionChanged);
+			// 
+			// cbAGVList
+			// 
+			this.cbAGVList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbAGVList.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.cbAGVList.FormattingEnabled = true;
+			this.cbAGVList.Location = new System.Drawing.Point(6, 6);
+			this.cbAGVList.Name = "cbAGVList";
+			this.cbAGVList.Size = new System.Drawing.Size(303, 38);
+			this.cbAGVList.TabIndex = 0;
+			this.cbAGVList.SelectedIndexChanged += new System.EventHandler(this.cbAGVList_SelectedIndexChanged);
+			// 
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.dgvInfo);
@@ -142,25 +163,6 @@
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Objects";
 			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
-			// cbAGVList
-			// 
-			this.cbAGVList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbAGVList.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.cbAGVList.FormattingEnabled = true;
-			this.cbAGVList.Location = new System.Drawing.Point(6, 6);
-			this.cbAGVList.Name = "cbAGVList";
-			this.cbAGVList.Size = new System.Drawing.Size(303, 38);
-			this.cbAGVList.TabIndex = 0;
-			// 
-			// dgvAGVInfo
-			// 
-			this.dgvAGVInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvAGVInfo.Location = new System.Drawing.Point(6, 50);
-			this.dgvAGVInfo.Name = "dgvAGVInfo";
-			this.dgvAGVInfo.RowTemplate.Height = 27;
-			this.dgvAGVInfo.Size = new System.Drawing.Size(303, 311);
-			this.dgvAGVInfo.TabIndex = 1;
 			// 
 			// frmTest
 			// 
@@ -178,8 +180,8 @@
 			this.statusStrip1.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
-			this.tabPage2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvAGVInfo)).EndInit();
+			this.tabPage2.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
