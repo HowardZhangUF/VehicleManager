@@ -26,7 +26,7 @@ namespace LittleGhost
         /// </summary>
         public static TResult InvokeIfNecessary<T, TResult>(this T ctrl, Func<T, TResult> action) where T : Control
         {
-            if (ctrl.InvokeRequired) { return (TResult)ctrl.Invoke(action); }
+            if (ctrl.InvokeRequired) { return (TResult)ctrl.Invoke(action, ctrl); }
             else { return action(ctrl); }
         }
     }
