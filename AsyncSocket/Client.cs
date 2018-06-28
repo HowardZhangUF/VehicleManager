@@ -32,8 +32,19 @@ namespace AsyncSocket
                 var res = handler.TryEndConnect(ar);
                 if (res == null) { Disconnect(); return; }
 
-                // 建立資料接收器
-                var state = new StateObject();
+				ConnectStatus = EConnectStatus.Connect;
+
+				var arg = new ConnectStatusChangedEventArgs()
+				{
+					ConnectStatus = EConnectStatus.Connect,
+					RemoteInfo = new EndPointInfo(socket.RemoteEndPoint as IPEndPoint),
+					StatusChangedTime = DateTime.Now,
+				};
+
+				new WaitTask.WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
+
+				// 建立資料接收器
+				var state = new StateObject();
                 state.workSocket = handler;
                 res = handler.TryBeginReceive(state.buffer, 0, StateObject.BUFFER_SIZE, 0, new AsyncCallback(AsyncReceiveCallback), state);
                 if (res == null) Disconnect();
@@ -116,8 +127,6 @@ namespace AsyncSocket
             {
                 if (ConnectStatus == EConnectStatus.Connect) return;
 
-                ConnectStatus = EConnectStatus.Connect;
-
                 RemoteIP = ip;
                 RemotePort = port;
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -127,15 +136,6 @@ namespace AsyncSocket
 
                 var res = socket.TryBeginConnect(new IPEndPoint(IPAddress.Parse(ip), port), new AsyncCallback(AsyncConnectCallback), socket);
                 if (res == null) { Disconnect(); return; }
-
-                var arg = new ConnectStatusChangedEventArgs()
-                {
-                    ConnectStatus = EConnectStatus.Connect,
-                    RemoteInfo = new EndPointInfo(socket.RemoteEndPoint as IPEndPoint),
-                    StatusChangedTime = DateTime.Now,
-                };
-
-                new WaitTask.WaitTask(() => ConnectStatusChangedEvent?.Invoke(this, arg)).Start();
             }
         }
 
