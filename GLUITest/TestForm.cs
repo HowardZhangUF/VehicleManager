@@ -522,12 +522,12 @@ namespace GLUITest
 		{
 			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[0].Cells[1].Value?.ToString() != status?.Name.ToString())									dgvAGVInfo.Rows[0].Cells[1].Value = status?.Name.ToString();								});
 			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[1].Cells[1].Value?.ToString() != status?.Description.ToString())							dgvAGVInfo.Rows[1].Cells[1].Value = status?.Description.ToString();							});
-			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[2].Cells[1].Value?.ToString() != status?.Battery.ToString())								dgvAGVInfo.Rows[2].Cells[1].Value = status?.Battery.ToString();								});
-			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[3].Cells[1].Value?.ToString() != status?.X.ToString())										dgvAGVInfo.Rows[3].Cells[1].Value = status?.X.ToString();									});
-			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[4].Cells[1].Value?.ToString() != status?.Y.ToString())										dgvAGVInfo.Rows[4].Cells[1].Value = status?.Y.ToString();									});
-			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[5].Cells[1].Value?.ToString() != status?.Toward.ToString())								dgvAGVInfo.Rows[5].Cells[1].Value = status?.Toward.ToString();								});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[2].Cells[1].Value?.ToString() != status?.Battery.ToString("F2"))							dgvAGVInfo.Rows[2].Cells[1].Value = status?.Battery.ToString("F2");							});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[3].Cells[1].Value?.ToString() != status?.X.ToString("F2"))									dgvAGVInfo.Rows[3].Cells[1].Value = status?.X.ToString("F2");								});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[4].Cells[1].Value?.ToString() != status?.Y.ToString("F2"))									dgvAGVInfo.Rows[4].Cells[1].Value = status?.Y.ToString("F2");								});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[5].Cells[1].Value?.ToString() != status?.Toward.ToString("F2"))							dgvAGVInfo.Rows[5].Cells[1].Value = status?.Toward.ToString("F2");							});
 			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[6].Cells[1].Value?.ToString() != status?.GoalName.ToString())								dgvAGVInfo.Rows[6].Cells[1].Value = status?.GoalName.ToString();							});
-			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[7].Cells[1].Value?.ToString() != status?.MapMatch.ToString())								dgvAGVInfo.Rows[7].Cells[1].Value = status?.MapMatch.ToString();							});
+			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[7].Cells[1].Value?.ToString() != status?.MapMatch.ToString("F2"))							dgvAGVInfo.Rows[7].Cells[1].Value = status?.MapMatch.ToString("F2");						});
 			dgvAGVInfo.InvokeIfNecessary(() => { if (dgvAGVInfo.Rows[8].Cells[1].Value?.ToString() != status?.TimeStamp.ToString("yyyy/MM/dd HH:mm:ss.fff"))	dgvAGVInfo.Rows[8].Cells[1].Value = status?.TimeStamp.ToString("yyyy/MM/dd HH:mm:ss.fff");	});
 		}
 
