@@ -807,11 +807,11 @@ namespace GLUITest
 			{
 				if (!agvs.Any())
 				{
-					GUI_UpdateConnectStatusMonitor(Resources.circle_yellow, agvs.Count.ToString());
+					GUI_UpdateConnectStatusMonitor(Resources.CircleYellow, agvs.Count.ToString());
 				}
 				else
 				{
-					GUI_UpdateConnectStatusMonitor(Resources.circle_green, agvs.Count.ToString());
+					GUI_UpdateConnectStatusMonitor(Resources.CircleGreen, agvs.Count.ToString());
 				}
 			}
         }
@@ -824,11 +824,11 @@ namespace GLUITest
 			// 更新連線狀態
 			if (e.ListenStatus == EListenStatus.Idle)
 			{
-				GUI_UpdateConnectStatusMonitor(Resources.circle_red, "0");
+				GUI_UpdateConnectStatusMonitor(Resources.CircleRed, "0");
 			}
 			else
 			{
-				GUI_UpdateConnectStatusMonitor(Resources.circle_yellow, "0");
+				GUI_UpdateConnectStatusMonitor(Resources.CircleYellow, "0");
             }
         }
 
@@ -858,7 +858,7 @@ namespace GLUITest
 				// 更新連線狀態
 				lock (agvs)
 				{
-					GUI_UpdateConnectStatusMonitor(Resources.circle_green, agvs.Count.ToString());
+					GUI_UpdateConnectStatusMonitor(Resources.CircleGreen, agvs.Count.ToString());
 				}
 			}
 			else if (e.Data is AGVPath)

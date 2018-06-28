@@ -89,7 +89,7 @@
 			// 
 			// tsslConnectStatus
 			// 
-			this.tsslConnectStatus.Image = global::GLUITest.Properties.Resources.circle_red;
+			this.tsslConnectStatus.Image = global::GLUITest.Properties.Resources.CircleRed;
 			this.tsslConnectStatus.Name = "tsslConnectStatus";
 			this.tsslConnectStatus.Size = new System.Drawing.Size(38, 20);
 			this.tsslConnectStatus.Text = "0";

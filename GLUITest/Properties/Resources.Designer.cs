@@ -63,9 +63,9 @@ namespace GLUITest.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
-        internal static System.Drawing.Bitmap circle_green {
+        internal static System.Drawing.Bitmap CircleGreen {
             get {
-                object obj = ResourceManager.GetObject("circle_green", resourceCulture);
+                object obj = ResourceManager.GetObject("CircleGreen", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace GLUITest.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
-        internal static System.Drawing.Bitmap circle_red {
+        internal static System.Drawing.Bitmap CircleRed {
             get {
-                object obj = ResourceManager.GetObject("circle_red", resourceCulture);
+                object obj = ResourceManager.GetObject("CircleRed", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace GLUITest.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
-        internal static System.Drawing.Bitmap circle_yellow {
+        internal static System.Drawing.Bitmap CircleYellow {
             get {
-                object obj = ResourceManager.GetObject("circle_yellow", resourceCulture);
+                object obj = ResourceManager.GetObject("CircleYellow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
