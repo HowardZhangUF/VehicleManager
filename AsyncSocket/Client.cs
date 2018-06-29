@@ -37,7 +37,7 @@ namespace AsyncSocket
 				var arg = new ConnectStatusChangedEventArgs()
 				{
 					ConnectStatus = EConnectStatus.Connect,
-					RemoteInfo = new EndPointInfo(socket.RemoteEndPoint as IPEndPoint),
+					RemoteInfo = new EndPointInfo(handler.RemoteEndPoint as IPEndPoint),
 					StatusChangedTime = DateTime.Now,
 				};
 
