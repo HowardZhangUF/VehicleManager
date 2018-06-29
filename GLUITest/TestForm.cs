@@ -729,7 +729,7 @@ namespace GLUITest
         /// <summary>
         /// 將 <see cref="ConcurrentQueue{T}"/> 所有的內容移除，並以 <see cref="IEnumerable{T}"/> 方式回傳
         /// </summary>
-        private IEnumerable<T> QueqeToIEnumer<T>(ConcurrentQueue<T> queqe)
+        private IEnumerable<T> DequeueToIEnumer<T>(ConcurrentQueue<T> queqe)
         {
             T item = default(T);
             while (queqe.TryDequeue(out item))
@@ -771,7 +771,7 @@ namespace GLUITest
                 lock (socketEventQueue)
                 {
                     // ToList() 是為了讓 QueqeToIEnumer 真的搬移資料
-                    eventArgsList = QueqeToIEnumer(socketEventQueue).ToList();
+                    eventArgsList = DequeueToIEnumer(socketEventQueue).ToList();
                     mreSocketEventTask.Reset();
                 }
 
