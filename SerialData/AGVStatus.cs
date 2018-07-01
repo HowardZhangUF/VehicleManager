@@ -91,7 +91,6 @@ namespace SerialData
             status.MapMatch = rnd.NextDouble(0, 100);
             status.Name = "AGV01";
             status.TimeStamp = DateTime.Now;
-            status.TxID = 666;
             status.Velocity = rnd.NextDouble(0, 100);
             return status;
         }

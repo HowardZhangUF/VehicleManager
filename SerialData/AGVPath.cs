@@ -48,7 +48,6 @@ namespace SerialData
 			path.PathY.Add(rnd.NextDouble(0, 1000));
             path.Name = "AGV01";
             path.TimeStamp = DateTime.Now;
-            path.TxID = 666;
             return path;
         }
 
