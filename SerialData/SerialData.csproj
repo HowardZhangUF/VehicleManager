@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AGVPath.cs" />
     <Compile Include="AGVStatus.cs" />
+    <Compile Include="Command.cs" />
     <Compile Include="EDescription.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
