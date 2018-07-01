@@ -1259,7 +1259,7 @@ namespace GLCore
                         break;
 
                     case nameof(ECMDType.Move):
-                        res = Move(dic, para.Skip(1));
+                        res = MoveObject(dic, para.Skip(1));
                         if (res != -1 && pushHistory) PreMoveCommand = cmd;
                         break;
 
@@ -1288,7 +1288,7 @@ namespace GLCore
         /// 移動物件。執行失敗回傳 -1
         /// </summary>
         /// <param name="para">id,n,dx,dy</param>
-        private int Move(Dictionary<int, ISingle> dic, IEnumerable<string> para)
+        private int MoveObject(Dictionary<int, ISingle> dic, IEnumerable<string> para)
         {
             lock (key)
             {
