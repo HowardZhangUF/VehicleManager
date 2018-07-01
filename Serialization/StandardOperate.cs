@@ -34,7 +34,7 @@ namespace Serialization
         /// <summary>
         /// <para>反序列化第一筆資料，並刪除原始資料中已經反序列化的部分</para>
         /// </summary>
-        public static ISerializable Deserialize(ref byte[] array)
+        public static Serializable Deserialize(ref byte[] array)
         {
             for (int ii = 0; ii + Head.Length + Int32Length + CheckSumLength - 1 < array.Length; ii++)
             {
@@ -50,12 +50,12 @@ namespace Serialization
                         {
                             // 將資料反序列化
                             byte[] data = array.Skip(ii + Head.Length + Int32Length).Take(dataLength).ToArray();
-                            ISerializable obj = null;
+                            Serializable obj = null;
                             using (MemoryStream stream = new MemoryStream(data))
                             {
                                 IFormatter formatter = new BinaryFormatter();
                                 stream.Seek(0, SeekOrigin.Begin);
-                                obj = formatter.Deserialize(stream) as ISerializable;
+                                obj = formatter.Deserialize(stream) as Serializable;
                             }
                             array = array.Skip(ii + Head.Length + Int32Length + dataLength + CheckSumLength).ToArray();
                             return obj;
@@ -84,7 +84,7 @@ namespace Serialization
         /// <para>資料量佔 4 bytes，等於 實際資料.Count </para>
         /// <para>檢查碼佔 1 byte，固定為 0x00 </para>
         /// </summary>
-        public static byte[] Serialize(this ISerializable data)
+        public static byte[] Serialize(this Serializable data)
         {
             MemoryStream stream = new MemoryStream();
             IFormatter formatter = new BinaryFormatter();

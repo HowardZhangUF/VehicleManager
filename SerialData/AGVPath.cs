@@ -9,7 +9,7 @@ namespace SerialData
     /// AGV 路徑
     /// </summary>
     [Serializable]
-    public class AGVPath : ISerializable
+    public class AGVPath : Serializable
     {
         /// <summary>
         /// AGV 名稱
@@ -28,18 +28,6 @@ namespace SerialData
 		/// </summary>
 		[DisplayName("PathY")]
 		public List<double> PathY { get; set; }
-
-		/// <summary>
-		/// 訊息時間戳
-		/// </summary>
-		[DisplayName("Time Stamp")]
-        public DateTime TimeStamp { get; set; } = DateTime.Now;
-
-        /// <summary>
-        /// 流水號，用來識別遠端訊息回應的對象
-        /// </summary>
-        [DisplayName("TxID")]
-        public uint TxID { get; set; }
 
         /// <summary>
         /// 產生假資料

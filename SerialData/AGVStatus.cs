@@ -12,7 +12,7 @@ namespace SerialData
 	/// AGV 狀態
 	/// </summary>
 	[Serializable]
-	public class AGVStatus : ISerializable
+	public class AGVStatus : Serializable
 	{
 		/// <summary>
 		/// 錯誤訊息
@@ -67,18 +67,6 @@ namespace SerialData
         /// </summary>
         [DisplayName("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// 訊息時間戳
-        /// </summary>
-        [DisplayName("Time Stamp")]
-        public DateTime TimeStamp { get; set; } = DateTime.Now;
-
-        /// <summary>
-        /// 流水號，用來識別遠端訊息回應的對象
-        /// </summary>
-        [DisplayName("TxID")]
-        public uint TxID { get; set; }
 
         /// <summary>
         /// 當下實際速度(mm/s)

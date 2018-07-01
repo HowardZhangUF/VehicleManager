@@ -35,7 +35,7 @@ namespace Serialization
 				var oriLength = rxBuffer.Length;
 				Array.Resize(ref rxBuffer, rxBuffer.Length + e.Data.Length);
 				Array.Copy(e.Data, 0, rxBuffer, oriLength, e.Data.Length);
-				ISerializable obj = Deserialize(ref rxBuffer);
+				Serializable obj = Deserialize(ref rxBuffer);
                 if (obj != null)
                 {
                     var arg = new ReceivedSerialDataEventArgs
@@ -102,7 +102,7 @@ namespace Serialization
         /// <summary>
         /// 發送資料至遠端(使用序列化傳輸)
         /// </summary>
-        public void Send(ISerializable data) => @base.Send(data.Serialize());
+        public void Send(Serializable data) => @base.Send(data.Serialize());
 
         #region Dispose
         private bool disposed = false;

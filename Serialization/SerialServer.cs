@@ -36,7 +36,7 @@ namespace Serialization
                 var oriLength = rxBuffer.Length;
                 Array.Resize(ref rxBuffer, rxBuffer.Length + e.Data.Length);
                 Array.Copy(e.Data, 0, rxBuffer, oriLength, e.Data.Length);
-                ISerializable obj = Deserialize(ref rxBuffer);
+                Serializable obj = Deserialize(ref rxBuffer);
                 if (obj != null)
                 {
                     var arg = new ReceivedSerialDataEventArgs
@@ -103,7 +103,7 @@ namespace Serialization
         /// <summary>
         /// 發送資料至所有遠端(使用序列化傳輸)
         /// </summary>
-        public void Send(ISerializable data) => @base.Send(data.Serialize());
+        public void Send(Serializable data) => @base.Send(data.Serialize());
 
         /// <summary>
         /// 發送資料至指定遠端(使用序列化傳輸)
@@ -118,7 +118,7 @@ namespace Serialization
         /// <summary>
         /// 發送資料至指定遠端(使用序列化傳輸)
         /// </summary>
-        public void Send(string ipport, ISerializable data) => @base.Send(ipport, data.Serialize());
+        public void Send(string ipport, Serializable data) => @base.Send(ipport, data.Serialize());
 
         /// <summary>
         /// 開始監聽連線

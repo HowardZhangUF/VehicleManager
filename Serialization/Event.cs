@@ -22,7 +22,7 @@ namespace Serialization
         /// <summary>
         /// 接收到的序列化資料
         /// </summary>
-        public ISerializable Data { get; set; }
+        public Serializable Data { get; set; }
 
         /// <summary>
         /// 接收時間
