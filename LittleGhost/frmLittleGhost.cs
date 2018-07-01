@@ -43,25 +43,25 @@ namespace LittleGhost
         }
 
         private void ReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
-		{
-			if (e.Data is AGVStatus)
-				AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVStatus 過來 : {(e.Data as AGVStatus).ToString()}");
-			else if (e.Data is AGVPath)
-				AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVPath 過來 : {(e.Data as AGVPath).ToString()}");
-			else if (e.Data is StringMessage)
+        {
+            if (e.Data is AGVStatus)
+                AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVStatus 過來 : {(e.Data as AGVStatus).ToString()}");
+            else if (e.Data is AGVPath)
+                AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送 AGVPath 過來 : {(e.Data as AGVPath).ToString()}");
+            else if (e.Data is StringMessage)
                 AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送字串過來 >> {(e.Data as StringMessage).Message}");
             else if (e.Data is ByteArray)
                 AddMessage(e.ReceivedTime, $"{e.RemoteInfo} 發送陣列過來 >> {Encoding.Unicode.GetString((e.Data as ByteArray).Message)}");
-		}
+        }
 
-		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			Log.SaveAll();
-		}
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.SaveAll();
+        }
 
-		#region Server
+        #region Server
 
-		private readonly SerialServer server = new SerialServer();
+        private readonly SerialServer server = new SerialServer();
 
         private void btnListening_Click(object sender, EventArgs e)
         {
@@ -85,17 +85,6 @@ namespace LittleGhost
             string remote = cmbRemoteList.Text;
             string data = txtServerSendData.Text;
 
-			if (data == "FakeAGVStatus")
-			{
-				server.Send(remote, AGVStatus.CreateFakeData());
-				return;
-			}
-			else if (data == "FakeAGVPath")
-			{
-				server.Send(remote, AGVPath.CreateFakeData());
-				return;
-			}
-
             if (chkServerSendByBytes.Checked)
             {
                 server.Send(remote, Encoding.Unicode.GetBytes(data));
@@ -104,6 +93,18 @@ namespace LittleGhost
             {
                 server.Send(remote, data);
             }
+        }
+
+        private void btnServerSendFakeStatus_Click(object sender, EventArgs e)
+        {
+            string remote = cmbRemoteList.Text;
+            server.Send(remote, AGVStatus.CreateFakeData());
+        }
+
+        private void btnServerSendFakePath_Click(object sender, EventArgs e)
+        {
+            string remote = cmbRemoteList.Text;
+            server.Send(remote, AGVPath.CreateFakeData());
         }
 
         private void Server_ConnectStatusChangedEvent(object sender, ConnectStatusChangedEventArgs e)
@@ -140,18 +141,7 @@ namespace LittleGhost
         {
             string data = txtClientSendData.Text;
 
-			if (data == "FakeAGVStatus")
-			{
-				client.Send(AGVStatus.CreateFakeData());
-				return;
-			}
-			else if (data == "FakeAGVPath")
-			{
-				client.Send(AGVPath.CreateFakeData());
-				return;
-			}
-
-			if (chkClientSendByBytes.Checked)
+            if (chkClientSendByBytes.Checked)
             {
                 client.Send(Encoding.Unicode.GetBytes(data));
             }
@@ -159,6 +149,16 @@ namespace LittleGhost
             {
                 client.Send(data);
             }
+        }
+
+        private void btnClientSendFakeStatus_Click(object sender, EventArgs e)
+        {
+            client.Send(AGVStatus.CreateFakeData());
+        }
+
+        private void btnClientSendFakePath_Click(object sender, EventArgs e)
+        {
+            client.Send(AGVPath.CreateFakeData());
         }
 
         private void btnConnect_Click(object sender, EventArgs e)

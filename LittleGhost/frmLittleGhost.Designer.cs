@@ -36,6 +36,8 @@
             this.components = new System.ComponentModel.Container();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.pageServer = new System.Windows.Forms.TabPage();
+            this.btnServerSendFakePath = new System.Windows.Forms.Button();
+            this.btnServerSendFakeStatus = new System.Windows.Forms.Button();
             this.chkServerSendByBytes = new System.Windows.Forms.CheckBox();
             this.txtServerSendData = new System.Windows.Forms.TextBox();
             this.btnServerSend = new System.Windows.Forms.Button();
@@ -44,6 +46,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.nmrServerPort = new System.Windows.Forms.NumericUpDown();
             this.pageClient = new System.Windows.Forms.TabPage();
+            this.btnClientSendFakePath = new System.Windows.Forms.Button();
+            this.btnClientSendFakeStatus = new System.Windows.Forms.Button();
             this.chkClientSendByBytes = new System.Windows.Forms.CheckBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.txtClientSendData = new System.Windows.Forms.TextBox();
@@ -74,6 +78,8 @@
             // 
             // pageServer
             // 
+            this.pageServer.Controls.Add(this.btnServerSendFakePath);
+            this.pageServer.Controls.Add(this.btnServerSendFakeStatus);
             this.pageServer.Controls.Add(this.chkServerSendByBytes);
             this.pageServer.Controls.Add(this.txtServerSendData);
             this.pageServer.Controls.Add(this.btnServerSend);
@@ -90,10 +96,32 @@
             this.pageServer.Text = "Server";
             this.pageServer.UseVisualStyleBackColor = true;
             // 
+            // btnServerSendFakePath
+            // 
+            this.btnServerSendFakePath.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btnServerSendFakePath.Location = new System.Drawing.Point(696, 92);
+            this.btnServerSendFakePath.Name = "btnServerSendFakePath";
+            this.btnServerSendFakePath.Size = new System.Drawing.Size(125, 40);
+            this.btnServerSendFakePath.TabIndex = 8;
+            this.btnServerSendFakePath.Text = "Fake Path";
+            this.btnServerSendFakePath.UseVisualStyleBackColor = true;
+            this.btnServerSendFakePath.Click += new System.EventHandler(this.btnServerSendFakePath_Click);
+            // 
+            // btnServerSendFakeStatus
+            // 
+            this.btnServerSendFakeStatus.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btnServerSendFakeStatus.Location = new System.Drawing.Point(565, 93);
+            this.btnServerSendFakeStatus.Name = "btnServerSendFakeStatus";
+            this.btnServerSendFakeStatus.Size = new System.Drawing.Size(125, 40);
+            this.btnServerSendFakeStatus.TabIndex = 7;
+            this.btnServerSendFakeStatus.Text = "Fake Status";
+            this.btnServerSendFakeStatus.UseVisualStyleBackColor = true;
+            this.btnServerSendFakeStatus.Click += new System.EventHandler(this.btnServerSendFakeStatus_Click);
+            // 
             // chkServerSendByBytes
             // 
             this.chkServerSendByBytes.AutoSize = true;
-            this.chkServerSendByBytes.Location = new System.Drawing.Point(565, 101);
+            this.chkServerSendByBytes.Location = new System.Drawing.Point(434, 53);
             this.chkServerSendByBytes.Name = "chkServerSendByBytes";
             this.chkServerSendByBytes.Size = new System.Drawing.Size(192, 32);
             this.chkServerSendByBytes.TabIndex = 6;
@@ -167,6 +195,8 @@
             // 
             // pageClient
             // 
+            this.pageClient.Controls.Add(this.btnClientSendFakePath);
+            this.pageClient.Controls.Add(this.btnClientSendFakeStatus);
             this.pageClient.Controls.Add(this.chkClientSendByBytes);
             this.pageClient.Controls.Add(this.btnConnect);
             this.pageClient.Controls.Add(this.txtClientSendData);
@@ -182,10 +212,32 @@
             this.pageClient.Text = "Client";
             this.pageClient.UseVisualStyleBackColor = true;
             // 
+            // btnClientSendFakePath
+            // 
+            this.btnClientSendFakePath.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btnClientSendFakePath.Location = new System.Drawing.Point(691, 50);
+            this.btnClientSendFakePath.Name = "btnClientSendFakePath";
+            this.btnClientSendFakePath.Size = new System.Drawing.Size(125, 40);
+            this.btnClientSendFakePath.TabIndex = 12;
+            this.btnClientSendFakePath.Text = "Fake Path";
+            this.btnClientSendFakePath.UseVisualStyleBackColor = true;
+            this.btnClientSendFakePath.Click += new System.EventHandler(this.btnClientSendFakePath_Click);
+            // 
+            // btnClientSendFakeStatus
+            // 
+            this.btnClientSendFakeStatus.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btnClientSendFakeStatus.Location = new System.Drawing.Point(560, 51);
+            this.btnClientSendFakeStatus.Name = "btnClientSendFakeStatus";
+            this.btnClientSendFakeStatus.Size = new System.Drawing.Size(125, 40);
+            this.btnClientSendFakeStatus.TabIndex = 11;
+            this.btnClientSendFakeStatus.Text = "Fake Status";
+            this.btnClientSendFakeStatus.UseVisualStyleBackColor = true;
+            this.btnClientSendFakeStatus.Click += new System.EventHandler(this.btnClientSendFakeStatus_Click);
+            // 
             // chkClientSendByBytes
             // 
             this.chkClientSendByBytes.AutoSize = true;
-            this.chkClientSendByBytes.Location = new System.Drawing.Point(560, 60);
+            this.chkClientSendByBytes.Location = new System.Drawing.Point(560, 15);
             this.chkClientSendByBytes.Name = "chkClientSendByBytes";
             this.chkClientSendByBytes.Size = new System.Drawing.Size(192, 32);
             this.chkClientSendByBytes.TabIndex = 10;
@@ -311,6 +363,10 @@
         private System.Windows.Forms.Button btnClientSend;
         private System.Windows.Forms.CheckBox chkServerSendByBytes;
         private System.Windows.Forms.CheckBox chkClientSendByBytes;
+        private System.Windows.Forms.Button btnServerSendFakePath;
+        private System.Windows.Forms.Button btnServerSendFakeStatus;
+        private System.Windows.Forms.Button btnClientSendFakePath;
+        private System.Windows.Forms.Button btnClientSendFakeStatus;
     }
 }
 
