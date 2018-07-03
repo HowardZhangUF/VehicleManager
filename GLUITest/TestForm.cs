@@ -590,7 +590,8 @@ namespace GLUITest
         {
             aStar.LoadMap(e.MapPath);
             pathID = GLCMD.CMD.AddMultiStripLine("Path", null);
-        }
+			agvs.Clear();
+		}
 
         private void GLUI_PenMapEvent(object sender, PenMapEventArgs e)
         {
@@ -888,9 +889,9 @@ namespace GLUITest
                         line.Clear();
                         line.AddRangeIfNotNull(PathToPairCollection(path));
                     });
-                }
-            }
-        }
+				}
+			}
+		}
 
         #region AGV 資訊處理
 
