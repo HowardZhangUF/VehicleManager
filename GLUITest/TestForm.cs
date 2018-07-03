@@ -587,10 +587,13 @@ namespace GLUITest
         }
 
         private void GLUI_LoadMapEvent(object sender, LoadMapEventArgs e)
-        {
-            aStar.LoadMap(e.MapPath);
+		{
+			lock (agvs)
+			{
+				agvs.Clear();
+			}
+			aStar.LoadMap(e.MapPath);
             pathID = GLCMD.CMD.AddMultiStripLine("Path", null);
-			agvs.Clear();
 		}
 
         private void GLUI_PenMapEvent(object sender, PenMapEventArgs e)
