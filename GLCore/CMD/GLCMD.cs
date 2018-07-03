@@ -266,20 +266,20 @@ namespace GLCore
         /// </summary>
         private History CommandHistory { get; } = new History(10);
 
-        /// <summary>
-        /// 當下複合物件列表
-        /// </summary>
-        private Dictionary<int, IMulti> CurrentMultiObject { get; set; } = new Dictionary<int, IMulti>();
+		/// <summary>
+		/// 當下複合物件列表
+		/// </summary>
+		private Dictionary<int, IMulti> CurrentMultiObject { get; set; } = new Dictionary<int, IMulti>();
 
-        /// <summary>
-        /// 當下單一物件列表
-        /// </summary>
-        private Dictionary<int, ISingle> CurrentSingleObject { get; set; } = new Dictionary<int, ISingle>();
+		/// <summary>
+		/// 當下單一物件列表
+		/// </summary>
+		private Dictionary<int, ISingle> CurrentSingleObject { get; set; } = new Dictionary<int, ISingle>();
 
-        /// <summary>
-        /// 背景暫存單一物件列表
-        /// </summary>
-        private Dictionary<int, ISingle> DuplicateSingleObject { get; } = new Dictionary<int, ISingle>();
+		/// <summary>
+		/// 背景暫存單一物件列表
+		/// </summary>
+		private Dictionary<int, ISingle> DuplicateSingleObject { get; } = new Dictionary<int, ISingle>();
 
         /// <summary>
         /// 上一筆移動指令
@@ -510,7 +510,8 @@ namespace GLCore
                 SelectTargetID = -1;
                 ObstaclePointsID = SerialNumber.Next();
                 CommandHistory.Clear();
-                CurrentMultiObject.Clear();
+				CurrentAGV.Clear();
+				CurrentMultiObject.Clear();
                 CurrentSingleObject.Clear();
                 DuplicateSingleObject.Clear();
                 Eraser.SaftyEdit(true, eraser => eraser.Cancel());
@@ -557,7 +558,7 @@ namespace GLCore
 
                 // 更新綁定
                 ResetAllBindings();
-            }
+			}
         }
 
         #endregion 載入地圖
@@ -958,33 +959,33 @@ namespace GLCore
                     obj.Draw(gl);
                 }
 
-                // 先畫不透明再畫透明
-                // 不透明
-                foreach (var obj in CurrentMultiObject.Values.Where(obj => !obj.Transparent))
-                {
-                    obj.Draw(gl);
-                }
-                foreach (var obj in CurrentSingleObject.Values.Where(obj => !obj.Transparent))
-                {
-                    obj.Draw(gl);
-                }
+				// 先畫不透明再畫透明
+				// 不透明
+				foreach (var obj in CurrentMultiObject.Values.Where(obj => !obj.Transparent))
+				{
+					obj.Draw(gl);
+				}
+				foreach (var obj in CurrentSingleObject.Values.Where(obj => !obj.Transparent))
+				{
+					obj.Draw(gl);
+				}
 
-                // 透明
-                foreach (var obj in CurrentMultiObject.Values.Where(obj => obj.Transparent))
-                {
-                    obj.Draw(gl);
-                }
-                foreach (var obj in CurrentSingleObject.Values.Where(obj => obj.Transparent))
-                {
-                    obj.Draw(gl);
-                }
+				// 透明
+				foreach (var obj in CurrentMultiObject.Values.Where(obj => obj.Transparent))
+				{
+					obj.Draw(gl);
+				}
+				foreach (var obj in CurrentSingleObject.Values.Where(obj => obj.Transparent))
+				{
+					obj.Draw(gl);
+				}
 
-                // 選擇邊界
-                if (CurrentSingleObject.Keys.Contains(SelectTargetID))
-                {
-                    CurrentSingleObject[SelectTargetID].DrawBound(gl);
-                }
-            }
+				// 選擇邊界
+				if (CurrentSingleObject.Keys.Contains(SelectTargetID))
+				{
+					CurrentSingleObject[SelectTargetID].DrawBound(gl);
+				}
+			}
         }
 
         /// <summary>
