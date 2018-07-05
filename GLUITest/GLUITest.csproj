@@ -88,6 +88,18 @@
       <Project>{A617D647-1075-4BBB-9B9C-17971D56FE1E}</Project>
       <Name>Geometry</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\iTSLibrary\GLCore\GLCore.csproj">
+      <Project>{8DD11590-79E3-4D93-83DB-8B2DD19CD3F4}</Project>
+      <Name>GLCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\iTSLibrary\GLStyle\GLStyle.csproj">
+      <Project>{67EDE669-FF71-41EC-BA78-0D167FB5D989}</Project>
+      <Name>GLStyle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\iTSLibrary\GLUI\GLUI.csproj">
+      <Project>{390DC0BB-01D8-48B3-A7C3-84C5B3355DEE}</Project>
+      <Name>GLUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\iTSLibrary\LittleGhost\LittleGhost.csproj">
       <Project>{6086472b-1061-42b0-a442-b4d2fbb3e863}</Project>
       <Name>LittleGhost</Name>
@@ -104,25 +116,9 @@
       <Project>{3306C8F2-A0C8-4DF6-A8F7-86A58647F3AF}</Project>
       <Name>AStar</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GLCore\GLCore.csproj">
-      <Project>{8dd11590-79e3-4d93-83db-8b2dd19cd3f4}</Project>
-      <Name>GLCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GLStyle\GLStyle.csproj">
-      <Project>{67ede669-ff71-41ec-ba78-0d167fb5d989}</Project>
-      <Name>GLStyle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GLUI\GLUI.csproj">
-      <Project>{390dc0bb-01d8-48b3-a7c3-84c5b3355dee}</Project>
-      <Name>GLUI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PairStar\PairStar.csproj">
       <Project>{23B2D01C-73A9-412E-8C44-30F53D2003A5}</Project>
       <Name>PairStar</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThreadSafety\ThreadSafety.csproj">
-      <Project>{68031e26-f58a-4f5a-8552-e5bc30ce97fc}</Project>
-      <Name>ThreadSafety</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
