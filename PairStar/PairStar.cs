@@ -3,14 +3,13 @@ using Geometry;
 using MapReader;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace PairAStar
 {
-    /// <summary>
-    /// A 星路徑搜尋。<see cref="Pair"/> 與 <see cref="AStar{T}"/> 的結合
-    /// </summary>
-    public class PairStar
+	/// <summary>
+	/// A 星路徑搜尋。<see cref="Pair"/> 與 <see cref="AStar{T}"/> 的結合
+	/// </summary>
+	public class PairStar
     {
         /// <summary>
         /// 車寬

@@ -1,12 +1,11 @@
 ﻿using Geometry;
-using SharpGL;
 
 namespace GLCore
 {
-    /// <summary>
-    /// 擦子類別
-    /// </summary>
-    public class Eraser : SingleArea, IGLCore
+	/// <summary>
+	/// 擦子類別
+	/// </summary>
+	public class Eraser : SingleArea, IGLCore
     {
         /// <summary>
         /// 建構新擦子

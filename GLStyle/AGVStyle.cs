@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace GLStyle
 {
-    /// <summary>
-    /// AGV 樣式
-    /// </summary>
-    internal class AGVStyle : IAGVStyle
+	/// <summary>
+	/// AGV 樣式
+	/// </summary>
+	internal class AGVStyle : IAGVStyle
     {
         /// <summary>
         /// 基底樣式

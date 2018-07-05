@@ -44,13 +44,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\iTSLibrary\Geometry\Geometry.csproj">
+      <Project>{A617D647-1075-4BBB-9B9C-17971D56FE1E}</Project>
+      <Name>Geometry</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AStar\AStar.csproj">
       <Project>{3306c8f2-a0c8-4df6-a8f7-86a58647f3af}</Project>
       <Name>AStar</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Geometry\Geometry.csproj">
-      <Project>{a617d647-1075-4bbb-9b9c-17971d56fe1e}</Project>
-      <Name>Geometry</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapReader\MapReader.csproj">
       <Project>{86FBB304-7B4F-4C7D-891C-2A3309A275F4}</Project>

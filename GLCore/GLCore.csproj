@@ -108,8 +108,8 @@
     <Content Include="DLL\SharpGL.WinForms.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Geometry\Geometry.csproj">
-      <Project>{a617d647-1075-4bbb-9b9c-17971d56fe1e}</Project>
+    <ProjectReference Include="..\..\iTSLibrary\Geometry\Geometry.csproj">
+      <Project>{A617D647-1075-4BBB-9B9C-17971D56FE1E}</Project>
       <Name>Geometry</Name>
     </ProjectReference>
     <ProjectReference Include="..\GLStyle\GLStyle.csproj">
@@ -119,10 +119,6 @@
     <ProjectReference Include="..\MapReader\MapReader.csproj">
       <Project>{86FBB304-7B4F-4C7D-891C-2A3309A275F4}</Project>
       <Name>MapReader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MD5Hash\MD5Hash.csproj">
-      <Project>{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}</Project>
-      <Name>MD5Hash</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThreadSafety\ThreadSafety.csproj">
       <Project>{68031e26-f58a-4f5a-8552-e5bc30ce97fc}</Project>

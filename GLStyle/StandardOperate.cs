@@ -6,10 +6,10 @@ using System.Collections.Generic;
 
 namespace GLStyle
 {
-    /// <summary>
-    /// 標準操作
-    /// </summary>
-    public static class StandardOperate
+	/// <summary>
+	/// 標準操作
+	/// </summary>
+	public static class StandardOperate
     {
         /// <summary>
         /// 開啟虛線

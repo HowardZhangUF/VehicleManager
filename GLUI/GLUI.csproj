@@ -86,8 +86,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Geometry\Geometry.csproj">
-      <Project>{a617d647-1075-4bbb-9b9c-17971d56fe1e}</Project>
+    <ProjectReference Include="..\..\iTSLibrary\Geometry\Geometry.csproj">
+      <Project>{A617D647-1075-4BBB-9B9C-17971D56FE1E}</Project>
       <Name>Geometry</Name>
     </ProjectReference>
     <ProjectReference Include="..\GLCore\GLCore.csproj">
@@ -97,10 +97,6 @@
     <ProjectReference Include="..\GLStyle\GLStyle.csproj">
       <Project>{67ede669-ff71-41ec-ba78-0d167fb5d989}</Project>
       <Name>GLStyle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IniFiles\IniFiles.csproj">
-      <Project>{d2ece031-6105-402b-bc01-8e2e1c9b469d}</Project>
-      <Name>IniFiles</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThreadSafety\ThreadSafety.csproj">
       <Project>{68031e26-f58a-4f5a-8552-e5bc30ce97fc}</Project>

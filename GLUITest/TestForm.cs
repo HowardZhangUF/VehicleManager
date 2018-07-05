@@ -1,23 +1,23 @@
-﻿using AsyncSocket;
-using Geometry;
-using GLCore;
+﻿using GLCore;
 using GLStyle;
 using GLUI;
 using PairAStar;
-using SerialData;
-using Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using LittleGhost;
 using GLUITest.Properties;
 using System.Collections.Concurrent;
+using SerialData;
+using Geometry;
+using Serialization;
+using AsyncSocket;
+using LittleGhost;
 
 namespace GLUITest
 {
-    public partial class frmTest : Form
+	public partial class frmTest : Form
     {
         public frmTest()
         {

@@ -46,12 +46,12 @@
     <Compile Include="Reader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Geometry\Geometry.csproj">
+    <ProjectReference Include="..\..\iTSLibrary\Geometry\Geometry.csproj">
       <Project>{A617D647-1075-4BBB-9B9C-17971D56FE1E}</Project>
       <Name>Geometry</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MD5Hash\MD5Hash.csproj">
-      <Project>{1610eb3a-cccb-451d-81d3-f4e174d90d0d}</Project>
+    <ProjectReference Include="..\..\iTSLibrary\MD5Hash\MD5Hash.csproj">
+      <Project>{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}</Project>
       <Name>MD5Hash</Name>
     </ProjectReference>
   </ItemGroup>

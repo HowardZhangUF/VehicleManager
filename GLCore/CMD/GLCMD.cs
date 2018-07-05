@@ -1,7 +1,6 @@
 ﻿using Geometry;
 using GLStyle;
 using MapReader;
-using MD5Hash;
 using SharpGL;
 using System;
 using System.Collections.Generic;
@@ -14,10 +13,10 @@ using ThreadSafety;
 
 namespace GLCore
 {
-    /// <summary>
-    /// GL 物件命令管理器
-    /// </summary>
-    public class GLCMD : Control, IGLCore, INotifyPropertyChanged
+	/// <summary>
+	/// GL 物件命令管理器
+	/// </summary>
+	public class GLCMD : Control, IGLCore, INotifyPropertyChanged
     {
         #region 設定成唯一物件
 

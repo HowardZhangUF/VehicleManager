@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace MapReader
 {
-    /// <summary>
-    /// 地圖讀取器
-    /// </summary>
-    public class Reader : IMapReader
+	/// <summary>
+	/// 地圖讀取器
+	/// </summary>
+	public class Reader : IMapReader
     {
         /// <summary>
         /// <para>讀取目標點列表</para>

@@ -64,12 +64,12 @@
     <Compile Include="TowardPairStyle.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Geometry\Geometry.csproj">
+    <ProjectReference Include="..\..\iTSLibrary\Geometry\Geometry.csproj">
       <Project>{A617D647-1075-4BBB-9B9C-17971D56FE1E}</Project>
       <Name>Geometry</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IniFiles\IniFiles.csproj">
-      <Project>{d2ece031-6105-402b-bc01-8e2e1c9b469d}</Project>
+    <ProjectReference Include="..\..\iTSLibrary\IniFiles\IniFiles.csproj">
+      <Project>{D2ECE031-6105-402B-BC01-8E2E1C9B469D}</Project>
       <Name>IniFiles</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThreadSafety\ThreadSafety.csproj">
