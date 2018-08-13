@@ -27,10 +27,10 @@ namespace GLUITest
             StyleManager.LoadStyle("Style.ini");
 
             // 加入選單
-            cmbSelectType.Items.Add(nameof(SinglePairInfo));
-            cmbSelectType.Items.Add(nameof(SingleTowardPairInfo));
-            cmbSelectType.Items.Add(nameof(SingleLineInfo));
-            cmbSelectType.Items.Add(nameof(SingleAreaInfo));
+            cmbSelectType.Items.Add("Point");
+            cmbSelectType.Items.Add("Station");
+            cmbSelectType.Items.Add("Line");
+            cmbSelectType.Items.Add("Area");
 
             // 資料綁定
             var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
@@ -106,28 +106,28 @@ namespace GLUITest
             // 綁資料
             switch ((sender as ComboBox).Text)
             {
-                case nameof(SinglePairInfo):
+                case "Point":
                     {
                         BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.CMD.SinglePairInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
                     }
                     break;
 
-                case nameof(SingleTowardPairInfo):
+                case "Station":
                     {
                         BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.CMD.SingleTowerPairInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
                     }
                     break;
 
-                case nameof(SingleLineInfo):
+                case "Line":
                     {
                         BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.CMD.SingleLineInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
                     }
                     break;
 
-                case nameof(SingleAreaInfo):
+                case "Area":
                     {
                         BindingSource singleTowerPairInfoSource = new BindingSource(GLCMD.CMD.SingleAreaInfo, null);
                         dgvInfo.DataSource = singleTowerPairInfoSource;
@@ -157,7 +157,7 @@ namespace GLUITest
 
             switch (cmbSelectType.Text)
             {
-                case nameof(SinglePairInfo):
+                case "Point":
                     {
                         int x = (int)(dgvInfo[nameof(SinglePairInfo.X), rowIndex].Value);
                         int y = (int)(dgvInfo[nameof(SinglePairInfo.Y), rowIndex].Value);
@@ -166,7 +166,7 @@ namespace GLUITest
                     }
                     break;
 
-                case nameof(SingleTowardPairInfo):
+                case "Station":
                     {
                         int x = (int)(dgvInfo[nameof(SingleTowardPairInfo.X), rowIndex].Value);
                         int y = (int)(dgvInfo[nameof(SingleTowardPairInfo.Y), rowIndex].Value);
@@ -175,7 +175,7 @@ namespace GLUITest
                     }
                     break;
 
-                case nameof(SingleLineInfo):
+                case "Line":
                     {
                         int x0 = (int)(dgvInfo[nameof(SingleLineInfo.X0), rowIndex].Value);
                         int y0 = (int)(dgvInfo[nameof(SingleLineInfo.Y0), rowIndex].Value);
@@ -186,7 +186,7 @@ namespace GLUITest
                     }
                     break;
 
-                case nameof(SingleAreaInfo):
+                case "Area":
                     {
                         int x0 = (int)(dgvInfo[nameof(SingleAreaInfo.MinX), rowIndex].Value);
                         int y0 = (int)(dgvInfo[nameof(SingleAreaInfo.MinY), rowIndex].Value);
@@ -219,22 +219,22 @@ namespace GLUITest
 
             switch (cmbSelectType.Text)
             {
-                case nameof(SinglePairInfo):
+                case "Point":
                     {
                         return (int)(dgvInfo[nameof(SinglePairInfo.ID), rowIndex].Value);
                     }
 
-                case nameof(SingleTowardPairInfo):
+                case "Station":
                     {
                         return (int)(dgvInfo[nameof(SingleTowardPairInfo.ID), rowIndex].Value);
                     }
 
-                case nameof(SingleLineInfo):
+                case "Line":
                     {
                         return (int)(dgvInfo[nameof(SingleLineInfo.ID), rowIndex].Value);
                     }
 
-                case nameof(SingleAreaInfo):
+                case "Area":
                     {
                         return (int)(dgvInfo[nameof(SingleAreaInfo.ID), rowIndex].Value);
                     }
@@ -267,25 +267,25 @@ namespace GLUITest
 
             switch (cmbSelectType.Text)
             {
-                case nameof(SinglePairInfo):
+                case "Point":
                     {
                         UpdateSinglePairInfo(rowIndex, colName, newValue);
                     }
                     break;
 
-                case nameof(SingleTowardPairInfo):
+                case "Station":
                     {
                         UpdateSingleTowardPairInfo(rowIndex, colName, newValue);
                     }
                     break;
 
-                case nameof(SingleLineInfo):
+                case "Line":
                     {
                         UpdateSingleLineInfo(rowIndex, colName, newValue);
                     }
                     break;
 
-                case nameof(SingleAreaInfo):
+                case "Area":
                     {
                         UpdateSingleAreaInfo(rowIndex, colName, newValue);
                     }
