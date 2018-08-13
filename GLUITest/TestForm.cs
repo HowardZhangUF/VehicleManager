@@ -74,10 +74,34 @@ namespace GLUITest
             }
         }
 
-        /// <summary>
-        /// 重新綁定資料
-        /// </summary>
-        private void CmbSelectType_SelectedValueChanged(object sender, EventArgs e)
+		/// <summary>
+		/// 傳送要求地圖清單的命令
+		/// </summary>
+		private void btnRequestMapList_Click(object sender, EventArgs e)
+		{
+			SendRequestMapListCommand();
+		}
+
+		/// <summary>
+		/// 傳送上傳地圖至 AGV 上的命令
+		/// </summary>
+		private void btnUploadMapToAGV_Click(object sender, EventArgs e)
+		{
+			SendUploadMapCommand();
+		}
+
+		/// <summary>
+		/// 傳送 AGV 更新目前使用地圖的命令
+		/// </summary>
+		private void btnChangeMap_Click(object sender, EventArgs e)
+		{
+			SendChangeMapCommand();
+		}
+
+		/// <summary>
+		/// 重新綁定資料
+		/// </summary>
+		private void CmbSelectType_SelectedValueChanged(object sender, EventArgs e)
         {
             // 綁資料
             switch ((sender as ComboBox).Text)
@@ -466,14 +490,56 @@ namespace GLUITest
                 default:
                     break;
             }
-        }
+		}
 
-        #region 介面操作
+		/// <summary>
+		/// 自訂輸入視窗
+		/// </summary>
+		/// <param name="caption">標題</param>
+		/// <param name="text">內文</param>
+		/// <param name="value">結果值</param>
+		/// <returns></returns>
+		public static DialogResult InputBox(string caption, string text, ref string value)
+		{
+			Form form = new Form();
+			Label lblText = new Label();
+			TextBox txtResult = new TextBox();
+			Button btnOk = new Button();
+			Button btnCancel = new Button();
 
-        /// <summary>
-        /// 初始化顯示 AGV 狀態的 DataGridView
-        /// </summary>
-        private void GUI_InitializeAGVInfoMonitor()
+			form.Text = caption;
+			lblText.Text = text;
+			lblText.AutoSize = true;
+			btnOk.Text = "OK";
+			btnOk.DialogResult = DialogResult.OK;
+			btnCancel.Text = "Cancel";
+			btnCancel.DialogResult = DialogResult.Cancel;
+
+			form.Controls.AddRange(new Control[] { lblText, txtResult, btnOk, btnCancel });
+			lblText.Location = new System.Drawing.Point(20, 10);
+			txtResult.SetBounds(20, lblText.Location.Y + lblText.Size.Height + 10, 160, 20);
+			btnOk.SetBounds(20, txtResult.Location.Y + txtResult.Size.Height + 10, 75, 30);
+			btnCancel.SetBounds(btnOk.Right + 10, btnOk.Location.Y, 75, 30);
+
+			form.ClientSize = new System.Drawing.Size(Math.Max(btnCancel.Right + 20, lblText.Right + 20), btnCancel.Bottom + 10);
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterParent;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = btnOk;
+			form.CancelButton = btnCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+			value = txtResult.Text;
+			return dialogResult;
+		}
+
+		#region 介面操作
+
+		/// <summary>
+		/// 初始化顯示 AGV 狀態的 DataGridView
+		/// </summary>
+		private void GUI_InitializeAGVInfoMonitor()
         {
             // 允許使用者新增列
             dgvAGVInfo.AllowUserToAddRows = false;
@@ -894,14 +960,141 @@ namespace GLUITest
                     });
 				}
 			}
+			else if (e.Data is RequestMapList)
+			{
+				if ((e.Data as RequestMapList).Response == null) return;
+				Thread thd = new Thread(() => 
+				{
+					var tmp = e.Data as RequestMapList;
+					if (tmp.Response.Count > 0)
+					{
+						string text = "Please Input the Map Index:\r\n";
+						for (int i = 0; i < tmp.Response.Count; ++i)
+						{
+							text += (i + 1).ToString() + ". " + tmp.Response.ElementAt(i).ToString();
+							if (i != (tmp.Response.Count - 1)) text += "\r\n";
+						}
+
+						string result = "";
+						int selectedIndex = -1;
+						if (InputBox("Choose Map", text, ref result) == DialogResult.OK)
+						{
+							if (int.TryParse(result, out selectedIndex))
+							{
+								if (selectedIndex > 0 && selectedIndex <= tmp.Response.Count)
+								{
+									SendGetMap(tmp.Response.ElementAt(selectedIndex - 1));
+								}
+							}
+						}
+					}
+				});
+				thd.SetApartmentState(ApartmentState.STA);
+				thd.Start();
+			}
+			else if (e.Data is GetMap)
+			{
+				if ((e.Data as GetMap).Response == null) return;
+				Thread thd = new Thread(() =>
+				{
+					string msg = $"Receive Map File: {(e.Data as GetMap).Response.ToString()}.\r\nSave it?";
+					if (MessageBox.Show(msg, "Receive Map File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+					{
+						FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+						if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
+						(e.Data as GetMap).Response.SaveAs(folderBrowserDialog.SelectedPath);
+					}
+				});
+				thd.SetApartmentState(ApartmentState.STA);
+				thd.Start();
+			}
+			else if (e.Data is UploadMapToAGV)
+			{
+				if ((e.Data as UploadMapToAGV).Response == true)
+					Console.WriteLine($"Upload Map ({(e.Data as UploadMapToAGV).Require.Name}) To AGV Success!");
+			}
+			else if (e.Data is ChangeMap)
+			{
+				if ((e.Data as ChangeMap).Response == true)
+					Console.WriteLine($"Change Map ({(e.Data as ChangeMap).Require}) Success!");
+			}
 		}
 
-        #region AGV 資訊處理
+		#region 地圖處理
 
-        /// <summary>
-        /// 從 <see cref="agvs"/> 中根據 IP:Port 找出所有應的車子名稱。若 IP:Port 不存在則回傳 <see cref="string.Empty"/>
-        /// </summary>
-        private IEnumerable<string> FindAGVNameByIPPort(string ipport)
+		/// <summary>
+		/// 傳送要求地圖清單的命令
+		/// </summary>
+		private void SendRequestMapListCommand()
+		{
+			string agvName = cbAGVList.InvokeIfNecessary((a) => a.Text);
+			if (agvs.Keys.Contains(agvName))
+			{
+				server.Send(agvs[agvName].IPPort, new RequestMapList(null));
+			}
+		}
+
+		/// <summary>
+		/// 傳送要求地圖的命令
+		/// </summary>
+		/// <param name="fileName">地圖名稱</param>
+		private void SendGetMap(string fileName)
+		{
+			string agvName = cbAGVList.InvokeIfNecessary((a) => a.Text);
+			if (agvs.Keys.Contains(agvName))
+			{
+				server.Send(agvs[agvName].IPPort, new GetMap(fileName));
+			}
+		}
+
+		/// <summary>
+		/// 傳送上傳地圖至 AGV 上的命令
+		/// </summary>
+		private void SendUploadMapCommand()
+		{
+			string agvName = cbAGVList.InvokeIfNecessary((a) => a.Text);
+			if (agvs.Keys.Contains(agvName))
+			{
+				string fileName = "";
+				OpenFileDialog openFileDialog = new OpenFileDialog();
+				openFileDialog.InitialDirectory = Application.StartupPath;
+				openFileDialog.Filter = "Map Files|*.map|All Files|*.*";
+				openFileDialog.FilterIndex = 1;
+				if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+				fileName = openFileDialog.FileName;
+
+				server.Send(agvs[agvName].IPPort, new UploadMapToAGV(new FileInfo(fileName)));
+			}
+		}
+
+		/// <summary>
+		/// 傳送 AGV 更新目前使用地圖的命令
+		/// </summary>
+		private void SendChangeMapCommand()
+		{
+			string agvName = cbAGVList.InvokeIfNecessary((a) => a.Text);
+			if (agvs.Keys.Contains(agvName))
+			{
+				string fileName = "";
+				OpenFileDialog openFileDialog = new OpenFileDialog();
+				openFileDialog.InitialDirectory = Application.StartupPath;
+				openFileDialog.Filter = "Map Files|*.map|All Files|*.*";
+				openFileDialog.FilterIndex = 1;
+				if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+				fileName = openFileDialog.FileName;
+
+				server.Send(agvs[agvName].IPPort, new ChangeMap(System.IO.Path.GetFileName(fileName)));
+			}
+		}
+
+		#endregion
+
+		#region AGV 資訊處理
+
+		/// <summary>
+		/// 從 <see cref="agvs"/> 中根據 IP:Port 找出所有應的車子名稱。若 IP:Port 不存在則回傳 <see cref="string.Empty"/>
+		/// </summary>
+		private IEnumerable<string> FindAGVNameByIPPort(string ipport)
         {
             lock (agvs)
             {
@@ -967,18 +1160,18 @@ namespace GLUITest
             }
         }
 
-        #endregion
+		#endregion
 
-        #endregion
+		#endregion
 
-        #endregion
-    }
+		#endregion
+	}
 
-    /// <summary>
-    /// AGV 資訊
-    /// </summary>
-    /// <remarks>一個 AGV 狀態對應到一個 AGV 路徑</remarks>
-    public class AGVInfo
+	/// <summary>
+	/// AGV 資訊
+	/// </summary>
+	/// <remarks>一個 AGV 狀態對應到一個 AGV 路徑</remarks>
+	public class AGVInfo
     {
         /// <summary>
         /// AGV 狀態

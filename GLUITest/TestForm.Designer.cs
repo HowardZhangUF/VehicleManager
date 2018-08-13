@@ -35,6 +35,9 @@
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.btnChangeMap = new System.Windows.Forms.Button();
+			this.btnUploadMapToAGV = new System.Windows.Forms.Button();
+			this.btnRequestMapList = new System.Windows.Forms.Button();
 			this.dgvAGVInfo = new System.Windows.Forms.DataGridView();
 			this.cbAGVList = new System.Windows.Forms.ComboBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -121,6 +124,9 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.btnChangeMap);
+			this.tabPage1.Controls.Add(this.btnUploadMapToAGV);
+			this.tabPage1.Controls.Add(this.btnRequestMapList);
 			this.tabPage1.Controls.Add(this.dgvAGVInfo);
 			this.tabPage1.Controls.Add(this.cbAGVList);
 			this.tabPage1.Location = new System.Drawing.Point(4, 44);
@@ -130,6 +136,36 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "AGVs";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// btnChangeMap
+			// 
+			this.btnChangeMap.Location = new System.Drawing.Point(456, 461);
+			this.btnChangeMap.Name = "btnChangeMap";
+			this.btnChangeMap.Size = new System.Drawing.Size(202, 53);
+			this.btnChangeMap.TabIndex = 4;
+			this.btnChangeMap.Text = "Change Map";
+			this.btnChangeMap.UseVisualStyleBackColor = true;
+			this.btnChangeMap.Click += new System.EventHandler(this.btnChangeMap_Click);
+			// 
+			// btnUploadMapToAGV
+			// 
+			this.btnUploadMapToAGV.Location = new System.Drawing.Point(456, 402);
+			this.btnUploadMapToAGV.Name = "btnUploadMapToAGV";
+			this.btnUploadMapToAGV.Size = new System.Drawing.Size(202, 53);
+			this.btnUploadMapToAGV.TabIndex = 3;
+			this.btnUploadMapToAGV.Text = "Upload Map To AGV";
+			this.btnUploadMapToAGV.UseVisualStyleBackColor = true;
+			this.btnUploadMapToAGV.Click += new System.EventHandler(this.btnUploadMapToAGV_Click);
+			// 
+			// btnRequestMapList
+			// 
+			this.btnRequestMapList.Location = new System.Drawing.Point(456, 343);
+			this.btnRequestMapList.Name = "btnRequestMapList";
+			this.btnRequestMapList.Size = new System.Drawing.Size(202, 53);
+			this.btnRequestMapList.TabIndex = 2;
+			this.btnRequestMapList.Text = "Request Map List";
+			this.btnRequestMapList.UseVisualStyleBackColor = true;
+			this.btnRequestMapList.Click += new System.EventHandler(this.btnRequestMapList_Click);
 			// 
 			// dgvAGVInfo
 			// 
@@ -198,6 +234,9 @@
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.DataGridView dgvAGVInfo;
 		private System.Windows.Forms.ComboBox cbAGVList;
+		private System.Windows.Forms.Button btnRequestMapList;
+		private System.Windows.Forms.Button btnUploadMapToAGV;
+		private System.Windows.Forms.Button btnChangeMap;
 	}
 }
 
