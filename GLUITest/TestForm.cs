@@ -656,6 +656,10 @@ namespace GLUITest
 		{
 			lock (agvs)
 			{
+				foreach (var agv in agvs)
+				{
+					GLCMD.CMD.DeleteAGV(agv.Value.AGVID);
+				}
 				agvs.Clear();
 			}
 			aStar.LoadMap(e.MapPath);
@@ -1125,7 +1129,7 @@ namespace GLUITest
                     agv.IPPort = ipport;
                     agv.PathID = GLCMD.CMD.AddMultiStripLine("Path", null);
                     agvs.Add(status.Name, agv);
-                }
+				}
             }
         }
 
