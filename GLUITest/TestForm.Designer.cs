@@ -34,18 +34,26 @@
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.btnChangeMap = new System.Windows.Forms.Button();
 			this.btnUploadMapToAGV = new System.Windows.Forms.Button();
 			this.btnRequestMapList = new System.Windows.Forms.Button();
 			this.dgvAGVInfo = new System.Windows.Forms.DataGridView();
 			this.cbAGVList = new System.Windows.Forms.ComboBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.GLUI = new GLUI.GLUICtrl();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
+			this.btnLoadMap = new System.Windows.Forms.Button();
+			this.btnClearMap = new System.Windows.Forms.Button();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label4 = new System.Windows.Forms.Label();
+			this.lblMapLastEditTime = new System.Windows.Forms.Label();
+			this.lblMapHash = new System.Windows.Forms.Label();
+			this.lblMapName = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.dgvInfo)).BeginInit();
 			this.statusStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -56,27 +64,30 @@
 			// 
 			// dgvInfo
 			// 
-			this.dgvInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			this.dgvInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgvInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvInfo.Location = new System.Drawing.Point(7, 53);
 			this.dgvInfo.Margin = new System.Windows.Forms.Padding(4);
 			this.dgvInfo.Name = "dgvInfo";
 			this.dgvInfo.RowTemplate.Height = 24;
-			this.dgvInfo.Size = new System.Drawing.Size(791, 493);
+			this.dgvInfo.Size = new System.Drawing.Size(841, 493);
 			this.dgvInfo.TabIndex = 1;
 			this.dgvInfo.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvInfo_CellValueChanged);
 			this.dgvInfo.DoubleClick += new System.EventHandler(this.DgvInfo_DoubleClick);
 			// 
 			// cmbSelectType
 			// 
+			this.cmbSelectType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.cmbSelectType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbSelectType.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.cmbSelectType.FormattingEnabled = true;
 			this.cmbSelectType.Location = new System.Drawing.Point(7, 7);
 			this.cmbSelectType.Margin = new System.Windows.Forms.Padding(4);
 			this.cmbSelectType.Name = "cmbSelectType";
-			this.cmbSelectType.Size = new System.Drawing.Size(791, 38);
+			this.cmbSelectType.Size = new System.Drawing.Size(841, 38);
 			this.cmbSelectType.TabIndex = 2;
 			this.cmbSelectType.SelectedValueChanged += new System.EventHandler(this.CmbSelectType_SelectedValueChanged);
 			// 
@@ -114,15 +125,23 @@
 			// 
 			// tabPage1
 			// 
-			this.tabPage1.Controls.Add(this.label2);
+			this.tabPage1.Controls.Add(this.lblMapName);
+			this.tabPage1.Controls.Add(this.lblMapHash);
+			this.tabPage1.Controls.Add(this.lblMapLastEditTime);
+			this.tabPage1.Controls.Add(this.btnClearMap);
+			this.tabPage1.Controls.Add(this.btnLoadMap);
+			this.tabPage1.Controls.Add(this.label8);
+			this.tabPage1.Controls.Add(this.label7);
+			this.tabPage1.Controls.Add(this.label6);
+			this.tabPage1.Controls.Add(this.label5);
 			this.tabPage1.Controls.Add(this.label1);
 			this.tabPage1.Controls.Add(this.btnChangeMap);
 			this.tabPage1.Controls.Add(this.btnUploadMapToAGV);
 			this.tabPage1.Controls.Add(this.btnRequestMapList);
 			this.tabPage1.Controls.Add(this.dgvAGVInfo);
 			this.tabPage1.Controls.Add(this.cbAGVList);
-			this.tabPage1.Controls.Add(this.label3);
 			this.tabPage1.Controls.Add(this.label4);
+			this.tabPage1.Controls.Add(this.label9);
 			this.tabPage1.Location = new System.Drawing.Point(4, 44);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -131,21 +150,11 @@
 			this.tabPage1.Text = "AGVs";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label2.Location = new System.Drawing.Point(433, 22);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(153, 20);
-			this.label2.TabIndex = 6;
-			this.label2.Text = "Map Synchronize";
-			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label1.Location = new System.Drawing.Point(129, 22);
+			this.label1.Location = new System.Drawing.Point(45, 20);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(135, 20);
 			this.label1.TabIndex = 5;
@@ -153,7 +162,7 @@
 			// 
 			// btnChangeMap
 			// 
-			this.btnChangeMap.Location = new System.Drawing.Point(408, 163);
+			this.btnChangeMap.Location = new System.Drawing.Point(601, 282);
 			this.btnChangeMap.Name = "btnChangeMap";
 			this.btnChangeMap.Size = new System.Drawing.Size(202, 53);
 			this.btnChangeMap.TabIndex = 4;
@@ -163,7 +172,7 @@
 			// 
 			// btnUploadMapToAGV
 			// 
-			this.btnUploadMapToAGV.Location = new System.Drawing.Point(408, 104);
+			this.btnUploadMapToAGV.Location = new System.Drawing.Point(601, 223);
 			this.btnUploadMapToAGV.Name = "btnUploadMapToAGV";
 			this.btnUploadMapToAGV.Size = new System.Drawing.Size(202, 53);
 			this.btnUploadMapToAGV.TabIndex = 3;
@@ -173,9 +182,9 @@
 			// 
 			// btnRequestMapList
 			// 
-			this.btnRequestMapList.Location = new System.Drawing.Point(408, 45);
+			this.btnRequestMapList.Location = new System.Drawing.Point(393, 223);
 			this.btnRequestMapList.Name = "btnRequestMapList";
-			this.btnRequestMapList.Size = new System.Drawing.Size(202, 53);
+			this.btnRequestMapList.Size = new System.Drawing.Size(202, 112);
 			this.btnRequestMapList.TabIndex = 2;
 			this.btnRequestMapList.Text = "Request Map";
 			this.btnRequestMapList.UseVisualStyleBackColor = true;
@@ -202,22 +211,6 @@
 			this.cbAGVList.TabIndex = 0;
 			this.cbAGVList.SelectedIndexChanged += new System.EventHandler(this.cbAGVList_SelectedIndexChanged);
 			// 
-			// label3
-			// 
-			this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label3.Location = new System.Drawing.Point(393, 30);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(232, 201);
-			this.label3.TabIndex = 7;
-			// 
-			// label4
-			// 
-			this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label4.Location = new System.Drawing.Point(30, 30);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(333, 320);
-			this.label4.TabIndex = 8;
-			// 
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.dgvInfo);
@@ -225,7 +218,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 44);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(805, 553);
+			this.tabPage2.Size = new System.Drawing.Size(855, 553);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Map Objects";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -235,7 +228,7 @@
 			this.tabPage3.Location = new System.Drawing.Point(4, 44);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage3.Size = new System.Drawing.Size(805, 553);
+			this.tabPage3.Size = new System.Drawing.Size(855, 553);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Dispatch System";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -256,6 +249,111 @@
 			this.GLUI.Size = new System.Drawing.Size(473, 585);
 			this.GLUI.TabIndex = 6;
 			this.GLUI.Zoom = 10D;
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label5.Location = new System.Drawing.Point(393, 65);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(44, 15);
+			this.label5.TabIndex = 9;
+			this.label5.Text = "Name:";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label6.Location = new System.Drawing.Point(393, 95);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(39, 15);
+			this.label6.TabIndex = 10;
+			this.label6.Text = "Hash:";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label7.Location = new System.Drawing.Point(393, 125);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(97, 15);
+			this.label7.TabIndex = 11;
+			this.label7.Text = "Last Edit Time:";
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label8.Location = new System.Drawing.Point(393, 20);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(150, 20);
+			this.label8.TabIndex = 12;
+			this.label8.Text = "Map Information";
+			// 
+			// btnLoadMap
+			// 
+			this.btnLoadMap.Location = new System.Drawing.Point(393, 164);
+			this.btnLoadMap.Name = "btnLoadMap";
+			this.btnLoadMap.Size = new System.Drawing.Size(202, 53);
+			this.btnLoadMap.TabIndex = 13;
+			this.btnLoadMap.Text = "Load Map";
+			this.btnLoadMap.UseVisualStyleBackColor = true;
+			// 
+			// btnClearMap
+			// 
+			this.btnClearMap.Location = new System.Drawing.Point(601, 164);
+			this.btnClearMap.Name = "btnClearMap";
+			this.btnClearMap.Size = new System.Drawing.Size(202, 53);
+			this.btnClearMap.TabIndex = 14;
+			this.btnClearMap.Text = "Clear Map";
+			this.btnClearMap.UseVisualStyleBackColor = true;
+			// 
+			// label9
+			// 
+			this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label9.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.label9.Location = new System.Drawing.Point(378, 30);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(440, 320);
+			this.label9.TabIndex = 15;
+			// 
+			// label4
+			// 
+			this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label4.Location = new System.Drawing.Point(30, 30);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(333, 320);
+			this.label4.TabIndex = 8;
+			// 
+			// lblMapLastEditTime
+			// 
+			this.lblMapLastEditTime.AutoSize = true;
+			this.lblMapLastEditTime.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapLastEditTime.Location = new System.Drawing.Point(496, 125);
+			this.lblMapLastEditTime.Name = "lblMapLastEditTime";
+			this.lblMapLastEditTime.Size = new System.Drawing.Size(27, 15);
+			this.lblMapLastEditTime.TabIndex = 16;
+			this.lblMapLastEditTime.Text = "----";
+			// 
+			// lblMapHash
+			// 
+			this.lblMapHash.AutoSize = true;
+			this.lblMapHash.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapHash.Location = new System.Drawing.Point(496, 95);
+			this.lblMapHash.Name = "lblMapHash";
+			this.lblMapHash.Size = new System.Drawing.Size(27, 15);
+			this.lblMapHash.TabIndex = 17;
+			this.lblMapHash.Text = "----";
+			// 
+			// lblMapName
+			// 
+			this.lblMapName.AutoSize = true;
+			this.lblMapName.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapName.Location = new System.Drawing.Point(496, 65);
+			this.lblMapName.Name = "lblMapName";
+			this.lblMapName.Size = new System.Drawing.Size(27, 15);
+			this.lblMapName.TabIndex = 18;
+			this.lblMapName.Text = "----";
 			// 
 			// frmTest
 			// 
@@ -296,10 +394,18 @@
 		private System.Windows.Forms.Button btnChangeMap;
 		private System.Windows.Forms.TabPage tabPage3;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
 		private GLUI.GLUICtrl GLUI;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Button btnClearMap;
+		private System.Windows.Forms.Button btnLoadMap;
 		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label lblMapLastEditTime;
+		private System.Windows.Forms.Label lblMapName;
+		private System.Windows.Forms.Label lblMapHash;
 	}
 }
 
