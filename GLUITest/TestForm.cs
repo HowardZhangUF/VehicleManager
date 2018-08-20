@@ -32,16 +32,19 @@ namespace GLUITest
             cmbSelectType.Items.Add("Line");
             cmbSelectType.Items.Add("Area");
 
-            // 資料綁定
-            var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
-            binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
-            DataBindings.Add(binding);
+			// 資料綁定
+			var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
+			binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
+			DataBindings.Add(binding);
 
             // 加入事件
             GLUI.LoadMapEvent += GLUI_LoadMapEvent;
             GLUI.PenMapEvent += GLUI_PenMapEvent;
             GLUI.EraserMapEvent += GLUI_EraserMapEvent;
             GLUI.CommandOnClick += GLUI_CommandOnClick;
+
+			// 關閉地圖編輯功能
+			GLUI.ContextMenuStripMode = false;
 
             // 加入範例 / 測試
             //CMDDemo();
