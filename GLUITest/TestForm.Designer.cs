@@ -109,7 +109,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(12, 12);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(813, 601);
+			this.tabControl1.Size = new System.Drawing.Size(863, 601);
 			this.tabControl1.TabIndex = 5;
 			// 
 			// tabPage1
@@ -126,7 +126,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 44);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(805, 553);
+			this.tabPage1.Size = new System.Drawing.Size(855, 553);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "AGVs";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -235,7 +235,7 @@
 			this.tabPage3.Location = new System.Drawing.Point(4, 44);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage3.Size = new System.Drawing.Size(805, 520);
+			this.tabPage3.Size = new System.Drawing.Size(805, 553);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Dispatch System";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -247,12 +247,13 @@
 			this.GLUI.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.GLUI.Location = new System.Drawing.Point(832, 24);
+			this.GLUI.ContextMenuStripMode = true;
+			this.GLUI.Location = new System.Drawing.Point(882, 24);
 			this.GLUI.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.GLUI.Name = "GLUI";
 			this.GLUI.ShowAxis = true;
 			this.GLUI.ShowGrid = true;
-			this.GLUI.Size = new System.Drawing.Size(523, 585);
+			this.GLUI.Size = new System.Drawing.Size(473, 585);
 			this.GLUI.TabIndex = 6;
 			this.GLUI.Zoom = 10D;
 			// 
