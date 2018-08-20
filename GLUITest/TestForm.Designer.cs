@@ -298,6 +298,7 @@
 			this.btnLoadMap.TabIndex = 13;
 			this.btnLoadMap.Text = "Load Map";
 			this.btnLoadMap.UseVisualStyleBackColor = true;
+			this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
 			// 
 			// btnClearMap
 			// 
@@ -307,6 +308,7 @@
 			this.btnClearMap.TabIndex = 14;
 			this.btnClearMap.Text = "Clear Map";
 			this.btnClearMap.UseVisualStyleBackColor = true;
+			this.btnClearMap.Click += new System.EventHandler(this.btnClearMap_Click);
 			// 
 			// label9
 			// 

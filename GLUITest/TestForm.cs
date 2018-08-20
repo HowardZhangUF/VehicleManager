@@ -26,16 +26,13 @@ namespace GLUITest
             // 載入設定檔
             StyleManager.LoadStyle("Style.ini");
 
-            // 加入選單
-            cmbSelectType.Items.Add("Point");
-            cmbSelectType.Items.Add("Station");
+			// 加入選單
+			cmbSelectType.Items.Add("Point");
+			cmbSelectType.Items.Add("Station");
             cmbSelectType.Items.Add("Line");
             cmbSelectType.Items.Add("Area");
 
-			// 資料綁定
-			var binding = new Binding(nameof(Text), GLCMD.CMD, nameof(GLCMD.MapHash));
-			binding.Format += (sender, e) => e.Value = $"Map Editor, Map Hash:{e.Value}";
-			DataBindings.Add(binding);
+			Text = "Vehicle Manager";
 
             // 加入事件
             GLUI.LoadMapEvent += GLUI_LoadMapEvent;
@@ -75,7 +72,24 @@ namespace GLUITest
             {
                 GUI_UpdateAGVInfoMonitor(agvs[cbAGVList.InvokeIfNecessary((a) => a.SelectedItem.ToString())].Status);
             }
-        }
+		}
+
+		/// <summary>
+		/// 載入地圖
+		/// </summary>
+		private void btnLoadMap_Click(object sender, EventArgs e)
+		{
+			GLUI.LoadMap();
+		}
+
+		/// <summary>
+		/// 初始化地圖，除了 AGV 資訊
+		/// </summary>
+		private void btnClearMap_Click(object sender, EventArgs e)
+		{
+			GLCMD.CMD.InitialButAGV();
+			GUI_ClearMapInfo();
+		}
 
 		/// <summary>
 		/// 傳送要求地圖清單的命令
@@ -623,6 +637,24 @@ namespace GLUITest
             statusStrip1.InvokeIfNecessary(() => tsslConnectStatus.Text = text);
         }
 
+		/// <summary>
+		/// 更新地圖資訊
+		/// </summary>
+		private void GUI_UpdateMapInfo(string name, string hash, string time)
+		{
+			lblMapName.InvokeIfNecessary(() => { lblMapName.Text = name; });
+			lblMapHash.InvokeIfNecessary(() => { lblMapHash.Text = hash; });
+			lblMapLastEditTime.InvokeIfNecessary(() => { lblMapLastEditTime.Text = time; });
+		}
+
+		/// <summary>
+		/// 清除地圖資訊
+		/// </summary>
+		private void GUI_ClearMapInfo()
+		{
+			GUI_UpdateMapInfo("----", "----", "----");
+		}
+
         #endregion
 
         #region 路徑搜尋
@@ -657,6 +689,7 @@ namespace GLUITest
 
         private void GLUI_LoadMapEvent(object sender, LoadMapEventArgs e)
 		{
+			// 清除 AGV 殘留圖示與 AGV 資訊
 			lock (agvs)
 			{
 				foreach (var agv in agvs)
@@ -665,6 +698,12 @@ namespace GLUITest
 				}
 				agvs.Clear();
 			}
+
+			// 更新地圖資訊
+			System.IO.FileInfo fi = new System.IO.FileInfo(e.MapPath);
+			GUI_UpdateMapInfo(fi.Name, GLCMD.CMD.MapHash, fi.LastWriteTime.ToString("yyyy/MM/dd HH:mm:ss"));
+
+			// A* 載入地圖，並註冊 A* 路徑編號
 			aStar.LoadMap(e.MapPath);
             pathID = GLCMD.CMD.AddMultiStripLine("Path", null);
 		}
