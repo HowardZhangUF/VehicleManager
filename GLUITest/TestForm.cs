@@ -1099,7 +1099,10 @@ namespace GLUITest
 							{
 								if (selectedIndex > 0 && selectedIndex <= tmp.Response.Count)
 								{
-									SendGetMap(tmp.Response.ElementAt(selectedIndex - 1));
+									// 尾端為 * 符號的，代表是車子當前使用地圖
+									string fileName = tmp.Response.ElementAt(selectedIndex - 1);
+									if (fileName.EndsWith("*")) fileName.TrimEnd('*');
+									SendGetMap(fileName);
 								}
 							}
 						}
