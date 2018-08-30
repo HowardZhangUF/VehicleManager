@@ -231,9 +231,22 @@ namespace GLUITest
 			// 若已登入
 			if (isLogIn)
 			{
-				LogOut();
+				switch (logLevel)
+				{
+					case 0:
+						if (tabControl1.TabPages.Contains(tabPage2))
+							tabControl1.TabPages.Remove(tabPage2);
+						break;
+					case 1:
+						break;
+					case -1:
+						break;
+					default:
+						break;
+				}
 				toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = "Log In";
 				toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
+				LogOut();
 			}
 			// 若未登入
 			else
@@ -243,6 +256,19 @@ namespace GLUITest
 					// 登入成功
 					if (LogIn(password))
 					{
+						switch (logLevel)
+						{
+							case 0:
+								if (!tabControl1.TabPages.Contains(tabPage2))
+									tabControl1.TabPages.Add(tabPage2);
+								break;
+							case 1:
+								break;
+							case -1:
+								break;
+							default:
+								break;
+						}
 						toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
 						toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Yellow;
 					}
@@ -1258,7 +1284,19 @@ namespace GLUITest
 
 		#region 權限控制
 
+		/// <summary>
+		/// 是否登入
+		/// </summary>
 		private bool isLogIn = false;
+
+		/// <summary>
+		/// 權限等級， -1 為未登入， 0 為最高等級， 99 為最低等級
+		/// </summary>
+		private int logLevel = -1;
+
+		/// <summary>
+		/// 當前登入的使用者
+		/// </summary>
 		private string currentUser = "";
 
 		private bool LogIn(string password)
@@ -1270,12 +1308,14 @@ namespace GLUITest
 				{
 					currentUser = "CASTEC";
 					isLogIn = true;
+					logLevel = 0;
 					result = true;
 				}
 				else if (password == "octvmp6ru03")
 				{
 					currentUser = "TSMC";
 					isLogIn = true;
+					logLevel = 1;
 					result = true;
 				}
 			}
@@ -1285,6 +1325,7 @@ namespace GLUITest
 		private void LogOut()
 		{
 			currentUser = "";
+			logLevel = -1;
 			isLogIn = false;
 		}
 
