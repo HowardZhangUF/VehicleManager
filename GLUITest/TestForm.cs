@@ -232,8 +232,8 @@ namespace GLUITest
 			if (isLogIn)
 			{
 				LogOut();
-				toolStripStatusLabelLogIn.Text = "Log In";
-				toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
+				toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = "Log In";
+				toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
 			}
 			// 若未登入
 			else
@@ -243,15 +243,23 @@ namespace GLUITest
 					// 登入成功
 					if (LogIn(password))
 					{
-						toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
-						toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Yellow;
+						toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
+						toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Yellow;
 					}
 					else
 					{
-						MessageBox.Show("Wrong Passwrod!");
+						MessageBox.Show("Wrong Passwrod!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// ToolStripItem 的 Log In 選單被點擊時
+		/// </summary>
+		private void logInToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			toolStripStatusLabelLogIn_Click(null, null);
 		}
 
 		/// <summary>

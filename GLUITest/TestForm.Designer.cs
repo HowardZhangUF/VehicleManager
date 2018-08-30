@@ -32,6 +32,8 @@
 			this.cmbSelectType = new System.Windows.Forms.ComboBox();
 			this.tsslConnectStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripStatusLabelLogIn = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.lblMapName = new System.Windows.Forms.Label();
@@ -54,14 +56,15 @@
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.GLUI = new GLUI.GLUICtrl();
-			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.toolStripStatusLabelLogIn = new System.Windows.Forms.ToolStripStatusLabel();
+			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.toolStripMenuItemLogIn = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.dgvInfo)).BeginInit();
 			this.statusStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvAGVInfo)).BeginInit();
 			this.tabPage2.SuspendLayout();
+			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// dgvInfo
@@ -107,11 +110,27 @@
             this.tsslConnectStatus,
             this.toolStripStatusLabel1,
             this.toolStripStatusLabelLogIn});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 613);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 627);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(1368, 28);
 			this.statusStrip1.TabIndex = 4;
 			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// toolStripStatusLabel1
+			// 
+			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(1258, 23);
+			this.toolStripStatusLabel1.Spring = true;
+			// 
+			// toolStripStatusLabelLogIn
+			// 
+			this.toolStripStatusLabelLogIn.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.toolStripStatusLabelLogIn.Name = "toolStripStatusLabelLogIn";
+			this.toolStripStatusLabelLogIn.Size = new System.Drawing.Size(57, 23);
+			this.toolStripStatusLabelLogIn.Text = "Log In";
+			this.toolStripStatusLabelLogIn.Click += new System.EventHandler(this.toolStripStatusLabelLogIn_Click);
 			// 
 			// tabControl1
 			// 
@@ -121,7 +140,7 @@
 			this.tabControl1.Controls.Add(this.tabPage2);
 			this.tabControl1.Controls.Add(this.tabPage3);
 			this.tabControl1.ItemSize = new System.Drawing.Size(40, 40);
-			this.tabControl1.Location = new System.Drawing.Point(12, 12);
+			this.tabControl1.Location = new System.Drawing.Point(12, 26);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(863, 601);
@@ -352,7 +371,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.GLUI.ContextMenuStripMode = true;
-			this.GLUI.Location = new System.Drawing.Point(882, 24);
+			this.GLUI.Location = new System.Drawing.Point(882, 38);
 			this.GLUI.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.GLUI.Name = "GLUI";
 			this.GLUI.ShowAxis = true;
@@ -361,29 +380,33 @@
 			this.GLUI.TabIndex = 6;
 			this.GLUI.Zoom = 10D;
 			// 
-			// toolStripStatusLabel1
+			// menuStrip1
 			// 
-			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(1219, 23);
-			this.toolStripStatusLabel1.Spring = true;
+			this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemLogIn});
+			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.Size = new System.Drawing.Size(1368, 28);
+			this.menuStrip1.TabIndex = 7;
+			this.menuStrip1.Text = "menuStrip1";
 			// 
-			// toolStripStatusLabelLogIn
+			// toolStripMenuItemLogIn
 			// 
-			this.toolStripStatusLabelLogIn.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-			this.toolStripStatusLabelLogIn.Name = "toolStripStatusLabelLogIn";
-			this.toolStripStatusLabelLogIn.Size = new System.Drawing.Size(57, 23);
-			this.toolStripStatusLabelLogIn.Text = "Log In";
-			this.toolStripStatusLabelLogIn.Click += new System.EventHandler(this.toolStripStatusLabelLogIn_Click);
+			this.toolStripMenuItemLogIn.Name = "toolStripMenuItemLogIn";
+			this.toolStripMenuItemLogIn.Size = new System.Drawing.Size(65, 24);
+			this.toolStripMenuItemLogIn.Text = "Log In";
+			this.toolStripMenuItemLogIn.Click += new System.EventHandler(this.logInToolStripMenuItem_Click);
 			// 
 			// frmTest
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-			this.ClientSize = new System.Drawing.Size(1368, 641);
+			this.ClientSize = new System.Drawing.Size(1368, 655);
 			this.Controls.Add(this.GLUI);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.statusStrip1);
+			this.Controls.Add(this.menuStrip1);
+			this.MainMenuStrip = this.menuStrip1;
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "frmTest";
 			this.Text = "GLUITest";
@@ -396,6 +419,8 @@
 			this.tabPage1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvAGVInfo)).EndInit();
 			this.tabPage2.ResumeLayout(false);
+			this.menuStrip1.ResumeLayout(false);
+			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -430,6 +455,8 @@
 		private System.Windows.Forms.Label lblMapHash;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLogIn;
+		private System.Windows.Forms.MenuStrip menuStrip1;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLogIn;
 	}
 }
 
