@@ -43,6 +43,9 @@ namespace GLUITest
 			// 關閉地圖編輯功能
 			GLUI.ContextMenuStripMode = false;
 
+			// Map Objects 分頁隱藏
+			tabControl1.TabPages.Remove(tabPage2);
+
             // 加入範例 / 測試
             //CMDDemo();
             //AGVDemo();
@@ -217,20 +220,52 @@ namespace GLUITest
                 default:
                     break;
             }
-        }
+		}
 
-        /// <summary>
-        /// 傳送命令
-        /// </summary>
-        private void GLUI_CommandOnClick(object sender, CommandOnClickEventArgs e)
+		/// <summary>
+		/// StatusStrip 的 Log In 標籤被點擊時
+		/// </summary>
+		private void toolStripStatusLabelLogIn_Click(object sender, EventArgs e)
+		{
+			string password = "";
+			// 若已登入
+			if (isLogIn)
+			{
+				LogOut();
+				toolStripStatusLabelLogIn.Text = "Log In";
+				toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
+			}
+			// 若未登入
+			else
+			{
+				if (InputBox("Log In", "Please Enter the Password:", ref password, '*') == DialogResult.OK)
+				{
+					// 登入成功
+					if (LogIn(password))
+					{
+						toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
+						toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Yellow;
+					}
+					else
+					{
+						MessageBox.Show("Wrong Passwrod!");
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// 傳送命令
+		/// </summary>
+		private void GLUI_CommandOnClick(object sender, CommandOnClickEventArgs e)
         {
             MessageBox.Show($"這裡向 iM 發送命令:\r\n{e.Command}");
-        }
+		}
 
-        /// <summary>
-        /// 回傳表格中對應的 ID。若 ID 不存在，則回傳 -1
-        /// </summary>
-        private int GetTargetID(int rowIndex)
+		/// <summary>
+		/// 回傳表格中對應的 ID。若 ID 不存在，則回傳 -1
+		/// </summary>
+		private int GetTargetID(int rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= dgvInfo.RowCount) return -1;
 
@@ -516,7 +551,7 @@ namespace GLUITest
 		/// <param name="text">內文</param>
 		/// <param name="value">結果值</param>
 		/// <returns></returns>
-		public static DialogResult InputBox(string caption, string text, ref string value)
+		public static DialogResult InputBox(string caption, string text, ref string value, char passwordChar = '\0')
 		{
 			Form form = new Form();
 			Label lblText = new Label();
@@ -531,6 +566,7 @@ namespace GLUITest
 			btnOk.DialogResult = DialogResult.OK;
 			btnCancel.Text = "Cancel";
 			btnCancel.DialogResult = DialogResult.Cancel;
+			if (passwordChar != '\0') txtResult.PasswordChar = passwordChar;
 
 			form.Controls.AddRange(new Control[] { lblText, txtResult, btnOk, btnCancel });
 			lblText.Location = new System.Drawing.Point(20, 10);
@@ -1209,6 +1245,40 @@ namespace GLUITest
 		#endregion
 
 		#endregion
+
+		#endregion
+
+		#region 權限控制
+
+		private bool isLogIn = false;
+		private string currentUser = "";
+
+		private bool LogIn(string password)
+		{
+			bool result = false;
+			if (!isLogIn)
+			{
+				if (password == "oct27635744")
+				{
+					currentUser = "CASTEC";
+					isLogIn = true;
+					result = true;
+				}
+				else if (password == "octvmp6ru03")
+				{
+					currentUser = "TSMC";
+					isLogIn = true;
+					result = true;
+				}
+			}
+			return result;
+		}
+
+		private void LogOut()
+		{
+			currentUser = "";
+			isLogIn = false;
+		}
 
 		#endregion
 	}

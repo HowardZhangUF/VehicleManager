@@ -34,26 +34,28 @@
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.lblMapName = new System.Windows.Forms.Label();
+			this.lblMapHash = new System.Windows.Forms.Label();
+			this.lblMapLastEditTime = new System.Windows.Forms.Label();
+			this.btnClearMap = new System.Windows.Forms.Button();
+			this.btnLoadMap = new System.Windows.Forms.Button();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.btnChangeMap = new System.Windows.Forms.Button();
 			this.btnUploadMapToAGV = new System.Windows.Forms.Button();
 			this.btnRequestMapList = new System.Windows.Forms.Button();
 			this.dgvAGVInfo = new System.Windows.Forms.DataGridView();
 			this.cbAGVList = new System.Windows.Forms.ComboBox();
+			this.label4 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.GLUI = new GLUI.GLUICtrl();
-			this.label5 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
-			this.label8 = new System.Windows.Forms.Label();
-			this.btnLoadMap = new System.Windows.Forms.Button();
-			this.btnClearMap = new System.Windows.Forms.Button();
-			this.label9 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
-			this.lblMapLastEditTime = new System.Windows.Forms.Label();
-			this.lblMapHash = new System.Windows.Forms.Label();
-			this.lblMapName = new System.Windows.Forms.Label();
+			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripStatusLabelLogIn = new System.Windows.Forms.ToolStripStatusLabel();
 			((System.ComponentModel.ISupportInitialize)(this.dgvInfo)).BeginInit();
 			this.statusStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -95,17 +97,19 @@
 			// 
 			this.tsslConnectStatus.Image = global::GLUITest.Properties.Resources.CircleRed;
 			this.tsslConnectStatus.Name = "tsslConnectStatus";
-			this.tsslConnectStatus.Size = new System.Drawing.Size(38, 20);
+			this.tsslConnectStatus.Size = new System.Drawing.Size(38, 23);
 			this.tsslConnectStatus.Text = "0";
 			// 
 			// statusStrip1
 			// 
 			this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsslConnectStatus});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 616);
+            this.tsslConnectStatus,
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabelLogIn});
+			this.statusStrip1.Location = new System.Drawing.Point(0, 613);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(1368, 25);
+			this.statusStrip1.Size = new System.Drawing.Size(1368, 28);
 			this.statusStrip1.TabIndex = 4;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -149,6 +153,96 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "AGVs";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// lblMapName
+			// 
+			this.lblMapName.AutoSize = true;
+			this.lblMapName.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapName.Location = new System.Drawing.Point(496, 65);
+			this.lblMapName.Name = "lblMapName";
+			this.lblMapName.Size = new System.Drawing.Size(27, 15);
+			this.lblMapName.TabIndex = 18;
+			this.lblMapName.Text = "----";
+			// 
+			// lblMapHash
+			// 
+			this.lblMapHash.AutoSize = true;
+			this.lblMapHash.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapHash.Location = new System.Drawing.Point(496, 95);
+			this.lblMapHash.Name = "lblMapHash";
+			this.lblMapHash.Size = new System.Drawing.Size(27, 15);
+			this.lblMapHash.TabIndex = 17;
+			this.lblMapHash.Text = "----";
+			// 
+			// lblMapLastEditTime
+			// 
+			this.lblMapLastEditTime.AutoSize = true;
+			this.lblMapLastEditTime.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapLastEditTime.Location = new System.Drawing.Point(496, 125);
+			this.lblMapLastEditTime.Name = "lblMapLastEditTime";
+			this.lblMapLastEditTime.Size = new System.Drawing.Size(27, 15);
+			this.lblMapLastEditTime.TabIndex = 16;
+			this.lblMapLastEditTime.Text = "----";
+			// 
+			// btnClearMap
+			// 
+			this.btnClearMap.Location = new System.Drawing.Point(601, 164);
+			this.btnClearMap.Name = "btnClearMap";
+			this.btnClearMap.Size = new System.Drawing.Size(202, 53);
+			this.btnClearMap.TabIndex = 14;
+			this.btnClearMap.Text = "Clear Map";
+			this.btnClearMap.UseVisualStyleBackColor = true;
+			this.btnClearMap.Click += new System.EventHandler(this.btnClearMap_Click);
+			// 
+			// btnLoadMap
+			// 
+			this.btnLoadMap.Location = new System.Drawing.Point(393, 164);
+			this.btnLoadMap.Name = "btnLoadMap";
+			this.btnLoadMap.Size = new System.Drawing.Size(202, 53);
+			this.btnLoadMap.TabIndex = 13;
+			this.btnLoadMap.Text = "Load Map";
+			this.btnLoadMap.UseVisualStyleBackColor = true;
+			this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label8.Location = new System.Drawing.Point(393, 20);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(150, 20);
+			this.label8.TabIndex = 12;
+			this.label8.Text = "Map Information";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label7.Location = new System.Drawing.Point(393, 125);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(97, 15);
+			this.label7.TabIndex = 11;
+			this.label7.Text = "Last Edit Time:";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label6.Location = new System.Drawing.Point(393, 95);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(39, 15);
+			this.label6.TabIndex = 10;
+			this.label6.Text = "Hash:";
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label5.Location = new System.Drawing.Point(393, 65);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(44, 15);
+			this.label5.TabIndex = 9;
+			this.label5.Text = "Name:";
 			// 
 			// label1
 			// 
@@ -211,6 +305,23 @@
 			this.cbAGVList.TabIndex = 0;
 			this.cbAGVList.SelectedIndexChanged += new System.EventHandler(this.cbAGVList_SelectedIndexChanged);
 			// 
+			// label4
+			// 
+			this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label4.Location = new System.Drawing.Point(30, 30);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(333, 320);
+			this.label4.TabIndex = 8;
+			// 
+			// label9
+			// 
+			this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label9.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.label9.Location = new System.Drawing.Point(378, 30);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(440, 320);
+			this.label9.TabIndex = 15;
+			// 
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.dgvInfo);
@@ -250,112 +361,21 @@
 			this.GLUI.TabIndex = 6;
 			this.GLUI.Zoom = 10D;
 			// 
-			// label5
+			// toolStripStatusLabel1
 			// 
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label5.Location = new System.Drawing.Point(393, 65);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(44, 15);
-			this.label5.TabIndex = 9;
-			this.label5.Text = "Name:";
+			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(1219, 23);
+			this.toolStripStatusLabel1.Spring = true;
 			// 
-			// label6
+			// toolStripStatusLabelLogIn
 			// 
-			this.label6.AutoSize = true;
-			this.label6.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label6.Location = new System.Drawing.Point(393, 95);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(39, 15);
-			this.label6.TabIndex = 10;
-			this.label6.Text = "Hash:";
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label7.Location = new System.Drawing.Point(393, 125);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(97, 15);
-			this.label7.TabIndex = 11;
-			this.label7.Text = "Last Edit Time:";
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label8.Location = new System.Drawing.Point(393, 20);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(150, 20);
-			this.label8.TabIndex = 12;
-			this.label8.Text = "Map Information";
-			// 
-			// btnLoadMap
-			// 
-			this.btnLoadMap.Location = new System.Drawing.Point(393, 164);
-			this.btnLoadMap.Name = "btnLoadMap";
-			this.btnLoadMap.Size = new System.Drawing.Size(202, 53);
-			this.btnLoadMap.TabIndex = 13;
-			this.btnLoadMap.Text = "Load Map";
-			this.btnLoadMap.UseVisualStyleBackColor = true;
-			this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
-			// 
-			// btnClearMap
-			// 
-			this.btnClearMap.Location = new System.Drawing.Point(601, 164);
-			this.btnClearMap.Name = "btnClearMap";
-			this.btnClearMap.Size = new System.Drawing.Size(202, 53);
-			this.btnClearMap.TabIndex = 14;
-			this.btnClearMap.Text = "Clear Map";
-			this.btnClearMap.UseVisualStyleBackColor = true;
-			this.btnClearMap.Click += new System.EventHandler(this.btnClearMap_Click);
-			// 
-			// label9
-			// 
-			this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label9.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.label9.Location = new System.Drawing.Point(378, 30);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(440, 320);
-			this.label9.TabIndex = 15;
-			// 
-			// label4
-			// 
-			this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label4.Location = new System.Drawing.Point(30, 30);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(333, 320);
-			this.label4.TabIndex = 8;
-			// 
-			// lblMapLastEditTime
-			// 
-			this.lblMapLastEditTime.AutoSize = true;
-			this.lblMapLastEditTime.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblMapLastEditTime.Location = new System.Drawing.Point(496, 125);
-			this.lblMapLastEditTime.Name = "lblMapLastEditTime";
-			this.lblMapLastEditTime.Size = new System.Drawing.Size(27, 15);
-			this.lblMapLastEditTime.TabIndex = 16;
-			this.lblMapLastEditTime.Text = "----";
-			// 
-			// lblMapHash
-			// 
-			this.lblMapHash.AutoSize = true;
-			this.lblMapHash.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblMapHash.Location = new System.Drawing.Point(496, 95);
-			this.lblMapHash.Name = "lblMapHash";
-			this.lblMapHash.Size = new System.Drawing.Size(27, 15);
-			this.lblMapHash.TabIndex = 17;
-			this.lblMapHash.Text = "----";
-			// 
-			// lblMapName
-			// 
-			this.lblMapName.AutoSize = true;
-			this.lblMapName.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblMapName.Location = new System.Drawing.Point(496, 65);
-			this.lblMapName.Name = "lblMapName";
-			this.lblMapName.Size = new System.Drawing.Size(27, 15);
-			this.lblMapName.TabIndex = 18;
-			this.lblMapName.Text = "----";
+			this.toolStripStatusLabelLogIn.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.toolStripStatusLabelLogIn.Name = "toolStripStatusLabelLogIn";
+			this.toolStripStatusLabelLogIn.Size = new System.Drawing.Size(57, 23);
+			this.toolStripStatusLabelLogIn.Text = "Log In";
+			this.toolStripStatusLabelLogIn.Click += new System.EventHandler(this.toolStripStatusLabelLogIn_Click);
 			// 
 			// frmTest
 			// 
@@ -408,6 +428,8 @@
 		private System.Windows.Forms.Label lblMapLastEditTime;
 		private System.Windows.Forms.Label lblMapName;
 		private System.Windows.Forms.Label lblMapHash;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLogIn;
 	}
 }
 
