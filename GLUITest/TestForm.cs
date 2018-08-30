@@ -14,6 +14,8 @@ using Geometry;
 using Serialization;
 using AsyncSocket;
 using LittleGhost;
+using LogManager;
+using static LogManager.LogManager;
 
 namespace GLUITest
 {
@@ -56,12 +58,18 @@ namespace GLUITest
             GUI_InitializeAGVInfoMonitor();
 
             SocketTest();
-        }
+			FootPrintStart();
+		}
 
-        /// <summary>
-        /// 停用顯示 AGV 狀態的 DataGridView 的選取功能
-        /// </summary>
-        private void dgvAGVInfo_SelectionChanged(object sender, EventArgs e)
+		private void frmTest_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			FootPrintStop();
+		}
+
+		/// <summary>
+		/// 停用顯示 AGV 狀態的 DataGridView 的選取功能
+		/// </summary>
+		private void dgvAGVInfo_SelectionChanged(object sender, EventArgs e)
         {
             dgvAGVInfo.ClearSelection();
         }
@@ -1330,6 +1338,93 @@ namespace GLUITest
 			currentUser = "";
 			logLevel = -1;
 			isLogIn = false;
+		}
+
+		#endregion
+
+		#region 足跡管理
+
+		/// <summary>
+		/// 是否啟用足跡功能
+		/// </summary>
+		private bool footPrintEnable = true;
+
+		/// <summary>
+		/// 紀錄足跡的間隔時間，單位為 ms
+		/// </summary>
+		private int footPrintInterval = 5000;
+
+		private Thread thdFootPrint = null;
+
+		/// <summary>
+		/// 紀錄足跡的執行緒開始
+		/// </summary>
+		private void FootPrintStart()
+		{
+			if (!footPrintEnable) return;
+
+			FootPrintStop();
+
+			thdFootPrint = new Thread(FootPrintTask);
+			thdFootPrint.IsBackground = true;
+			thdFootPrint.Start();
+		}
+
+		/// <summary>
+		/// 紀錄足跡的執行緒停止
+		/// </summary>
+		private void FootPrintStop()
+		{
+			if (!footPrintEnable) return;
+
+			if (thdFootPrint != null)
+			{
+				if (thdFootPrint.IsAlive) thdFootPrint.Abort();
+				thdFootPrint = null;
+			}
+		}
+
+		/// <summary>
+		/// 紀錄足跡的主程式
+		/// </summary>
+		private void FootPrintTask()
+		{
+			try
+			{
+				if (!footPrintEnable) return;
+
+				while (true)
+				{
+					RecordFootPrint();
+					Thread.Sleep(footPrintInterval);
+				}
+			}
+			catch (Exception ex)
+			{
+				ex.WriteLog();
+			}
+		}
+
+		/// <summary>
+		/// 紀錄當前所有車輛的足跡，格式為：[AGV1,X,Y,Toward][AGV2,X,Y,Toward]...
+		/// </summary>
+		private void RecordFootPrint()
+		{
+			if (footPrintEnable)
+			{
+				lock (agvs)
+				{
+					if (agvs.Count() > 0)
+					{
+						string str = "";
+						foreach (var item in agvs.Values)
+						{
+							str += $"[{item.Status.Name},{item.Status.X},{item.Status.Y},{item.Status.Toward}]";
+						}
+						Log.FootPrintLog.Add(str);
+					}
+				}
+			}
 		}
 
 		#endregion

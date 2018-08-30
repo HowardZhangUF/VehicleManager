@@ -104,6 +104,10 @@
       <Project>{6086472b-1061-42b0-a442-b4d2fbb3e863}</Project>
       <Name>LittleGhost</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\iTSLibrary\LogManager\LogManager.csproj">
+      <Project>{6F05D782-1F88-491A-984D-8359CF296CB3}</Project>
+      <Name>LogManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\iTSLibrary\SerialData\SerialData.csproj">
       <Project>{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}</Project>
       <Name>SerialData</Name>

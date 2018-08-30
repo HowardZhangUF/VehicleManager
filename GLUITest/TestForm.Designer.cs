@@ -410,6 +410,7 @@
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "frmTest";
 			this.Text = "GLUITest";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmTest_FormClosing);
 			this.Load += new System.EventHandler(this.frmTest_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dgvInfo)).EndInit();
 			this.statusStrip1.ResumeLayout(false);
