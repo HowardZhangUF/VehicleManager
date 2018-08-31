@@ -58,16 +58,131 @@ namespace GLUITest
         {
             GUI_InitializeAGVInfoMonitor();
 
-            SocketTest();
+			startCalculateIdleTime();
+			subscribeControlsMouseMoveEvent();
+			SocketTest();
 			FootPrintStart();
 			Log.SystemLog.Add("Program Start!");
 		}
 
 		private void frmTest_FormClosing(object sender, FormClosingEventArgs e)
 		{
+
+			subscribeControlsMouseMoveEvent();
 			FootPrintStop();
 			Log.SystemLog.Add("Program Stop!");
 			Log.SaveAll();
+		}
+
+		/// <summary>
+		/// 當前閒置時間 (sec)
+		/// </summary>
+		private int programIdleTime = 0;
+
+		/// <summary>
+		/// 閒置時間閾值 (sec)
+		/// </summary>
+		private int programIdleThreshold = 20;
+
+		private void startCalculateIdleTime()
+		{
+			Thread thd = new Thread(() =>
+			{
+				while (true)
+				{
+					if (isLogIn)
+					{
+						// 當登入時，開始倒數計時
+						if (programIdleTime > 1)
+						{
+							programIdleTime -= 1;
+							statusStrip1.InvokeIfNecessary(() => { toolStripStatusReciprocal.Text = programIdleTime.ToString(); });
+							Console.WriteLine($"Reciprocal: {programIdleTime} sec");
+						}
+						else
+						{
+							toolStripStatusLabelLogIn_Click(null, null);
+							statusStrip1.InvokeIfNecessary(() => { toolStripStatusReciprocal.Text = string.Empty; });
+						}
+					}
+					else
+					{
+						// 當未登入時，將閒置時間計時重置
+						if (programIdleTime != programIdleThreshold) programIdleTime = programIdleThreshold;
+					}
+					Thread.Sleep(1000);
+				}
+			});
+			thd.IsBackground = true;
+			thd.Start();
+		}
+
+		/// <summary>
+		/// 訂閱所有控制項的 MouseMove 事件。用來計算程式閒置時間
+		/// </summary>
+		private void subscribeControlsMouseMoveEvent()
+		{
+			MouseMove += Control_MouseMove;
+			foreach (Control ctrl in Controls)
+			{
+				ctrl.MouseMove += Control_MouseMove;
+			}
+			foreach (Control ctrl in GLUI.Controls)
+			{
+				ctrl.MouseMove += Control_MouseMove;
+			}
+			foreach (Control ctrl in tabPage1.Controls)
+			{
+				ctrl.MouseMove += Control_MouseMove;
+			}
+			foreach (Control ctrl in tabPage2.Controls)
+			{
+				ctrl.MouseMove += Control_MouseMove;
+			}
+			foreach (Control ctrl in tabPage3.Controls)
+			{
+				ctrl.MouseMove += Control_MouseMove;
+			}
+		}
+
+		/// <summary>
+		/// 取消訂閱所有控制項的 MouseMove 事件
+		/// </summary>
+		private void unsubscribeControlsMouseMoveEvent()
+		{
+			MouseMove -= Control_MouseMove;
+			foreach (Control ctrl in Controls)
+			{
+				ctrl.MouseMove -= Control_MouseMove;
+			}
+			foreach (Control ctrl in GLUI.Controls)
+			{
+				ctrl.MouseMove -= Control_MouseMove;
+			}
+			foreach (Control ctrl in tabPage1.Controls)
+			{
+				ctrl.MouseMove -= Control_MouseMove;
+			}
+			foreach (Control ctrl in tabPage2.Controls)
+			{
+				ctrl.MouseMove -= Control_MouseMove;
+			}
+			foreach (Control ctrl in tabPage3.Controls)
+			{
+				ctrl.MouseMove -= Control_MouseMove;
+			}
+		}
+
+		/// <summary>
+		/// 所有控制項的 MouseMove 事件處理器
+		/// </summary>
+		private void Control_MouseMove(object sender, MouseEventArgs e)
+		{
+			//Control ctrl = sender as Control;
+			//Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} Mouse Move Event Trigger! Control: {ctrl.Name}");
+
+			// 當登入時且滑鼠移動時，將閒置時間計時重置
+			if (isLogIn && programIdleTime != programIdleThreshold) programIdleTime = programIdleThreshold;
 		}
 
 		/// <summary>
@@ -241,73 +356,68 @@ namespace GLUITest
 		{
 			string password = "";
 			// 若已登入
-			if (isLogIn)
+			tabControl1.InvokeIfNecessary(() => 
 			{
-				switch (logLevel)
+				if (isLogIn)
 				{
-					case 0:
-						if (tabControl1.TabPages.Contains(tabPage2))
-							tabControl1.TabPages.Remove(tabPage2);
-						Log.LoginLog.Add($"CASTEC Log Out!");
-						break;
-					case 1:
-						Log.LoginLog.Add($"TSMC Log Out!");
-						break;
-					case -1:
-						Log.LoginLog.Add($"{logLevel} Log Out!");
-						break;
-					default:
-						Log.LoginLog.Add($"{logLevel} Log Out!");
-						break;
-				}
-				toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = "Log In";
-				toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
-				Log.LoginLog.Add($"{logLevel} Log Out!");
-				LogOut();
-			}
-			// 若未登入
-			else
-			{
-				if (InputBox("Log In", "Please Enter the Password:", ref password, '*') == DialogResult.OK)
-				{
-					// 登入成功
-					if (LogIn(password))
+					switch (logLevel)
 					{
-						switch (logLevel)
+						case 0:
+							if (tabControl1.TabPages.Contains(tabPage2))
+								tabControl1.TabPages.Remove(tabPage2);
+							Log.LoginLog.Add($"CASTEC Log Out!");
+							break;
+						case 1:
+							Log.LoginLog.Add($"TSMC Log Out!");
+							break;
+						case -1:
+							Log.LoginLog.Add($"{logLevel} Log Out!");
+							break;
+						default:
+							Log.LoginLog.Add($"{logLevel} Log Out!");
+							break;
+					}
+					toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = "Log In";
+					toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
+					Log.LoginLog.Add($"{logLevel} Log Out!");
+					LogOut();
+				}
+				// 若未登入
+				else
+				{
+					if (InputBox("Log In", "Please Enter the Password:", ref password, '*') == DialogResult.OK)
+					{
+						// 登入成功
+						if (LogIn(password))
 						{
-							case 0:
-								if (!tabControl1.TabPages.Contains(tabPage2))
-									tabControl1.TabPages.Add(tabPage2);
-								Log.LoginLog.Add($"CASTEC Log In!");
-								break;
-							case 1:
-								Log.LoginLog.Add($"TSMC Log In!");
-								break;
-							case -1:
-								Log.LoginLog.Add($"{logLevel} Log In!");
-								break;
-							default:
-								Log.LoginLog.Add($"{logLevel} Log In!");
-								break;
+							switch (logLevel)
+							{
+								case 0:
+									if (!tabControl1.TabPages.Contains(tabPage2))
+										tabControl1.TabPages.Add(tabPage2);
+									Log.LoginLog.Add($"CASTEC Log In!");
+									break;
+								case 1:
+									Log.LoginLog.Add($"TSMC Log In!");
+									break;
+								case -1:
+									Log.LoginLog.Add($"{logLevel} Log In!");
+									break;
+								default:
+									Log.LoginLog.Add($"{logLevel} Log In!");
+									break;
+							}
+							toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
+							toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Yellow;
 						}
-						toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
-						toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Yellow;
-					}
-					else
-					{
-						MessageBox.Show("Wrong Passwrod!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						Log.LoginLog.Add($"Log In Failed!");
+						else
+						{
+							MessageBox.Show("Wrong Passwrod!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+							Log.LoginLog.Add($"Log In Failed!");
+						}
 					}
 				}
-			}
-		}
-
-		/// <summary>
-		/// ToolStripItem 的 Log In 選單被點擊時
-		/// </summary>
-		private void logInToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			toolStripStatusLabelLogIn_Click(null, null);
+			});
 		}
 
 		/// <summary>

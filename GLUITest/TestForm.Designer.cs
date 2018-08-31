@@ -33,6 +33,7 @@
 			this.tsslConnectStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripStatusReciprocal = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabelLogIn = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -109,6 +110,7 @@
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslConnectStatus,
             this.toolStripStatusLabel1,
+            this.toolStripStatusReciprocal,
             this.toolStripStatusLabelLogIn});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 627);
 			this.statusStrip1.Name = "statusStrip1";
@@ -121,6 +123,14 @@
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
 			this.toolStripStatusLabel1.Size = new System.Drawing.Size(1258, 23);
 			this.toolStripStatusLabel1.Spring = true;
+			// 
+			// toolStripStatusReciprocal
+			// 
+			this.toolStripStatusReciprocal.BackColor = System.Drawing.Color.Black;
+			this.toolStripStatusReciprocal.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.toolStripStatusReciprocal.ForeColor = System.Drawing.Color.Yellow;
+			this.toolStripStatusReciprocal.Name = "toolStripStatusReciprocal";
+			this.toolStripStatusReciprocal.Size = new System.Drawing.Size(0, 23);
 			// 
 			// toolStripStatusLabelLogIn
 			// 
@@ -396,7 +406,7 @@
 			this.toolStripMenuItemLogIn.Name = "toolStripMenuItemLogIn";
 			this.toolStripMenuItemLogIn.Size = new System.Drawing.Size(65, 24);
 			this.toolStripMenuItemLogIn.Text = "Log In";
-			this.toolStripMenuItemLogIn.Click += new System.EventHandler(this.logInToolStripMenuItem_Click);
+			this.toolStripMenuItemLogIn.Click += new System.EventHandler(this.toolStripStatusLabelLogIn_Click);
 			// 
 			// frmTest
 			// 
@@ -458,6 +468,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLogIn;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLogIn;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusReciprocal;
 	}
 }
 
