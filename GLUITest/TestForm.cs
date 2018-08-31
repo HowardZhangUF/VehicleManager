@@ -41,6 +41,7 @@ namespace GLUITest
             GLUI.PenMapEvent += GLUI_PenMapEvent;
             GLUI.EraserMapEvent += GLUI_EraserMapEvent;
             GLUI.CommandOnClick += GLUI_CommandOnClick;
+			GLUI.GLClick += GLUI_GLClick;
 
 			// 關閉地圖編輯功能
 			GLUI.ContextMenuStripMode = false;
@@ -302,6 +303,52 @@ namespace GLUITest
 		private void GLUI_CommandOnClick(object sender, CommandOnClickEventArgs e)
         {
             MessageBox.Show($"這裡向 iM 發送命令:\r\n{e.Command}");
+		}
+
+		private bool _isMarking = false;
+
+		/// <summary>
+		/// 是否正在啟用取得地圖 X, Y, Angle 功能
+		/// </summary>
+		private bool isMarking
+		{
+			get
+			{
+				return _isMarking;
+			}
+			set
+			{
+				_isMarking = value;
+				//if (_isMarking) button1.InvokeIfNecessary(() => { button1.BackColor = System.Drawing.Color.Yellow; });
+				//else button1.InvokeIfNecessary(() => { button1.BackColor = System.Drawing.Color.Transparent; });
+			}
+		}
+
+		/// <summary>
+		/// 藉由點擊介面控制項來啟用/停用取得地圖 X, Y, Angle 功能
+		/// </summary>
+		private void button1_Click(object sender, EventArgs e)
+		{
+			isMarking = !isMarking;
+		}
+
+		private void GLUI_GLClick(object sender, EventArgs e)
+		{
+			if (isMarking)
+			{
+				MouseEventArgs mouse = (MouseEventArgs)e;
+				IPair currentGLPosition = GLUI.ScreenToGL(mouse.X, mouse.Y);
+
+				if (!GLCMD.CMD.IsMovement)
+				{
+					GLCMD.CMD.StartMovement(currentGLPosition);
+				}
+				else
+				{
+					ITowardPair target = GLCMD.CMD.FinishMovement(currentGLPosition);
+					isMarking = false;
+				}
+			}
 		}
 
 		/// <summary>
