@@ -60,11 +60,14 @@ namespace GLUITest
 
             SocketTest();
 			FootPrintStart();
+			Log.SystemLog.Add("Program Start!");
 		}
 
 		private void frmTest_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			FootPrintStop();
+			Log.SystemLog.Add("Program Stop!");
+			Log.SaveAll();
 		}
 
 		/// <summary>
@@ -245,16 +248,21 @@ namespace GLUITest
 					case 0:
 						if (tabControl1.TabPages.Contains(tabPage2))
 							tabControl1.TabPages.Remove(tabPage2);
+						Log.LoginLog.Add($"CASTEC Log Out!");
 						break;
 					case 1:
+						Log.LoginLog.Add($"TSMC Log Out!");
 						break;
 					case -1:
+						Log.LoginLog.Add($"{logLevel} Log Out!");
 						break;
 					default:
+						Log.LoginLog.Add($"{logLevel} Log Out!");
 						break;
 				}
 				toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = "Log In";
 				toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
+				Log.LoginLog.Add($"{logLevel} Log Out!");
 				LogOut();
 			}
 			// 若未登入
@@ -270,12 +278,16 @@ namespace GLUITest
 							case 0:
 								if (!tabControl1.TabPages.Contains(tabPage2))
 									tabControl1.TabPages.Add(tabPage2);
+								Log.LoginLog.Add($"CASTEC Log In!");
 								break;
 							case 1:
+								Log.LoginLog.Add($"TSMC Log In!");
 								break;
 							case -1:
+								Log.LoginLog.Add($"{logLevel} Log In!");
 								break;
 							default:
+								Log.LoginLog.Add($"{logLevel} Log In!");
 								break;
 						}
 						toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
@@ -284,6 +296,7 @@ namespace GLUITest
 					else
 					{
 						MessageBox.Show("Wrong Passwrod!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						Log.LoginLog.Add($"Log In Failed!");
 					}
 				}
 			}
