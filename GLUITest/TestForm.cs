@@ -59,7 +59,7 @@ namespace GLUITest
             GUI_InitializeAGVInfoMonitor();
 
 			startCalculateIdleTime();
-			subscribeControlsMouseMoveEvent();
+			subscribeControlsMouseEnterEvent();
 			SocketTest();
 			FootPrintStart();
 			Log.SystemLog.Add("Program Start!");
@@ -67,122 +67,19 @@ namespace GLUITest
 
 		private void frmTest_FormClosing(object sender, FormClosingEventArgs e)
 		{
-
-			subscribeControlsMouseMoveEvent();
+			unsubscribeControlsMouseEnterEvent();
 			FootPrintStop();
 			Log.SystemLog.Add("Program Stop!");
 			Log.SaveAll();
 		}
 
 		/// <summary>
-		/// 當前閒置時間 (sec)
+		/// 所有控制項的 MouseEnter 事件處理器
 		/// </summary>
-		private int programIdleTime = 0;
-
-		/// <summary>
-		/// 閒置時間閾值 (sec)
-		/// </summary>
-		private int programIdleThreshold = 20;
-
-		private void startCalculateIdleTime()
+		private void Control_MouseEnter(object sender, EventArgs e)
 		{
-			Thread thd = new Thread(() =>
-			{
-				while (true)
-				{
-					if (isLogIn)
-					{
-						// 當登入時，開始倒數計時
-						if (programIdleTime > 1)
-						{
-							programIdleTime -= 1;
-							statusStrip1.InvokeIfNecessary(() => { toolStripStatusReciprocal.Text = programIdleTime.ToString(); });
-							Console.WriteLine($"Reciprocal: {programIdleTime} sec");
-						}
-						else
-						{
-							toolStripStatusLabelLogIn_Click(null, null);
-							statusStrip1.InvokeIfNecessary(() => { toolStripStatusReciprocal.Text = string.Empty; });
-						}
-					}
-					else
-					{
-						// 當未登入時，將閒置時間計時重置
-						if (programIdleTime != programIdleThreshold) programIdleTime = programIdleThreshold;
-					}
-					Thread.Sleep(1000);
-				}
-			});
-			thd.IsBackground = true;
-			thd.Start();
-		}
-
-		/// <summary>
-		/// 訂閱所有控制項的 MouseMove 事件。用來計算程式閒置時間
-		/// </summary>
-		private void subscribeControlsMouseMoveEvent()
-		{
-			MouseMove += Control_MouseMove;
-			foreach (Control ctrl in Controls)
-			{
-				ctrl.MouseMove += Control_MouseMove;
-			}
-			foreach (Control ctrl in GLUI.Controls)
-			{
-				ctrl.MouseMove += Control_MouseMove;
-			}
-			foreach (Control ctrl in tabPage1.Controls)
-			{
-				ctrl.MouseMove += Control_MouseMove;
-			}
-			foreach (Control ctrl in tabPage2.Controls)
-			{
-				ctrl.MouseMove += Control_MouseMove;
-			}
-			foreach (Control ctrl in tabPage3.Controls)
-			{
-				ctrl.MouseMove += Control_MouseMove;
-			}
-		}
-
-		/// <summary>
-		/// 取消訂閱所有控制項的 MouseMove 事件
-		/// </summary>
-		private void unsubscribeControlsMouseMoveEvent()
-		{
-			MouseMove -= Control_MouseMove;
-			foreach (Control ctrl in Controls)
-			{
-				ctrl.MouseMove -= Control_MouseMove;
-			}
-			foreach (Control ctrl in GLUI.Controls)
-			{
-				ctrl.MouseMove -= Control_MouseMove;
-			}
-			foreach (Control ctrl in tabPage1.Controls)
-			{
-				ctrl.MouseMove -= Control_MouseMove;
-			}
-			foreach (Control ctrl in tabPage2.Controls)
-			{
-				ctrl.MouseMove -= Control_MouseMove;
-			}
-			foreach (Control ctrl in tabPage3.Controls)
-			{
-				ctrl.MouseMove -= Control_MouseMove;
-			}
-		}
-
-		/// <summary>
-		/// 所有控制項的 MouseMove 事件處理器
-		/// </summary>
-		private void Control_MouseMove(object sender, MouseEventArgs e)
-		{
-			//Control ctrl = sender as Control;
-			//Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} Mouse Move Event Trigger! Control: {ctrl.Name}");
-
-			// 當登入時且滑鼠移動時，將閒置時間計時重置
-			if (isLogIn && programIdleTime != programIdleThreshold) programIdleTime = programIdleThreshold;
+			// 當登入且滑鼠進入控制項時，將閒置時間計時重置
+			if (isLogIn && programIdleTime != 0) programIdleTime = 0;
 		}
 
 		/// <summary>
@@ -1593,6 +1490,115 @@ namespace GLUITest
 						}
 						Log.FootPrintLog.Add(str);
 					}
+				}
+			}
+		}
+
+		#endregion
+
+		#region 閒置時間計算
+
+		/// <summary>
+		/// 當前閒置時間計時器 (sec)
+		/// </summary>
+		private int programIdleTime = 0;
+
+		/// <summary>
+		/// 閒置時間閾值 (sec) ，超過此數值時視為閒置
+		/// </summary>
+		private int programIdleThreshold = 180;
+
+		/// <summary>
+		/// 當閒置時間高於此數值時，顯示時間提示
+		/// </summary>
+		private int programIdleHintThreshold = 120;
+
+		/// <summary>
+		/// 開啟計算程式閒置時間的執行緒
+		/// </summary>
+		private void startCalculateIdleTime()
+		{
+			Thread thd = new Thread(() =>
+			{
+				while (true)
+				{
+					// 當登入時，開始計算閒置時間
+					if (isLogIn)
+					{
+						// 當閒置時間小於閾值時
+						if (programIdleTime < programIdleThreshold - 1)
+						{
+							programIdleTime += 1;
+							statusStrip1.InvokeIfNecessary(() =>
+							{
+								if (programIdleTime > programIdleHintThreshold)
+									toolStripStatusReciprocal.Text = (programIdleThreshold - programIdleTime).ToString();
+								else
+									toolStripStatusReciprocal.Text = string.Empty;
+							});
+							//Console.WriteLine($"Reciprocal: {programIdleTime} sec");
+						}
+						// 當閒置時間超過閾值時
+						else
+						{
+							toolStripStatusLabelLogIn_Click(null, null);
+							statusStrip1.InvokeIfNecessary(() => { toolStripStatusReciprocal.Text = string.Empty; });
+						}
+					}
+					// 當未登入時，將閒置時間計時重置
+					else
+					{
+						if (programIdleTime != programIdleThreshold) programIdleTime = programIdleThreshold;
+					}
+					Thread.Sleep(1000);
+				}
+			});
+			thd.IsBackground = true;
+			thd.Start();
+		}
+
+		/// <summary>
+		/// 訂閱所有控制項的 MouseEnter 事件。用來計算程式閒置時間
+		/// </summary>
+		private void subscribeControlsMouseEnterEvent()
+		{
+			MouseEnter += Control_MouseEnter;
+			foreach (Control ctrl in Controls)
+			{
+				ctrl.MouseEnter += Control_MouseEnter;
+			}
+			foreach (Control ctrl in GLUI.Controls)
+			{
+				ctrl.MouseEnter += Control_MouseEnter;
+			}
+			foreach (TabPage tp in tabControl1.TabPages)
+			{
+				foreach (Control ctrl in tp.Controls)
+				{
+					ctrl.MouseEnter += Control_MouseEnter;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 取消訂閱所有控制項的 MouseEnter 事件
+		/// </summary>
+		private void unsubscribeControlsMouseEnterEvent()
+		{
+			MouseEnter -= Control_MouseEnter;
+			foreach (Control ctrl in Controls)
+			{
+				ctrl.MouseEnter -= Control_MouseEnter;
+			}
+			foreach (Control ctrl in GLUI.Controls)
+			{
+				ctrl.MouseEnter -= Control_MouseEnter;
+			}
+			foreach (TabPage tp in tabControl1.TabPages)
+			{
+				foreach (Control ctrl in tp.Controls)
+				{
+					ctrl.MouseEnter -= Control_MouseEnter;
 				}
 			}
 		}
