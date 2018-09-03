@@ -41,10 +41,13 @@ namespace GLUITest
             GLUI.PenMapEvent += GLUI_PenMapEvent;
             GLUI.EraserMapEvent += GLUI_EraserMapEvent;
             GLUI.CommandOnClick += GLUI_CommandOnClick;
-			GLUI.GLClick += GLUI_GLClick;
+			GLUI.MovementEvent += GLUI_MovementEvent;
 
 			// 關閉地圖編輯功能
-			GLUI.ContextMenuStripMode = false;
+			GLUI.SetEditMode(false);
+
+			// 開啟地圖控制功能
+			GLUI.SetControlMode(true);
 
 			// Map Objects 分頁隱藏
 			tabControl1.TabPages.Remove(tabPage2);
@@ -61,14 +64,14 @@ namespace GLUITest
 			startCalculateIdleTime();
 			subscribeControlsMouseEnterEvent();
 			SocketTest();
-			FootPrintStart();
+			FootprintStart();
 			Log.SystemLog.Add("Program Start!");
 		}
 
 		private void frmTest_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			unsubscribeControlsMouseEnterEvent();
-			FootPrintStop();
+			FootprintStop();
 			Log.SystemLog.Add("Program Stop!");
 			Log.SaveAll();
 		}
@@ -356,23 +359,13 @@ namespace GLUITest
 			isMarking = !isMarking;
 		}
 
-		private void GLUI_GLClick(object sender, EventArgs e)
+		/// <summary>
+		/// 對地圖使用右鍵選單的移動時會觸發此方法
+		/// </summary>
+		private void GLUI_MovementEvent(object sender, EventArgs e)
 		{
-			if (isMarking)
-			{
-				MouseEventArgs mouse = (MouseEventArgs)e;
-				IPair currentGLPosition = GLUI.ScreenToGL(mouse.X, mouse.Y);
-
-				if (!GLCMD.CMD.IsMovement)
-				{
-					GLCMD.CMD.StartMovement(currentGLPosition);
-				}
-				else
-				{
-					ITowardPair target = GLCMD.CMD.FinishMovement(currentGLPosition);
-					isMarking = false;
-				}
-			}
+			LocationEventArgs tmpEvent = e as LocationEventArgs;
+			Console.WriteLine($"X: {tmpEvent.TowardPair.Position.X}, Y: {tmpEvent.TowardPair.Position.Y}, Theta: {tmpEvent.TowardPair.Toward}.");
 		}
 
 		/// <summary>
@@ -1418,56 +1411,56 @@ namespace GLUITest
 		/// <summary>
 		/// 是否啟用足跡功能
 		/// </summary>
-		private bool footPrintEnable = true;
+		private bool footprintEnable = true;
 
 		/// <summary>
 		/// 紀錄足跡的間隔時間，單位為 ms
 		/// </summary>
-		private int footPrintInterval = 5000;
+		private int footprintInterval = 5000;
 
-		private Thread thdFootPrint = null;
+		private Thread thdFootprint = null;
 
 		/// <summary>
 		/// 紀錄足跡的執行緒開始
 		/// </summary>
-		private void FootPrintStart()
+		private void FootprintStart()
 		{
-			if (!footPrintEnable) return;
+			if (!footprintEnable) return;
 
-			FootPrintStop();
+			FootprintStop();
 
-			thdFootPrint = new Thread(FootPrintTask);
-			thdFootPrint.IsBackground = true;
-			thdFootPrint.Start();
+			thdFootprint = new Thread(FootprintTask);
+			thdFootprint.IsBackground = true;
+			thdFootprint.Start();
 		}
 
 		/// <summary>
 		/// 紀錄足跡的執行緒停止
 		/// </summary>
-		private void FootPrintStop()
+		private void FootprintStop()
 		{
-			if (!footPrintEnable) return;
+			if (!footprintEnable) return;
 
-			if (thdFootPrint != null)
+			if (thdFootprint != null)
 			{
-				if (thdFootPrint.IsAlive) thdFootPrint.Abort();
-				thdFootPrint = null;
+				if (thdFootprint.IsAlive) thdFootprint.Abort();
+				thdFootprint = null;
 			}
 		}
 
 		/// <summary>
 		/// 紀錄足跡的主程式
 		/// </summary>
-		private void FootPrintTask()
+		private void FootprintTask()
 		{
 			try
 			{
-				if (!footPrintEnable) return;
+				if (!footprintEnable) return;
 
 				while (true)
 				{
-					RecordFootPrint();
-					Thread.Sleep(footPrintInterval);
+					RecordFootprint();
+					Thread.Sleep(footprintInterval);
 				}
 			}
 			catch (Exception ex)
@@ -1479,9 +1472,9 @@ namespace GLUITest
 		/// <summary>
 		/// 紀錄當前所有車輛的足跡，格式為：[AGV1,X,Y,Toward][AGV2,X,Y,Toward]...
 		/// </summary>
-		private void RecordFootPrint()
+		private void RecordFootprint()
 		{
-			if (footPrintEnable)
+			if (footprintEnable)
 			{
 				lock (agvs)
 				{
@@ -1492,7 +1485,7 @@ namespace GLUITest
 						{
 							str += $"[{item.Status.Name},{item.Status.X},{item.Status.Y},{item.Status.Toward}]";
 						}
-						Log.FootPrintLog.Add(str);
+						Log.FootprintLog.Add(str);
 					}
 				}
 			}

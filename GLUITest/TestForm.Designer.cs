@@ -382,7 +382,6 @@
 			this.GLUI.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.GLUI.ContextMenuStripMode = true;
 			this.GLUI.Location = new System.Drawing.Point(882, 38);
 			this.GLUI.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.GLUI.Name = "GLUI";
