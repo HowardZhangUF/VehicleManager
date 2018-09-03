@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AE9DF079-1C3D-4504-890C-B45A956A64A4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FootprintViewer</RootNamespace>
+    <AssemblyName>FootprintViewer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>FootprintViewer.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AsyncSocket, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\AsyncSocket.dll</HintPath>
+    </Reference>
+    <Reference Include="Geometry">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\Geometry.dll</HintPath>
+    </Reference>
+    <Reference Include="GLCore">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\GLCore.dll</HintPath>
+    </Reference>
+    <Reference Include="GLStyle">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\GLStyle.dll</HintPath>
+    </Reference>
+    <Reference Include="GLUI">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\GLUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Hasp">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\Hasp.dll</HintPath>
+    </Reference>
+    <Reference Include="hasp_net_windows">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\hasp_net_windows.dll</HintPath>
+    </Reference>
+    <Reference Include="IniFiles">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\IniFiles.dll</HintPath>
+    </Reference>
+    <Reference Include="iTSLibrary">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\iTSLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="LogManager">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\LogManager.dll</HintPath>
+    </Reference>
+    <Reference Include="MapReader">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\MapReader.dll</HintPath>
+    </Reference>
+    <Reference Include="MD5Hash">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\MD5Hash.dll</HintPath>
+    </Reference>
+    <Reference Include="SerialData">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SerialData.dll</HintPath>
+    </Reference>
+    <Reference Include="Serialization">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.SceneGraph">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.SceneGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.Serialization">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.WinForms">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ThreadSafety">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\ThreadSafety.dll</HintPath>
+    </Reference>
+    <Reference Include="WaitTask">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\WaitTask.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FootprintViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FootprintViewer.Designer.cs">
+      <DependentUpon>FootprintViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FootprintViewer.resx">
+      <DependentUpon>FootprintViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
