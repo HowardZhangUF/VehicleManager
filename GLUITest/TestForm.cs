@@ -262,6 +262,8 @@ namespace GLUITest
 						case 0:
 							if (tabControl1.TabPages.Contains(tabPage2))
 								tabControl1.TabPages.Remove(tabPage2);
+							btnUploadMapToAGV.Enabled = false;
+							btnChangeMap.Enabled = false;
 							Log.LoginLog.Add($"CASTEC Log Out!");
 							break;
 						case 1:
@@ -292,6 +294,8 @@ namespace GLUITest
 								case 0:
 									if (!tabControl1.TabPages.Contains(tabPage2))
 										tabControl1.TabPages.Add(tabPage2);
+									btnUploadMapToAGV.Enabled = true;
+									btnChangeMap.Enabled = true;
 									Log.LoginLog.Add($"CASTEC Log In!");
 									break;
 								case 1:
@@ -1532,23 +1536,23 @@ namespace GLUITest
 							statusStrip1.InvokeIfNecessary(() =>
 							{
 								if (programIdleTime > programIdleHintThreshold)
-									toolStripStatusReciprocal.Text = (programIdleThreshold - programIdleTime).ToString();
+									toolStripStatusIdleTime.Text = (programIdleThreshold - programIdleTime).ToString();
 								else
-									toolStripStatusReciprocal.Text = string.Empty;
+									toolStripStatusIdleTime.Text = string.Empty;
 							});
-							//Console.WriteLine($"Reciprocal: {programIdleTime} sec");
+							//Console.WriteLine($"Idle Time: {programIdleTime} sec");
 						}
 						// 當閒置時間超過閾值時
 						else
 						{
 							toolStripStatusLabelLogIn_Click(null, null);
-							statusStrip1.InvokeIfNecessary(() => { toolStripStatusReciprocal.Text = string.Empty; });
+							statusStrip1.InvokeIfNecessary(() => { toolStripStatusIdleTime.Text = string.Empty; });
 						}
 					}
 					// 當未登入時，將閒置時間計時重置
 					else
 					{
-						if (programIdleTime != programIdleThreshold) programIdleTime = programIdleThreshold;
+						if (programIdleTime != 0) programIdleTime = 0;
 					}
 					Thread.Sleep(1000);
 				}

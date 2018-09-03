@@ -33,7 +33,7 @@
 			this.tsslConnectStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.toolStripStatusReciprocal = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripStatusIdleTime = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabelLogIn = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -110,7 +110,7 @@
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslConnectStatus,
             this.toolStripStatusLabel1,
-            this.toolStripStatusReciprocal,
+            this.toolStripStatusIdleTime,
             this.toolStripStatusLabelLogIn});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 627);
 			this.statusStrip1.Name = "statusStrip1";
@@ -121,16 +121,16 @@
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(1258, 23);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(1219, 23);
 			this.toolStripStatusLabel1.Spring = true;
 			// 
-			// toolStripStatusReciprocal
+			// toolStripStatusIdleTime
 			// 
-			this.toolStripStatusReciprocal.BackColor = System.Drawing.Color.Black;
-			this.toolStripStatusReciprocal.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.toolStripStatusReciprocal.ForeColor = System.Drawing.Color.Yellow;
-			this.toolStripStatusReciprocal.Name = "toolStripStatusReciprocal";
-			this.toolStripStatusReciprocal.Size = new System.Drawing.Size(0, 23);
+			this.toolStripStatusIdleTime.BackColor = System.Drawing.Color.Black;
+			this.toolStripStatusIdleTime.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.toolStripStatusIdleTime.ForeColor = System.Drawing.Color.Yellow;
+			this.toolStripStatusIdleTime.Name = "toolStripStatusIdleTime";
+			this.toolStripStatusIdleTime.Size = new System.Drawing.Size(0, 23);
 			// 
 			// toolStripStatusLabelLogIn
 			// 
@@ -285,6 +285,7 @@
 			// 
 			// btnChangeMap
 			// 
+			this.btnChangeMap.Enabled = false;
 			this.btnChangeMap.Location = new System.Drawing.Point(601, 282);
 			this.btnChangeMap.Name = "btnChangeMap";
 			this.btnChangeMap.Size = new System.Drawing.Size(202, 53);
@@ -295,6 +296,7 @@
 			// 
 			// btnUploadMapToAGV
 			// 
+			this.btnUploadMapToAGV.Enabled = false;
 			this.btnUploadMapToAGV.Location = new System.Drawing.Point(601, 223);
 			this.btnUploadMapToAGV.Name = "btnUploadMapToAGV";
 			this.btnUploadMapToAGV.Size = new System.Drawing.Size(202, 53);
@@ -397,14 +399,14 @@
             this.toolStripMenuItemLogIn});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(1368, 28);
+			this.menuStrip1.Size = new System.Drawing.Size(1368, 27);
 			this.menuStrip1.TabIndex = 7;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
 			// toolStripMenuItemLogIn
 			// 
 			this.toolStripMenuItemLogIn.Name = "toolStripMenuItemLogIn";
-			this.toolStripMenuItemLogIn.Size = new System.Drawing.Size(65, 24);
+			this.toolStripMenuItemLogIn.Size = new System.Drawing.Size(65, 23);
 			this.toolStripMenuItemLogIn.Text = "Log In";
 			this.toolStripMenuItemLogIn.Click += new System.EventHandler(this.toolStripStatusLabelLogIn_Click);
 			// 
@@ -468,7 +470,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLogIn;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLogIn;
-		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusReciprocal;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusIdleTime;
 	}
 }
 
