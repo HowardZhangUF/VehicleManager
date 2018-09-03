@@ -57,10 +57,11 @@
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.btnBrowseMapPath = new System.Windows.Forms.Button();
-			this.textBox2 = new System.Windows.Forms.TextBox();
+			this.txtMapPath = new System.Windows.Forms.TextBox();
 			this.label13 = new System.Windows.Forms.Label();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.btnSetTimeInterval = new System.Windows.Forms.Button();
+			this.btnSaveSettings = new System.Windows.Forms.Button();
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
 			this.SuspendLayout();
 			// 
@@ -323,12 +324,12 @@
 			this.btnBrowseMapPath.UseVisualStyleBackColor = true;
 			this.btnBrowseMapPath.Click += new System.EventHandler(this.btnBrowseMapPath_Click);
 			// 
-			// textBox2
+			// txtMapPath
 			// 
-			this.textBox2.Location = new System.Drawing.Point(218, 28);
-			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size(552, 25);
-			this.textBox2.TabIndex = 46;
+			this.txtMapPath.Location = new System.Drawing.Point(218, 28);
+			this.txtMapPath.Name = "txtMapPath";
+			this.txtMapPath.Size = new System.Drawing.Size(552, 25);
+			this.txtMapPath.TabIndex = 46;
 			// 
 			// label13
 			// 
@@ -356,17 +357,27 @@
 			this.btnSetTimeInterval.TabIndex = 49;
 			this.btnSetTimeInterval.Text = "Set";
 			this.btnSetTimeInterval.UseVisualStyleBackColor = true;
+			this.btnSetTimeInterval.Click += new System.EventHandler(this.btnSetTimeInterval_Click);
+			// 
+			// btnSaveSettings
+			// 
+			this.btnSaveSettings.Location = new System.Drawing.Point(1068, 27);
+			this.btnSaveSettings.Name = "btnSaveSettings";
+			this.btnSaveSettings.Size = new System.Drawing.Size(99, 55);
+			this.btnSaveSettings.TabIndex = 51;
+			this.btnSaveSettings.Text = "Save Settings";
+			this.btnSaveSettings.UseVisualStyleBackColor = true;
 			// 
 			// gluiCtrl1
 			// 
 			this.gluiCtrl1.AllowObjectMenu = true;
 			this.gluiCtrl1.AllowUndoMenu = true;
-			this.gluiCtrl1.Location = new System.Drawing.Point(286, 213);
+			this.gluiCtrl1.Location = new System.Drawing.Point(93, 157);
 			this.gluiCtrl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.gluiCtrl1.Name = "gluiCtrl1";
 			this.gluiCtrl1.ShowAxis = true;
 			this.gluiCtrl1.ShowGrid = true;
-			this.gluiCtrl1.Size = new System.Drawing.Size(263, 214);
+			this.gluiCtrl1.Size = new System.Drawing.Size(802, 400);
 			this.gluiCtrl1.TabIndex = 50;
 			this.gluiCtrl1.Zoom = 10D;
 			// 
@@ -374,11 +385,12 @@
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.ClientSize = new System.Drawing.Size(1195, 654);
+			this.Controls.Add(this.btnSaveSettings);
 			this.Controls.Add(this.gluiCtrl1);
 			this.Controls.Add(this.btnSetTimeInterval);
 			this.Controls.Add(this.comboBox1);
 			this.Controls.Add(this.btnBrowseMapPath);
-			this.Controls.Add(this.textBox2);
+			this.Controls.Add(this.txtMapPath);
 			this.Controls.Add(this.label13);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.textBox1);
@@ -447,11 +459,12 @@
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.Button btnBrowseMapPath;
-		private System.Windows.Forms.TextBox textBox2;
+		private System.Windows.Forms.TextBox txtMapPath;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.ComboBox comboBox1;
 		private System.Windows.Forms.Button btnSetTimeInterval;
 		private GLUI.GLUICtrl gluiCtrl1;
+		private System.Windows.Forms.Button btnSaveSettings;
 	}
 }
 

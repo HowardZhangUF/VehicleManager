@@ -1,4 +1,5 @@
 ﻿using GLStyle;
+using GLUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,9 @@ namespace FootprintViewer
 		private void FootprintViewer_Load(object sender, EventArgs e)
 		{
 			StyleManager.LoadStyle("Style.ini");
+
+			gluiCtrl1.LoadMapEvent += gluiCtrl1_LoadMapEvent;
+
 			gluiCtrl1.SetEditMode(false);
 			gluiCtrl1.SetControlMode(false);
 
@@ -33,14 +37,40 @@ namespace FootprintViewer
 
 		private void FootprintViewer_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			
+
 		}
 
+		/// <summary>
+		/// 載入地圖
+		/// </summary>
+		private void btnBrowseMapPath_Click(object sender, EventArgs e)
+		{
+			gluiCtrl1.LoadMap();
+		}
+
+		/// <summary>
+		/// 載入 Footprint 資料夾
+		/// </summary>
 		private void btnBrowseFootprintDirectory_Click(object sender, EventArgs e)
 		{
 			FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 			if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
+			txtFootprintDirectory.Text = folderBrowserDialog.SelectedPath;
 			checkFootprintPath(folderBrowserDialog.SelectedPath);
+		}
+
+		/// <summary>
+		/// 設定時間區間
+		/// </summary>
+		private void btnSetTimeInterval_Click(object sender, EventArgs e)
+		{
+			string tmp1 = $"{cbYear1.Text}/{cbMonth1.Text}/{cbDay1.Text} {cbHour1.Text}:{cbMinute1.Text}:{cbSecond1.Text}";
+			string tmp2 = $"{cbYear2.Text}/{cbMonth2.Text}/{cbDay2.Text} {cbHour2.Text}:{cbMinute2.Text}:{cbSecond2.Text}";
+			DateTime dateTime1, dateTime2;
+			if (DateTime.TryParse(tmp1, out dateTime1) && DateTime.TryParse(tmp2, out dateTime2))
+			{
+
+			}
 		}
 
 		/// <summary>
@@ -133,9 +163,16 @@ namespace FootprintViewer
 
 		}
 
-		private void btnBrowseMapPath_Click(object sender, EventArgs e)
+		#region	gluiCtrl1 事件
+
+		/// <summary>
+		/// 載入地圖後觸發
+		/// </summary>
+		private void gluiCtrl1_LoadMapEvent(object sender, LoadMapEventArgs e)
 		{
-			gluiCtrl1.LoadMap();
+			txtMapPath.Text = e.MapPath;
 		}
+
+		#endregion
 	}
 }
