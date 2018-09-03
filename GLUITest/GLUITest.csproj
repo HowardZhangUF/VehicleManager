@@ -120,6 +120,10 @@
       <Project>{3306C8F2-A0C8-4DF6-A8F7-86A58647F3AF}</Project>
       <Name>AStar</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FootprintViewer\FootprintViewer.csproj">
+      <Project>{AE9DF079-1C3D-4504-890C-B45A956A64A4}</Project>
+      <Name>FootprintViewer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PairStar\PairStar.csproj">
       <Project>{23B2D01C-73A9-412E-8C44-30F53D2003A5}</Project>
       <Name>PairStar</Name>

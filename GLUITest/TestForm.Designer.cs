@@ -59,6 +59,7 @@
 			this.GLUI = new GLUI.GLUICtrl();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.toolStripMenuItemLogIn = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItemFootprint = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.dgvInfo)).BeginInit();
 			this.statusStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -121,7 +122,7 @@
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(1219, 23);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(1258, 23);
 			this.toolStripStatusLabel1.Spring = true;
 			// 
 			// toolStripStatusIdleTime
@@ -395,19 +396,27 @@
 			// 
 			this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemLogIn});
+            this.toolStripMenuItemLogIn,
+            this.toolStripMenuItemFootprint});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(1368, 27);
+			this.menuStrip1.Size = new System.Drawing.Size(1368, 28);
 			this.menuStrip1.TabIndex = 7;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
 			// toolStripMenuItemLogIn
 			// 
 			this.toolStripMenuItemLogIn.Name = "toolStripMenuItemLogIn";
-			this.toolStripMenuItemLogIn.Size = new System.Drawing.Size(65, 23);
+			this.toolStripMenuItemLogIn.Size = new System.Drawing.Size(65, 24);
 			this.toolStripMenuItemLogIn.Text = "Log In";
 			this.toolStripMenuItemLogIn.Click += new System.EventHandler(this.toolStripStatusLabelLogIn_Click);
+			// 
+			// toolStripMenuItemFootprint
+			// 
+			this.toolStripMenuItemFootprint.Name = "toolStripMenuItemFootprint";
+			this.toolStripMenuItemFootprint.Size = new System.Drawing.Size(85, 24);
+			this.toolStripMenuItemFootprint.Text = "Footprint";
+			this.toolStripMenuItemFootprint.Click += new System.EventHandler(this.toolStripMenuItemFootprint_Click);
 			// 
 			// frmTest
 			// 
@@ -470,6 +479,7 @@
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLogIn;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusIdleTime;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemFootprint;
 	}
 }
 

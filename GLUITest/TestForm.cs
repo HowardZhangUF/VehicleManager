@@ -16,6 +16,7 @@ using AsyncSocket;
 using LittleGhost;
 using LogManager;
 using static LogManager.LogManager;
+using System.Diagnostics;
 
 namespace GLUITest
 {
@@ -322,6 +323,14 @@ namespace GLUITest
 					}
 				}
 			});
+		}
+
+		/// <summary>
+		/// 開啟 Footprint Viewer 視窗
+		/// </summary>
+		private void toolStripMenuItemFootprint_Click(object sender, EventArgs e)
+		{
+			Process.Start("FootprintViewer.exe");
 		}
 
 		/// <summary>
