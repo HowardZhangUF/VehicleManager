@@ -1,5 +1,8 @@
-﻿using GLStyle;
+﻿using Geometry;
+using GLCore;
+using GLStyle;
 using GLUI;
+using LittleGhost;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +37,9 @@ namespace FootprintViewer
 			gluiCtrl1.SetControlMode(false);
 
 			//loadFootprintDirectory(txtFootprintDirectory.Text);
+
+			// 註冊 Footprint 圖像識別碼
+			footprintIconID = GLCMD.CMD.AddMultiPair("@ObstaclePoints", null);
 		}
 
 		private void FootprintViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -57,6 +63,11 @@ namespace FootprintViewer
 		/// Footprint 資料
 		/// </summary>
 		private List<Footprint> footprints = new List<Footprint>();
+
+		/// <summary>
+		/// Footprint 圖像識別碼
+		/// </summary>
+		private int footprintIconID;
 
 		/// <summary>
 		/// 地圖檔路徑
@@ -160,6 +171,19 @@ namespace FootprintViewer
 			}
 		}
 
+		/// <summary>
+		/// 將 Footprint 繪製至 gluiCtrl1 上
+		/// </summary>
+		private void writeFootprintToMap()
+		{
+			List<IPair> points = new List<IPair>();
+			foreach (Footprint fp in footprints)
+			{
+				points.Add(new Pair(fp.position.Position.X, fp.position.Position.Y));
+			}
+			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => o.AddRangeIfNotNull(points));
+		}
+
 		#endregion
 
 		#region 方法
@@ -227,6 +251,7 @@ namespace FootprintViewer
 				}
 				// 讀取 Footprint 資料
 				loadFootprintData(footprintDateStart, footprintDateEnd);
+				writeFootprintToMap();
 			}
 		}
 
@@ -360,7 +385,10 @@ namespace FootprintViewer
 		/// </summary>
 		private void gluiCtrl1_LoadMapEvent(object sender, LoadMapEventArgs e)
 		{
-			mapFilePath = txtMapPath.Text = e.MapPath;
+			txtMapPath.InvokeIfNecessary(() => 
+			{
+				mapFilePath = txtMapPath.Text = e.MapPath;
+			});
 		}
 
 		#endregion
@@ -384,25 +412,13 @@ namespace FootprintViewer
 		/// <summary>
 		/// Footprint 位置
 		/// </summary>
-		public double x;
-
-		/// <summary>
-		/// Footprint 位置
-		/// </summary>
-		public double y;
-
-		/// <summary>
-		/// Footprint 位置
-		/// </summary>
-		public double toward;
+		public TowardPair position;
 
 		public Footprint(DateTime time, string robotID, double x, double y, double toward)
 		{
 			this.time = time;
 			this.robotID = robotID;
-			this.x = x;
-			this.y = y;
-			this.toward = toward;
+			position = new TowardPair(x, y, toward);
 		}
 
 		public static List<Footprint> Analyze(string src)
