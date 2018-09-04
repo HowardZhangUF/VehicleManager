@@ -33,7 +33,7 @@ namespace FootprintViewer
 			gluiCtrl1.SetEditMode(false);
 			gluiCtrl1.SetControlMode(false);
 
-			loadFootprintDirectory(txtFootprintDirectory.Text);
+			//loadFootprintDirectory(txtFootprintDirectory.Text);
 		}
 
 		private void FootprintViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -86,7 +86,7 @@ namespace FootprintViewer
 		/// <summary>
 		/// 載入地圖
 		/// </summary>
-		private bool loadMapPath(string path)
+		private bool loadMapFile(string path)
 		{
 			bool result = false;
 			if (File.Exists(path) && path.EndsWith(".map"))
@@ -109,11 +109,15 @@ namespace FootprintViewer
 				if (baseDirInfo.Name.Contains(FOOTPRINT_DIRECTORY_KEYWORD))
 				{
 					footprintDirPath = path;
-					DirectoryInfo[] dirInfos = baseDirInfo.GetDirectories();
-					footprintDirDateStart = DateTime.ParseExact(dirInfos.First().Name, "yyMMdd", CultureInfo.InvariantCulture);
-					footprintDirDateEnd = DateTime.ParseExact(dirInfos.Last().Name, "yyMMdd", CultureInfo.InvariantCulture);
-					initializeDateComboBoxes(footprintDirDateStart.Year, footprintDirDateEnd.Year);
-					result = true;
+					DateTime nonsense;
+					IEnumerable<DirectoryInfo> dirInfos = baseDirInfo.GetDirectories().Where(info => info.Name.Length == 6 && DateTime.TryParseExact(info.Name, "yyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
+					if (dirInfos.Count() > 0)
+					{
+						footprintDirDateStart = DateTime.ParseExact(dirInfos.First().Name, "yyMMdd", CultureInfo.InvariantCulture);
+						footprintDirDateEnd = DateTime.ParseExact(dirInfos.Last().Name, "yyMMdd", CultureInfo.InvariantCulture);
+						initializeDateComboBoxes(footprintDirDateStart, footprintDirDateEnd);
+						result = true;
+					}
 				}
 			}
 			return result;
@@ -125,7 +129,9 @@ namespace FootprintViewer
 		private bool loadFootprintData(DateTime dateStart, DateTime dateEnd)
 		{
 			bool result = false;
-			
+			int days = dateEnd.DayOfYear - dateStart.DayOfYear;
+
+
 			return result;
 		}
 
@@ -281,22 +287,22 @@ namespace FootprintViewer
 			}
 			else if (keyword == "2")
 			{
-				if (cbYear2.Items.Count > index1) cbYear1.SelectedIndex = index1;
-				if (cbMonth2.Items.Count > index2) cbMonth1.SelectedIndex = index2;
-				if (cbDay2.Items.Count > index3) cbDay1.SelectedIndex = index3;
-				if (cbHour2.Items.Count > index4) cbHour1.SelectedIndex = index4;
-				if (cbMinute2.Items.Count > index5) cbMinute1.SelectedIndex = index5;
-				if (cbSecond2.Items.Count > index6) cbSecond1.SelectedIndex = index6;
+				if (cbYear2.Items.Count > index1) cbYear2.SelectedIndex = index1;
+				if (cbMonth2.Items.Count > index2) cbMonth2.SelectedIndex = index2;
+				if (cbDay2.Items.Count > index3) cbDay2.SelectedIndex = index3;
+				if (cbHour2.Items.Count > index4) cbHour2.SelectedIndex = index4;
+				if (cbMinute2.Items.Count > index5) cbMinute2.SelectedIndex = index5;
+				if (cbSecond2.Items.Count > index6) cbSecond2.SelectedIndex = index6;
 			}
 		}
 
 		/// <summary>
 		/// 初始化日期 ComboBox
 		/// </summary>
-		private void initializeDateComboBoxes(int yearMin, int yearMax)
+		private void initializeDateComboBoxes(DateTime dateStart, DateTime dateEnd)
 		{
 			List<string> obj1 = new List<string>();
-			for (int i = yearMin; i <= yearMax; ++i)
+			for (int i = dateStart.Year; i <= dateEnd.Year; ++i)
 			{
 				obj1.Add(i.ToString());
 			}
@@ -316,8 +322,8 @@ namespace FootprintViewer
 			resetDateComboBoxItem("1", obj1.ToArray(), obj2, obj3, obj4, obj5, obj5);
 			resetDateComboBoxItem("2", obj1.ToArray(), obj2, obj3, obj4, obj5, obj5);
 
-			setDateComboBoxSelectIndex("1", 0, 0, 0, 0, 0, 0);
-			setDateComboBoxSelectIndex("2", 0, 0, 0, 0, 0, 0);
+			setDateComboBoxSelectItem("1", footprintDirDateStart.Year.ToString(), footprintDirDateStart.Month.ToString().PadLeft(2, '0'), footprintDirDateStart.Day.ToString().PadLeft(2, '0'), "00", "00", "00");
+			setDateComboBoxSelectItem("2", footprintDirDateEnd.Year.ToString(), footprintDirDateEnd.Month.ToString().PadLeft(2, '0'), footprintDirDateEnd.Day.ToString().PadLeft(2, '0'), "23", "59", "59");
 		}
 
 		#endregion
