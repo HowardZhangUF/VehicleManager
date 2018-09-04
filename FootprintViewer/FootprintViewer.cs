@@ -54,6 +54,11 @@ namespace FootprintViewer
 		private const string FOOTPRINT_FILE_KEYWORD = "Footprint.txt";
 
 		/// <summary>
+		/// Footprint 資料
+		/// </summary>
+		private List<Footprint> footprints = new List<Footprint>();
+
+		/// <summary>
 		/// 地圖檔路徑
 		/// </summary>
 		private string mapFilePath = "";
@@ -126,13 +131,33 @@ namespace FootprintViewer
 		/// <summary>
 		/// 讀取 Footprint 資料
 		/// </summary>
-		private bool loadFootprintData(DateTime dateStart, DateTime dateEnd)
+		private void loadFootprintData(DateTime dateStart, DateTime dateEnd)
 		{
-			bool result = false;
+			// 計算要處理的天數
 			int days = dateEnd.DayOfYear - dateStart.DayOfYear;
+			days += 1; // 若起始天於結束天相等，至少還是要讀取一天的資料
 
+			// 計算要處理的檔案的路徑
+			List<string> filePaths = new List<string>();
+			for (int i = 0; i < days; ++i)
+			{
+				string tmp = footprintDirPath + "\\" + dateStart.AddDays(i).ToString("yyMMdd") + "\\" + FOOTPRINT_FILE_KEYWORD;
+				filePaths.Add(tmp);
+			}
 
-			return result;
+			// 從檔案讀取資料
+			footprints.Clear();
+			foreach (string filePath in filePaths)
+			{
+				if (File.Exists(filePath))
+				{
+					string[] lines = File.ReadAllLines(filePath);
+					foreach (string line in lines)
+					{
+						footprints.AddRange(Footprint.Analyze(line));
+					}
+				}
+			}
 		}
 
 		#endregion
@@ -339,5 +364,65 @@ namespace FootprintViewer
 		}
 
 		#endregion
+	}
+
+	/// <summary>
+	/// Footprint 資料
+	/// </summary>
+	public class Footprint
+	{
+		/// <summary>
+		/// Footprint 時間點
+		/// </summary>
+		public DateTime time;
+
+		/// <summary>
+		/// Footprint 機器人 ID
+		/// </summary>
+		public string robotID;
+
+		/// <summary>
+		/// Footprint 位置
+		/// </summary>
+		public double x;
+
+		/// <summary>
+		/// Footprint 位置
+		/// </summary>
+		public double y;
+
+		/// <summary>
+		/// Footprint 位置
+		/// </summary>
+		public double toward;
+
+		public Footprint(DateTime time, string robotID, double x, double y, double toward)
+		{
+			this.time = time;
+			this.robotID = robotID;
+			this.x = x;
+			this.y = y;
+			this.toward = toward;
+		}
+
+		public static List<Footprint> Analyze(string src)
+		{
+			//Format: [2018/09/02 00:00:54.960] [iTS-TSMC,-30016.42,-8586.81,332.36][iTS-300B,-26198.43,-8654.82,124.67]
+			List<Footprint> fps = new List<Footprint>();
+			string[] datas = src.Split(new string[] { "[", "]" }, StringSplitOptions.RemoveEmptyEntries);
+			if (datas.Count() > 1)
+			{
+				DateTime tmpTime = DateTime.ParseExact(datas[0], "yyyy/MM/dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+				for (int i = 2; i < datas.Count(); ++i)
+				{
+					string[] tmp = datas[i].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+					if (tmp.Count() == 4)
+					{
+						fps.Add(new Footprint(tmpTime, tmp[0], double.Parse(tmp[1]), double.Parse(tmp[2]), double.Parse(tmp[3])));
+					}
+				}
+			}
+			return fps;
+		}
 	}
 }
