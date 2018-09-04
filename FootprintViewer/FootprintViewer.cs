@@ -33,7 +33,7 @@ namespace FootprintViewer
 			gluiCtrl1.SetEditMode(false);
 			gluiCtrl1.SetControlMode(false);
 
-			checkFootprintDirectory(txtFootprintDirectory.Text);
+			loadFootprintDirectory(txtFootprintDirectory.Text);
 		}
 
 		private void FootprintViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -41,22 +41,66 @@ namespace FootprintViewer
 
 		}
 
-		#region 方法
+		#region 商業邏輯
 
 		/// <summary>
 		/// Footprint 資料夾關鍵字
 		/// </summary>
-		private string FOOTPRINT_DIRECTORY_KEYWORD = "VMLog";
+		private const string FOOTPRINT_DIRECTORY_KEYWORD = "VMLog";
 
 		/// <summary>
 		/// Footprint 檔案關鍵字
 		/// </summary>
-		private string FOOTPRINT_FILE_KEYWORD = "Footprint.txt";
+		private const string FOOTPRINT_FILE_KEYWORD = "Footprint.txt";
 
 		/// <summary>
-		/// 確認 Footprint 資料夾的時間區間(年)，並更新介面的 ComboBox
+		/// 地圖檔路徑
 		/// </summary>
-		private bool checkFootprintDirectory(string path)
+		private string mapFilePath = "";
+
+		/// <summary>
+		/// Footprint 資料夾路徑
+		/// </summary>
+		private string footprintDirPath = "";
+
+		/// <summary>
+		/// Footprint 資料夾開始日期
+		/// </summary>
+		private DateTime footprintDirDateStart;
+
+		/// <summary>
+		/// Footprint 資料夾結束日期
+		/// </summary>
+		private DateTime footprintDirDateEnd;
+
+		/// <summary>
+		/// 使用者要讀取的 Footprint 開始日期
+		/// </summary>
+		private DateTime footprintDateStart;
+
+		/// <summary>
+		/// 使用者要讀取的 Footprint 結束日期
+		/// </summary>
+		private DateTime footprintDateEnd;
+
+		/// <summary>
+		/// 載入地圖
+		/// </summary>
+		private bool loadMapPath(string path)
+		{
+			bool result = false;
+			if (File.Exists(path) && path.EndsWith(".map"))
+			{
+				gluiCtrl1.LoadMap(path);
+				result = true;
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 讀取 Footprint 資料夾的時間區間(年)，並更新介面的 ComboBox
+		/// </summary>
+		private bool loadFootprintDirectory(string path)
 		{
 			bool result = false;
 			if (Directory.Exists(path))
@@ -64,15 +108,30 @@ namespace FootprintViewer
 				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
 				if (baseDirInfo.Name.Contains(FOOTPRINT_DIRECTORY_KEYWORD))
 				{
+					footprintDirPath = path;
 					DirectoryInfo[] dirInfos = baseDirInfo.GetDirectories();
-					DateTime dateMin = DateTime.ParseExact(dirInfos.First().Name, "yyMMdd", CultureInfo.InvariantCulture);
-					DateTime dateMax = DateTime.ParseExact(dirInfos.Last().Name, "yyMMdd", CultureInfo.InvariantCulture);
-					initializeDateComboBoxes(dateMin.Year, dateMax.Year);
+					footprintDirDateStart = DateTime.ParseExact(dirInfos.First().Name, "yyMMdd", CultureInfo.InvariantCulture);
+					footprintDirDateEnd = DateTime.ParseExact(dirInfos.Last().Name, "yyMMdd", CultureInfo.InvariantCulture);
+					initializeDateComboBoxes(footprintDirDateStart.Year, footprintDirDateEnd.Year);
 					result = true;
 				}
 			}
 			return result;
 		}
+
+		/// <summary>
+		/// 讀取 Footprint 資料
+		/// </summary>
+		private bool loadFootprintData(DateTime dateStart, DateTime dateEnd)
+		{
+			bool result = false;
+			
+			return result;
+		}
+
+		#endregion
+
+		#region 方法
 
 		/// <summary>
 		/// 開啟一資料夾選擇視窗，並回傳資料夾路徑
@@ -107,7 +166,7 @@ namespace FootprintViewer
 			string dirPath = getDirectoryPath();
 			if (dirPath != "")
 			{
-				if (checkFootprintDirectory(dirPath))
+				if (loadFootprintDirectory(dirPath))
 				{
 					txtFootprintDirectory.Text = dirPath;
 				}
@@ -122,9 +181,21 @@ namespace FootprintViewer
 			string tmp1 = $"{cbYear1.Text}/{cbMonth1.Text}/{cbDay1.Text} {cbHour1.Text}:{cbMinute1.Text}:{cbSecond1.Text}";
 			string tmp2 = $"{cbYear2.Text}/{cbMonth2.Text}/{cbDay2.Text} {cbHour2.Text}:{cbMinute2.Text}:{cbSecond2.Text}";
 			DateTime dateTime1, dateTime2;
+			// 若日期皆為有效日期
 			if (DateTime.TryParse(tmp1, out dateTime1) && DateTime.TryParse(tmp2, out dateTime2))
 			{
-
+				if (dateTime1 > dateTime2)
+				{
+					footprintDateStart = dateTime2;
+					footprintDateEnd = dateTime1;
+				}
+				else
+				{
+					footprintDateStart = dateTime1;
+					footprintDateEnd = dateTime2;
+				}
+				// 讀取 Footprint 資料
+				loadFootprintData(footprintDateStart, footprintDateEnd);
 			}
 		}
 
@@ -258,7 +329,7 @@ namespace FootprintViewer
 		/// </summary>
 		private void gluiCtrl1_LoadMapEvent(object sender, LoadMapEventArgs e)
 		{
-			txtMapPath.Text = e.MapPath;
+			mapFilePath = txtMapPath.Text = e.MapPath;
 		}
 
 		#endregion
