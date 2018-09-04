@@ -1492,7 +1492,7 @@ namespace GLUITest
 						string str = "";
 						foreach (var item in agvs.Values)
 						{
-							str += $"[{item.Status.Name},{item.Status.X},{item.Status.Y},{item.Status.Toward}]";
+							str += $"[{item.Status.Name},{item.Status.X.ToString("F2")},{item.Status.Y.ToString("F2")},{item.Status.Toward.ToString("F2")}]";
 						}
 						Log.FootprintLog.Add(str);
 					}
