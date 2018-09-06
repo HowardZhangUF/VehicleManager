@@ -54,7 +54,7 @@
 			this.txtFootprintDirectory = new System.Windows.Forms.TextBox();
 			this.btnBrowseFootprintDirectory = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.txtInspectionResultDirectory = new System.Windows.Forms.TextBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.btnBrowseMapPath = new System.Windows.Forms.Button();
 			this.txtMapPath = new System.Windows.Forms.TextBox();
@@ -298,12 +298,12 @@
 			this.button1.Text = "...";
 			this.button1.UseVisualStyleBackColor = true;
 			// 
-			// textBox1
+			// txtInspectionResultDirectory
 			// 
-			this.textBox1.Location = new System.Drawing.Point(262, 565);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(552, 25);
-			this.textBox1.TabIndex = 43;
+			this.txtInspectionResultDirectory.Location = new System.Drawing.Point(262, 565);
+			this.txtInspectionResultDirectory.Name = "txtInspectionResultDirectory";
+			this.txtInspectionResultDirectory.Size = new System.Drawing.Size(552, 25);
+			this.txtInspectionResultDirectory.TabIndex = 43;
 			// 
 			// label12
 			// 
@@ -367,6 +367,7 @@
 			this.btnSaveSettings.TabIndex = 51;
 			this.btnSaveSettings.Text = "Save Settings";
 			this.btnSaveSettings.UseVisualStyleBackColor = true;
+			this.btnSaveSettings.Click += new System.EventHandler(this.btnSaveSettings_Click);
 			// 
 			// gluiCtrl1
 			// 
@@ -393,7 +394,7 @@
 			this.Controls.Add(this.txtMapPath);
 			this.Controls.Add(this.label13);
 			this.Controls.Add(this.button1);
-			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.txtInspectionResultDirectory);
 			this.Controls.Add(this.label12);
 			this.Controls.Add(this.btnBrowseFootprintDirectory);
 			this.Controls.Add(this.txtFootprintDirectory);
@@ -456,7 +457,7 @@
 		private System.Windows.Forms.TextBox txtFootprintDirectory;
 		private System.Windows.Forms.Button btnBrowseFootprintDirectory;
 		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox txtInspectionResultDirectory;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.Button btnBrowseMapPath;
 		private System.Windows.Forms.TextBox txtMapPath;

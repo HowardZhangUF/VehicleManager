@@ -36,7 +36,8 @@ namespace FootprintViewer
 			gluiCtrl1.SetEditMode(false);
 			gluiCtrl1.SetControlMode(false);
 
-			//loadFootprintDirectory(txtFootprintDirectory.Text);
+			// 讀取介面設定
+			readSettings(SETTINGS_FILE);
 
 			// 註冊 Footprint 圖像識別碼
 			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
@@ -48,6 +49,8 @@ namespace FootprintViewer
 		}
 
 		#region 商業邏輯
+
+		private const string SETTINGS_FILE = "FootprintViewer Settings.ini";
 
 		/// <summary>
 		/// Footprint 資料夾關鍵字
@@ -206,6 +209,44 @@ namespace FootprintViewer
 			return result;
 		}
 
+		/// <summary>
+		/// 讀取介面設定
+		/// </summary>
+		private void readSettings(string file)
+		{
+			if (!File.Exists(file)) return;
+
+			string mapPath = "";
+			string footprintDirectory = "";
+			string inspectionResultDirectory = "";
+
+			mapPath = IniFiles.INI.Read(file, "FootprintViewer", "MapPath", mapPath);
+			footprintDirectory = IniFiles.INI.Read(file, "FootprintViewer", "FootprintDirectory", footprintDirectory);
+			inspectionResultDirectory = IniFiles.INI.Read(file, "FootprintViewer", "InspectionResultDirectory", inspectionResultDirectory);
+
+			if (mapPath != null) txtMapPath.InvokeIfNecessary(() => { txtMapPath.Text = mapPath; });
+			if (footprintDirectory != null) txtFootprintDirectory.InvokeIfNecessary(() => { txtFootprintDirectory.Text = footprintDirectory; });
+			if (inspectionResultDirectory != null) txtInspectionResultDirectory.InvokeIfNecessary(() => { txtInspectionResultDirectory.Text = inspectionResultDirectory; });
+		}
+
+		/// <summary>
+		/// 儲存介面設定
+		/// </summary>
+		private void writeSettings(string file)
+		{
+			string mapPath = "";
+			string footprintDirectory = "";
+			string inspectionResultDirectory = "";
+
+			txtMapPath.InvokeIfNecessary(() => { mapPath = txtMapPath.Text; });
+			txtFootprintDirectory.InvokeIfNecessary(() => { footprintDirectory = txtFootprintDirectory.Text; });
+			txtInspectionResultDirectory.InvokeIfNecessary(() => { inspectionResultDirectory = txtInspectionResultDirectory.Text; });
+
+			if (mapPath != "") IniFiles.INI.Write(file, "FootprintViewer", "MapPath", mapPath);
+			if (footprintDirectory != "") IniFiles.INI.Write(file, "FootprintViewer", "FootprintDirectory", footprintDirectory);
+			if (inspectionResultDirectory != "") IniFiles.INI.Write(file, "FootprintViewer", "InspectionResultDirectory", inspectionResultDirectory);
+		}
+
 		#endregion
 
 		#region GUI 事件
@@ -258,6 +299,14 @@ namespace FootprintViewer
 				loadFootprintData(footprintDateStart, footprintDateEnd);
 				writeFootprintToMap();
 			}
+		}
+
+		/// <summary>
+		/// 儲存介面設定
+		/// </summary>
+		private void btnSaveSettings_Click(object sender, EventArgs e)
+		{
+			writeSettings(SETTINGS_FILE);
 		}
 
 		#endregion
