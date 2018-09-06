@@ -43,7 +43,7 @@ namespace FootprintViewer
 			// 註冊 Footprint 圖像識別碼
 			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
 
-			// 讀取地圖
+			// 讀取地圖資料
 			if (txtMapPath.Text != "" && txtMapPath.Text.EndsWith(".map"))
 			{
 				gluiCtrl1.LoadMap(txtMapPath.Text);
@@ -359,6 +359,30 @@ namespace FootprintViewer
 		{
 			writeSettings(SETTINGS_FILE);
 			writeSettings_TSMC(SETTINGS_FILE);
+		}
+
+		/// <summary>
+		/// 重新讀取介面設定
+		/// </summary>
+		private void btnReloadSettings_Click(object sender, EventArgs e)
+		{
+			// 讀取地圖資料
+			if (txtMapPath.Text != "" && txtMapPath.Text.EndsWith(".map"))
+			{
+				gluiCtrl1.LoadMap(txtMapPath.Text);
+			}
+
+			// 讀取 Footprint 資料
+			if (txtFootprintDirectory.Text != "")
+			{
+				loadFootprintDirectory(txtFootprintDirectory.Text);
+			}
+
+			// 讀取 Inspection Result 資料
+			if (txtInspectionResultDirectory.Text != "")
+			{
+				loadInspectionResultDirectory(txtInspectionResultDirectory.Text);
+			}
 		}
 
 		#endregion

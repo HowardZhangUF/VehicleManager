@@ -64,6 +64,7 @@
 			this.btnSaveSettings = new System.Windows.Forms.Button();
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
 			this.lbRobotID = new System.Windows.Forms.ListBox();
+			this.btnReloadSettings = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// cbYear1
@@ -378,7 +379,7 @@
 			this.btnSaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnSaveSettings.Location = new System.Drawing.Point(1030, 25);
 			this.btnSaveSettings.Name = "btnSaveSettings";
-			this.btnSaveSettings.Size = new System.Drawing.Size(148, 171);
+			this.btnSaveSettings.Size = new System.Drawing.Size(148, 83);
 			this.btnSaveSettings.TabIndex = 51;
 			this.btnSaveSettings.Text = "Save Settings";
 			this.btnSaveSettings.UseVisualStyleBackColor = true;
@@ -411,10 +412,22 @@
 			this.lbRobotID.Size = new System.Drawing.Size(120, 439);
 			this.lbRobotID.TabIndex = 52;
 			// 
+			// btnReloadSettings
+			// 
+			this.btnReloadSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnReloadSettings.Location = new System.Drawing.Point(1030, 114);
+			this.btnReloadSettings.Name = "btnReloadSettings";
+			this.btnReloadSettings.Size = new System.Drawing.Size(148, 84);
+			this.btnReloadSettings.TabIndex = 53;
+			this.btnReloadSettings.Text = "Reload Settings";
+			this.btnReloadSettings.UseVisualStyleBackColor = true;
+			this.btnReloadSettings.Click += new System.EventHandler(this.btnReloadSettings_Click);
+			// 
 			// FootprintViewer
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.ClientSize = new System.Drawing.Size(1195, 654);
+			this.Controls.Add(this.btnReloadSettings);
 			this.Controls.Add(this.lbRobotID);
 			this.Controls.Add(this.btnSaveSettings);
 			this.Controls.Add(this.gluiCtrl1);
@@ -497,6 +510,7 @@
 		private GLUI.GLUICtrl gluiCtrl1;
 		private System.Windows.Forms.Button btnSaveSettings;
 		private System.Windows.Forms.ListBox lbRobotID;
+		private System.Windows.Forms.Button btnReloadSettings;
 	}
 }
 
