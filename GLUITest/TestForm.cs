@@ -85,9 +85,53 @@ namespace GLUITest
 		/// </summary>
 		private void Control_MouseEnter(object sender, EventArgs e)
 		{
-			// 當登入且滑鼠進入控制項時，將閒置時間計時重置
-			if (isLogIn && programIdleTime != 0) programIdleTime = 0;
+			// 當滑鼠進入控制項時，將閒置時間計時重置
+			resetIdleTimeCounter();
 		}
+
+		/// <summary>
+		/// StatusStrip 的 Log In 標籤被點擊時
+		/// </summary>
+		private void toolStripStatusLabelLogIn_Click(object sender, EventArgs e)
+		{
+			string password = "";
+			// 若已登入
+			tabControl1.InvokeIfNecessary(() =>
+			{
+				if (isLogIn)
+				{
+					ActionBeforeLogOut();
+					LogOut();
+				}
+				// 若未登入
+				else
+				{
+					if (InputBox("Log In", "Please Enter the Password:", ref password, '*') == DialogResult.OK)
+					{
+						// 登入成功
+						if (LogIn(password))
+						{
+							ActionAfterLogIn();
+						}
+						else
+						{
+							MessageBox.Show("Wrong Passwrod!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+							Log.LoginLog.Add($"Log In Failed!");
+						}
+					}
+				}
+			});
+		}
+
+		/// <summary>
+		/// 開啟 Footprint Viewer 視窗
+		/// </summary>
+		private void toolStripMenuItemFootprint_Click(object sender, EventArgs e)
+		{
+			Process.Start("FootprintViewer.exe");
+		}
+
+		#region 自走車頁面事件
 
 		/// <summary>
 		/// 停用顯示 AGV 狀態的 DataGridView 的選取功能
@@ -148,6 +192,10 @@ namespace GLUITest
 		{
 			SendChangeMapCommand();
 		}
+
+		#endregion
+
+		#region 地圖物件頁面事件
 
 		/// <summary>
 		/// 重新綁定資料
@@ -253,47 +301,293 @@ namespace GLUITest
             }
 		}
 
+		#endregion
+
+		#region 地圖物件頁面事件處理
+
 		/// <summary>
-		/// StatusStrip 的 Log In 標籤被點擊時
+		/// 回傳表格中對應的 ID。若 ID 不存在，則回傳 -1
 		/// </summary>
-		private void toolStripStatusLabelLogIn_Click(object sender, EventArgs e)
+		private int GetTargetID(int rowIndex)
 		{
-			string password = "";
-			// 若已登入
-			tabControl1.InvokeIfNecessary(() => 
+			if (rowIndex < 0 || rowIndex >= dgvInfo.RowCount) return -1;
+
+			switch (cmbSelectType.Text)
 			{
-				if (isLogIn)
-				{
-					ActionBeforeLogOut();
-					LogOut();
-				}
-				// 若未登入
-				else
-				{
-					if (InputBox("Log In", "Please Enter the Password:", ref password, '*') == DialogResult.OK)
+				case "Point":
 					{
-						// 登入成功
-						if (LogIn(password))
-						{
-							ActionAfterLogIn();
-						}
-						else
-						{
-							MessageBox.Show("Wrong Passwrod!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-							Log.LoginLog.Add($"Log In Failed!");
-						}
+						return (int)(dgvInfo[nameof(SinglePairInfo.ID), rowIndex].Value);
 					}
-				}
-			});
+
+				case "Station":
+					{
+						return (int)(dgvInfo[nameof(SingleTowardPairInfo.ID), rowIndex].Value);
+					}
+
+				case "Line":
+					{
+						return (int)(dgvInfo[nameof(SingleLineInfo.ID), rowIndex].Value);
+					}
+
+				case "Area":
+					{
+						return (int)(dgvInfo[nameof(SingleAreaInfo.ID), rowIndex].Value);
+					}
+
+				default:
+					break;
+			}
+
+			return -1;
 		}
 
 		/// <summary>
-		/// 開啟 Footprint Viewer 視窗
+		/// 從 <see cref="dgvInfo"/> 中搜尋對應的欄位。若資料不存在則回 <see cref="string.Empty"/>
 		/// </summary>
-		private void toolStripMenuItemFootprint_Click(object sender, EventArgs e)
+		private string GetValue(int rowIndex, string elementName)
 		{
-			Process.Start("FootprintViewer.exe");
+			return dgvInfo[elementName, rowIndex].Value.ToString();
 		}
+
+		/// <summary>
+		/// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
+		/// </summary>
+		private void UpdateGLCMD(int rowIndex, int colIndex)
+		{
+			if (rowIndex < 0 || rowIndex >= dgvInfo.RowCount) return;
+			if (colIndex < 0 || colIndex >= dgvInfo.ColumnCount) return;
+
+			string colName = dgvInfo.Columns[colIndex].Name;
+			string newValue = dgvInfo[colIndex, rowIndex].Value.ToString();
+
+			switch (cmbSelectType.Text)
+			{
+				case "Point":
+					{
+						UpdateSinglePairInfo(rowIndex, colName, newValue);
+					}
+					break;
+
+				case "Station":
+					{
+						UpdateSingleTowardPairInfo(rowIndex, colName, newValue);
+					}
+					break;
+
+				case "Line":
+					{
+						UpdateSingleLineInfo(rowIndex, colName, newValue);
+					}
+					break;
+
+				case "Area":
+					{
+						UpdateSingleAreaInfo(rowIndex, colName, newValue);
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		/// <summary>
+		/// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
+		/// </summary>
+		private void UpdateSingleAreaInfo(int rowIndex, string elementName, string newValue)
+		{
+			int id = GetTargetID(rowIndex);
+			switch (elementName)
+			{
+				case nameof(SingleAreaInfo.Name):
+					{
+						GLCMD.CMD.DoRename(id, newValue);
+					}
+					break;
+
+				case nameof(SingleAreaInfo.MinX):
+					{
+						int x = int.Parse(newValue);
+						int y = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MinY)));
+						GLCMD.CMD.DoMoveMin(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SingleAreaInfo.MinY):
+					{
+						int x = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MinX)));
+						int y = int.Parse(newValue);
+						GLCMD.CMD.DoMoveMin(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SingleAreaInfo.MaxX):
+					{
+						int x = int.Parse(newValue);
+						int y = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MaxY)));
+						GLCMD.CMD.DoMoveMax(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SingleAreaInfo.MaxY):
+					{
+						int x = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MaxX)));
+						int y = int.Parse(newValue);
+						GLCMD.CMD.DoMoveMax(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		/// <summary>
+		/// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
+		/// </summary>
+		private void UpdateSingleLineInfo(int rowIndex, string elementName, string newValue)
+		{
+			int id = GetTargetID(rowIndex);
+			switch (elementName)
+			{
+				case nameof(SingleLineInfo.Name):
+					{
+						GLCMD.CMD.DoRename(id, newValue);
+					}
+					break;
+
+				case nameof(SingleLineInfo.X0):
+					{
+						int x = int.Parse(newValue);
+						int y = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.Y0)));
+						GLCMD.CMD.DoMoveBegin(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SingleLineInfo.Y0):
+					{
+						int x = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.X0)));
+						int y = int.Parse(newValue);
+						GLCMD.CMD.DoMoveBegin(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SingleLineInfo.X1):
+					{
+						int x = int.Parse(newValue);
+						int y = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.Y1)));
+						GLCMD.CMD.DoMoveEnd(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SingleLineInfo.Y1):
+					{
+						int x = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.X1)));
+						int y = int.Parse(newValue);
+						GLCMD.CMD.DoMoveEnd(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		/// <summary>
+		/// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
+		/// </summary>
+		private void UpdateSinglePairInfo(int rowIndex, string elementName, string newValue)
+		{
+			int id = GetTargetID(rowIndex);
+			switch (elementName)
+			{
+				case nameof(SinglePairInfo.Name):
+					{
+						GLCMD.CMD.DoRename(id, newValue);
+					}
+					break;
+
+				case nameof(SinglePairInfo.X):
+					{
+						int x = int.Parse(newValue);
+						int y = int.Parse(GetValue(rowIndex, nameof(SinglePairInfo.Y)));
+						GLCMD.CMD.DoMoveCenter(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SinglePairInfo.Y):
+					{
+						int x = int.Parse(GetValue(rowIndex, nameof(SinglePairInfo.X)));
+						int y = int.Parse(newValue);
+						GLCMD.CMD.DoMoveCenter(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		/// <summary>
+		/// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
+		/// </summary>
+		private void UpdateSingleTowardPairInfo(int rowIndex, string elementName, string newValue)
+		{
+			int id = GetTargetID(rowIndex);
+			switch (elementName)
+			{
+				case nameof(SingleTowardPairInfo.Name):
+					{
+						GLCMD.CMD.DoRename(id, newValue);
+					}
+					break;
+
+				case nameof(SingleTowardPairInfo.X):
+					{
+						int x = int.Parse(newValue);
+						int y = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.Y)));
+						GLCMD.CMD.DoMoveCenter(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SingleTowardPairInfo.Y):
+					{
+						int x = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.X)));
+						int y = int.Parse(newValue);
+						GLCMD.CMD.DoMoveCenter(id, x, y);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				case nameof(SingleTowardPairInfo.Toward):
+					{
+						double theta = double.Parse(newValue) * Math.PI / 180.0;
+						int x = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.X)));
+						int y = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.Y)));
+						int dx = (int)(Math.Cos(theta) * 10000);
+						int dy = (int)(Math.Sin(theta) * 10000);
+						GLCMD.CMD.DoMoveToward(id, x + dx, y + dy);
+						GLCMD.CMD.MoveFinish();
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		#endregion
 
 		#endregion
 
@@ -361,332 +655,6 @@ namespace GLUITest
 		}
 
 		#endregion
-
-		/// <summary>
-		/// 回傳表格中對應的 ID。若 ID 不存在，則回傳 -1
-		/// </summary>
-		private int GetTargetID(int rowIndex)
-        {
-            if (rowIndex < 0 || rowIndex >= dgvInfo.RowCount) return -1;
-
-            switch (cmbSelectType.Text)
-            {
-                case "Point":
-                    {
-                        return (int)(dgvInfo[nameof(SinglePairInfo.ID), rowIndex].Value);
-                    }
-
-                case "Station":
-                    {
-                        return (int)(dgvInfo[nameof(SingleTowardPairInfo.ID), rowIndex].Value);
-                    }
-
-                case "Line":
-                    {
-                        return (int)(dgvInfo[nameof(SingleLineInfo.ID), rowIndex].Value);
-                    }
-
-                case "Area":
-                    {
-                        return (int)(dgvInfo[nameof(SingleAreaInfo.ID), rowIndex].Value);
-                    }
-
-                default:
-                    break;
-            }
-
-            return -1;
-        }
-
-        /// <summary>
-        /// 從 <see cref="dgvInfo"/> 中搜尋對應的欄位。若資料不存在則回 <see cref="string.Empty"/>
-        /// </summary>
-        private string GetValue(int rowIndex, string elementName)
-        {
-            return dgvInfo[elementName, rowIndex].Value.ToString();
-        }
-
-        /// <summary>
-        /// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
-        /// </summary>
-        private void UpdateGLCMD(int rowIndex, int colIndex)
-        {
-            if (rowIndex < 0 || rowIndex >= dgvInfo.RowCount) return;
-            if (colIndex < 0 || colIndex >= dgvInfo.ColumnCount) return;
-
-            string colName = dgvInfo.Columns[colIndex].Name;
-            string newValue = dgvInfo[colIndex, rowIndex].Value.ToString();
-
-            switch (cmbSelectType.Text)
-            {
-                case "Point":
-                    {
-                        UpdateSinglePairInfo(rowIndex, colName, newValue);
-                    }
-                    break;
-
-                case "Station":
-                    {
-                        UpdateSingleTowardPairInfo(rowIndex, colName, newValue);
-                    }
-                    break;
-
-                case "Line":
-                    {
-                        UpdateSingleLineInfo(rowIndex, colName, newValue);
-                    }
-                    break;
-
-                case "Area":
-                    {
-                        UpdateSingleAreaInfo(rowIndex, colName, newValue);
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
-        /// </summary>
-        private void UpdateSingleAreaInfo(int rowIndex, string elementName, string newValue)
-        {
-            int id = GetTargetID(rowIndex);
-            switch (elementName)
-            {
-                case nameof(SingleAreaInfo.Name):
-                    {
-                        GLCMD.CMD.DoRename(id, newValue);
-                    }
-                    break;
-
-                case nameof(SingleAreaInfo.MinX):
-                    {
-                        int x = int.Parse(newValue);
-                        int y = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MinY)));
-                        GLCMD.CMD.DoMoveMin(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SingleAreaInfo.MinY):
-                    {
-                        int x = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MinX)));
-                        int y = int.Parse(newValue);
-                        GLCMD.CMD.DoMoveMin(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SingleAreaInfo.MaxX):
-                    {
-                        int x = int.Parse(newValue);
-                        int y = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MaxY)));
-                        GLCMD.CMD.DoMoveMax(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SingleAreaInfo.MaxY):
-                    {
-                        int x = int.Parse(GetValue(rowIndex, nameof(SingleAreaInfo.MaxX)));
-                        int y = int.Parse(newValue);
-                        GLCMD.CMD.DoMoveMax(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
-        /// </summary>
-        private void UpdateSingleLineInfo(int rowIndex, string elementName, string newValue)
-        {
-            int id = GetTargetID(rowIndex);
-            switch (elementName)
-            {
-                case nameof(SingleLineInfo.Name):
-                    {
-                        GLCMD.CMD.DoRename(id, newValue);
-                    }
-                    break;
-
-                case nameof(SingleLineInfo.X0):
-                    {
-                        int x = int.Parse(newValue);
-                        int y = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.Y0)));
-                        GLCMD.CMD.DoMoveBegin(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SingleLineInfo.Y0):
-                    {
-                        int x = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.X0)));
-                        int y = int.Parse(newValue);
-                        GLCMD.CMD.DoMoveBegin(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SingleLineInfo.X1):
-                    {
-                        int x = int.Parse(newValue);
-                        int y = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.Y1)));
-                        GLCMD.CMD.DoMoveEnd(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SingleLineInfo.Y1):
-                    {
-                        int x = int.Parse(GetValue(rowIndex, nameof(SingleLineInfo.X1)));
-                        int y = int.Parse(newValue);
-                        GLCMD.CMD.DoMoveEnd(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
-        /// </summary>
-        private void UpdateSinglePairInfo(int rowIndex, string elementName, string newValue)
-        {
-            int id = GetTargetID(rowIndex);
-            switch (elementName)
-            {
-                case nameof(SinglePairInfo.Name):
-                    {
-                        GLCMD.CMD.DoRename(id, newValue);
-                    }
-                    break;
-
-                case nameof(SinglePairInfo.X):
-                    {
-                        int x = int.Parse(newValue);
-                        int y = int.Parse(GetValue(rowIndex, nameof(SinglePairInfo.Y)));
-                        GLCMD.CMD.DoMoveCenter(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SinglePairInfo.Y):
-                    {
-                        int x = int.Parse(GetValue(rowIndex, nameof(SinglePairInfo.X)));
-                        int y = int.Parse(newValue);
-                        GLCMD.CMD.DoMoveCenter(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// 下命令方式更新 <see cref="GLCMD"/> 中的物件座標、名稱等等
-        /// </summary>
-        private void UpdateSingleTowardPairInfo(int rowIndex, string elementName, string newValue)
-        {
-            int id = GetTargetID(rowIndex);
-            switch (elementName)
-            {
-                case nameof(SingleTowardPairInfo.Name):
-                    {
-                        GLCMD.CMD.DoRename(id, newValue);
-                    }
-                    break;
-
-                case nameof(SingleTowardPairInfo.X):
-                    {
-                        int x = int.Parse(newValue);
-                        int y = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.Y)));
-                        GLCMD.CMD.DoMoveCenter(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SingleTowardPairInfo.Y):
-                    {
-                        int x = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.X)));
-                        int y = int.Parse(newValue);
-                        GLCMD.CMD.DoMoveCenter(id, x, y);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                case nameof(SingleTowardPairInfo.Toward):
-                    {
-                        double theta = double.Parse(newValue) * Math.PI / 180.0;
-                        int x = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.X)));
-                        int y = int.Parse(GetValue(rowIndex, nameof(SingleTowardPairInfo.Y)));
-                        int dx = (int)(Math.Cos(theta) * 10000);
-                        int dy = (int)(Math.Sin(theta) * 10000);
-                        GLCMD.CMD.DoMoveToward(id, x + dx, y + dy);
-                        GLCMD.CMD.MoveFinish();
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-		}
-
-		/// <summary>
-		/// 自訂輸入視窗
-		/// </summary>
-		/// <param name="caption">標題</param>
-		/// <param name="text">內文</param>
-		/// <param name="value">結果值</param>
-		/// <returns></returns>
-		public static DialogResult InputBox(string caption, string text, ref string value, char passwordChar = '\0')
-		{
-			Form form = new Form();
-			Label lblText = new Label();
-			TextBox txtResult = new TextBox();
-			Button btnOk = new Button();
-			Button btnCancel = new Button();
-
-			form.Text = caption;
-			lblText.Text = text;
-			lblText.AutoSize = true;
-			txtResult.BackColor = System.Drawing.Color.Khaki;
-			btnOk.Text = "OK";
-			btnOk.DialogResult = DialogResult.OK;
-			btnCancel.Text = "Cancel";
-			btnCancel.DialogResult = DialogResult.Cancel;
-			if (passwordChar != '\0') txtResult.PasswordChar = passwordChar;
-
-			form.Controls.AddRange(new Control[] { lblText, txtResult, btnOk, btnCancel });
-			lblText.Location = new System.Drawing.Point(20, 10);
-			txtResult.SetBounds(20, lblText.Location.Y + lblText.Size.Height + 10, 160, 20);
-			btnOk.SetBounds(20, txtResult.Location.Y + txtResult.Size.Height + 10, 75, 30);
-			btnCancel.SetBounds(btnOk.Right + 10, btnOk.Location.Y, 75, 30);
-
-			form.ClientSize = new System.Drawing.Size(Math.Max(btnCancel.Right + 20, lblText.Right + 20), btnCancel.Bottom + 10);
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.StartPosition = FormStartPosition.CenterParent;
-			form.MinimizeBox = false;
-			form.MaximizeBox = false;
-			form.AcceptButton = btnOk;
-			form.CancelButton = btnCancel;
-
-			DialogResult dialogResult = form.ShowDialog();
-			value = txtResult.Text;
-			return dialogResult;
-		}
 
 		#region 介面操作
 
@@ -812,55 +780,6 @@ namespace GLUITest
         private IPair start = new Pair();
 
         #endregion 路徑搜尋
-
-        #region 範例 / 測試
-
-        /// <summary>
-        /// 命令範例
-        /// </summary>
-        private void CMDDemo()
-        {
-            // 使用者用指令加入圖形(可復原)
-            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ChargingDocking,-2000,0,0");
-            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea2,0,0,3000,3000");
-            GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea,4000,4000,7000,7000");
-
-            // 使用者用函式加入圖形(可復原)
-            GLCMD.CMD.DoAddSingleTowardPair("General", 0, 2000, 45);
-
-            // 使用者用函式加入複合圖形(不可復原)
-            Random random = new Random();
-            List<IPair> list = new List<IPair>();
-            for (int ii = 0; ii < 100000; ++ii)
-            {
-                list.Add(new Pair(random.Next(-10000, 10000), random.Next(-10000, 10000)));
-            }
-            GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
-        }
-
-        /// <summary>
-        /// AGV 範例
-        /// </summary>
-        private void AGVDemo()
-        {
-            int agv1 = GLCMD.CMD.SerialNumber.Next();
-            int agv2 = GLCMD.CMD.SerialNumber.Next();
-            Random random = new Random();
-            new Thread(() =>
-            {
-                while (true)
-                {
-                    GLCMD.CMD.AddAGV(agv1, "AGV-1", random.Next(0, 5000), random.Next(0, 5000), random.Next(0, 360));
-                    GLCMD.CMD.AddAGV(agv2, random.Next(-5000, 0), random.Next(-5000, 0), random.Next(0, 360));
-                    Thread.Sleep(1000);
-                }
-            })
-            {
-                IsBackground = true
-            }.Start();
-        }
-
-		#endregion
 
 		#region Socket
 
@@ -1453,6 +1372,9 @@ namespace GLUITest
 		/// </summary>
 		private int footprintInterval = 5000;
 
+		/// <summary>
+		/// 紀錄足跡的執行緒
+		/// </summary>
 		private Thread thdFootprint = null;
 
 		/// <summary>
@@ -1546,6 +1468,14 @@ namespace GLUITest
 		private int programIdleHintThreshold = 120;
 
 		/// <summary>
+		/// 重置閒置時間計時
+		/// </summary>
+		private void resetIdleTimeCounter()
+		{
+			if (isLogIn && programIdleTime != 0) programIdleTime = 0;
+		}
+
+		/// <summary>
 		/// 開啟計算程式閒置時間的執行緒
 		/// </summary>
 		private void startCalculateIdleTime()
@@ -1636,6 +1566,99 @@ namespace GLUITest
 		}
 
 		#endregion
+
+		#region 範例 / 測試
+
+		/// <summary>
+		/// 命令範例
+		/// </summary>
+		private void CMDDemo()
+		{
+			// 使用者用指令加入圖形(可復原)
+			GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ChargingDocking,-2000,0,0");
+			GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea2,0,0,3000,3000");
+			GLCMD.CMD.Do($"Add,{GLCMD.CMD.SerialNumber.Next()},ForbiddenArea,4000,4000,7000,7000");
+
+			// 使用者用函式加入圖形(可復原)
+			GLCMD.CMD.DoAddSingleTowardPair("General", 0, 2000, 45);
+
+			// 使用者用函式加入複合圖形(不可復原)
+			Random random = new Random();
+			List<IPair> list = new List<IPair>();
+			for (int ii = 0; ii < 100000; ++ii)
+			{
+				list.Add(new Pair(random.Next(-10000, 10000), random.Next(-10000, 10000)));
+			}
+			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(GLCMD.CMD.ObstaclePointsID, true, o => o.AddRangeIfNotNull(list));
+		}
+
+		/// <summary>
+		/// AGV 範例
+		/// </summary>
+		private void AGVDemo()
+		{
+			int agv1 = GLCMD.CMD.SerialNumber.Next();
+			int agv2 = GLCMD.CMD.SerialNumber.Next();
+			Random random = new Random();
+			new Thread(() =>
+			{
+				while (true)
+				{
+					GLCMD.CMD.AddAGV(agv1, "AGV-1", random.Next(0, 5000), random.Next(0, 5000), random.Next(0, 360));
+					GLCMD.CMD.AddAGV(agv2, random.Next(-5000, 0), random.Next(-5000, 0), random.Next(0, 360));
+					Thread.Sleep(1000);
+				}
+			})
+			{
+				IsBackground = true
+			}.Start();
+		}
+
+		#endregion
+
+		/// <summary>
+		/// 自訂輸入視窗
+		/// </summary>
+		/// <param name="caption">標題</param>
+		/// <param name="text">內文</param>
+		/// <param name="value">結果值</param>
+		/// <returns></returns>
+		public static DialogResult InputBox(string caption, string text, ref string value, char passwordChar = '\0')
+		{
+			Form form = new Form();
+			Label lblText = new Label();
+			TextBox txtResult = new TextBox();
+			Button btnOk = new Button();
+			Button btnCancel = new Button();
+
+			form.Text = caption;
+			lblText.Text = text;
+			lblText.AutoSize = true;
+			txtResult.BackColor = System.Drawing.Color.Khaki;
+			btnOk.Text = "OK";
+			btnOk.DialogResult = DialogResult.OK;
+			btnCancel.Text = "Cancel";
+			btnCancel.DialogResult = DialogResult.Cancel;
+			if (passwordChar != '\0') txtResult.PasswordChar = passwordChar;
+
+			form.Controls.AddRange(new Control[] { lblText, txtResult, btnOk, btnCancel });
+			lblText.Location = new System.Drawing.Point(20, 10);
+			txtResult.SetBounds(20, lblText.Location.Y + lblText.Size.Height + 10, 160, 20);
+			btnOk.SetBounds(20, txtResult.Location.Y + txtResult.Size.Height + 10, 75, 30);
+			btnCancel.SetBounds(btnOk.Right + 10, btnOk.Location.Y, 75, 30);
+
+			form.ClientSize = new System.Drawing.Size(Math.Max(btnCancel.Right + 20, lblText.Right + 20), btnCancel.Bottom + 10);
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterParent;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = btnOk;
+			form.CancelButton = btnCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+			value = txtResult.Text;
+			return dialogResult;
+		}
 	}
 
 	/// <summary>
