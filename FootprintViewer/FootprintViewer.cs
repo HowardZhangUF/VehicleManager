@@ -39,7 +39,7 @@ namespace FootprintViewer
 			//loadFootprintDirectory(txtFootprintDirectory.Text);
 
 			// 註冊 Footprint 圖像識別碼
-			footprintIconID = GLCMD.CMD.AddMultiPair("@ObstaclePoints", null);
+			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
 		}
 
 		private void FootprintViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -389,6 +389,9 @@ namespace FootprintViewer
 			{
 				mapFilePath = txtMapPath.Text = e.MapPath;
 			});
+
+			// 重新註冊 Footprint 圖像識別碼
+			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
 		}
 
 		#endregion
