@@ -903,6 +903,8 @@ namespace GLUITest
 			socketEventHandler.Start();
 		}
 
+		#region Socket 事件
+
 		private void Server_ConnectStatusChangedEvent(object sender, ConnectStatusChangedEventArgs e)
 		{
 			Console.WriteLine($"{e.StatusChangedTime} 和 {e.RemoteInfo} 的連線狀態改變 >> {e.ConnectStatus}");
@@ -932,6 +934,10 @@ namespace GLUITest
 				mreSocketEventTask.Set();
 			}
 		}
+
+		#endregion
+
+		#region 事件處理
 
 		/// <summary>
 		/// 將 <see cref="ConcurrentQueue{T}"/> 所有的內容移除，並以 <see cref="IEnumerable{T}"/> 方式回傳
@@ -1160,7 +1166,9 @@ namespace GLUITest
 			}
 		}
 
-		#region 地圖處理
+		#endregion
+
+		#region 地圖同步處理
 
 		/// <summary>
 		/// 傳送要求地圖清單的命令
@@ -1226,6 +1234,8 @@ namespace GLUITest
 				server.Send(agvs[agvName].IPPort, new ChangeMap(System.IO.Path.GetFileName(fileName)));
 			}
 		}
+
+		#endregion
 
 		#endregion
 
@@ -1304,8 +1314,6 @@ namespace GLUITest
 				yield return new Pair(path.PathX[ii], path.PathY[ii]);
 			}
 		}
-
-		#endregion
 
 		#endregion
 
