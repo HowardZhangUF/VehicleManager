@@ -569,17 +569,20 @@ namespace FootprintViewer
 						foreach (DirectoryInfo dirInfo in dirInfos)
 						{
 							string filePath = dirInfo.FullName + "\\InspectionResult.log";
-							string[] tmpData = File.ReadAllLines(filePath);
-							DateTime tmpTime = DateTime.ParseExact(dirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture);
-							for (int i = 0; i < tmpData.Count(); ++i)
+							if (File.Exists(filePath))
 							{
-								string tt = tmpTime.ToString("yyyyMMdd");
-								bool ttt = tmpData[i].Contains("[InspectionResult]");
-								if (tmpData[i].StartsWith(tmpTime.ToString("yyyy/MM/dd")) && tmpData[i].Contains("[InspectionResult]"))
+								string[] tmpData = File.ReadAllLines(filePath);
+								DateTime tmpTime = DateTime.ParseExact(dirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture);
+								for (int i = 0; i < tmpData.Count(); ++i)
 								{
-									DateTime inspectionStartTime = DateTime.ParseExact(tmpData[i + 1].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-									DateTime inspectionEndTime = DateTime.ParseExact(tmpData[i + 2].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-									intervals.Add(inspectionStartTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + inspectionEndTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + tmpData[i + 3] + " - " + tmpData[i + 4]);
+									string tt = tmpTime.ToString("yyyyMMdd");
+									bool ttt = tmpData[i].Contains("[InspectionResult]");
+									if (tmpData[i].StartsWith(tmpTime.ToString("yyyy/MM/dd")) && tmpData[i].Contains("[InspectionResult]"))
+									{
+										DateTime inspectionStartTime = DateTime.ParseExact(tmpData[i + 1].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
+										DateTime inspectionEndTime = DateTime.ParseExact(tmpData[i + 2].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
+										intervals.Add(inspectionStartTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + inspectionEndTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + tmpData[i + 3] + " - " + tmpData[i + 4]);
+									}
 								}
 							}
 						}
