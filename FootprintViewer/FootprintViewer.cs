@@ -201,19 +201,22 @@ namespace FootprintViewer
 		/// <summary>
 		/// 將 Footprint 繪製至 gluiCtrl1 上
 		/// </summary>
-		private void writeFootprintToMap()
+		private void writeFootprintToMap(string robotID = "")
 		{
 			string[] robotList = footprints.getRobotList();
 			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { o.Clear(); });
-			foreach (string robotID in robotList)
+			foreach (string tmpRobotID in robotList)
 			{
-				List<Footprint> tmpFps = footprints.getFootprintsOf(robotID);
-				List<IPair> points = new List<IPair>();
-				foreach (Footprint fp in tmpFps)
+				if (robotID == "" || tmpRobotID == robotID)
 				{
-					points.Add(new Pair(fp.position.Position.X, fp.position.Position.Y));
+					List<Footprint> tmpFps = footprints.getFootprintsOf(tmpRobotID);
+					List<IPair> points = new List<IPair>();
+					foreach (Footprint fp in tmpFps)
+					{
+						points.Add(new Pair(fp.position.Position.X, fp.position.Position.Y));
+					}
+					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { o.AddRangeIfNotNull(points); });
 				}
-				GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { o.AddRangeIfNotNull(points); });
 			}
 		}
 
@@ -348,7 +351,12 @@ namespace FootprintViewer
 				}
 				// 讀取 Footprint 資料
 				loadFootprintData(footprintDateStart, footprintDateEnd);
-				writeFootprintToMap();
+				//writeFootprintToMap();
+
+				lbRobotID.Items.Clear();
+				lbRobotID.Items.Add("All");
+				lbRobotID.Items.AddRange(footprints.getRobotList());
+				lbRobotID.SelectedIndex = 0;
 			}
 		}
 
@@ -382,6 +390,22 @@ namespace FootprintViewer
 			if (txtInspectionResultDirectory.Text != "")
 			{
 				loadInspectionResultDirectory(txtInspectionResultDirectory.Text);
+			}
+		}
+
+		/// <summary>
+		/// 繪製特定 Footprint
+		/// </summary>
+		private void lbRobotID_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			string robotID = lbRobotID.SelectedItem.ToString();
+			if (robotID == "All")
+			{
+				writeFootprintToMap("");
+			}
+			else if (footprints.getRobotList().Contains(robotID))
+			{
+				writeFootprintToMap(robotID);
 			}
 		}
 

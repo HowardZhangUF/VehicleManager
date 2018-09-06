@@ -411,6 +411,7 @@
 			this.lbRobotID.Name = "lbRobotID";
 			this.lbRobotID.Size = new System.Drawing.Size(120, 439);
 			this.lbRobotID.TabIndex = 52;
+			this.lbRobotID.SelectedIndexChanged += new System.EventHandler(this.lbRobotID_SelectedIndexChanged);
 			// 
 			// btnReloadSettings
 			// 
