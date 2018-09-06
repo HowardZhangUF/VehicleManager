@@ -41,6 +41,18 @@ namespace FootprintViewer
 
 			// 註冊 Footprint 圖像識別碼
 			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
+
+			// 讀取地圖
+			if (txtMapPath.Text != "" && txtMapPath.Text.EndsWith(".map"))
+			{
+				gluiCtrl1.LoadMap(txtMapPath.Text);
+			}
+
+			// 讀取 Footprint 資料
+			if (txtFootprintDirectory.Text != "")
+			{
+				loadFootprintDirectory(txtFootprintDirectory.Text);
+			}
 		}
 
 		private void FootprintViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -199,13 +211,32 @@ namespace FootprintViewer
 		/// <summary>
 		/// 開啟一資料夾選擇視窗，並回傳資料夾路徑
 		/// </summary>
-		private string getDirectoryPath()
+		private string getDirectoryPath(string defaultPath = "")
 		{
 			string result = "";
-			FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-			folderBrowserDialog.SelectedPath = Application.StartupPath;
-			if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-				result = folderBrowserDialog.SelectedPath;
+			FolderBrowserDialog fbd = new FolderBrowserDialog();
+			if (defaultPath != "" && Directory.Exists(defaultPath))
+				fbd.SelectedPath = defaultPath;
+			else
+				fbd.SelectedPath = Application.StartupPath;
+			if (fbd.ShowDialog() == DialogResult.OK)
+				result = fbd.SelectedPath;
+			return result;
+		}
+
+		/// <summary>
+		/// 開啟一檔案選擇視窗，並回傳檔案路徑
+		/// </summary>
+		private string getFilePath(string defaultPath = "")
+		{
+			string result = "";
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (defaultPath != "" && Directory.Exists(defaultPath))
+				ofd.InitialDirectory = defaultPath;
+			else
+				ofd.InitialDirectory = Application.StartupPath;
+			if (ofd.ShowDialog() == DialogResult.OK)
+				result = ofd.FileName;
 			return result;
 		}
 
@@ -256,7 +287,16 @@ namespace FootprintViewer
 		/// </summary>
 		private void btnBrowseMapPath_Click(object sender, EventArgs e)
 		{
-			gluiCtrl1.LoadMap();
+			string mapPath = "";
+			if (txtMapPath.Text != "" && File.Exists(txtMapPath.Text))
+				mapPath = getFilePath(Path.GetDirectoryName(txtMapPath.Text));
+			else
+				mapPath = getFilePath();
+			if (mapPath != "" && mapPath.EndsWith(".map"))
+			{
+				gluiCtrl1.LoadMap(mapPath);
+				txtMapPath.Text = mapPath;
+			}
 		}
 
 		/// <summary>
@@ -264,12 +304,16 @@ namespace FootprintViewer
 		/// </summary>
 		private void btnBrowseFootprintDirectory_Click(object sender, EventArgs e)
 		{
-			string dirPath = getDirectoryPath();
-			if (dirPath != "")
+			string footprintDir = "";
+			if (txtFootprintDirectory.Text != "" && Directory.Exists(txtFootprintDirectory.Text))
+				footprintDir = getDirectoryPath(txtFootprintDirectory.Text);
+			else
+				footprintDir = getDirectoryPath();
+			if (footprintDir != "")
 			{
-				if (loadFootprintDirectory(dirPath))
+				if (loadFootprintDirectory(footprintDir))
 				{
-					txtFootprintDirectory.Text = dirPath;
+					txtFootprintDirectory.Text = footprintDir;
 				}
 			}
 		}
