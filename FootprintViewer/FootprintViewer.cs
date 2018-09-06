@@ -38,6 +38,7 @@ namespace FootprintViewer
 
 			// 讀取介面設定
 			readSettings(SETTINGS_FILE);
+			readSettings_TSMC(SETTINGS_FILE);
 
 			// 註冊 Footprint 圖像識別碼
 			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
@@ -101,11 +102,6 @@ namespace FootprintViewer
 		private string footprintDirPath = "";
 
 		/// <summary>
-		/// Inspection Result 資料夾路徑，台積巡檢專案專用
-		/// </summary>
-		private string inspectionResultDirPath = "";
-
-		/// <summary>
 		/// Footprint 資料夾開始日期
 		/// </summary>
 		private DateTime footprintDirDateStart;
@@ -159,55 +155,6 @@ namespace FootprintViewer
 						footprintDirDateEnd = DateTime.ParseExact(dirInfos.Last().Name, "yyMMdd", CultureInfo.InvariantCulture);
 						initializeDateComboBoxes(footprintDirDateStart, footprintDirDateEnd);
 						result = true;
-					}
-				}
-			}
-			return result;
-		}
-
-		/// <summary>
-		/// 讀取 Inspection Result 資料並更新 ComboBox ，台積巡檢專案專用
-		/// </summary>
-		private bool loadInspectionResultDirectory(string path)
-		{
-			bool result = false;
-			if (Directory.Exists(path))
-			{
-				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
-				if (baseDirInfo.Name.Contains("CIMLog"))
-				{
-					inspectionResultDirPath = path;
-					DateTime nonsense;
-					IEnumerable<DirectoryInfo> dirInfos = baseDirInfo.GetDirectories().Where(info => info.Name.Length == 8 && DateTime.TryParseExact(info.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
-					if (dirInfos.Count() > 0)
-					{
-						List<string> intervals = new List<string>();
-						foreach (DirectoryInfo dirInfo in dirInfos)
-						{
-							string filePath = dirInfo.FullName + "\\InspectionResult.log";
-							string[] tmpData = File.ReadAllLines(filePath);
-							DateTime tmpTime = DateTime.ParseExact(dirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture);
-							for (int i = 0; i < tmpData.Count(); ++i)
-							{
-								string tt = tmpTime.ToString("yyyyMMdd");
-								bool ttt = tmpData[i].Contains("[InspectionResult]");
-								if (tmpData[i].StartsWith(tmpTime.ToString("yyyy/MM/dd")) && tmpData[i].Contains("[InspectionResult]"))
-								{
-									DateTime inspectionStartTime = DateTime.ParseExact(tmpData[i + 1].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-									DateTime inspectionEndTime = DateTime.ParseExact(tmpData[i + 2].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-									intervals.Add(inspectionStartTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + inspectionEndTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + tmpData[i + 3] + " - " + tmpData[i + 4]);
-								}
-							}
-						}
-						if (intervals.Count > 0)
-						{
-							cmbInspectionResultIntervals.InvokeIfNecessary(() => 
-							{
-								cmbInspectionResultIntervals.Items.Clear();
-								cmbInspectionResultIntervals.Items.AddRange(intervals.ToArray());
-							});
-							result = true;
-						}
 					}
 				}
 			}
@@ -315,15 +262,12 @@ namespace FootprintViewer
 
 			string mapPath = "";
 			string footprintDirectory = "";
-			string inspectionResultDirectory = "";
 
 			mapPath = IniFiles.INI.Read(file, "FootprintViewer", "MapPath", mapPath);
 			footprintDirectory = IniFiles.INI.Read(file, "FootprintViewer", "FootprintDirectory", footprintDirectory);
-			inspectionResultDirectory = IniFiles.INI.Read(file, "FootprintViewer", "InspectionResultDirectory", inspectionResultDirectory);
 
 			if (mapPath != null) txtMapPath.InvokeIfNecessary(() => { txtMapPath.Text = mapPath; });
 			if (footprintDirectory != null) txtFootprintDirectory.InvokeIfNecessary(() => { txtFootprintDirectory.Text = footprintDirectory; });
-			if (inspectionResultDirectory != null) txtInspectionResultDirectory.InvokeIfNecessary(() => { txtInspectionResultDirectory.Text = inspectionResultDirectory; });
 		}
 
 		/// <summary>
@@ -333,15 +277,12 @@ namespace FootprintViewer
 		{
 			string mapPath = "";
 			string footprintDirectory = "";
-			string inspectionResultDirectory = "";
 
 			txtMapPath.InvokeIfNecessary(() => { mapPath = txtMapPath.Text; });
 			txtFootprintDirectory.InvokeIfNecessary(() => { footprintDirectory = txtFootprintDirectory.Text; });
-			txtInspectionResultDirectory.InvokeIfNecessary(() => { inspectionResultDirectory = txtInspectionResultDirectory.Text; });
 
 			if (mapPath != "") IniFiles.INI.Write(file, "FootprintViewer", "MapPath", mapPath);
 			if (footprintDirectory != "") IniFiles.INI.Write(file, "FootprintViewer", "FootprintDirectory", footprintDirectory);
-			if (inspectionResultDirectory != "") IniFiles.INI.Write(file, "FootprintViewer", "InspectionResultDirectory", inspectionResultDirectory);
 		}
 
 		#endregion
@@ -385,25 +326,6 @@ namespace FootprintViewer
 		}
 
 		/// <summary>
-		/// 載入 Inspection Result 資料夾，台積巡檢專案專用
-		/// </summary>
-		private void btnBrowseInsepctionResultDirectory_Click(object sender, EventArgs e)
-		{
-			string inspectionResultDir = "";
-			if (txtInspectionResultDirectory.Text != "" && Directory.Exists(txtInspectionResultDirectory.Text))
-				inspectionResultDir = getDirectoryPath(txtInspectionResultDirectory.Text);
-			else
-				inspectionResultDir = getDirectoryPath();
-			if (inspectionResultDir != "")
-			{
-				if (loadInspectionResultDirectory(inspectionResultDir))
-				{
-					txtInspectionResultDirectory.Text = inspectionResultDir;
-				}
-			}
-		}
-
-		/// <summary>
 		/// 讀取日期 ComboBox
 		/// </summary>
 		private void btnSetTimeInterval_Click(object sender, EventArgs e)
@@ -436,22 +358,7 @@ namespace FootprintViewer
 		private void btnSaveSettings_Click(object sender, EventArgs e)
 		{
 			writeSettings(SETTINGS_FILE);
-		}
-
-		/// <summary>
-		/// 根據 ComboBox 選擇的項目來切換時間的 ComboBox ，台積巡檢專案專用
-		/// </summary>
-		private void cmbInspectionResultIntervals_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			string content = cmbInspectionResultIntervals.SelectedItem.ToString();
-			string[] tmp = content.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
-			if (tmp.Count() >= 2)
-			{
-				DateTime time1 = DateTime.ParseExact(tmp[0], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-				DateTime time2 = DateTime.ParseExact(tmp[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-				setDateComboBoxSelectItem("1", time1);
-				setDateComboBoxSelectItem("2", time2);
-			}
+			writeSettings_TSMC(SETTINGS_FILE);
 		}
 
 		#endregion
@@ -606,6 +513,124 @@ namespace FootprintViewer
 
 			// 重新註冊 Footprint 圖像識別碼
 			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
+		}
+
+		#endregion
+
+		#region 擴充功能 - 台積巡檢機專案專用
+
+		// 此功能為可透過讀取 Inspection Result ，來將各個巡檢的時間區間輸入於 cmbInspectionResultIntervals 內，
+		// 然後透過選擇 cmbInspectionResultIntervals 的項目來快速設定 Time1 與 Time2 。
+
+		/// <summary>
+		/// Inspection Result 資料夾路徑，台積巡檢機專案專用
+		/// </summary>
+		private string inspectionResultDirPath = "";
+
+		/// <summary>
+		/// 讀取設定，台積巡檢機專案專用
+		/// </summary>
+		/// <param name="filePath"></param>
+		private void readSettings_TSMC(string filePath)
+		{
+			if (!File.Exists(filePath)) return;
+
+			string inspectionResultDirectory = IniFiles.INI.Read(filePath, "TSMC", "InspectionResultDirectory", "");
+			if (inspectionResultDirectory != null) txtInspectionResultDirectory.InvokeIfNecessary(() => { txtInspectionResultDirectory.Text = inspectionResultDirectory; });
+		}
+
+		/// <summary>
+		/// 儲存設定，台積巡檢機專案專用
+		/// </summary>
+		private void writeSettings_TSMC(string filePath)
+		{
+			string inspectionResultDirectory = "";
+			txtInspectionResultDirectory.InvokeIfNecessary(() => { inspectionResultDirectory = txtInspectionResultDirectory.Text; });
+			if (inspectionResultDirectory != "") IniFiles.INI.Write(filePath, "TSMC", "InspectionResultDirectory", inspectionResultDirectory);
+		}
+
+		/// <summary>
+		/// 讀取 Inspection Result 資料並更新 ComboBox ，台積巡檢機專案專用
+		/// </summary>
+		private bool loadInspectionResultDirectory(string path)
+		{
+			bool result = false;
+			if (Directory.Exists(path))
+			{
+				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
+				if (baseDirInfo.Name.Contains("CIMLog"))
+				{
+					inspectionResultDirPath = path;
+					DateTime nonsense;
+					IEnumerable<DirectoryInfo> dirInfos = baseDirInfo.GetDirectories().Where(info => info.Name.Length == 8 && DateTime.TryParseExact(info.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
+					if (dirInfos.Count() > 0)
+					{
+						List<string> intervals = new List<string>();
+						foreach (DirectoryInfo dirInfo in dirInfos)
+						{
+							string filePath = dirInfo.FullName + "\\InspectionResult.log";
+							string[] tmpData = File.ReadAllLines(filePath);
+							DateTime tmpTime = DateTime.ParseExact(dirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture);
+							for (int i = 0; i < tmpData.Count(); ++i)
+							{
+								string tt = tmpTime.ToString("yyyyMMdd");
+								bool ttt = tmpData[i].Contains("[InspectionResult]");
+								if (tmpData[i].StartsWith(tmpTime.ToString("yyyy/MM/dd")) && tmpData[i].Contains("[InspectionResult]"))
+								{
+									DateTime inspectionStartTime = DateTime.ParseExact(tmpData[i + 1].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
+									DateTime inspectionEndTime = DateTime.ParseExact(tmpData[i + 2].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
+									intervals.Add(inspectionStartTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + inspectionEndTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + tmpData[i + 3] + " - " + tmpData[i + 4]);
+								}
+							}
+						}
+						if (intervals.Count > 0)
+						{
+							cmbInspectionResultIntervals.InvokeIfNecessary(() =>
+							{
+								cmbInspectionResultIntervals.Items.Clear();
+								cmbInspectionResultIntervals.Items.AddRange(intervals.ToArray());
+							});
+							result = true;
+						}
+					}
+				}
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 載入 Inspection Result 資料夾，台積巡檢機專案專用
+		/// </summary>
+		private void btnBrowseInsepctionResultDirectory_Click(object sender, EventArgs e)
+		{
+			string inspectionResultDir = "";
+			if (txtInspectionResultDirectory.Text != "" && Directory.Exists(txtInspectionResultDirectory.Text))
+				inspectionResultDir = getDirectoryPath(txtInspectionResultDirectory.Text);
+			else
+				inspectionResultDir = getDirectoryPath();
+			if (inspectionResultDir != "")
+			{
+				if (loadInspectionResultDirectory(inspectionResultDir))
+				{
+					txtInspectionResultDirectory.Text = inspectionResultDir;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 根據 ComboBox 選擇的項目來切換日期的 ComboBox ，台積巡檢機專案專用
+		/// </summary>
+		private void cmbInspectionResultIntervals_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			string content = cmbInspectionResultIntervals.SelectedItem.ToString();
+			string[] tmp = content.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
+			if (tmp.Count() >= 2)
+			{
+				DateTime time1 = DateTime.ParseExact(tmp[0], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
+				DateTime time2 = DateTime.ParseExact(tmp[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
+				setDateComboBoxSelectItem("1", time1);
+				setDateComboBoxSelectItem("2", time2);
+			}
 		}
 
 		#endregion
