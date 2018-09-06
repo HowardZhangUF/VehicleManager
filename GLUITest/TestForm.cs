@@ -301,33 +301,6 @@ namespace GLUITest
             MessageBox.Show($"這裡向 iM 發送命令:\r\n{e.Command}");
 		}
 
-		private bool _isMarking = false;
-
-		/// <summary>
-		/// 是否正在啟用取得地圖 X, Y, Angle 功能
-		/// </summary>
-		private bool isMarking
-		{
-			get
-			{
-				return _isMarking;
-			}
-			set
-			{
-				_isMarking = value;
-				//if (_isMarking) button1.InvokeIfNecessary(() => { button1.BackColor = System.Drawing.Color.Yellow; });
-				//else button1.InvokeIfNecessary(() => { button1.BackColor = System.Drawing.Color.Transparent; });
-			}
-		}
-
-		/// <summary>
-		/// 藉由點擊介面控制項來啟用/停用取得地圖 X, Y, Angle 功能
-		/// </summary>
-		private void button1_Click(object sender, EventArgs e)
-		{
-			isMarking = !isMarking;
-		}
-
 		/// <summary>
 		/// 對地圖使用右鍵選單的移動時會觸發此方法
 		/// </summary>
