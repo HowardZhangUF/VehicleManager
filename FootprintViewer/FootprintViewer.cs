@@ -240,7 +240,12 @@ namespace FootprintViewer
 					string[] lines = File.ReadAllLines(filePath);
 					foreach (string line in lines)
 					{
-						footprints.addRange(Footprint.Analyze(line));
+						List<Footprint> data = Footprint.Analyze(line);
+						foreach (Footprint fp in data)
+						{
+							if (dateStart < fp.time && dateEnd > fp.time)
+								footprints.add(fp);
+						}
 					}
 				}
 			}
@@ -252,6 +257,7 @@ namespace FootprintViewer
 		private void writeFootprintToMap()
 		{
 			string[] robotList = footprints.getRobotList();
+			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { o.Clear(); });
 			foreach (string robotID in robotList)
 			{
 				List<Footprint> tmpFps = footprints.getFootprintsOf(robotID);
@@ -260,7 +266,7 @@ namespace FootprintViewer
 				{
 					points.Add(new Pair(fp.position.Position.X, fp.position.Position.Y));
 				}
-				GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => o.AddRangeIfNotNull(points));
+				GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { o.AddRangeIfNotNull(points); });
 			}
 		}
 
