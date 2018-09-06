@@ -50,8 +50,9 @@ namespace GLUITest
 			// 開啟地圖控制功能
 			GLUI.SetControlMode(true);
 
-			// Map Objects 分頁隱藏
-			tabControl1.TabPages.Remove(tabPage2);
+			// 程式開始時執行一次登出動作，確保將有權限的控制項停用
+			ActionBeforeLogOut();
+			LogOut();
 
             // 加入範例 / 測試
             //CMDDemo();
@@ -261,28 +262,7 @@ namespace GLUITest
 			{
 				if (isLogIn)
 				{
-					switch (logLevel)
-					{
-						case 0:
-							if (tabControl1.TabPages.Contains(tabPage2))
-								tabControl1.TabPages.Remove(tabPage2);
-							btnUploadMapToAGV.Enabled = false;
-							btnChangeMap.Enabled = false;
-							Log.LoginLog.Add($"CASTEC Log Out!");
-							break;
-						case 1:
-							Log.LoginLog.Add($"TSMC Log Out!");
-							break;
-						case -1:
-							Log.LoginLog.Add($"{logLevel} Log Out!");
-							break;
-						default:
-							Log.LoginLog.Add($"{logLevel} Log Out!");
-							break;
-					}
-					toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = "Log In";
-					toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
-					Log.LoginLog.Add($"{logLevel} Log Out!");
+					ActionBeforeLogOut();
 					LogOut();
 				}
 				// 若未登入
@@ -293,27 +273,7 @@ namespace GLUITest
 						// 登入成功
 						if (LogIn(password))
 						{
-							switch (logLevel)
-							{
-								case 0:
-									if (!tabControl1.TabPages.Contains(tabPage2))
-										tabControl1.TabPages.Add(tabPage2);
-									btnUploadMapToAGV.Enabled = true;
-									btnChangeMap.Enabled = true;
-									Log.LoginLog.Add($"CASTEC Log In!");
-									break;
-								case 1:
-									Log.LoginLog.Add($"TSMC Log In!");
-									break;
-								case -1:
-									Log.LoginLog.Add($"{logLevel} Log In!");
-									break;
-								default:
-									Log.LoginLog.Add($"{logLevel} Log In!");
-									break;
-							}
-							toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
-							toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Yellow;
+							ActionAfterLogIn();
 						}
 						else
 						{
@@ -677,6 +637,7 @@ namespace GLUITest
 			form.Text = caption;
 			lblText.Text = text;
 			lblText.AutoSize = true;
+			txtResult.BackColor = System.Drawing.Color.Khaki;
 			btnOk.Text = "OK";
 			btnOk.DialogResult = DialogResult.OK;
 			btnCancel.Text = "Cancel";
@@ -1369,7 +1330,7 @@ namespace GLUITest
 		#region 權限控制
 
 		/// <summary>
-		/// 是否登入
+		/// 是否登入中
 		/// </summary>
 		private bool isLogIn = false;
 
@@ -1383,7 +1344,23 @@ namespace GLUITest
 		/// </summary>
 		private string currentUser = "";
 
+		/// <summary>
+		/// 執行登入
+		/// </summary>
 		private bool LogIn(string password)
+		{
+			bool result = false;
+			if (CheckPassword(password))
+			{
+				result = true;
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 確認密碼是否正確
+		/// </summary>
+		private bool CheckPassword(string password)
 		{
 			bool result = false;
 			if (!isLogIn)
@@ -1406,11 +1383,70 @@ namespace GLUITest
 			return result;
 		}
 
+		/// <summary>
+		/// 執行登出
+		/// </summary>
 		private void LogOut()
 		{
 			currentUser = "";
 			logLevel = -1;
 			isLogIn = false;
+		}
+
+		/// <summary>
+		/// 登入成功後要做的動作，依據不同的權限進行不同的動作
+		/// </summary>
+		private void ActionAfterLogIn()
+		{
+			switch (logLevel)
+			{
+				case 0:
+					if (!tabControl1.TabPages.Contains(tabPage2))
+						tabControl1.TabPages.Add(tabPage2);
+					btnUploadMapToAGV.Enabled = true;
+					btnChangeMap.Enabled = true;
+					Log.LoginLog.Add($"CASTEC Log In!");
+					break;
+				case 1:
+					Log.LoginLog.Add($"TSMC Log In!");
+					break;
+				case -1:
+					Log.LoginLog.Add($"{logLevel} Log In!");
+					break;
+				default:
+					Log.LoginLog.Add($"{logLevel} Log In!");
+					break;
+			}
+			toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = $"{currentUser} - Log Out";
+			toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Yellow;
+		}
+
+		/// <summary>
+		/// 登出前要做的動作，依據不同的權限進行不同的動作
+		/// </summary>
+		private void ActionBeforeLogOut()
+		{
+			switch (logLevel)
+			{
+				case 0:
+					if (tabControl1.TabPages.Contains(tabPage2))
+						tabControl1.TabPages.Remove(tabPage2);
+					btnUploadMapToAGV.Enabled = false;
+					btnChangeMap.Enabled = false;
+					Log.LoginLog.Add($"CASTEC Log Out!");
+					break;
+				case 1:
+					Log.LoginLog.Add($"TSMC Log Out!");
+					break;
+				case -1:
+					Log.LoginLog.Add($"{logLevel} Log Out!");
+					break;
+				default:
+					Log.LoginLog.Add($"{logLevel} Log Out!");
+					break;
+			}
+			toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = "Log In";
+			toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
 		}
 
 		#endregion
