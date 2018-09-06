@@ -53,13 +53,13 @@
 			this.label11 = new System.Windows.Forms.Label();
 			this.txtFootprintDirectory = new System.Windows.Forms.TextBox();
 			this.btnBrowseFootprintDirectory = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
+			this.btnBrowseInsepctionResultDirectory = new System.Windows.Forms.Button();
 			this.txtInspectionResultDirectory = new System.Windows.Forms.TextBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.btnBrowseMapPath = new System.Windows.Forms.Button();
 			this.txtMapPath = new System.Windows.Forms.TextBox();
 			this.label13 = new System.Windows.Forms.Label();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.cmbInspectionResultIntervals = new System.Windows.Forms.ComboBox();
 			this.btnSetTimeInterval = new System.Windows.Forms.Button();
 			this.btnSaveSettings = new System.Windows.Forms.Button();
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
@@ -289,14 +289,15 @@
 			this.btnBrowseFootprintDirectory.UseVisualStyleBackColor = true;
 			this.btnBrowseFootprintDirectory.Click += new System.EventHandler(this.btnBrowseFootprintDirectory_Click);
 			// 
-			// button1
+			// btnBrowseInsepctionResultDirectory
 			// 
-			this.button1.Location = new System.Drawing.Point(820, 564);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 30);
-			this.button1.TabIndex = 44;
-			this.button1.Text = "...";
-			this.button1.UseVisualStyleBackColor = true;
+			this.btnBrowseInsepctionResultDirectory.Location = new System.Drawing.Point(820, 564);
+			this.btnBrowseInsepctionResultDirectory.Name = "btnBrowseInsepctionResultDirectory";
+			this.btnBrowseInsepctionResultDirectory.Size = new System.Drawing.Size(75, 30);
+			this.btnBrowseInsepctionResultDirectory.TabIndex = 44;
+			this.btnBrowseInsepctionResultDirectory.Text = "...";
+			this.btnBrowseInsepctionResultDirectory.UseVisualStyleBackColor = true;
+			this.btnBrowseInsepctionResultDirectory.Click += new System.EventHandler(this.btnBrowseInsepctionResultDirectory_Click);
 			// 
 			// txtInspectionResultDirectory
 			// 
@@ -340,14 +341,15 @@
 			this.label13.TabIndex = 45;
 			this.label13.Text = "Map Path:";
 			// 
-			// comboBox1
+			// cmbInspectionResultIntervals
 			// 
-			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(93, 609);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(802, 23);
-			this.comboBox1.TabIndex = 48;
+			this.cmbInspectionResultIntervals.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbInspectionResultIntervals.FormattingEnabled = true;
+			this.cmbInspectionResultIntervals.Location = new System.Drawing.Point(93, 609);
+			this.cmbInspectionResultIntervals.Name = "cmbInspectionResultIntervals";
+			this.cmbInspectionResultIntervals.Size = new System.Drawing.Size(802, 23);
+			this.cmbInspectionResultIntervals.TabIndex = 48;
+			this.cmbInspectionResultIntervals.SelectedIndexChanged += new System.EventHandler(this.cmbInspectionResultIntervals_SelectedIndexChanged);
 			// 
 			// btnSetTimeInterval
 			// 
@@ -389,11 +391,11 @@
 			this.Controls.Add(this.btnSaveSettings);
 			this.Controls.Add(this.gluiCtrl1);
 			this.Controls.Add(this.btnSetTimeInterval);
-			this.Controls.Add(this.comboBox1);
+			this.Controls.Add(this.cmbInspectionResultIntervals);
 			this.Controls.Add(this.btnBrowseMapPath);
 			this.Controls.Add(this.txtMapPath);
 			this.Controls.Add(this.label13);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.btnBrowseInsepctionResultDirectory);
 			this.Controls.Add(this.txtInspectionResultDirectory);
 			this.Controls.Add(this.label12);
 			this.Controls.Add(this.btnBrowseFootprintDirectory);
@@ -456,13 +458,13 @@
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.TextBox txtFootprintDirectory;
 		private System.Windows.Forms.Button btnBrowseFootprintDirectory;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button btnBrowseInsepctionResultDirectory;
 		private System.Windows.Forms.TextBox txtInspectionResultDirectory;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.Button btnBrowseMapPath;
 		private System.Windows.Forms.TextBox txtMapPath;
 		private System.Windows.Forms.Label label13;
-		private System.Windows.Forms.ComboBox comboBox1;
+		private System.Windows.Forms.ComboBox cmbInspectionResultIntervals;
 		private System.Windows.Forms.Button btnSetTimeInterval;
 		private GLUI.GLUICtrl gluiCtrl1;
 		private System.Windows.Forms.Button btnSaveSettings;
