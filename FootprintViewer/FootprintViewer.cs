@@ -53,6 +53,12 @@ namespace FootprintViewer
 			{
 				loadFootprintDirectory(txtFootprintDirectory.Text);
 			}
+
+			// 讀取 Inspection Result 資料
+			if (txtInspectionResultDirectory.Text != "")
+			{
+				loadInspectionResultDirectory(txtInspectionResultDirectory.Text);
+			}
 		}
 
 		private void FootprintViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -189,7 +195,7 @@ namespace FootprintViewer
 								{
 									DateTime inspectionStartTime = DateTime.ParseExact(tmpData[i + 1].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
 									DateTime inspectionEndTime = DateTime.ParseExact(tmpData[i + 2].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-									intervals.Add(inspectionStartTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + inspectionEndTime.ToString("yyyy/MM/dd HH:mm:ss"));
+									intervals.Add(inspectionStartTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + inspectionEndTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + tmpData[i + 3] + " - " + tmpData[i + 4]);
 								}
 							}
 						}
@@ -433,7 +439,7 @@ namespace FootprintViewer
 		{
 			string content = cmbInspectionResultIntervals.SelectedItem.ToString();
 			string[] tmp = content.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
-			if (tmp.Count() == 2)
+			if (tmp.Count() >= 2)
 			{
 				DateTime time1 = DateTime.ParseExact(tmp[0], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
 				DateTime time2 = DateTime.ParseExact(tmp[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
