@@ -62,7 +62,7 @@ namespace FootprintViewer
 		/// <summary>
 		/// Footprint 資料
 		/// </summary>
-		private List<Footprint> footprints = new List<Footprint>();
+		private Footprints footprints = new Footprints();
 
 		/// <summary>
 		/// Footprint 圖像識別碼
@@ -157,7 +157,7 @@ namespace FootprintViewer
 			}
 
 			// 從檔案讀取資料
-			footprints.Clear();
+			footprints.clear();
 			foreach (string filePath in filePaths)
 			{
 				if (File.Exists(filePath))
@@ -165,7 +165,7 @@ namespace FootprintViewer
 					string[] lines = File.ReadAllLines(filePath);
 					foreach (string line in lines)
 					{
-						footprints.AddRange(Footprint.Analyze(line));
+						footprints.addRange(Footprint.Analyze(line));
 					}
 				}
 			}
@@ -176,12 +176,17 @@ namespace FootprintViewer
 		/// </summary>
 		private void writeFootprintToMap()
 		{
-			List<IPair> points = new List<IPair>();
-			foreach (Footprint fp in footprints)
+			string[] robotList = footprints.getRobotList();
+			foreach (string robotID in robotList)
 			{
-				points.Add(new Pair(fp.position.Position.X, fp.position.Position.Y));
+				List<Footprint> tmpFps = footprints.getFootprintsOf(robotID);
+				List<IPair> points = new List<IPair>();
+				foreach (Footprint fp in tmpFps)
+				{
+					points.Add(new Pair(fp.position.Position.X, fp.position.Position.Y));
+				}
+				GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => o.AddRangeIfNotNull(points));
 			}
-			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => o.AddRangeIfNotNull(points));
 		}
 
 		#endregion
@@ -442,6 +447,92 @@ namespace FootprintViewer
 				}
 			}
 			return fps;
+		}
+	}
+
+	public class Footprints
+	{
+		/// <summary>
+		/// 最後更新時間
+		/// </summary>
+		public DateTime lastUpdateTime = DateTime.Now;
+
+		/// <summary>
+		/// 所有機器人的 Footprint 儲存區
+		/// </summary>
+		private Dictionary<string, List<Footprint>> footprints = new Dictionary<string, List<Footprint>>();
+
+		/// <summary>
+		/// 執行緒鎖
+		/// </summary>
+		private readonly object o = new object();
+
+		/// <summary>
+		/// 加入 Footprint
+		/// </summary>
+		public void add(Footprint fp)
+		{
+			lock (o)
+			{
+				if (footprints.Keys.Contains(fp.robotID))
+				{
+					footprints[fp.robotID].Add(fp);
+				}
+				else
+				{
+					footprints.Add(fp.robotID, new List<Footprint> { fp });
+				}
+			}
+			lastUpdateTime = DateTime.Now;
+		}
+
+		/// <summary>
+		/// 加入 Footprint 集合
+		/// </summary>
+		public void addRange(List<Footprint> fps)
+		{
+			foreach (Footprint fp in fps)
+			{
+				add(fp);
+			}
+		}
+
+		/// <summary>
+		/// 目前儲存的 Footprint 的機器人清單
+		/// </summary>
+		public string[] getRobotList()
+		{
+			return footprints.Keys.ToArray();
+		}
+
+		/// <summary>
+		///  取得特定機器人的 Footprint 清單
+		/// </summary>
+		public List<Footprint> getFootprintsOf(string robotID)
+		{
+			lock (o)
+			{
+				if (footprints.Keys.Contains(robotID))
+				{
+					return footprints[robotID];
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 清除所有資料
+		/// </summary>
+		public void clear()
+		{
+			lock (o)
+			{
+				footprints.Clear();
+			}
+			lastUpdateTime = DateTime.Now;
 		}
 	}
 }
