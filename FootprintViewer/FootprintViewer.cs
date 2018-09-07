@@ -37,11 +37,11 @@ namespace FootprintViewer
 			gluiCtrl1.SetControlMode(false);
 
 			// 讀取介面設定
-			readSettings(SETTINGS_FILE);
-			readSettings_TSMC(SETTINGS_FILE);
+			readSettings(mSETTINGS_FILE);
+			readSettings_TSMC(mSETTINGS_FILE);
 
 			// 註冊 Footprint 圖像識別碼
-			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
+			mFootprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
 
 			// 讀取地圖資料
 			if (txtMapPath.Text != "" && txtMapPath.Text.EndsWith(".map"))
@@ -69,57 +69,57 @@ namespace FootprintViewer
 
 		#region 商業邏輯
 
-		private const string SETTINGS_FILE = "FootprintViewer Settings.ini";
+		private const string mSETTINGS_FILE = "FootprintViewer Settings.ini";
 
 		/// <summary>
 		/// Footprint 資料夾關鍵字
 		/// </summary>
-		private const string FOOTPRINT_DIRECTORY_KEYWORD = "VMLog";
+		private const string mFOOTPRINT_DIRECTORY_KEYWORD = "VMLog";
 
 		/// <summary>
 		/// Footprint 檔案關鍵字
 		/// </summary>
-		private const string FOOTPRINT_FILE_KEYWORD = "Footprint.txt";
+		private const string mFOOTPRINT_FILE_KEYWORD = "Footprint.txt";
 
 		/// <summary>
 		/// Footprint 資料
 		/// </summary>
-		private Footprints footprints = new Footprints();
+		private Footprints mFootprints = new Footprints();
 
 		/// <summary>
 		/// Footprint 圖像識別碼
 		/// </summary>
-		private int footprintIconID;
+		private int mFootprintIconID;
 
 		/// <summary>
 		/// 地圖檔路徑
 		/// </summary>
-		private string mapFilePath = "";
+		private string mMapFilePath = "";
 
 		/// <summary>
 		/// Footprint 資料夾路徑
 		/// </summary>
-		private string footprintDirPath = "";
+		private string mFootprintDirPath = "";
 
 		/// <summary>
 		/// Footprint 資料夾開始日期
 		/// </summary>
-		private DateTime footprintDirDateStart;
+		private DateTime mFootprintDirDateStart;
 
 		/// <summary>
 		/// Footprint 資料夾結束日期
 		/// </summary>
-		private DateTime footprintDirDateEnd;
+		private DateTime mFootprintDirDateEnd;
 
 		/// <summary>
 		/// 使用者要讀取的 Footprint 開始日期
 		/// </summary>
-		private DateTime footprintDateStart;
+		private DateTime mFootprintDateStart;
 
 		/// <summary>
 		/// 使用者要讀取的 Footprint 結束日期
 		/// </summary>
-		private DateTime footprintDateEnd;
+		private DateTime mFootprintDateEnd;
 
 		/// <summary>
 		/// 載入地圖
@@ -138,6 +138,8 @@ namespace FootprintViewer
 		/// <summary>
 		/// 讀取 Footprint 資料夾的時間區間(年)，並更新介面的 ComboBox，重置 RobotID 的清單與地圖
 		/// </summary>
+		/// 若是讀取 \\VMLog ，並計算底下 yyMMdd 的範圍
+		/// 若是讀取 \\VMLog\\yyMMdd ，則使用 yyMMdd 當作範圍
 		private bool loadFootprintDirectory(string path)
 		{
 			bool result = false;
@@ -145,39 +147,38 @@ namespace FootprintViewer
 			{
 				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
 				// 若是選取 \\VMLog
-				if (baseDirInfo.Name.Contains(FOOTPRINT_DIRECTORY_KEYWORD))
+				if (baseDirInfo.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD))
 				{
-					footprintDirPath = path;
+					mFootprintDirPath = path;
 					DateTime nonsense;
 					IEnumerable<DirectoryInfo> dirInfos = baseDirInfo.GetDirectories().Where(info => info.Name.Length == 6 && DateTime.TryParseExact(info.Name, "yyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
 					if (dirInfos.Count() > 0)
 					{
-						footprintDirDateStart = DateTime.ParseExact(dirInfos.First().Name, "yyMMdd", CultureInfo.InvariantCulture);
-						footprintDirDateEnd = DateTime.ParseExact(dirInfos.Last().Name, "yyMMdd", CultureInfo.InvariantCulture);
-						initializeDateComboBoxes(footprintDirDateStart, footprintDirDateEnd);
+						mFootprintDirDateStart = DateTime.ParseExact(dirInfos.First().Name, "yyMMdd", CultureInfo.InvariantCulture);
+						mFootprintDirDateEnd = DateTime.ParseExact(dirInfos.Last().Name, "yyMMdd", CultureInfo.InvariantCulture);
+						initializeDateComboBoxes(mFootprintDirDateStart, mFootprintDirDateEnd);
 						result = true;
 					}
 				}
 				// 若是選取 \\VMLog\\yyMMdd
-				else if (baseDirInfo.Parent.Name.Contains(FOOTPRINT_DIRECTORY_KEYWORD) && baseDirInfo.Name.Length == 6)
+				else if (baseDirInfo.Parent.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD) && baseDirInfo.Name.Length == 6)
 				{
 					DateTime time;
 					if (DateTime.TryParseExact(baseDirInfo.Name, "yyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
 					{
-						footprintDirPath = path;
-						footprintDirDateStart = time.Date;
-						footprintDirDateEnd = time.Date;
-						initializeDateComboBoxes(footprintDirDateStart, footprintDirDateEnd);
+						mFootprintDirPath = path;
+						mFootprintDirDateStart = time.Date;
+						mFootprintDirDateEnd = time.Date;
+						initializeDateComboBoxes(mFootprintDirDateStart, mFootprintDirDateEnd);
 						result = true;
 					}
-
 				}
 
 				// RobotID 清單清空
 				if (lbRobotID.Items.Count > 0) lbRobotID.Items.Clear();
 
 				// 地圖 Footprint 清空
-				GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { if (o.Count() > 0) o.Clear(); });
+				GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mFootprintIconID, true, o => { if (o.Count() > 0) o.Clear(); });
 			}
 			return result;
 		}
@@ -195,24 +196,23 @@ namespace FootprintViewer
 			List<string> filePaths = new List<string>();
 
 			// 若是選取 \\VMLog
-			if (footprintDirPath.EndsWith(FOOTPRINT_DIRECTORY_KEYWORD))
+			if (mFootprintDirPath.EndsWith(mFOOTPRINT_DIRECTORY_KEYWORD))
 			{
 				for (int i = 0; i < days; ++i)
 				{
-					string tmp = footprintDirPath + "\\" + dateStart.AddDays(i).ToString("yyMMdd") + "\\" + FOOTPRINT_FILE_KEYWORD;
-					filePaths.Add(tmp);
+					string tmp = mFootprintDirPath + "\\" + dateStart.AddDays(i).ToString("yyMMdd") + "\\" + mFOOTPRINT_FILE_KEYWORD;
+					if (File.Exists(tmp)) filePaths.Add(tmp);
 				}
 			}
 			// 若是選取 \\VMLog\\yyMMdd
 			else
 			{
-				string tmp = footprintDirPath + "\\" + FOOTPRINT_FILE_KEYWORD;
-				filePaths.Add(tmp);
+				string tmp = mFootprintDirPath + "\\" + mFOOTPRINT_FILE_KEYWORD;
+				if (File.Exists(tmp)) filePaths.Add(tmp);
 			}
 
-
-			// 從檔案讀取資料
-			footprints.clear();
+			// 從檔案讀取 Footprint 資料
+			mFootprints.clear();
 			foreach (string filePath in filePaths)
 			{
 				if (File.Exists(filePath))
@@ -223,8 +223,8 @@ namespace FootprintViewer
 						List<Footprint> data = Footprint.Analyze(line);
 						foreach (Footprint fp in data)
 						{
-							if (dateStart < fp.time && dateEnd > fp.time)
-								footprints.add(fp);
+							if (dateStart < fp.mTime && dateEnd > fp.mTime)
+								mFootprints.add(fp);
 						}
 					}
 				}
@@ -232,23 +232,23 @@ namespace FootprintViewer
 		}
 
 		/// <summary>
-		/// 將 Footprint 繪製至 gluiCtrl1 上
+		/// 從 Footprints 中擷取指定 Footprint 並繪製至 gluiCtrl1 上
 		/// </summary>
 		private void writeFootprintToMap(string robotID = "")
 		{
-			string[] robotList = footprints.getRobotList();
-			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { o.Clear(); });
+			string[] robotList = mFootprints.getRobotList();
+			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mFootprintIconID, true, o => { o.Clear(); });
 			foreach (string tmpRobotID in robotList)
 			{
 				if (robotID == "" || tmpRobotID == robotID)
 				{
-					List<Footprint> tmpFps = footprints.getFootprintsOf(tmpRobotID);
+					List<Footprint> tmpFps = mFootprints.getFootprintsOf(tmpRobotID);
 					List<IPair> points = new List<IPair>();
 					foreach (Footprint fp in tmpFps)
 					{
-						points.Add(new Pair(fp.position.Position.X, fp.position.Position.Y));
+						points.Add(new Pair(fp.mPosition.Position.X, fp.mPosition.Position.Y));
 					}
-					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { o.AddRangeIfNotNull(points); });
+					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mFootprintIconID, true, o => { o.AddRangeIfNotNull(points); });
 				}
 			}
 		}
@@ -374,21 +374,21 @@ namespace FootprintViewer
 			{
 				if (dateTime1 > dateTime2)
 				{
-					footprintDateStart = dateTime2;
-					footprintDateEnd = dateTime1;
+					mFootprintDateStart = dateTime2;
+					mFootprintDateEnd = dateTime1;
 				}
 				else
 				{
-					footprintDateStart = dateTime1;
-					footprintDateEnd = dateTime2;
+					mFootprintDateStart = dateTime1;
+					mFootprintDateEnd = dateTime2;
 				}
 				// 讀取 Footprint 資料
-				loadFootprintData(footprintDateStart, footprintDateEnd);
+				loadFootprintData(mFootprintDateStart, mFootprintDateEnd);
 				//writeFootprintToMap();
 
 				lbRobotID.Items.Clear();
 				lbRobotID.Items.Add("All");
-				lbRobotID.Items.AddRange(footprints.getRobotList());
+				lbRobotID.Items.AddRange(mFootprints.getRobotList());
 				lbRobotID.SelectedIndex = 0;
 			}
 		}
@@ -398,8 +398,8 @@ namespace FootprintViewer
 		/// </summary>
 		private void btnSaveSettings_Click(object sender, EventArgs e)
 		{
-			writeSettings(SETTINGS_FILE);
-			writeSettings_TSMC(SETTINGS_FILE);
+			writeSettings(mSETTINGS_FILE);
+			writeSettings_TSMC(mSETTINGS_FILE);
 		}
 
 		/// <summary>
@@ -436,7 +436,7 @@ namespace FootprintViewer
 			{
 				writeFootprintToMap("");
 			}
-			else if (footprints.getRobotList().Contains(robotID))
+			else if (mFootprints.getRobotList().Contains(robotID))
 			{
 				writeFootprintToMap(robotID);
 			}
@@ -574,8 +574,8 @@ namespace FootprintViewer
 			resetDateComboBoxItem("1", obj1.ToArray(), obj2, obj3, obj4, obj5, obj5);
 			resetDateComboBoxItem("2", obj1.ToArray(), obj2, obj3, obj4, obj5, obj5);
 			
-			setDateComboBoxSelectItem("1", footprintDirDateStart);
-			setDateComboBoxSelectItem("2", footprintDirDateEnd.AddDays(1).AddSeconds(-1));
+			setDateComboBoxSelectItem("1", mFootprintDirDateStart);
+			setDateComboBoxSelectItem("2", mFootprintDirDateEnd.AddDays(1).AddSeconds(-1));
 		}
 
 		#endregion
@@ -589,11 +589,11 @@ namespace FootprintViewer
 		{
 			txtMapPath.InvokeIfNecessary(() => 
 			{
-				mapFilePath = txtMapPath.Text = e.MapPath;
+				mMapFilePath = txtMapPath.Text = e.MapPath;
 			});
 
 			// 重新註冊 Footprint 圖像識別碼
-			footprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
+			mFootprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
 		}
 
 		#endregion
@@ -606,17 +606,17 @@ namespace FootprintViewer
 		/// <summary>
 		/// Inspection Result 資料夾關鍵字
 		/// </summary>
-		private const string INSPECTION_RESULT_DIRECTORY_KEYWORD = "CIMLog";
+		private const string mINSPECTION_RESULT_DIRECTORY_KEYWORD = "CIMLog";
 
 		/// <summary>
 		/// Inspection Result 檔案關鍵字
 		/// </summary>
-		private const string INSPECTION_RESULT_FILE_KEYWORD = "InspectionResult.log";
+		private const string mINSPECTION_RESULT_FILE_KEYWORD = "InspectionResult.log";
 
 		/// <summary>
 		/// Inspection Result 資料夾路徑，台積巡檢機專案專用
 		/// </summary>
-		private string inspectionResultDirPath = "";
+		private string mInspectionResultDirPath = "";
 
 		/// <summary>
 		/// 讀取設定，台積巡檢機專案專用
@@ -651,9 +651,9 @@ namespace FootprintViewer
 				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
 				List<string> intervals = new List<string>();
 				// 若是選取 \\CIMLog
-				if (baseDirInfo.Name.Contains(INSPECTION_RESULT_DIRECTORY_KEYWORD))
+				if (baseDirInfo.Name.Contains(mINSPECTION_RESULT_DIRECTORY_KEYWORD))
 				{
-					inspectionResultDirPath = path;
+					mInspectionResultDirPath = path;
 					DateTime nonsense;
 					IEnumerable<DirectoryInfo> dirInfos = baseDirInfo.GetDirectories().Where(info => info.Name.Length == 8 && DateTime.TryParseExact(info.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
 					if (dirInfos.Count() > 0)
@@ -661,18 +661,18 @@ namespace FootprintViewer
 						foreach (DirectoryInfo dirInfo in dirInfos)
 						{
 							// 分析 InspectionResult.log
-							string filePath = dirInfo.FullName + "\\" + INSPECTION_RESULT_FILE_KEYWORD;
+							string filePath = dirInfo.FullName + "\\" + mINSPECTION_RESULT_FILE_KEYWORD;
 							intervals.AddRange(analyzeInspectionResultFile(filePath));
 						}
 					}
 				}
 				// 若是選取 \\CIMLog\\yyyyMMdd
-				else if (baseDirInfo.Parent.Name.Contains(INSPECTION_RESULT_DIRECTORY_KEYWORD) && baseDirInfo.Name.Length == 8)
+				else if (baseDirInfo.Parent.Name.Contains(mINSPECTION_RESULT_DIRECTORY_KEYWORD) && baseDirInfo.Name.Length == 8)
 				{
 					DateTime nonsense;
 					if (DateTime.TryParseExact(baseDirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense))
 					{
-						intervals = analyzeInspectionResultFile(baseDirInfo.FullName + "\\" + INSPECTION_RESULT_FILE_KEYWORD);
+						intervals = analyzeInspectionResultFile(baseDirInfo.FullName + "\\" + mINSPECTION_RESULT_FILE_KEYWORD);
 					}
 				}
 
@@ -695,7 +695,7 @@ namespace FootprintViewer
 		private List<string> analyzeInspectionResultFile(string filePath)
 		{
 			List<string> result = new List<string>();
-			if (File.Exists(filePath) && filePath.EndsWith(INSPECTION_RESULT_FILE_KEYWORD))
+			if (File.Exists(filePath) && filePath.EndsWith(mINSPECTION_RESULT_FILE_KEYWORD))
 			{
 				string[] tmpData = File.ReadAllLines(filePath);
 				DirectoryInfo tmpDirInfo = new DirectoryInfo(Path.GetDirectoryName(filePath));
@@ -759,23 +759,23 @@ namespace FootprintViewer
 		/// <summary>
 		/// Footprint 時間點
 		/// </summary>
-		public DateTime time;
+		public DateTime mTime;
 
 		/// <summary>
 		/// Footprint 機器人 ID
 		/// </summary>
-		public string robotID;
+		public string mRobotID;
 
 		/// <summary>
 		/// Footprint 位置
 		/// </summary>
-		public TowardPair position;
+		public TowardPair mPosition;
 
 		public Footprint(DateTime time, string robotID, double x, double y, double toward)
 		{
-			this.time = time;
-			this.robotID = robotID;
-			position = new TowardPair(x, y, toward);
+			this.mTime = time;
+			this.mRobotID = robotID;
+			mPosition = new TowardPair(x, y, toward);
 		}
 
 		public static List<Footprint> Analyze(string src)
@@ -804,35 +804,35 @@ namespace FootprintViewer
 		/// <summary>
 		/// 最後更新時間
 		/// </summary>
-		public DateTime lastUpdateTime = DateTime.Now;
+		public DateTime mLastUpdateTime = DateTime.Now;
 
 		/// <summary>
 		/// 所有機器人的 Footprint 儲存區
 		/// </summary>
-		private Dictionary<string, List<Footprint>> footprints = new Dictionary<string, List<Footprint>>();
+		private Dictionary<string, List<Footprint>> mFootprints = new Dictionary<string, List<Footprint>>();
 
 		/// <summary>
 		/// 執行緒鎖
 		/// </summary>
-		private readonly object o = new object();
+		private readonly object mO = new object();
 
 		/// <summary>
 		/// 加入 Footprint
 		/// </summary>
 		public void add(Footprint fp)
 		{
-			lock (o)
+			lock (mO)
 			{
-				if (footprints.Keys.Contains(fp.robotID))
+				if (mFootprints.Keys.Contains(fp.mRobotID))
 				{
-					footprints[fp.robotID].Add(fp);
+					mFootprints[fp.mRobotID].Add(fp);
 				}
 				else
 				{
-					footprints.Add(fp.robotID, new List<Footprint> { fp });
+					mFootprints.Add(fp.mRobotID, new List<Footprint> { fp });
 				}
 			}
-			lastUpdateTime = DateTime.Now;
+			mLastUpdateTime = DateTime.Now;
 		}
 
 		/// <summary>
@@ -851,7 +851,7 @@ namespace FootprintViewer
 		/// </summary>
 		public string[] getRobotList()
 		{
-			return footprints.Keys.ToArray();
+			return mFootprints.Keys.ToArray();
 		}
 
 		/// <summary>
@@ -859,11 +859,11 @@ namespace FootprintViewer
 		/// </summary>
 		public List<Footprint> getFootprintsOf(string robotID)
 		{
-			lock (o)
+			lock (mO)
 			{
-				if (footprints.Keys.Contains(robotID))
+				if (mFootprints.Keys.Contains(robotID))
 				{
-					return footprints[robotID];
+					return mFootprints[robotID];
 				}
 				else
 				{
@@ -877,11 +877,11 @@ namespace FootprintViewer
 		/// </summary>
 		public void clear()
 		{
-			lock (o)
+			lock (mO)
 			{
-				footprints.Clear();
+				mFootprints.Clear();
 			}
-			lastUpdateTime = DateTime.Now;
+			mLastUpdateTime = DateTime.Now;
 		}
 	}
 }
