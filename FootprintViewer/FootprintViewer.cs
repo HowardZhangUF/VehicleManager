@@ -384,12 +384,18 @@ namespace FootprintViewer
 				}
 				// 讀取 Footprint 資料
 				loadFootprintData(mFootprintDateStart, mFootprintDateEnd);
-				//writeFootprintToMap();
 
-				lbRobotID.Items.Clear();
-				lbRobotID.Items.Add("All");
-				lbRobotID.Items.AddRange(mFootprints.getRobotList());
-				lbRobotID.SelectedIndex = 0;
+				if (mFootprints.getRobotList().Count() == 0)
+				{
+					MessageBox.Show("No Data", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
+				else
+				{
+					lbRobotID.Items.Clear();
+					lbRobotID.Items.Add("All");
+					lbRobotID.Items.AddRange(mFootprints.getRobotList());
+					lbRobotID.SelectedIndex = 0;
+				}
 			}
 		}
 
