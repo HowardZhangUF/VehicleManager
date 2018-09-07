@@ -648,40 +648,49 @@ namespace FootprintViewer
 			bool result = false;
 			if (Directory.Exists(path))
 			{
-				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
-				List<string> intervals = new List<string>();
+				// 計算要處理的檔案路徑
+				List<string> filePaths = new List<string>();
+				DirectoryInfo tmpDir = new DirectoryInfo(path);
 				// 若是選取 \\CIMLog
-				if (baseDirInfo.Name.Contains(mINSPECTION_RESULT_DIRECTORY_KEYWORD))
+				if (tmpDir.Name.Contains(mINSPECTION_RESULT_DIRECTORY_KEYWORD))
 				{
 					mInspectionResultDirPath = path;
 					DateTime nonsense;
-					IEnumerable<DirectoryInfo> dirInfos = baseDirInfo.GetDirectories().Where(info => info.Name.Length == 8 && DateTime.TryParseExact(info.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
+					IEnumerable<DirectoryInfo> dirInfos = tmpDir.GetDirectories().Where(info => info.Name.Length == 8 && DateTime.TryParseExact(info.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
 					if (dirInfos.Count() > 0)
 					{
 						foreach (DirectoryInfo dirInfo in dirInfos)
 						{
-							// 分析 InspectionResult.log
-							string filePath = dirInfo.FullName + "\\" + mINSPECTION_RESULT_FILE_KEYWORD;
-							intervals.AddRange(analyzeInspectionResultFile(filePath));
+							string tmpFilePath = dirInfo.FullName + "\\" + mINSPECTION_RESULT_FILE_KEYWORD;
+							if (File.Exists(tmpFilePath)) filePaths.Add(tmpFilePath);
 						}
 					}
 				}
 				// 若是選取 \\CIMLog\\yyyyMMdd
-				else if (baseDirInfo.Parent.Name.Contains(mINSPECTION_RESULT_DIRECTORY_KEYWORD) && baseDirInfo.Name.Length == 8)
+				else if (tmpDir.Parent.Name.Contains(mINSPECTION_RESULT_DIRECTORY_KEYWORD) && tmpDir.Name.Length == 8)
 				{
 					DateTime nonsense;
-					if (DateTime.TryParseExact(baseDirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense))
+					if (DateTime.TryParseExact(tmpDir.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense))
 					{
-						intervals = analyzeInspectionResultFile(baseDirInfo.FullName + "\\" + mINSPECTION_RESULT_FILE_KEYWORD);
+						string tmpFilePath = tmpDir.FullName + "\\" + mINSPECTION_RESULT_FILE_KEYWORD;
+						if (File.Exists(tmpFilePath)) filePaths.Add(tmpFilePath);
 					}
 				}
 
-				if (intervals.Count > 0)
+				// 分析 Inspection Result
+				List<string> inspectionIntervals = new List<string>();
+				foreach (var filePath in filePaths)
+				{
+					inspectionIntervals.AddRange(analyzeInspectionResultFile(filePath));
+				}
+
+				// 將分析完的資料顯示於介面
+				if (inspectionIntervals.Count > 0)
 				{
 					cmbInspectionResultIntervals.InvokeIfNecessary(() =>
 					{
 						cmbInspectionResultIntervals.Items.Clear();
-						cmbInspectionResultIntervals.Items.AddRange(intervals.ToArray());
+						cmbInspectionResultIntervals.Items.AddRange(inspectionIntervals.ToArray());
 					});
 					result = true;
 				}
