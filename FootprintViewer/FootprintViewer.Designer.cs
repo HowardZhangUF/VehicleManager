@@ -278,6 +278,7 @@
 			// 
 			this.txtFootprintDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtFootprintDirectory.Enabled = false;
 			this.txtFootprintDirectory.Location = new System.Drawing.Point(218, 57);
 			this.txtFootprintDirectory.Name = "txtFootprintDirectory";
 			this.txtFootprintDirectory.Size = new System.Drawing.Size(725, 25);
@@ -309,6 +310,7 @@
 			// 
 			this.txtInspectionResultDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtInspectionResultDirectory.Enabled = false;
 			this.txtInspectionResultDirectory.Location = new System.Drawing.Point(267, 145);
 			this.txtInspectionResultDirectory.Name = "txtInspectionResultDirectory";
 			this.txtInspectionResultDirectory.Size = new System.Drawing.Size(676, 25);
@@ -338,6 +340,7 @@
 			// 
 			this.txtMapPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtMapPath.Enabled = false;
 			this.txtMapPath.Location = new System.Drawing.Point(102, 27);
 			this.txtMapPath.Name = "txtMapPath";
 			this.txtMapPath.Size = new System.Drawing.Size(841, 25);
