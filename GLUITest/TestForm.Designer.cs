@@ -187,35 +187,36 @@
 			// lblMapName
 			// 
 			this.lblMapName.AutoSize = true;
-			this.lblMapName.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblMapName.Location = new System.Drawing.Point(496, 65);
+			this.lblMapName.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapName.Location = new System.Drawing.Point(496, 61);
 			this.lblMapName.Name = "lblMapName";
-			this.lblMapName.Size = new System.Drawing.Size(27, 15);
+			this.lblMapName.Size = new System.Drawing.Size(33, 20);
 			this.lblMapName.TabIndex = 18;
 			this.lblMapName.Text = "----";
 			// 
 			// lblMapHash
 			// 
 			this.lblMapHash.AutoSize = true;
-			this.lblMapHash.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblMapHash.Location = new System.Drawing.Point(496, 95);
+			this.lblMapHash.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapHash.Location = new System.Drawing.Point(496, 91);
 			this.lblMapHash.Name = "lblMapHash";
-			this.lblMapHash.Size = new System.Drawing.Size(27, 15);
+			this.lblMapHash.Size = new System.Drawing.Size(33, 20);
 			this.lblMapHash.TabIndex = 17;
 			this.lblMapHash.Text = "----";
 			// 
 			// lblMapLastEditTime
 			// 
 			this.lblMapLastEditTime.AutoSize = true;
-			this.lblMapLastEditTime.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblMapLastEditTime.Location = new System.Drawing.Point(496, 125);
+			this.lblMapLastEditTime.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblMapLastEditTime.Location = new System.Drawing.Point(496, 121);
 			this.lblMapLastEditTime.Name = "lblMapLastEditTime";
-			this.lblMapLastEditTime.Size = new System.Drawing.Size(27, 15);
+			this.lblMapLastEditTime.Size = new System.Drawing.Size(33, 20);
 			this.lblMapLastEditTime.TabIndex = 16;
 			this.lblMapLastEditTime.Text = "----";
 			// 
 			// btnClearMap
 			// 
+			this.btnClearMap.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnClearMap.Location = new System.Drawing.Point(601, 164);
 			this.btnClearMap.Name = "btnClearMap";
 			this.btnClearMap.Size = new System.Drawing.Size(202, 53);
@@ -226,6 +227,7 @@
 			// 
 			// btnLoadMap
 			// 
+			this.btnLoadMap.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnLoadMap.Location = new System.Drawing.Point(393, 164);
 			this.btnLoadMap.Name = "btnLoadMap";
 			this.btnLoadMap.Size = new System.Drawing.Size(202, 53);
@@ -287,6 +289,7 @@
 			// btnChangeMap
 			// 
 			this.btnChangeMap.Enabled = false;
+			this.btnChangeMap.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnChangeMap.Location = new System.Drawing.Point(601, 282);
 			this.btnChangeMap.Name = "btnChangeMap";
 			this.btnChangeMap.Size = new System.Drawing.Size(202, 53);
@@ -298,6 +301,7 @@
 			// btnUploadMapToAGV
 			// 
 			this.btnUploadMapToAGV.Enabled = false;
+			this.btnUploadMapToAGV.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnUploadMapToAGV.Location = new System.Drawing.Point(601, 223);
 			this.btnUploadMapToAGV.Name = "btnUploadMapToAGV";
 			this.btnUploadMapToAGV.Size = new System.Drawing.Size(202, 53);
@@ -308,6 +312,7 @@
 			// 
 			// btnRequestMapList
 			// 
+			this.btnRequestMapList.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnRequestMapList.Location = new System.Drawing.Point(393, 223);
 			this.btnRequestMapList.Name = "btnRequestMapList";
 			this.btnRequestMapList.Size = new System.Drawing.Size(202, 112);
@@ -400,21 +405,21 @@
             this.toolStripMenuItemFootprint});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(1368, 28);
+			this.menuStrip1.Size = new System.Drawing.Size(1368, 27);
 			this.menuStrip1.TabIndex = 7;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
 			// toolStripMenuItemLogIn
 			// 
 			this.toolStripMenuItemLogIn.Name = "toolStripMenuItemLogIn";
-			this.toolStripMenuItemLogIn.Size = new System.Drawing.Size(65, 24);
+			this.toolStripMenuItemLogIn.Size = new System.Drawing.Size(65, 23);
 			this.toolStripMenuItemLogIn.Text = "Log In";
 			this.toolStripMenuItemLogIn.Click += new System.EventHandler(this.toolStripStatusLabelLogIn_Click);
 			// 
 			// toolStripMenuItemFootprint
 			// 
 			this.toolStripMenuItemFootprint.Name = "toolStripMenuItemFootprint";
-			this.toolStripMenuItemFootprint.Size = new System.Drawing.Size(85, 24);
+			this.toolStripMenuItemFootprint.Size = new System.Drawing.Size(85, 23);
 			this.toolStripMenuItemFootprint.Text = "Footprint";
 			this.toolStripMenuItemFootprint.Click += new System.EventHandler(this.toolStripMenuItemFootprint_Click);
 			// 
