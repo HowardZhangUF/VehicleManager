@@ -71,7 +71,7 @@
 			// 
 			this.cbYear1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbYear1.FormattingEnabled = true;
-			this.cbYear1.Location = new System.Drawing.Point(84, 87);
+			this.cbYear1.Location = new System.Drawing.Point(66, 66);
 			this.cbYear1.Name = "cbYear1";
 			this.cbYear1.Size = new System.Drawing.Size(65, 23);
 			this.cbYear1.TabIndex = 16;
@@ -80,7 +80,7 @@
 			// 
 			this.cbMonth1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbMonth1.FormattingEnabled = true;
-			this.cbMonth1.Location = new System.Drawing.Point(172, 87);
+			this.cbMonth1.Location = new System.Drawing.Point(154, 66);
 			this.cbMonth1.Name = "cbMonth1";
 			this.cbMonth1.Size = new System.Drawing.Size(60, 23);
 			this.cbMonth1.TabIndex = 17;
@@ -89,7 +89,7 @@
 			// 
 			this.cbDay1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbDay1.FormattingEnabled = true;
-			this.cbDay1.Location = new System.Drawing.Point(255, 87);
+			this.cbDay1.Location = new System.Drawing.Point(237, 66);
 			this.cbDay1.Name = "cbDay1";
 			this.cbDay1.Size = new System.Drawing.Size(60, 23);
 			this.cbDay1.TabIndex = 18;
@@ -97,7 +97,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(155, 90);
+			this.label1.Location = new System.Drawing.Point(137, 69);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(11, 15);
 			this.label1.TabIndex = 19;
@@ -106,7 +106,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(238, 90);
+			this.label2.Location = new System.Drawing.Point(220, 69);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(11, 15);
 			this.label2.TabIndex = 20;
@@ -115,7 +115,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(412, 90);
+			this.label3.Location = new System.Drawing.Point(394, 69);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(11, 15);
 			this.label3.TabIndex = 21;
@@ -125,7 +125,7 @@
 			// 
 			this.cbHour1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbHour1.FormattingEnabled = true;
-			this.cbHour1.Location = new System.Drawing.Point(346, 87);
+			this.cbHour1.Location = new System.Drawing.Point(328, 66);
 			this.cbHour1.Name = "cbHour1";
 			this.cbHour1.Size = new System.Drawing.Size(60, 23);
 			this.cbHour1.TabIndex = 22;
@@ -134,7 +134,7 @@
 			// 
 			this.cbMinute1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbMinute1.FormattingEnabled = true;
-			this.cbMinute1.Location = new System.Drawing.Point(429, 87);
+			this.cbMinute1.Location = new System.Drawing.Point(411, 66);
 			this.cbMinute1.Name = "cbMinute1";
 			this.cbMinute1.Size = new System.Drawing.Size(60, 23);
 			this.cbMinute1.TabIndex = 24;
@@ -142,7 +142,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(495, 90);
+			this.label4.Location = new System.Drawing.Point(477, 69);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(11, 15);
 			this.label4.TabIndex = 23;
@@ -152,7 +152,7 @@
 			// 
 			this.cbSecond1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbSecond1.FormattingEnabled = true;
-			this.cbSecond1.Location = new System.Drawing.Point(512, 87);
+			this.cbSecond1.Location = new System.Drawing.Point(494, 66);
 			this.cbSecond1.Name = "cbSecond1";
 			this.cbSecond1.Size = new System.Drawing.Size(60, 23);
 			this.cbSecond1.TabIndex = 25;
@@ -161,7 +161,7 @@
 			// 
 			this.cbSecond2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbSecond2.FormattingEnabled = true;
-			this.cbSecond2.Location = new System.Drawing.Point(512, 117);
+			this.cbSecond2.Location = new System.Drawing.Point(494, 96);
 			this.cbSecond2.Name = "cbSecond2";
 			this.cbSecond2.Size = new System.Drawing.Size(60, 23);
 			this.cbSecond2.TabIndex = 35;
@@ -170,7 +170,7 @@
 			// 
 			this.cbMinute2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbMinute2.FormattingEnabled = true;
-			this.cbMinute2.Location = new System.Drawing.Point(429, 117);
+			this.cbMinute2.Location = new System.Drawing.Point(411, 96);
 			this.cbMinute2.Name = "cbMinute2";
 			this.cbMinute2.Size = new System.Drawing.Size(60, 23);
 			this.cbMinute2.TabIndex = 34;
@@ -178,7 +178,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(495, 120);
+			this.label5.Location = new System.Drawing.Point(477, 99);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(11, 15);
 			this.label5.TabIndex = 33;
@@ -188,7 +188,7 @@
 			// 
 			this.cbHour2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbHour2.FormattingEnabled = true;
-			this.cbHour2.Location = new System.Drawing.Point(346, 117);
+			this.cbHour2.Location = new System.Drawing.Point(328, 96);
 			this.cbHour2.Name = "cbHour2";
 			this.cbHour2.Size = new System.Drawing.Size(60, 23);
 			this.cbHour2.TabIndex = 32;
@@ -196,7 +196,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(412, 120);
+			this.label6.Location = new System.Drawing.Point(394, 99);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(11, 15);
 			this.label6.TabIndex = 31;
@@ -205,7 +205,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(238, 120);
+			this.label7.Location = new System.Drawing.Point(220, 99);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(11, 15);
 			this.label7.TabIndex = 30;
@@ -214,7 +214,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(155, 120);
+			this.label8.Location = new System.Drawing.Point(137, 99);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(11, 15);
 			this.label8.TabIndex = 29;
@@ -224,7 +224,7 @@
 			// 
 			this.cbDay2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbDay2.FormattingEnabled = true;
-			this.cbDay2.Location = new System.Drawing.Point(255, 117);
+			this.cbDay2.Location = new System.Drawing.Point(237, 96);
 			this.cbDay2.Name = "cbDay2";
 			this.cbDay2.Size = new System.Drawing.Size(60, 23);
 			this.cbDay2.TabIndex = 28;
@@ -233,7 +233,7 @@
 			// 
 			this.cbMonth2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbMonth2.FormattingEnabled = true;
-			this.cbMonth2.Location = new System.Drawing.Point(172, 117);
+			this.cbMonth2.Location = new System.Drawing.Point(154, 96);
 			this.cbMonth2.Name = "cbMonth2";
 			this.cbMonth2.Size = new System.Drawing.Size(60, 23);
 			this.cbMonth2.TabIndex = 27;
@@ -242,7 +242,7 @@
 			// 
 			this.cbYear2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbYear2.FormattingEnabled = true;
-			this.cbYear2.Location = new System.Drawing.Point(84, 117);
+			this.cbYear2.Location = new System.Drawing.Point(66, 96);
 			this.cbYear2.Name = "cbYear2";
 			this.cbYear2.Size = new System.Drawing.Size(65, 23);
 			this.cbYear2.TabIndex = 26;
@@ -250,7 +250,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(30, 90);
+			this.label9.Location = new System.Drawing.Point(12, 69);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(48, 15);
 			this.label9.TabIndex = 36;
@@ -259,7 +259,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(30, 120);
+			this.label10.Location = new System.Drawing.Point(12, 99);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(48, 15);
 			this.label10.TabIndex = 37;
@@ -268,7 +268,7 @@
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(30, 60);
+			this.label11.Location = new System.Drawing.Point(12, 39);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(182, 15);
 			this.label11.TabIndex = 38;
@@ -278,16 +278,16 @@
 			// 
 			this.txtFootprintDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtFootprintDirectory.Enabled = false;
-			this.txtFootprintDirectory.Location = new System.Drawing.Point(218, 57);
+			this.txtFootprintDirectory.Location = new System.Drawing.Point(200, 36);
 			this.txtFootprintDirectory.Name = "txtFootprintDirectory";
+			this.txtFootprintDirectory.ReadOnly = true;
 			this.txtFootprintDirectory.Size = new System.Drawing.Size(725, 25);
 			this.txtFootprintDirectory.TabIndex = 39;
 			// 
 			// btnBrowseFootprintDirectory
 			// 
 			this.btnBrowseFootprintDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnBrowseFootprintDirectory.Location = new System.Drawing.Point(949, 55);
+			this.btnBrowseFootprintDirectory.Location = new System.Drawing.Point(931, 34);
 			this.btnBrowseFootprintDirectory.Name = "btnBrowseFootprintDirectory";
 			this.btnBrowseFootprintDirectory.Size = new System.Drawing.Size(75, 25);
 			this.btnBrowseFootprintDirectory.TabIndex = 40;
@@ -298,7 +298,7 @@
 			// btnBrowseInsepctionResultDirectory
 			// 
 			this.btnBrowseInsepctionResultDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnBrowseInsepctionResultDirectory.Location = new System.Drawing.Point(949, 143);
+			this.btnBrowseInsepctionResultDirectory.Location = new System.Drawing.Point(931, 122);
 			this.btnBrowseInsepctionResultDirectory.Name = "btnBrowseInsepctionResultDirectory";
 			this.btnBrowseInsepctionResultDirectory.Size = new System.Drawing.Size(75, 25);
 			this.btnBrowseInsepctionResultDirectory.TabIndex = 44;
@@ -310,16 +310,16 @@
 			// 
 			this.txtInspectionResultDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtInspectionResultDirectory.Enabled = false;
-			this.txtInspectionResultDirectory.Location = new System.Drawing.Point(267, 145);
+			this.txtInspectionResultDirectory.Location = new System.Drawing.Point(249, 124);
 			this.txtInspectionResultDirectory.Name = "txtInspectionResultDirectory";
+			this.txtInspectionResultDirectory.ReadOnly = true;
 			this.txtInspectionResultDirectory.Size = new System.Drawing.Size(676, 25);
 			this.txtInspectionResultDirectory.TabIndex = 43;
 			// 
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(31, 148);
+			this.label12.Location = new System.Drawing.Point(13, 127);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(230, 15);
 			this.label12.TabIndex = 42;
@@ -328,7 +328,7 @@
 			// btnBrowseMapPath
 			// 
 			this.btnBrowseMapPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnBrowseMapPath.Location = new System.Drawing.Point(949, 25);
+			this.btnBrowseMapPath.Location = new System.Drawing.Point(931, 4);
 			this.btnBrowseMapPath.Name = "btnBrowseMapPath";
 			this.btnBrowseMapPath.Size = new System.Drawing.Size(75, 25);
 			this.btnBrowseMapPath.TabIndex = 47;
@@ -340,16 +340,16 @@
 			// 
 			this.txtMapPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtMapPath.Enabled = false;
-			this.txtMapPath.Location = new System.Drawing.Point(102, 27);
+			this.txtMapPath.Location = new System.Drawing.Point(84, 6);
 			this.txtMapPath.Name = "txtMapPath";
+			this.txtMapPath.ReadOnly = true;
 			this.txtMapPath.Size = new System.Drawing.Size(841, 25);
 			this.txtMapPath.TabIndex = 46;
 			// 
 			// label13
 			// 
 			this.label13.AutoSize = true;
-			this.label13.Location = new System.Drawing.Point(30, 30);
+			this.label13.Location = new System.Drawing.Point(12, 9);
 			this.label13.Name = "label13";
 			this.label13.Size = new System.Drawing.Size(66, 15);
 			this.label13.TabIndex = 45;
@@ -361,7 +361,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cmbInspectionResultIntervals.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbInspectionResultIntervals.FormattingEnabled = true;
-			this.cmbInspectionResultIntervals.Location = new System.Drawing.Point(33, 175);
+			this.cmbInspectionResultIntervals.Location = new System.Drawing.Point(15, 154);
 			this.cmbInspectionResultIntervals.Name = "cmbInspectionResultIntervals";
 			this.cmbInspectionResultIntervals.Size = new System.Drawing.Size(991, 23);
 			this.cmbInspectionResultIntervals.TabIndex = 48;
@@ -369,7 +369,7 @@
 			// 
 			// btnSetTimeInterval
 			// 
-			this.btnSetTimeInterval.Location = new System.Drawing.Point(578, 86);
+			this.btnSetTimeInterval.Location = new System.Drawing.Point(560, 65);
 			this.btnSetTimeInterval.Name = "btnSetTimeInterval";
 			this.btnSetTimeInterval.Size = new System.Drawing.Size(99, 52);
 			this.btnSetTimeInterval.TabIndex = 49;
@@ -380,9 +380,9 @@
 			// btnSaveSettings
 			// 
 			this.btnSaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSaveSettings.Location = new System.Drawing.Point(1030, 25);
+			this.btnSaveSettings.Location = new System.Drawing.Point(1012, 3);
 			this.btnSaveSettings.Name = "btnSaveSettings";
-			this.btnSaveSettings.Size = new System.Drawing.Size(148, 83);
+			this.btnSaveSettings.Size = new System.Drawing.Size(171, 83);
 			this.btnSaveSettings.TabIndex = 51;
 			this.btnSaveSettings.Text = "Save Settings";
 			this.btnSaveSettings.UseVisualStyleBackColor = true;
@@ -395,12 +395,12 @@
 			this.gluiCtrl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.gluiCtrl1.Location = new System.Drawing.Point(154, 203);
+			this.gluiCtrl1.Location = new System.Drawing.Point(159, 184);
 			this.gluiCtrl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.gluiCtrl1.Name = "gluiCtrl1";
 			this.gluiCtrl1.ShowAxis = true;
 			this.gluiCtrl1.ShowGrid = true;
-			this.gluiCtrl1.Size = new System.Drawing.Size(1024, 438);
+			this.gluiCtrl1.Size = new System.Drawing.Size(1024, 453);
 			this.gluiCtrl1.TabIndex = 50;
 			this.gluiCtrl1.Zoom = 10D;
 			// 
@@ -410,18 +410,18 @@
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.lbRobotID.FormattingEnabled = true;
 			this.lbRobotID.ItemHeight = 15;
-			this.lbRobotID.Location = new System.Drawing.Point(29, 204);
+			this.lbRobotID.Location = new System.Drawing.Point(15, 183);
 			this.lbRobotID.Name = "lbRobotID";
-			this.lbRobotID.Size = new System.Drawing.Size(120, 439);
+			this.lbRobotID.Size = new System.Drawing.Size(137, 454);
 			this.lbRobotID.TabIndex = 52;
 			this.lbRobotID.SelectedIndexChanged += new System.EventHandler(this.lbRobotID_SelectedIndexChanged);
 			// 
 			// btnReloadSettings
 			// 
 			this.btnReloadSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnReloadSettings.Location = new System.Drawing.Point(1030, 114);
+			this.btnReloadSettings.Location = new System.Drawing.Point(1012, 92);
 			this.btnReloadSettings.Name = "btnReloadSettings";
-			this.btnReloadSettings.Size = new System.Drawing.Size(148, 84);
+			this.btnReloadSettings.Size = new System.Drawing.Size(171, 83);
 			this.btnReloadSettings.TabIndex = 53;
 			this.btnReloadSettings.Text = "Reload Settings";
 			this.btnReloadSettings.UseVisualStyleBackColor = true;
