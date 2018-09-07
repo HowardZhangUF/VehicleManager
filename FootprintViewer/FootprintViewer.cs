@@ -136,7 +136,7 @@ namespace FootprintViewer
 		}
 
 		/// <summary>
-		/// 讀取 Footprint 資料夾的時間區間(年)，並更新介面的 ComboBox
+		/// 讀取 Footprint 資料夾的時間區間(年)，並更新介面的 ComboBox，重置 RobotID 的清單與地圖
 		/// </summary>
 		private bool loadFootprintDirectory(string path)
 		{
@@ -144,6 +144,7 @@ namespace FootprintViewer
 			if (Directory.Exists(path))
 			{
 				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
+				// 若是選取 \\VMLog
 				if (baseDirInfo.Name.Contains(FOOTPRINT_DIRECTORY_KEYWORD))
 				{
 					footprintDirPath = path;
@@ -157,12 +158,32 @@ namespace FootprintViewer
 						result = true;
 					}
 				}
+				// 若是選取 \\VMLog\\yyMMdd
+				else if (baseDirInfo.Parent.Name.Contains(FOOTPRINT_DIRECTORY_KEYWORD) && baseDirInfo.Name.Length == 6)
+				{
+					DateTime time;
+					if (DateTime.TryParseExact(baseDirInfo.Name, "yyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+					{
+						footprintDirPath = path;
+						footprintDirDateStart = time.Date;
+						footprintDirDateEnd = time.Date;
+						initializeDateComboBoxes(footprintDirDateStart, footprintDirDateEnd);
+						result = true;
+					}
+
+				}
+
+				// RobotID 清單清空
+				if (lbRobotID.Items.Count > 0) lbRobotID.Items.Clear();
+
+				// 地圖 Footprint 清空
+				GLCMD.CMD.SaftyEditMultiGeometry<IPair>(footprintIconID, true, o => { if (o.Count() > 0) o.Clear(); });
 			}
 			return result;
 		}
 
 		/// <summary>
-		/// 讀取 Footprint 資料
+		/// 讀取 Footprint 資料，於指定路徑 (VMLog) ，讀取其底下介於指定時間區間的資料夾的 Footprint 資料
 		/// </summary>
 		private void loadFootprintData(DateTime dateStart, DateTime dateEnd)
 		{
@@ -172,11 +193,23 @@ namespace FootprintViewer
 
 			// 計算要處理的檔案的路徑
 			List<string> filePaths = new List<string>();
-			for (int i = 0; i < days; ++i)
+
+			// 若是選取 \\VMLog
+			if (footprintDirPath.EndsWith(FOOTPRINT_DIRECTORY_KEYWORD))
 			{
-				string tmp = footprintDirPath + "\\" + dateStart.AddDays(i).ToString("yyMMdd") + "\\" + FOOTPRINT_FILE_KEYWORD;
+				for (int i = 0; i < days; ++i)
+				{
+					string tmp = footprintDirPath + "\\" + dateStart.AddDays(i).ToString("yyMMdd") + "\\" + FOOTPRINT_FILE_KEYWORD;
+					filePaths.Add(tmp);
+				}
+			}
+			// 若是選取 \\VMLog\\yyMMdd
+			else
+			{
+				string tmp = footprintDirPath + "\\" + FOOTPRINT_FILE_KEYWORD;
 				filePaths.Add(tmp);
 			}
+
 
 			// 從檔案讀取資料
 			footprints.clear();
@@ -571,6 +604,16 @@ namespace FootprintViewer
 		// 然後透過選擇 cmbInspectionResultIntervals 的項目來快速設定 Time1 與 Time2 。
 
 		/// <summary>
+		/// Inspection Result 資料夾關鍵字
+		/// </summary>
+		private const string INSPECTION_RESULT_DIRECTORY_KEYWORD = "CIMLog";
+
+		/// <summary>
+		/// Inspection Result 檔案關鍵字
+		/// </summary>
+		private const string INSPECTION_RESULT_FILE_KEYWORD = "InspectionResult.log";
+
+		/// <summary>
 		/// Inspection Result 資料夾路徑，台積巡檢機專案專用
 		/// </summary>
 		private string inspectionResultDirPath = "";
@@ -606,43 +649,64 @@ namespace FootprintViewer
 			if (Directory.Exists(path))
 			{
 				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
-				if (baseDirInfo.Name.Contains("CIMLog"))
+				List<string> intervals = new List<string>();
+				// 若是選取 \\CIMLog
+				if (baseDirInfo.Name.Contains(INSPECTION_RESULT_DIRECTORY_KEYWORD))
 				{
 					inspectionResultDirPath = path;
 					DateTime nonsense;
 					IEnumerable<DirectoryInfo> dirInfos = baseDirInfo.GetDirectories().Where(info => info.Name.Length == 8 && DateTime.TryParseExact(info.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
 					if (dirInfos.Count() > 0)
 					{
-						List<string> intervals = new List<string>();
 						foreach (DirectoryInfo dirInfo in dirInfos)
 						{
-							string filePath = dirInfo.FullName + "\\InspectionResult.log";
-							if (File.Exists(filePath))
-							{
-								string[] tmpData = File.ReadAllLines(filePath);
-								DateTime tmpTime = DateTime.ParseExact(dirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture);
-								for (int i = 0; i < tmpData.Count(); ++i)
-								{
-									string tt = tmpTime.ToString("yyyyMMdd");
-									bool ttt = tmpData[i].Contains("[InspectionResult]");
-									if (tmpData[i].StartsWith(tmpTime.ToString("yyyy/MM/dd")) && tmpData[i].Contains("[InspectionResult]"))
-									{
-										DateTime inspectionStartTime = DateTime.ParseExact(tmpData[i + 1].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-										DateTime inspectionEndTime = DateTime.ParseExact(tmpData[i + 2].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
-										intervals.Add(inspectionStartTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + inspectionEndTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + tmpData[i + 3] + " - " + tmpData[i + 4]);
-									}
-								}
-							}
+							// 分析 InspectionResult.log
+							string filePath = dirInfo.FullName + "\\" + INSPECTION_RESULT_FILE_KEYWORD;
+							intervals.AddRange(analyzeInspectionResultFile(filePath));
 						}
-						if (intervals.Count > 0)
-						{
-							cmbInspectionResultIntervals.InvokeIfNecessary(() =>
-							{
-								cmbInspectionResultIntervals.Items.Clear();
-								cmbInspectionResultIntervals.Items.AddRange(intervals.ToArray());
-							});
-							result = true;
-						}
+					}
+				}
+				// 若是選取 \\CIMLog\\yyyyMMdd
+				else if (baseDirInfo.Parent.Name.Contains(INSPECTION_RESULT_DIRECTORY_KEYWORD) && baseDirInfo.Name.Length == 8)
+				{
+					DateTime nonsense;
+					if (DateTime.TryParseExact(baseDirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense))
+					{
+						intervals = analyzeInspectionResultFile(baseDirInfo.FullName + "\\" + INSPECTION_RESULT_FILE_KEYWORD);
+					}
+				}
+
+				if (intervals.Count > 0)
+				{
+					cmbInspectionResultIntervals.InvokeIfNecessary(() =>
+					{
+						cmbInspectionResultIntervals.Items.Clear();
+						cmbInspectionResultIntervals.Items.AddRange(intervals.ToArray());
+					});
+					result = true;
+				}
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 讀取 InspectionResult.log 裡每一趟 Inspection 的開始、結束時間，再將其組合成 "yyyy/MM/dd HH:mm:ss - yyyy/MM/dd HH:mm:ss - ... - ..." 的字串
+		/// </summary>
+		private List<string> analyzeInspectionResultFile(string filePath)
+		{
+			List<string> result = new List<string>();
+			if (File.Exists(filePath) && filePath.EndsWith(INSPECTION_RESULT_FILE_KEYWORD))
+			{
+				string[] tmpData = File.ReadAllLines(filePath);
+				DirectoryInfo tmpDirInfo = new DirectoryInfo(Path.GetDirectoryName(filePath));
+				DateTime tmpTime = DateTime.ParseExact(tmpDirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture);
+				for (int i = 0; i < tmpData.Count(); ++i)
+				{
+					if (tmpData[i].StartsWith(tmpTime.ToString("yyyy/MM/dd")) && tmpData[i].Contains("[InspectionResult]"))
+					{
+						DateTime inspectionStartTime = DateTime.ParseExact(tmpData[i + 1].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
+						DateTime inspectionEndTime = DateTime.ParseExact(tmpData[i + 2].Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries)[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
+						result.Add(inspectionStartTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + inspectionEndTime.ToString("yyyy/MM/dd HH:mm:ss") + " - " + tmpData[i + 3] + " - " + tmpData[i + 4]);
 					}
 				}
 			}
