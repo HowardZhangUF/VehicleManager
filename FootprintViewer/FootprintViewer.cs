@@ -448,6 +448,11 @@ namespace FootprintViewer
 			}
 		}
 
+		private void btnScreenShot_Click(object sender, EventArgs e)
+		{
+
+		}
+
 		#endregion
 
 		#region 介面操作

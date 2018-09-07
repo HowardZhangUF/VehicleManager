@@ -65,6 +65,7 @@
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
 			this.lbRobotID = new System.Windows.Forms.ListBox();
 			this.btnReloadSettings = new System.Windows.Forms.Button();
+			this.btnScreenShot = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// cbYear1
@@ -382,7 +383,7 @@
 			this.btnSaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnSaveSettings.Location = new System.Drawing.Point(1012, 3);
 			this.btnSaveSettings.Name = "btnSaveSettings";
-			this.btnSaveSettings.Size = new System.Drawing.Size(171, 83);
+			this.btnSaveSettings.Size = new System.Drawing.Size(171, 40);
 			this.btnSaveSettings.TabIndex = 51;
 			this.btnSaveSettings.Text = "Save Settings";
 			this.btnSaveSettings.UseVisualStyleBackColor = true;
@@ -419,18 +420,32 @@
 			// btnReloadSettings
 			// 
 			this.btnReloadSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnReloadSettings.Location = new System.Drawing.Point(1012, 92);
+			this.btnReloadSettings.Location = new System.Drawing.Point(1012, 49);
 			this.btnReloadSettings.Name = "btnReloadSettings";
-			this.btnReloadSettings.Size = new System.Drawing.Size(171, 83);
+			this.btnReloadSettings.Size = new System.Drawing.Size(171, 40);
 			this.btnReloadSettings.TabIndex = 53;
 			this.btnReloadSettings.Text = "Reload Settings";
 			this.btnReloadSettings.UseVisualStyleBackColor = true;
 			this.btnReloadSettings.Click += new System.EventHandler(this.btnReloadSettings_Click);
 			// 
+			// btnScreenShot
+			// 
+			this.btnScreenShot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnScreenShot.Enabled = false;
+			this.btnScreenShot.Location = new System.Drawing.Point(1015, 137);
+			this.btnScreenShot.Name = "btnScreenShot";
+			this.btnScreenShot.Size = new System.Drawing.Size(168, 40);
+			this.btnScreenShot.TabIndex = 54;
+			this.btnScreenShot.Text = "Screen Shot";
+			this.btnScreenShot.UseVisualStyleBackColor = true;
+			this.btnScreenShot.Visible = false;
+			this.btnScreenShot.Click += new System.EventHandler(this.btnScreenShot_Click);
+			// 
 			// FootprintViewer
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.ClientSize = new System.Drawing.Size(1195, 654);
+			this.Controls.Add(this.btnScreenShot);
 			this.Controls.Add(this.btnReloadSettings);
 			this.Controls.Add(this.lbRobotID);
 			this.Controls.Add(this.btnSaveSettings);
@@ -515,6 +530,7 @@
 		private System.Windows.Forms.Button btnSaveSettings;
 		private System.Windows.Forms.ListBox lbRobotID;
 		private System.Windows.Forms.Button btnReloadSettings;
+		private System.Windows.Forms.Button btnScreenShot;
 	}
 }
 
