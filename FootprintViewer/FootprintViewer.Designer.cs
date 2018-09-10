@@ -431,14 +431,12 @@
 			// btnScreenShot
 			// 
 			this.btnScreenShot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnScreenShot.Enabled = false;
 			this.btnScreenShot.Location = new System.Drawing.Point(1015, 137);
 			this.btnScreenShot.Name = "btnScreenShot";
 			this.btnScreenShot.Size = new System.Drawing.Size(168, 40);
 			this.btnScreenShot.TabIndex = 54;
 			this.btnScreenShot.Text = "Screen Shot";
 			this.btnScreenShot.UseVisualStyleBackColor = true;
-			this.btnScreenShot.Visible = false;
 			this.btnScreenShot.Click += new System.EventHandler(this.btnScreenShot_Click);
 			// 
 			// FootprintViewer

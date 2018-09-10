@@ -60,6 +60,9 @@ namespace FootprintViewer
 			{
 				loadInspectionResultDirectory(txtInspectionResultDirectory.Text);
 			}
+
+			// 計算「Win10 中，設定 -> 系統 -> 顯示器 -> 變更文字、應用程式與其他項目的大小」的值
+			mScreenDPIRatio = calculateScreenScalingRatio();
 		}
 
 		private void FootprintViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -258,6 +261,11 @@ namespace FootprintViewer
 		#region 方法
 
 		/// <summary>
+		/// 螢幕 DPI 比例，供擷取當前畫面時使用
+		/// </summary>
+		private float mScreenDPIRatio = 0;
+
+		/// <summary>
 		/// 開啟一資料夾選擇視窗，並回傳資料夾路徑
 		/// </summary>
 		private string getDirectoryPath(string defaultPath = "")
@@ -286,6 +294,19 @@ namespace FootprintViewer
 				ofd.InitialDirectory = Application.StartupPath;
 			if (ofd.ShowDialog() == DialogResult.OK)
 				result = ofd.FileName;
+			return result;
+		}
+
+		/// <summary>
+		/// 取得欲儲存的檔案的完整路徑
+		/// </summary>
+		private string getFileSavePath(string defaultFileName)
+		{
+			string result = "";
+			SaveFileDialog sfd = new SaveFileDialog();
+			sfd.FileName = defaultFileName;
+			if (sfd.ShowDialog() == DialogResult.OK)
+				result = sfd.FileName;
 			return result;
 		}
 
@@ -319,6 +340,46 @@ namespace FootprintViewer
 
 			if (mapPath != "") IniFiles.INI.Write(file, "FootprintViewer", "MapPath", mapPath);
 			if (footprintDirectory != "") IniFiles.INI.Write(file, "FootprintViewer", "FootprintDirectory", footprintDirectory);
+		}
+
+		/// <summary>
+		/// 將當前畫面紀錄並輸出成 Image 物件
+		/// </summary>
+		private Image printScreen()
+		{
+			Image result = null;
+			int counter = 0;
+			Clipboard.Clear();
+			SendKeys.SendWait("{PRTSC}");
+			// 若太久(一秒)都沒有讀到圖片，則放棄
+			while (!Clipboard.ContainsImage() || counter > 100)
+			{
+				counter += 1;
+				System.Threading.Thread.Sleep(10);
+			}
+			result = Clipboard.GetImage();
+			Clipboard.Clear();
+			return result;
+		}
+
+		/// <summary>
+		/// 計算「Win10 中，設定 -> 系統 -> 顯示器 -> 變更文字、應用程式與其他項目的大小」的值
+		/// </summary>
+		/// <returns></returns>
+		private float calculateScreenScalingRatio()
+		{
+			float result = 0;
+
+			Image tmpImg = printScreen();
+			float resolutionX = tmpImg.Width;
+			float resolutionY = tmpImg.Height;
+
+			int boundX = Screen.PrimaryScreen.Bounds.Width;
+			int boundY = Screen.PrimaryScreen.Bounds.Height;
+
+			result = resolutionX / boundX;
+
+			return result;
 		}
 
 		#endregion
@@ -448,9 +509,41 @@ namespace FootprintViewer
 			}
 		}
 
+		/// <summary>
+		/// 擷取當前 gluiCtrl1 的畫面
+		/// </summary>
 		private void btnScreenShot_Click(object sender, EventArgs e)
 		{
+			// 擷取當前畫面
+			SendKeys.SendWait("{PRTSC}");
+			Image img = Clipboard.GetImage();
 
+			// 計算擷取範圍 (整個表單)
+			int x = Location.X;
+			int y = Location.Y;
+			int width = Width;
+			int height = Height;
+			//Console.WriteLine($"{x} {y} {Width} {Height}");
+
+			// 乘以 DPI Ration ，並計算數值是否超過邊界
+			if (mScreenDPIRatio > 0)
+			{
+				x = (int)(x * mScreenDPIRatio) < 0 ? 0 : (int)(x * mScreenDPIRatio);
+				y = (int)(y * mScreenDPIRatio) < 0 ? 0 : (int)(y * mScreenDPIRatio);
+				width = (int)(width * mScreenDPIRatio) > (img.Width - x) ? (img.Width - x) : (int)(width * mScreenDPIRatio);
+				height = (int)(height * mScreenDPIRatio) > (img.Height - y) ? (img.Height - y) : (int)(height * mScreenDPIRatio);
+				//Console.WriteLine($"{x} {y} {Width} {Height}");
+			}
+
+			// 執行擷取
+			Bitmap bmp = new Bitmap(img);
+			Bitmap tmp = bmp.Clone(new Rectangle(x, y, width, height), bmp.PixelFormat);
+
+			// 儲存檔案
+			string fileName = $"{cbYear1.Text}{cbMonth1.Text}{cbDay1.Text}{cbHour1.Text}{cbMinute1.Text}{cbSecond1.Text}_{cbYear2.Text}{cbMonth2.Text}{cbDay2.Text}{cbHour2.Text}{cbMinute2.Text}{cbSecond2.Text}_{lbRobotID.SelectedItem?.ToString()}.jpg";
+			fileName = getFileSavePath(fileName);
+			if (fileName != "")
+				tmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
 		}
 
 		#endregion
