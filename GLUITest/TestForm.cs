@@ -1310,8 +1310,7 @@ namespace GLUITest
 			switch (logLevel)
 			{
 				case 0:
-					if (!tabControl1.TabPages.Contains(tabPage2))
-						tabControl1.TabPages.Add(tabPage2);
+					if (!tabControl1.TabPages.Contains(tabPage2)) tabControl1.TabPages.Add(tabPage2);
 					btnUploadMapToAGV.Enabled = true;
 					btnChangeMap.Enabled = true;
 					Log.LoginLog.Add($"CASTEC Log In!");
@@ -1338,10 +1337,6 @@ namespace GLUITest
 			switch (logLevel)
 			{
 				case 0:
-					if (tabControl1.TabPages.Contains(tabPage2))
-						tabControl1.TabPages.Remove(tabPage2);
-					btnUploadMapToAGV.Enabled = false;
-					btnChangeMap.Enabled = false;
 					Log.LoginLog.Add($"CASTEC Log Out!");
 					break;
 				case 1:
@@ -1354,6 +1349,9 @@ namespace GLUITest
 					Log.LoginLog.Add($"{logLevel} Log Out!");
 					break;
 			}
+			if (tabControl1.TabPages.Contains(tabPage2)) tabControl1.TabPages.Remove(tabPage2);
+			btnUploadMapToAGV.Enabled = false;
+			btnChangeMap.Enabled = false;
 			toolStripMenuItemLogIn.Text = toolStripStatusLabelLogIn.Text = "Log In";
 			toolStripMenuItemLogIn.BackColor = toolStripStatusLabelLogIn.BackColor = System.Drawing.Color.Transparent;
 		}
