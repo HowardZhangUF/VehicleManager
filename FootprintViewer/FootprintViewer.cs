@@ -261,7 +261,7 @@ namespace FootprintViewer
 		#region 方法
 
 		/// <summary>
-		/// 螢幕 DPI 比例，供擷取當前畫面時使用
+		/// 螢幕 DPI 比例，供擷取當前畫面後，欲進行裁減 (Crop) 時使用。目前用不到，因為已經更新擷取當前畫面的方法
 		/// </summary>
 		private float mScreenDPIRatio = 0;
 
@@ -300,7 +300,7 @@ namespace FootprintViewer
 		/// <summary>
 		/// 取得欲儲存的檔案的完整路徑
 		/// </summary>
-		private string getFileSavePath(string defaultFileName)
+		private string getFileSavePath(string defaultFileName = "")
 		{
 			string result = "";
 			SaveFileDialog sfd = new SaveFileDialog();
