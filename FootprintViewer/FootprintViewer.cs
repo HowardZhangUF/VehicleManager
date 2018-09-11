@@ -514,36 +514,12 @@ namespace FootprintViewer
 		/// </summary>
 		private void btnScreenShot_Click(object sender, EventArgs e)
 		{
-			// 擷取當前畫面
-			SendKeys.SendWait("{PRTSC}");
-			Image img = Clipboard.GetImage();
-
-			// 計算擷取範圍 (整個表單)
-			int x = Location.X;
-			int y = Location.Y;
-			int width = Width;
-			int height = Height;
-			//Console.WriteLine($"{x} {y} {Width} {Height}");
-
-			// 乘以 DPI Ration ，並計算數值是否超過邊界
-			if (mScreenDPIRatio > 0)
-			{
-				x = (int)(x * mScreenDPIRatio) < 0 ? 0 : (int)(x * mScreenDPIRatio);
-				y = (int)(y * mScreenDPIRatio) < 0 ? 0 : (int)(y * mScreenDPIRatio);
-				width = (int)(width * mScreenDPIRatio) > (img.Width - x) ? (img.Width - x) : (int)(width * mScreenDPIRatio);
-				height = (int)(height * mScreenDPIRatio) > (img.Height - y) ? (img.Height - y) : (int)(height * mScreenDPIRatio);
-				//Console.WriteLine($"{x} {y} {Width} {Height}");
-			}
-
-			// 執行擷取
-			Bitmap bmp = new Bitmap(img);
-			Bitmap tmp = bmp.Clone(new Rectangle(x, y, width, height), bmp.PixelFormat);
-
-			// 儲存檔案
 			string fileName = $"{cbYear1.Text}{cbMonth1.Text}{cbDay1.Text}{cbHour1.Text}{cbMinute1.Text}{cbSecond1.Text}_{cbYear2.Text}{cbMonth2.Text}{cbDay2.Text}{cbHour2.Text}{cbMinute2.Text}{cbSecond2.Text}_{lbRobotID.SelectedItem?.ToString()}.jpg";
 			fileName = getFileSavePath(fileName);
 			if (fileName != "")
-				tmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			{
+				gluiCtrl1.SaveToPicture(fileName, false);
+			}
 		}
 
 		#endregion
