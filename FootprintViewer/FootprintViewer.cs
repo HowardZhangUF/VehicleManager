@@ -199,7 +199,7 @@ namespace FootprintViewer
 			List<string> filePaths = new List<string>();
 
 			// 若是選取 \\VMLog
-			if (mFootprintDirPath.EndsWith(mFOOTPRINT_DIRECTORY_KEYWORD))
+			if (mFootprintDirPath.Contains(mFOOTPRINT_DIRECTORY_KEYWORD))
 			{
 				for (int i = 0; i < days; ++i)
 				{
