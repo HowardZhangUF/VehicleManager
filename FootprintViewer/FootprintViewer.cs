@@ -41,7 +41,7 @@ namespace FootprintViewer
 			readSettings_TSMC(mSETTINGS_FILE);
 
 			// 註冊 Footprint 圖像識別碼
-			mFootprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
+			mFootprintIconID = GLCMD.CMD.AddMultiStripArrowLine("Path", null);
 
 			// 讀取地圖資料
 			if (txtMapPath.Text != "" && txtMapPath.Text.EndsWith(".map"))
@@ -240,7 +240,7 @@ namespace FootprintViewer
 		private void writeFootprintToMap(string robotID = "")
 		{
 			string[] robotList = mFootprints.getRobotList();
-			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mFootprintIconID, true, o => { o.Clear(); });
+			GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mFootprintIconID, true, o => { if (o.Count() > 0) o.Clear(); });
 			foreach (string tmpRobotID in robotList)
 			{
 				if (robotID == "" || tmpRobotID == robotID)
@@ -673,7 +673,7 @@ namespace FootprintViewer
 			});
 
 			// 重新註冊 Footprint 圖像識別碼
-			mFootprintIconID = GLCMD.CMD.AddMultiPair("Footprint", null);
+			mFootprintIconID = GLCMD.CMD.AddMultiStripArrowLine("Path", null);
 		}
 
 		#endregion
