@@ -514,7 +514,7 @@ namespace FootprintViewer
 		/// </summary>
 		private void btnScreenShot_Click(object sender, EventArgs e)
 		{
-			string fileName = $"{cbYear1.Text}{cbMonth1.Text}{cbDay1.Text}{cbHour1.Text}{cbMinute1.Text}{cbSecond1.Text}_{cbYear2.Text}{cbMonth2.Text}{cbDay2.Text}{cbHour2.Text}{cbMinute2.Text}{cbSecond2.Text}_{lbRobotID.SelectedItem?.ToString()}.jpg";
+			string fileName = $"{cbYear1.Text}{cbMonth1.Text}{cbDay1.Text}{cbHour1.Text}{cbMinute1.Text}{cbSecond1.Text}_{cbYear2.Text}{cbMonth2.Text}{cbDay2.Text}{cbHour2.Text}{cbMinute2.Text}{cbSecond2.Text}_{lbRobotID.SelectedItem?.ToString()}.png";
 			fileName = getFileSavePath(fileName);
 			if (fileName != "")
 			{
@@ -835,6 +835,7 @@ namespace FootprintViewer
 				DateTime time2 = DateTime.ParseExact(tmp[1], "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
 				setDateComboBoxSelectItem("1", time1);
 				setDateComboBoxSelectItem("2", time2);
+				btnSetTimeInterval_Click(null, null);
 			}
 		}
 
