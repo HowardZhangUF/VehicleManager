@@ -433,8 +433,10 @@
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Margin = new System.Windows.Forms.Padding(4);
+			this.MinimizeBox = false;
 			this.Name = "frmTest";
 			this.Text = "GLUITest";
+			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmTest_FormClosing);
 			this.Load += new System.EventHandler(this.frmTest_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dgvInfo)).EndInit();
