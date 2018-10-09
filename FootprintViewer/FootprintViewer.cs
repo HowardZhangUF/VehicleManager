@@ -75,14 +75,14 @@ namespace FootprintViewer
 		private const string mSETTINGS_FILE = "FootprintViewer Settings.ini";
 
 		/// <summary>
-		/// Footprint 資料夾關鍵字
+		/// Footprint 資料夾關鍵字 (iTS)
 		/// </summary>
-		private const string mFOOTPRINT_DIRECTORY_KEYWORD = "VMLog";
+		private const string mFOOTPRINT_DIRECTORY_KEYWORD_ITS = "VMLog";
 
 		/// <summary>
-		/// Footprint 檔案關鍵字
+		/// Footprint 檔案關鍵字 (iTS)
 		/// </summary>
-		private const string mFOOTPRINT_FILE_KEYWORD = "Footprint.txt";
+		private const string mFOOTPRINT_FILE_KEYWORD_ITS = "Footprint.txt";
 
 		/// <summary>
 		/// Footprint 資料
@@ -150,7 +150,7 @@ namespace FootprintViewer
 			{
 				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
 				// 若是選取 \\VMLog
-				if (baseDirInfo.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD))
+				if (baseDirInfo.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_ITS))
 				{
 					mFootprintDirPath = path;
 					DateTime nonsense;
@@ -164,7 +164,7 @@ namespace FootprintViewer
 					}
 				}
 				// 若是選取 \\VMLog\\yyMMdd
-				else if (baseDirInfo.Parent.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD) && baseDirInfo.Name.Length == 6)
+				else if (baseDirInfo.Parent.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_ITS) && baseDirInfo.Name.Length == 6)
 				{
 					DateTime time;
 					if (DateTime.TryParseExact(baseDirInfo.Name, "yyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
@@ -199,18 +199,18 @@ namespace FootprintViewer
 			List<string> filePaths = new List<string>();
 
 			// 若是選取 \\VMLog
-			if (mFootprintDirPath.Contains(mFOOTPRINT_DIRECTORY_KEYWORD))
+			if (mFootprintDirPath.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_ITS))
 			{
 				for (int i = 0; i < days; ++i)
 				{
-					string tmp = mFootprintDirPath + "\\" + dateStart.AddDays(i).ToString("yyMMdd") + "\\" + mFOOTPRINT_FILE_KEYWORD;
+					string tmp = mFootprintDirPath + "\\" + dateStart.AddDays(i).ToString("yyMMdd") + "\\" + mFOOTPRINT_FILE_KEYWORD_ITS;
 					if (File.Exists(tmp)) filePaths.Add(tmp);
 				}
 			}
 			// 若是選取 \\VMLog\\yyMMdd
 			else
 			{
-				string tmp = mFootprintDirPath + "\\" + mFOOTPRINT_FILE_KEYWORD;
+				string tmp = mFootprintDirPath + "\\" + mFOOTPRINT_FILE_KEYWORD_ITS;
 				if (File.Exists(tmp)) filePaths.Add(tmp);
 			}
 
@@ -223,7 +223,7 @@ namespace FootprintViewer
 					string[] lines = File.ReadAllLines(filePath);
 					foreach (string line in lines)
 					{
-						List<Footprint> data = Footprint.Analyze(line);
+						List<Footprint> data = Footprint.Analyze_iTS(line);
 						foreach (Footprint fp in data)
 						{
 							if (dateStart < fp.mTime && dateEnd > fp.mTime)
@@ -869,12 +869,13 @@ namespace FootprintViewer
 			mPosition = new TowardPair(x, y, toward);
 		}
 
-		public static List<Footprint> Analyze(string src)
+		public static List<Footprint> Analyze_iTS(string src)
 		{
-			//Format: [2018/09/02 00:00:54.960] [iTS-TSMC,-30016.42,-8586.81,332.36][iTS-300B,-26198.43,-8654.82,124.67]
+			//Format:
+			//[2018/09/02 00:00:54.960] [iTS-TSMC,-30016.42,-8586.81,332.36][iTS-300B,-26198.43,-8654.82,124.67]
 			List<Footprint> fps = new List<Footprint>();
 			string[] datas = src.Split(new string[] { "[", "]" }, StringSplitOptions.RemoveEmptyEntries);
-			if (datas.Count() > 1)
+			if (datas.Count() > 2)
 			{
 				DateTime tmpTime = DateTime.ParseExact(datas[0], "yyyy/MM/dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
 				for (int i = 2; i < datas.Count(); ++i)
