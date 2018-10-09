@@ -526,9 +526,13 @@ namespace FootprintViewer
 				mapPath = getFilePath(Path.GetDirectoryName(txtMapPath.Text));
 			else
 				mapPath = getFilePath();
+			
 			if (mapPath != "" && mapPath.EndsWith(".map"))
 			{
-				gluiCtrl1.LoadMap(mapPath);
+				if (mapPath.ToLower().Contains("lynx"))
+					gluiCtrl1.LoadLynxMap(mapPath);
+				else
+					gluiCtrl1.LoadMap(mapPath);
 				txtMapPath.Text = mapPath;
 			}
 		}
@@ -607,7 +611,10 @@ namespace FootprintViewer
 			// 讀取地圖資料
 			if (txtMapPath.Text != "" && txtMapPath.Text.EndsWith(".map"))
 			{
-				gluiCtrl1.LoadMap(txtMapPath.Text);
+				if (txtMapPath.Text.ToLower().Contains("lynx"))
+					gluiCtrl1.LoadLynxMap(txtMapPath.Text);
+				else
+					gluiCtrl1.LoadMap(txtMapPath.Text);
 			}
 
 			// 讀取 Footprint 資料
