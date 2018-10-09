@@ -85,6 +85,16 @@ namespace FootprintViewer
 		private const string mFOOTPRINT_FILE_KEYWORD_ITS = "Footprint.txt";
 
 		/// <summary>
+		/// Footprint 資料夾關鍵字 (Lynx)
+		/// </summary>
+		private const string mFOOTPRINT_DIRECTORY_KEYWORD_LYNX = "CIMLog";
+
+		/// <summary>
+		/// Footprint 檔案關鍵字 (Lynx)
+		/// </summary>
+		private const string mFOOTPRINT_FILE_KEYWORD_LYNX = "Footprint.log";
+
+		/// <summary>
 		/// Footprint 資料
 		/// </summary>
 		private Footprints mFootprints = new Footprints();
@@ -141,9 +151,22 @@ namespace FootprintViewer
 		/// <summary>
 		/// 讀取 Footprint 資料夾的時間區間(年)，並更新介面的 ComboBox，重置 RobotID 的清單與地圖
 		/// </summary>
+		private bool loadFootprintDirectory(string path)
+		{
+			if (path.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_ITS))
+				return loadFootprintDirectory_iTS(path);
+			else if (path.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_LYNX))
+				return loadFootprintDirectory_Lynx(path);
+			else
+				return false;
+		}
+
+		/// <summary>
+		/// 讀取 Footprint 資料夾的時間區間(年)，並更新介面的 ComboBox，重置 RobotID 的清單與地圖 (iTS)
+		/// </summary>
 		/// 若是讀取 \\VMLog ，並計算底下 yyMMdd 的範圍
 		/// 若是讀取 \\VMLog\\yyMMdd ，則使用 yyMMdd 當作範圍
-		private bool loadFootprintDirectory(string path)
+		private bool loadFootprintDirectory_iTS(string path)
 		{
 			bool result = false;
 			if (Directory.Exists(path))
@@ -187,9 +210,68 @@ namespace FootprintViewer
 		}
 
 		/// <summary>
-		/// 讀取 Footprint 資料，於指定路徑 (VMLog) ，讀取其底下介於指定時間區間的資料夾的 Footprint 資料
+		/// 讀取 Footprint 資料夾的時間區間(年)，並更新介面的 ComboBox，重置 RobotID 的清單與地圖 (Lynx)
+		/// </summary>
+		/// 若是讀取 \\CIMLog ，並計算底下 yyyyMMdd 的範圍
+		/// 若是讀取 \\CIMLog\\yyyyMMdd ，則使用 yyyyMMdd 當作範圍
+		private bool loadFootprintDirectory_Lynx(string path)
+		{
+			bool result = false;
+			if (Directory.Exists(path))
+			{
+				DirectoryInfo baseDirInfo = new DirectoryInfo(path);
+				// 若是選取 \\CIMLog
+				if (baseDirInfo.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_LYNX))
+				{
+					mFootprintDirPath = path;
+					DateTime nonsense;
+					IEnumerable<DirectoryInfo> dirInfos = baseDirInfo.GetDirectories().Where(info => info.Name.Length == 8 && DateTime.TryParseExact(info.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out nonsense));
+					if (dirInfos.Count() > 0)
+					{
+						mFootprintDirDateStart = DateTime.ParseExact(dirInfos.First().Name, "yyyyMMdd", CultureInfo.InvariantCulture);
+						mFootprintDirDateEnd = DateTime.ParseExact(dirInfos.Last().Name, "yyyyMMdd", CultureInfo.InvariantCulture);
+						initializeDateComboBoxes(mFootprintDirDateStart, mFootprintDirDateEnd);
+						result = true;
+					}
+				}
+				// 若是選取 \\CIMLog\\yyyyMMdd
+				else if (baseDirInfo.Parent.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_LYNX) && baseDirInfo.Name.Length == 8)
+				{
+					DateTime time;
+					if (DateTime.TryParseExact(baseDirInfo.Name, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+					{
+						mFootprintDirPath = path;
+						mFootprintDirDateStart = time.Date;
+						mFootprintDirDateEnd = time.Date;
+						initializeDateComboBoxes(mFootprintDirDateStart, mFootprintDirDateEnd);
+						result = true;
+					}
+				}
+
+				// RobotID 清單清空
+				if (lbRobotID.Items.Count > 0) lbRobotID.Items.Clear();
+
+				// 地圖 Footprint 清空
+				GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mFootprintIconID, true, o => { if (o.Count() > 0) o.Clear(); });
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 讀取 Footprint 資料，於指定路徑，讀取其底下介於指定時間區間的資料夾的 Footprint 資料
 		/// </summary>
 		private void loadFootprintData(DateTime dateStart, DateTime dateEnd)
+		{
+			if (mFootprintDirPath.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_ITS))
+				loadFootprintData_iTS(dateStart, dateEnd);
+			else if (mFootprintDirPath.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_LYNX))
+				loadFootprintData_Lynx(dateStart, dateEnd);
+		}
+
+		/// <summary>
+		/// 讀取 Footprint 資料，於指定路徑 (VMLog) ，讀取其底下介於指定時間區間的資料夾的 Footprint 資料 (iTS)
+		/// </summary>
+		private void loadFootprintData_iTS(DateTime dateStart, DateTime dateEnd)
 		{
 			// 計算要處理的天數
 			int days = dateEnd.DayOfYear - dateStart.DayOfYear;
@@ -197,9 +279,9 @@ namespace FootprintViewer
 
 			// 計算要處理的檔案的路徑
 			List<string> filePaths = new List<string>();
-
+			DirectoryInfo baseDirInfo = new DirectoryInfo(mFootprintDirPath);
 			// 若是選取 \\VMLog
-			if (mFootprintDirPath.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_ITS))
+			if (baseDirInfo.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_ITS))
 			{
 				for (int i = 0; i < days; ++i)
 				{
@@ -224,6 +306,54 @@ namespace FootprintViewer
 					foreach (string line in lines)
 					{
 						List<Footprint> data = Footprint.Analyze_iTS(line);
+						foreach (Footprint fp in data)
+						{
+							if (dateStart < fp.mTime && dateEnd > fp.mTime)
+								mFootprints.add(fp);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// 讀取 Footprint 資料，於指定路徑 (CIMLog) ，讀取其底下介於指定時間區間的資料夾的 Footprint 資料 (Lynx)
+		/// </summary>
+		private void loadFootprintData_Lynx(DateTime dateStart, DateTime dateEnd)
+		{
+			// 計算要處理的天數
+			int days = dateEnd.DayOfYear - dateStart.DayOfYear;
+			days += 1; // 若起始天於結束天相等，至少還是要讀取一天的資料
+
+			// 計算要處理的檔案的路徑
+			List<string> filePaths = new List<string>();
+			DirectoryInfo baseDirInfo = new DirectoryInfo(mFootprintDirPath);
+			// 若是選取 \\CIMLog
+			if (baseDirInfo.Name.Contains(mFOOTPRINT_DIRECTORY_KEYWORD_LYNX))
+			{
+				for (int i = 0; i < days; ++i)
+				{
+					string tmp = mFootprintDirPath + "\\" + dateStart.AddDays(i).ToString("yyyyMMdd") + "\\" + mFOOTPRINT_FILE_KEYWORD_LYNX;
+					if (File.Exists(tmp)) filePaths.Add(tmp);
+				}
+			}
+			// 若是選取 \\CIMLog\\yyyyMMdd
+			else
+			{
+				string tmp = mFootprintDirPath + "\\" + mFOOTPRINT_FILE_KEYWORD_LYNX;
+				if (File.Exists(tmp)) filePaths.Add(tmp);
+			}
+
+			// 從檔案讀取 Footprint 資料
+			mFootprints.clear();
+			foreach (string filePath in filePaths)
+			{
+				if (File.Exists(filePath))
+				{
+					string[] lines = File.ReadAllLines(filePath);
+					foreach (string line in lines)
+					{
+						List<Footprint> data = Footprint.Analyze_Lynx(line);
 						foreach (Footprint fp in data)
 						{
 							if (dateStart < fp.mTime && dateEnd > fp.mTime)
@@ -879,6 +1009,29 @@ namespace FootprintViewer
 			{
 				DateTime tmpTime = DateTime.ParseExact(datas[0], "yyyy/MM/dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
 				for (int i = 2; i < datas.Count(); ++i)
+				{
+					string[] tmp = datas[i].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+					if (tmp.Count() == 4)
+					{
+						fps.Add(new Footprint(tmpTime, tmp[0], double.Parse(tmp[1]), double.Parse(tmp[2]), double.Parse(tmp[3])));
+					}
+				}
+			}
+			return fps;
+		}
+
+		public static List<Footprint> Analyze_Lynx(string src)
+		{
+			//Format:
+			//2018/10/09 10:46:17.537 [Footprint] Footprint Record Started!
+			//2018/10/09 10:46:25.479 [Footprint] [iO_01,1946,-3314,55]
+			//2018/10/09 10:46:25.479 [Footprint] [iO_01,1946,-3314,55][AGV03,1666,-2915,251]
+			List<Footprint> fps = new List<Footprint>();
+			string[] datas = src.Split(new string[] { "[", "]" }, StringSplitOptions.RemoveEmptyEntries);
+			if (datas.Count() > 3)
+			{
+				DateTime tmpTime = DateTime.ParseExact(datas[0].Trim(), "yyyy/MM/dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+				for (int i = 3; i < datas.Count(); ++i)
 				{
 					string[] tmp = datas[i].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 					if (tmp.Count() == 4)
