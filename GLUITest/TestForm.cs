@@ -17,17 +17,42 @@ using LittleGhost;
 using LogManager;
 using static LogManager.LogManager;
 using System.Diagnostics;
+using Hasp;
 
 namespace GLUITest
 {
 	public partial class frmTest : Form
     {
-        public frmTest()
+		/// <summary>
+		/// Dongle 物件
+		/// </summary>
+		private CtHasp mHasp = new CtHasp();
+
+		/// <summary>
+		/// 判斷是否檢查 Dongle 模式
+		/// </summary>
+		private bool DongleMode = true;
+
+		public frmTest()
         {
             InitializeComponent();
 
-            // 載入設定檔
-            StyleManager.LoadStyle("Style.ini");
+			string[] para = Environment.GetCommandLineArgs();
+			for (int i = 0; i < para.Length; i++)
+			{
+				switch (para[i].ToLower())
+				{
+					case "debug":
+						DongleMode = false;
+						break;
+					default:
+						DongleMode = true;
+						break;
+				}
+			}
+
+			// 載入設定檔
+			StyleManager.LoadStyle("Style.ini");
 
 			// 加入選單
 			cmbSelectType.Items.Add("Point");
@@ -61,7 +86,15 @@ namespace GLUITest
 
         private void frmTest_Load(object sender, EventArgs e)
         {
-            GUI_InitializeAGVInfoMonitor();
+			if (DongleMode)
+			{
+				if (!mHasp.IsDongleCorrect())
+				{
+					Close();
+				}
+			}
+
+			GUI_InitializeAGVInfoMonitor();
 
 			startCalculateIdleTime();
 			subscribeControlsMouseEnterEvent();
