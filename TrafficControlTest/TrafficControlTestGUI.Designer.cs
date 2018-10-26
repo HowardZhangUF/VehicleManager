@@ -32,15 +32,15 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpMonitor = new System.Windows.Forms.TabPage();
 			this.tpDebugMsg = new System.Windows.Forms.TabPage();
+			this.chkAGVInfoManagerMsg = new System.Windows.Forms.CheckBox();
+			this.chkDebugMessage3 = new System.Windows.Forms.CheckBox();
 			this.chkRtxtDebugMsgAutoScroll = new System.Windows.Forms.CheckBox();
-			this.chkDebugMessage1 = new System.Windows.Forms.CheckBox();
+			this.chkAGVMonitorMsg = new System.Windows.Forms.CheckBox();
 			this.rtxtDebugMessage = new System.Windows.Forms.RichTextBox();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuItemLoadMap = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-			this.chkDebugMessage3 = new System.Windows.Forms.CheckBox();
-			this.chkDebugMessage2 = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.tpMonitor.SuspendLayout();
 			this.tpDebugMsg.SuspendLayout();
@@ -91,10 +91,10 @@
 			// 
 			// tpDebugMsg
 			// 
-			this.tpDebugMsg.Controls.Add(this.chkDebugMessage2);
+			this.tpDebugMsg.Controls.Add(this.chkAGVInfoManagerMsg);
 			this.tpDebugMsg.Controls.Add(this.chkDebugMessage3);
 			this.tpDebugMsg.Controls.Add(this.chkRtxtDebugMsgAutoScroll);
-			this.tpDebugMsg.Controls.Add(this.chkDebugMessage1);
+			this.tpDebugMsg.Controls.Add(this.chkAGVMonitorMsg);
 			this.tpDebugMsg.Controls.Add(this.rtxtDebugMessage);
 			this.tpDebugMsg.Location = new System.Drawing.Point(4, 29);
 			this.tpDebugMsg.Name = "tpDebugMsg";
@@ -104,10 +104,36 @@
 			this.tpDebugMsg.Text = "Debug Message";
 			this.tpDebugMsg.UseVisualStyleBackColor = true;
 			// 
+			// chkAGVInfoManagerMsg
+			// 
+			this.chkAGVInfoManagerMsg.AutoSize = true;
+			this.chkAGVInfoManagerMsg.Checked = true;
+			this.chkAGVInfoManagerMsg.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkAGVInfoManagerMsg.Location = new System.Drawing.Point(6, 31);
+			this.chkAGVInfoManagerMsg.Name = "chkAGVInfoManagerMsg";
+			this.chkAGVInfoManagerMsg.Size = new System.Drawing.Size(141, 19);
+			this.chkAGVInfoManagerMsg.TabIndex = 4;
+			this.chkAGVInfoManagerMsg.Text = "AGV Info Manager";
+			this.chkAGVInfoManagerMsg.UseVisualStyleBackColor = true;
+			this.chkAGVInfoManagerMsg.CheckedChanged += new System.EventHandler(this.chkAGVInfoManagerMsg_CheckedChanged);
+			// 
+			// chkDebugMessage3
+			// 
+			this.chkDebugMessage3.AutoSize = true;
+			this.chkDebugMessage3.Location = new System.Drawing.Point(6, 56);
+			this.chkDebugMessage3.Name = "chkDebugMessage3";
+			this.chkDebugMessage3.Size = new System.Drawing.Size(129, 19);
+			this.chkDebugMessage3.TabIndex = 3;
+			this.chkDebugMessage3.Text = "Debug Message 3";
+			this.chkDebugMessage3.UseVisualStyleBackColor = true;
+			// 
 			// chkRtxtDebugMsgAutoScroll
 			// 
 			this.chkRtxtDebugMsgAutoScroll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.chkRtxtDebugMsgAutoScroll.AutoSize = true;
+			this.chkRtxtDebugMsgAutoScroll.Checked = true;
+			this.chkRtxtDebugMsgAutoScroll.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkRtxtDebugMsgAutoScroll.Enabled = false;
 			this.chkRtxtDebugMsgAutoScroll.Location = new System.Drawing.Point(891, 56);
 			this.chkRtxtDebugMsgAutoScroll.Name = "chkRtxtDebugMsgAutoScroll";
 			this.chkRtxtDebugMsgAutoScroll.Size = new System.Drawing.Size(95, 19);
@@ -115,15 +141,18 @@
 			this.chkRtxtDebugMsgAutoScroll.Text = "Auto Scroll";
 			this.chkRtxtDebugMsgAutoScroll.UseVisualStyleBackColor = true;
 			// 
-			// chkDebugMessage1
+			// chkAGVMonitorMsg
 			// 
-			this.chkDebugMessage1.AutoSize = true;
-			this.chkDebugMessage1.Location = new System.Drawing.Point(6, 6);
-			this.chkDebugMessage1.Name = "chkDebugMessage1";
-			this.chkDebugMessage1.Size = new System.Drawing.Size(129, 19);
-			this.chkDebugMessage1.TabIndex = 1;
-			this.chkDebugMessage1.Text = "Debug Message 1";
-			this.chkDebugMessage1.UseVisualStyleBackColor = true;
+			this.chkAGVMonitorMsg.AutoSize = true;
+			this.chkAGVMonitorMsg.Checked = true;
+			this.chkAGVMonitorMsg.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkAGVMonitorMsg.Location = new System.Drawing.Point(6, 6);
+			this.chkAGVMonitorMsg.Name = "chkAGVMonitorMsg";
+			this.chkAGVMonitorMsg.Size = new System.Drawing.Size(110, 19);
+			this.chkAGVMonitorMsg.TabIndex = 1;
+			this.chkAGVMonitorMsg.Text = "AGV Monitor";
+			this.chkAGVMonitorMsg.UseVisualStyleBackColor = true;
+			this.chkAGVMonitorMsg.CheckedChanged += new System.EventHandler(this.chkAGVMonitorMsg_CheckedChanged);
 			// 
 			// rtxtDebugMessage
 			// 
@@ -131,8 +160,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.rtxtDebugMessage.BackColor = System.Drawing.Color.Black;
+			this.rtxtDebugMessage.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.rtxtDebugMessage.ForeColor = System.Drawing.SystemColors.Control;
 			this.rtxtDebugMessage.Location = new System.Drawing.Point(6, 81);
 			this.rtxtDebugMessage.Name = "rtxtDebugMessage";
+			this.rtxtDebugMessage.ReadOnly = true;
 			this.rtxtDebugMessage.Size = new System.Drawing.Size(980, 408);
 			this.rtxtDebugMessage.TabIndex = 0;
 			this.rtxtDebugMessage.Text = "";
@@ -159,7 +191,7 @@
 			// menuItemLoadMap
 			// 
 			this.menuItemLoadMap.Name = "menuItemLoadMap";
-			this.menuItemLoadMap.Size = new System.Drawing.Size(181, 26);
+			this.menuItemLoadMap.Size = new System.Drawing.Size(154, 26);
 			this.menuItemLoadMap.Text = "Load Map";
 			// 
 			// statusStrip1
@@ -170,26 +202,6 @@
 			this.statusStrip1.Size = new System.Drawing.Size(1024, 22);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
-			// 
-			// chkDebugMessage3
-			// 
-			this.chkDebugMessage3.AutoSize = true;
-			this.chkDebugMessage3.Location = new System.Drawing.Point(6, 56);
-			this.chkDebugMessage3.Name = "chkDebugMessage3";
-			this.chkDebugMessage3.Size = new System.Drawing.Size(129, 19);
-			this.chkDebugMessage3.TabIndex = 3;
-			this.chkDebugMessage3.Text = "Debug Message 3";
-			this.chkDebugMessage3.UseVisualStyleBackColor = true;
-			// 
-			// chkDebugMessage2
-			// 
-			this.chkDebugMessage2.AutoSize = true;
-			this.chkDebugMessage2.Location = new System.Drawing.Point(6, 31);
-			this.chkDebugMessage2.Name = "chkDebugMessage2";
-			this.chkDebugMessage2.Size = new System.Drawing.Size(129, 19);
-			this.chkDebugMessage2.TabIndex = 4;
-			this.chkDebugMessage2.Text = "Debug Message 2";
-			this.chkDebugMessage2.UseVisualStyleBackColor = true;
 			// 
 			// TrafficControlTestGUI
 			// 
@@ -225,9 +237,9 @@
 		private System.Windows.Forms.ToolStripMenuItem menuItemLoadMap;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.RichTextBox rtxtDebugMessage;
-		private System.Windows.Forms.CheckBox chkDebugMessage1;
+		private System.Windows.Forms.CheckBox chkAGVMonitorMsg;
 		private System.Windows.Forms.CheckBox chkRtxtDebugMsgAutoScroll;
-		private System.Windows.Forms.CheckBox chkDebugMessage2;
+		private System.Windows.Forms.CheckBox chkAGVInfoManagerMsg;
 		private System.Windows.Forms.CheckBox chkDebugMessage3;
 	}
 }

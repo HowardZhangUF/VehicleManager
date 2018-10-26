@@ -50,6 +50,8 @@
     <Compile Include="AGVInfo.cs" />
     <Compile Include="AGVInfoManager.cs" />
     <Compile Include="AGVMonitor.cs" />
+    <Compile Include="DebugMessage.cs" />
+    <Compile Include="Extension.cs" />
     <Compile Include="TrafficControlTestGUI.cs">
       <SubType>Form</SubType>
     </Compile>

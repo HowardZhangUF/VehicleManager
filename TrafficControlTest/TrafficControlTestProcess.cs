@@ -26,6 +26,9 @@ namespace TrafficControlTest
 			UnsubscribeAGVMonitorEvent();
 		}
 
+		public delegate void DebugMessageEventHandler(DateTime timeStamp, string category, string message);
+		public event DebugMessageEventHandler DebugMessage;
+
 		public event AGVInfoManager.AGVAddedEventHandler AGVAdded;
 
 		public event AGVInfoManager.AGVRemovedEventHandler AGVRemoved;
@@ -114,25 +117,45 @@ namespace TrafficControlTest
 
 		private void AGVInfoManager_AGVAdded(DateTime occurTime, string agvName, string ipPort, AGVInfo agvInfo)
 		{
-			if (DisplayAGVInfoManagerDebugMessage) Console.WriteLine(occurTime.ToString(TIME_FORMAT_DETAIL) + $" - AGV Added - Name: {agvName} IPPort: {ipPort}");
+			if (DisplayAGVInfoManagerDebugMessage)
+			{
+				string message = $"AGV Added. Name: {agvName} IPPort: {ipPort}";
+				DebugMessage?.Invoke(occurTime, "AGV Info Manager", message);
+			}
+
 			AGVAdded?.Invoke(occurTime, agvName, ipPort, agvInfo);
 		}
 
 		private void AGVInfoManager_AGVRemoved(DateTime occurTime, string agvName, string ipPort, AGVInfo agvInfo)
 		{
-			if (DisplayAGVInfoManagerDebugMessage) Console.WriteLine(occurTime.ToString(TIME_FORMAT_DETAIL) + $" - AGV Removed - Name: {agvName} IPPort: {ipPort}");
+			if (DisplayAGVInfoManagerDebugMessage)
+			{
+				string message = $"AGV Removed. Name: {agvName} IPPort: {ipPort}";
+				DebugMessage?.Invoke(occurTime, "AGV Info Manager", message);
+			}
+
 			AGVRemoved?.Invoke(occurTime, agvName, ipPort, agvInfo);
 		}
 
 		private void AGVInfoManager_AGVStatusUpdated(DateTime occurTime, string agvName, string ipPort, AGVInfo agvInfo)
 		{
-			if (DisplayAGVInfoManagerDebugMessage) Console.WriteLine(occurTime.ToString(TIME_FORMAT_DETAIL) + $" - AGV Status Updated - Name: {agvName} IPPort: {ipPort}");
+			if (DisplayAGVInfoManagerDebugMessage)
+			{
+				string message = $"AGV Status Updated. Name: {agvName} IPPort: {ipPort}";
+				DebugMessage?.Invoke(occurTime, "AGV Info Manager", message);
+			}
+
 			AGVStatusUpdated?.Invoke(occurTime, agvName, ipPort, agvInfo);
 		}
 
 		private void AGVInfoManager_AGVPathUpdated(DateTime occurTime, string agvName, string ipPort, AGVInfo agvInfo)
 		{
-			if (DisplayAGVInfoManagerDebugMessage) Console.WriteLine(occurTime.ToString(TIME_FORMAT_DETAIL) + $" - AGV Path Updated - Name: {agvName} IPPort: {ipPort}");
+			if (DisplayAGVInfoManagerDebugMessage)
+			{
+				string message = $"AGV Path Updated. Name: {agvName} IPPort: {ipPort}";
+				DebugMessage?.Invoke(occurTime, "AGV Info Manager", message);
+			}
+
 			AGVPathUpdated?.Invoke(occurTime, agvName, ipPort, agvInfo);
 		}
 
@@ -224,17 +247,30 @@ namespace TrafficControlTest
 
 		private void AGVMonitor_AGVMonitorStarted(DateTime occurTime)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(occurTime.ToString(TIME_FORMAT_DETAIL) + " - AGV Monitor Started.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = "AGV Monitor Started.";
+				DebugMessage?.Invoke(occurTime, "AGV Monitor", message);
+			}
 		}
 
 		private void AGVMonitor_AGVMonitorStopped(DateTime occurTime)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(occurTime.ToString(TIME_FORMAT_DETAIL) + " - AGV Monitor Stopped.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = "AGV Monitor Stopped.";
+				DebugMessage?.Invoke(occurTime, "AGV Monitor", message);
+			}
 		}
 
 		private void AGVMonitor_AGVConnectStatusChanged(DateTime occurTime, EndPointInfo remoteInfo, EConnectStatus newStatus)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(occurTime.ToString(TIME_FORMAT_DETAIL) + $" - {remoteInfo.ToString()} - Connect Status Change to: {newStatus.ToString()}.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = $"Connect Status Changed. IP: {remoteInfo.ToString()} New Status: {newStatus.ToString()}.";
+				DebugMessage?.Invoke(occurTime, "AGV Monitor", message);
+			}
+
 			if (newStatus == EConnectStatus.Disconnect)
 			{
 				if (IsAGVExistByIPPort(remoteInfo.ToString()))
@@ -246,39 +282,69 @@ namespace TrafficControlTest
 
 		private void AGVMonitor_AGVMonitorListenStatusChanged(DateTime occurTime, EListenStatus newStatus)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(occurTime.ToString(TIME_FORMAT_DETAIL) + $" - AGV Monitor - Listen Status Change to: {newStatus}.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = $"Listen Status Changed. New Status: {newStatus.ToString()}.";
+				DebugMessage?.Invoke(occurTime, "AGV Monitor", message);
+			}
 		}
 
 		private void AGVMonitor_ReceivedAGVStatusData(DateTime receivedTime, EndPointInfo remoteInfo, AGVStatus data)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(receivedTime.ToString(TIME_FORMAT_DETAIL) + $" - Received - {remoteInfo.ToString()} - AGVStatus.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = $"Received AGV Status. IP: {remoteInfo.ToString()}.";
+				DebugMessage?.Invoke(receivedTime, "AGV Monitor", message);
+			}
+
 			SetAGVInfo(remoteInfo, data);
 		}
 
 		private void AGVMonitor_ReceivedAGVPathData(DateTime receivedTime, EndPointInfo remoteInfo, AGVPath data)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(receivedTime.ToString(TIME_FORMAT_DETAIL) + $" - Received - {remoteInfo.ToString()} - AGVPath.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = $"Received AGV Path. IP: {remoteInfo.ToString()}.";
+				DebugMessage?.Invoke(receivedTime, "AGV Monitor", message);
+			}
+
 			SetAGVInfo(remoteInfo, data);
 		}
 
 		private void AGVMonitor_ReceivedRequestMapListData(DateTime receivedTime, EndPointInfo remoteInfo, RequestMapList data)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(receivedTime.ToString(TIME_FORMAT_DETAIL) + $" - Received - {remoteInfo.ToString()} - RequestMapList.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = $"Received RequestMapList Command. IP: {remoteInfo.ToString()}.";
+				DebugMessage?.Invoke(receivedTime, "AGV Monitor", message);
+			}
 		}
 
 		private void AGVMonitor_ReceivedGetMapData(DateTime receivedTime, EndPointInfo remoteInfo, GetMap data)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(receivedTime.ToString(TIME_FORMAT_DETAIL) + $" - Received - {remoteInfo.ToString()} - GetMap.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = $"Received GetMap Command. IP: {remoteInfo.ToString()}.";
+				DebugMessage?.Invoke(receivedTime, "AGV Monitor", message);
+			}
 		}
 
 		private void AGVMonitor_ReceivedUploadMapToAGVData(DateTime receivedTime, EndPointInfo remoteInfo, UploadMapToAGV data)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(receivedTime.ToString(TIME_FORMAT_DETAIL) + $" - Received - {remoteInfo.ToString()} - UploadMapToAGV.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = $"Received UploadMapToAGV Command. IP: {remoteInfo.ToString()}.";
+				DebugMessage?.Invoke(receivedTime, "AGV Monitor", message);
+			}
 		}
 
 		private void AGVMonitor_ReceivedChangeMapData(DateTime receivedTime, EndPointInfo remoteInfo, ChangeMap data)
 		{
-			if (DisplayAGVMonitorDebugMessage) Console.WriteLine(receivedTime.ToString(TIME_FORMAT_DETAIL) + $" - Received - {remoteInfo.ToString()} - ChangeMap.");
+			if (DisplayAGVMonitorDebugMessage)
+			{
+				string message = $"Received ChangeMap Command. IP: {remoteInfo.ToString()}.";
+				DebugMessage?.Invoke(receivedTime, "AGV Monitor", message);
+			}
 		}
 
 		#endregion

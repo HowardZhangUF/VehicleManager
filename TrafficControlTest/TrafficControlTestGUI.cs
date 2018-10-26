@@ -26,6 +26,7 @@ namespace TrafficControlTest
 
 		private void SubscribeProcessEvent()
 		{
+			process.DebugMessage += Process_DebugMessage;
 			process.AGVAdded += Process_AGVAdded;
 			process.AGVRemoved += Process_AGVRemoved;
 			process.AGVStatusUpdated += Process_AGVStatusUpdated;
@@ -34,6 +35,7 @@ namespace TrafficControlTest
 
 		private void UnsubscribeProcessEvent()
 		{
+			process.DebugMessage -= Process_DebugMessage;
 			process.AGVAdded -= Process_AGVAdded;
 			process.AGVRemoved -= Process_AGVRemoved;
 			process.AGVStatusUpdated -= Process_AGVStatusUpdated;
@@ -75,6 +77,17 @@ namespace TrafficControlTest
 		{
 			if (agvInfo.AGVIconID != -1) GLCMD.CMD.DeleteAGV(agvInfo.AGVIconID);
 			if (agvInfo.PathIconID != -1) GLCMD.CMD.DeleteMulti(agvInfo.PathIconID);
+		}
+
+		private void Process_DebugMessage(DateTime timeStamp, string category, string message)
+		{
+			rtxtDebugMessage.InvokeIfNecessary(() =>
+			{
+				if (chkRtxtDebugMsgAutoScroll.Checked)
+					rtxtDebugMessage.AppendText(new DebugMessage(timeStamp, category, message).ToString() + "\n");
+				else
+					rtxtDebugMessage.Text += new DebugMessage(timeStamp, category, message).ToString() + "\n";
+			});
 		}
 
 		private void Process_AGVAdded(DateTime occurTime, string agvName, string ipPort, AGVInfo agvInfo)
@@ -141,6 +154,24 @@ namespace TrafficControlTest
 				EraseIcon(tmp);
 				RegisterIconID(tmp);
 			}
+		}
+
+		private void chkAGVMonitorMsg_CheckedChanged(object sender, EventArgs e)
+		{
+			if (chkAGVMonitorMsg.Checked)
+				process.DisplayAGVMonitorDebugMessage = true;
+			else
+				process.DisplayAGVMonitorDebugMessage = false;
+			rtxtDebugMessage.Focus();
+		}
+
+		private void chkAGVInfoManagerMsg_CheckedChanged(object sender, EventArgs e)
+		{
+			if (chkAGVInfoManagerMsg.Checked)
+				process.DisplayAGVInfoManagerDebugMessage = true;
+			else
+				process.DisplayAGVInfoManagerDebugMessage = false;
+			rtxtDebugMessage.Focus();
 		}
 	}
 }
