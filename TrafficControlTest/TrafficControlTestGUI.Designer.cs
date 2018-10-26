@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpMonitor = new System.Windows.Forms.TabPage();
@@ -41,10 +42,13 @@
 			this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuItemLoadMap = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.cmenuRichTextboxProcess = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.cmenuItemClearRichTextbox = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tpMonitor.SuspendLayout();
 			this.tpDebugMsg.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
+			this.cmenuRichTextboxProcess.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gluiCtrl1
@@ -160,6 +164,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.rtxtDebugMessage.BackColor = System.Drawing.Color.Black;
+			this.rtxtDebugMessage.ContextMenuStrip = this.cmenuRichTextboxProcess;
 			this.rtxtDebugMessage.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.rtxtDebugMessage.ForeColor = System.Drawing.SystemColors.Control;
 			this.rtxtDebugMessage.Location = new System.Drawing.Point(6, 81);
@@ -203,6 +208,21 @@
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
+			// cmenuRichTextboxProcess
+			// 
+			this.cmenuRichTextboxProcess.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.cmenuRichTextboxProcess.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmenuItemClearRichTextbox});
+			this.cmenuRichTextboxProcess.Name = "cmenuRichTextboxProcess";
+			this.cmenuRichTextboxProcess.Size = new System.Drawing.Size(115, 28);
+			// 
+			// cmenuItemClearRichTextbox
+			// 
+			this.cmenuItemClearRichTextbox.Name = "cmenuItemClearRichTextbox";
+			this.cmenuItemClearRichTextbox.Size = new System.Drawing.Size(175, 24);
+			this.cmenuItemClearRichTextbox.Text = "Clear";
+			this.cmenuItemClearRichTextbox.Click += new System.EventHandler(this.cmenuItemClearRichTextbox_Click);
+			// 
 			// TrafficControlTestGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -221,6 +241,7 @@
 			this.tpDebugMsg.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			this.cmenuRichTextboxProcess.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -241,6 +262,8 @@
 		private System.Windows.Forms.CheckBox chkRtxtDebugMsgAutoScroll;
 		private System.Windows.Forms.CheckBox chkAGVInfoManagerMsg;
 		private System.Windows.Forms.CheckBox chkDebugMessage3;
+		private System.Windows.Forms.ContextMenuStrip cmenuRichTextboxProcess;
+		private System.Windows.Forms.ToolStripMenuItem cmenuItemClearRichTextbox;
 	}
 }
 

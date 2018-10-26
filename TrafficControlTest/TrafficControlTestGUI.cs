@@ -173,5 +173,10 @@ namespace TrafficControlTest
 				process.DisplayAGVInfoManagerDebugMessage = false;
 			rtxtDebugMessage.Focus();
 		}
+
+		private void cmenuItemClearRichTextbox_Click(object sender, EventArgs e)
+		{
+			rtxtDebugMessage.Clear();
+		}
 	}
 }
