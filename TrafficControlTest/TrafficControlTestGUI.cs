@@ -178,5 +178,12 @@ namespace TrafficControlTest
 		{
 			rtxtDebugMessage.Clear();
 		}
+
+		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// 切換分頁到 DebugMessage 時，自動 Focus 到 RichTextbox 上，好讓其能自動捲動
+			if (tabControl1.SelectedTab == tpDebugMsg)
+				rtxtDebugMessage.Focus();
+		}
 	}
 }
