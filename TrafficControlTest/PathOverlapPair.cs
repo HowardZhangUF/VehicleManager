@@ -17,6 +17,15 @@ namespace TrafficControlTest
 		public AGVInfo AGV2 = null;
 		public List<Rectangle> OverlapRegions = null;
 		private PathOverlapPair() { }
+		public override string ToString()
+		{
+			string tmp = "";
+			tmp += $"{AGV1.Status.Name}'s path & {AGV2.Status.Name}'s path are overlapped.\n";
+			tmp += $"The amount of overlap regions is {OverlapRegions.Count()}\n";
+			for (int i = 0; i < OverlapRegions.Count(); ++i)
+				tmp += $"The overlap region {i + 1} is {OverlapRegions[i].ToString()}\n";
+			return tmp;
+		}
 
 		/// <summary>計算路徑線是否有重疊</summary>
 		public static PathOverlapPair IsPathOverlap(PathRegionOverlapPair pair)
