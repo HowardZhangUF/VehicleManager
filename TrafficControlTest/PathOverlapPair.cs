@@ -18,7 +18,7 @@ namespace TrafficControlTest
 		public List<Rectangle> OverlapRegions = null;
 		private PathOverlapPair() { }
 
-		/// <summary>路徑線是否有重疊</summary>
+		/// <summary>計算路徑線是否有重疊</summary>
 		public static PathOverlapPair IsPathOverlap(PathRegionOverlapPair pair)
 		{
 			PathOverlapPair result = null;

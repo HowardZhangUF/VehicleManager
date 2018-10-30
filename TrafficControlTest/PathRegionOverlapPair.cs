@@ -13,6 +13,8 @@ namespace TrafficControlTest
 		public AGVInfo AGV2 = null;
 		public Rectangle OverlapRegion = null;
 		private PathRegionOverlapPair() { }
+
+		/// <summary>計算路徑線區域是否有重疊</summary>
 		public static PathRegionOverlapPair IsPathRegionOverlap(AGVInfo agv1, AGVInfo agv2)
 		{
 			PathRegionOverlapPair result = null;
