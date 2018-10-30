@@ -55,6 +55,12 @@ namespace TrafficControlTest
 			this.YMax = y_max;
 		}
 
+		/// <summary>確認點是否在自身範圍內</summary>
+		public bool IsPointInside(int x, int y)
+		{
+			return (x >= XMin && x <= XMax && y >= YMin && y <= YMax);
+		}
+
 		/// <summary>清除</summary>
 		public void Clear()
 		{
