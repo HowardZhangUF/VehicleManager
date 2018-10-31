@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootprintViewer", "Footprin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficControlTest", "TrafficControlTest\TrafficControlTest.csproj", "{46BE9935-F474-4C10-8E8C-7341AAC51640}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleSimulator", "VehicleSimulator\VehicleSimulator.csproj", "{163D754B-08E3-4070-A8A5-712986B19257}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{46BE9935-F474-4C10-8E8C-7341AAC51640}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46BE9935-F474-4C10-8E8C-7341AAC51640}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46BE9935-F474-4C10-8E8C-7341AAC51640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{163D754B-08E3-4070-A8A5-712986B19257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163D754B-08E3-4070-A8A5-712986B19257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163D754B-08E3-4070-A8A5-712986B19257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163D754B-08E3-4070-A8A5-712986B19257}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,6 +172,7 @@ Global
 		{67EDE669-FF71-41EC-BA78-0D167FB5D989} = {3E3A17E3-6786-4993-9257-CF76CEF4755E}
 		{390DC0BB-01D8-48B3-A7C3-84C5B3355DEE} = {3E3A17E3-6786-4993-9257-CF76CEF4755E}
 		{46BE9935-F474-4C10-8E8C-7341AAC51640} = {3E3A17E3-6786-4993-9257-CF76CEF4755E}
+		{163D754B-08E3-4070-A8A5-712986B19257} = {3E3A17E3-6786-4993-9257-CF76CEF4755E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44F82E87-1AD7-4303-B123-E6A74B69BA6F}
