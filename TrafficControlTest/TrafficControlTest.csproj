@@ -70,7 +70,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrafficControlTestProcess.cs" />
-    <Compile Include="TrafficManager.cs" />
+    <Compile Include="TrafficController.cs" />
     <Compile Include="Vector2D.cs" />
     <EmbeddedResource Include="TrafficControlTestGUI.resx">
       <DependentUpon>TrafficControlTestGUI.cs</DependentUpon>

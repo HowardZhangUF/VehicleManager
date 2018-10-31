@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TrafficControlTest
 {
-	class TrafficManager
+	class TrafficController
 	{
 		public static void test()
 		{
