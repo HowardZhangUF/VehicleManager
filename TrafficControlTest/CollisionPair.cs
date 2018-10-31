@@ -31,6 +31,7 @@ namespace TrafficControlTest
 			tmp += $"The collision will begin in {CollisionBeginTime} seconds.\n";
 			tmp += $"The {AGV1.Status.Name} Enter Direction: {EnterVectorOfAGV1.ToString()}";
 			tmp += $"The {AGV2.Status.Name} Enter Direction: {EnterVectorOfAGV2.ToString()}";
+			tmp += $"Angle Between Two Direction: {Vector2D.CalculateAngleOfTwoVector(EnterVectorOfAGV1, EnterVectorOfAGV2)}";
 			return tmp;
 		}
 
