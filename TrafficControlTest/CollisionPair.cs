@@ -18,10 +18,10 @@ namespace TrafficControlTest
 		private int CollisionEndTimeOfAGV1;
 		private int CollisionBeginTimeOfAGV2;
 		private int CollisionEndTimeOfAGV2;
-		public double EnterAngleOfAGV1;
-		public double ExitAngleOfAGV1;
-		public double EnterAngleOfAGV2;
-		public double ExitAngleOfAGV2;
+		public Vector2D EnterVectorOfAGV1;
+		public Vector2D ExitVectorOfAGV1;
+		public Vector2D EnterVectorOfAGV2;
+		public Vector2D ExitVectorOfAGV2;
 		private CollisionPair() { }
 		public override string ToString()
 		{
@@ -29,6 +29,8 @@ namespace TrafficControlTest
 			tmp += $"{AGV1.Status.Name} & {AGV2.Status.Name} will be collided.\n";
 			tmp += $"The collision region is {CollisionRegion.ToString()}\n";
 			tmp += $"The collision will begin in {CollisionBeginTime} seconds.\n";
+			tmp += $"The {AGV1.Status.Name} Enter Direction: {EnterVectorOfAGV1.ToString()}";
+			tmp += $"The {AGV2.Status.Name} Enter Direction: {EnterVectorOfAGV2.ToString()}";
 			return tmp;
 		}
 
@@ -91,9 +93,11 @@ namespace TrafficControlTest
 			{
 				int timeOfEnterOfAGV1 = -1, timeOfExitOfAGV1 = -1;
 				int timeOfEnterOfAGV2 = -1, timeOfExitOfAGV2 = -1;
-				CalculateTimeIntervalOfRegion(agv1, intersectionRegion, ref timeOfEnterOfAGV1, ref timeOfExitOfAGV1);
-				CalculateTimeIntervalOfRegion(agv2, intersectionRegion, ref timeOfEnterOfAGV2, ref timeOfExitOfAGV2);
-				if (timeOfEnterOfAGV1 >= 0 && timeOfExitOfAGV1 > timeOfEnterOfAGV1 && timeOfEnterOfAGV2 >= 0 && timeOfExitOfAGV2 > timeOfEnterOfAGV2)
+				Vector2D vectorOfEnterOfAGV1 = null, vectorOfExitOfAGV1 = null;
+				Vector2D vectorOfEnterOfAGV2 = null, vectorOfExitOfAGV2 = null;
+				CalculateTimeIntervalOfRegion(agv1, intersectionRegion, ref timeOfEnterOfAGV1, ref timeOfExitOfAGV1, ref vectorOfEnterOfAGV1, ref vectorOfExitOfAGV1);
+				CalculateTimeIntervalOfRegion(agv2, intersectionRegion, ref timeOfEnterOfAGV2, ref timeOfExitOfAGV2, ref vectorOfEnterOfAGV2, ref vectorOfExitOfAGV2);
+				if (timeOfEnterOfAGV1 >= 0 && timeOfExitOfAGV1 > timeOfEnterOfAGV1 && timeOfEnterOfAGV2 >= 0 && timeOfExitOfAGV2 > timeOfEnterOfAGV2 && vectorOfEnterOfAGV1 != null && vectorOfExitOfAGV1 != null && vectorOfEnterOfAGV2 != null && vectorOfExitOfAGV2 != null)
 				{
 					// 判斷兩車的時間是否有重疊
 					if ((timeOfEnterOfAGV1 >= timeOfEnterOfAGV2 && timeOfEnterOfAGV1 <= timeOfExitOfAGV2)
@@ -111,6 +115,10 @@ namespace TrafficControlTest
 						result.CollisionEndTimeOfAGV1 = timeOfExitOfAGV1;
 						result.CollisionBeginTimeOfAGV2 = timeOfEnterOfAGV2;
 						result.CollisionEndTimeOfAGV2 = timeOfExitOfAGV2;
+						result.EnterVectorOfAGV1 = vectorOfEnterOfAGV1;
+						result.ExitVectorOfAGV1 = vectorOfExitOfAGV1;
+						result.EnterVectorOfAGV2 = vectorOfEnterOfAGV2;
+						result.ExitVectorOfAGV2 = vectorOfExitOfAGV2;
 					}
 				}
 			}
@@ -118,15 +126,17 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>計算車子於指定區域的進入時間與離開時間</summary>
-		private static void CalculateTimeIntervalOfRegion(AGVInfo agv, Rectangle region, ref int timeOfEnter, ref int timeOfExit)
+		private static void CalculateTimeIntervalOfRegion(AGVInfo agv, Rectangle region, ref int timeOfEnter, ref int timeOfExit, ref Vector2D vectorOfEnter, ref Vector2D vectorOfExit)
 		{
 			timeOfEnter = -1;
 			timeOfExit = -1;
+			vectorOfEnter = null;
+			vectorOfExit = null;
 			if (agv != null && region != null && agv.Status != null && agv.Status.Velocity > 0)
 			{
 				int indexOfEnter = -1, indexOfExit = -1;
-				CalculateIndexIntervalOfRegion(agv, region, ref indexOfEnter, ref indexOfExit);
-				if (indexOfEnter >= 0 && indexOfExit > indexOfEnter)
+				CalculateIndexIntervalOfRegion(agv, region, ref indexOfEnter, ref indexOfExit, ref vectorOfEnter, ref vectorOfExit);
+				if (indexOfEnter >= 0 && indexOfExit > indexOfEnter && vectorOfEnter != null && vectorOfExit != null)
 				{
 					int distanceOfEnter = -1, distanceOfExit = -1;
 					distanceOfEnter = CalculateDistanceOfTwoPointInPath(agv, 0, indexOfEnter);
@@ -141,10 +151,12 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>計算車子於指定區域的進入點索引與離開點索引</summary>
-		private static void CalculateIndexIntervalOfRegion(AGVInfo agv, Rectangle region, ref int indexOfEnter, ref int indexOfExit)
+		private static void CalculateIndexIntervalOfRegion(AGVInfo agv, Rectangle region, ref int indexOfEnter, ref int indexOfExit, ref Vector2D vectorOfEnter, ref Vector2D vectorOfExit)
 		{
 			indexOfEnter = -1;
 			indexOfExit = -1;
+			vectorOfEnter = null;
+			vectorOfExit = null;
 			if (agv != null && region != null && agv.PathPoints != null)
 			{
 				bool isInRegion = false;
@@ -157,6 +169,7 @@ namespace TrafficControlTest
 						{
 							isInRegion = true;
 							indexOfEnter = ((i - 1) >= 0) ? (i - 1) : i;
+							vectorOfEnter = ((i - 1) >= 0) ? Vector2D.CalculateVector2D(agv.PathPoints[i - 1].X, agv.PathPoints[i - 1].Y, agv.PathPoints[i].X, agv.PathPoints[i].Y) : Vector2D.CalculateVector2D(0, 0, 0, 0);
 						}
 					}
 					// 計算離開點索引
@@ -166,6 +179,7 @@ namespace TrafficControlTest
 						{
 							isInRegion = false;
 							indexOfExit = i;
+							vectorOfExit = Vector2D.CalculateVector2D(agv.PathPoints[i - 1].X, agv.PathPoints[i - 1].Y, agv.PathPoints[i].X, agv.PathPoints[i].Y);
 							break;
 						}
 						// 如果到路徑線點尾端都還沒離開，則將尾端設定為離開點的索引
@@ -173,6 +187,7 @@ namespace TrafficControlTest
 						{
 							isInRegion = false;
 							indexOfExit = i;
+							vectorOfExit = Vector2D.CalculateVector2D(0, 0, 0, 0);
 						}
 					}
 				}
