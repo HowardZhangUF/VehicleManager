@@ -1,4 +1,6 @@
 ﻿using Geometry;
+using GLCore;
+using GLStyle;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,28 +18,51 @@ namespace VehicleSimulator
 	{
 		private VehicleSimulatorProcess process = new VehicleSimulatorProcess();
 
+		VehicleSimulator vehicle = null;
+		int id = 100;
+
 		public VehicleSimulatorGUI()
 		{
 			InitializeComponent();
+
+			StyleManager.LoadStyle("Style.ini");
+			VehicleSimulatorTest();
 		}
 
 		private void VehicleSimulatorGUI_Load(object sender, EventArgs e)
 		{
 			process.StartCommunication();
-
-			// VehicleSimulator 測試
-			VehicleSimulator vehicle = new VehicleSimulator("AGV01", 20, 20);
-			List<Pair> Path = new List<Pair>();
-			Path.Add(new Pair(100, 100));
-			Path.Add(new Pair(200, 100));
-			vehicle.SetPath(Path);
-			Thread.Sleep(1000);
-			vehicle.StartMoving();
 		}
 
 		private void VehicleSimulatorGUI_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			process.StopCommunication();
+		}
+
+		private void VehicleSimulatorTest()
+		{
+			vehicle = new VehicleSimulator("AGV01", 500, 40);
+			vehicle.PositionChanged += Vehicle_PositionChanged;
+
+			List<Pair> Path = new List<Pair>();
+			Path.Add(new Pair(-2000, -1000));
+			Path.Add(new Pair(3000, -1000));
+			Path.Add(new Pair(-2000, 1000));
+			Path.Add(new Pair(2000, 1000));
+			Path.Add(new Pair(-2000, -1000));
+			Path.Add(new Pair(1000, 1000));
+			Path.Add(new Pair(2000, 1000));
+			Path.Add(new Pair(2000, 2000));
+			Path.Add(new Pair(1000, 2000));
+			Path.Add(new Pair(1000, 1000));
+			vehicle.SetPath(Path);
+			Thread.Sleep(1000);
+			vehicle.StartMoving();
+		}
+
+		private void Vehicle_PositionChanged(string name, TowardPair position)
+		{
+			GLCMD.CMD.AddAGV(id, name, position.Position.X, position.Position.Y, position.Toward.Theta);
 		}
 	}
 }
