@@ -110,6 +110,8 @@
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "VehicleSimulatorGUI";
 			this.Text = "Form1";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VehicleSimulatorGUI_FormClosing);
+			this.Load += new System.EventHandler(this.VehicleSimulatorGUI_Load);
 			this.tabControl1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
