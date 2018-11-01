@@ -53,6 +53,8 @@
   <ItemGroup>
     <Compile Include="Extension.cs" />
     <Compile Include="IntMath.cs" />
+    <Compile Include="MapSimulator.cs" />
+    <Compile Include="VehicleSimulator.cs" />
     <Compile Include="VehicleSimulatorGUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +64,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VehicleSimulatorProcess.cs" />
+    <Compile Include="ConsoleCommunicator.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -109,6 +112,14 @@
     <ProjectReference Include="..\..\iTSLibrary\GLUI\GLUI.csproj">
       <Project>{390dc0bb-01d8-48b3-a7c3-84c5b3355dee}</Project>
       <Name>GLUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\iTSLibrary\SerialData\SerialData.csproj">
+      <Project>{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}</Project>
+      <Name>SerialData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\iTSLibrary\Serialization\Serialization.csproj">
+      <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
+      <Name>Serialization</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
