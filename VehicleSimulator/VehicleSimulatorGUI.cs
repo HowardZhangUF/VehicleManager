@@ -25,6 +25,7 @@ namespace VehicleSimulator
 		{
 			process.StartCommunication();
 
+			// VehicleSimulator 測試
 			VehicleSimulator vehicle = new VehicleSimulator("AGV01", 20, 20);
 			List<Pair> Path = new List<Pair>();
 			Path.Add(new Pair(100, 100));
