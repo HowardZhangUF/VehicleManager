@@ -22,7 +22,20 @@ namespace VehicleSimulator
 		public string Name { get; private set; } = "";
 		private int X = 0;
 		private int Y = 0;
-		private double Toward = 0;
+		private double _Toward = 0;
+		private double Toward
+		{
+			get
+			{
+				return _Toward;
+			}
+			set
+			{
+				_Toward = value;
+				if (_Toward < 0) Toward += 360;
+				if (_Toward > 360) Toward -= 360;
+			}
+		}
 		public TowardPair Position { get { return new TowardPair(X, Y, Toward); } }
 		public double TranslationSpeed { get; private set; } = 0; // mm/s
 		public double RotationSpeed { get; private set; } = 0; // degree/s
@@ -84,7 +97,7 @@ namespace VehicleSimulator
 
 		private void MainTask()
 		{
-			int timeInterval = 500;
+			int timeInterval = 200;
 			while (true)
 			{
 				if (Status == "Moving")
@@ -114,7 +127,8 @@ namespace VehicleSimulator
 			{
 				Pair targetPoint = Path[0];
 				double targetToward = CalculateHorizontalAngle(new Pair(X, Y), Path[0]);
-				
+				Console.WriteLine($"Target Point: ({targetPoint.X}, {targetPoint.Y}). Target Toward: {targetToward}");
+
 				// 進行旋轉
 				if (RotationSpeed > 0 && !IsApproximatelyEqual(Toward, targetToward))
 				{
@@ -124,17 +138,17 @@ namespace VehicleSimulator
 					if ((diffAngle > 0 && diffAngle < 180) || (diffAngle < -180 && diffAngle > -360))
 					{
 						if (Math.Abs(diffAngle) < rotationAngle)
-							Toward = targetToward;
+							ChangePosition(X, Y, targetToward);
 						else
-							Toward += rotationAngle;
+							ChangePosition(X, Y, Toward + rotationAngle);
 					}
 					// 順時針旋轉
 					else
 					{
 						if (Math.Abs(diffAngle) < rotationAngle)
-							Toward = targetToward;
+							ChangePosition(X, Y, targetToward);
 						else
-							Toward -= rotationAngle;
+							ChangePosition(X, Y, Toward - rotationAngle);
 					}
 				}
 				// 進行平移
@@ -142,66 +156,40 @@ namespace VehicleSimulator
 				{
 					double diffX = targetPoint.X - X;
 					double diffY = targetPoint.Y - Y;
-					double diffDistance = CalculateDistance(new Pair(X, Y), targetPoint);
-					double towardInRadian = Toward * Math.PI / 180;
-					double translateX = Math.Abs(Math.Cos(towardInRadian)) * TranslationSpeed * time;
-					double translateY = Math.Abs(Math.Sin(towardInRadian)) * TranslationSpeed * time;
+					double translateX = Math.Abs(Math.Cos(Toward * Math.PI / 180)) * TranslationSpeed * time;
+					double translateY = Math.Abs(Math.Sin(Toward * Math.PI / 180)) * TranslationSpeed * time;
 
 					// 向右向上移動
 					if (diffX >= 0 && diffY >= 0)
 					{
 						if (X + translateX > targetPoint.X || Y + translateY > targetPoint.Y)
-						{
-							X = targetPoint.X;
-							Y = targetPoint.Y;
-						}
+							ChangePosition(targetPoint.X, targetPoint.Y, Toward);
 						else
-						{
-							X = (int)(X + translateX);
-							Y = (int)(Y + translateY);
-						}
+							ChangePosition((int)(X + translateX), (int)(Y + translateY), Toward);
 					}
 					// 向左向上移動
 					else if (diffX < 0 && diffY >= 0)
 					{
-						if (X - translateX > targetPoint.X || Y + translateY > targetPoint.Y)
-						{
-							X = targetPoint.X;
-							Y = targetPoint.Y;
-						}
+						if (X - translateX < targetPoint.X || Y + translateY > targetPoint.Y)
+							ChangePosition(targetPoint.X, targetPoint.Y, Toward);
 						else
-						{
-							X = (int)(X - translateX);
-							Y = (int)(Y + translateY);
-						}
+							ChangePosition((int)(X - translateX), (int)(Y + translateY), Toward);
 					}
 					// 向左向下移動
 					else if (diffX < 0 && diffY < 0)
 					{
-						if (X - translateX > targetPoint.X || Y - translateY > targetPoint.Y)
-						{
-							X = targetPoint.X;
-							Y = targetPoint.Y;
-						}
+						if (X - translateX < targetPoint.X || Y - translateY < targetPoint.Y)
+							ChangePosition(targetPoint.X, targetPoint.Y, Toward);
 						else
-						{
-							X = (int)(X - translateX);
-							Y = (int)(Y - translateY);
-						}
+							ChangePosition((int)(X - translateX), (int)(Y - translateY), Toward);
 					}
 					// 向右向下移動
 					else if (diffX >= 0 && diffY < 0) 
 					{
-						if (X + translateX > targetPoint.X || Y - translateY > targetPoint.Y)
-						{
-							X = targetPoint.X;
-							Y = targetPoint.Y;
-						}
+						if (X + translateX > targetPoint.X || Y - translateY < targetPoint.Y)
+							ChangePosition(targetPoint.X, targetPoint.Y, Toward);
 						else
-						{
-							X = (int)(X + translateX);
-							Y = (int)(Y - translateY);
-						}
+							ChangePosition((int)(X + translateX), (int)(Y - translateY), Toward);
 					}
 
 					// 判斷是否到達該點
@@ -212,17 +200,27 @@ namespace VehicleSimulator
 					}
 				}
 
-				Console.WriteLine($"X:{X}, Y:{Y}, Toward:{Toward.ToString("F2")}");
-				PositionChanged?.Invoke(Name, new TowardPair(X, Y, Toward));
 			}
 		}
 
-		private double CalculateHorizontalAngle(Pair point1, Pair point2)
+		private double CalculateHorizontalAngle(Pair src, Pair dst)
 		{
 			double result = 0;
-			if (point1 != null && point2 != null)
+			if (src != null && dst != null)
 			{
-				result = Math.Atan((point1.Y - point2.Y) / (point1.X - point2.X)) / Math.PI * 180;
+				int diffX = dst.X - src.X;
+				int diffY = dst.Y - src.Y;
+
+				if (diffX == 0)
+				{
+					if (diffY > 0) result = 90;
+					else result = 270;
+				}
+				else
+				{
+					result = Math.Atan2(diffY, diffX) / Math.PI * 180;
+					if (result < 0) result += 360;
+				}
 			}
 			return result;
 		}
@@ -244,9 +242,27 @@ namespace VehicleSimulator
 
 		private void ChangePosition(int x, int y, double toward)
 		{
-			X = x;
-			Y = y;
-			Toward = toward;
+			bool changed = false;
+			if (X != x)
+			{
+				X = x;
+				changed = true;
+			}
+			if (Y != y)
+			{
+				Y = y;
+				changed = true;
+			}
+			if (Toward != toward)
+			{
+				Toward = toward;
+				changed = true;
+			}
+			if (changed)
+			{
+				Console.WriteLine($"X:{X}, Y:{Y}, Toward:{Toward.ToString("F2")}");
+				PositionChanged?.Invoke(Name, new TowardPair(X, Y, Toward));
+			}
 		}
 	}
 }
