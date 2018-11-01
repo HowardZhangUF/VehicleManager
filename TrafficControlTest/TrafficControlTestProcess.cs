@@ -44,7 +44,7 @@ namespace TrafficControlTest
 		public bool DisplayAGVInfoManagerDebugMessage = true;
 
 		/// <summary>訂閱 AGVInfoManager 事件</summary>
-		public void SubscribeAGVInfoManagerEvent()
+		private void SubscribeAGVInfoManagerEvent()
 		{
 			AGVInfoManager.AGVAdded += AGVInfoManager_AGVAdded;
 			AGVInfoManager.AGVRemoved += AGVInfoManager_AGVRemoved;
@@ -53,7 +53,7 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>取消訂閱 AGVInfoManager 事件</summary>
-		public void UnsubscribeAGVInfoManagerEvent()
+		private void UnsubscribeAGVInfoManagerEvent()
 		{
 			AGVInfoManager.AGVAdded -= AGVInfoManager_AGVAdded;
 			AGVInfoManager.AGVRemoved -= AGVInfoManager_AGVRemoved;
@@ -180,7 +180,7 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>訂閱 AGVMonitor 事件</summary>
-		public void SubscribeAGVMonitorEvent()
+		private void SubscribeAGVMonitorEvent()
 		{
 			AGVMonitor.AGVMonitorStarted += AGVMonitor_AGVMonitorStarted;
 			AGVMonitor.AGVMonitorStopped += AGVMonitor_AGVMonitorStopped;
@@ -195,7 +195,7 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>取消訂閱 AGVMonitor 事件</summary>
-		public void UnsubscribeAGVMonitorEvent()
+		private void UnsubscribeAGVMonitorEvent()
 		{
 			AGVMonitor.AGVMonitorStarted -= AGVMonitor_AGVMonitorStarted;
 			AGVMonitor.AGVMonitorStopped -= AGVMonitor_AGVMonitorStopped;
