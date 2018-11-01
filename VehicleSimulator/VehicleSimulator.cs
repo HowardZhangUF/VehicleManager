@@ -10,11 +10,14 @@ namespace VehicleSimulator
 {
 	class VehicleSimulator
 	{
-		public delegate void PositionUpdateEventHandler(string name, TowardPair position);
-		public event PositionUpdateEventHandler PositionUpdate;
+		public delegate void PositionChangedEventHandler(string name, TowardPair position);
+		public event PositionChangedEventHandler PositionChanged;
 
-		public delegate void PathUpdateEventHandler(string name, List<Pair> path);
-		public event PathUpdateEventHandler PathUpdate;
+		public delegate void PathChangedEventHandler(string name, List<Pair> path);
+		public event PathChangedEventHandler PathChanged;
+
+		public delegate void StatusChangedEventHandler(string name, string status);
+		public event StatusChangedEventHandler StatusChanged;
 
 		public string Name { get; private set; } = "";
 		private int X = 0;
@@ -23,8 +26,23 @@ namespace VehicleSimulator
 		public TowardPair Position { get { return new TowardPair(X, Y, Toward); } }
 		public double TranslationSpeed { get; private set; } = 0; // mm/s
 		public double RotationSpeed { get; private set; } = 0; // degree/s
-		public string Status { get; private set; } = "Stopped";
-		public List<Pair> Path { get; private set; } = null;
+		private string _Status = "";
+		public string Status
+		{
+			get
+			{
+				return _Status;
+			}
+			private set
+			{
+				if (_Status != value)
+				{
+					_Status = value;
+					StatusChanged?.Invoke(Name, _Status);
+				}
+			}
+		}
+		private List<Pair> Path { get; set; } = null;
 		private Thread MainThread;
 
 		public VehicleSimulator(string name, double translationSpeed, double rotationSpeed)
@@ -71,9 +89,10 @@ namespace VehicleSimulator
 			{
 				if (Status == "Moving")
 				{
-					MoveToNextPosition((double)timeInterval / 1000);
 					if (Path == null || Path.Count() == 0)
 						Status = "Stopped";
+					else
+						MoveToNextPosition((double)timeInterval / 1000);
 				}
 				else if (Status == "Paused")
 				{
@@ -189,12 +208,12 @@ namespace VehicleSimulator
 					if (IsEqual(new Pair(X, Y), targetPoint))
 					{
 						Path.RemoveAt(0);
-						PathUpdate?.Invoke(Name, Path);
+						PathChanged?.Invoke(Name, Path);
 					}
 				}
 
 				Console.WriteLine($"X:{X}, Y:{Y}, Toward:{Toward.ToString("F2")}");
-				PositionUpdate?.Invoke(Name, new TowardPair(X, Y, Toward));
+				PositionChanged?.Invoke(Name, new TowardPair(X, Y, Toward));
 			}
 		}
 
