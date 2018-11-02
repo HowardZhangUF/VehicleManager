@@ -18,7 +18,7 @@ namespace VehicleSimulator
 	{
 		private VehicleSimulatorProcess process = new VehicleSimulatorProcess();
 
-		VehicleSimulator vehicle = null;
+		VehicleSimulator Vehicle = null;
 		int id = 100;
 
 		public VehicleSimulatorGUI()
@@ -41,23 +41,22 @@ namespace VehicleSimulator
 
 		private void VehicleSimulatorTest()
 		{
-			vehicle = new VehicleSimulator("AGV01", 500, 40);
-			vehicle.PositionChanged += Vehicle_PositionChanged;
+			Vehicle = new VehicleSimulator("AGV01", 1000, 40);
+			Vehicle.PositionChanged += Vehicle_PositionChanged;
 
-			List<Pair> Path = new List<Pair>();
-			Path.Add(new Pair(-2000, -1000));
-			Path.Add(new Pair(3000, -1000));
-			Path.Add(new Pair(-2000, 1000));
-			Path.Add(new Pair(2000, 1000));
-			Path.Add(new Pair(-2000, -1000));
-			Path.Add(new Pair(1000, 1000));
-			Path.Add(new Pair(2000, 1000));
-			Path.Add(new Pair(2000, 2000));
-			Path.Add(new Pair(1000, 2000));
-			Path.Add(new Pair(1000, 1000));
-			vehicle.SetPath(Path);
+			List<Pair> path = new List<Pair>();
+			path.Add(new Pair(-2000, -1000));
+			path.Add(new Pair(3000, -2000));
+			path.Add(new Pair(-2000, 2000));
+			path.Add(new Pair(2000, 1000));
+			path.Add(new Pair(-2000, -1000));
+			path.Add(new Pair(1000, 1000));
+			path.Add(new Pair(2000, 1000));
+			path.Add(new Pair(2000, 2000));
+			path.Add(new Pair(1000, 2000));
+			path.Add(new Pair(1000, 1000));
 			Thread.Sleep(1000);
-			vehicle.StartMoving();
+			Vehicle.Move(path);
 		}
 
 		private void Vehicle_PositionChanged(string name, TowardPair position)
