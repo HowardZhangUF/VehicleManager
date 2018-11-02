@@ -18,50 +18,94 @@ namespace VehicleSimulator
 	{
 		private VehicleSimulatorProcess process = new VehicleSimulatorProcess();
 
-		VehicleSimulator Vehicle = null;
-		int id = 100;
+		Dictionary<string, int> VehicleIconIDs = new Dictionary<string, int>();
 
 		public VehicleSimulatorGUI()
 		{
 			InitializeComponent();
 
 			StyleManager.LoadStyle("Style.ini");
-			VehicleSimulatorTest();
 		}
 
 		private void VehicleSimulatorGUI_Load(object sender, EventArgs e)
 		{
-			process.StartCommunication();
+			SubscribeVehicleSimulatorProcessEvent();
+
+			List<Pair> path1 = new List<Pair>();
+			path1.Add(new Pair(-2000, -1000));
+			path1.Add(new Pair(3000, -2000));
+			path1.Add(new Pair(-2000, 2000));
+			path1.Add(new Pair(2000, 1000));
+			path1.Add(new Pair(-2000, -1000));
+			path1.Add(new Pair(1000, 1000));
+			path1.Add(new Pair(2000, 1000));
+			path1.Add(new Pair(2000, 2000));
+			path1.Add(new Pair(1000, 2000));
+			path1.Add(new Pair(1000, 1000));
+
+			List<Pair> path2 = new List<Pair>();
+			path2.Add(new Pair(-2000, -1000));
+			path2.Add(new Pair(3000, -2000));
+			path2.Add(new Pair(-2000, 2000));
+			path2.Add(new Pair(2000, 1000));
+			path2.Add(new Pair(-2000, -1000));
+			path2.Add(new Pair(1000, 1000));
+			path2.Add(new Pair(2000, 1000));
+			path2.Add(new Pair(2000, 2000));
+			path2.Add(new Pair(1000, 2000));
+			path2.Add(new Pair(1000, 1000));
+
+			process.AddVehicleSimualtor("AGV01", 1000, 40);
+			process.AddVehicleSimualtor("AGV02", 500, 20);
+			process.VehicleSimulatorMove("AGV01", path1);
+			process.VehicleSimulatorMove("AGV02", path2);
+			//process.StartCommunication("127.0.0.1", 8000);
 		}
 
 		private void VehicleSimulatorGUI_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			process.StopCommunication();
+			UnsubscribeVehicleSimulatorProcessEvent();
+			//process.StopCommunication();
 		}
 
-		private void VehicleSimulatorTest()
+		private void AddAGVIcon(string name, int x, int y, double toward)
 		{
-			Vehicle = new VehicleSimulator("AGV01", 1000, 40);
-			Vehicle.PositionChanged += Vehicle_PositionChanged;
+			if (!VehicleIconIDs.Keys.Contains(name))
+			{
+				VehicleIconIDs.Add(name, GLCMD.CMD.SerialNumber.Next());
+			}
 
-			List<Pair> path = new List<Pair>();
-			path.Add(new Pair(-2000, -1000));
-			path.Add(new Pair(3000, -2000));
-			path.Add(new Pair(-2000, 2000));
-			path.Add(new Pair(2000, 1000));
-			path.Add(new Pair(-2000, -1000));
-			path.Add(new Pair(1000, 1000));
-			path.Add(new Pair(2000, 1000));
-			path.Add(new Pair(2000, 2000));
-			path.Add(new Pair(1000, 2000));
-			path.Add(new Pair(1000, 1000));
-			Thread.Sleep(1000);
-			Vehicle.Move(path);
+			GLCMD.CMD.AddAGV(VehicleIconIDs[name], name, x, y, toward);
 		}
 
-		private void Vehicle_PositionChanged(string name, TowardPair position)
+		private void RemoveAGVIcon(string name)
 		{
-			GLCMD.CMD.AddAGV(id, name, position.Position.X, position.Position.Y, position.Toward.Theta);
+			if (!VehicleIconIDs.Keys.Contains(name))
+			{
+				GLCMD.CMD.DeleteAGV(VehicleIconIDs[name]);
+				VehicleIconIDs.Remove(name);
+			}
+		}
+
+		private void SubscribeVehicleSimulatorProcessEvent()
+		{
+			process.VehicleSimulatorPositionChanged += Process_VehicleSimulatorPositionChanged;
+			process.DebugMessage += Process_DebugMessage;
+		}
+
+		private void UnsubscribeVehicleSimulatorProcessEvent()
+		{
+			process.VehicleSimulatorPositionChanged -= Process_VehicleSimulatorPositionChanged;
+			process.DebugMessage -= Process_DebugMessage;
+		}
+
+		private void Process_VehicleSimulatorPositionChanged(string name, TowardPair position)
+		{
+			AddAGVIcon(name, position.Position.X, position.Position.Y, position.Toward.Theta);
+		}
+
+		private void Process_DebugMessage(DateTime timeStamp, string category, string message)
+		{
 		}
 	}
 }
