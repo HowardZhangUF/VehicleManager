@@ -149,7 +149,11 @@ namespace VehicleSimulator
 		public void StopMoving()
 		{
 			if (Status == "Moving")
+			{
 				Status = "Stopped";
+				Path.Clear();
+				Path = null;
+			}
 		}
 
 		private void MainTask()
