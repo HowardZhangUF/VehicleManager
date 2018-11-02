@@ -1,4 +1,5 @@
 ﻿using Geometry;
+using SerialData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,41 @@ namespace VehicleSimulator
 		{
 			TranslationSpeed = translationSpeed;
 			RotationSpeed = rotationSpeed;
+		}
+
+		public AGVStatus GetAGVStatus()
+		{
+			AGVStatus result = new AGVStatus();
+			result.AlarmMessage = "";
+			result.Battery = 75.5f;
+			if (Status == "Moving") result.Description = EDescription.Running;
+			else if (Status == "Paused") result.Description = EDescription.Pause;
+			else if (Status == "Stopped") result.Description = EDescription.Arrived;
+			result.GoalName = "";
+			result.MapMatch = 99.9f;
+			result.Name = Name;
+			result.Toward = Toward;
+			result.Velocity = TranslationSpeed;
+			result.X = X;
+			result.Y = Y;
+			return result;
+		}
+
+		public AGVPath GetAGVPath()
+		{
+			AGVPath result = null;
+			if (Path != null && Path.Count() > 0)
+			{
+				result.Name = Name;
+				result.PathX = new List<double>();
+				result.PathY = new List<double>();
+				for (int i = 0; i < Path.Count(); ++i)
+				{
+					result.PathX.Add(Path[i].X);
+					result.PathY.Add(Path[i].Y);
+				}
+			}
+			return result;
 		}
 
 		public void Move(List<Pair> path)
