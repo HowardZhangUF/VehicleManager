@@ -33,7 +33,7 @@ namespace VehicleSimulator
 			{
 				_Toward = value;
 				if (_Toward < 0) Toward += 360;
-				if (_Toward > 360) Toward -= 360;
+				if (_Toward >= 360) Toward -= 360;
 			}
 		}
 		public TowardPair Position { get { return new TowardPair(X, Y, Toward); } }
@@ -79,7 +79,7 @@ namespace VehicleSimulator
 		{
 			Path = path;
 		}
-		
+
 		public void StartMoving()
 		{
 			Status = "Moving";
@@ -126,8 +126,8 @@ namespace VehicleSimulator
 			if (Path != null && Path.Count() > 0)
 			{
 				Pair targetPoint = Path[0];
-				double targetToward = CalculateHorizontalAngle(new Pair(X, Y), Path[0]);
-				Console.WriteLine($"Target Point: ({targetPoint.X}, {targetPoint.Y}). Target Toward: {targetToward}");
+				double targetToward = CalculateVectorAngle(new Pair(X, Y), Path[0]);
+				//Console.WriteLine($"Target Point: ({targetPoint.X}, {targetPoint.Y}). Target Toward: {targetToward}");
 
 				// 進行旋轉
 				if (RotationSpeed > 0 && !IsApproximatelyEqual(Toward, targetToward))
@@ -184,7 +184,7 @@ namespace VehicleSimulator
 							ChangePosition((int)(X - translateX), (int)(Y - translateY), Toward);
 					}
 					// 向右向下移動
-					else if (diffX >= 0 && diffY < 0) 
+					else if (diffX >= 0 && diffY < 0)
 					{
 						if (X + translateX > targetPoint.X || Y - translateY < targetPoint.Y)
 							ChangePosition(targetPoint.X, targetPoint.Y, Toward);
@@ -203,7 +203,7 @@ namespace VehicleSimulator
 			}
 		}
 
-		private double CalculateHorizontalAngle(Pair src, Pair dst)
+		private double CalculateVectorAngle(Pair src, Pair dst)
 		{
 			double result = 0;
 			if (src != null && dst != null)
@@ -211,16 +211,8 @@ namespace VehicleSimulator
 				int diffX = dst.X - src.X;
 				int diffY = dst.Y - src.Y;
 
-				if (diffX == 0)
-				{
-					if (diffY > 0) result = 90;
-					else result = 270;
-				}
-				else
-				{
-					result = Math.Atan2(diffY, diffX) / Math.PI * 180;
-					if (result < 0) result += 360;
-				}
+				result = Math.Atan2(diffY, diffX) / Math.PI * 180;
+				if (result < 0) result += 360;
 			}
 			return result;
 		}
@@ -260,7 +252,7 @@ namespace VehicleSimulator
 			}
 			if (changed)
 			{
-				Console.WriteLine($"X:{X}, Y:{Y}, Toward:{Toward.ToString("F2")}");
+				//Console.WriteLine($"X:{X}, Y:{Y}, Toward:{Toward.ToString("F2")}");
 				PositionChanged?.Invoke(Name, new TowardPair(X, Y, Toward));
 			}
 		}
