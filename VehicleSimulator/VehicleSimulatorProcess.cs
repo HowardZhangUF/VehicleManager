@@ -82,6 +82,33 @@ namespace VehicleSimulator
 			}
 		}
 
+		/// <summary>將字串轉換成路徑。字串格式應為 (0,0),(1000,2000),(-2000,1000),(3000,-2000),(-4000,-1000)</summary>
+		public List<Pair> ConvertStringToPath(string src)
+		{
+			List<Pair> result = null;
+			if (src != string.Empty)
+			{
+				string[] split = src.Split(new string[] { "),(", "(", ")" }, StringSplitOptions.RemoveEmptyEntries);
+				if (split.Count() >= 2)
+				{
+					result = new List<Pair>();
+					for (int i = 0; i < split.Count(); ++i)
+					{
+						string[] position = split[i].Split(',');
+						if (position.Count() == 2)
+						{
+							int x = 0, y = 0;
+							if (int.TryParse(position[0], out x) && int.TryParse(position[1], out y))
+							{
+								result.Add(new Pair(x, y));
+							}
+						}
+					}
+				}
+			}
+			return result;
+		}
+
 		#region 車模擬器
 
 		private Dictionary<string, VehicleSimulator> VehicleSimulators = new Dictionary<string, VehicleSimulator>();
@@ -128,6 +155,16 @@ namespace VehicleSimulator
 			if (VehicleSimulators.Keys.Contains(name))
 			{
 				result = VehicleSimulators[name].GetAGVPath();
+			}
+			return result;
+		}
+
+		public string GetVehicleStatus(string name)
+		{
+			string result = "";
+			if (VehicleSimulators.Keys.Contains(name))
+			{
+				result = VehicleSimulators[name].Status;
 			}
 			return result;
 		}
@@ -185,7 +222,7 @@ namespace VehicleSimulator
 		{
 			if (VehicleSimulators.Keys.Contains(name))
 			{
-				if (VehicleSimulators[name].Status == "Moving")
+				if (VehicleSimulators[name].Status == "Moving" || VehicleSimulators[name].Status == "Paused")
 				{
 					VehicleSimulators[name].StopMoving();
 				}
