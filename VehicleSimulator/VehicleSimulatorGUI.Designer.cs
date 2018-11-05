@@ -48,6 +48,12 @@
 			this.txtVehicleName1 = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.btnAddVehicle = new System.Windows.Forms.Button();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.txtRemotePort = new System.Windows.Forms.TextBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.txtRemoteIP = new System.Windows.Forms.TextBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.btnConnectRemote = new System.Windows.Forms.Button();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +62,7 @@
 			this.tpDebugMsg.SuspendLayout();
 			this.tpVehicleSettings.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			this.tabPage1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -83,6 +90,7 @@
 			this.tabControl1.Controls.Add(this.tpMonitor);
 			this.tabControl1.Controls.Add(this.tpDebugMsg);
 			this.tabControl1.Controls.Add(this.tpVehicleSettings);
+			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Location = new System.Drawing.Point(12, 30);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.Padding = new System.Drawing.Point(20, 5);
@@ -288,6 +296,66 @@
 			this.btnAddVehicle.Text = "Add";
 			this.btnAddVehicle.UseVisualStyleBackColor = true;
 			// 
+			// tabPage1
+			// 
+			this.tabPage1.Controls.Add(this.txtRemotePort);
+			this.tabPage1.Controls.Add(this.label7);
+			this.tabPage1.Controls.Add(this.txtRemoteIP);
+			this.tabPage1.Controls.Add(this.label6);
+			this.tabPage1.Controls.Add(this.btnConnectRemote);
+			this.tabPage1.Location = new System.Drawing.Point(4, 29);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Size = new System.Drawing.Size(992, 495);
+			this.tabPage1.TabIndex = 3;
+			this.tabPage1.Text = "Other Settings";
+			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// txtRemotePort
+			// 
+			this.txtRemotePort.Location = new System.Drawing.Point(81, 67);
+			this.txtRemotePort.Name = "txtRemotePort";
+			this.txtRemotePort.Size = new System.Drawing.Size(100, 25);
+			this.txtRemotePort.TabIndex = 4;
+			this.txtRemotePort.Text = "8051";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(40, 70);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(35, 15);
+			this.label7.TabIndex = 3;
+			this.label7.Text = "Port:";
+			// 
+			// txtRemoteIP
+			// 
+			this.txtRemoteIP.Location = new System.Drawing.Point(81, 37);
+			this.txtRemoteIP.Name = "txtRemoteIP";
+			this.txtRemoteIP.Size = new System.Drawing.Size(100, 25);
+			this.txtRemoteIP.TabIndex = 2;
+			this.txtRemoteIP.Text = "127.0.0.1";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(40, 40);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(24, 15);
+			this.label6.TabIndex = 1;
+			this.label6.Text = "IP:";
+			// 
+			// btnConnectRemote
+			// 
+			this.btnConnectRemote.BackColor = System.Drawing.Color.LightPink;
+			this.btnConnectRemote.Location = new System.Drawing.Point(44, 95);
+			this.btnConnectRemote.Name = "btnConnectRemote";
+			this.btnConnectRemote.Size = new System.Drawing.Size(138, 30);
+			this.btnConnectRemote.TabIndex = 0;
+			this.btnConnectRemote.Text = "Connect";
+			this.btnConnectRemote.UseVisualStyleBackColor = false;
+			this.btnConnectRemote.Click += new System.EventHandler(this.btnConnectRemote_Click);
+			// 
 			// statusStrip1
 			// 
 			this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -333,6 +401,8 @@
 			this.tpVehicleSettings.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			this.tabPage1.ResumeLayout(false);
+			this.tabPage1.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
@@ -365,6 +435,12 @@
 		private System.Windows.Forms.TextBox txtVehiclePath1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.TextBox txtRemotePort;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.TextBox txtRemoteIP;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Button btnConnectRemote;
 	}
 }
 

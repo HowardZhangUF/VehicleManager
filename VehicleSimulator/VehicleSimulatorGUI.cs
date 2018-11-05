@@ -47,13 +47,19 @@ namespace VehicleSimulator
 			process.AddVehicleSimualtor("AGV02", 1000, 40);
 			process.VehicleSimulatorMove("AGV01", path1);
 			process.VehicleSimulatorMove("AGV02", path2);
-			//process.StartCommunication("127.0.0.1", 8000);
 		}
 
 		private void VehicleSimulatorGUI_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			UnsubscribeVehicleSimulatorProcessEvent();
-			//process.StopCommunication();
+		}
+
+		private void btnConnectRemote_Click(object sender, EventArgs e)
+		{
+			if (!process.IsCommunicationAlive)
+				process.StartCommunication(txtRemoteIP.Text, int.Parse(txtRemotePort.Text));
+			else
+				process.StopCommunication();
 		}
 
 		#region Map Process
@@ -107,7 +113,7 @@ namespace VehicleSimulator
 
 		#endregion
 
-		#region Process
+		#region Main Process
 
 		private void SubscribeVehicleSimulatorProcessEvent()
 		{
@@ -116,6 +122,9 @@ namespace VehicleSimulator
 			process.VehicleSimulatorPositionChanged += Process_VehicleSimulatorPositionChanged;
 			process.VehicleSimulatorPathChanged += Process_VehicleSimulatorPathChanged;
 			process.VehicleSimulatorStatusChanged += Process_VehicleSimulatorStatusChanged;
+			process.ConsoleConnectStatusChanged += Process_ConsoleConnectStatusChanged;
+			process.ConsoleReportStarted += Process_ConsoleReportStarted;
+			process.ConsoleReportStopped += Process_ConsoleReportStopped;
 			process.DebugMessage += Process_DebugMessage;
 		}
 
@@ -126,6 +135,9 @@ namespace VehicleSimulator
 			process.VehicleSimulatorPositionChanged -= Process_VehicleSimulatorPositionChanged;
 			process.VehicleSimulatorPathChanged -= Process_VehicleSimulatorPathChanged;
 			process.VehicleSimulatorStatusChanged -= Process_VehicleSimulatorStatusChanged;
+			process.ConsoleConnectStatusChanged -= Process_ConsoleConnectStatusChanged;
+			process.ConsoleReportStarted -= Process_ConsoleReportStarted;
+			process.ConsoleReportStopped -= Process_ConsoleReportStopped;
 			process.DebugMessage -= Process_DebugMessage;
 		}
 
@@ -155,8 +167,31 @@ namespace VehicleSimulator
 		{
 		}
 
+		private void Process_ConsoleConnectStatusChanged(DateTime occurTime, AsyncSocket.EndPointInfo remoteInfo, AsyncSocket.EConnectStatus newStatus)
+		{
+			if (newStatus == AsyncSocket.EConnectStatus.Connect)
+				btnConnectRemote.InvokeIfNecessary(() => btnConnectRemote.BackColor = Color.LightGreen);
+			else
+				btnConnectRemote.InvokeIfNecessary(() => btnConnectRemote.BackColor = Color.LightPink);
+		}
+
+		private void Process_ConsoleReportStarted()
+		{
+		}
+
+		private void Process_ConsoleReportStopped()
+		{
+		}
+
 		private void Process_DebugMessage(DateTime timeStamp, string category, string message)
 		{
+			rtxtDebugMessage.InvokeIfNecessary(() =>
+			{
+				if (chkRtxtDebugMsgAutoScroll.Checked)
+					rtxtDebugMessage.AppendText(new DebugMessage(timeStamp, category, message).ToString() + "\n");
+				else
+					rtxtDebugMessage.Text += new DebugMessage(timeStamp, category, message).ToString() + "\n";
+			});
 		}
 
 		#endregion

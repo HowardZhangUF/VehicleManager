@@ -37,6 +37,12 @@ namespace VehicleSimulator
 		public event VehicleSimulator.PathChangedEventHandler VehicleSimulatorPathChanged;
 		public event VehicleSimulator.StatusChangedEventHandler VehicleSimulatorStatusChanged;
 
+		public event ConsoleCommunicator.ConnectStatusChangedEventHandler ConsoleConnectStatusChanged;
+
+		public delegate void ConsoleReportStartedEventHandler();
+		public event ConsoleReportStartedEventHandler ConsoleReportStarted;
+		public event ConsoleReportStartedEventHandler ConsoleReportStopped;
+
 		private Thread ReportThread;
 
 		/// <summary>定時傳送 AGV 狀態、路徑至主控台的功能</summary>
@@ -44,6 +50,7 @@ namespace VehicleSimulator
 		{
 			try
 			{
+				ConsoleReportStarted?.Invoke();
 				while (true)
 				{
 					if (ConsoleCommunicator.IsAlive)
@@ -65,6 +72,10 @@ namespace VehicleSimulator
 			catch (Exception ex)
 			{
 				DebugMessage?.Invoke(DateTime.Now, "Exception", ex.ToString());
+			}
+			finally
+			{
+				ConsoleReportStopped?.Invoke();
 			}
 		}
 
@@ -304,6 +315,8 @@ namespace VehicleSimulator
 			ConsoleCommunicator.Stop();
 		}
 
+		public bool IsCommunicationAlive { get { return ConsoleCommunicator.IsAlive; } }
+
 		public void SendSerializableData(Serializable data)
 		{
 			ConsoleCommunicator.SendSerializableData(data);
@@ -334,6 +347,8 @@ namespace VehicleSimulator
 				string message = $"Connect Status Changed. IP: {remoteInfo.ToString()} New Status: {newStatus.ToString()}.";
 				DebugMessage?.Invoke(occurTime, "Console Communicator", message);
 			}
+
+			ConsoleConnectStatusChanged?.Invoke(occurTime, remoteInfo, newStatus);
 
 			if (newStatus == EConnectStatus.Connect)
 			{
