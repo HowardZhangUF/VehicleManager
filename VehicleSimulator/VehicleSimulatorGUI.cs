@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static VehicleSimulator.VehicleSimulator;
 
 namespace VehicleSimulator
 {
@@ -60,6 +61,30 @@ namespace VehicleSimulator
 				process.StartCommunication(txtRemoteIP.Text, int.Parse(txtRemotePort.Text));
 			else
 				process.StopCommunication();
+		}
+
+		private void chkVehicleSimulator_CheckedChanged(object sender, EventArgs e)
+		{
+			process.DisplayVehicleSimulatorDebugMessage = chkVehicleSimulator.Checked;
+			rtxtDebugMessage.Focus();
+		}
+
+		private void chkConsoleCommunicator_CheckedChanged(object sender, EventArgs e)
+		{
+			process.DisplayConsoleCommunicatorDebugMessage = chkConsoleCommunicator.Checked;
+			rtxtDebugMessage.Focus();
+		}
+
+		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// 切換分頁到 DebugMessage 時，自動 Focus 到 RichTextbox 上，好讓其能自動捲動
+			if (tabControl1.SelectedTab == tpDebugMsg)
+				rtxtDebugMessage.Focus();
+		}
+
+		private void cmenuItemClearRichTextbox_Click(object sender, EventArgs e)
+		{
+			rtxtDebugMessage.Clear();
 		}
 
 		#region Map Process
@@ -120,7 +145,6 @@ namespace VehicleSimulator
 			process.VehicleSimulatorAdded += Process_VehicleSimulatorAdded;
 			process.VehicleSimulatorRemoved += Process_VehicleSimulatorRemoved;
 			process.VehicleSimulatorPositionChanged += Process_VehicleSimulatorPositionChanged;
-			process.VehicleSimulatorPathChanged += Process_VehicleSimulatorPathChanged;
 			process.VehicleSimulatorStatusChanged += Process_VehicleSimulatorStatusChanged;
 			process.ConsoleConnectStatusChanged += Process_ConsoleConnectStatusChanged;
 			process.ConsoleReportStarted += Process_ConsoleReportStarted;
@@ -133,7 +157,6 @@ namespace VehicleSimulator
 			process.VehicleSimulatorAdded -= Process_VehicleSimulatorAdded;
 			process.VehicleSimulatorRemoved -= Process_VehicleSimulatorRemoved;
 			process.VehicleSimulatorPositionChanged -= Process_VehicleSimulatorPositionChanged;
-			process.VehicleSimulatorPathChanged -= Process_VehicleSimulatorPathChanged;
 			process.VehicleSimulatorStatusChanged -= Process_VehicleSimulatorStatusChanged;
 			process.ConsoleConnectStatusChanged -= Process_ConsoleConnectStatusChanged;
 			process.ConsoleReportStarted -= Process_ConsoleReportStarted;
@@ -159,11 +182,7 @@ namespace VehicleSimulator
 			UpdateAGVPathIcon(name, tmp);
 		}
 
-		private void Process_VehicleSimulatorPathChanged(string name, List<Pair> path)
-		{
-		}
-
-		private void Process_VehicleSimulatorStatusChanged(string name, string status)
+		private void Process_VehicleSimulatorStatusChanged(string name, VehicleStatus status)
 		{
 		}
 

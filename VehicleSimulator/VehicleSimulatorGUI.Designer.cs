@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpMonitor = new System.Windows.Forms.TabPage();
@@ -57,6 +58,9 @@
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.chkConsoleCommunicator = new System.Windows.Forms.CheckBox();
+			this.cmenuRichTextboxProcess = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.cmenuItemClearRichTextbox = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tpMonitor.SuspendLayout();
 			this.tpDebugMsg.SuspendLayout();
@@ -64,6 +68,7 @@
 			this.groupBox1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
+			this.cmenuRichTextboxProcess.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gluiCtrl1
@@ -97,6 +102,7 @@
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(1000, 528);
 			this.tabControl1.TabIndex = 1;
+			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
 			// tpMonitor
 			// 
@@ -111,6 +117,7 @@
 			// 
 			// tpDebugMsg
 			// 
+			this.tpDebugMsg.Controls.Add(this.chkConsoleCommunicator);
 			this.tpDebugMsg.Controls.Add(this.chkRtxtDebugMsgAutoScroll);
 			this.tpDebugMsg.Controls.Add(this.chkVehicleSimulator);
 			this.tpDebugMsg.Controls.Add(this.rtxtDebugMessage);
@@ -147,6 +154,7 @@
 			this.chkVehicleSimulator.TabIndex = 6;
 			this.chkVehicleSimulator.Text = "Vehicle Simulator";
 			this.chkVehicleSimulator.UseVisualStyleBackColor = true;
+			this.chkVehicleSimulator.CheckedChanged += new System.EventHandler(this.chkVehicleSimulator_CheckedChanged);
 			// 
 			// rtxtDebugMessage
 			// 
@@ -154,6 +162,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.rtxtDebugMessage.BackColor = System.Drawing.Color.Black;
+			this.rtxtDebugMessage.ContextMenuStrip = this.cmenuRichTextboxProcess;
 			this.rtxtDebugMessage.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.rtxtDebugMessage.ForeColor = System.Drawing.SystemColors.Control;
 			this.rtxtDebugMessage.Location = new System.Drawing.Point(6, 81);
@@ -317,7 +326,7 @@
 			this.txtRemotePort.Name = "txtRemotePort";
 			this.txtRemotePort.Size = new System.Drawing.Size(100, 25);
 			this.txtRemotePort.TabIndex = 4;
-			this.txtRemotePort.Text = "8051";
+			this.txtRemotePort.Text = "8000";
 			// 
 			// label7
 			// 
@@ -382,6 +391,34 @@
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(45, 23);
 			this.fileToolStripMenuItem.Text = "File";
 			// 
+			// chkConsoleCommunicator
+			// 
+			this.chkConsoleCommunicator.AutoSize = true;
+			this.chkConsoleCommunicator.Checked = true;
+			this.chkConsoleCommunicator.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkConsoleCommunicator.Location = new System.Drawing.Point(6, 31);
+			this.chkConsoleCommunicator.Name = "chkConsoleCommunicator";
+			this.chkConsoleCommunicator.Size = new System.Drawing.Size(162, 19);
+			this.chkConsoleCommunicator.TabIndex = 8;
+			this.chkConsoleCommunicator.Text = "Console Communicator";
+			this.chkConsoleCommunicator.UseVisualStyleBackColor = true;
+			this.chkConsoleCommunicator.CheckedChanged += new System.EventHandler(this.chkConsoleCommunicator_CheckedChanged);
+			// 
+			// cmenuRichTextboxProcess
+			// 
+			this.cmenuRichTextboxProcess.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.cmenuRichTextboxProcess.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmenuItemClearRichTextbox});
+			this.cmenuRichTextboxProcess.Name = "cmenuRichTextboxProcess";
+			this.cmenuRichTextboxProcess.Size = new System.Drawing.Size(115, 28);
+			// 
+			// cmenuItemClearRichTextbox
+			// 
+			this.cmenuItemClearRichTextbox.Name = "cmenuItemClearRichTextbox";
+			this.cmenuItemClearRichTextbox.Size = new System.Drawing.Size(175, 24);
+			this.cmenuItemClearRichTextbox.Text = "Clear";
+			this.cmenuItemClearRichTextbox.Click += new System.EventHandler(this.cmenuItemClearRichTextbox_Click);
+			// 
 			// VehicleSimulatorGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -405,6 +442,7 @@
 			this.tabPage1.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			this.cmenuRichTextboxProcess.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -441,6 +479,9 @@
 		private System.Windows.Forms.TextBox txtRemoteIP;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Button btnConnectRemote;
+		private System.Windows.Forms.CheckBox chkConsoleCommunicator;
+		private System.Windows.Forms.ContextMenuStrip cmenuRichTextboxProcess;
+		private System.Windows.Forms.ToolStripMenuItem cmenuItemClearRichTextbox;
 	}
 }
 

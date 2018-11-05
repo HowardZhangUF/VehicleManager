@@ -14,11 +14,24 @@ namespace VehicleSimulator
 		public delegate void PositionChangedEventHandler(string name, TowardPair position, List<Pair> path);
 		public event PositionChangedEventHandler PositionChanged;
 
-		public delegate void PathChangedEventHandler(string name, List<Pair> path);
-		public event PathChangedEventHandler PathChanged;
-
-		public delegate void StatusChangedEventHandler(string name, string status);
+		public delegate void StatusChangedEventHandler(string name, VehicleStatus status);
 		public event StatusChangedEventHandler StatusChanged;
+
+		public delegate void MoveMissionStartedEventHandler(DateTime timeStamp, string name);
+		public event MoveMissionStartedEventHandler MoveMissionStarted;
+
+		public delegate void MoveMissionInterruptedEventHandler(DateTime timeStamp, string name);
+		public event MoveMissionInterruptedEventHandler MoveMissionInterrupted;
+
+		public delegate void MoveMissionCompletedEventHandler(DateTime timeStamp, string name);
+		public event MoveMissionCompletedEventHandler MoveMissionCompleted;
+
+		public enum VehicleStatus
+		{
+			Moving,
+			Stopped,
+			Paused
+		}
 
 		public string Name { get; private set; } = "";
 		private int X = 0;
@@ -40,8 +53,8 @@ namespace VehicleSimulator
 		public TowardPair Position { get { return new TowardPair(X, Y, Toward); } }
 		public double TranslationSpeed { get; private set; } = 0; // mm/s
 		public double RotationSpeed { get; private set; } = 0; // degree/s
-		private string _Status = "Stopped";
-		public string Status
+		private VehicleStatus _Status = VehicleStatus.Stopped;
+		public VehicleStatus Status
 		{
 			get
 			{
@@ -57,6 +70,7 @@ namespace VehicleSimulator
 			}
 		}
 		private List<Pair> Path { get; set; } = null;
+		private int CurrentTargetIndex = -1;
 		private Thread MainThread;
 
 		public VehicleSimulator(string name, double translationSpeed, double rotationSpeed)
@@ -76,14 +90,19 @@ namespace VehicleSimulator
 			RotationSpeed = rotationSpeed;
 		}
 
+		public void SetPath(List<Pair> path)
+		{
+			Path = path;
+		}
+
 		public AGVStatus GetAGVStatus()
 		{
 			AGVStatus result = new AGVStatus();
 			result.AlarmMessage = "";
 			result.Battery = 75.5f;
-			if (Status == "Moving") result.Description = EDescription.Running;
-			else if (Status == "Paused") result.Description = EDescription.Pause;
-			else if (Status == "Stopped") result.Description = EDescription.Arrived;
+			if (Status == VehicleStatus.Moving) result.Description = EDescription.Running;
+			else if (Status == VehicleStatus.Paused) result.Description = EDescription.Pause;
+			else if (Status == VehicleStatus.Stopped) result.Description = EDescription.Arrived;
 			result.GoalName = "";
 			result.MapMatch = 99.9f;
 			result.Name = Name;
@@ -116,46 +135,47 @@ namespace VehicleSimulator
 
 		public void Move(List<Pair> path)
 		{
-			if (Status == "Stopped")
+			if (Status == VehicleStatus.Stopped)
 			{
 				Path = path;
-				Status = "Moving";
+				Status = VehicleStatus.Moving;
+				CurrentTargetIndex = 0;
+				MoveMissionStarted?.Invoke(DateTime.Now, Name);
 			}
 		}
 
-		private void MoveTo(Pair point)
+		public void Move()
 		{
-			if (Status == "Stopped")
+			if (Status == VehicleStatus.Stopped)
 			{
-			}
-		}
-
-		private void MoveTo(TowardPair point)
-		{
-			if (Status == "Stopped")
-			{
+				if (Path != null && Path.Count() > 0)
+				{
+					Status = VehicleStatus.Moving;
+					CurrentTargetIndex = 0;
+					MoveMissionStarted?.Invoke(DateTime.Now, Name);
+				}
 			}
 		}
 
 		public void PauseMoving()
 		{
-			if (Status == "Moving")
-				Status = "Paused";
+			if (Status == VehicleStatus.Moving)
+				Status = VehicleStatus.Paused;
 		}
 
 		public void ResumeMoving()
 		{
-			if (Status == "Paused")
-				Status = "Moving";
+			if (Status == VehicleStatus.Paused)
+				Status = VehicleStatus.Moving;
 		}
 
 		public void StopMoving()
 		{
-			if (Status == "Moving" || Status == "Paused")
+			if (Status == VehicleStatus.Moving || Status == VehicleStatus.Paused)
 			{
-				Status = "Stopped";
-				Path.Clear();
-				Path = null;
+				Status = VehicleStatus.Stopped;
+				CurrentTargetIndex = -1;
+				MoveMissionInterrupted?.Invoke(DateTime.Now, Name);
 			}
 		}
 
@@ -164,18 +184,18 @@ namespace VehicleSimulator
 			int timeInterval = 200;
 			while (true)
 			{
-				if (Status == "Moving")
+				if (Status == VehicleStatus.Moving)
 				{
 					if (Path == null || Path.Count() == 0)
-						Status = "Stopped";
+						Status = VehicleStatus.Stopped;
 					else
 						MoveToNextPosition((double)timeInterval / 1000);
 				}
-				else if (Status == "Paused")
+				else if (Status == VehicleStatus.Paused)
 				{
 
 				}
-				else if (Status == "Stopped")
+				else if (Status == VehicleStatus.Stopped)
 				{
 
 				}
@@ -189,9 +209,8 @@ namespace VehicleSimulator
 		{
 			if (Path != null && Path.Count() > 0)
 			{
-				Pair targetPoint = Path[0];
-				double targetToward = CalculateVectorAngleInDegree(new Pair(X, Y), Path[0]);
-				//Console.WriteLine($"Target Point: ({targetPoint.X}, {targetPoint.Y}). Target Toward: {targetToward}");
+				Pair targetPoint = Path[CurrentTargetIndex];
+				double targetToward = CalculateVectorAngleInDegree(new Pair(X, Y), Path[CurrentTargetIndex]);
 
 				// 進行旋轉
 				if (RotationSpeed > 0 && !IsDoubleApproximatelyEqual(Toward, targetToward))
@@ -204,15 +223,19 @@ namespace VehicleSimulator
 				{
 					Pair newPosition = TranslateToTarget(new Pair(X, Y), targetPoint, TranslationSpeed, time);
 					ChangePosition(newPosition.X, newPosition.Y, null);
-
-					// 判斷是否到達該點
-					if (IsPairEqual(new Pair(X, Y), targetPoint))
-					{
-						Path.RemoveAt(0);
-						PathChanged?.Invoke(Name, Path);
-					}
 				}
 
+				// 判斷是否到達該點
+				if (IsPairEqual(new Pair(X, Y), targetPoint))
+				{
+					CurrentTargetIndex += 1;
+					if (CurrentTargetIndex >= Path.Count())
+					{
+						Status = VehicleStatus.Stopped;
+						CurrentTargetIndex = -1;
+						MoveMissionCompleted?.Invoke(DateTime.Now, Name);
+					}
+				}
 			}
 		}
 
@@ -236,8 +259,7 @@ namespace VehicleSimulator
 			}
 			if (changed)
 			{
-				//Console.WriteLine($"X:{X}, Y:{Y}, Toward:{Toward.ToString("F2")}");
-				PositionChanged?.Invoke(Name, new TowardPair(X, Y, Toward), Path);
+				PositionChanged?.Invoke(Name, new TowardPair(X, Y, Toward), Path.Skip(CurrentTargetIndex).ToList());
 			}
 		}
 

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static VehicleSimulator.VehicleSimulator;
 
 namespace VehicleSimulator
 {
@@ -33,9 +34,8 @@ namespace VehicleSimulator
 		public delegate void VehicleSimulatorRemovedEventHandler(string name);
 		public event VehicleSimulatorRemovedEventHandler VehicleSimulatorRemoved;
 
-		public event VehicleSimulator.PositionChangedEventHandler VehicleSimulatorPositionChanged;
-		public event VehicleSimulator.PathChangedEventHandler VehicleSimulatorPathChanged;
-		public event VehicleSimulator.StatusChangedEventHandler VehicleSimulatorStatusChanged;
+		public event PositionChangedEventHandler VehicleSimulatorPositionChanged;
+		public event StatusChangedEventHandler VehicleSimulatorStatusChanged;
 
 		public event ConsoleCommunicator.ConnectStatusChangedEventHandler ConsoleConnectStatusChanged;
 
@@ -180,9 +180,9 @@ namespace VehicleSimulator
 			return result;
 		}
 
-		public string GetVehicleStatus(string name)
+		public VehicleStatus? GetVehicleStatus(string name)
 		{
-			string result = "";
+			VehicleStatus? result = null;
 			if (VehicleSimulators.Keys.Contains(name))
 			{
 				result = VehicleSimulators[name].Status;
@@ -194,7 +194,7 @@ namespace VehicleSimulator
 		{
 			if (VehicleSimulators.Keys.Contains(name))
 			{
-				if (VehicleSimulators[name].Status == "Stopped")
+				if (VehicleSimulators[name].Status == VehicleStatus.Stopped)
 				{
 					List<Pair> newPath = new List<Pair>();
 					for (int i = 0; i < cycleTimes; ++i)
@@ -210,7 +210,7 @@ namespace VehicleSimulator
 		{
 			if (VehicleSimulators.Keys.Contains(name))
 			{
-				if (VehicleSimulators[name].Status == "Stopped")
+				if (VehicleSimulators[name].Status == VehicleStatus.Stopped)
 				{
 					VehicleSimulators[name].Move(path);
 				}
@@ -221,7 +221,7 @@ namespace VehicleSimulator
 		{
 			if (VehicleSimulators.Keys.Contains(name))
 			{
-				if (VehicleSimulators[name].Status == "Moving")
+				if (VehicleSimulators[name].Status == VehicleStatus.Moving)
 				{
 					VehicleSimulators[name].PauseMoving();
 				}
@@ -232,7 +232,7 @@ namespace VehicleSimulator
 		{
 			if (VehicleSimulators.Keys.Contains(name))
 			{
-				if (VehicleSimulators[name].Status == "Paused")
+				if (VehicleSimulators[name].Status == VehicleStatus.Paused)
 				{
 					VehicleSimulators[name].ResumeMoving();
 				}
@@ -243,7 +243,7 @@ namespace VehicleSimulator
 		{
 			if (VehicleSimulators.Keys.Contains(name))
 			{
-				if (VehicleSimulators[name].Status == "Moving" || VehicleSimulators[name].Status == "Paused")
+				if (VehicleSimulators[name].Status == VehicleStatus.Moving || VehicleSimulators[name].Status == VehicleStatus.Paused)
 				{
 					VehicleSimulators[name].StopMoving();
 				}
@@ -253,18 +253,16 @@ namespace VehicleSimulator
 		private void SubscribeVehicleSimulatorEvent(VehicleSimulator vehicleSimulator)
 		{
 			vehicleSimulator.StatusChanged += VehicleSimulator_StatusChanged;
-			vehicleSimulator.PathChanged += VehicleSimulator_PathChanged;
 			vehicleSimulator.PositionChanged += VehicleSimulator_PositionChanged;
 		}
 
 		private void UnsubscribeVehicleSimulatorEvent(VehicleSimulator vehicleSimulator)
 		{
 			vehicleSimulator.StatusChanged -= VehicleSimulator_StatusChanged;
-			vehicleSimulator.PathChanged -= VehicleSimulator_PathChanged;
 			vehicleSimulator.PositionChanged -= VehicleSimulator_PositionChanged;
 		}
 
-		private void VehicleSimulator_StatusChanged(string name, string status)
+		private void VehicleSimulator_StatusChanged(string name, VehicleStatus status)
 		{
 			if (DisplayVehicleSimulatorDebugMessage)
 			{
@@ -273,17 +271,6 @@ namespace VehicleSimulator
 			}
 
 			VehicleSimulatorStatusChanged?.Invoke(name, status);
-		}
-
-		private void VehicleSimulator_PathChanged(string name, List<Pair> path)
-		{
-			if (DisplayVehicleSimulatorDebugMessage)
-			{
-				string message = $"Vehicle: {name} Path Changed! New Path Length: {path.Count()}";
-				DebugMessage?.Invoke(DateTime.Now, "Vehicle Simulator", message);
-			}
-
-			VehicleSimulatorPathChanged?.Invoke(name, path);
 		}
 
 		private void VehicleSimulator_PositionChanged(string name, TowardPair position, List<Pair> path)
