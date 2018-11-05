@@ -102,6 +102,8 @@ namespace VehicleSimulator
 				result.Name = Name;
 				result.PathX = new List<double>();
 				result.PathY = new List<double>();
+				result.PathX.Add(X);
+				result.PathY.Add(Y);
 				for (int i = 0; i < Path.Count(); ++i)
 				{
 					result.PathX.Add(Path[i].X);
