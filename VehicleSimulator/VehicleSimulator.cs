@@ -11,7 +11,7 @@ namespace VehicleSimulator
 {
 	class VehicleSimulator
 	{
-		public delegate void PositionChangedEventHandler(string name, TowardPair position);
+		public delegate void PositionChangedEventHandler(string name, TowardPair position, List<Pair> path);
 		public event PositionChangedEventHandler PositionChanged;
 
 		public delegate void PathChangedEventHandler(string name, List<Pair> path);
@@ -236,7 +236,7 @@ namespace VehicleSimulator
 			if (changed)
 			{
 				//Console.WriteLine($"X:{X}, Y:{Y}, Toward:{Toward.ToString("F2")}");
-				PositionChanged?.Invoke(Name, new TowardPair(X, Y, Toward));
+				PositionChanged?.Invoke(Name, new TowardPair(X, Y, Toward), Path);
 			}
 		}
 

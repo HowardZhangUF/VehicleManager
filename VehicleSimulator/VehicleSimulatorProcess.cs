@@ -27,7 +27,15 @@ namespace VehicleSimulator
 		public delegate void DebugMessageEventHandler(DateTime timeStamp, string category, string message);
 		public event DebugMessageEventHandler DebugMessage;
 
+		public delegate void VehicleSimulatorAddedEventHandler(string name);
+		public event VehicleSimulatorAddedEventHandler VehicleSimulatorAdded;
+
+		public delegate void VehicleSimulatorRemovedEventHandler(string name);
+		public event VehicleSimulatorRemovedEventHandler VehicleSimulatorRemoved;
+
 		public event VehicleSimulator.PositionChangedEventHandler VehicleSimulatorPositionChanged;
+		public event VehicleSimulator.PathChangedEventHandler VehicleSimulatorPathChanged;
+		public event VehicleSimulator.StatusChangedEventHandler VehicleSimulatorStatusChanged;
 
 		private Thread ReportThread;
 
@@ -122,6 +130,7 @@ namespace VehicleSimulator
 			{
 				VehicleSimulators.Add(name, new VehicleSimulator(name, translationSpeed, rotationSpeed));
 				SubscribeVehicleSimulatorEvent(VehicleSimulators[name]);
+				VehicleSimulatorAdded?.Invoke(name);
 				result = true;
 			}
 			return result;
@@ -134,6 +143,7 @@ namespace VehicleSimulator
 			{
 				UnsubscribeVehicleSimulatorEvent(VehicleSimulators[name]);
 				VehicleSimulators.Remove(name);
+				VehicleSimulatorRemoved?.Invoke(name);
 				result = true;
 			}
 			return result;
@@ -250,6 +260,8 @@ namespace VehicleSimulator
 				string message = $"Vehicle: {name} Status Changed! New Status: {status}";
 				DebugMessage?.Invoke(DateTime.Now, "Vehicle Simulator", message);
 			}
+
+			VehicleSimulatorStatusChanged?.Invoke(name, status);
 		}
 
 		private void VehicleSimulator_PathChanged(string name, List<Pair> path)
@@ -259,9 +271,11 @@ namespace VehicleSimulator
 				string message = $"Vehicle: {name} Path Changed! New Path Length: {path.Count()}";
 				DebugMessage?.Invoke(DateTime.Now, "Vehicle Simulator", message);
 			}
+
+			VehicleSimulatorPathChanged?.Invoke(name, path);
 		}
 
-		private void VehicleSimulator_PositionChanged(string name, TowardPair position)
+		private void VehicleSimulator_PositionChanged(string name, TowardPair position, List<Pair> path)
 		{
 			if (DisplayVehicleSimulatorDebugMessage)
 			{
@@ -269,7 +283,7 @@ namespace VehicleSimulator
 				DebugMessage?.Invoke(DateTime.Now, "Vehicle Simulator", message);
 			}
 
-			VehicleSimulatorPositionChanged?.Invoke(name, position);
+			VehicleSimulatorPositionChanged?.Invoke(name, position, path);
 		}
 
 		#endregion
