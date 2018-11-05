@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugMessage.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="IntMath.cs" />
     <Compile Include="MapSimulator.cs" />
