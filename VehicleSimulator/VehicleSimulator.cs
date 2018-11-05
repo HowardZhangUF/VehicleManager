@@ -99,6 +99,7 @@ namespace VehicleSimulator
 			AGVPath result = null;
 			if (Path != null && Path.Count() > 0)
 			{
+				result = new AGVPath();
 				result.Name = Name;
 				result.PathX = new List<double>();
 				result.PathY = new List<double>();
