@@ -118,7 +118,7 @@ namespace VehicleSimulator
 			MRESocketEventHandler.Reset();
 		}
 
-		/// <summary>處理 SocketServer 事件的執行緒</summary>
+		/// <summary>處理 SocketClient 事件的執行緒</summary>
 		private void TaskSocketEventHandler()
 		{
 			try
@@ -144,6 +144,20 @@ namespace VehicleSimulator
 			catch (ThreadAbortException)
 			{
 				// do nothing
+			}
+			finally
+			{
+				List<EventArgs> events = null;
+				lock (SocketEventContainer)
+				{
+					events = SocketEventContainer.ToList();
+					SocketEventContainer.Clear();
+				}
+
+				foreach (EventArgs e in events)
+				{
+					HandleSocketEvent(e);
+				}
 			}
 		}
 
