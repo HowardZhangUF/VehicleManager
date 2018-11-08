@@ -124,7 +124,7 @@ namespace VehicleSimulator
 				result.PathY = new List<double>();
 				result.PathX.Add(X);
 				result.PathY.Add(Y);
-				for (int i = 0; i < Path.Count(); ++i)
+				for (int i = CurrentTargetIndex; i < Path.Count(); ++i)
 				{
 					result.PathX.Add(Path[i].X);
 					result.PathY.Add(Path[i].Y);

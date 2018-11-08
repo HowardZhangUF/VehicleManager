@@ -61,8 +61,11 @@ namespace VehicleSimulator
 							{
 								ConsoleCommunicator.SendSerializableData(vehicleSimulator.GetAGVStatus());
 								Thread.Sleep(50);
-								ConsoleCommunicator.SendSerializableData(vehicleSimulator.GetAGVPath());
-								Thread.Sleep(50);
+								if (vehicleSimulator.Status == VehicleStatus.Moving)
+								{
+									ConsoleCommunicator.SendSerializableData(vehicleSimulator.GetAGVPath());
+									Thread.Sleep(50);
+								}
 							}
 						}
 					}
