@@ -44,7 +44,7 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>車框半徑。車框 = 車身安全框 + Buffer 框</summary>
-		public int FrameRadius = 0;
+		public int FrameRadius = 2000;
 
 		/// <summary>AGV 圖像識別碼</summary>
 		public int AGVIconID = -1;
