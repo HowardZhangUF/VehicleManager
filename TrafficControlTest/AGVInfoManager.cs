@@ -75,11 +75,20 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>取得 AGV 的名字清單</summary>
-		public string[] GetAGVNames()
+		public List<string> GetAGVNames()
 		{
 			lock (AGVInfos)
 			{
-				return AGVInfos.Keys.ToArray();
+				return AGVInfos.Keys.ToList();
+			}
+		}
+
+		/// <summary>取得 AGV 的狀態清單</summary>
+		public List<AGVInfo> GetAGVInfos()
+		{
+			lock(AGVInfos)
+			{
+				return AGVInfos.Values.ToList();
 			}
 		}
 

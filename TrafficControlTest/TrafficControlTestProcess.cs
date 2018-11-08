@@ -86,7 +86,7 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>取得 AGV 的名字清單</summary>
-		public string[] GetAGVNames()
+		public List<string> GetAGVNames()
 		{
 			return AGVInfoManager.GetAGVNames();
 		}
