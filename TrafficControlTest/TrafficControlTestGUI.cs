@@ -23,7 +23,7 @@ namespace TrafficControlTest
 			InitializeComponent();
 			StyleManager.LoadStyle("Style.ini");
 
-			TrafficController.CalculateCollisionEvent(TrafficController.CreateFakeData());
+			//TrafficController.CalculateCollisionEvent(TrafficController.CreateFakeData());
 		}
 
 		private void SubscribeProcessEvent()
