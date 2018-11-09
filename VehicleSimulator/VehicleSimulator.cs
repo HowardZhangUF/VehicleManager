@@ -73,10 +73,12 @@ namespace VehicleSimulator
 		private int CurrentTargetIndex = -1;
 		private Thread MainThread;
 
-		public VehicleSimulator(string name, double translationSpeed, double rotationSpeed)
+		public VehicleSimulator(string name, double translationSpeed, double rotationSpeed, int x, int y)
 		{
 			Name = name;
 			SetSpeed(translationSpeed, rotationSpeed);
+			X = x;
+			Y = y;
 
 			MainThread = new Thread(MainTask);
 			MainThread.IsBackground = true;

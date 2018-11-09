@@ -31,21 +31,15 @@ namespace VehicleSimulator
 			SubscribeVehicleSimulatorProcessEvent();
 
 			List<Pair> path1 = new List<Pair>();
-			path1.Add(new Pair(9000, -6000));
-			path1.Add(new Pair(-8000, -7000));
-			path1.Add(new Pair(5000, 5000));
-			path1.Add(new Pair(-3000, 4000));
-			path1.Add(new Pair(-3000, -9000));
+			path1.Add(new Pair(7000, -1000));
+			path1.Add(new Pair(-10000, 1000));
 
 			List<Pair> path2 = new List<Pair>();
-			path2.Add(new Pair(-4000, -8000));
-			path2.Add(new Pair(8000, -7000));
-			path2.Add(new Pair(-9000, 6000));
-			path2.Add(new Pair(3000, 4000));
-			path2.Add(new Pair(-5000, -5000));
+			path2.Add(new Pair(1000, 9000));
+			path2.Add(new Pair(-1000, -9000));
 
-			process.AddVehicleSimualtor("AGV01", 1000, 40);
-			process.AddVehicleSimualtor("AGV02", 1000, 40);
+			process.AddVehicleSimualtor("AGV01", 1000, 40, 7000, -1000);
+			process.AddVehicleSimualtor("AGV02", 1000, 40, 1000, 9000);
 			process.VehicleSimulatorMove("AGV01", path1);
 			process.VehicleSimulatorMove("AGV02", path2);
 		}

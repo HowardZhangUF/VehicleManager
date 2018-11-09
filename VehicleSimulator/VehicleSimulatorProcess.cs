@@ -137,12 +137,12 @@ namespace VehicleSimulator
 
 		public bool DisplayVehicleSimulatorDebugMessage = true;
 
-		public bool AddVehicleSimualtor(string name, double translationSpeed, double rotationSpeed)
+		public bool AddVehicleSimualtor(string name, double translationSpeed, double rotationSpeed, int x, int y)
 		{
 			bool result = false;
 			if (!VehicleSimulators.Keys.Contains(name))
 			{
-				VehicleSimulators.Add(name, new VehicleSimulator(name, translationSpeed, rotationSpeed));
+				VehicleSimulators.Add(name, new VehicleSimulator(name, translationSpeed, rotationSpeed, x, y));
 				SubscribeVehicleSimulatorEvent(VehicleSimulators[name]);
 				VehicleSimulatorAdded?.Invoke(name);
 				result = true;
