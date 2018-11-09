@@ -55,6 +55,18 @@ namespace TrafficControlTest
 		/// <summary>AGV 的 IP 與 Port 。格式為 IP:Port</summary>
 		public string IPPort = string.Empty;
 
+		/// <summary>清除 AGV 路徑線點</summary>
+		public void ClearPathPoints()
+		{
+			_PathPoints = null;
+		}
+
+		/// <summary>清除 AGV 路徑線區域</summary>
+		public void ClearPathRegion()
+		{
+			_PathRegion = null;
+		}
+
 		/// <summary>將路徑節點轉換成點集合</summary>
 		private static List<Pair> CalculatePathPoints(AGVPath path, int frameRadius)
 		{

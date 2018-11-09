@@ -196,6 +196,8 @@ namespace TrafficControlTest
 					if (AGVInfos.Keys.Contains(path.Name))
 					{
 						AGVInfos[path.Name].Path = path;
+						AGVInfos[path.Name].ClearPathPoints();
+						AGVInfos[path.Name].ClearPathRegion();
 						AGVPathUpdated?.Invoke(DateTime.Now, path.Name, AGVInfos[path.Name].IPPort, AGVInfos[path.Name]);
 					}
 				}
