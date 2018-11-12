@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Geometry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,12 @@ namespace TrafficControlTest
 		public AGVInfo AGV1 = null;
 		public AGVInfo AGV2 = null;
 		public Rectangle CollisionRegion = null;
-		public int CollisionBeginTime { get { return CollisionBeginTimeOfAGV1 < CollisionBeginTimeOfAGV2 ? CollisionBeginTimeOfAGV1 : CollisionBeginTimeOfAGV2; } }
-		public int CollisionEndTime { get { return CollisionEndTimeOfAGV1 > CollisionBeginTimeOfAGV2 ? CollisionEndTimeOfAGV1 : CollisionEndTimeOfAGV2; } }
-		private int CollisionBeginTimeOfAGV1;
-		private int CollisionEndTimeOfAGV1;
-		private int CollisionBeginTimeOfAGV2;
-		private int CollisionEndTimeOfAGV2;
+		public double CollisionBeginTime { get { return CollisionBeginTimeOfAGV1 < CollisionBeginTimeOfAGV2 ? CollisionBeginTimeOfAGV1 : CollisionBeginTimeOfAGV2; } }
+		public double CollisionEndTime { get { return CollisionEndTimeOfAGV1 > CollisionBeginTimeOfAGV2 ? CollisionEndTimeOfAGV1 : CollisionEndTimeOfAGV2; } }
+		private double CollisionBeginTimeOfAGV1;
+		private double CollisionEndTimeOfAGV1;
+		private double CollisionBeginTimeOfAGV2;
+		private double CollisionEndTimeOfAGV2;
 		public Vector2D EnterVectorOfAGV1;
 		public Vector2D ExitVectorOfAGV1;
 		public Vector2D EnterVectorOfAGV2;
@@ -28,7 +29,7 @@ namespace TrafficControlTest
 			string tmp = "";
 			tmp += $"{AGV1.Status.Name} & {AGV2.Status.Name} will be collided.\n";
 			tmp += $"The collision region is {CollisionRegion.ToString()}\n";
-			tmp += $"The collision will begin in {CollisionBeginTime} seconds.\n";
+			tmp += $"The collision will begin in {CollisionBeginTime.ToString("F2")} seconds.\n";
 			tmp += $"The {AGV1.Status.Name} Enter Direction: {EnterVectorOfAGV1.ToString()}";
 			tmp += $"The {AGV2.Status.Name} Enter Direction: {EnterVectorOfAGV2.ToString()}";
 			tmp += $"Angle Between Two Direction: {Vector2D.CalculateAngleOfTwoVector(EnterVectorOfAGV1, EnterVectorOfAGV2)}";
@@ -44,13 +45,13 @@ namespace TrafficControlTest
 				if (pair.AGV1 != null && pair.AGV2 != null && pair.OverlapRegions != null && pair.OverlapRegions.Count() > 0)
 				{
 					List<CollisionPair> collisionPairs = null;
-					int timeBegin = -1, timeEnd = -1;
+					double timeBegin = -1, timeEnd = -1;
 					for (int i = 0; i < pair.OverlapRegions.Count(); ++i)
 					{
 						// 計算兩車於指定區域的交會時間
 						CollisionPair tmp = null;
 						tmp = CalculateTimeIntervalOfIntersection(pair.AGV1, pair.AGV2, pair.OverlapRegions[i], ref timeBegin, ref timeEnd);
-						if (timeBegin > 0 && timeEnd > 0)
+						if (timeBegin >= 0 && timeEnd >= 0)
 						{
 							if (collisionPairs == null) collisionPairs = new List<CollisionPair>();
 							collisionPairs.Add(tmp);
@@ -67,7 +68,7 @@ namespace TrafficControlTest
 						else if (collisionPairs.Count > 1)
 						{
 							int indexOfEarlier = 0;
-							int timeOfEarlier = collisionPairs[0].CollisionBeginTime;
+							double timeOfEarlier = collisionPairs[0].CollisionBeginTime;
 							for (int i = 1; i < collisionPairs.Count(); ++i)
 							{
 								if (collisionPairs[i].CollisionBeginTime < timeOfEarlier)
@@ -85,15 +86,15 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>計算兩車於指定區域的交會時間</summary>
-		private static CollisionPair CalculateTimeIntervalOfIntersection(AGVInfo agv1, AGVInfo agv2, Rectangle intersectionRegion, ref int timeBegin, ref int timeEnd)
+		private static CollisionPair CalculateTimeIntervalOfIntersection(AGVInfo agv1, AGVInfo agv2, Rectangle intersectionRegion, ref double timeBegin, ref double timeEnd)
 		{
 			CollisionPair result = null;
 			timeBegin = -1;
 			timeEnd = -1;
 			if (agv1 != null && agv2 != null && intersectionRegion != null)
 			{
-				int timeOfEnterOfAGV1 = -1, timeOfExitOfAGV1 = -1;
-				int timeOfEnterOfAGV2 = -1, timeOfExitOfAGV2 = -1;
+				double timeOfEnterOfAGV1 = -1, timeOfExitOfAGV1 = -1;
+				double timeOfEnterOfAGV2 = -1, timeOfExitOfAGV2 = -1;
 				Vector2D vectorOfEnterOfAGV1 = null, vectorOfExitOfAGV1 = null;
 				Vector2D vectorOfEnterOfAGV2 = null, vectorOfExitOfAGV2 = null;
 				CalculateTimeIntervalOfRegion(agv1, intersectionRegion, ref timeOfEnterOfAGV1, ref timeOfExitOfAGV1, ref vectorOfEnterOfAGV1, ref vectorOfExitOfAGV1);
@@ -127,7 +128,7 @@ namespace TrafficControlTest
 		}
 
 		/// <summary>計算車子於指定區域的進入時間與離開時間</summary>
-		private static void CalculateTimeIntervalOfRegion(AGVInfo agv, Rectangle region, ref int timeOfEnter, ref int timeOfExit, ref Vector2D vectorOfEnter, ref Vector2D vectorOfExit)
+		private static void CalculateTimeIntervalOfRegion(AGVInfo agv, Rectangle region, ref double timeOfEnter, ref double timeOfExit, ref Vector2D vectorOfEnter, ref Vector2D vectorOfExit)
 		{
 			timeOfEnter = -1;
 			timeOfExit = -1;
@@ -142,10 +143,22 @@ namespace TrafficControlTest
 					int distanceOfEnter = -1, distanceOfExit = -1;
 					distanceOfEnter = CalculateDistanceOfTwoPointInPath(agv, 0, indexOfEnter);
 					distanceOfExit = distanceOfEnter + CalculateDistanceOfTwoPointInPath(agv, indexOfEnter, indexOfExit);
+
+					// 因為 PathPoint 每次都會重新計算，所以每次進入點的距離與當前位置的距離都差不多，需要再加上進入點的位置與交會區域的距離
+					// 因為 PathPoint 每次都會重新計算，所以每次算出的 Collision Region 都不一樣
+					if (indexOfEnter >= 0 && (indexOfEnter + 1) < agv.PathPoints.Count())
+					{
+						Pair EnterPoint = CalculateIntersectionPoint(region, agv.PathPoints[indexOfEnter], agv.PathPoints[indexOfEnter + 1]);
+						if (EnterPoint != null)
+						{
+							distanceOfEnter += (int)CalculateDistanceOfTwoPoint(EnterPoint.X, EnterPoint.Y, agv.PathPoints[indexOfEnter].X, agv.PathPoints[indexOfEnter].Y);
+						}
+					}
+
 					if (distanceOfEnter >= 0 && distanceOfExit > distanceOfEnter)
 					{
-						timeOfEnter = (int)(distanceOfEnter / agv.Status.Velocity);
-						timeOfExit = (int)(distanceOfExit / agv.Status.Velocity);
+						timeOfEnter = distanceOfEnter / agv.Status.Velocity;
+						timeOfExit = distanceOfExit / agv.Status.Velocity;
 					}
 				}
 			}
@@ -203,10 +216,113 @@ namespace TrafficControlTest
 			{
 				for (int i = indexOfBegin + 1; i <= indexOfEnd; ++i)
 				{
-					result += Math.Sqrt(Math.Pow(agv.PathPoints[i - 1].X - agv.PathPoints[i].X, 2) + Math.Pow(agv.PathPoints[i - 1].Y - agv.PathPoints[i].Y, 2));
+					result += CalculateDistanceOfTwoPoint(agv.PathPoints[i - 1].X, agv.PathPoints[i - 1].Y, agv.PathPoints[i].X, agv.PathPoints[i].Y);
 				}
 			}
 			return (int)result;
+		}
+
+		/// <summary>計算兩點間的距離</summary>
+		private static double CalculateDistanceOfTwoPoint(int x1, int y1, int x2, int y2)
+		{
+			return Math.Sqrt(Math.Pow(x1 - x2, 2)) + Math.Sqrt(Math.Pow(y1 - y2, 2));
+		}
+
+		/// <summary>計算指定矩形與兩點組成的線段的交點</summary>
+		private static Pair CalculateIntersectionPoint(Rectangle rectangle, Pair point1, Pair point2)
+		{
+			Pair result = null;
+			if (rectangle != null && point1 != null && point2 != null)
+			{
+				// 計算矩形的四個邊與兩點組成的線段的交點
+				if (result == null)
+				{
+					result = CalculateIntersectionPoint(point1, point2, new Pair(rectangle.XMax, rectangle.YMax), new Pair(rectangle.XMax, rectangle.YMin));
+				}
+				if (result == null)
+				{
+					result = CalculateIntersectionPoint(point1, point2, new Pair(rectangle.XMax, rectangle.YMax), new Pair(rectangle.XMin, rectangle.YMax));
+				}
+				if (result == null)
+				{
+					result = CalculateIntersectionPoint(point1, point2, new Pair(rectangle.XMin, rectangle.YMin), new Pair(rectangle.XMax, rectangle.YMin));
+				}
+				if (result == null)
+				{
+					result = CalculateIntersectionPoint(point1, point2, new Pair(rectangle.XMin, rectangle.YMin), new Pair(rectangle.XMin, rectangle.YMax));
+				}
+			}
+			return result;
+		}
+
+		/// <summary>計算兩線段的交點</summary>
+		private static Pair CalculateIntersectionPoint(Pair line1Point1, Pair line1Point2, Pair line2Point1, Pair line2Point2)
+		{
+			/*
+			參考資料：https://www.cnblogs.com/sanmubai/p/7306599.html
+
+			線段 AB 其端點為 (xa, ya) 與 (xb, yb) ，其直線方程為：
+			x = xa + lambda * (xb - xa)
+			y = ya + lambda * (yb - ya)
+			0 <= lambda <= 1
+
+			線段 CD 其端點為 (xc, yc) 與 (xd, yd) ，其直線方程為：
+			x = xc + micro * (xd - xc)
+			y = yc + micro * (yd - yc)
+			0 <= micro <= 1
+
+			則交點應滿足：
+			x = xa + lambda * (xb - xa) = xc + micro * (xd - xc)
+			y = ya + lambda * (yb - ya) = yc + micro * (yd - yc)
+
+			可整理成：
+			(xb - xa) * lambda - (xd - xc) * micro = xc - xa
+			(yb - ya) * lambda - (yd - yc) * micro = yc - ya
+
+			行列式 delta 的算法為：
+			A = |(xb - xa) -(xd - xc)|
+				|(yb - ya) -(yd - yc)|
+			delta = (xb - xa) * (-(yd - yc)) - (-(xd - xc)) * (yb - ya)
+				  = (xb - xa) * (yc - yd) - (xc - xd) * (yb - ya)
+
+			若其行列式等於零，表示線段 AB 與線段 CD 重合或平行。
+
+			若其行列式不等於零，則可求出：
+			lambda = 1 / delta * det|(xc - xa) -(xd - xc)|
+									|(yc - ya) -(yd - yc)|
+				   = 1 / delta * ((xc - xa) * (yc - yd) - (xc - xd) * (yc - ya))
+			mircro = 1 / delta * det|(xb - xa) (xc - xa)|
+									|(yb - ya) (yc - ya)|
+				   = 1 / delta * ((xb - xa) * (yc - ya) - (xc - xa) * (yb - ya))
+			
+			需特別注意，僅有當 0 <= lambda <= 1 且 0 <= micro <= 1 時，兩線段才有相交，
+			否則，交點在線段的延長線上，仍認為兩線段不相交。
+
+			算出 lambda 與 micro 後，可得交點為：
+			x = xa + lambda * (xb - xa)
+			y = ya + lambda * (yb - ya)
+			*/
+			Pair result = null;
+			if (line1Point1 != null && line1Point2 != null && line2Point1 != null && line2Point2 != null)
+			{
+				double delta = (line1Point2.X - line1Point1.X) * (line2Point1.Y - line2Point2.Y) - (line2Point1.X - line2Point2.X) * (line1Point2.Y - line1Point1.Y);
+				if (delta <= double.Epsilon && delta >= -double.Epsilon)
+				{
+					result = null;
+				}
+				double lambda = ((line2Point1.X - line1Point1.X) * (line2Point1.Y - line2Point2.Y) - (line2Point1.X - line2Point2.X) * (line2Point1.Y - line1Point1.Y)) / delta;
+				if (0 <= lambda && lambda <= 1)
+				{
+					double micro = ((line1Point2.X - line1Point1.X) * (line2Point1.Y - line1Point1.Y) - (line2Point1.X - line1Point1.X) * (line1Point2.Y - line1Point1.Y)) / delta;
+					if (0 <= micro && micro <= 1)
+					{
+						int x = line1Point1.X + (int)(lambda * (line1Point2.X - line1Point1.X));
+						int y = line1Point1.Y + (int)(lambda * (line1Point2.Y - line1Point1.Y));
+						result = new Pair(x, y);
+					}
+				}
+			}
+			return result;
 		}
 	}
 }

@@ -18,12 +18,16 @@ namespace TrafficControlTest
 		{
 			SubscribeAGVInfoManagerEvent();
 			SubscribeAGVMonitorEvent();
+			CollisionEventMonitor.SetAGVInfoManager(AGVInfoManager);
+			SubscribeCollisionEventMonitorEvent();
 		}
 
 		~TrafficControlTestProcess()
 		{
 			UnsubscribeAGVInfoManagerEvent();
 			UnsubscribeAGVMonitorEvent();
+			CollisionEventMonitor.ClearAGVInfoManager();
+			UnsubscribeCollisionEventMonitorEvent();
 		}
 
 		public delegate void DebugMessageEventHandler(DateTime timeStamp, string category, string message);
@@ -36,6 +40,67 @@ namespace TrafficControlTest
 		public event AGVInfoManager.AGVStatusUpdatedEventHandler AGVStatusUpdated;
 
 		public event AGVInfoManager.AGVPathUpdateEventHandler AGVPathUpdated;
+
+		public event CollisionEventMonitor.CollisionPairEventHandler CollisionOccured;
+
+		public event CollisionEventMonitor.CollisionPairEventHandler CollisionUpdated;
+
+		public event CollisionEventMonitor.CollisionPairEventHandler CollisionSolved;
+
+		#region AGV 碰撞監控
+
+		CollisionEventMonitor CollisionEventMonitor = new CollisionEventMonitor();
+
+		public bool DisplayCollisionEventMonitorDebugMessage = true;
+
+		public void SubscribeCollisionEventMonitorEvent()
+		{
+			CollisionEventMonitor.CollisionOccured += CollisionEventMonitor_CollisionOccured;
+			CollisionEventMonitor.CollisionUpdated += CollisionEventMonitor_CollisionUpdated;
+			CollisionEventMonitor.CollisionSolved += CollisionEventMonitor_CollisionSolved;
+		}
+
+		public void UnsubscribeCollisionEventMonitorEvent()
+		{
+			CollisionEventMonitor.CollisionOccured -= CollisionEventMonitor_CollisionOccured;
+			CollisionEventMonitor.CollisionUpdated -= CollisionEventMonitor_CollisionUpdated;
+			CollisionEventMonitor.CollisionSolved -= CollisionEventMonitor_CollisionSolved;
+		}
+
+		private void CollisionEventMonitor_CollisionOccured(CollisionPair collisionPair)
+		{
+			if (DisplayCollisionEventMonitorDebugMessage)
+			{
+				string message = $"Collision Occured!";
+				DebugMessage?.Invoke(DateTime.Now, "Collision Event Monitor", message);
+			}
+
+			CollisionOccured?.Invoke(collisionPair);
+		}
+
+		private void CollisionEventMonitor_CollisionUpdated(CollisionPair collisionPair)
+		{
+			if (DisplayCollisionEventMonitorDebugMessage)
+			{
+				string message = $"Collision Updated!";
+				DebugMessage?.Invoke(DateTime.Now, "Collision Event Monitor", message);
+			}
+
+			CollisionUpdated?.Invoke(collisionPair);
+		}
+
+		private void CollisionEventMonitor_CollisionSolved(CollisionPair collisionPair)
+		{
+			if (DisplayCollisionEventMonitorDebugMessage)
+			{
+				string message = $"Collision Solved!";
+				DebugMessage?.Invoke(DateTime.Now, "Collision Event Monitor", message);
+			}
+
+			CollisionSolved?.Invoke(collisionPair);
+		}
+
+		#endregion
 
 		#region AGV 資訊管理
 

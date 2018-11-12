@@ -18,6 +18,10 @@ namespace TrafficControlTest
 	{
 		private TrafficControlTestProcess process = new TrafficControlTestProcess();
 
+		private Dictionary<string, int> CollisionRegionIcons = new Dictionary<string, int>();
+
+		private Dictionary<string, int> PathPointsIcons = new Dictionary<string, int>();
+
 		public TrafficControlTestGUI()
 		{
 			InitializeComponent();
@@ -33,6 +37,9 @@ namespace TrafficControlTest
 			process.AGVRemoved += Process_AGVRemoved;
 			process.AGVStatusUpdated += Process_AGVStatusUpdated;
 			process.AGVPathUpdated += Process_AGVPathUpdated;
+			process.CollisionOccured += Process_CollisionOccured;
+			process.CollisionUpdated += Process_CollisionUpdated;
+			process.CollisionSolved += Process_CollisionSolved;
 		}
 
 		private void UnsubscribeProcessEvent()
@@ -42,6 +49,9 @@ namespace TrafficControlTest
 			process.AGVRemoved -= Process_AGVRemoved;
 			process.AGVStatusUpdated -= Process_AGVStatusUpdated;
 			process.AGVPathUpdated -= Process_AGVPathUpdated;
+			process.CollisionOccured -= Process_CollisionOccured;
+			process.CollisionUpdated -= Process_CollisionUpdated;
+			process.CollisionSolved -= Process_CollisionSolved;
 		}
 
 		/// <summary>註冊圖像 ID</summary>
@@ -49,6 +59,11 @@ namespace TrafficControlTest
 		{
 			agvInfo.AGVIconID = GLCMD.CMD.SerialNumber.Next();
 			agvInfo.PathIconID = GLCMD.CMD.AddMultiStripLine("Path", null);
+			if (!PathPointsIcons.Keys.Contains(agvInfo.Status.Name))
+			{
+				int tmp = GLCMD.CMD.AddMultiPair("PathPoint", null);
+				PathPointsIcons.Add(agvInfo.Status.Name, tmp);
+			}
 		}
 
 		/// <summary>印出圖像</summary>
@@ -71,6 +86,14 @@ namespace TrafficControlTest
 						line.AddRangeIfNotNull(ConvertAGVPathToPairCollection(agvInfo.Path));
 					});
 				}
+				if (PathPointsIcons.Keys.Contains(agvInfo.Status.Name))
+				{
+					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(PathPointsIcons[agvInfo.Status.Name], true, (points) =>
+					{
+						points.Clear();
+						points.AddRangeIfNotNull(agvInfo.PathPoints);
+					});
+				}
 			}
 		}
 
@@ -79,6 +102,11 @@ namespace TrafficControlTest
 		{
 			if (agvInfo.AGVIconID != -1) GLCMD.CMD.DeleteAGV(agvInfo.AGVIconID);
 			if (agvInfo.PathIconID != -1) GLCMD.CMD.DeleteMulti(agvInfo.PathIconID);
+			if (PathPointsIcons.Keys.Contains(agvInfo.Status.Name))
+			{
+				GLCMD.CMD.DeleteMulti(PathPointsIcons[agvInfo.Status.Name]);
+				PathPointsIcons.Remove(agvInfo.Status.Name);
+			}
 		}
 
 		private void Process_DebugMessage(DateTime timeStamp, string category, string message)
@@ -122,6 +150,53 @@ namespace TrafficControlTest
 			if (agvInfo != null)
 			{
 				PrintIcon(agvInfo);
+			}
+		}
+
+		private void Process_CollisionOccured(CollisionPair collisionPair)
+		{
+			if (collisionPair != null)
+			{
+				string keyword = collisionPair.AGV1.Status.Name + collisionPair.AGV2.Status.Name;
+				if (!CollisionRegionIcons.Keys.Contains(keyword))
+				{
+					List<Area> tmp = new List<Area>();
+					tmp.Add(new Area(collisionPair.CollisionRegion.XMin, collisionPair.CollisionRegion.YMin, collisionPair.CollisionRegion.XMax, collisionPair.CollisionRegion.YMax));
+					int id = GLCMD.CMD.AddMultiArea("CollisionArea", tmp);
+					CollisionRegionIcons.Add(keyword, id);
+				}
+			}
+		}
+
+		private void Process_CollisionUpdated(CollisionPair collisionPair)
+		{
+			if (collisionPair != null)
+			{
+				string keyword = collisionPair.AGV1.Status.Name + collisionPair.AGV2.Status.Name;
+				if (CollisionRegionIcons.Keys.Contains(keyword))
+				{
+					List<Area> tmp = new List<Area>();
+					tmp.Add(new Area(collisionPair.CollisionRegion.XMin, collisionPair.CollisionRegion.YMin, collisionPair.CollisionRegion.XMax, collisionPair.CollisionRegion.YMax));
+
+					GLCMD.CMD.SaftyEditMultiGeometry<IArea>(CollisionRegionIcons[keyword], true, (area) =>
+					{
+						area.Clear();
+						area.AddRangeIfNotNull(tmp);
+					});
+				}
+			}
+		}
+
+		private void Process_CollisionSolved(CollisionPair collisionPair)
+		{
+			if (collisionPair != null)
+			{
+				string keyword = collisionPair.AGV1.Status.Name + collisionPair.AGV2.Status.Name;
+				if (CollisionRegionIcons.Keys.Contains(keyword))
+				{
+					GLCMD.CMD.DeleteMulti(CollisionRegionIcons[keyword]);
+					CollisionRegionIcons.Remove(keyword);
+				}
 			}
 		}
 

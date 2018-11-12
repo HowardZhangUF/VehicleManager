@@ -54,6 +54,7 @@
     <Compile Include="AGVInfo.cs" />
     <Compile Include="AGVInfoManager.cs" />
     <Compile Include="AGVMonitor.cs" />
+    <Compile Include="CollisionEventMonitor.cs" />
     <Compile Include="CollisionPair.cs" />
     <Compile Include="DebugMessage.cs" />
     <Compile Include="Extension.cs" />
