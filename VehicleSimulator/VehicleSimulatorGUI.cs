@@ -38,8 +38,8 @@ namespace VehicleSimulator
 			path2.Add(new Pair(1000, 9000));
 			path2.Add(new Pair(-1000, -9000));
 
-			process.AddVehicleSimualtor("AGV01", 1000, 40, 7000, -1000);
-			process.AddVehicleSimualtor("AGV02", 1000, 40, 1000, 9000);
+			process.AddVehicleSimualtor("AGV01", 500, 40, 7000, -1000);
+			process.AddVehicleSimualtor("AGV02", 500, 40, 1000, 9000);
 			process.VehicleSimulatorMove("AGV01", path1);
 			process.VehicleSimulatorMove("AGV02", path2);
 		}
