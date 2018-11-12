@@ -25,7 +25,7 @@ namespace TrafficControlTest
 		{
 			get
 			{
-				if (_PathPoints == null) _PathPoints = AGVInfo.CalculatePathPoints(Path, FrameRadius);
+				if (_PathPoints == null) _PathPoints = AGVInfo.CalculatePathPoints(Path, FrameRadius / 10);
 				return _PathPoints;
 			}
 		}
