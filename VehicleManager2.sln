@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLUITest", "GLUITest\GLUITest.csproj", "{9E4DDC1F-4314-4171-A226-D344B7E2DCCD}"
 EndProject
@@ -54,6 +54,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficControlTest", "TrafficControlTest\TrafficControlTest.csproj", "{46BE9935-F474-4C10-8E8C-7341AAC51640}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleSimulator", "VehicleSimulator\VehicleSimulator.csproj", "{163D754B-08E3-4070-A8A5-712986B19257}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficControlTestTests", "TrafficControlTestTests\TrafficControlTestTests.csproj", "{52D7D760-2A5A-4C7A-81F2-FA303D3EF313}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +155,10 @@ Global
 		{163D754B-08E3-4070-A8A5-712986B19257}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{163D754B-08E3-4070-A8A5-712986B19257}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{163D754B-08E3-4070-A8A5-712986B19257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52D7D760-2A5A-4C7A-81F2-FA303D3EF313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D7D760-2A5A-4C7A-81F2-FA303D3EF313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D7D760-2A5A-4C7A-81F2-FA303D3EF313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D7D760-2A5A-4C7A-81F2-FA303D3EF313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
