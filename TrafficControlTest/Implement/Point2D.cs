@@ -1,7 +1,9 @@
-﻿using TrafficControlTest.Interface;
+﻿using System;
+using TrafficControlTest.Interface;
 
 namespace TrafficControlTest.Implement
 {
+	[Serializable]
 	public class Point2D : IPoint2D
 	{
 		public int mX { get; set; } = 0;

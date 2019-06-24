@@ -1,7 +1,9 @@
-﻿using TrafficControlTest.Interface;
+﻿using System;
+using TrafficControlTest.Interface;
 
 namespace TrafficControlTest.Implement
 {
+	[Serializable]
 	public class Rectangle2D : IRectangle2D
 	{
 		public IPoint2D mMaxPoint { get; set; }

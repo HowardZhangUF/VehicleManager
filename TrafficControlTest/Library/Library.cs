@@ -274,8 +274,6 @@ namespace TrafficControlTest.Library
 		{
 			IVector2D result = null;
 			result = GenerateIVector2D(X2 - X1, Y2 - Y1);
-			result.mXComponent = X2 - X1;
-			result.mYComponent = Y2 - Y1;
 			return result;
 		}
 		public static IVector2D GetNormalizeVector(IVector2D Vector)
@@ -373,12 +371,12 @@ namespace TrafficControlTest.Library
 			IRectangle2D result = null;
 			if (Points.Count() > 1)
 			{
-				result = GenerateIRectangle2D(Points.ElementAt(0), Points.ElementAt(0));
+				result = GenerateIRectangle2D(GetDeepClone(Points.ElementAt(0)), GetDeepClone(Points.ElementAt(0)));
 				for (int i = 1; i < Points.Count(); ++i)
 				{
-					if (Points.ElementAt(i).mX < result.mMinX) result.mMinPoint.mX = Points.ElementAt(i).mX;
+					if		(Points.ElementAt(i).mX < result.mMinX) result.mMinPoint.mX = Points.ElementAt(i).mX;
 					else if (Points.ElementAt(i).mX > result.mMaxX) result.mMaxPoint.mX = Points.ElementAt(i).mX;
-					if (Points.ElementAt(i).mY < result.mMinY) result.mMinPoint.mY = Points.ElementAt(i).mY;
+					if		(Points.ElementAt(i).mY < result.mMinY) result.mMinPoint.mY = Points.ElementAt(i).mY;
 					else if (Points.ElementAt(i).mY > result.mMaxY) result.mMaxPoint.mY = Points.ElementAt(i).mY;
 				}
 			}

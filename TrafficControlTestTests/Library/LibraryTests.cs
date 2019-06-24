@@ -110,5 +110,64 @@ namespace TrafficControlTest.Library.Tests
 			if (linePoints6.ElementAt(3).ToString() != Library.GenerateIPoint2D(-18, -18).ToString()) Assert.Fail();
 			if (linePoints6.ElementAt(4).ToString() != Library.GenerateIPoint2D(-25, -25).ToString()) Assert.Fail();
 		}
+
+		[TestMethod()]
+		public void RegionIVector2D()
+		{
+			if (Library.GetVector(10, 10, 30, 30).ToString() != Library.GenerateIVector2D(20.0f, 20.0f).ToString()) Assert.Fail();
+
+			if (Library.GetNormalizeVector(Library.GenerateIVector2D(55.0f, 55.0f)).ToString() != Library.GenerateIVector2D(0.71f, 0.71f).ToString()) Assert.Fail();
+
+			if (Library.GetDotProduct(Library.GenerateIVector2D(100, 0), Library.GenerateIVector2D(100, 100)).ToString("F2") != "10000.00") Assert.Fail();
+
+			if (Library.GetAngleOfTwoVector(Library.GenerateIVector2D(100, 0), Library.GenerateIVector2D(100, 100)).ToString("F2") != "45.00") Assert.Fail();
+		}
+
+		[TestMethod()]
+		public void RegionIRectangle2D()
+		{
+			IPoint2D point0 = Library.GenerateIPoint2D(0, 0);
+			IPoint2D point1 = Library.GenerateIPoint2D(0, 10);
+			IPoint2D point2 = Library.GenerateIPoint2D(0, -10);
+			IPoint2D point3 = Library.GenerateIPoint2D(30, 40);
+			IPoint2D point4 = Library.GenerateIPoint2D(-30, -40);
+			IPoint2D point5 = Library.GenerateIPoint2D(10, 20);
+			IPoint2D point6 = Library.GenerateIPoint2D(0, 40);
+			IPoint2D point7 = Library.GenerateIPoint2D(-10, 0);
+			IPoint2D point8 = Library.GenerateIPoint2D(90, 10);
+
+			if (Library.IsRectangleOverlap(Library.GenerateIRectangle2D(point3, point2), Library.GenerateIRectangle2D(point1, point4)) == true) Assert.Fail();
+			if (Library.IsRectangleOverlap(Library.GenerateIRectangle2D(point3, point1), Library.GenerateIRectangle2D(point2, point4)) == true) Assert.Fail();
+			if (Library.IsRectangleOverlap(Library.GenerateIRectangle2D(point3, point4), Library.GenerateIRectangle2D(point0, point1)) == false) Assert.Fail();
+			if (Library.IsRectangleOverlap(Library.GenerateIRectangle2D(point3, point0), Library.GenerateIRectangle2D(point5, point4)) == false) Assert.Fail();
+
+			if (Library.IsPointInside(point0, Library.GenerateIRectangle2D(point3, point4)) == false) Assert.Fail();
+			if (Library.IsPointInside(point6, Library.GenerateIRectangle2D(point3, point4)) == false) Assert.Fail();
+			if (Library.IsPointInside(point3, Library.GenerateIRectangle2D(point5, point4)) == true) Assert.Fail();
+
+			if (Library.GetCoverRectangle(Library.GenerateIRectangle2D(point3, point0), Library.GenerateIRectangle2D(point5, point4)).ToString() != Library.GenerateIRectangle2D(point3, point4).ToString()) Assert.Fail();
+			if (Library.GetCoverRectangle(Library.GenerateIRectangle2D(point6, point4), Library.GenerateIRectangle2D(point5, point7)).ToString() != Library.GenerateIRectangle2D(Library.GenerateIPoint2D(10, 40), point4).ToString()) Assert.Fail();
+			if (Library.GetCoverRectangle(Library.GenerateIRectangle2D(point3, point5), Library.GenerateIRectangle2D(point0, point4)).ToString() != Library.GenerateIRectangle2D(point3, point4).ToString()) Assert.Fail();
+
+			if (Library.GetIntersectionRectangle(Library.GenerateIRectangle2D(point3, point0), Library.GenerateIRectangle2D(point5, point4)).ToString() != Library.GenerateIRectangle2D(point5, point0).ToString()) Assert.Fail();
+			if (Library.GetIntersectionRectangle(Library.GenerateIRectangle2D(point6, point4), Library.GenerateIRectangle2D(point5, point7)).ToString() != Library.GenerateIRectangle2D(Library.GenerateIPoint2D(0, 20), point7).ToString()) Assert.Fail();
+			if (Library.GetIntersectionRectangle(Library.GenerateIRectangle2D(point3, point5), Library.GenerateIRectangle2D(point0, point4)) != null) Assert.Fail();
+
+			if (Library.GetRectangle(10, 20, 40).ToString() != Library.GenerateIRectangle2D(Library.GenerateIPoint2D(50, 60), Library.GenerateIPoint2D(-30, -20)).ToString()) Assert.Fail();
+
+			if (Library.GetAmplifyRectangle(Library.GenerateIRectangle2D(point3, point7), 10, 5).ToString() != Library.GenerateIRectangle2D(Library.GenerateIPoint2D(40, 45), Library.GenerateIPoint2D(-20, -5)).ToString()) Assert.Fail();
+
+			if (Library.GetCoverRectangle(new List<IPoint2D> { point0, point1, point2, point3, point4, point5, point6, point7 }).ToString() != Library.GenerateIRectangle2D(point3, point4).ToString()) Assert.Fail();
+
+			List<IRectangle2D> rectangles1 = new List<IRectangle2D>();
+			rectangles1.Add(Library.GenerateIRectangle2D(point3, point2));
+			rectangles1.Add(Library.GenerateIRectangle2D(point5, point0));
+			rectangles1.Add(Library.GenerateIRectangle2D(point5, point4));
+			List<IRectangle2D> mergedRectangles1 = Library.MergeRectangle(rectangles1).ToList();
+			if (mergedRectangles1.Count != 1 || !mergedRectangles1.Any((o) => o.ToString() == Library.GenerateIRectangle2D(point3, point4).ToString())) Assert.Fail();
+			rectangles1.Add(Library.GenerateIRectangle2D(point8, point0));
+			List<IRectangle2D> mergedRectangles2 = Library.MergeRectangle(rectangles1).ToList();
+			if (mergedRectangles2.Count != 1 || !mergedRectangles2.Any((o) => o.ToString() == Library.GenerateIRectangle2D(Library.GenerateIPoint2D(90, 40), point4).ToString())) Assert.Fail();
+		}
 	}
 }
