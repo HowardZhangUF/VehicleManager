@@ -78,6 +78,7 @@ namespace TrafficControlTest.Library
 		#endregion
 
 		#region IPoint2D
+		/// <summary>計算向量 (End - Start) 與 X+ 的夾角。範圍為 -180 ~ 180 ，單位為 degree</summary>
 		public static double GetAngle(IPoint2D Start, IPoint2D End)
 		{
 			return Math.Atan2(End.mY - Start.mY, End.mX - Start.mX) / Math.PI * 180.0f;
@@ -86,7 +87,7 @@ namespace TrafficControlTest.Library
 		{
 			return Math.Sqrt(GetDistanceSquare(Point1, Point2));
 		}
-		/// <summary>計算點集合連起來的線段的長度總和</summary>
+		/// <summary>計算點集合依序連起來的線段的長度總和</summary>
 		public static double GetDistance(IEnumerable<IPoint2D> Points)
 		{
 			double result = 0;
@@ -114,13 +115,13 @@ namespace TrafficControlTest.Library
 				// 計算矩形的四個邊與兩點組成的線段的交點
 				IPoint2D tmp = null;
 				tmp = GetIntersectionPoint(Point1, Point2, GenerateIPoint2D(Rectangle.mMaxX, Rectangle.mMaxY), GenerateIPoint2D(Rectangle.mMaxX, Rectangle.mMinY));
-				if (tmp != null) result.Add(tmp);
+				if (tmp != null && !result.Any((o) => o.ToString() == tmp.ToString())) result.Add(tmp);
 				tmp = GetIntersectionPoint(Point1, Point2, GenerateIPoint2D(Rectangle.mMaxX, Rectangle.mMaxY), GenerateIPoint2D(Rectangle.mMinX, Rectangle.mMaxY));
-				if (tmp != null) result.Add(tmp);
+				if (tmp != null && !result.Any((o) => o.ToString() == tmp.ToString())) result.Add(tmp);
 				tmp = GetIntersectionPoint(Point1, Point2, GenerateIPoint2D(Rectangle.mMinX, Rectangle.mMinY), GenerateIPoint2D(Rectangle.mMaxX, Rectangle.mMinY));
-				if (tmp != null) result.Add(tmp);
+				if (tmp != null && !result.Any((o) => o.ToString() == tmp.ToString())) result.Add(tmp);
 				tmp = GetIntersectionPoint(Point1, Point2, GenerateIPoint2D(Rectangle.mMinX, Rectangle.mMinY), GenerateIPoint2D(Rectangle.mMinX, Rectangle.mMaxY));
-				if (tmp != null) result.Add(tmp);
+				if (tmp != null && !result.Any((o) => o.ToString() == tmp.ToString())) result.Add(tmp);
 			}
 			return result;
 		}
@@ -224,7 +225,7 @@ namespace TrafficControlTest.Library
 			// 斜率為零
 			else if (diffY == 0)
 			{
-				if (Start.mX < End.mY)
+				if (Start.mX < End.mX)
 				{
 					for (int i = Start.mX + Interval; i < End.mX; i += Interval)
 					{
