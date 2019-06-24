@@ -58,10 +58,30 @@
     <Compile Include="CollisionPair.cs" />
     <Compile Include="DebugMessage.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="Implement\TimePeriod.cs" />
+    <Compile Include="Implement\TowardPoint2D.cs" />
+    <Compile Include="Interface\ITimePeriod.cs" />
+    <Compile Include="Interface\ITowardPoint2D.cs" />
     <Compile Include="IntMath.cs" />
+    <Compile Include="Implement\CollisionPair.cs" />
+    <Compile Include="Interface\ICollisionPair.cs" />
+    <Compile Include="Interface\IPathOverlapPair.cs" />
+    <Compile Include="Interface\IPathRegionOverlapPair.cs" />
+    <Compile Include="Interface\IPoint2D.cs" />
+    <Compile Include="Interface\IRectangle2D.cs" />
+    <Compile Include="Interface\IVector2D.cs" />
+    <Compile Include="Interface\IVehicleCommunicator.cs" />
+    <Compile Include="Interface\IVehicleInfo.cs" />
+    <Compile Include="Interface\IVehicleInfoManager.cs" />
+    <Compile Include="Library\Library.cs" />
+    <Compile Include="Implement\PathOverlapPair.cs" />
+    <Compile Include="Implement\PathRegionOverlapPair.cs" />
+    <Compile Include="Implement\Vector2D.cs" />
     <Compile Include="PathOverlapPair.cs" />
     <Compile Include="PathRegionOverlapPair.cs" />
+    <Compile Include="Implement\Point2D.cs" />
     <Compile Include="Rectangle.cs" />
+    <Compile Include="Implement\Rectangle2D.cs" />
     <Compile Include="TrafficControlTestGUI.cs">
       <SubType>Form</SubType>
     </Compile>

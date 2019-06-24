@@ -1,0 +1,42 @@
+﻿using TrafficControlTest.Interface;
+
+namespace TrafficControlTest.Implement
+{
+	public class Rectangle2D : IRectangle2D
+	{
+		public IPoint2D mMaxPoint { get; set; }
+		public IPoint2D mMinPoint { get; set; }
+
+		public int mMaxX { get { return mMaxPoint.mX; } }
+		public int mMaxY { get { return mMaxPoint.mY; } }
+		public int mMinX { get { return mMinPoint.mX; } }
+		public int mMinY { get { return mMinPoint.mY; } }
+		public int mWidth { get { if (mMaxPoint == null || mMinPoint == null) return 0; else return (mMaxPoint.mX - mMinPoint.mX); } }
+		public int mHeight { get { if (mMaxPoint == null || mMinPoint == null) return 0; else return (mMaxPoint.mY - mMinPoint.mY); } }
+
+		public Rectangle2D(IPoint2D MaxPoint, IPoint2D MinPoint)
+		{
+			Set(MaxPoint, MinPoint);
+		}
+		public void Set(IPoint2D MaxPoint, IPoint2D MinPoint)
+		{
+			mMaxPoint = MaxPoint;
+			mMinPoint = MinPoint;
+		}
+		public void Amplify(int OffsetX, int OffsetY)
+		{
+			mMaxPoint.mX += OffsetX;
+			mMaxPoint.mY += OffsetY;
+			mMinPoint.mX -= OffsetX;
+			mMinPoint.mY -= OffsetY;
+		}
+		public bool IsIncludePoint(IPoint2D Point)
+		{
+			return (Point.mX >= mMinPoint.mX && Point.mX <= mMaxPoint.mX && Point.mY >= mMinPoint.mY && Point.mY <= mMaxPoint.mY);
+		}
+		public override string ToString()
+		{
+			return $"MaxPoint: {mMaxPoint.ToString()} MinPoint: {mMinPoint.ToString()}";
+		}
+	}
+}
