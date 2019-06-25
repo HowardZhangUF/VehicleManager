@@ -1,6 +1,4 @@
-﻿using SerialData;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleInfoManager;
 
 namespace TrafficControlTest.Interface

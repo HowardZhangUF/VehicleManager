@@ -73,6 +73,10 @@ namespace TrafficControlTest.Library
 		{
 			return new TimePeriod(Start, End);
 		}
+		public static IVehicleInfo GenerateIVehicleInfo(string Name)
+		{
+			return new VehicleInfo(Name);
+		}
 		#endregion
 
 		#region IPoint2D
@@ -818,7 +822,7 @@ namespace TrafficControlTest.Library
 
 	public static class EventHandlerLibraryOfIVehicleInfoManager
 	{
-		public delegate void EventHandlerVehicleInfo(DateTime OccurTime, string AgvName, string IpPort, IVehicleInfo VehicleInfo);
+		public delegate void EventHandlerVehicleInfo(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo);
 	}
 
 	public static class EventHandlerLibraryOfIVehicleCommunicator

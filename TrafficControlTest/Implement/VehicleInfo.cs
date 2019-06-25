@@ -27,7 +27,7 @@ namespace TrafficControlTest.Implement
 		public string mState
 		{
 			get { return _State; }
-			private set
+			set
 			{
 				if (!string.IsNullOrEmpty(value) && _State != value)
 				{
@@ -47,7 +47,7 @@ namespace TrafficControlTest.Implement
 		public IPoint2D mPosition
 		{
 			get { return _Position; }
-			private set
+			set
 			{
 				if (value != null && (_Position.mX != value.mX || _Position.mY != value.mY))
 				{
@@ -60,7 +60,7 @@ namespace TrafficControlTest.Implement
 		public double mToward
 		{
 			get { return _Toward; }
-			private set
+			set
 			{
 				if (_Toward != value)
 				{
@@ -73,7 +73,7 @@ namespace TrafficControlTest.Implement
 		public string mTarget
 		{
 			get { return _Target; }
-			private set
+			set
 			{
 				if (!string.IsNullOrEmpty(value) && _Target != value)
 				{
@@ -88,7 +88,7 @@ namespace TrafficControlTest.Implement
 		public double mVelocity
 		{
 			get { return _Velocity; }
-			private set
+			set
 			{
 				_Velocity = value;
 				if (mLastVelocity.Count > mVelocifyDataCount) mLastVelocity.RemoveAt(0);
@@ -107,7 +107,7 @@ namespace TrafficControlTest.Implement
 			{
 				return _MapMatch;
 			}
-			private set
+			set
 			{
 				if (_MapMatch != value)
 				{
@@ -123,7 +123,7 @@ namespace TrafficControlTest.Implement
 			{
 				return _Battery;
 			}
-			private set
+			set
 			{
 				if (_Battery != value)
 				{
@@ -139,7 +139,7 @@ namespace TrafficControlTest.Implement
 			{
 				return _PathBlocked;
 			}
-			private set
+			set
 			{
 				if (_PathBlocked != value)
 				{
@@ -160,7 +160,7 @@ namespace TrafficControlTest.Implement
 			{
 				return _AlarmMessage;
 			}
-			private set
+			set
 			{
 				if (!string.IsNullOrEmpty(value) && _AlarmMessage != value)
 				{
@@ -176,7 +176,7 @@ namespace TrafficControlTest.Implement
 			{
 				return _SafetyFrameRadius;
 			}
-			private set
+			set
 			{
 				if (_SafetyFrameRadius != value)
 				{
@@ -200,7 +200,7 @@ namespace TrafficControlTest.Implement
 			{
 				return _Path;
 			}
-			private set
+			set
 			{
 				if (value != null)
 				{
@@ -252,7 +252,7 @@ namespace TrafficControlTest.Implement
 			{
 				return _IpPort;
 			}
-			private set
+			set
 			{
 				if (!string.IsNullOrEmpty(value) && _IpPort != value)
 				{
@@ -294,10 +294,6 @@ namespace TrafficControlTest.Implement
 		public void Set(string Name)
 		{
 			mName = Name;
-		}
-		public void Update(IVehicleInfo Vehicle)
-		{
-
 		}
 		public override string ToString()
 		{

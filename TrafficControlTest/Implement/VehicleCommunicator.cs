@@ -20,13 +20,13 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerSentSerializableData SentSerializableData;
 		public event EventHandlerReceivedSerializableData ReceivedSerializableData;
 
+		public ListenState mListenState { get { return mSocketServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
+		public int mClientCount { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? 0 : mSocketServer.ClientCount; } }
+
 		private SerialServer mSocketServer = null;
 		private readonly Queue<EventArgs> mSerialServerEvents = new Queue<EventArgs>();
 		private readonly object mLockOfSerialServerEvents = new object();
 		private Thread mThdHandleSerialServerEvents = null;
-
-		public ListenState mListenState { get { return mSocketServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
-		public int mClientCount { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? 0 : mSocketServer.ClientCount; } }
 
 		public VehicleCommunicator()
 		{
