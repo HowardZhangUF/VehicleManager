@@ -303,7 +303,7 @@ namespace TrafficControlTest.Implement
 		{
 			return base.ToString();
 		}
-		protected virtual void RaiseEvent_VehicleStateUpdated(bool Sync = false)
+		protected virtual void RaiseEvent_VehicleStateUpdated(bool Sync = true)
 		{
 			if (Sync)
 			{

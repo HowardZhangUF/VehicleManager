@@ -1,5 +1,4 @@
-﻿using AsyncSocket;
-using KdTree;
+﻿using KdTree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -820,15 +819,9 @@ namespace TrafficControlTest.Library
 	public static class EventHandlerLibraryOfIVehicleCommunicator
 	{
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
-		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string RemoteInfo, ConnectState NewState);
+		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);
 		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState);
-		public delegate void EventHandlerSentSerializableData(DateTime OccurTime, string RemoteInfo, object Data);
-		public delegate void EventHandlerReceivedSerializableData(DateTime OccurTime, string RemoteInfo, object Data);
-		//public delegate void EventHandlerRemoteAGVStatus(DateTime ReceivedTime, EndPointInfo RemoteInfo, SerialData.AGVStatus Data);
-		//public delegate void EventHandlerRemoteAGVPath(DateTime ReceivedTime, EndPointInfo RemoteInfo, SerialData.AGVPath Data);
-		//public delegate void EventHandlerRemoteRequestMapList(DateTime ReceivedTime, EndPointInfo RemoteInfo, SerialData.RequestMapList Data);
-		//public delegate void EventHandlerRemoteGetMap(DateTime ReceivedTime, EndPointInfo RemoteInfo, SerialData.GetMap Data);
-		//public delegate void EventHandlerRemoteUploadMapToAGV(DateTime ReceivedTime, EndPointInfo RemoteInfo, SerialData.UploadMapToAGV Data);
-		//public delegate void EventHandlerRemoteChangeMap(DateTime ReceivedTime, EndPointInfo RemoteInfo, SerialData.ChangeMap Data);
+		public delegate void EventHandlerSentSerializableData(DateTime OccurTime, string IpPort, object Data);
+		public delegate void EventHandlerReceivedSerializableData(DateTime OccurTime, string IpPort, object Data);
 	}
 }
