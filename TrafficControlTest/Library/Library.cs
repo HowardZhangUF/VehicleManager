@@ -22,7 +22,6 @@ namespace TrafficControlTest.Library
 
 	public static class Library
 	{
-
 		public const string TIME_FORMAT = "yyyy/MM/dd HH:mm:ss.fff";
 
 		public static T GetDeepClone<T>(T o)
@@ -264,6 +263,12 @@ namespace TrafficControlTest.Library
 					}
 				}
 			}
+			return result;
+		}
+		public static string ConvertToString(IEnumerable<IPoint2D> Points)
+		{
+			string result = string.Empty;
+			result = string.Join(" ", Points.Select((o) => o.ToString()));
 			return result;
 		}
 		#endregion
