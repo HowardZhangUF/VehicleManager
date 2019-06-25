@@ -49,7 +49,7 @@ namespace TrafficControlTest.Implement
 			get { return _Position; }
 			set
 			{
-				if (value != null && (_Position.mX != value.mX || _Position.mY != value.mY))
+				if (value != null && (_Position == null || (_Position.mX != value.mX || _Position.mY != value.mY)))
 				{
 					_Position = value;
 					mLastUpdated = DateTime.Now;

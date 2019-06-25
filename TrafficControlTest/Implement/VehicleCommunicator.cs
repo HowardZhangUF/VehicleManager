@@ -239,9 +239,13 @@ namespace TrafficControlTest.Implement
 						}
 					}
 
-					foreach (EventArgs e in events)
+					if (events != null && events.Count > 0)
 					{
-						HandleSerialServerEvent(e);
+						foreach (EventArgs e in events)
+						{
+							HandleSerialServerEvent(e);
+						}
+						events.Clear();
 					}
 					Thread.Sleep(100);
 				}
