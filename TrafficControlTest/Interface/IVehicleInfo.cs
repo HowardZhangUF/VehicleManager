@@ -11,33 +11,33 @@ namespace TrafficControlTest.Interface
 		/// <summary>名稱</summary>
 		string mName { get; }
 		/// <summary>當前狀態</summary>
-		string mState { get; set; }
+		string mState { get; }
 		/// <summary>上一個狀態</summary>
 		string mLastState { get; }
 		/// <summary>狀態持續時間</summary>
 		TimeSpan mStateDuration { get; }
 		/// <summary>位置 (mm)</summary>
-		IPoint2D mPosition { get; set; }
+		IPoint2D mPosition { get; }
 		/// <summary>面向 (degree)</summary>
-		double mToward { get; set; }
+		double mToward { get; }
 		/// <summary>當前移動目標點</summary>
-		string mTarget { get; set; }
+		string mTarget { get; }
 		/// <summary>上一個移動目標點</summary>
 		string mLastTarget { get; }
 		/// <summary>速度(mm/s)</summary>
-		double mVelocity { get; set; }
+		double mVelocity { get; }
 		/// <summary>平均速度 (mm/s) 。收集最近 n 秒內的速度數據來做平均</summary>
 		double mAverageVelocity { get; }
 		/// <summary>匹配度 (%)</summary>
 		double mMapMatch { get; set; }
 		/// <summary>電池電量 (%)</summary>
-		double mBattery { get; set; }
+		double mBattery { get; }
 		/// <summary>前方是否有物體擋住導致無法移動</summary>
 		bool mPathBlocked { get; set; }
 		/// <summary>有物體擋住導致無法移動持續時間</summary>
 		TimeSpan mPathBlockedDuration { get; }
 		/// <summary>錯誤訊息</summary>
-		string mAlarmMessage { get; set; }
+		string mAlarmMessage { get; }
 		/// <summary>安全框半徑</summary>
 		int mSafetyFrameRadius { get; set; }
 		/// <summary>Buffer 框半徑</summary>
@@ -51,7 +51,7 @@ namespace TrafficControlTest.Interface
 		/// <summary>路徑範圍</summary>
 		IRectangle2D mPathRegion { get; }
 		/// <summary>IP:Port</summary>
-		string mIpPort { get; set; }
+		string mIpPort { get; }
 		/// <summary>上次更新時間</summary>
 		DateTime mLastUpdated { get; }
 		/// <summary>車圖像識別碼</summary>
@@ -60,6 +60,9 @@ namespace TrafficControlTest.Interface
 		int mPathIconId { get; set; }
 
 		void Set(string Name);
+		void Set(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage);
+		void Set(IEnumerable<IPoint2D> Path);
+		void SetIpPort(string IpPort);
 		string ToString();
 	}
 }

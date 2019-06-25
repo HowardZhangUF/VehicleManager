@@ -27,7 +27,7 @@ namespace TrafficControlTest.Implement
 		public string mState
 		{
 			get { return _State; }
-			set
+			private set
 			{
 				if (!string.IsNullOrEmpty(value) && _State != value)
 				{
@@ -35,7 +35,6 @@ namespace TrafficControlTest.Implement
 					_State = value;
 					mStateStartTimestamp = DateTime.Now;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
 				}
 			}
 		}
@@ -47,40 +46,37 @@ namespace TrafficControlTest.Implement
 		public IPoint2D mPosition
 		{
 			get { return _Position; }
-			set
+			private set
 			{
 				if (value != null && (_Position == null || (_Position.mX != value.mX || _Position.mY != value.mY)))
 				{
 					_Position = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
 				}
 			}
 		}
 		public double mToward
 		{
 			get { return _Toward; }
-			set
+			private set
 			{
 				if (_Toward != value)
 				{
 					_Toward = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
 				}
 			}
 		}
 		public string mTarget
 		{
 			get { return _Target; }
-			set
+			private set
 			{
 				if (!string.IsNullOrEmpty(value) && _Target != value)
 				{
 					mLastTarget = _Target;
 					_Target = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
 				}
 			}
 		}
@@ -88,13 +84,12 @@ namespace TrafficControlTest.Implement
 		public double mVelocity
 		{
 			get { return _Velocity; }
-			set
+			private set
 			{
 				_Velocity = value;
 				if (mLastVelocity.Count > mVelocifyDataCount) mLastVelocity.RemoveAt(0);
 				mLastVelocity.Add(value);
 				mLastUpdated = DateTime.Now;
-				RaiseEvent_VehicleStateUpdated();
 			}
 		}
 		public double mAverageVelocity
@@ -123,13 +118,12 @@ namespace TrafficControlTest.Implement
 			{
 				return _Battery;
 			}
-			set
+			private set
 			{
 				if (_Battery != value)
 				{
 					_Battery = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
 				}
 			}
 		}
@@ -160,13 +154,12 @@ namespace TrafficControlTest.Implement
 			{
 				return _AlarmMessage;
 			}
-			set
+			private set
 			{
 				if (!string.IsNullOrEmpty(value) && _AlarmMessage != value)
 				{
 					_AlarmMessage = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
 				}
 			}
 		}
@@ -252,7 +245,7 @@ namespace TrafficControlTest.Implement
 			{
 				return _IpPort;
 			}
-			set
+			private set
 			{
 				if (!string.IsNullOrEmpty(value) && _IpPort != value)
 				{
@@ -295,10 +288,30 @@ namespace TrafficControlTest.Implement
 		{
 			mName = Name;
 		}
+		public void Set(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage)
+		{
+			mState = State;
+			mPosition = Position;
+			mToward = Toward;
+			mBattery = Battery;
+			mVelocity = Velocity;
+			mTarget = Target;
+			mAlarmMessage = AlarmMessage;
+			RaiseEvent_VehicleStateUpdated();
+		}
+		public void Set(IEnumerable<IPoint2D> Path)
+		{
+			mPath = Path;
+		}
+		public void SetIpPort(string IpPort)
+		{
+			mIpPort = IpPort;
+		}
 		public override string ToString()
 		{
 			return base.ToString();
 		}
+
 		protected virtual void RaiseEvent_VehicleStateUpdated(bool Sync = true)
 		{
 			if (Sync)
