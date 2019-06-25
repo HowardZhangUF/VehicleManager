@@ -77,6 +77,14 @@ namespace TrafficControlTest.Library
 		{
 			return new VehicleInfo(Name);
 		}
+		public static IVehicleCommunicator GenerateIVehicleCommunicator()
+		{
+			return new VehicleCommunicator();
+		}
+		public static IVehicleInfoManager GenerateIVehicleInfoManager(IVehicleCommunicator VehicleCommunicator)
+		{
+			return new VehicleInfoManager(VehicleCommunicator);
+		}
 		#endregion
 
 		#region IPoint2D
