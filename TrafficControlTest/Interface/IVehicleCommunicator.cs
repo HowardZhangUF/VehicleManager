@@ -9,8 +9,8 @@ namespace TrafficControlTest.Interface
 		event EventHandlerDateTime VehicleCommunicatorStarted;
 		event EventHandlerDateTime VehicleCommunicatorStopped;
 
-		event EventHandlerRemoteConnectState VehicleConnectStateChagned;
-		event EventHandlerLocalListenState VehicleCommunicatorListenStateChagned;
+		event EventHandlerRemoteConnectState VehicleConnectStateChanged;
+		event EventHandlerLocalListenState VehicleCommunicatorListenStateChanged;
 
 		event EventHandlerSentSerializableData SentSerializableData;
 		event EventHandlerReceivedSerializableData ReceivedSerializableData;

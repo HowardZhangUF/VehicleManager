@@ -14,8 +14,7 @@ namespace TrafficControlTest.Implement
 	{
 		public event EventHandlerVehicleInfo VehicleAdded;
 		public event EventHandlerVehicleInfo VehicleRemoved;
-		public event EventHandlerVehicleInfo VehicleStatusUpdated;
-		public event EventHandlerVehicleInfo VehiclePathUpdated;
+		public event EventHandlerVehicleInfo VehicleStateUpdated;
 
 		public IVehicleInfo this[string Name] => GetVehicleInfo(Name);
 
@@ -119,7 +118,7 @@ namespace TrafficControlTest.Implement
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.VehicleConnectStateChagned += HandleEvent_VehicleCommunicatorVehicleConnectStateChagned;
+				VehicleCommunicator.VehicleConnectStateChanged += HandleEvent_VehicleCommunicatorVehicleConnectStateChanged;
 				VehicleCommunicator.ReceivedSerializableData += HandleEvent_VehicleCommunicatorReceivedSerializableData;
 			}
 		}
@@ -127,7 +126,7 @@ namespace TrafficControlTest.Implement
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.VehicleConnectStateChagned -= HandleEvent_VehicleCommunicatorVehicleConnectStateChagned;
+				VehicleCommunicator.VehicleConnectStateChanged -= HandleEvent_VehicleCommunicatorVehicleConnectStateChanged;
 				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
 			}
 		}
@@ -153,33 +152,22 @@ namespace TrafficControlTest.Implement
 				Task.Run(() => { VehicleRemoved?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleStatusUpdated(string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleStateUpdated(string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleStatusUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo);
+				VehicleStateUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleStatusUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo); });
-			}
-		}
-		protected virtual void RaiseEvent_VehiclePathUpdated(string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehiclePathUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo);
-			}
-			else
-			{
-				Task.Run(() => { VehiclePathUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo); });
+				Task.Run(() => { VehicleStateUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo); });
 			}
 		}
 		private void HandleEvent_VehicleInfoVehicleStateUpdated(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo)
 		{
-			RaiseEvent_VehicleStatusUpdated(Name, IpPort, VehicleInfo);
+			RaiseEvent_VehicleStateUpdated(Name, IpPort, VehicleInfo);
 		}
-		private void HandleEvent_VehicleCommunicatorVehicleConnectStateChagned(DateTime OccurTime, string IpPort, ConnectState NewState)
+		private void HandleEvent_VehicleCommunicatorVehicleConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
 			if (NewState == ConnectState.Disconnected)
 			{

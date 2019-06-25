@@ -7,8 +7,7 @@ namespace TrafficControlTest.Interface
 	{
 		event EventHandlerVehicleInfo VehicleAdded;
 		event EventHandlerVehicleInfo VehicleRemoved;
-		event EventHandlerVehicleInfo VehicleStatusUpdated;
-		event EventHandlerVehicleInfo VehiclePathUpdated;
+		event EventHandlerVehicleInfo VehicleStateUpdated;
 
 		/// <summary>設定 IVehicleCommunicator</summary>
 		void SetVehicleCommunicator(IVehicleCommunicator VehicleCommunicator);

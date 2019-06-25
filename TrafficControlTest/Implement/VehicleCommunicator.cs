@@ -15,8 +15,8 @@ namespace TrafficControlTest.Implement
 	{
 		public event EventHandlerDateTime VehicleCommunicatorStarted;
 		public event EventHandlerDateTime VehicleCommunicatorStopped;
-		public event EventHandlerRemoteConnectState VehicleConnectStateChagned;
-		public event EventHandlerLocalListenState VehicleCommunicatorListenStateChagned;
+		public event EventHandlerRemoteConnectState VehicleConnectStateChanged;
+		public event EventHandlerLocalListenState VehicleCommunicatorListenStateChanged;
 		public event EventHandlerSentSerializableData SentSerializableData;
 		public event EventHandlerReceivedSerializableData ReceivedSerializableData;
 
@@ -139,26 +139,26 @@ namespace TrafficControlTest.Implement
 				Task.Run(() => { VehicleCommunicatorStopped?.Invoke(DateTime.Now); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleConnectStateChagned(string IpPort, ConnectState NewState, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleConnectStateChagned?.Invoke(DateTime.Now, IpPort, NewState);
+				VehicleConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState);
 			}
 			else
 			{
-				Task.Run(() => { VehicleConnectStateChagned?.Invoke(DateTime.Now, IpPort, NewState); });
+				Task.Run(() => { VehicleConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCommunicatorListenStateChagned(ListenState NewState, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleCommunicatorListenStateChanged(ListenState NewState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleCommunicatorListenStateChagned?.Invoke(DateTime.Now, NewState);
+				VehicleCommunicatorListenStateChanged?.Invoke(DateTime.Now, NewState);
 			}
 			else
 			{
-				Task.Run(() => { VehicleCommunicatorListenStateChagned?.Invoke(DateTime.Now, NewState); });
+				Task.Run(() => { VehicleCommunicatorListenStateChanged?.Invoke(DateTime.Now, NewState); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableData(string IpPort, object Data, bool Sync = true)
@@ -211,11 +211,11 @@ namespace TrafficControlTest.Implement
 		}
 		private void HandleSerialServerEvent(ConnectStatusChangedEventArgs E)
 		{
-			RaiseEvent_VehicleConnectStateChagned(E.RemoteInfo.ToString(), E.ConnectStatus == EConnectStatus.Connect ? ConnectState.Connected : ConnectState.Disconnected);
+			RaiseEvent_VehicleConnectStateChanged(E.RemoteInfo.ToString(), E.ConnectStatus == EConnectStatus.Connect ? ConnectState.Connected : ConnectState.Disconnected);
 		}
 		private void HandleSerialServerEvent(ListenStatusChangedEventArgs E)
 		{
-			RaiseEvent_VehicleCommunicatorListenStateChagned(E.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed);
+			RaiseEvent_VehicleCommunicatorListenStateChanged(E.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed);
 		}
 		private void HandleSerialServerEvent(ReceivedSerialDataEventArgs E)
 		{
