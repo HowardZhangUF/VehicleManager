@@ -34,10 +34,14 @@ namespace TrafficControlTest.Interface
 		double mBattery { get; }
 		/// <summary>前方是否有物體擋住導致無法移動</summary>
 		bool mPathBlocked { get; }
+		/// <summary>有物體擋住導致無法移動持續時間</summary>
+		TimeSpan mPathBlockedDuration { get; }
 		/// <summary>錯誤訊息</summary>
 		string mAlarmMessage { get; }
 		/// <summary>安全框半徑</summary>
 		int mSafetyFrameRadius { get; }
+		/// <summary>Buffer 框半徑</summary>
+		int mBufferFrameRadius { get; }
 		/// <summary>車框半徑。車框 = 車身安全框 + Buffer 框</summary>
 		int mTotalFrameRadius { get; }
 		/// <summary>路徑</summary>
@@ -54,5 +58,9 @@ namespace TrafficControlTest.Interface
 		int mVehicleIconId { get; }
 		/// <summary>路徑線圖像識別碼</summary>
 		int mPathIconId { get; }
+
+		void Set(string Name);
+		void Update(IVehicleInfo Vehicle);
+		string ToString();
 	}
 }
