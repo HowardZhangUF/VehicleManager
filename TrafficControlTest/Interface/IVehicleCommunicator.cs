@@ -6,11 +6,11 @@ namespace TrafficControlTest.Interface
 	/// <summary>提供與 Vehicle 連線、溝通的方法</summary>
 	public interface IVehicleCommunicator
 	{
-		event EventHandlerDateTime VehicleCommunicatorStarted;
-		event EventHandlerDateTime VehicleCommunicatorStopped;
+		event EventHandlerDateTime SystemStarted;
+		event EventHandlerDateTime SystemStopped;
 
-		event EventHandlerRemoteConnectState VehicleConnectStateChanged;
-		event EventHandlerLocalListenState VehicleCommunicatorListenStateChanged;
+		event EventHandlerRemoteConnectState RemoteConnectStateChanged;
+		event EventHandlerLocalListenState LocalListenStateChanged;
 
 		event EventHandlerSentSerializableData SentSerializableData;
 		event EventHandlerReceivedSerializableData ReceivedSerializableData;

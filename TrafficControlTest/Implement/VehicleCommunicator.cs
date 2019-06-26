@@ -13,10 +13,10 @@ namespace TrafficControlTest.Implement
 {
 	class VehicleCommunicator : IVehicleCommunicator
 	{
-		public event EventHandlerDateTime VehicleCommunicatorStarted;
-		public event EventHandlerDateTime VehicleCommunicatorStopped;
-		public event EventHandlerRemoteConnectState VehicleConnectStateChanged;
-		public event EventHandlerLocalListenState VehicleCommunicatorListenStateChanged;
+		public event EventHandlerDateTime SystemStarted;
+		public event EventHandlerDateTime SystemStopped;
+		public event EventHandlerRemoteConnectState RemoteConnectStateChanged;
+		public event EventHandlerLocalListenState LocalListenStateChanged;
 		public event EventHandlerSentSerializableData SentSerializableData;
 		public event EventHandlerReceivedSerializableData ReceivedSerializableData;
 
@@ -117,48 +117,48 @@ namespace TrafficControlTest.Implement
 				mThdHandleSerialServerEvents = null;
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCommunicatorStarted(bool Sync = true)
+		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleCommunicatorStarted?.Invoke(DateTime.Now);
+				SystemStarted?.Invoke(DateTime.Now);
 			}
 			else
 			{
-				Task.Run(() => { VehicleCommunicatorStarted?.Invoke(DateTime.Now); });
+				Task.Run(() => { SystemStarted?.Invoke(DateTime.Now); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCommunicatorStopped(bool Sync = true)
+		protected virtual void RaiseEvent_SystemStopped(bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleCommunicatorStopped?.Invoke(DateTime.Now);
+				SystemStopped?.Invoke(DateTime.Now);
 			}
 			else
 			{
-				Task.Run(() => { VehicleCommunicatorStopped?.Invoke(DateTime.Now); });
+				Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
+		protected virtual void RaiseEvent_RemoteConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState);
+				RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState);
 			}
 			else
 			{
-				Task.Run(() => { VehicleConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
+				Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCommunicatorListenStateChanged(ListenState NewState, bool Sync = true)
+		protected virtual void RaiseEvent_LocalListenStateChanged(ListenState NewState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleCommunicatorListenStateChanged?.Invoke(DateTime.Now, NewState);
+				LocalListenStateChanged?.Invoke(DateTime.Now, NewState);
 			}
 			else
 			{
-				Task.Run(() => { VehicleCommunicatorListenStateChanged?.Invoke(DateTime.Now, NewState); });
+				Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableData(string IpPort, object Data, bool Sync = true)
@@ -211,11 +211,11 @@ namespace TrafficControlTest.Implement
 		}
 		private void HandleSerialServerEvent(ConnectStatusChangedEventArgs E)
 		{
-			RaiseEvent_VehicleConnectStateChanged(E.RemoteInfo.ToString(), E.ConnectStatus == EConnectStatus.Connect ? ConnectState.Connected : ConnectState.Disconnected);
+			RaiseEvent_RemoteConnectStateChanged(E.RemoteInfo.ToString(), E.ConnectStatus == EConnectStatus.Connect ? ConnectState.Connected : ConnectState.Disconnected);
 		}
 		private void HandleSerialServerEvent(ListenStatusChangedEventArgs E)
 		{
-			RaiseEvent_VehicleCommunicatorListenStateChanged(E.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed);
+			RaiseEvent_LocalListenStateChanged(E.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed);
 		}
 		private void HandleSerialServerEvent(ReceivedSerialDataEventArgs E)
 		{
@@ -225,7 +225,7 @@ namespace TrafficControlTest.Implement
 		{
 			try
 			{
-				RaiseEvent_VehicleCommunicatorStarted();
+				RaiseEvent_SystemStarted();
 				while (true)
 				{
 					List<EventArgs> events = null;
@@ -256,7 +256,7 @@ namespace TrafficControlTest.Implement
 			}
 			finally
 			{
-				RaiseEvent_VehicleCommunicatorStopped();
+				RaiseEvent_SystemStopped();
 			}
 		}
 	}

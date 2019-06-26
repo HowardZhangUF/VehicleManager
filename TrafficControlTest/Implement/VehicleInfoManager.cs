@@ -118,7 +118,7 @@ namespace TrafficControlTest.Implement
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.VehicleConnectStateChanged += HandleEvent_VehicleCommunicatorVehicleConnectStateChanged;
+				VehicleCommunicator.RemoteConnectStateChanged += HandleEvent_VehicleCommunicatorVehicleConnectStateChanged;
 				VehicleCommunicator.ReceivedSerializableData += HandleEvent_VehicleCommunicatorReceivedSerializableData;
 			}
 		}
@@ -126,7 +126,7 @@ namespace TrafficControlTest.Implement
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.VehicleConnectStateChanged -= HandleEvent_VehicleCommunicatorVehicleConnectStateChanged;
+				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorVehicleConnectStateChanged;
 				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
 			}
 		}
