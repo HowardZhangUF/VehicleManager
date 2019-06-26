@@ -6,7 +6,7 @@ namespace TrafficControlTest.Interface
 {
 	public interface IVehicleInfo
 	{
-		event EventHandlerIVehicleInfo VehicleStateUpdated;
+		event EventHandlerIVehicleInfo StateUpdated;
 
 		/// <summary>名稱</summary>
 		string mName { get; }

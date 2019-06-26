@@ -9,7 +9,7 @@ namespace TrafficControlTest.Implement
 {
 	class VehicleInfo : IVehicleInfo
 	{
-		public event EventHandlerIVehicleInfo VehicleStateUpdated;
+		public event EventHandlerIVehicleInfo StateUpdated;
 
 		public string mName
 		{
@@ -20,7 +20,7 @@ namespace TrafficControlTest.Implement
 				{
 					_Name = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
+					RaiseEvent_StateUpdated();
 				}
 			}
 		}
@@ -108,7 +108,7 @@ namespace TrafficControlTest.Implement
 				{
 					_MapMatch = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
+					RaiseEvent_StateUpdated();
 				}
 			}
 		}
@@ -140,7 +140,7 @@ namespace TrafficControlTest.Implement
 					_PathBlocked = value;
 					if (_PathBlocked == true) mPathBlockedStartTimestamp = DateTime.Now;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
+					RaiseEvent_StateUpdated();
 				}
 			}
 		}
@@ -175,7 +175,7 @@ namespace TrafficControlTest.Implement
 				{
 					_SafetyFrameRadius = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
+					RaiseEvent_StateUpdated();
 				}
 			}
 		}
@@ -201,7 +201,7 @@ namespace TrafficControlTest.Implement
 					_PathDetail = null;
 					_PathRegion = null;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
+					RaiseEvent_StateUpdated();
 				}
 			}
 		}
@@ -218,7 +218,7 @@ namespace TrafficControlTest.Implement
 				{
 					_PathDetail = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
+					RaiseEvent_StateUpdated();
 				}
 			}
 		}
@@ -235,7 +235,7 @@ namespace TrafficControlTest.Implement
 				{
 					_PathRegion = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
+					RaiseEvent_StateUpdated();
 				}
 			}
 		}
@@ -251,7 +251,7 @@ namespace TrafficControlTest.Implement
 				{
 					_IpPort = value;
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_VehicleStateUpdated();
+					RaiseEvent_StateUpdated();
 				}
 			}
 		}
@@ -297,7 +297,7 @@ namespace TrafficControlTest.Implement
 			mVelocity = Velocity;
 			mTarget = Target;
 			mAlarmMessage = AlarmMessage;
-			RaiseEvent_VehicleStateUpdated();
+			RaiseEvent_StateUpdated();
 		}
 		public void Set(IEnumerable<IPoint2D> Path)
 		{
@@ -312,15 +312,15 @@ namespace TrafficControlTest.Implement
 			return base.ToString();
 		}
 
-		protected virtual void RaiseEvent_VehicleStateUpdated(bool Sync = true)
+		protected virtual void RaiseEvent_StateUpdated(bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleStateUpdated?.Invoke(DateTime.Now, mName, mIpPort, this);
+				StateUpdated?.Invoke(DateTime.Now, mName, mIpPort, this);
 			}
 			else
 			{
-				Task.Run(() => VehicleStateUpdated?.Invoke(DateTime.Now, mName, mIpPort, this));
+				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mName, mIpPort, this));
 			}
 		}
 		private IEnumerable<IPoint2D> CalculatePathDetail(IEnumerable<IPoint2D> Path, int Interval)

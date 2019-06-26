@@ -104,14 +104,14 @@ namespace TrafficControlTest.Implement
 		{
 			if (VehicleInfo != null)
 			{
-				VehicleInfo.VehicleStateUpdated += HandleEvent_VehicleInfoVehicleStateUpdated;
+				VehicleInfo.StateUpdated += HandleEvent_VehicleInfoStateUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleInfo(IVehicleInfo VehicleInfo)
 		{
 			if (VehicleInfo != null)
 			{
-				VehicleInfo.VehicleStateUpdated -= HandleEvent_VehicleInfoVehicleStateUpdated;
+				VehicleInfo.StateUpdated -= HandleEvent_VehicleInfoStateUpdated;
 			}
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -163,7 +163,7 @@ namespace TrafficControlTest.Implement
 				Task.Run(() => { VehicleStateUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo); });
 			}
 		}
-		private void HandleEvent_VehicleInfoVehicleStateUpdated(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoStateUpdated(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo)
 		{
 			RaiseEvent_VehicleStateUpdated(Name, IpPort, VehicleInfo);
 		}
