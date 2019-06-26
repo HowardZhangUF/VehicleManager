@@ -64,8 +64,10 @@
     <Compile Include="Implement\VehicleCommunicator.cs" />
     <Compile Include="Implement\VehicleInfo.cs" />
     <Compile Include="Implement\VehicleInfoManager.cs" />
+    <Compile Include="Implement\VehicleMessageAnalyzer.cs" />
     <Compile Include="Interface\ITimePeriod.cs" />
     <Compile Include="Interface\ITowardPoint2D.cs" />
+    <Compile Include="Interface\IVehicleMessageAnalyzer.cs" />
     <Compile Include="IntMath.cs" />
     <Compile Include="Implement\CollisionPair.cs" />
     <Compile Include="Interface\ICollisionPair.cs" />

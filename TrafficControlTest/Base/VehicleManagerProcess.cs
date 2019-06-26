@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
-using static TrafficControlTest.Library.EventHandlerLibraryOfDebugMessage;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleInfoManager;
 using static TrafficControlTest.Library.Library;
@@ -21,8 +20,9 @@ namespace TrafficControlTest.Base
 		public event EventHandlerVehicleInfo VehicleInfoManagerVehicleRemoved;
 		public event EventHandlerVehicleInfo VehicleInfoManagerVehicleStateUpdated;
 
-		private IVehicleCommunicator mVehicleCommunicator;
-		private IVehicleInfoManager mVehicleInfoManager;
+		private IVehicleCommunicator mVehicleCommunicator = null;
+		private IVehicleInfoManager mVehicleInfoManager = null;
+		private IVehicleMessageAnalyzer mVehicleMessageAnalyzer = null;
 
 		public VehicleManagerProcess()
 		{
@@ -48,8 +48,10 @@ namespace TrafficControlTest.Base
 			SubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
 
 			UnsubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
-			mVehicleInfoManager = GenerateIVehicleInfoManager(mVehicleCommunicator);
+			mVehicleInfoManager = GenerateIVehicleInfoManager();
 			SubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
+
+			mVehicleMessageAnalyzer = GenerateIVehicleMessageAnalyzer(mVehicleCommunicator, mVehicleInfoManager);
 		}
 		private void Destructor()
 		{

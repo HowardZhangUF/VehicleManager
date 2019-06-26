@@ -81,9 +81,13 @@ namespace TrafficControlTest.Library
 		{
 			return new VehicleCommunicator();
 		}
-		public static IVehicleInfoManager GenerateIVehicleInfoManager(IVehicleCommunicator VehicleCommunicator)
+		public static IVehicleInfoManager GenerateIVehicleInfoManager()
 		{
-			return new VehicleInfoManager(VehicleCommunicator);
+			return new VehicleInfoManager();
+		}
+		public static IVehicleMessageAnalyzer GenerateIVehicleMessageAnalyzer(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		{
+			return new VehicleMessageAnalyzer(VehicleCommunicator, VehicleInfoManager);
 		}
 		#endregion
 
