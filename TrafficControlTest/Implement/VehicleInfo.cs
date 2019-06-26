@@ -309,7 +309,17 @@ namespace TrafficControlTest.Implement
 		}
 		public override string ToString()
 		{
-			return base.ToString();
+			string result = string.Empty;
+			result += $"Name: {mName}, ";
+			result += $"State: {mState}, ";
+			result += $"Position: {(mPosition != null ? mPosition.ToString() : string.Empty)}, ";
+			result += $"Toward: {mToward.ToString("F2")}, ";
+			result += $"Target: {mTarget}, ";
+			result += $"Velocity: {mVelocity.ToString("F2")}, ";
+			result += $"AverageVelocity: {(!double.IsNaN(mAverageVelocity) ? mAverageVelocity.ToString("F2") : string.Empty)}, ";
+			result += $"Battery: {mBattery.ToString("F2")}, ";
+			result += $"Path: {((mPath != null && mPath.Count() > 0) ? Library.Library.ConvertToString(mPath) : string.Empty)}";
+			return result;
 		}
 
 		protected virtual void RaiseEvent_StateUpdated(bool Sync = true)
