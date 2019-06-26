@@ -54,6 +54,7 @@
     <Compile Include="AGVInfo.cs" />
     <Compile Include="AGVInfoManager.cs" />
     <Compile Include="AGVMonitor.cs" />
+    <Compile Include="Base\VehicleManagerProcess.cs" />
     <Compile Include="CollisionEventMonitor.cs" />
     <Compile Include="CollisionPair.cs" />
     <Compile Include="DebugMessage.cs" />
@@ -95,6 +96,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrafficControlTestProcess.cs" />
     <Compile Include="TrafficController.cs" />
+    <Compile Include="UserInterface\VehicleManagerGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\VehicleManagerGUI.Designer.cs">
+      <DependentUpon>VehicleManagerGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vector2D.cs" />
     <EmbeddedResource Include="TrafficControlTestGUI.resx">
       <DependentUpon>TrafficControlTestGUI.cs</DependentUpon>
@@ -109,6 +116,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UserInterface\VehicleManagerGUI.resx">
+      <DependentUpon>VehicleManagerGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -153,6 +163,7 @@
       <Name>Serialization</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
