@@ -59,7 +59,8 @@ namespace TrafficControlTest.Implement
 			if (!IsExist(Name))
 			{
 				mCollisionPairs.Add(Name, Data);
-				RaiseEvent_CollisionEventAdded(Name, Data);
+				SubscribeEvent_ICollisionPair(mCollisionPairs[Name]);
+				RaiseEvent_CollisionEventAdded(mCollisionPairs[Name].mName, mCollisionPairs[Name]);
 			}
 			else
 			{
@@ -71,6 +72,7 @@ namespace TrafficControlTest.Implement
 			if (IsExist(Name))
 			{
 				ICollisionPair tmpData = mCollisionPairs[Name];
+				UnsubscribeEvent_ICollisionPair(mCollisionPairs[Name]);
 				mCollisionPairs.Remove(Name);
 				RaiseEvent_CollisionEventRemoved(Name, tmpData);
 			}
