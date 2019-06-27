@@ -80,7 +80,7 @@ namespace TrafficControlTest.Implement
 			mVehicleInfos.Add(Name, Library.Library.GenerateIVehicleInfo(Name));
 			mVehicleInfos[Name].SetIpPort(IpPort);
 			SubscribeEvent_IVehicleInfo(mVehicleInfos[Name]);
-			RaiseEvent_VehicleAdded(mVehicleInfos[Name].mName, mVehicleInfos[Name].mIpPort, mVehicleInfos[Name]);
+			RaiseEvent_VehicleAdded(mVehicleInfos[Name].mName, mVehicleInfos[Name]);
 		}
 		public void RemoveVehicleInfo(string IpPort)
 		{
@@ -89,7 +89,7 @@ namespace TrafficControlTest.Implement
 			IVehicleInfo info = mVehicleInfos[name];
 			UnsubscribeEvent_IVehicleInfo(mVehicleInfos[name]);
 			mVehicleInfos.Remove(mVehicleInfos.First((o) => o.Value.mIpPort == IpPort).Key);
-			RaiseEvent_VehicleRemoved(name, ipPort, info);
+			RaiseEvent_VehicleRemoved(name, info);
 		}
 
 		private void SubscribeEvent_IVehicleInfo(IVehicleInfo VehicleInfo)
@@ -106,42 +106,42 @@ namespace TrafficControlTest.Implement
 				VehicleInfo.StateUpdated -= HandleEvent_VehicleInfoStateUpdated;
 			}
 		}
-		protected virtual void RaiseEvent_VehicleAdded(string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleAdded(string Name, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleAdded?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo);
+				VehicleAdded?.Invoke(DateTime.Now, Name, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleAdded?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo); });
+				Task.Run(() => { VehicleAdded?.Invoke(DateTime.Now, Name, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleRemoved(string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleRemoved(string Name, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleRemoved?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo);
+				VehicleRemoved?.Invoke(DateTime.Now, Name, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleRemoved?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo); });
+				Task.Run(() => { VehicleRemoved?.Invoke(DateTime.Now, Name, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleStateUpdated(string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleStateUpdated(string Name, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleStateUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo);
+				VehicleStateUpdated?.Invoke(DateTime.Now, Name, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleStateUpdated?.Invoke(DateTime.Now, Name, IpPort, VehicleInfo); });
+				Task.Run(() => { VehicleStateUpdated?.Invoke(DateTime.Now, Name, VehicleInfo); });
 			}
 		}
-		private void HandleEvent_VehicleInfoStateUpdated(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			RaiseEvent_VehicleStateUpdated(Name, IpPort, VehicleInfo);
+			RaiseEvent_VehicleStateUpdated(Name, VehicleInfo);
 		}
 	}
 }

@@ -59,12 +59,14 @@
     <Compile Include="CollisionPair.cs" />
     <Compile Include="DebugMessage.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="Implement\CollisionEventManager.cs" />
     <Compile Include="Implement\TimePeriod.cs" />
     <Compile Include="Implement\TowardPoint2D.cs" />
     <Compile Include="Implement\VehicleCommunicator.cs" />
     <Compile Include="Implement\VehicleInfo.cs" />
     <Compile Include="Implement\VehicleInfoManager.cs" />
     <Compile Include="Implement\VehicleMessageAnalyzer.cs" />
+    <Compile Include="Interface\ICollisionEventManager.cs" />
     <Compile Include="Interface\ITimePeriod.cs" />
     <Compile Include="Interface\ITowardPoint2D.cs" />
     <Compile Include="Interface\IVehicleMessageAnalyzer.cs" />

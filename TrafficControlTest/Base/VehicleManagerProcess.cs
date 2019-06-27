@@ -166,37 +166,37 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { VehicleCommunicatorReceivedSerializableData?.Invoke(OccurTime, IpPort, Data); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleInfoManagerVehicleAdded?.Invoke(OccurTime, Name, IpPort, VehicleInfo);
+				VehicleInfoManagerVehicleAdded?.Invoke(OccurTime, Name, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleInfoManagerVehicleAdded?.Invoke(OccurTime, Name, IpPort, VehicleInfo); });
+				Task.Run(() => { VehicleInfoManagerVehicleAdded?.Invoke(OccurTime, Name, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleInfoManagerVehicleRemoved?.Invoke(OccurTime, Name, IpPort, VehicleInfo);
+				VehicleInfoManagerVehicleRemoved?.Invoke(OccurTime, Name, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleInfoManagerVehicleRemoved?.Invoke(OccurTime, Name, IpPort, VehicleInfo); });
+				Task.Run(() => { VehicleInfoManagerVehicleRemoved?.Invoke(OccurTime, Name, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleInfoManagerVehicleStateUpdated?.Invoke(OccurTime, Name, IpPort, VehicleInfo);
+				VehicleInfoManagerVehicleStateUpdated?.Invoke(OccurTime, Name, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleInfoManagerVehicleStateUpdated?.Invoke(OccurTime, Name, IpPort, VehicleInfo); });
+				Task.Run(() => { VehicleInfoManagerVehicleStateUpdated?.Invoke(OccurTime, Name, VehicleInfo); });
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
@@ -229,20 +229,20 @@ namespace TrafficControlTest.Base
 			HandleDebugMessage("VehicleCommunicator", $"Received Serializable Data. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
 			RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
 		}
-		private void HandleEvent_VehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Vehicle Added. Name: {Name}, IPPort: {IpPort}, Info: {VehicleInfo.ToString()}");
-			RaiseEvent_VehicleInfoManagerVehicleAdded(OccurTime, Name, IpPort, VehicleInfo);
+			HandleDebugMessage("VehicleInfoManager", $"Vehicle Added. Name: {Name}, Info: {VehicleInfo.ToString()}");
+			RaiseEvent_VehicleInfoManagerVehicleAdded(OccurTime, Name, VehicleInfo);
 		}
-		private void HandleEvent_VehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Vehicle Removed. Name: {Name}, IPPort: {IpPort}, Info: {VehicleInfo.ToString()}");
-			RaiseEvent_VehicleInfoManagerVehicleRemoved(OccurTime, Name, IpPort, VehicleInfo);
+			HandleDebugMessage("VehicleInfoManager", $"Vehicle Removed. Name: {Name}, Info: {VehicleInfo.ToString()}");
+			RaiseEvent_VehicleInfoManagerVehicleRemoved(OccurTime, Name, VehicleInfo);
 		}
-		private void HandleEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Vehicle State Updated. Name: {Name}, IPPort: {IpPort}, Info: {VehicleInfo.ToString()}");
-			RaiseEvent_VehicleInfoManagerVehicleStateUpdated(OccurTime, Name, IpPort, VehicleInfo);
+			HandleDebugMessage("VehicleInfoManager", $"Vehicle State Updated. Name: {Name}, Info: {VehicleInfo.ToString()}");
+			RaiseEvent_VehicleInfoManagerVehicleStateUpdated(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleDebugMessage(string Message)
 		{

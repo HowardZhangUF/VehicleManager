@@ -1,10 +1,14 @@
 ﻿using System;
+using static TrafficControlTest.Library.EventHandlerLibraryOfICollisionEventManager;
 
 namespace TrafficControlTest.Interface
 {
 	/// <summary>會發生交會的組合</summary>
 	public interface ICollisionPair
 	{
+		event EventHandlerICollisionPair StateUpdated;
+
+		string mName { get; }
 		IVehicleInfo mVehicle1 { get; }
 		IVehicleInfo mVehicle2 { get; }
 		IRectangle2D mCollisionRegion { get; }

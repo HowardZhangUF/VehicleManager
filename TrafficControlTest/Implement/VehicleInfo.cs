@@ -311,6 +311,7 @@ namespace TrafficControlTest.Implement
 		{
 			string result = string.Empty;
 			result += $"Name: {mName}, ";
+			result += $"IpPort: {mIpPort}, ";
 			result += $"State: {mState}, ";
 			result += $"Position: {(mPosition != null ? mPosition.ToString() : string.Empty)}, ";
 			result += $"Toward: {mToward.ToString("F2")}, ";
@@ -326,11 +327,11 @@ namespace TrafficControlTest.Implement
 		{
 			if (Sync)
 			{
-				StateUpdated?.Invoke(DateTime.Now, mName, mIpPort, this);
+				StateUpdated?.Invoke(DateTime.Now, mName, this);
 			}
 			else
 			{
-				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mName, mIpPort, this));
+				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mName, this));
 			}
 		}
 		private IEnumerable<IPoint2D> CalculatePathDetail(IEnumerable<IPoint2D> Path, int Interval)

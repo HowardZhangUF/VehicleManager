@@ -829,12 +829,12 @@ namespace TrafficControlTest.Library
 
 	public static class EventHandlerLibraryOfIVehicleInfo
 	{
-		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo);
+		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo);
 	}
 
 	public static class EventHandlerLibraryOfIVehicleInfoManager
 	{
-		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo);
+		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo);
 	}
 
 	public static class EventHandlerLibraryOfIVehicleCommunicator
@@ -844,5 +844,10 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState);
 		public delegate void EventHandlerSentSerializableData(DateTime OccurTime, string IpPort, object Data);
 		public delegate void EventHandlerReceivedSerializableData(DateTime OccurTime, string IpPort, object Data);
+	}
+
+	public static class EventHandlerLibraryOfICollisionEventManager
+	{
+		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
 	}
 }
