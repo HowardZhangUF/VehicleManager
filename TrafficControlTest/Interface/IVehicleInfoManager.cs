@@ -27,5 +27,11 @@ namespace TrafficControlTest.Interface
 		void Add(string IpPort, string Name);
 		/// <summary>移除 Vehicle 資訊</summary>
 		void Remove(string IpPort);
+		/// <summary>更新指定 Vehicle 資訊</summary>
+		void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage);
+		/// <summary>更新指定 Vehicle 資訊</summary>
+		void Update(string Name, IEnumerable<IPoint2D> Path);
+		/// <summary>更新指定 Vehicle 資訊</summary>
+		void Update(string Name, string IpPort);
 	}
 }

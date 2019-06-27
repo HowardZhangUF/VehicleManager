@@ -91,6 +91,27 @@ namespace TrafficControlTest.Implement
 			mVehicleInfos.Remove(mVehicleInfos.First((o) => o.Value.mIpPort == IpPort).Key);
 			RaiseEvent_VehicleRemoved(name, info);
 		}
+		public void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage)
+		{
+			if (IsExist(Name))
+			{
+				mVehicleInfos[Name].Update(State, Position, Toward, Battery, Velocity, Target, AlarmMessage);
+			}
+		}
+		public void Update(string Name, IEnumerable<IPoint2D> Path)
+		{
+			if (IsExist(Name))
+			{
+				mVehicleInfos[Name].Update(Path);
+			}
+		}
+		public void Update(string Name, string IpPort)
+		{
+			if (IsExist(Name))
+			{
+				mVehicleInfos[Name].Update(IpPort);
+			}
+		}
 
 		private void SubscribeEvent_IVehicleInfo(IVehicleInfo VehicleInfo)
 		{
