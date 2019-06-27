@@ -86,8 +86,8 @@ namespace TrafficControlTest.Implement
 				rVehicleInfoManager.Add(IpPort, AgvStatus.Name);
 			}
 
-			rVehicleInfoManager[AgvStatus.Name].SetIpPort(IpPort);
-			rVehicleInfoManager[AgvStatus.Name].Set(AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D((int)AgvStatus.X, (int)AgvStatus.Y), AgvStatus.Toward, AgvStatus.Battery, AgvStatus.Velocity, AgvStatus.GoalName, AgvStatus.AlarmMessage);
+			rVehicleInfoManager[AgvStatus.Name].Update(IpPort);
+			rVehicleInfoManager[AgvStatus.Name].Update(AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D((int)AgvStatus.X, (int)AgvStatus.Y), AgvStatus.Toward, AgvStatus.Battery, AgvStatus.Velocity, AgvStatus.GoalName, AgvStatus.AlarmMessage);
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVPath AgvPath)
 		{
@@ -96,8 +96,8 @@ namespace TrafficControlTest.Implement
 				rVehicleInfoManager.Add(IpPort, AgvPath.Name);
 			}
 
-			rVehicleInfoManager[AgvPath.Name].SetIpPort(IpPort);
-			rVehicleInfoManager[AgvPath.Name].Set(ConvertToPoints(AgvPath.PathX, AgvPath.PathY));
+			rVehicleInfoManager[AgvPath.Name].Update(IpPort);
+			rVehicleInfoManager[AgvPath.Name].Update(ConvertToPoints(AgvPath.PathX, AgvPath.PathY));
 		}
 		private IEnumerable<IPoint2D> ConvertToPoints(List<double> X, List<double> Y)
 		{

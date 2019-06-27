@@ -288,7 +288,7 @@ namespace TrafficControlTest.Implement
 		{
 			mName = Name;
 		}
-		public void Set(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage)
+		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage)
 		{
 			mState = State;
 			mPosition = Position;
@@ -299,11 +299,11 @@ namespace TrafficControlTest.Implement
 			mAlarmMessage = AlarmMessage;
 			RaiseEvent_StateUpdated();
 		}
-		public void Set(IEnumerable<IPoint2D> Path)
+		public void Update(IEnumerable<IPoint2D> Path)
 		{
 			mPath = Path;
 		}
-		public void SetIpPort(string IpPort)
+		public void Update(string IpPort)
 		{
 			mIpPort = IpPort;
 		}

@@ -78,7 +78,7 @@ namespace TrafficControlTest.Implement
 		public void Add(string IpPort, string Name)
 		{
 			mVehicleInfos.Add(Name, Library.Library.GenerateIVehicleInfo(Name));
-			mVehicleInfos[Name].SetIpPort(IpPort);
+			mVehicleInfos[Name].Update(IpPort);
 			SubscribeEvent_IVehicleInfo(mVehicleInfos[Name]);
 			RaiseEvent_VehicleAdded(mVehicleInfos[Name].mName, mVehicleInfos[Name]);
 		}

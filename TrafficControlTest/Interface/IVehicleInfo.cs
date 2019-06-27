@@ -60,9 +60,9 @@ namespace TrafficControlTest.Interface
 		int mPathIconId { get; set; }
 
 		void Set(string Name);
-		void Set(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage);
-		void Set(IEnumerable<IPoint2D> Path);
-		void SetIpPort(string IpPort);
+		void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage);
+		void Update(IEnumerable<IPoint2D> Path);
+		void Update(string IpPort);
 		string ToString();
 	}
 }
