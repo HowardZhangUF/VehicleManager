@@ -24,9 +24,9 @@ namespace TrafficControlTest.Interface
 		/// <summary>取得線上 Vehicle 的資訊</summary>
 		List<IVehicleInfo> GetList();
 		/// <summary>新增 Vehicle 資訊</summary>
-		void Add(string IpPort, string Name);
+		void Add(string Name, IVehicleInfo Data);
 		/// <summary>移除 Vehicle 資訊</summary>
-		void Remove(string IpPort);
+		void Remove(string Name);
 		/// <summary>更新指定 Vehicle 資訊</summary>
 		void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage);
 		/// <summary>更新指定 Vehicle 資訊</summary>

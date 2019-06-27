@@ -57,7 +57,7 @@ namespace TrafficControlTest.Implement
 			{
 				if (rVehicleInfoManager.IsExistByIpPort(IpPort))
 				{
-					rVehicleInfoManager.Remove(IpPort);
+					rVehicleInfoManager.Remove(rVehicleInfoManager.GetByIpPort(IpPort).mName);
 				}
 			}
 		}
@@ -83,7 +83,9 @@ namespace TrafficControlTest.Implement
 		{
 			if (!rVehicleInfoManager.IsExist(AgvStatus.Name))
 			{
-				rVehicleInfoManager.Add(IpPort, AgvStatus.Name);
+				IVehicleInfo tmpData = Library.Library.GenerateIVehicleInfo(AgvStatus.Name);
+				tmpData.Update(IpPort);
+				rVehicleInfoManager.Add(AgvStatus.Name, tmpData);
 			}
 
 			rVehicleInfoManager.Update(AgvStatus.Name, IpPort);
@@ -93,7 +95,9 @@ namespace TrafficControlTest.Implement
 		{
 			if (!rVehicleInfoManager.IsExist(AgvPath.Name))
 			{
-				rVehicleInfoManager.Add(IpPort, AgvPath.Name);
+				IVehicleInfo tmpData = Library.Library.GenerateIVehicleInfo(AgvPath.Name);
+				tmpData.Update(IpPort);
+				rVehicleInfoManager.Add(AgvPath.Name, tmpData);
 			}
 
 			rVehicleInfoManager.Update(AgvPath.Name, IpPort);

@@ -75,21 +75,24 @@ namespace TrafficControlTest.Implement
 				return null;
 			}
 		}
-		public void Add(string IpPort, string Name)
+		public void Add(string Name, IVehicleInfo Data)
 		{
-			mVehicleInfos.Add(Name, Library.Library.GenerateIVehicleInfo(Name));
-			mVehicleInfos[Name].Update(IpPort);
-			SubscribeEvent_IVehicleInfo(mVehicleInfos[Name]);
-			RaiseEvent_VehicleAdded(mVehicleInfos[Name].mName, mVehicleInfos[Name]);
+			if (!IsExist(Name))
+			{
+				mVehicleInfos.Add(Name, Data);
+				SubscribeEvent_IVehicleInfo(mVehicleInfos[Name]);
+				RaiseEvent_VehicleAdded(mVehicleInfos[Name].mName, mVehicleInfos[Name]);
+			}
 		}
-		public void Remove(string IpPort)
+		public void Remove(string Name)
 		{
-			string name = mVehicleInfos.First((o) => o.Value.mIpPort == IpPort).Key;
-			string ipPort = mVehicleInfos[name].mIpPort;
-			IVehicleInfo info = mVehicleInfos[name];
-			UnsubscribeEvent_IVehicleInfo(mVehicleInfos[name]);
-			mVehicleInfos.Remove(mVehicleInfos.First((o) => o.Value.mIpPort == IpPort).Key);
-			RaiseEvent_VehicleRemoved(name, info);
+			if (IsExist(Name))
+			{
+				IVehicleInfo tmpData = mVehicleInfos[Name];
+				UnsubscribeEvent_IVehicleInfo(mVehicleInfos[Name]);
+				mVehicleInfos.Remove(Name);
+				RaiseEvent_VehicleRemoved(Name, tmpData);
+			}
 		}
 		public void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage)
 		{
