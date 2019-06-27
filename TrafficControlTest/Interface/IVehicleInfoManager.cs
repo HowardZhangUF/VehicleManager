@@ -10,22 +10,22 @@ namespace TrafficControlTest.Interface
 		event EventHandlerIVehicleInfo VehicleStateUpdated;
 
 		/// <summary>檢查指定 Vehicle 是否在線上(透過 Vehicle 名稱)</summary>
-		bool IsVehicleExist(string Name);
+		bool IsExist(string Name);
 		/// <summary>檢查指定 Vehicle 是否在線上(透過 Vehicle IP:Port)</summary>
-		bool IsVehicleExistByIpPort(string IpPort);
+		bool IsExistByIpPort(string IpPort);
 		/// <summary>取得指定 Vehicle 的資訊(透過 Vehicle 名稱)</summary>
 		IVehicleInfo this[string Name] { get; }
 		/// <summary>取得指定 Vehicle 的資訊(透過 Vehicle 名稱)</summary>
-		IVehicleInfo GetVehicleInfo(string Name);
+		IVehicleInfo Get(string Name);
 		/// <summary>取得指定 Vehicle 的資訊(透過 Vehicle IP:Port)</summary>
-		IVehicleInfo GetVehicleInfoByIpPort(string IpPort);
+		IVehicleInfo GetByIpPort(string IpPort);
 		/// <summary>取得線上 Vehicle 的清單</summary>
-		List<string> GetVehicleNameList();
+		List<string> GetNames();
 		/// <summary>取得線上 Vehicle 的資訊</summary>
-		List<IVehicleInfo> GetVehicleInfoList();
+		List<IVehicleInfo> GetList();
 		/// <summary>新增 Vehicle 資訊</summary>
-		void AddVehicleInfo(string IpPort, string Name);
+		void Add(string IpPort, string Name);
 		/// <summary>移除 Vehicle 資訊</summary>
-		void RemoveVehicleInfo(string IpPort);
+		void Remove(string IpPort);
 	}
 }

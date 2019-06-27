@@ -16,24 +16,24 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerIVehicleInfo VehicleRemoved;
 		public event EventHandlerIVehicleInfo VehicleStateUpdated;
 
-		public IVehicleInfo this[string Name] => GetVehicleInfo(Name);
+		public IVehicleInfo this[string Name] => Get(Name);
 
 		private Dictionary<string, IVehicleInfo> mVehicleInfos = new Dictionary<string, IVehicleInfo>();
 
 		public VehicleInfoManager()
 		{
 		}
-		public bool IsVehicleExist(string Name)
+		public bool IsExist(string Name)
 		{
 			return mVehicleInfos.Keys.Contains(Name);
 		}
-		public bool IsVehicleExistByIpPort(string IpPort)
+		public bool IsExistByIpPort(string IpPort)
 		{
 			return mVehicleInfos.Any((o) => o.Value.mIpPort == IpPort);
 		}
-		public IVehicleInfo GetVehicleInfo(string Name)
+		public IVehicleInfo Get(string Name)
 		{
-			if (IsVehicleExist(Name))
+			if (IsExist(Name))
 			{
 				return mVehicleInfos[Name];
 			}
@@ -42,9 +42,9 @@ namespace TrafficControlTest.Implement
 				return null;
 			}
 		}
-		public IVehicleInfo GetVehicleInfoByIpPort(string IpPort)
+		public IVehicleInfo GetByIpPort(string IpPort)
 		{
-			if (IsVehicleExistByIpPort(IpPort))
+			if (IsExistByIpPort(IpPort))
 			{
 				return mVehicleInfos.First((o) => o.Value.mIpPort == IpPort).Value;
 			}
@@ -53,7 +53,7 @@ namespace TrafficControlTest.Implement
 				return null;
 			}
 		}
-		public List<string> GetVehicleNameList()
+		public List<string> GetNames()
 		{
 			if (mVehicleInfos.Count > 0)
 			{
@@ -64,7 +64,7 @@ namespace TrafficControlTest.Implement
 				return null;
 			}
 		}
-		public List<IVehicleInfo> GetVehicleInfoList()
+		public List<IVehicleInfo> GetList()
 		{
 			if (mVehicleInfos.Count > 0)
 			{
@@ -75,14 +75,14 @@ namespace TrafficControlTest.Implement
 				return null;
 			}
 		}
-		public void AddVehicleInfo(string IpPort, string Name)
+		public void Add(string IpPort, string Name)
 		{
 			mVehicleInfos.Add(Name, Library.Library.GenerateIVehicleInfo(Name));
 			mVehicleInfos[Name].SetIpPort(IpPort);
 			SubscribeEvent_IVehicleInfo(mVehicleInfos[Name]);
 			RaiseEvent_VehicleAdded(mVehicleInfos[Name].mName, mVehicleInfos[Name]);
 		}
-		public void RemoveVehicleInfo(string IpPort)
+		public void Remove(string IpPort)
 		{
 			string name = mVehicleInfos.First((o) => o.Value.mIpPort == IpPort).Key;
 			string ipPort = mVehicleInfos[name].mIpPort;

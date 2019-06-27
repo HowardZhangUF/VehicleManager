@@ -55,9 +55,9 @@ namespace TrafficControlTest.Implement
 		{
 			if (NewState == ConnectState.Disconnected)
 			{
-				if (rVehicleInfoManager.IsVehicleExistByIpPort(IpPort))
+				if (rVehicleInfoManager.IsExistByIpPort(IpPort))
 				{
-					rVehicleInfoManager.RemoveVehicleInfo(IpPort);
+					rVehicleInfoManager.Remove(IpPort);
 				}
 			}
 		}
@@ -81,9 +81,9 @@ namespace TrafficControlTest.Implement
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVStatus AgvStatus)
 		{
-			if (!rVehicleInfoManager.IsVehicleExist(AgvStatus.Name))
+			if (!rVehicleInfoManager.IsExist(AgvStatus.Name))
 			{
-				rVehicleInfoManager.AddVehicleInfo(IpPort, AgvStatus.Name);
+				rVehicleInfoManager.Add(IpPort, AgvStatus.Name);
 			}
 
 			rVehicleInfoManager[AgvStatus.Name].SetIpPort(IpPort);
@@ -91,9 +91,9 @@ namespace TrafficControlTest.Implement
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVPath AgvPath)
 		{
-			if (!rVehicleInfoManager.IsVehicleExist(AgvPath.Name))
+			if (!rVehicleInfoManager.IsExist(AgvPath.Name))
 			{
-				rVehicleInfoManager.AddVehicleInfo(IpPort, AgvPath.Name);
+				rVehicleInfoManager.Add(IpPort, AgvPath.Name);
 			}
 
 			rVehicleInfoManager[AgvPath.Name].SetIpPort(IpPort);
