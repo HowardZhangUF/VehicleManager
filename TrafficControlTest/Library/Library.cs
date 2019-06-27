@@ -617,7 +617,7 @@ namespace TrafficControlTest.Library
 					CalculatePassInfo(PathOverlapPair.mVehicle2, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), out ITowardPoint2D EnterPoint2, out ITowardPoint2D ExitPoint2, out double EnterDistance2, out double ExitDistance2, out ITimePeriod PassPeriod2);
 					if (IsOverlap(PassPeriod1, PassPeriod2))
 					{
-						tmpCollisionPairs.Add(GenerateICollisionPair(PathOverlapPair.mVehicle1, PathOverlapPair.mVehicle2, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), GetUnion(PassPeriod1, PassPeriod2)));
+						tmpCollisionPairs.Add(GenerateICollisionPair(PathOverlapPair.mVehicle1, PathOverlapPair.mVehicle2, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), PassPeriod1.mStart < PassPeriod2.mStart ? PassPeriod1 : PassPeriod2));
 					}
 				}
 
