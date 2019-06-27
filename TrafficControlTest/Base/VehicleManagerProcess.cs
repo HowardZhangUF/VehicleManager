@@ -16,9 +16,9 @@ namespace TrafficControlTest.Base
 		public event EventHandlerRemoteConnectState VehicleCommunicatorRemoteConnectStateChagned;
 		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableData;
 		public event EventHandlerReceivedSerializableData VehicleCommunicatorReceivedSerializableData;
-		public event EventHandlerVehicleInfo VehicleInfoManagerVehicleAdded;
-		public event EventHandlerVehicleInfo VehicleInfoManagerVehicleRemoved;
-		public event EventHandlerVehicleInfo VehicleInfoManagerVehicleStateUpdated;
+		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleAdded;
+		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleRemoved;
+		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleStateUpdated;
 
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;

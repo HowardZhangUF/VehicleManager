@@ -834,7 +834,7 @@ namespace TrafficControlTest.Library
 
 	public static class EventHandlerLibraryOfIVehicleInfoManager
 	{
-		public delegate void EventHandlerVehicleInfo(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo);
+		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, string IpPort, IVehicleInfo VehicleInfo);
 	}
 
 	public static class EventHandlerLibraryOfIVehicleCommunicator

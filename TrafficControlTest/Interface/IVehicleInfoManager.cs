@@ -5,9 +5,9 @@ namespace TrafficControlTest.Interface
 {
 	public interface IVehicleInfoManager
 	{
-		event EventHandlerVehicleInfo VehicleAdded;
-		event EventHandlerVehicleInfo VehicleRemoved;
-		event EventHandlerVehicleInfo VehicleStateUpdated;
+		event EventHandlerIVehicleInfo VehicleAdded;
+		event EventHandlerIVehicleInfo VehicleRemoved;
+		event EventHandlerIVehicleInfo VehicleStateUpdated;
 
 		/// <summary>檢查指定 Vehicle 是否在線上(透過 Vehicle 名稱)</summary>
 		bool IsVehicleExist(string Name);

@@ -12,9 +12,9 @@ namespace TrafficControlTest.Implement
 {
 	public class VehicleInfoManager : IVehicleInfoManager
 	{
-		public event EventHandlerVehicleInfo VehicleAdded;
-		public event EventHandlerVehicleInfo VehicleRemoved;
-		public event EventHandlerVehicleInfo VehicleStateUpdated;
+		public event EventHandlerIVehicleInfo VehicleAdded;
+		public event EventHandlerIVehicleInfo VehicleRemoved;
+		public event EventHandlerIVehicleInfo VehicleStateUpdated;
 
 		public IVehicleInfo this[string Name] => GetVehicleInfo(Name);
 
