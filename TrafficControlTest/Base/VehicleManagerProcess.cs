@@ -387,17 +387,17 @@ namespace TrafficControlTest.Base
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			HandleDebugMessage("CollisionEventManager", $"Collision Event Added. Name: {Name}, Info: {CollisionPair.ToString()}");
+			HandleDebugMessage("CollisionEventManager", $"Collision Event Added. Name: {Name}, Info:\n{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventAdded(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			HandleDebugMessage("CollisionEventManager", $"Collision Event Removed. Name: {Name}, Info: {CollisionPair.ToString()}");
+			HandleDebugMessage("CollisionEventManager", $"Collision Event Removed. Name: {Name}, Info:\n{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventRemoved(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			HandleDebugMessage("CollisionEventManager", $"Collision Event StateUpdated. Name: {Name}, Info: {CollisionPair.ToString()}");
+			HandleDebugMessage("CollisionEventManager", $"Collision Event StateUpdated. Name: {Name}, Info:\n{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventStateUpdated(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime)
