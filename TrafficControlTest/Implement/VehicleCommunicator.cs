@@ -27,6 +27,7 @@ namespace TrafficControlTest.Implement
 		private readonly Queue<EventArgs> mSerialServerEvents = new Queue<EventArgs>();
 		private readonly object mLockOfSerialServerEvents = new object();
 		private Thread mThdHandleSerialServerEvents = null;
+		private bool[] mThdHandleSerialServerEventsExitFlag = null;
 
 		public VehicleCommunicator()
 		{
@@ -100,7 +101,8 @@ namespace TrafficControlTest.Implement
 		}
 		private void InitializeThread()
 		{
-			mThdHandleSerialServerEvents = new Thread(Task_HandleSerialServerEvents);
+			mThdHandleSerialServerEventsExitFlag = new bool[] { false };
+			mThdHandleSerialServerEvents = new Thread(() => Task_HandleSerialServerEvents(mThdHandleSerialServerEventsExitFlag));
 			mThdHandleSerialServerEvents.IsBackground = true;
 			mThdHandleSerialServerEvents.Start();
 		}
@@ -110,7 +112,7 @@ namespace TrafficControlTest.Implement
 			{
 				if (mThdHandleSerialServerEvents.IsAlive)
 				{
-					mThdHandleSerialServerEvents.Abort();
+					mThdHandleSerialServerEventsExitFlag[0] = true;
 				}
 				mThdHandleSerialServerEvents = null;
 			}
@@ -219,20 +221,16 @@ namespace TrafficControlTest.Implement
 		{
 			RaiseEvent_ReceivedSerializableData(E.RemoteInfo.ToString(), E.Data);
 		}
-		private void Task_HandleSerialServerEvents()
+		private void Task_HandleSerialServerEvents(bool[] ExitFlag)
 		{
 			try
 			{
 				RaiseEvent_SystemStarted();
-				while (true)
+				while (!ExitFlag[0])
 				{
 					Subtask_HandleSerialServerEvents();
 					Thread.Sleep(100);
 				}
-			}
-			catch (ThreadAbortException e)
-			{
-				Console.WriteLine(e.ToString());
 			}
 			finally
 			{

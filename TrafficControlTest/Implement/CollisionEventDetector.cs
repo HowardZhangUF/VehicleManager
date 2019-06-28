@@ -17,6 +17,7 @@ namespace TrafficControlTest.Implement
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private ICollisionEventManager rCollisionEventManager = null;
 		private Thread mThdDetectCollisionEvent = null;
+		private bool[] mThdDetectCollisionEventExitFlag = null;
 
 		public CollisionEventDetector(IVehicleInfoManager VehicleInfoManager, ICollisionEventManager CollisionEventManager)
 		{
@@ -100,7 +101,8 @@ namespace TrafficControlTest.Implement
 		}
 		private void InitializeThread()
 		{
-			mThdDetectCollisionEvent = new Thread(Task_DetectCollisionEvent);
+			mThdDetectCollisionEventExitFlag = new bool[] { false };
+			mThdDetectCollisionEvent = new Thread(() => Task_DetectCollisionEvent(mThdDetectCollisionEventExitFlag));
 			mThdDetectCollisionEvent.IsBackground = true;
 			mThdDetectCollisionEvent.Start();
 		}
@@ -110,25 +112,21 @@ namespace TrafficControlTest.Implement
 			{
 				if (mThdDetectCollisionEvent.IsAlive)
 				{
-					mThdDetectCollisionEvent.Abort();
+					mThdDetectCollisionEventExitFlag[0] = true;
 				}
 				mThdDetectCollisionEvent = null;
 			}
 		}
-		private void Task_DetectCollisionEvent()
+		private void Task_DetectCollisionEvent(bool[] ExitFlag)
 		{
 			try
 			{
 				RaiseEvent_SystemStarted();
-				while (true)
+				while (!ExitFlag[0])
 				{
 					Subtask_DetectCollisionEvent();
 					Thread.Sleep(750);
 				}
-			}
-			catch (ThreadAbortException Ex)
-			{
-				Console.WriteLine(Ex.ToString());
 			}
 			finally
 			{
