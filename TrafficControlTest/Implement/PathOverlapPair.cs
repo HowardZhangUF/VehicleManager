@@ -30,7 +30,7 @@ namespace TrafficControlTest.Implement
 			{
 				result += $"\nRegion{i + 1}: {mOverlapRegionsOfPaths.ElementAt(i).ToString()}";
 			}
-			result += $"\n============================================================\n";
+			result += $"\n============================================================";
 			return result;
 		}
 	}

@@ -25,7 +25,7 @@ namespace TrafficControlTest.Implement
 			result += $"\n[ PathRegionOverlapPair ]";
 			result += $"\nVehicles: {mVehicle1.mName} & {mVehicle2.mName}";
 			result += $"\nRegion: {mOverlapRegionOfPathRegions.ToString()}";
-			result += $"\n============================================================\n";
+			result += $"\n============================================================";
 			return result;
 		}
 	}

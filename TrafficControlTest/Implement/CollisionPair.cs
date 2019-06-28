@@ -49,11 +49,12 @@ namespace TrafficControlTest.Implement
 			result += $"============================================================";
 			result += $"\n[ CollisionPair ]";
 			result += $"\nVehicles: {mVehicle1.mName} & {mVehicle2.mName}";
+			result += $"\nName: {mName}";
 			result += $"\nRegion: {mCollisionRegion.ToString()}";
 			result += $"\nEstimate Time(s): {mPeriod.ToString(Library.Library.TIME_FORMAT)}";
 			result += $"\nEvent Duration(s): {mDuration.TotalSeconds.ToString("F2")}";
 			result += $"\nLastUpdated: {mLastUpdated.ToString(Library.Library.TIME_FORMAT)}";
-			result += $"\n============================================================\n";
+			result += $"\n============================================================";
 			return result;
 		}
 
