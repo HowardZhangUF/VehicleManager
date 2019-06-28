@@ -738,7 +738,7 @@ namespace TrafficControlTest.Library
 			{
 				List<IPoint2D> tmpPath = Vehicle.mPath.ToList();
 				tmpPath.Insert(0, Vehicle.mPosition);
-				for (int i = 1; i < Vehicle.mPath.Count(); ++i)
+				for (int i = 1; i < tmpPath.Count(); ++i)
 				{
 					IEnumerable<IPoint2D> intersectionPoints = GetIntersectionPoint(Region, tmpPath[i - 1], tmpPath[i]);
 					switch (intersectionPoints.Count())
