@@ -31,11 +31,11 @@ namespace VehicleSimulator
 			SubscribeVehicleSimulatorProcessEvent();
 
 			List<Pair> path1 = new List<Pair>();
-			path1.Add(new Pair(7000, -1000));
+			//path1.Add(new Pair(3000, -5000));
 			path1.Add(new Pair(-10000, 1000));
 
 			List<Pair> path2 = new List<Pair>();
-			path2.Add(new Pair(1000, 9000));
+			//path2.Add(new Pair(3000, 4000));
 			path2.Add(new Pair(-1000, -9000));
 
 			process.AddVehicleSimualtor("AGV01", 500, 40, 7000, -1000);
