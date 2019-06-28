@@ -89,6 +89,14 @@ namespace TrafficControlTest.Library
 		{
 			return new VehicleMessageAnalyzer(VehicleCommunicator, VehicleInfoManager);
 		}
+		public static ICollisionEventManager GenerateICollisionEventManager()
+		{
+			return new CollisionEventManager();
+		}
+		public static ICollisionEventDetector GenerateICollisionEventDetector(IVehicleInfoManager VehicleInfoManager, ICollisionEventManager CollisionEventManager)
+		{
+			return new CollisionEventDetector(VehicleInfoManager, CollisionEventManager);
+		}
 		#endregion
 
 		#region IPoint2D
@@ -649,8 +657,9 @@ namespace TrafficControlTest.Library
 		{
 			return false;
 		}
-		public static bool IsAnyCollisionPair(IEnumerable<IVehicleInfo> Vehicles, ref IEnumerable<ICollisionPair> CollisionPairs)
+		public static bool IsAnyCollisionPair(IEnumerable<IVehicleInfo> Vehicles, out IEnumerable<ICollisionPair> CollisionPairs)
 		{
+			CollisionPairs = null;
 			return false;
 
 			//// 計算「路徑線區域重疊的組合」
