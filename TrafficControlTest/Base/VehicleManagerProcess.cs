@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using static TrafficControlTest.Library.EventHandlerLibraryOfICollisionEventManager;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleInfoManager;
 using static TrafficControlTest.Library.Library;
@@ -19,10 +20,17 @@ namespace TrafficControlTest.Base
 		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleAdded;
 		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleRemoved;
 		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleStateUpdated;
+		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventAdded;
+		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventRemoved;
+		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventStateUpdated;
+		public event EventHandlerDateTime CollisionEventDetectorSystemStarted;
+		public event EventHandlerDateTime CollisionEventDetectorSystemStopped;
 
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
 		private IVehicleMessageAnalyzer mVehicleMessageAnalyzer = null;
+		private ICollisionEventManager mCollisionEventManager = null;
+		private ICollisionEventDetector mCollisionEventDetector = null;
 
 		public VehicleManagerProcess()
 		{
@@ -40,6 +48,14 @@ namespace TrafficControlTest.Base
 		{
 			mVehicleCommunicator.StopListen();
 		}
+		public void CollisionEventDetectorStart()
+		{
+			mCollisionEventDetector.Start();
+		}
+		public void CollisionEventDetectorStop()
+		{
+			mCollisionEventDetector.Stop();
+		}
 
 		private void Constructor()
 		{
@@ -54,6 +70,14 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
 			mVehicleMessageAnalyzer = GenerateIVehicleMessageAnalyzer(mVehicleCommunicator, mVehicleInfoManager);
 			SubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
+
+			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
+			mCollisionEventManager = GenerateICollisionEventManager();
+			SubscribeEvent_ICollisionEventManager(mCollisionEventManager);
+
+			UnsubscribeEvent_ICollisionEventDetector(mCollisionEventDetector);
+			mCollisionEventDetector = GenerateICollisionEventDetector(mVehicleInfoManager, mCollisionEventManager);
+			SubscribeEvent_ICollisionEventDetector(mCollisionEventDetector);
 		}
 		private void Destructor()
 		{
@@ -65,6 +89,12 @@ namespace TrafficControlTest.Base
 
 			UnsubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
 			mVehicleMessageAnalyzer = null;
+
+			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
+			mCollisionEventManager = null;
+
+			UnsubscribeEvent_ICollisionEventDetector(mCollisionEventDetector);
+			mCollisionEventDetector = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -120,6 +150,40 @@ namespace TrafficControlTest.Base
 			if (VehicleMessageAnalyzer != null)
 			{
 
+			}
+		}
+		private void SubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
+		{
+			if (CollisionEventManager != null)
+			{
+				CollisionEventManager.CollisionEventAdded += HandleEvent_CollisionEventManagerCollisionEventAdded;
+				CollisionEventManager.CollisionEventRemoved += HandleEvent_CollisionEventManagerCollisionEventRemoved;
+				CollisionEventManager.CollisionEventStateUpdated += HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+			}
+		}
+		private void UnsubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
+		{
+			if (CollisionEventManager != null)
+			{
+				CollisionEventManager.CollisionEventAdded -= HandleEvent_CollisionEventManagerCollisionEventAdded;
+				CollisionEventManager.CollisionEventRemoved -= HandleEvent_CollisionEventManagerCollisionEventRemoved;
+				CollisionEventManager.CollisionEventStateUpdated -= HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+			}
+		}
+		private void SubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
+		{
+			if (CollisionEventDetector != null)
+			{
+				CollisionEventDetector.SystemStarted += HandleEvent_CollisionEventDetectorSystemStarted;
+				CollisionEventDetector.SystemStopped += HandleEvent_CollisionEventDetectorSystemStopped;
+			}
+		}
+		private void UnsubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
+		{
+			if (CollisionEventDetector != null)
+			{
+				CollisionEventDetector.SystemStarted -= HandleEvent_CollisionEventDetectorSystemStarted;
+				CollisionEventDetector.SystemStopped -= HandleEvent_CollisionEventDetectorSystemStopped;
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
@@ -221,6 +285,61 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { VehicleInfoManagerVehicleStateUpdated?.Invoke(OccurTime, Name, VehicleInfo); });
 			}
 		}
+		protected virtual void RaiseEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair, bool Sync = true)
+		{
+			if (Sync)
+			{
+				CollisionEventManagerCollisionEventAdded?.Invoke(OccurTime, Name, CollisionPair);
+			}
+			else
+			{
+				Task.Run(() => { CollisionEventManagerCollisionEventAdded?.Invoke(OccurTime, Name, CollisionPair); });
+			}
+		}
+		protected virtual void RaiseEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair, bool Sync = true)
+		{
+			if (Sync)
+			{
+				CollisionEventManagerCollisionEventRemoved?.Invoke(OccurTime, Name, CollisionPair);
+			}
+			else
+			{
+				Task.Run(() => { CollisionEventManagerCollisionEventRemoved?.Invoke(OccurTime, Name, CollisionPair); });
+			}
+		}
+		protected virtual void RaiseEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair, bool Sync = true)
+		{
+			if (Sync)
+			{
+				CollisionEventManagerCollisionEventStateUpdated?.Invoke(OccurTime, Name, CollisionPair);
+			}
+			else
+			{
+				Task.Run(() => { CollisionEventManagerCollisionEventStateUpdated?.Invoke(OccurTime, Name, CollisionPair); });
+			}
+		}
+		protected virtual void RaiseEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime, bool Sync = true)
+		{
+			if (Sync)
+			{
+				CollisionEventDetectorSystemStarted?.Invoke(OccurTime);
+			}
+			else
+			{
+				Task.Run(() => { CollisionEventDetectorSystemStarted?.Invoke(OccurTime); });
+			}
+		}
+		protected virtual void RaiseEvent_CollisionEventDetectorSystemStopped(DateTime OccurTime, bool Sync = true)
+		{
+			if (Sync)
+			{
+				CollisionEventDetectorSystemStopped?.Invoke(OccurTime);
+			}
+			else
+			{
+				Task.Run(() => { CollisionEventDetectorSystemStopped?.Invoke(OccurTime); });
+			}
+		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage("VehicleCommunicator", "System Started.");
@@ -265,6 +384,31 @@ namespace TrafficControlTest.Base
 		{
 			HandleDebugMessage("VehicleInfoManager", $"Vehicle State Updated. Name: {Name}, Info: {VehicleInfo.ToString()}");
 			RaiseEvent_VehicleInfoManagerVehicleStateUpdated(OccurTime, Name, VehicleInfo);
+		}
+		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		{
+			HandleDebugMessage("CollisionEventManager", $"Collision Event Added. Name: {Name}, Info: {CollisionPair.ToString()}");
+			RaiseEvent_CollisionEventManagerCollisionEventAdded(OccurTime, Name, CollisionPair);
+		}
+		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		{
+			HandleDebugMessage("CollisionEventManager", $"Collision Event Removed. Name: {Name}, Info: {CollisionPair.ToString()}");
+			RaiseEvent_CollisionEventManagerCollisionEventRemoved(OccurTime, Name, CollisionPair);
+		}
+		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		{
+			HandleDebugMessage("CollisionEventManager", $"Collision Event StateUpdated. Name: {Name}, Info: {CollisionPair.ToString()}");
+			RaiseEvent_CollisionEventManagerCollisionEventStateUpdated(OccurTime, Name, CollisionPair);
+		}
+		private void HandleEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime)
+		{
+			HandleDebugMessage("CollisionEventDetector", "System Started.");
+			RaiseEvent_CollisionEventDetectorSystemStarted(OccurTime);
+		}
+		private void HandleEvent_CollisionEventDetectorSystemStopped(DateTime OccurTime)
+		{
+			HandleDebugMessage("CollisionEventDetector", "System Stopped.");
+			RaiseEvent_CollisionEventDetectorSystemStopped(OccurTime);
 		}
 		private void HandleDebugMessage(string Message)
 		{

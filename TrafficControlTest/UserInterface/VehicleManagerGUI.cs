@@ -22,6 +22,7 @@ namespace TrafficControlTest.UserInterface
 			try
 			{
 				mCore.VehicleCommunicatorStartListen(8000);
+				mCore.CollisionEventDetectorStart();
 			}
 			catch (Exception Ex)
 			{
