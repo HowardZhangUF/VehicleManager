@@ -51,12 +51,20 @@ namespace TrafficControlTest.Base
 			mVehicleInfoManager = GenerateIVehicleInfoManager();
 			SubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
 
+			UnsubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
 			mVehicleMessageAnalyzer = GenerateIVehicleMessageAnalyzer(mVehicleCommunicator, mVehicleInfoManager);
+			SubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
 		}
 		private void Destructor()
 		{
 			UnsubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
+			mVehicleCommunicator = null;
+
 			UnsubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
+			mVehicleInfoManager = null;
+
+			UnsubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
+			mVehicleMessageAnalyzer = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -98,6 +106,20 @@ namespace TrafficControlTest.Base
 				VehicleInfoManager.VehicleAdded -= HandleEvent_VehicleInfoManagerVehicleAdded;
 				VehicleInfoManager.VehicleRemoved -= HandleEvent_VehicleInfoManagerVehicleRemoved;
 				VehicleInfoManager.VehicleStateUpdated -= HandleEvent_VehicleInfoManagerVehicleStateUpdated;
+			}
+		}
+		private void SubscribeEvent_IVehicleMessageAnalyzer(IVehicleMessageAnalyzer VehicleMessageAnalyzer)
+		{
+			if (VehicleMessageAnalyzer != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_IVehicleMessageAnalyzer(IVehicleMessageAnalyzer VehicleMessageAnalyzer)
+		{
+			if (VehicleMessageAnalyzer != null)
+			{
+
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
