@@ -7,7 +7,7 @@ using static TrafficControlTest.Library.EventHandlerLibraryOfICollisionEventMana
 
 namespace TrafficControlTest.Implement
 {
-	class CollisionEventManager : ICollisionEventManager
+	public class CollisionEventManager : ICollisionEventManager
 	{
 		public event EventHandlerICollisionPair CollisionEventAdded;
 		public event EventHandlerICollisionPair CollisionEventRemoved;
@@ -17,6 +17,9 @@ namespace TrafficControlTest.Implement
 
 		private Dictionary<string, ICollisionPair> mCollisionPairs = new Dictionary<string, ICollisionPair>();
 
+		public CollisionEventManager()
+		{
+		}
 		public bool IsExist(string Name)
 		{
 			return mCollisionPairs.Keys.Contains(Name);
