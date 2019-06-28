@@ -334,7 +334,7 @@ namespace TrafficControlTest.Library
 		/// <summary>判斷兩個矩形是否有重疊。共用同一個邊不算重疊</summary>
 		public static bool IsRectangleOverlap(IRectangle2D Rectangle1, IRectangle2D Rectangle2)
 		{
-			if (Rectangle1.mMaxX > Rectangle2.mMinX && Rectangle2.mMaxX > Rectangle1.mMinX && Rectangle1.mMaxY > Rectangle2.mMinY && Rectangle2.mMaxY > Rectangle1.mMinY)
+			if (Rectangle1 != null && Rectangle2 != null && Rectangle1.mMaxX > Rectangle2.mMinX && Rectangle2.mMaxX > Rectangle1.mMinX && Rectangle1.mMaxY > Rectangle2.mMinY && Rectangle2.mMaxY > Rectangle1.mMinY)
 				return true;
 			else
 				return false;
@@ -441,7 +441,7 @@ namespace TrafficControlTest.Library
 
 		#region IPathRegionOverlapPair
 		/// <summary>判斷兩車是否會發生「路徑線區域」重疊的狀況。若有，輸出其區域資訊</summary>
-		public static bool IsPathRegionOverlap(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, out IPathRegionOverlapPair PathRegionOverlapPair)
+		private static bool IsPathRegionOverlapPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, out IPathRegionOverlapPair PathRegionOverlapPair)
 		{
 			/*
 			 * 輸入：兩車資訊
@@ -463,7 +463,7 @@ namespace TrafficControlTest.Library
 				return false;
 			}
 		}
-		public static bool IsAnyPathRegionOverlap(IEnumerable<IVehicleInfo> Vehicles, out IEnumerable<IPathRegionOverlapPair> PathRegionOverlapPairs)
+		private static bool IsAnyPathRegionOverlapPair(IEnumerable<IVehicleInfo> Vehicles, out IEnumerable<IPathRegionOverlapPair> PathRegionOverlapPairs)
 		{
 			List<IPathRegionOverlapPair> tmpPathRegionOverlapPairs = new List<IPathRegionOverlapPair>();
 
@@ -473,7 +473,7 @@ namespace TrafficControlTest.Library
 				{
 					for (int j = i + 1; j < Vehicles.Count(); ++j)
 					{
-						if (IsPathRegionOverlap(Vehicles.ElementAt(i), Vehicles.ElementAt(j), out IPathRegionOverlapPair PathRegionOverlapPair))
+						if (IsPathRegionOverlapPair(Vehicles.ElementAt(i), Vehicles.ElementAt(j), out IPathRegionOverlapPair PathRegionOverlapPair))
 						{
 							tmpPathRegionOverlapPairs.Add(PathRegionOverlapPair);
 						}
@@ -481,8 +481,16 @@ namespace TrafficControlTest.Library
 				}
 			}
 
-			PathRegionOverlapPairs = tmpPathRegionOverlapPairs.Count > 0 ? tmpPathRegionOverlapPairs : null;
-			return PathRegionOverlapPairs.Count() > 0 ? true : false;
+			if (tmpPathRegionOverlapPairs.Count > 0)
+			{
+				PathRegionOverlapPairs = tmpPathRegionOverlapPairs;
+				return true;
+			}
+			else
+			{
+				PathRegionOverlapPairs = null;
+				return false;
+			}
 		}
 		#endregion
 
@@ -490,12 +498,8 @@ namespace TrafficControlTest.Library
 		/// <summary>鄰近點數量。當需要使用鄰近點資料時，會使用鄰近 n 個點的資料， n 即是此變數值</summary>
 		public static int mConsideredNeighbourAmount { get; set; } = 10;
 
-		public static bool IsPathOverlapPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, ref IPathOverlapPair PathOverlapPair)
-		{
-			return false;
-		}
 		/// <summary>判斷兩車在『「路徑線區域」重疊的區域』內是否會發生「路徑線」重疊的狀況。若有，輸出其區域資訊。此種區域可能會有多個</summary>
-		public static bool IsPathOverlapPair(IPathRegionOverlapPair PathRegionOverlapPair, out IPathOverlapPair PathOverlapPair)
+		private static bool IsPathOverlapPair(IPathRegionOverlapPair PathRegionOverlapPair, out IPathOverlapPair PathOverlapPair)
 		{
 			/*
 			 * 輸入：「路徑線區域」重疊的區域與對應的兩車，亦為「有機會」發生「路徑線」重疊的區域與對應的兩車
@@ -532,9 +536,31 @@ namespace TrafficControlTest.Library
 
 			return PathOverlapPair != null ? true : false;
 		}
-		public static bool IsAnyPathOverlapPair(IEnumerable<IPathRegionOverlapPair> PathRegionOverlapPairs, ref IEnumerable<IPathOverlapPair> PathOverlaPairs)
+		private static bool IsAnyPathOverlapPair(IEnumerable<IPathRegionOverlapPair> PathRegionOverlapPairs, out IEnumerable<IPathOverlapPair> PathOverlapPairs)
 		{
-			return false;
+			List<IPathOverlapPair> tmpPathOverlapPairs = new List<IPathOverlapPair>();
+
+			if (PathRegionOverlapPairs != null && PathRegionOverlapPairs.Count() > 0)
+			{
+				for (int i = 0; i < PathRegionOverlapPairs.Count(); ++i)
+				{
+					if (IsPathOverlapPair(PathRegionOverlapPairs.ElementAt(i), out IPathOverlapPair tmpPathOverlapPair))
+					{
+						tmpPathOverlapPairs.Add(tmpPathOverlapPair);
+					}
+				}
+			}
+
+			if (tmpPathOverlapPairs.Count > 0)
+			{
+				PathOverlapPairs = tmpPathOverlapPairs;
+				return true;
+			}
+			else
+			{
+				PathOverlapPairs = null;
+				return false;
+			}
 		}
 		private static bool TryToBuildTreeOfPoints(IEnumerable<IPoint2D> Points, out KdTree<int, string> Tree)
 		{
@@ -588,24 +614,44 @@ namespace TrafficControlTest.Library
 							}
 						}
 					}
-					OverlapRegions = MergeRectangle(tmpOverlapRegions).ToList();
+
+					if (tmpOverlapRegions != null && tmpOverlapRegions.Count > 0)
+					{
+						OverlapRegions = MergeRectangle(tmpOverlapRegions).ToList();
+					}
 				}
 			}
-			return (OverlapRegions != null || OverlapRegions.Count() > 0) ? true : false;
+			return (OverlapRegions != null && OverlapRegions.Count() > 0) ? true : false;
 		}
 		#endregion
-		
+
 		#region ICollisionPair
-		public static bool IsCollisionPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, ref ICollisionPair CollisionPair)
+		public static bool IsAnyCollisionPair(IEnumerable<IVehicleInfo> Vehicles, out IEnumerable<ICollisionPair> CollisionPairs)
 		{
-			return false;
-		}
-		public static bool IsCollisionPair(IPathRegionOverlapPair PathRegionOverlapPair, ref ICollisionPair CollisionPair)
-		{
+			try
+			{
+				if (IsAnyPathRegionOverlapPair(Vehicles, out IEnumerable<IPathRegionOverlapPair> tmpPathRegionOverlapPairs))
+				{
+					if (IsAnyPathOverlapPair(tmpPathRegionOverlapPairs, out IEnumerable<IPathOverlapPair> tmpPathOverlapPairs))
+					{
+						if (IsAnyCollisionPair(tmpPathOverlapPairs, out IEnumerable<ICollisionPair> tmpCollisionPairs))
+						{
+							CollisionPairs = tmpCollisionPairs;
+							return true;
+						}
+					}
+				}
+			}
+			catch (Exception Ex)
+			{
+				Console.WriteLine(Ex.ToString());
+			}
+
+			CollisionPairs = null;
 			return false;
 		}
 		/// <summary>判斷兩車在『「路徑線」重疊的區域』內是否會發生交會。若有，輸出其交會資訊</summary>
-		public static bool IsCollisionPair(IPathOverlapPair PathOverlapPair, out ICollisionPair CollisionPair)
+		private static bool IsCollisionPair(IPathOverlapPair PathOverlapPair, out ICollisionPair CollisionPair)
 		{
 			/*
 			 * 輸入：「路徑線」重疊的區域與對應的兩車
@@ -653,82 +699,31 @@ namespace TrafficControlTest.Library
 			}
 			return CollisionPair != null ? true : false;
 		}
-		public static bool IsAnyCollisionPair(IEnumerable<IPathOverlapPair> PathOverlapPairs, ref IEnumerable<ICollisionPair> CollisionPairs)
+		private static bool IsAnyCollisionPair(IEnumerable<IPathOverlapPair> PathOverlapPairs, out IEnumerable<ICollisionPair> CollisionPairs)
 		{
-			return false;
-		}
-		public static bool IsAnyCollisionPair(IEnumerable<IVehicleInfo> Vehicles, out IEnumerable<ICollisionPair> CollisionPairs)
-		{
-			CollisionPairs = null;
-			return false;
+			List<ICollisionPair> tmpCollisionPairs = new List<ICollisionPair>();
 
-			//// 計算「路徑線區域重疊的組合」
-			//List<PathRegionOverlapPair> pathRegionOverlapPairs = null;
-			//if (agvs != null && agvs.Count() > 1)
-			//{
-			//	for (int i = 0; i < agvs.Count(); ++i)
-			//	{
-			//		for (int j = i + 1; j < agvs.Count(); ++j)
-			//		{
-			//			PathRegionOverlapPair pathRegionOverlapPair = PathRegionOverlapPair.IsPathRegionOverlap(agvs[i], agvs[j]);
-			//			if (pathRegionOverlapPair != null)
-			//			{
-			//				if (pathRegionOverlapPairs == null) pathRegionOverlapPairs = new List<PathRegionOverlapPair>();
-			//				pathRegionOverlapPairs.Add(pathRegionOverlapPair);
-			//			}
-			//		}
-			//	}
-			//}
+			if (PathOverlapPairs != null && PathOverlapPairs.Count() > 0)
+			{
+				for (int i = 0; i < PathOverlapPairs.Count(); ++i)
+				{
+					if (IsCollisionPair(PathOverlapPairs.ElementAt(i), out ICollisionPair tmpCollisionPair))
+					{
+						tmpCollisionPairs.Add(tmpCollisionPair);
+					}
+				}
+			}
 
-			//// 計算「路徑線重疊的組合」
-			//List<PathOverlapPair> pathOverlapPairs = null;
-			//if (pathRegionOverlapPairs != null && pathRegionOverlapPairs.Count() > 0)
-			//{
-			//	for (int i = 0; i < pathRegionOverlapPairs.Count(); ++i)
-			//	{
-			//		PathOverlapPair pathOverlapPair = PathOverlapPair.IsPathOverlap(pathRegionOverlapPairs[i]);
-			//		if (pathOverlapPair != null)
-			//		{
-			//			if (pathOverlapPairs == null) pathOverlapPairs = new List<PathOverlapPair>();
-			//			pathOverlapPairs.Add(pathOverlapPair);
-			//		}
-			//	}
-			//}
-
-			//// 輸出「路徑線重疊的組合」的資訊
-			////if (pathOverlapPairs != null && pathOverlapPairs.Count > 0)
-			////{
-			////	for (int i = 0; i < pathOverlapPairs.Count(); ++i)
-			////	{
-			////		Console.WriteLine(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff") + pathOverlapPairs[i].ToString());
-			////	}
-			////}
-
-			//// 計算「發生交會的組合」
-			//List<CollisionPair> collisionPairs = null;
-			//if (pathOverlapPairs != null && pathOverlapPairs.Count() > 0)
-			//{
-			//	for (int i = 0; i < pathOverlapPairs.Count(); ++i)
-			//	{
-			//		CollisionPair collisionPair = CollisionPair.IsCollision(pathOverlapPairs[i]);
-			//		if (collisionPair != null)
-			//		{
-			//			if (collisionPairs == null) collisionPairs = new List<CollisionPair>();
-			//			collisionPairs.Add(collisionPair);
-			//		}
-			//	}
-			//}
-
-			//// 輸出「發生交會的組合」的資訊
-			//if (collisionPairs != null && collisionPairs.Count() > 0)
-			//{
-			//	for (int i = 0; i < collisionPairs.Count(); ++i)
-			//	{
-			//		Console.WriteLine(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff") + collisionPairs[i].ToString());
-			//	}
-			//}
-
-			//return collisionPairs;
+			if (tmpCollisionPairs.Count > 0)
+			{
+				CollisionPairs = tmpCollisionPairs;
+				return true;
+			}
+			else
+			{
+				CollisionPairs = null;
+				return false;
+			}
 		}
 		/// <summary>計算車子通過指令區域的相關資訊</summary>
 		private static void CalculatePassInfo(IVehicleInfo Vehicle, IRectangle2D Region, out ITowardPoint2D EnterPoint, out ITowardPoint2D ExitPoint, out double EnterDistance, out double ExitDistance, out ITimePeriod PassPeriod)
