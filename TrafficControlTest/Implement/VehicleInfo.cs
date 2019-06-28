@@ -226,7 +226,7 @@ namespace TrafficControlTest.Implement
 		{
 			get
 			{
-				if (_PathRegion == null) _PathRegion = CalculatePathRegion(_Path);
+				if (_PathRegion == null) _PathRegion = CalculatePathRegion(_Path, mSafetyFrameRadius + mBufferFrameRadius);
 				return _PathRegion;
 			}
 			private set
@@ -351,7 +351,7 @@ namespace TrafficControlTest.Implement
 			}
 			return result;
 		}
-		private IRectangle2D CalculatePathRegion(IEnumerable<IPoint2D> Path)
+		private IRectangle2D CalculatePathRegion(IEnumerable<IPoint2D> Path, int Amplify)
 		{
 			IRectangle2D result = null;
 			if (Path != null && Path.Count() > 0)
@@ -359,6 +359,7 @@ namespace TrafficControlTest.Implement
 				List<IPoint2D> tmpPath = Path.ToList();
 				tmpPath.Insert(0, mPosition);
 				result = Library.Library.GetCoverRectangle(tmpPath);
+				result = Library.Library.GetAmplifyRectangle(result, Amplify, Amplify);
 			}
 			return result;
 		}
