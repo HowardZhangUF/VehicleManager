@@ -36,6 +36,7 @@ namespace TrafficControlTest.Implement
 		{
 			if (mSocketServer.ListenStatus == EListenStatus.Idle)
 			{
+				InitializeThread();
 				mSocketServer.StartListening(Port);
 			}
 		}
@@ -44,6 +45,7 @@ namespace TrafficControlTest.Implement
 			if (mSocketServer.ListenStatus == EListenStatus.Listening)
 			{
 				mSocketServer.StopListen();
+				DestroyThread();
 			}
 		}
 		public void SendSerializableData(string IpPort, object Data)
@@ -64,8 +66,6 @@ namespace TrafficControlTest.Implement
 		}
 		private void Constructor()
 		{
-			InitializeThread();
-
 			if (mSocketServer == null)
 			{
 				mSocketServer = new SerialServer();
@@ -79,8 +79,6 @@ namespace TrafficControlTest.Implement
 				UnsubscribeEvent_SerialServer(mSocketServer);
 				mSocketServer = null;
 			}
-
-			DestroyThread();
 		}
 		private void SubscribeEvent_SerialServer(SerialServer SerialServer)
 		{
@@ -228,25 +226,7 @@ namespace TrafficControlTest.Implement
 				RaiseEvent_SystemStarted();
 				while (true)
 				{
-					List<EventArgs> events = null;
-
-					lock (mLockOfSerialServerEvents)
-					{
-						if (mSerialServerEvents.Count > 0)
-						{
-							events = mSerialServerEvents.ToList();
-							mSerialServerEvents.Clear();
-						}
-					}
-
-					if (events != null && events.Count > 0)
-					{
-						foreach (EventArgs e in events)
-						{
-							HandleSerialServerEvent(e);
-						}
-						events.Clear();
-					}
+					Subtask_HandleSerialServerEvents();
 					Thread.Sleep(100);
 				}
 			}
@@ -256,7 +236,30 @@ namespace TrafficControlTest.Implement
 			}
 			finally
 			{
+				Subtask_HandleSerialServerEvents();
 				RaiseEvent_SystemStopped();
+			}
+		}
+		private void Subtask_HandleSerialServerEvents()
+		{
+			List<EventArgs> events = null;
+
+			lock (mLockOfSerialServerEvents)
+			{
+				if (mSerialServerEvents.Count > 0)
+				{
+					events = mSerialServerEvents.ToList();
+					mSerialServerEvents.Clear();
+				}
+			}
+
+			if (events != null && events.Count > 0)
+			{
+				foreach (EventArgs e in events)
+				{
+					HandleSerialServerEvent(e);
+				}
+				events.Clear();
 			}
 		}
 	}
