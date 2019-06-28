@@ -209,7 +209,7 @@ namespace TrafficControlTest.Implement
 		{
 			get
 			{
-				if (_PathDetail == null) _PathDetail = CalculatePathDetail(mPath, (mSafetyFrameRadius + mBufferFrameRadius) / 10);
+				if (_PathDetail == null) _PathDetail = CalculatePathDetail(_Path, (mSafetyFrameRadius + mBufferFrameRadius) / 10);
 				return _PathDetail;
 			}
 			private set
@@ -226,7 +226,7 @@ namespace TrafficControlTest.Implement
 		{
 			get
 			{
-				if (mPathRegion == null)_PathRegion = CalculatePathRegion(mPath);
+				if (_PathRegion == null) _PathRegion = CalculatePathRegion(_Path);
 				return _PathRegion;
 			}
 			private set
@@ -360,7 +360,7 @@ namespace TrafficControlTest.Implement
 				tmpPath.Insert(0, mPosition);
 				result = Library.Library.GetCoverRectangle(tmpPath);
 			}
-			return null;
+			return result;
 		}
 	}
 }
