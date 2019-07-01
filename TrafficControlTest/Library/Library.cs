@@ -764,7 +764,7 @@ namespace TrafficControlTest.Library
 							}
 							break;
 						case 2:
-							double distance1 = GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
+							double distance1 = GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0)); // 距離較小的點為進入點，距離較大的點為離開點
 							double distance2 = GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
 							if (distance1 < distance2)
 							{

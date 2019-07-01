@@ -23,7 +23,7 @@ namespace TrafficControlTest.Interface
 		void Add(string Name, ICollisionPair Data);
 		/// <summary>移除指定 Collision 資訊</summary>
 		void Remove(string Name);
-		/// <summary>更新指定 Collision 資訊</summary>
+		/// <summary>更新指定 Collision 的資訊</summary>
 		void Update(string Name, IRectangle2D CollisionRegion, ITimePeriod Period);
 	}
 }

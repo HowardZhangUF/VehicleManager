@@ -15,7 +15,7 @@ namespace TrafficControlTest.Interface
 		event EventHandlerSentSerializableData SentSerializableData;
 		event EventHandlerReceivedSerializableData ReceivedSerializableData;
 
-		/// <summary>監聽狀態。小於 0 時代表未監聽；大於等於 0 時代表監聽中，數字代表連線中的 Client 數量</summary>
+		/// <summary>監聽狀態</summary>
 		ListenState mListenState { get; }
 		/// <summary>連線中的 Client 數量</summary>
 		int mClientCount { get; }

@@ -27,11 +27,11 @@ namespace TrafficControlTest.Interface
 		void Add(string Name, IVehicleInfo Data);
 		/// <summary>移除 Vehicle 資訊</summary>
 		void Remove(string Name);
-		/// <summary>更新指定 Vehicle 資訊</summary>
+		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage);
-		/// <summary>更新指定 Vehicle 資訊</summary>
+		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void Update(string Name, IEnumerable<IPoint2D> Path);
-		/// <summary>更新指定 Vehicle 資訊</summary>
+		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void Update(string Name, string IpPort);
 	}
 }

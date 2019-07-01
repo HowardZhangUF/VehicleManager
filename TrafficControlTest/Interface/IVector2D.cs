@@ -9,6 +9,7 @@
 		double mDirection { get; }
 
 		void Set(double XComponent, double YComponent);
+		/// <summary>將自身轉換成單位向量</summary>
 		void Normalize();
 		string ToString();
 	}
