@@ -749,8 +749,8 @@ namespace TrafficControlTest.Library
 							{
 								if (EnterPoint == null)
 								{
-									GenerateITowardPoint2D(intersectionPoints.First(), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									EnterDistance = GetDistance(tmpPath.Take(i + 1)) + GetDistance(tmpPath[i - 1], intersectionPoints.First());
+									EnterPoint = GenerateITowardPoint2D(intersectionPoints.First(), GetAngle(tmpPath[i - 1], tmpPath[i]));
+									EnterDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.First());
 								}
 							}
 							// 第一個點在矩形內，第二個點在矩形外
@@ -758,8 +758,8 @@ namespace TrafficControlTest.Library
 							{
 								if (ExitPoint == null)
 								{
-									GenerateITowardPoint2D(intersectionPoints.First(), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									ExitDistance = GetDistance(tmpPath.Take(i + 1)) + GetDistance(tmpPath[i - 1], intersectionPoints.First());
+									ExitPoint = GenerateITowardPoint2D(intersectionPoints.First(), GetAngle(tmpPath[i - 1], tmpPath[i]));
+									ExitDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.First());
 								}
 							}
 							break;
@@ -770,26 +770,26 @@ namespace TrafficControlTest.Library
 							{
 								if (EnterPoint == null)
 								{
-									GenerateITowardPoint2D(intersectionPoints.ElementAt(0), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									EnterDistance = GetDistance(tmpPath.Take(i + 1)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
+									EnterPoint = GenerateITowardPoint2D(intersectionPoints.ElementAt(0), GetAngle(tmpPath[i - 1], tmpPath[i]));
+									EnterDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
 								}
 								if (ExitPoint == null)
 								{
-									GenerateITowardPoint2D(intersectionPoints.ElementAt(1), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									ExitDistance = GetDistance(tmpPath.Take(i + 1)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
+									ExitPoint = GenerateITowardPoint2D(intersectionPoints.ElementAt(1), GetAngle(tmpPath[i - 1], tmpPath[i]));
+									ExitDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
 								}
 							}
 							else
 							{
 								if (EnterPoint == null)
 								{
-									GenerateITowardPoint2D(intersectionPoints.ElementAt(1), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									EnterDistance = GetDistance(tmpPath.Take(i + 1)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
+									EnterPoint = GenerateITowardPoint2D(intersectionPoints.ElementAt(1), GetAngle(tmpPath[i - 1], tmpPath[i]));
+									EnterDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
 								}
 								if (ExitPoint == null)
 								{
-									GenerateITowardPoint2D(intersectionPoints.ElementAt(0), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									ExitDistance = GetDistance(tmpPath.Take(i + 1)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
+									ExitPoint = GenerateITowardPoint2D(intersectionPoints.ElementAt(0), GetAngle(tmpPath[i - 1], tmpPath[i]));
+									ExitDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
 								}
 							}
 							break;
@@ -798,7 +798,8 @@ namespace TrafficControlTest.Library
 					}
 				}
 
-				PassPeriod = GenerateITimePeriod(DateTime.Now.AddSeconds(EnterDistance / Vehicle.mVelocity), DateTime.Now.AddSeconds(ExitDistance / Vehicle.mVelocity));
+				double velocity = !double.IsNaN(Vehicle.mAverageVelocity) ? Vehicle.mAverageVelocity : Vehicle.mVelocity;
+				PassPeriod = GenerateITimePeriod(DateTime.Now.AddSeconds(EnterDistance / velocity), DateTime.Now.AddSeconds(ExitDistance / velocity));
 			}
 		}
 		#endregion

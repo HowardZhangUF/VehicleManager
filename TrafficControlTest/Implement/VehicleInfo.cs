@@ -179,7 +179,7 @@ namespace TrafficControlTest.Implement
 				}
 			}
 		}
-		public int mBufferFrameRadius { get; set; } = 1000;
+		public int mBufferFrameRadius { get; set; } = 500;
 		public int mTotalFrameRadius
 		{
 			get
@@ -269,7 +269,7 @@ namespace TrafficControlTest.Implement
 		public double _Battery = 0.0f;
 		public bool _PathBlocked = false;
 		public string _AlarmMessage = string.Empty;
-		public int _SafetyFrameRadius = 1000;
+		public int _SafetyFrameRadius = 500;
 		public IEnumerable<IPoint2D> _Path = null;
 		public IEnumerable<IPoint2D> _PathDetail = null;
 		public IRectangle2D _PathRegion = null;

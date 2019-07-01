@@ -20,7 +20,7 @@ namespace TrafficControlTest.Implement
 		}
 		public string ToString(string TimeFormat)
 		{
-			return $"{mStart.ToString(TimeFormat)} ~ {mEnd.ToString(TimeFormat)}";
+			return $"{mStart.ToString(TimeFormat)} ({mStart.Subtract(DateTime.Now).TotalSeconds.ToString("F2")} sec) ~ {mEnd.ToString(TimeFormat)} ({mEnd.Subtract(DateTime.Now).TotalSeconds.ToString("F2")} sec)";
 		}
 	}
 }
