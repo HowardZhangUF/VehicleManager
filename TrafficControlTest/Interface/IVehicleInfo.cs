@@ -44,6 +44,12 @@ namespace TrafficControlTest.Interface
 		int mBufferFrameRadius { get; }
 		/// <summary>車框半徑。車框 = 車身安全框 + Buffer 框</summary>
 		int mTotalFrameRadius { get; }
+		/// <summary>是否可被干預</summary>
+		bool mIsInterveneAvailable { get; }
+		/// <summary>是否被干預中</summary>
+		bool mIsIntervene { get; }
+		/// <summary>目前被干預中的指令。沒有被干預時，此值會為空字串</summary>
+		string mInterveneCommand { get; }
 		/// <summary>路徑</summary>
 		IEnumerable<IPoint2D> mPath { get; set; }
 		/// <summary>路徑(詳細)</summary>
@@ -60,7 +66,7 @@ namespace TrafficControlTest.Interface
 		int mPathIconId { get; set; }
 
 		void Set(string Name);
-		void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage);
+		void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervene, string InterveneCommand);
 		void Update(IEnumerable<IPoint2D> Path);
 		void Update(string IpPort);
 		string ToString();

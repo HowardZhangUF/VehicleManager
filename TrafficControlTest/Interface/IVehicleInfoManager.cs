@@ -28,7 +28,7 @@ namespace TrafficControlTest.Interface
 		/// <summary>移除 Vehicle 資訊</summary>
 		void Remove(string Name);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
-		void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage);
+		void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervene, string InterveneCommand);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void Update(string Name, IEnumerable<IPoint2D> Path);
 		/// <summary>更新指定 Vehicle 的資訊</summary>

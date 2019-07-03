@@ -127,6 +127,51 @@ namespace TrafficControlTest.Implement
 				}
 			}
 		}
+		public bool mIsInterveneAvailable
+		{
+			get
+			{
+				return _IsInterveneAvailable;
+			}
+			private set
+			{
+				if (_IsInterveneAvailable != value)
+				{
+					_IsInterveneAvailable = value;
+					mLastUpdated = DateTime.Now;
+				}
+			}
+		}
+		public bool mIsIntervene
+		{
+			get
+			{
+				return _IsIntervene;
+			}
+			private set
+			{
+				if (_IsIntervene != value)
+				{
+					_IsIntervene = value;
+					mLastUpdated = DateTime.Now;
+				}
+			}
+		}
+		public string mInterveneCommand
+		{
+			get
+			{
+				return _InterveneCommand;
+			}
+			private set
+			{
+				if (!string.IsNullOrEmpty(value) && _InterveneCommand != value)
+				{
+					_InterveneCommand = value;
+					mLastUpdated = DateTime.Now;
+				}
+			}
+		}
 		public bool mPathBlocked
 		{
 			get
@@ -259,21 +304,24 @@ namespace TrafficControlTest.Implement
 		public int mVehicleIconId { get; set; }
 		public int mPathIconId { get; set; }
 
-		public string _Name = string.Empty;
-		public string _State = string.Empty;
-		public IPoint2D _Position = null;
-		public double _Toward = 0.0f;
-		public string _Target = string.Empty;
-		public double _Velocity = 0.0f;
-		public double _MapMatch = 0.0f;
-		public double _Battery = 0.0f;
-		public bool _PathBlocked = false;
-		public string _AlarmMessage = string.Empty;
-		public int _SafetyFrameRadius = 500;
-		public IEnumerable<IPoint2D> _Path = null;
-		public IEnumerable<IPoint2D> _PathDetail = null;
-		public IRectangle2D _PathRegion = null;
-		public string _IpPort = string.Empty;
+		private string _Name = string.Empty;
+		private string _State = string.Empty;
+		private IPoint2D _Position = null;
+		private double _Toward = 0.0f;
+		private string _Target = string.Empty;
+		private double _Velocity = 0.0f;
+		private double _MapMatch = 0.0f;
+		private double _Battery = 0.0f;
+		private bool _PathBlocked = false;
+		private string _AlarmMessage = string.Empty;
+		private int _SafetyFrameRadius = 500;
+		private bool _IsInterveneAvailable = false;
+		private bool _IsIntervene = false;
+		private string _InterveneCommand = string.Empty;
+		private IEnumerable<IPoint2D> _Path = null;
+		private IEnumerable<IPoint2D> _PathDetail = null;
+		private IRectangle2D _PathRegion = null;
+		private string _IpPort = string.Empty;
 
 		private DateTime mStateStartTimestamp = DateTime.Now;
 		private List<double> mLastVelocity = new List<double>();
@@ -288,7 +336,7 @@ namespace TrafficControlTest.Implement
 		{
 			mName = Name;
 		}
-		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage)
+		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervene, string InterveneCommand)
 		{
 			mState = State;
 			mPosition = Position;
@@ -297,6 +345,9 @@ namespace TrafficControlTest.Implement
 			mVelocity = Velocity;
 			mTarget = Target;
 			mAlarmMessage = AlarmMessage;
+			mIsInterveneAvailable = IsInterveneAvailable;
+			mIsIntervene = IsIntervene;
+			mInterveneCommand = InterveneCommand;
 			RaiseEvent_StateUpdated();
 		}
 		public void Update(IEnumerable<IPoint2D> Path)
@@ -319,7 +370,10 @@ namespace TrafficControlTest.Implement
 			result += $"Velocity: {mVelocity.ToString("F2")}, ";
 			result += $"AverageVelocity: {(!double.IsNaN(mAverageVelocity) ? mAverageVelocity.ToString("F2") : string.Empty)}, ";
 			result += $"Battery: {mBattery.ToString("F2")}, ";
-			result += $"Path: {((mPath != null && mPath.Count() > 0) ? Library.Library.ConvertToString(mPath) : string.Empty)}";
+			result += $"Path: {((mPath != null && mPath.Count() > 0) ? Library.Library.ConvertToString(mPath) : string.Empty)}, ";
+			result += $"IsInterveneAvailable: {mIsInterveneAvailable.ToString()}, ";
+			result += $"IsIntervene: {mIsIntervene.ToString()}, ";
+			result += $"InterveneCommand: {mInterveneCommand}.";
 			return result;
 		}
 
