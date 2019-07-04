@@ -142,7 +142,7 @@ namespace TrafficControlTest.Implement
 				}
 			}
 		}
-		public bool mIsIntervene
+		public bool mIsIntervening
 		{
 			get
 			{
@@ -336,7 +336,7 @@ namespace TrafficControlTest.Implement
 		{
 			mName = Name;
 		}
-		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervene, string InterveneCommand)
+		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervening, string InterveneCommand)
 		{
 			mState = State;
 			mPosition = Position;
@@ -346,7 +346,7 @@ namespace TrafficControlTest.Implement
 			mTarget = Target;
 			mAlarmMessage = AlarmMessage;
 			mIsInterveneAvailable = IsInterveneAvailable;
-			mIsIntervene = IsIntervene;
+			mIsIntervening = IsIntervening;
 			mInterveneCommand = InterveneCommand;
 			RaiseEvent_StateUpdated();
 		}
@@ -372,7 +372,7 @@ namespace TrafficControlTest.Implement
 			result += $"Battery: {mBattery.ToString("F2")}, ";
 			result += $"Path: {((mPath != null && mPath.Count() > 0) ? Library.Library.ConvertToString(mPath) : string.Empty)}, ";
 			result += $"IsInterveneAvailable: {mIsInterveneAvailable.ToString()}, ";
-			result += $"IsIntervene: {mIsIntervene.ToString()}, ";
+			result += $"IsIntervening: {mIsIntervening.ToString()}, ";
 			result += $"InterveneCommand: {mInterveneCommand}.";
 			return result;
 		}

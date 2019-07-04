@@ -47,7 +47,7 @@ namespace TrafficControlTest.Interface
 		/// <summary>是否可被干預</summary>
 		bool mIsInterveneAvailable { get; }
 		/// <summary>是否被干預中</summary>
-		bool mIsIntervene { get; }
+		bool mIsIntervening { get; }
 		/// <summary>目前被干預中的指令。沒有被干預時，此值會為空字串</summary>
 		string mInterveneCommand { get; }
 		/// <summary>路徑</summary>
@@ -66,7 +66,7 @@ namespace TrafficControlTest.Interface
 		int mPathIconId { get; set; }
 
 		void Set(string Name);
-		void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervene, string InterveneCommand);
+		void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervening, string InterveneCommand);
 		void Update(IEnumerable<IPoint2D> Path);
 		void Update(string IpPort);
 		string ToString();

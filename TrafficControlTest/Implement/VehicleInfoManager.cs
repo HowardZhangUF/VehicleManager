@@ -94,11 +94,11 @@ namespace TrafficControlTest.Implement
 				RaiseEvent_VehicleRemoved(Name, tmpData);
 			}
 		}
-		public void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervene, string InterveneCommand)
+		public void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervening, string InterveneCommand)
 		{
 			if (IsExist(Name))
 			{
-				mVehicleInfos[Name].Update(State, Position, Toward, Battery, Velocity, Target, AlarmMessage, IsInterveneAvailable, IsIntervene, InterveneCommand);
+				mVehicleInfos[Name].Update(State, Position, Toward, Battery, Velocity, Target, AlarmMessage, IsInterveneAvailable, IsIntervening, InterveneCommand);
 			}
 		}
 		public void Update(string Name, IEnumerable<IPoint2D> Path)
