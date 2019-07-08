@@ -51,10 +51,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\VehicleSimulatorProcess.cs" />
     <Compile Include="DebugMessage.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="Implement\VehicleSimulatorInfo.cs" />
+    <Compile Include="Implement\VehicleStateReporter.cs" />
+    <Compile Include="Interface\IConsoleMessageHandler.cs" />
+    <Compile Include="Interface\IVehicleSimulatorInfo.cs" />
+    <Compile Include="Interface\IVehicleStateReporter.cs" />
     <Compile Include="IntMath.cs" />
+    <Compile Include="Library\Library.cs" />
     <Compile Include="MapSimulator.cs" />
+    <Compile Include="UserInterface\VehicleSimulatorGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\VehicleSimulatorGUI.Designer.cs">
+      <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="VehicleSimulator.cs" />
     <Compile Include="VehicleSimulatorGUI.cs">
       <SubType>Form</SubType>
@@ -76,6 +89,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UserInterface\VehicleSimulatorGUI.resx">
+      <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VehicleSimulatorGUI.resx">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,7 +138,12 @@
       <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
       <Name>Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TrafficControlTest\TrafficControlTest.csproj">
+      <Project>{46BE9935-F474-4C10-8E8C-7341AAC51640}</Project>
+      <Name>TrafficControlTest</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
