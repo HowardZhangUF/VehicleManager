@@ -18,7 +18,7 @@ namespace VehicleSimulator.Interface
 		/// <summary>當前移動目標點</summary>
 		string mTarget { get; set; }
 		/// <summary>當前移動目標 Buffer 點</summary>
-		string mBufferTarget { get; set; }
+		IPoint2D mBufferTarget { get; set; }
 		/// <summary>平移速度(mm/s)</summary>
 		double mTranslationVelocity { get; set; }
 		/// <summary>旋轉速度(mm/s)</summary>

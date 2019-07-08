@@ -89,7 +89,7 @@ namespace VehicleSimulator.Implement
 				}
 			}
 		}
-		public string mBufferTarget
+		public IPoint2D mBufferTarget
 		{
 			get
 			{
@@ -274,7 +274,7 @@ namespace VehicleSimulator.Implement
 		private IPoint2D _Position = null;
 		private double _Toward = 0.0f;
 		private string _Target = string.Empty;
-		private string _BufferTarget = string.Empty;
+		private IPoint2D _BufferTarget = null;
 		private double _TranslationVelocity = 700.0f;
 		private double _RotationVeloctiy = 700.0f;
 		private double _MapMatch = 0.0f;
@@ -370,8 +370,9 @@ namespace VehicleSimulator.Implement
 		{
 			if (_Path != null && _Path.Count() > 0)
 			{
-				IPoint2D targetPoint = _Path.First();
+				IPoint2D targetPoint = mBufferTarget != null ? mBufferTarget : _Path.First();
 				double targetToward = CalculateVectorAngleInDegree(_Position.mX, _Position.mY, targetPoint.mX, targetPoint.mY);
+
 				GetNextMove(_Position.mX, _Position.mY, mToward, targetPoint.mX, targetPoint.mY, targetToward, _TranslationVelocity, _RotationVeloctiy, Time, out int NextX, out int NextY, out double NextToward);
 
 				mPosition = GenerateIPoint2D(NextX, NextY);
@@ -379,9 +380,16 @@ namespace VehicleSimulator.Implement
 
 				if (IsApproximatelyEqual(_Position.mX, _Position.mY, _Toward, targetPoint.mX, targetPoint.mY, targetToward))
 				{
-					List<IPoint2D> tmp = _Path.ToList();
-					tmp.RemoveAt(0);
-					_Path = tmp;
+					if (mBufferTarget != null)
+					{
+						mBufferTarget = null;
+					}
+					else
+					{
+						List<IPoint2D> tmp = _Path.ToList();
+						tmp.RemoveAt(0);
+						_Path = tmp;
+					}
 				}
 			}
 		}
