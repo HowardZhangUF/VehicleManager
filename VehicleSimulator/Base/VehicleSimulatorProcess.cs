@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
@@ -36,6 +34,14 @@ namespace VehicleSimulator.Base
 		~VehicleSimulatorProcess()
 		{
 			Destructor();
+		}
+		public void VehicleSimulatorInfoStartMove(IEnumerable<IPoint2D> Path)
+		{
+			mVehicleSimulatorInfo.StartMove(Path);
+		}
+		public void VehicleSimulatorInfoStopMove()
+		{
+			mVehicleSimulatorInfo.StopMove();
 		}
 		public void CommunicatorClientStartConnect(string Ip, int Port)
 		{

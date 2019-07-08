@@ -5,8 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TrafficControlTest.Interface;
 
 namespace VehicleSimulator.UserInterface
 {
@@ -59,6 +61,20 @@ namespace VehicleSimulator.UserInterface
 			mCore = new Base.VehicleSimulatorProcess();
 			mCore.CommunicatorClientStartConnect("127.0.0.1", 8000);
 			//SubscribeEvent_VehicleSimulatorProcess(mCore);
+
+			List<IPoint2D> tmp = new List<IPoint2D>();
+			tmp.Add(TrafficControlTest.Library.Library.GenerateIPoint2D(5000, 5000));
+			tmp.Add(TrafficControlTest.Library.Library.GenerateIPoint2D(-5000, 2123));
+			mCore.VehicleSimulatorInfoStartMove(tmp);
+
+			Task.Run(() => {
+				Thread.Sleep(5000);
+				List<IPoint2D> tmp2 = new List<IPoint2D>();
+				tmp2.Add(TrafficControlTest.Library.Library.GenerateIPoint2D(9000, 1000));
+				tmp2.Add(TrafficControlTest.Library.Library.GenerateIPoint2D(-5000, 2123));
+				tmp2.Add(TrafficControlTest.Library.Library.GenerateIPoint2D(-9974, -9231));
+				mCore.VehicleSimulatorInfoStartMove(tmp2);
+			});
 		}
 		private void Destructor_VehicleManagerProcess()
 		{
