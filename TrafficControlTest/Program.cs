@@ -16,7 +16,7 @@ namespace TrafficControlTest
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new TrafficControlTestGUI());
+			Application.Run(new UserInterface.VehicleManagerGUI());
 		}
 	}
 }
