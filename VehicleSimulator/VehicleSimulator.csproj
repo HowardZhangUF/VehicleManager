@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\VehicleSimulatorProcess.cs" />
+    <Compile Include="Process\VehicleSimulatorProcess.cs" />
     <Compile Include="DebugMessage.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Implement\VehicleSimulatorInfo.cs" />
