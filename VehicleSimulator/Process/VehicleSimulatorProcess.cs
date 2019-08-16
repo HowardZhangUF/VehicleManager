@@ -13,14 +13,14 @@ namespace VehicleSimulator.Base
 {
 	public class VehicleSimulatorProcess
 	{
-		event EventHandlerIVehicleSimulator VehicleSimulatorInfoStateUpdated;
-		event EventHandlerDateTime CommunicatorClientSystemStarted;
-		event EventHandlerDateTime CommunicatorClientSystemStopped;
-		event EventHandlerRemoteConnectState CommunicatorClientConnectStateChanged;
-		event EventHandlerSentSerializableData CommunicatorClientSentSerializableData;
-		event EventHandlerReceivedSerializableData CommunicatorClientReceivedSerializableData;
-		event EventHandlerDateTime VehicleStateReporterSystemStarted;
-		event EventHandlerDateTime VehicleStateReporterSystemStopped;
+		public event EventHandlerIVehicleSimulator VehicleSimulatorInfoStateUpdated;
+		public event EventHandlerDateTime CommunicatorClientSystemStarted;
+		public event EventHandlerDateTime CommunicatorClientSystemStopped;
+		public event EventHandlerRemoteConnectState CommunicatorClientConnectStateChanged;
+		public event EventHandlerSentSerializableData CommunicatorClientSentSerializableData;
+		public event EventHandlerReceivedSerializableData CommunicatorClientReceivedSerializableData;
+		public event EventHandlerDateTime VehicleStateReporterSystemStarted;
+		public event EventHandlerDateTime VehicleStateReporterSystemStopped;
 
 		private IVehicleSimulatorInfo mVehicleSimulatorInfo = null;
 		private ICommunicatorClient mCommunicatorClient = null;
