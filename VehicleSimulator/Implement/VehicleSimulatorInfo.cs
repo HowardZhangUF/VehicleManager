@@ -327,6 +327,12 @@ namespace VehicleSimulator.Implement
 				mState = "Running";
 			}
 		}
+		public override string ToString()
+		{
+			string result = string.Empty;
+			result = $"{mName} ({mPosition.mX}, {mPosition.mY}, {mToward.ToString("F2")}) {mState}";
+			return result;
+		}
 
 		private void InitializeThread()
 		{
