@@ -327,6 +327,28 @@ namespace VehicleSimulator.Implement
 				mState = "Running";
 			}
 		}
+		public void SetInterveneCommand(string Command, params string[] Paras)
+		{
+			if (mIsInterveneAvailable)
+			{
+				if (Command == "Insert" && Paras != null && Paras.Length == 2)
+				{
+					SetInterveneCommand_Insert(int.Parse(Paras[0]), int.Parse(Paras[1]));
+				}
+				else if (Command == "CancelInsert" && Paras == null)
+				{
+					SetInterveneCommand_CancelInsert();
+				}
+				else if (Command == "Pause" && Paras == null)
+				{
+					SetInterveneCommand_Pause();
+				}
+				else if (Command == "Resume" && Paras == null)
+				{
+					SetInterveneCommand_Resume();
+				}
+			}
+		}
 		public override string ToString()
 		{
 			string result = string.Empty;
@@ -351,6 +373,30 @@ namespace VehicleSimulator.Implement
 				}
 				mThdMoveAlongPath = null;
 			}
+		}
+		private void SetInterveneCommand_Insert(int x, int y)
+		{
+			mBufferTarget = GenerateIPoint2D(x, y);
+			mIsIntervening = true;
+			mInterveneCommand = $"Insert:({mBufferTarget.mX},{mBufferTarget.mY})";
+		}
+		private void SetInterveneCommand_CancelInsert()
+		{
+			mBufferTarget = null;
+			mIsIntervening = false;
+			mInterveneCommand = string.Empty;
+		}
+		private void SetInterveneCommand_Pause()
+		{
+			PauseMove();
+			mIsIntervening = true;
+			mInterveneCommand = "Pause";
+		}
+		private void SetInterveneCommand_Resume()
+		{
+			ResumeMove();
+			mIsIntervening = false;
+			mInterveneCommand = string.Empty;
 		}
 		protected virtual void RaiseEvent_StateUpdated(bool Sync = true)
 		{
@@ -396,6 +442,7 @@ namespace VehicleSimulator.Implement
 					if (mBufferTarget != null)
 					{
 						mBufferTarget = null;
+						if (mIsIntervening) SetInterveneCommand_CancelInsert();
 					}
 					else
 					{
