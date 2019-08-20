@@ -51,6 +51,10 @@ namespace VehicleSimulator.Base
 		{
 			mVehicleSimulatorInfo.ResumeMove();
 		}
+		public void VehicleSimulatorInfoSetInterveneCommand(string Command, params string[] Paras)
+		{
+			mVehicleSimulatorInfo.SetInterveneCommand(Command, Paras);
+		}
 		public void CommunicatorClientStartConnect(string Ip, int Port)
 		{
 			if (mCommunicatorClient.mConnectState != ConnectState.Connected)

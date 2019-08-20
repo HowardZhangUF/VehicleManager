@@ -70,6 +70,21 @@ namespace VehicleSimulator.UserInterface
 			}
 			return result;
 		}
+		private bool GetCoordinate(string Src, out string X, out string Y)
+		{
+			bool result = false;
+			X = string.Empty;
+			Y = string.Empty;
+
+			string[] point = Src.Split(new string[] { ",", "(", ")" }, StringSplitOptions.RemoveEmptyEntries);
+			if (point.Length == 2)
+			{
+				X = point[0];
+				Y = point[1];
+				result = true;
+			}
+			return result;
+		}
 		private void VehicleSimulatorGUI_Load(object sender, EventArgs e)
 		{
 			try
@@ -136,6 +151,10 @@ namespace VehicleSimulator.UserInterface
 		public void VehicleSimulatorResumeMove()
 		{
 			mCore.VehicleSimulatorInfoResumeMove();
+		}
+		public void VehicleSimulatorIntervene(string Command, params string[] Paras)
+		{
+			mCore.VehicleSimulatorInfoSetInterveneCommand(Command, Paras);
 		}
 
 		private void Constructor_VehicleManagerProcess()
@@ -238,6 +257,25 @@ namespace VehicleSimulator.UserInterface
 		private void btnVehicleSimulatorResumeMove_Click(object sender, EventArgs e)
 		{
 			VehicleSimulatorResumeMove();
+		}
+		private void btnVehicleSimulatorInterveneInsert_Click(object sender, EventArgs e)
+		{
+			if (GetCoordinate(txtInterveneParameter.Text, out string X, out string Y))
+			{
+				VehicleSimulatorIntervene("Insert", X, Y);
+			}
+		}
+		private void btnVehicleSimulatorInterveneCancelInsert_Click(object sender, EventArgs e)
+		{
+			VehicleSimulatorIntervene("CancelInsert");
+		}
+		private void btnVehicleSimulatorIntervenePause_Click(object sender, EventArgs e)
+		{
+			VehicleSimulatorIntervene("Pause");
+		}
+		private void btnVehicleSimulatorInterveneResume_Click(object sender, EventArgs e)
+		{
+			VehicleSimulatorIntervene("Resume");
 		}
 	}
 }
