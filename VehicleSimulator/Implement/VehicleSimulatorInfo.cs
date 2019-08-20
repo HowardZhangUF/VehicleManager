@@ -307,7 +307,7 @@ namespace VehicleSimulator.Implement
 		}
 		public void StopMove()
 		{
-			if (mThdMoveAlongPath != null || mThdMoveAlongPath.IsAlive) DestroyThread();
+			if (mThdMoveAlongPath != null) DestroyThread();
 			List<IPoint2D> tmp = _Path.ToList();
 			tmp.Clear();
 			_Path = tmp;
@@ -409,7 +409,7 @@ namespace VehicleSimulator.Implement
 			{
 				RotateToTarget(CurrentToward, TargetToward, RotationVelocity, Time, out NextToward);
 			}
-			else if (CurrentX != TargetX && CurrentY != TargetY)
+			else if (CurrentX != TargetX || CurrentY != TargetY)
 			{
 				TranslateToTarget(CurrentX, CurrentY, TargetX, TargetY, TranslationVelocity, Time, out NextX, out NextY);
 			}
@@ -428,7 +428,8 @@ namespace VehicleSimulator.Implement
 			// 向右向上移動
 			if (diffX >= 0 && diffY >= 0)
 			{
-				if (CurrentX + translateX > TargetX || CurrentY + translateY > TargetY)
+				// 若當前座標與目標座標的距離小於 TranslationVelocity * Time 的話，則將下一個座標設定成目標座標，其餘，下一個座標等於當前座標 + TranslateX / + TranslateY
+				if (((TargetX - CurrentX) * (TargetX - CurrentX) + (TargetY - CurrentY) * (TargetY - CurrentY)) < (TranslationVelocity * Time) * (TranslationVelocity * Time))
 				{
 					X = TargetX;
 					Y = TargetY;
@@ -442,7 +443,7 @@ namespace VehicleSimulator.Implement
 			// 向左向上移動
 			else if (diffX < 0 && diffY >= 0)
 			{
-				if (CurrentX - translateX < TargetX || CurrentY + translateY > TargetY)
+				if (((TargetX - CurrentX) * (TargetX - CurrentX) + (TargetY - CurrentY) * (TargetY - CurrentY)) < (TranslationVelocity * Time) * (TranslationVelocity * Time))
 				{
 					X = TargetX;
 					Y = TargetY;
@@ -456,7 +457,7 @@ namespace VehicleSimulator.Implement
 			// 向左向下移動
 			else if (diffX < 0 && diffY < 0)
 			{
-				if (CurrentX - translateX < TargetX || CurrentY - translateY < TargetY)
+				if (((TargetX - CurrentX) * (TargetX - CurrentX) + (TargetY - CurrentY) * (TargetY - CurrentY)) < (TranslationVelocity * Time) * (TranslationVelocity * Time))
 				{
 					X = TargetX;
 					Y = TargetY;
@@ -470,7 +471,7 @@ namespace VehicleSimulator.Implement
 			// 向右向下移動
 			else if (diffX >= 0 && diffY < 0)
 			{
-				if (CurrentX + translateX > TargetX || CurrentY - translateY < TargetY)
+				if (((TargetX - CurrentX) * (TargetX - CurrentX) + (TargetY - CurrentY) * (TargetY - CurrentY)) < (TranslationVelocity * Time) * (TranslationVelocity * Time))
 				{
 					X = TargetX;
 					Y = TargetY;
@@ -517,10 +518,6 @@ namespace VehicleSimulator.Implement
 		private static bool IsApproximatelyEqual(double Num1, double Num2)
 		{
 			return ((Num1 + 0.1 > Num2) && (Num1 - 0.1 < Num2));
-		}
-		private static bool IsApproximatelyEqual(int X1, int Y1, int X2, int Y2)
-		{
-			return X1 == X2 && Y1 == Y2;
 		}
 		private static bool IsApproximatelyEqual(int X1, int Y1, double Toward1, int X2, int Y2, double Toward2)
 		{
