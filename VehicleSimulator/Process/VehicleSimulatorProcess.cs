@@ -43,6 +43,14 @@ namespace VehicleSimulator.Base
 		{
 			mVehicleSimulatorInfo.StopMove();
 		}
+		public void VehicleSimulatorInfoPauseMove()
+		{
+			mVehicleSimulatorInfo.PauseMove();
+		}
+		public void VehicleSimulatorInfoResumeMove()
+		{
+			mVehicleSimulatorInfo.ResumeMove();
+		}
 		public void CommunicatorClientStartConnect(string Ip, int Port)
 		{
 			if (mCommunicatorClient.mConnectState != ConnectState.Connected)

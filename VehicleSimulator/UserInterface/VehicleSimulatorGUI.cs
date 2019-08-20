@@ -223,5 +223,13 @@ namespace VehicleSimulator.UserInterface
 		{
 			mCore.VehicleSimulatorInfoStopMove();
 		}
+		private void btnVehicleSimulatorPauseMove_Click(object sender, EventArgs e)
+		{
+			mCore.VehicleSimulatorInfoPauseMove();
+		}
+		private void btnVehicleSimulatorResumeMove_Click(object sender, EventArgs e)
+		{
+			mCore.VehicleSimulatorInfoResumeMove();
+		}
 	}
 }

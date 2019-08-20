@@ -38,12 +38,14 @@
 			this.statusLabelHostConnectState = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.menuHostConnection = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuHostIpPort = new System.Windows.Forms.ToolStripTextBox();
 			this.menuHostConnect = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuHostIpPort = new System.Windows.Forms.ToolStripTextBox();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.btnVehicleSimulatorStartMove = new System.Windows.Forms.Button();
 			this.txtVehicleSimulatorPath = new System.Windows.Forms.TextBox();
 			this.btnVehicleSimulatorStopMove = new System.Windows.Forms.Button();
+			this.btnVehicleSimulatorPauseMove = new System.Windows.Forms.Button();
+			this.btnVehicleSimulatorResumeMove = new System.Windows.Forms.Button();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -131,33 +133,37 @@
 			this.menuHostConnection.Size = new System.Drawing.Size(136, 23);
 			this.menuHostConnection.Text = "Host Connection";
 			// 
+			// menuHostConnect
+			// 
+			this.menuHostConnect.Name = "menuHostConnect";
+			this.menuHostConnect.Size = new System.Drawing.Size(166, 26);
+			this.menuHostConnect.Text = "Connect";
+			this.menuHostConnect.Click += new System.EventHandler(this.menuHostConnect_Click);
+			// 
 			// menuHostIpPort
 			// 
 			this.menuHostIpPort.Name = "menuHostIpPort";
 			this.menuHostIpPort.Size = new System.Drawing.Size(100, 27);
 			this.menuHostIpPort.Text = "127.0.0.1:8000";
 			// 
-			// menuHostConnect
-			// 
-			this.menuHostConnect.Name = "menuHostConnect";
-			this.menuHostConnect.Size = new System.Drawing.Size(216, 26);
-			this.menuHostConnect.Text = "Connect";
-			this.menuHostConnect.Click += new System.EventHandler(this.menuHostConnect_Click);
-			// 
 			// tableLayoutPanel1
 			// 
-			this.tableLayoutPanel1.ColumnCount = 3;
+			this.tableLayoutPanel1.ColumnCount = 5;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleSimulatorStartMove, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.txtVehicleSimulatorPath, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleSimulatorStopMove, 1, 0);
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(407, 84);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleSimulatorPauseMove, 3, 0);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleSimulatorResumeMove, 4, 0);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(30, 50);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(342, 123);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(601, 123);
 			this.tableLayoutPanel1.TabIndex = 4;
 			// 
 			// btnVehicleSimulatorStartMove
@@ -165,7 +171,7 @@
 			this.btnVehicleSimulatorStartMove.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorStartMove.Location = new System.Drawing.Point(203, 3);
 			this.btnVehicleSimulatorStartMove.Name = "btnVehicleSimulatorStartMove";
-			this.btnVehicleSimulatorStartMove.Size = new System.Drawing.Size(65, 117);
+			this.btnVehicleSimulatorStartMove.Size = new System.Drawing.Size(94, 117);
 			this.btnVehicleSimulatorStartMove.TabIndex = 2;
 			this.btnVehicleSimulatorStartMove.Text = "Move";
 			this.btnVehicleSimulatorStartMove.UseVisualStyleBackColor = true;
@@ -183,13 +189,35 @@
 			// btnVehicleSimulatorStopMove
 			// 
 			this.btnVehicleSimulatorStopMove.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnVehicleSimulatorStopMove.Location = new System.Drawing.Point(274, 3);
+			this.btnVehicleSimulatorStopMove.Location = new System.Drawing.Point(303, 3);
 			this.btnVehicleSimulatorStopMove.Name = "btnVehicleSimulatorStopMove";
-			this.btnVehicleSimulatorStopMove.Size = new System.Drawing.Size(65, 117);
+			this.btnVehicleSimulatorStopMove.Size = new System.Drawing.Size(94, 117);
 			this.btnVehicleSimulatorStopMove.TabIndex = 1;
 			this.btnVehicleSimulatorStopMove.Text = "Stop";
 			this.btnVehicleSimulatorStopMove.UseVisualStyleBackColor = true;
 			this.btnVehicleSimulatorStopMove.Click += new System.EventHandler(this.btnVehicleSimulatorStopMove_Click);
+			// 
+			// btnVehicleSimulatorPauseMove
+			// 
+			this.btnVehicleSimulatorPauseMove.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnVehicleSimulatorPauseMove.Location = new System.Drawing.Point(403, 3);
+			this.btnVehicleSimulatorPauseMove.Name = "btnVehicleSimulatorPauseMove";
+			this.btnVehicleSimulatorPauseMove.Size = new System.Drawing.Size(94, 117);
+			this.btnVehicleSimulatorPauseMove.TabIndex = 3;
+			this.btnVehicleSimulatorPauseMove.Text = "Pause";
+			this.btnVehicleSimulatorPauseMove.UseVisualStyleBackColor = true;
+			this.btnVehicleSimulatorPauseMove.Click += new System.EventHandler(this.btnVehicleSimulatorPauseMove_Click);
+			// 
+			// btnVehicleSimulatorResumeMove
+			// 
+			this.btnVehicleSimulatorResumeMove.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnVehicleSimulatorResumeMove.Location = new System.Drawing.Point(503, 3);
+			this.btnVehicleSimulatorResumeMove.Name = "btnVehicleSimulatorResumeMove";
+			this.btnVehicleSimulatorResumeMove.Size = new System.Drawing.Size(95, 117);
+			this.btnVehicleSimulatorResumeMove.TabIndex = 4;
+			this.btnVehicleSimulatorResumeMove.Text = "Resume";
+			this.btnVehicleSimulatorResumeMove.UseVisualStyleBackColor = true;
+			this.btnVehicleSimulatorResumeMove.Click += new System.EventHandler(this.btnVehicleSimulatorResumeMove_Click);
 			// 
 			// VehicleSimulatorGUI
 			// 
@@ -231,5 +259,7 @@
 		private System.Windows.Forms.TextBox txtVehicleSimulatorPath;
 		private System.Windows.Forms.Button btnVehicleSimulatorStopMove;
 		private System.Windows.Forms.Button btnVehicleSimulatorStartMove;
+		private System.Windows.Forms.Button btnVehicleSimulatorPauseMove;
+		private System.Windows.Forms.Button btnVehicleSimulatorResumeMove;
 	}
 }

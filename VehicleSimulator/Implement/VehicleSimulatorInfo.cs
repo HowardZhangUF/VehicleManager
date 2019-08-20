@@ -276,7 +276,7 @@ namespace VehicleSimulator.Implement
 		private string _Target = string.Empty;
 		private IPoint2D _BufferTarget = null;
 		private double _TranslationVelocity = 700.0f;
-		private double _RotationVeloctiy = 700.0f;
+		private double _RotationVeloctiy = 30.0f;
 		private double _MapMatch = 0.0f;
 		private double _Battery = 73.1f;
 		private bool _PathBlocked = false;
@@ -307,6 +307,7 @@ namespace VehicleSimulator.Implement
 		}
 		public void StopMove()
 		{
+			if (mThdMoveAlongPath != null || mThdMoveAlongPath.IsAlive) DestroyThread();
 			List<IPoint2D> tmp = _Path.ToList();
 			tmp.Clear();
 			_Path = tmp;
@@ -314,11 +315,17 @@ namespace VehicleSimulator.Implement
 		}
 		public void PauseMove()
 		{
-			throw new NotImplementedException();
+			if (mState == "Running")
+			{
+				mState = "Pausing";
+			}
 		}
 		public void ResumeMove()
 		{
-			throw new NotImplementedException();
+			if (mState == "Pausing")
+			{
+				mState = "Running";
+			}
 		}
 
 		private void InitializeThread()
@@ -353,7 +360,7 @@ namespace VehicleSimulator.Implement
 		private void Task_MoveAlongPath(bool[] ExitFlag)
 		{
 			int interval = 200;
-			while (!ExitFlag[0] && mState == "Running")
+			while (!ExitFlag[0] && (mState == "Running" || mState == "Pausing"))
 			{
 				Subtask_Move((double)interval / 1000);
 
@@ -368,7 +375,7 @@ namespace VehicleSimulator.Implement
 		}
 		private void Subtask_Move(double Time)
 		{
-			if (_Path != null && _Path.Count() > 0)
+			if (_Path != null && _Path.Count() > 0 && mState == "Running")
 			{
 				IPoint2D targetPoint = mBufferTarget != null ? mBufferTarget : _Path.First();
 				double targetToward = CalculateVectorAngleInDegree(_Position.mX, _Position.mY, targetPoint.mX, targetPoint.mY);
