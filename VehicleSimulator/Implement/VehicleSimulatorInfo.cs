@@ -335,15 +335,15 @@ namespace VehicleSimulator.Implement
 				{
 					SetInterveneCommand_Insert(int.Parse(Paras[0]), int.Parse(Paras[1]));
 				}
-				else if (Command == "CancelInsert" && Paras == null)
+				else if (Command == "CancelInsert" && (Paras == null || Paras.Length == 0))
 				{
 					SetInterveneCommand_CancelInsert();
 				}
-				else if (Command == "Pause" && Paras == null)
+				else if (Command == "Pause" && (Paras == null || Paras.Length == 0))
 				{
 					SetInterveneCommand_Pause();
 				}
-				else if (Command == "Resume" && Paras == null)
+				else if (Command == "Resume" && (Paras == null || Paras.Length == 0))
 				{
 					SetInterveneCommand_Resume();
 				}
