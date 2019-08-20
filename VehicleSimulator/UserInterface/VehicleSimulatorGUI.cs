@@ -129,6 +129,14 @@ namespace VehicleSimulator.UserInterface
 		{
 			mCore.VehicleSimulatorInfoStopMove();
 		}
+		public void VehicleSimulatorPauseMove()
+		{
+			mCore.VehicleSimulatorInfoPauseMove();
+		}
+		public void VehicleSimulatorResumeMove()
+		{
+			mCore.VehicleSimulatorInfoResumeMove();
+		}
 
 		private void Constructor_VehicleManagerProcess()
 		{
@@ -216,20 +224,20 @@ namespace VehicleSimulator.UserInterface
 		{
 			if (GetPath(txtVehicleSimulatorPath.Text, out IEnumerable<IPoint2D> Path))
 			{
-				mCore.VehicleSimulatorInfoStartMove(Path);
+				VehicleSimulatorStartMove(Path);
 			}
 		}
 		private void btnVehicleSimulatorStopMove_Click(object sender, EventArgs e)
 		{
-			mCore.VehicleSimulatorInfoStopMove();
+			VehicleSimulatorStopMove();
 		}
 		private void btnVehicleSimulatorPauseMove_Click(object sender, EventArgs e)
 		{
-			mCore.VehicleSimulatorInfoPauseMove();
+			VehicleSimulatorPauseMove();
 		}
 		private void btnVehicleSimulatorResumeMove_Click(object sender, EventArgs e)
 		{
-			mCore.VehicleSimulatorInfoResumeMove();
+			VehicleSimulatorResumeMove();
 		}
 	}
 }
