@@ -205,6 +205,11 @@ namespace VehicleSimulator.Implement
 				result.Name = VehicleSimulatorInfo.mName;
 				result.PathX = VehicleSimulatorInfo.mPath.Select((o) => (double)o.mX).ToList();
 				result.PathY = VehicleSimulatorInfo.mPath.Select((o) => (double)o.mY).ToList();
+				if (VehicleSimulatorInfo.mBufferTarget != null)
+				{
+					result.PathX.Insert(0, VehicleSimulatorInfo.mBufferTarget.mX);
+					result.PathY.Insert(0, VehicleSimulatorInfo.mBufferTarget.mY);
+				}
 			}
 			return result;
 		}
