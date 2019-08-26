@@ -97,6 +97,10 @@ namespace VehicleSimulator.Base
 			UnsubscribeEvent_IVehicleStateReporter(mVehicleStateReporter);
 			mVehicleStateReporter = GenerateIVehicleStateReporter(mVehicleSimulatorInfo, mCommunicatorClient);
 			SubscribeEvent_IVehicleStateReporter(mVehicleStateReporter);
+
+			UnsubscribeEvent_IConsoleMessageHandler(mConsoleMessageHandler);
+			mConsoleMessageHandler = GenerateIConsoleMessageHandler(mVehicleSimulatorInfo, mCommunicatorClient);
+			SubscribeEvent_IConsoleMessageHandler(mConsoleMessageHandler);
 		}
 		private void Destructor()
 		{
@@ -159,6 +163,20 @@ namespace VehicleSimulator.Base
 			{
 				VehicleStateReporter.SystemStarted -= HandleEvent_VehicleStateReporterSystemStarted;
 				VehicleStateReporter.SystemStopped -= HandleEvent_VehicleStateReporterSystemStopped;
+			}
+		}
+		private void SubscribeEvent_IConsoleMessageHandler(IConsoleMessageHandler mConsoleMessageHandler)
+		{
+			if (mConsoleMessageHandler != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IConsoleMessageHandler(IConsoleMessageHandler mConsoleMessageHandler)
+		{
+			if (mConsoleMessageHandler != null)
+			{
+				// do nothing
 			}
 		}
 		private void HandleEvent_VehicleSimulatorInfoStateUpdated(DateTime OccurTime, string Name, IVehicleSimulatorInfo VehicleSimulatorInfo)

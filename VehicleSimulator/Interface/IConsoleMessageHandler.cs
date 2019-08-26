@@ -6,5 +6,6 @@ namespace VehicleSimulator.Interface
 	{
 		void Set(IVehicleSimulatorInfo VehicleSimulator);
 		void Set(ICommunicatorClient CommunicatorClient);
+		void Set(IVehicleSimulatorInfo VehicleSimulatorInfo, ICommunicatorClient CommunicatorClient);
 	}
 }

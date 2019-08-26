@@ -15,6 +15,10 @@ namespace VehicleSimulator.Library
 		{
 			return new VehicleStateReporter(VehicleSimulatorInfo, CommunicatorClient);
 		}
+		public static IConsoleMessageHandler GenerateIConsoleMessageHandler(IVehicleSimulatorInfo VehicleSimulatorInfo, ICommunicatorClient CommunicatorClient)
+		{
+			return new ConsoleMessageHandler(VehicleSimulatorInfo, CommunicatorClient);
+		}
 	}
 
 	public static class EventHandlerLibraryOfIVehicleSimulator
