@@ -52,6 +52,7 @@
 			this.btnVehicleSimulatorInterveneCancelInsert = new System.Windows.Forms.Button();
 			this.btnVehicleSimulatorIntervenePause = new System.Windows.Forms.Button();
 			this.btnVehicleSimulatorInterveneResume = new System.Windows.Forms.Button();
+			this.statusLabelLocation = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -99,6 +100,7 @@
 			this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabelFill,
+            this.statusLabelLocation,
             this.statusLabelHostConnectState});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 426);
 			this.statusStrip1.Name = "statusStrip1";
@@ -109,7 +111,7 @@
 			// statusLabelFill
 			// 
 			this.statusLabelFill.Name = "statusLabelFill";
-			this.statusLabelFill.Size = new System.Drawing.Size(744, 19);
+			this.statusLabelFill.Size = new System.Drawing.Size(689, 19);
 			this.statusLabelFill.Spring = true;
 			// 
 			// statusLabelHostConnectState
@@ -301,6 +303,12 @@
 			this.btnVehicleSimulatorInterveneResume.UseVisualStyleBackColor = true;
 			this.btnVehicleSimulatorInterveneResume.Click += new System.EventHandler(this.btnVehicleSimulatorInterveneResume_Click);
 			// 
+			// statusLabelLocation
+			// 
+			this.statusLabelLocation.Name = "statusLabelLocation";
+			this.statusLabelLocation.Size = new System.Drawing.Size(55, 19);
+			this.statusLabelLocation.Text = "(X,Y,H)";
+			// 
 			// VehicleSimulatorGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -352,5 +360,6 @@
 		private System.Windows.Forms.Button btnVehicleSimulatorInterveneCancelInsert;
 		private System.Windows.Forms.Button btnVehicleSimulatorIntervenePause;
 		private System.Windows.Forms.Button btnVehicleSimulatorInterveneResume;
+		private System.Windows.Forms.ToolStripStatusLabel statusLabelLocation;
 	}
 }

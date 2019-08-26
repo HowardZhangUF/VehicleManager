@@ -112,6 +112,10 @@ namespace VehicleSimulator.UserInterface
 		{
 			ParentContainer.InvokeIfNecessary(() => Control.BackColor = BackColor);
 		}
+		private void UpdateGui_ToolStripItemText(Control ParentContainer, ToolStripItem Control, string Text)
+		{
+			ParentContainer.InvokeIfNecessary(() => Control.Text = Text);
+		}
 		private void UpdateGui_ControlBackColor(Control Control, Color BackColor)
 		{
 			Control.InvokeIfNecessary((c) => c.BackColor = BackColor);
@@ -199,7 +203,7 @@ namespace VehicleSimulator.UserInterface
 		}
 		private void HandleEvent_VehicleSimulatorProcessVehicleSimulatorInfoStateUpdated(DateTime OccurTime, string Name, IVehicleSimulatorInfo VehicleSimulatorInfo)
 		{
-
+			UpdateGui_ToolStripItemText(statusStrip1, statusLabelLocation, $"({VehicleSimulatorInfo.mPosition.mX},{VehicleSimulatorInfo.mPosition.mY},{VehicleSimulatorInfo.mToward.ToString("F2")})");
 		}
 		private void HandleEvent_VehicleSimulatorProcessCommunicatorClientSystemStarted(DateTime OccurTime)
 		{
