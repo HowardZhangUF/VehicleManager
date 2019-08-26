@@ -61,6 +61,62 @@ namespace TrafficControlTest.UserInterface
 				HandleException(Ex);
 			}
 		}
+		private void btnInterveneInsertMovingBuffer_Click(object sender, EventArgs e)
+		{
+			if (cbVehicleList.SelectedItem != null && !string.IsNullOrEmpty(txtInterveneMovingBuffer.Text))
+			{
+				SendCommandToVehicle(cbVehicleList.SelectedItem.ToString(), "InsertMovingBuffer", txtInterveneMovingBuffer.Text);
+			}
+		}
+		private void btnInterveneRemoveMovingBuffer_Click(object sender, EventArgs e)
+		{
+			if (cbVehicleList.SelectedItem != null)
+			{
+				SendCommandToVehicle(cbVehicleList.SelectedItem.ToString(), "RemoveMovingBuffer");
+			}
+		}
+		private void btnIntervenePauseMoving_Click(object sender, EventArgs e)
+		{
+			if (cbVehicleList.SelectedItem != null)
+			{
+				SendCommandToVehicle(cbVehicleList.SelectedItem.ToString(), "PauseMoving");
+			}
+		}
+		private void btnInterveneResumeMoving_Click(object sender, EventArgs e)
+		{
+			if (cbVehicleList.SelectedItem != null)
+			{
+				SendCommandToVehicle(cbVehicleList.SelectedItem.ToString(), "ResumeMoving");
+			}
+		}
+
+		private void UpdateGui_ClearComboBoxItems(ComboBox ComboBox)
+		{
+			ComboBox.InvokeIfNecessary(() => ComboBox.Items.Clear());
+		}
+		private void UpdateGui_ClearComboBoxSelectedItem(ComboBox ComboBox)
+		{
+			ComboBox.InvokeIfNecessary(() => ComboBox.SelectedItem = null);
+		}
+		private void UpdateGui_UpdateComboBoxItems(ComboBox ComboBox, string[] Items)
+		{
+			UpdateGui_ClearComboBoxItems(ComboBox);
+			ComboBox.InvokeIfNecessary(() => ComboBox.Items.AddRange(Items));
+		}
+
+		private void UpdateVehicleNameList()
+		{
+			string[] vehicleNames = mCore.GetVehicleNameList().ToArray();
+			if (vehicleNames == null || vehicleNames.Length == 0)
+			{
+				UpdateGui_ClearComboBoxItems(cbVehicleList);
+			}
+			else
+			{
+				UpdateGui_UpdateComboBoxItems(cbVehicleList, vehicleNames);
+				UpdateGui_ClearComboBoxSelectedItem(cbVehicleList);
+			}
+		}
 
 		#region VehicleManagerProcess
 		VehicleManagerProcess mCore;
@@ -106,10 +162,12 @@ namespace TrafficControlTest.UserInterface
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			RegisterIconId(VehicleInfo);
+			UpdateVehicleNameList();
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			EraseIcon(VehicleInfo);
+			UpdateVehicleNameList();
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
@@ -126,6 +184,11 @@ namespace TrafficControlTest.UserInterface
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
 			PrintIcon(CollisionPair);
+		}
+
+		private void SendCommandToVehicle(string VehicleName, string Command, params string[] Paras)
+		{
+			mCore.SendCommand(VehicleName, Command, Paras);
 		}
 		#endregion
 

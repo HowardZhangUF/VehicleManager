@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SerialData;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
@@ -55,6 +57,34 @@ namespace TrafficControlTest.Base
 		public void CollisionEventDetectorStop()
 		{
 			mCollisionEventDetector.Stop();
+		}
+		public void SendCommand(string VehicleName, string Command, params string[] Paras)
+		{
+			if (mVehicleInfoManager.IsExist(VehicleName))
+			{
+				object data = null;
+				if (Command == "InsertMovingBuffer")
+				{
+					data = new InsertMovingBuffer(Paras[0]);
+				}
+				else if (Command == "RemoveMovingBuffer")
+				{
+					data = new RemoveMovingBuffer(null);
+				}
+				else if (Command == "PauseMoving")
+				{
+					data = new PauseMoving(null);
+				}
+				else if (Command == "ResumeMoving")
+				{
+					data = new ResumeMoving(null);
+				}
+				mVehicleCommunicator.SendSerializableData(mVehicleInfoManager.Get(VehicleName).mIpPort, data);
+			}
+		}
+		public List<string> GetVehicleNameList()
+		{
+			return mVehicleInfoManager.GetNames();
 		}
 
 		private void Constructor()
