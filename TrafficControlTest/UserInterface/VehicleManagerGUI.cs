@@ -106,7 +106,7 @@ namespace TrafficControlTest.UserInterface
 
 		private void UpdateVehicleNameList()
 		{
-			string[] vehicleNames = mCore.GetVehicleNameList().ToArray();
+			string[] vehicleNames = mCore.GetVehicleNameList()?.ToArray();
 			if (vehicleNames == null || vehicleNames.Length == 0)
 			{
 				UpdateGui_ClearComboBoxItems(cbVehicleList);
