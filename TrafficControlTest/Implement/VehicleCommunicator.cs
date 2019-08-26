@@ -1,4 +1,5 @@
 ﻿using AsyncSocket;
+using SerialData;
 using Serialization;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,22 @@ namespace TrafficControlTest.Implement
 					RaiseEvent_SentSerializableData(IpPort, Data);
 				}
 			}
+		}
+		public void SendSerializableData_InsertMovingBuffer(string IpPort, string Buffer)
+		{
+			SendSerializableData(IpPort, new InsertMovingBuffer(Buffer));
+		}
+		public void SendSerializableData_RemoveMovingBuffer(string IpPort)
+		{
+			SendSerializableData(IpPort, new RemoveMovingBuffer(null));
+		}
+		public void SendSerializableData_PauseMoving(string IpPort)
+		{
+			SendSerializableData(IpPort, new PauseMoving(null));
+		}
+		public void SendSerializableData_ResumeMoving(string IpPort)
+		{
+			SendSerializableData(IpPort, new ResumeMoving(null));
 		}
 
 		~VehicleCommunicator()

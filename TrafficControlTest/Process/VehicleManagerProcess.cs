@@ -1,5 +1,4 @@
-﻿using SerialData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
@@ -62,24 +61,22 @@ namespace TrafficControlTest.Base
 		{
 			if (mVehicleInfoManager.IsExist(VehicleName))
 			{
-				object data = null;
-				if (Command == "InsertMovingBuffer")
+				if (Command == "InsertMovingBuffer" && Paras != null && Paras.Length == 1)
 				{
-					data = new InsertMovingBuffer(Paras[0]);
+					mVehicleCommunicator.SendSerializableData_InsertMovingBuffer(mVehicleInfoManager.Get(VehicleName).mIpPort, Paras[0]);
 				}
 				else if (Command == "RemoveMovingBuffer")
 				{
-					data = new RemoveMovingBuffer(null);
+					mVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(mVehicleInfoManager.Get(VehicleName).mIpPort);
 				}
 				else if (Command == "PauseMoving")
 				{
-					data = new PauseMoving(null);
+					mVehicleCommunicator.SendSerializableData_PauseMoving(mVehicleInfoManager.Get(VehicleName).mIpPort);
 				}
 				else if (Command == "ResumeMoving")
 				{
-					data = new ResumeMoving(null);
+					mVehicleCommunicator.SendSerializableData_ResumeMoving(mVehicleInfoManager.Get(VehicleName).mIpPort);
 				}
-				mVehicleCommunicator.SendSerializableData(mVehicleInfoManager.Get(VehicleName).mIpPort, data);
 			}
 		}
 		public List<string> GetVehicleNameList()
