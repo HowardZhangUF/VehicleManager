@@ -13,7 +13,7 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerICollisionPair CollisionEventRemoved;
 		public event EventHandlerICollisionPair CollisionEventStateUpdated;
 
-		public ICollisionPair this[string Name] => throw new NotImplementedException();
+		public ICollisionPair this[string Name] { get { return Get(Name); } }
 
 		private Dictionary<string, ICollisionPair> mCollisionPairs = new Dictionary<string, ICollisionPair>();
 
