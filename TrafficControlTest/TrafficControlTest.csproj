@@ -51,14 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AGVInfo.cs" />
-    <Compile Include="AGVInfoManager.cs" />
-    <Compile Include="AGVMonitor.cs" />
+    <Compile Include="TrashCan\AGVInfo.cs" />
+    <Compile Include="TrashCan\AGVInfoManager.cs" />
+    <Compile Include="TrashCan\AGVMonitor.cs" />
     <Compile Include="Process\VehicleManagerProcess.cs" />
-    <Compile Include="CollisionEventMonitor.cs" />
-    <Compile Include="CollisionPair.cs" />
-    <Compile Include="DebugMessage.cs" />
-    <Compile Include="Extension.cs" />
+    <Compile Include="TrashCan\CollisionEventMonitor.cs" />
+    <Compile Include="TrashCan\CollisionPair.cs" />
+    <Compile Include="TrashCan\DebugMessage.cs" />
+    <Compile Include="Library\Extension.cs" />
     <Compile Include="Implement\CollisionEventDetector.cs" />
     <Compile Include="Implement\CollisionEventManager.cs" />
     <Compile Include="Implement\CommunicatorClient.cs" />
@@ -74,7 +74,7 @@
     <Compile Include="Interface\ITimePeriod.cs" />
     <Compile Include="Interface\ITowardPoint2D.cs" />
     <Compile Include="Interface\IVehicleMessageAnalyzer.cs" />
-    <Compile Include="IntMath.cs" />
+    <Compile Include="Library\IntMath.cs" />
     <Compile Include="Implement\CollisionPair.cs" />
     <Compile Include="Interface\ICollisionPair.cs" />
     <Compile Include="Interface\IPathOverlapPair.cs" />
@@ -89,29 +89,29 @@
     <Compile Include="Implement\PathOverlapPair.cs" />
     <Compile Include="Implement\PathRegionOverlapPair.cs" />
     <Compile Include="Implement\Vector2D.cs" />
-    <Compile Include="PathOverlapPair.cs" />
-    <Compile Include="PathRegionOverlapPair.cs" />
+    <Compile Include="TrashCan\PathOverlapPair.cs" />
+    <Compile Include="TrashCan\PathRegionOverlapPair.cs" />
     <Compile Include="Implement\Point2D.cs" />
-    <Compile Include="Rectangle.cs" />
+    <Compile Include="TrashCan\Rectangle.cs" />
     <Compile Include="Implement\Rectangle2D.cs" />
-    <Compile Include="TrafficControlTestGUI.cs">
+    <Compile Include="TrashCan\TrafficControlTestGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TrafficControlTestGUI.Designer.cs">
+    <Compile Include="TrashCan\TrafficControlTestGUI.Designer.cs">
       <DependentUpon>TrafficControlTestGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="TrashCan\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrafficControlTestProcess.cs" />
-    <Compile Include="TrafficController.cs" />
+    <Compile Include="TrashCan\TrafficControlTestProcess.cs" />
+    <Compile Include="TrashCan\TrafficController.cs" />
     <Compile Include="UserInterface\VehicleManagerGUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UserInterface\VehicleManagerGUI.Designer.cs">
       <DependentUpon>VehicleManagerGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Vector2D.cs" />
-    <EmbeddedResource Include="TrafficControlTestGUI.resx">
+    <Compile Include="TrashCan\Vector2D.cs" />
+    <EmbeddedResource Include="TrashCan\TrafficControlTestGUI.resx">
       <DependentUpon>TrafficControlTestGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
