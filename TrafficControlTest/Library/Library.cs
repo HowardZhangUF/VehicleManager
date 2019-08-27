@@ -630,6 +630,20 @@ namespace TrafficControlTest.Library
 		#endregion
 
 		#region ICollisionPair
+		public static bool IsCorrespondenceExist(ICollisionPair SrcCollisionPair, IEnumerable<ICollisionPair> CollisionPairCollection)
+		{
+			bool result = false;
+			if (CollisionPairCollection == null) return result;
+			for (int i = 0; i < CollisionPairCollection.Count(); ++i)
+			{
+				if (CollisionPairCollection.ElementAt(i).mName == SrcCollisionPair.mName)
+				{
+					result = true;
+					break;
+				}
+			}
+			return result;
+		}
 		public static bool IsAnyCollisionPair(IEnumerable<IVehicleInfo> Vehicles, out IEnumerable<ICollisionPair> CollisionPairs)
 		{
 			try

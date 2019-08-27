@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
+using static TrafficControlTest.Library.Library;
 
 namespace TrafficControlTest.Implement
 {
@@ -138,7 +140,7 @@ namespace TrafficControlTest.Implement
 		{
 			if (rVehicleInfoManager != null && rVehicleInfoManager.GetNames() != null && rVehicleInfoManager.GetNames().Count > 0)
 			{
-				if (Library.Library.IsAnyCollisionPair(rVehicleInfoManager.GetList(), out IEnumerable<ICollisionPair> collisionPairs))
+				if (IsAnyCollisionPair(rVehicleInfoManager.GetList(), out IEnumerable<ICollisionPair> collisionPairs))
 				{
 					if (rCollisionEventManager != null)
 					{
@@ -152,6 +154,20 @@ namespace TrafficControlTest.Implement
 							{
 								rCollisionEventManager.Add(collisionPair.mName, collisionPair);
 							}
+						}
+					}
+				}
+
+				// 若舊有的 Collision Pair 沒有新的、對應的 Collision Pair ，代表該 Collision Pair 被解除了
+				List<string> collisionNameList = rCollisionEventManager.GetNames();
+				if (collisionNameList != null && collisionNameList.Count > 0)
+				{
+					List<string> solvedCollisionPairs = rCollisionEventManager.GetList().Where((o) => !IsCorrespondenceExist(o, collisionPairs)).Select((o) => o.mName).ToList();
+					if (solvedCollisionPairs != null && solvedCollisionPairs.Count > 0)
+					{
+						for (int i = 0; i < solvedCollisionPairs.Count; ++i)
+						{
+							rCollisionEventManager.Remove(solvedCollisionPairs[i]);
 						}
 					}
 				}
