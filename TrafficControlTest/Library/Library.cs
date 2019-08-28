@@ -873,4 +873,9 @@ namespace TrafficControlTest.Library
 	{
 		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
 	}
+
+	public static class EventHandlerLibraryOfIVehicleControl
+	{
+		public delegate void EventHandlerIVehicleControl(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl);
+	}
 }

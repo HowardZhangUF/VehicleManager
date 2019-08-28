@@ -51,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implement\VehicleControl.cs" />
+    <Compile Include="Interface\IVehicleControl.cs" />
     <Compile Include="TrashCan\AGVInfo.cs" />
     <Compile Include="TrashCan\AGVInfoManager.cs" />
     <Compile Include="TrashCan\AGVMonitor.cs" />
