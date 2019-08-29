@@ -52,7 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implement\VehicleControl.cs" />
+    <Compile Include="Implement\VehicleControlManager.cs" />
     <Compile Include="Interface\IVehicleControl.cs" />
+    <Compile Include="Interface\IVehicleControlManager.cs" />
     <Compile Include="TrashCan\AGVInfo.cs" />
     <Compile Include="TrashCan\AGVInfoManager.cs" />
     <Compile Include="TrashCan\AGVMonitor.cs" />

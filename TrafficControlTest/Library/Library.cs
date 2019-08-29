@@ -876,6 +876,7 @@ namespace TrafficControlTest.Library
 
 	public static class EventHandlerLibraryOfIVehicleControl
 	{
+		public delegate void EventHandlerIVehicleControl(DateTime OccurTime, string Name, IVehicleControl VehicleControl);
 		public delegate void EventHandlerIVehicleControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl);
 	}
 }
