@@ -303,6 +303,8 @@ namespace VehicleSimulator.Implement
 		{
 			mPath = Path;
 			mState = "Running";
+			mTranslationVelocity = 700.0f;
+			mRotationVeloctiy = 30.0f;
 			if (mThdMoveAlongPath == null || !mThdMoveAlongPath.IsAlive) InitializeThread();
 		}
 		public void StopMove()
@@ -311,12 +313,16 @@ namespace VehicleSimulator.Implement
 			List<IPoint2D> tmp = _Path.ToList();
 			tmp.Clear();
 			_Path = tmp;
+			mTranslationVelocity = 0.0f;
+			mRotationVeloctiy = 0.0f;
 			mState = "Idle";
 		}
 		public void PauseMove()
 		{
 			if (mState == "Running")
 			{
+				mTranslationVelocity = 0.0f;
+				mRotationVeloctiy = 0.0f;
 				mState = "Pausing";
 			}
 		}
@@ -324,6 +330,8 @@ namespace VehicleSimulator.Implement
 		{
 			if (mState == "Pausing")
 			{
+				mTranslationVelocity = 700.0f;
+				mRotationVeloctiy = 30.0f;
 				mState = "Running";
 			}
 		}
@@ -376,25 +384,39 @@ namespace VehicleSimulator.Implement
 		}
 		private void SetInterveneCommand_Insert(int x, int y)
 		{
+			if (mIsIntervening) ClearInterveneCommand();
 			mBufferTarget = GenerateIPoint2D(x, y);
 			mIsIntervening = true;
 			mInterveneCommand = $"Insert:({mBufferTarget.mX},{mBufferTarget.mY})";
 		}
 		private void SetInterveneCommand_CancelInsert()
 		{
-			mBufferTarget = null;
-			mIsIntervening = false;
-			mInterveneCommand = string.Empty;
+			if (mIsIntervening) ClearInterveneCommand();
 		}
 		private void SetInterveneCommand_Pause()
 		{
+			if (mIsIntervening) ClearInterveneCommand();
 			PauseMove();
 			mIsIntervening = true;
 			mInterveneCommand = "Pause";
 		}
 		private void SetInterveneCommand_Resume()
 		{
-			ResumeMove();
+			if (mIsIntervening) ClearInterveneCommand();
+		}
+		private void ClearInterveneCommand()
+		{
+			if (!string.IsNullOrEmpty(mInterveneCommand))
+			{
+				if (mInterveneCommand.StartsWith("Insert"))
+				{
+					mBufferTarget = null;
+				}
+				else if (mInterveneCommand.StartsWith("Pause"))
+				{
+					ResumeMove();
+				}
+			}
 			mIsIntervening = false;
 			mInterveneCommand = string.Empty;
 		}
