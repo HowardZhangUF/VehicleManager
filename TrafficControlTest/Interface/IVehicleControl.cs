@@ -44,7 +44,7 @@ namespace TrafficControlTest.Interface
 
 	public interface IVehicleControl
 	{
-		event EventHandlerIVehicleControl StateUpdated;
+		event EventHandlerIVehicleControlStateUpdated StateUpdated;
 
 		/// <summary>識別碼</summary>
 		string mName { get; }

@@ -7,7 +7,7 @@ namespace TrafficControlTest.Implement
 {
 	public class VehicleControl : IVehicleControl
 	{
-		public event EventHandlerIVehicleControl StateUpdated;
+		public event EventHandlerIVehicleControlStateUpdated StateUpdated;
 
 		public string mName { get; private set; }
 		public SendState mSendState { get; private set; }
