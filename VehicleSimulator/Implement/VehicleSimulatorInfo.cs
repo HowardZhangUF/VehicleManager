@@ -302,7 +302,7 @@ namespace VehicleSimulator.Implement
 		public void StartMove(IEnumerable<IPoint2D> Path)
 		{
 			mPath = Path;
-			mState = "Running";
+			if (mState != "Pausing") mState = "Running";
 			mTranslationVelocity = 700.0f;
 			mRotationVeloctiy = 30.0f;
 			if (mThdMoveAlongPath == null || !mThdMoveAlongPath.IsAlive) InitializeThread();
