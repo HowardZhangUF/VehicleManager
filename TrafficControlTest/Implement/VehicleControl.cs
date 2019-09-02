@@ -10,6 +10,7 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerIVehicleControlStateUpdated StateUpdated;
 
 		public string mName { get; private set; }
+		public string mVehicleId { get; private set; }
 		public SendState mSendState { get; private set; }
 		public ExecuteState mExecuteState { get; private set; }
 		public Command mCommand { get; private set; }
@@ -20,13 +21,14 @@ namespace TrafficControlTest.Implement
 		public DateTime mExecutionStopTimestamp { get; private set; }
 		public DateTime mLastUpdated { get; private set; }
 
-		public VehicleControl(Command Command, string[] Parameters, string CauseId, string CauseDetail)
+		public VehicleControl(string VehicleId, Command Command, string[] Parameters, string CauseId, string CauseDetail)
 		{
-			Set(Command, Parameters, CauseId, CauseDetail);
+			Set(VehicleId, Command, Parameters, CauseId, CauseDetail);
 		}
-		public void Set(Command Command, string[] Parameters, string CauseId, string CauseDetail)
+		public void Set(string VehicleId, Command Command, string[] Parameters, string CauseId, string CauseDetail)
 		{
 			mName = $"VehicleControl_{CauseId}";
+			mVehicleId = VehicleId;
 			mSendState = SendState.Unsend;
 			mExecuteState = ExecuteState.Unexecute;
 			mCommand = Command;

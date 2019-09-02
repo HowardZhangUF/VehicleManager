@@ -48,6 +48,8 @@ namespace TrafficControlTest.Interface
 
 		/// <summary>識別碼</summary>
 		string mName { get; }
+		/// <summary>欲控制的車的識別碼</summary>
+		string mVehicleId { get; }
 		/// <summary>傳送狀態</summary>
 		SendState mSendState { get; }
 		/// <summary>執行狀態</summary>
@@ -67,7 +69,7 @@ namespace TrafficControlTest.Interface
 		/// <summary>上次更新時間</summary>
 		DateTime mLastUpdated { get; }
 
-		void Set(Command Command, string[] Parameters, string CauseId, string CauseDetail);
+		void Set(string VehicleId, Command Command, string[] Parameters, string CauseId, string CauseDetail);
 		void UpdateSendState(SendState SendState);
 		void UpdateExecuteState(ExecuteState ExecuteState);
 		void UpdateParameters(string[] Parameters);
