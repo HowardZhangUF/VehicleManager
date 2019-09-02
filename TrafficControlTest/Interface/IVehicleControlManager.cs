@@ -20,8 +20,12 @@ namespace TrafficControlTest.Interface
 
 		/// <summary>檢查指定資料是否存在</summary>
 		bool IsExist(string Name);
+		/// <summary>檢查指定資料是否存在</summary>
+		bool IsCauseExist(string CauseId);
 		/// <summary>取得指定資料</summary>
 		IVehicleControl Get(string Name);
+		/// <summary>取得指定資料</summary>
+		IVehicleControl GetViaCause(string CauseId);
 		/// <summary>取得資料名稱清單</summary>
 		List<string> GetNames();
 		/// <summary>取得資料清單</summary>

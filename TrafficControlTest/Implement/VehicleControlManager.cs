@@ -26,9 +26,17 @@ namespace TrafficControlTest.Implement
 		{
 			return mVehicleControls.Keys.Contains(Name);
 		}
+		public bool IsCauseExist(string CauseId)
+		{
+			return mVehicleControls.Values.Any((o) => o.mCauseId == CauseId);
+		}
 		public IVehicleControl Get(string Name)
 		{
 			return (IsExist(Name) ? mVehicleControls[Name] : null);
+		}
+		public IVehicleControl GetViaCause(string CauseId)
+		{
+			return (IsCauseExist(CauseId) ? mVehicleControls.Values.First((o) => o.mCauseId == CauseId) : null);
 		}
 		public List<string> GetNames()
 		{
