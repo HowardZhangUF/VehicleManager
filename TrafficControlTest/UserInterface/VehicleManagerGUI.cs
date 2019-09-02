@@ -126,6 +126,7 @@ namespace TrafficControlTest.UserInterface
 			mCore = new VehicleManagerProcess();
 			mCore.VehicleCommunicatorStartListen(8000);
 			mCore.CollisionEventDetectorStart();
+			mCore.VehicleControlHandlerStart();
 			SubscribeEvent_VehicleManagerProcess(mCore);
 		}
 		private void Destructor_VehicleManagerProcess()
@@ -133,6 +134,7 @@ namespace TrafficControlTest.UserInterface
 			UnsubscribeEvent_VehicleManagerProcess(mCore);
 			mCore.VehicleCommunicatorStopListen();
 			mCore.CollisionEventDetectorStop();
+			mCore.VehicleControlHandlerStop();
 			mCore = null;
 		}
 		private void SubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
