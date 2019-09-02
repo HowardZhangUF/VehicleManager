@@ -5,6 +5,7 @@ using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
 using static TrafficControlTest.Library.EventHandlerLibraryOfICollisionEventManager;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
+using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleControl;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleInfoManager;
 using static TrafficControlTest.Library.Library;
 
@@ -26,12 +27,17 @@ namespace TrafficControlTest.Base
 		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventStateUpdated;
 		public event EventHandlerDateTime CollisionEventDetectorSystemStarted;
 		public event EventHandlerDateTime CollisionEventDetectorSystemStopped;
+		public event EventHandlerIVehicleControl VehicleControlManagerControlAdded;
+		public event EventHandlerIVehicleControl VehicleControlManagerControlRemoved;
+		public event EventHandlerIVehicleControlStateUpdated VehicleControlManagerControlStateUpdated;
 
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
 		private IVehicleMessageAnalyzer mVehicleMessageAnalyzer = null;
 		private ICollisionEventManager mCollisionEventManager = null;
 		private ICollisionEventDetector mCollisionEventDetector = null;
+		private IVehicleControlManager mVehicleControlManager = null;
+		private ICollisionEventHandler mCollisionEventHandler = null;
 
 		public VehicleManagerProcess()
 		{
@@ -105,6 +111,14 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_ICollisionEventDetector(mCollisionEventDetector);
 			mCollisionEventDetector = GenerateICollisionEventDetector(mVehicleInfoManager, mCollisionEventManager);
 			SubscribeEvent_ICollisionEventDetector(mCollisionEventDetector);
+
+			UnsubscribeEvent_IVehicleControlManager(mVehicleControlManager);
+			mVehicleControlManager = GenerateIVehicleControlManager();
+			SubscribeEvent_IVehicleControlManager(mVehicleControlManager);
+
+			UnsubscribeEvent_ICollisionEventHandler(mCollisionEventHandler);
+			mCollisionEventHandler = GenerateICollisionEventHandler(mCollisionEventManager, mVehicleControlManager);
+			SubscribeEvent_ICollisionEventHandler(mCollisionEventHandler);
 		}
 		private void Destructor()
 		{
@@ -122,6 +136,12 @@ namespace TrafficControlTest.Base
 
 			UnsubscribeEvent_ICollisionEventDetector(mCollisionEventDetector);
 			mCollisionEventDetector = null;
+
+			UnsubscribeEvent_IVehicleControlManager(mVehicleControlManager);
+			mVehicleControlManager = null;
+
+			UnsubscribeEvent_ICollisionEventHandler(mCollisionEventHandler);
+			mCollisionEventHandler = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -211,6 +231,38 @@ namespace TrafficControlTest.Base
 			{
 				CollisionEventDetector.SystemStarted -= HandleEvent_CollisionEventDetectorSystemStarted;
 				CollisionEventDetector.SystemStopped -= HandleEvent_CollisionEventDetectorSystemStopped;
+			}
+		}
+		private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
+				VehicleControlManager.ControlAdded += HandleEvent_VehicleControlManagerControlAdded;
+				VehicleControlManager.ControlRemoved += HandleEvent_VehicleControlManagerControlRemoved;
+				VehicleControlManager.ControlStateUpdated += HandleEvent_VehicleControlManagerControlStateUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
+				VehicleControlManager.ControlAdded -= HandleEvent_VehicleControlManagerControlAdded;
+				VehicleControlManager.ControlRemoved -= HandleEvent_VehicleControlManagerControlRemoved;
+				VehicleControlManager.ControlStateUpdated -= HandleEvent_VehicleControlManagerControlStateUpdated;
+			}
+		}
+		private void SubscribeEvent_ICollisionEventHandler(ICollisionEventHandler CollisionEventHandler)
+		{
+			if (CollisionEventHandler != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_ICollisionEventHandler(ICollisionEventHandler CollisionEventHandler)
+		{
+			if (CollisionEventHandler != null)
+			{
+
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
@@ -367,6 +419,39 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { CollisionEventDetectorSystemStopped?.Invoke(OccurTime); });
 			}
 		}
+		protected virtual void RaiseEvent_VehicleControlManagerControlAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl, bool Sync = true)
+		{
+			if (Sync)
+			{
+				VehicleControlManagerControlAdded?.Invoke(OccurTime, Name, VehicleControl);
+			}
+			else
+			{
+				Task.Run(() => { VehicleControlManagerControlAdded?.Invoke(OccurTime, Name, VehicleControl); });
+			}
+		}
+		protected virtual void RaiseEvent_VehicleControlManagerControlRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl, bool Sync = true)
+		{
+			if (Sync)
+			{
+				VehicleControlManagerControlRemoved?.Invoke(OccurTime, Name, VehicleControl);
+			}
+			else
+			{
+				Task.Run(() => { VehicleControlManagerControlRemoved?.Invoke(OccurTime, Name, VehicleControl); });
+			}
+		}
+		protected virtual void RaiseEvent_VehicleControlManagerControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl, bool Sync = true)
+		{
+			if (Sync)
+			{
+				VehicleControlManagerControlStateUpdated?.Invoke(OccurTime, Name, StateName, VehicleControl);
+			}
+			else
+			{
+				Task.Run(() => { VehicleControlManagerControlStateUpdated?.Invoke(OccurTime, Name, StateName, VehicleControl); });
+			}
+		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage("VehicleCommunicator", "System Started.");
@@ -436,6 +521,21 @@ namespace TrafficControlTest.Base
 		{
 			HandleDebugMessage("CollisionEventDetector", "System Stopped.");
 			RaiseEvent_CollisionEventDetectorSystemStopped(OccurTime);
+		}
+		private void HandleEvent_VehicleControlManagerControlAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
+		{
+			HandleDebugMessage("VehicleControlManager", $"Control Added. Name: {Name}, Info:\n{VehicleControl.ToString()}");
+			RaiseEvent_VehicleControlManagerControlAdded(OccurTime, Name, VehicleControl);
+		}
+		private void HandleEvent_VehicleControlManagerControlRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
+		{
+			HandleDebugMessage("VehicleControlManager", $"Control Removed. Name: {Name}, Info:\n{VehicleControl.ToString()}");
+			RaiseEvent_VehicleControlManagerControlRemoved(OccurTime, Name, VehicleControl);
+		}
+		private void HandleEvent_VehicleControlManagerControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl)
+		{
+			HandleDebugMessage("VehicleControlManager", $"Control StateUpdated. Name: {Name}, StateName: {StateName}, Info:\n{VehicleControl.ToString()}");
+			RaiseEvent_VehicleControlManagerControlStateUpdated(OccurTime, Name, StateName, VehicleControl);
 		}
 		private void HandleDebugMessage(string Message)
 		{
