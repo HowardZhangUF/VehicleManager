@@ -109,6 +109,10 @@ namespace TrafficControlTest.Library
 		{
 			return new VehicleControlManager();
 		}
+		public static ICollisionEventHandler GenerateICollisionEventHandler(ICollisionEventManager CollisionEventManager, IVehicleControlManager VehicleControlManager)
+		{
+			return new CollisionEventHandler(CollisionEventManager, VehicleControlManager);
+		}
 		#endregion
 
 		#region IPoint2D
