@@ -53,9 +53,11 @@
   <ItemGroup>
     <Compile Include="Implement\CollisionEventHandler.cs" />
     <Compile Include="Implement\VehicleControl.cs" />
+    <Compile Include="Implement\VehicleControlHandler.cs" />
     <Compile Include="Implement\VehicleControlManager.cs" />
     <Compile Include="Interface\ICollisionEventHandler.cs" />
     <Compile Include="Interface\IVehicleControl.cs" />
+    <Compile Include="Interface\IVehicleControlHandler.cs" />
     <Compile Include="Interface\IVehicleControlManager.cs" />
     <Compile Include="TrashCan\AGVInfo.cs" />
     <Compile Include="TrashCan\AGVInfoManager.cs" />
