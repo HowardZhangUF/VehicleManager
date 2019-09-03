@@ -833,7 +833,10 @@ namespace TrafficControlTest.Library
 				}
 
 				double velocity = !double.IsNaN(Vehicle.mAverageVelocity) ? Vehicle.mAverageVelocity : Vehicle.mVelocity;
-				PassPeriod = GenerateITimePeriod(DateTime.Now.AddSeconds(EnterDistance / velocity), DateTime.Now.AddSeconds(ExitDistance / velocity));
+				// 當速度為 0 時，通過時間一律設定為 10 分鐘後通過
+				double enterSeconds = (velocity > -double.Epsilon && velocity < double.Epsilon ? 600 : (EnterDistance / velocity));
+				double exitSeconds = (velocity > -double.Epsilon && velocity < double.Epsilon ? 600 : (ExitDistance / velocity));
+				PassPeriod = GenerateITimePeriod(DateTime.Now.AddSeconds(enterSeconds), DateTime.Now.AddSeconds(exitSeconds));
 			}
 		}
 		#endregion
