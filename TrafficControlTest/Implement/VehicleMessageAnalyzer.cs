@@ -89,7 +89,7 @@ namespace TrafficControlTest.Implement
 			}
 
 			rVehicleInfoManager.Update(AgvStatus.Name, IpPort);
-			rVehicleInfoManager.Update(AgvStatus.Name, AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D((int)AgvStatus.X, (int)AgvStatus.Y), AgvStatus.Toward, AgvStatus.Battery, AgvStatus.Velocity, AgvStatus.GoalName, AgvStatus.AlarmMessage, false, false, string.Empty);
+			rVehicleInfoManager.Update(AgvStatus.Name, AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D((int)AgvStatus.X, (int)AgvStatus.Y), AgvStatus.Toward, AgvStatus.Battery, AgvStatus.Velocity, AgvStatus.GoalName, AgvStatus.AlarmMessage, AgvStatus.IsInterveneAvailable, AgvStatus.IsBeingIntervened, AgvStatus.InterveneCommand);
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVPath AgvPath)
 		{
