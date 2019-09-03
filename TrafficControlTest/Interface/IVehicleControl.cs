@@ -16,23 +16,6 @@ namespace TrafficControlTest.Interface
 		SentFailed
 	}
 
-	/// <summary>執行狀態</summary>
-	public enum ExecuteState
-	{
-		/// <summary>尚未執行</summary>
-		Unexecute,
-		/// <summary>尚未執行就被取消</summary>
-		Canceled,
-		/// <summary>執行中</summary>
-		Executing,
-		/// <summary>執行成功</summary>
-		Completed,
-		/// <summary>執行失敗</summary>
-		Failed,
-		/// <summary>執行後被中斷</summary>
-		Aborted
-	}
-
 	/// <summary>干預指令</summary>
 	public enum Command
 	{
@@ -52,8 +35,6 @@ namespace TrafficControlTest.Interface
 		string mVehicleId { get; }
 		/// <summary>傳送狀態</summary>
 		SendState mSendState { get; }
-		/// <summary>執行狀態</summary>
-		ExecuteState mExecuteState { get; }
 		/// <summary>指令</summary>
 		Command mCommand { get; }
 		/// <summary>指令參數</summary>
@@ -71,7 +52,6 @@ namespace TrafficControlTest.Interface
 
 		void Set(string VehicleId, Command Command, string[] Parameters, string CauseId, string CauseDetail);
 		void UpdateSendState(SendState SendState);
-		void UpdateExecuteState(ExecuteState ExecuteState);
 		void UpdateParameters(string[] Parameters);
 	}
 }

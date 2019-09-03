@@ -12,7 +12,6 @@ namespace TrafficControlTest.Implement
 		public string mName { get; private set; }
 		public string mVehicleId { get; private set; }
 		public SendState mSendState { get; private set; }
-		public ExecuteState mExecuteState { get; private set; }
 		public Command mCommand { get; private set; }
 		public string[] mParameters { get; private set; }
 		public string mCauseId { get; private set; }
@@ -30,7 +29,6 @@ namespace TrafficControlTest.Implement
 			mName = $"VehicleControl_{CauseId}";
 			mVehicleId = VehicleId;
 			mSendState = SendState.Unsend;
-			mExecuteState = ExecuteState.Unexecute;
 			mCommand = Command;
 			mParameters = Parameters;
 			mCauseId = CauseId;
@@ -47,27 +45,6 @@ namespace TrafficControlTest.Implement
 				mSendState = SendState;
 				mLastUpdated = DateTime.Now;
 				RaiseEvent_StateUpdated("SendState");
-			}
-		}
-		public void UpdateExecuteState(ExecuteState ExecuteState)
-		{
-			if (mExecuteState != ExecuteState)
-			{
-				mExecuteState = ExecuteState;
-				switch (ExecuteState)
-				{
-					case ExecuteState.Executing:
-						mExecutionStartTimestamp = DateTime.Now;
-						break;
-					case ExecuteState.Completed:
-					case ExecuteState.Failed:
-					case ExecuteState.Aborted:
-					case ExecuteState.Canceled:
-						mExecutionStopTimestamp = DateTime.Now;
-						break;
-				}
-				mLastUpdated = DateTime.Now;
-				RaiseEvent_StateUpdated("ExecuteState");
 			}
 		}
 		public void UpdateParameters(string[] Parameters)

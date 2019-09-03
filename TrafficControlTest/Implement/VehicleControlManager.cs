@@ -72,13 +72,6 @@ namespace TrafficControlTest.Implement
 				mVehicleControls[Name].UpdateSendState(SendState);
 			}
 		}
-		public void UpdateExecuteState(string Name, ExecuteState ExecuteState)
-		{
-			if (IsExist(Name))
-			{
-				mVehicleControls[Name].UpdateExecuteState(ExecuteState);
-			}
-		}
 		public void UpdateParameters(string Name, string[] Parameters)
 		{
 			if (IsExist(Name))

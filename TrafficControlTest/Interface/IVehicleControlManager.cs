@@ -37,8 +37,6 @@ namespace TrafficControlTest.Interface
 		/// <summary>更新指定資料</summary>
 		void UpdateSendState(string Name, SendState SendState);
 		/// <summary>更新指定資料</summary>
-		void UpdateExecuteState(string Name, ExecuteState ExecuteState);
-		/// <summary>更新指定資料</summary>
 		void UpdateParameters(string Name, string[] Parameters);
 	}
 }
