@@ -166,6 +166,7 @@
 			this.ClientSize = new System.Drawing.Size(922, 450);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Controls.Add(this.gluiCtrl1);
+			this.ImeMode = System.Windows.Forms.ImeMode.Off;
 			this.Name = "VehicleManagerGUI";
 			this.Text = "VehicleManagerGUI";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VehicleManagerGUI_FormClosing);

@@ -35,6 +35,7 @@
 			this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.statusLabelFill = new System.Windows.Forms.ToolStripStatusLabel();
+			this.statusLabelLocation = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusLabelHostConnectState = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.menuHostConnection = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +53,6 @@
 			this.btnVehicleSimulatorInterveneCancelInsert = new System.Windows.Forms.Button();
 			this.btnVehicleSimulatorIntervenePause = new System.Windows.Forms.Button();
 			this.btnVehicleSimulatorInterveneResume = new System.Windows.Forms.Button();
-			this.statusLabelLocation = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -113,6 +113,12 @@
 			this.statusLabelFill.Name = "statusLabelFill";
 			this.statusLabelFill.Size = new System.Drawing.Size(689, 19);
 			this.statusLabelFill.Spring = true;
+			// 
+			// statusLabelLocation
+			// 
+			this.statusLabelLocation.Name = "statusLabelLocation";
+			this.statusLabelLocation.Size = new System.Drawing.Size(55, 19);
+			this.statusLabelLocation.Text = "(X,Y,H)";
 			// 
 			// statusLabelHostConnectState
 			// 
@@ -303,12 +309,6 @@
 			this.btnVehicleSimulatorInterveneResume.UseVisualStyleBackColor = true;
 			this.btnVehicleSimulatorInterveneResume.Click += new System.EventHandler(this.btnVehicleSimulatorInterveneResume_Click);
 			// 
-			// statusLabelLocation
-			// 
-			this.statusLabelLocation.Name = "statusLabelLocation";
-			this.statusLabelLocation.Size = new System.Drawing.Size(55, 19);
-			this.statusLabelLocation.Text = "(X,Y,H)";
-			// 
 			// VehicleSimulatorGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -317,6 +317,7 @@
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.menuStrip1);
+			this.ImeMode = System.Windows.Forms.ImeMode.Off;
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "VehicleSimulatorGUI";
 			this.Text = "VehicleSimulatorGUI";
