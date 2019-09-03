@@ -53,10 +53,12 @@
 			this.btnVehicleSimulatorInterveneCancelInsert = new System.Windows.Forms.Button();
 			this.btnVehicleSimulatorIntervenePause = new System.Windows.Forms.Button();
 			this.btnVehicleSimulatorInterveneResume = new System.Windows.Forms.Button();
+			this.dgvVehicleState = new System.Windows.Forms.DataGridView();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgvVehicleState)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// BottomToolStripPanel
@@ -102,16 +104,16 @@
             this.statusLabelFill,
             this.statusLabelLocation,
             this.statusLabelHostConnectState});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 426);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 666);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(800, 24);
+			this.statusStrip1.Size = new System.Drawing.Size(629, 24);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
 			// statusLabelFill
 			// 
 			this.statusLabelFill.Name = "statusLabelFill";
-			this.statusLabelFill.Size = new System.Drawing.Size(689, 19);
+			this.statusLabelFill.Size = new System.Drawing.Size(518, 19);
 			this.statusLabelFill.Spring = true;
 			// 
 			// statusLabelLocation
@@ -134,7 +136,7 @@
             this.menuHostConnection});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(800, 27);
+			this.menuStrip1.Size = new System.Drawing.Size(629, 27);
 			this.menuStrip1.TabIndex = 3;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -163,6 +165,8 @@
 			// 
 			// tableLayoutPanel1
 			// 
+			this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tableLayoutPanel1.ColumnCount = 5;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -174,11 +178,11 @@
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleSimulatorStopMove, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleSimulatorPauseMove, 3, 0);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleSimulatorResumeMove, 4, 0);
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(30, 50);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 557);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(601, 123);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(601, 50);
 			this.tableLayoutPanel1.TabIndex = 4;
 			// 
 			// btnVehicleSimulatorStartMove
@@ -186,7 +190,7 @@
 			this.btnVehicleSimulatorStartMove.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorStartMove.Location = new System.Drawing.Point(203, 3);
 			this.btnVehicleSimulatorStartMove.Name = "btnVehicleSimulatorStartMove";
-			this.btnVehicleSimulatorStartMove.Size = new System.Drawing.Size(94, 117);
+			this.btnVehicleSimulatorStartMove.Size = new System.Drawing.Size(94, 44);
 			this.btnVehicleSimulatorStartMove.TabIndex = 2;
 			this.btnVehicleSimulatorStartMove.Text = "Move";
 			this.btnVehicleSimulatorStartMove.UseVisualStyleBackColor = true;
@@ -198,7 +202,7 @@
 			this.txtVehicleSimulatorPath.Location = new System.Drawing.Point(3, 3);
 			this.txtVehicleSimulatorPath.Multiline = true;
 			this.txtVehicleSimulatorPath.Name = "txtVehicleSimulatorPath";
-			this.txtVehicleSimulatorPath.Size = new System.Drawing.Size(194, 117);
+			this.txtVehicleSimulatorPath.Size = new System.Drawing.Size(194, 44);
 			this.txtVehicleSimulatorPath.TabIndex = 0;
 			this.txtVehicleSimulatorPath.Text = "-5000,5000\r\n1000,-3000";
 			// 
@@ -207,7 +211,7 @@
 			this.btnVehicleSimulatorStopMove.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorStopMove.Location = new System.Drawing.Point(303, 3);
 			this.btnVehicleSimulatorStopMove.Name = "btnVehicleSimulatorStopMove";
-			this.btnVehicleSimulatorStopMove.Size = new System.Drawing.Size(94, 117);
+			this.btnVehicleSimulatorStopMove.Size = new System.Drawing.Size(94, 44);
 			this.btnVehicleSimulatorStopMove.TabIndex = 1;
 			this.btnVehicleSimulatorStopMove.Text = "Stop";
 			this.btnVehicleSimulatorStopMove.UseVisualStyleBackColor = true;
@@ -218,7 +222,7 @@
 			this.btnVehicleSimulatorPauseMove.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorPauseMove.Location = new System.Drawing.Point(403, 3);
 			this.btnVehicleSimulatorPauseMove.Name = "btnVehicleSimulatorPauseMove";
-			this.btnVehicleSimulatorPauseMove.Size = new System.Drawing.Size(94, 117);
+			this.btnVehicleSimulatorPauseMove.Size = new System.Drawing.Size(94, 44);
 			this.btnVehicleSimulatorPauseMove.TabIndex = 3;
 			this.btnVehicleSimulatorPauseMove.Text = "Pause";
 			this.btnVehicleSimulatorPauseMove.UseVisualStyleBackColor = true;
@@ -229,7 +233,7 @@
 			this.btnVehicleSimulatorResumeMove.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorResumeMove.Location = new System.Drawing.Point(503, 3);
 			this.btnVehicleSimulatorResumeMove.Name = "btnVehicleSimulatorResumeMove";
-			this.btnVehicleSimulatorResumeMove.Size = new System.Drawing.Size(95, 117);
+			this.btnVehicleSimulatorResumeMove.Size = new System.Drawing.Size(95, 44);
 			this.btnVehicleSimulatorResumeMove.TabIndex = 4;
 			this.btnVehicleSimulatorResumeMove.Text = "Resume";
 			this.btnVehicleSimulatorResumeMove.UseVisualStyleBackColor = true;
@@ -237,6 +241,8 @@
 			// 
 			// tableLayoutPanel2
 			// 
+			this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tableLayoutPanel2.ColumnCount = 5;
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -248,11 +254,11 @@
 			this.tableLayoutPanel2.Controls.Add(this.btnVehicleSimulatorInterveneCancelInsert, 1, 0);
 			this.tableLayoutPanel2.Controls.Add(this.btnVehicleSimulatorIntervenePause, 3, 0);
 			this.tableLayoutPanel2.Controls.Add(this.btnVehicleSimulatorInterveneResume, 4, 0);
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(30, 179);
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 613);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(601, 123);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(601, 50);
 			this.tableLayoutPanel2.TabIndex = 5;
 			// 
 			// btnVehicleSimulatorInterveneInsert
@@ -260,7 +266,7 @@
 			this.btnVehicleSimulatorInterveneInsert.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorInterveneInsert.Location = new System.Drawing.Point(203, 3);
 			this.btnVehicleSimulatorInterveneInsert.Name = "btnVehicleSimulatorInterveneInsert";
-			this.btnVehicleSimulatorInterveneInsert.Size = new System.Drawing.Size(94, 117);
+			this.btnVehicleSimulatorInterveneInsert.Size = new System.Drawing.Size(94, 44);
 			this.btnVehicleSimulatorInterveneInsert.TabIndex = 2;
 			this.btnVehicleSimulatorInterveneInsert.Text = "Insert";
 			this.btnVehicleSimulatorInterveneInsert.UseVisualStyleBackColor = true;
@@ -272,7 +278,7 @@
 			this.txtInterveneParameter.Location = new System.Drawing.Point(3, 3);
 			this.txtInterveneParameter.Multiline = true;
 			this.txtInterveneParameter.Name = "txtInterveneParameter";
-			this.txtInterveneParameter.Size = new System.Drawing.Size(194, 117);
+			this.txtInterveneParameter.Size = new System.Drawing.Size(194, 44);
 			this.txtInterveneParameter.TabIndex = 0;
 			this.txtInterveneParameter.Text = "9000,9000";
 			// 
@@ -281,7 +287,7 @@
 			this.btnVehicleSimulatorInterveneCancelInsert.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorInterveneCancelInsert.Location = new System.Drawing.Point(303, 3);
 			this.btnVehicleSimulatorInterveneCancelInsert.Name = "btnVehicleSimulatorInterveneCancelInsert";
-			this.btnVehicleSimulatorInterveneCancelInsert.Size = new System.Drawing.Size(94, 117);
+			this.btnVehicleSimulatorInterveneCancelInsert.Size = new System.Drawing.Size(94, 44);
 			this.btnVehicleSimulatorInterveneCancelInsert.TabIndex = 1;
 			this.btnVehicleSimulatorInterveneCancelInsert.Text = "Cancel Insert";
 			this.btnVehicleSimulatorInterveneCancelInsert.UseVisualStyleBackColor = true;
@@ -292,7 +298,7 @@
 			this.btnVehicleSimulatorIntervenePause.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorIntervenePause.Location = new System.Drawing.Point(403, 3);
 			this.btnVehicleSimulatorIntervenePause.Name = "btnVehicleSimulatorIntervenePause";
-			this.btnVehicleSimulatorIntervenePause.Size = new System.Drawing.Size(94, 117);
+			this.btnVehicleSimulatorIntervenePause.Size = new System.Drawing.Size(94, 44);
 			this.btnVehicleSimulatorIntervenePause.TabIndex = 3;
 			this.btnVehicleSimulatorIntervenePause.Text = "Pause";
 			this.btnVehicleSimulatorIntervenePause.UseVisualStyleBackColor = true;
@@ -303,16 +309,29 @@
 			this.btnVehicleSimulatorInterveneResume.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnVehicleSimulatorInterveneResume.Location = new System.Drawing.Point(503, 3);
 			this.btnVehicleSimulatorInterveneResume.Name = "btnVehicleSimulatorInterveneResume";
-			this.btnVehicleSimulatorInterveneResume.Size = new System.Drawing.Size(95, 117);
+			this.btnVehicleSimulatorInterveneResume.Size = new System.Drawing.Size(95, 44);
 			this.btnVehicleSimulatorInterveneResume.TabIndex = 4;
 			this.btnVehicleSimulatorInterveneResume.Text = "Resume";
 			this.btnVehicleSimulatorInterveneResume.UseVisualStyleBackColor = true;
 			this.btnVehicleSimulatorInterveneResume.Click += new System.EventHandler(this.btnVehicleSimulatorInterveneResume_Click);
 			// 
+			// dgvVehicleState
+			// 
+			this.dgvVehicleState.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.dgvVehicleState.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvVehicleState.Location = new System.Drawing.Point(12, 30);
+			this.dgvVehicleState.Name = "dgvVehicleState";
+			this.dgvVehicleState.RowTemplate.Height = 27;
+			this.dgvVehicleState.Size = new System.Drawing.Size(601, 521);
+			this.dgvVehicleState.TabIndex = 6;
+			// 
 			// VehicleSimulatorGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(629, 690);
+			this.Controls.Add(this.dgvVehicleState);
 			this.Controls.Add(this.tableLayoutPanel2);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Controls.Add(this.statusStrip1);
@@ -331,6 +350,7 @@
 			this.tableLayoutPanel1.PerformLayout();
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgvVehicleState)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -362,5 +382,6 @@
 		private System.Windows.Forms.Button btnVehicleSimulatorIntervenePause;
 		private System.Windows.Forms.Button btnVehicleSimulatorInterveneResume;
 		private System.Windows.Forms.ToolStripStatusLabel statusLabelLocation;
+		private System.Windows.Forms.DataGridView dgvVehicleState;
 	}
 }

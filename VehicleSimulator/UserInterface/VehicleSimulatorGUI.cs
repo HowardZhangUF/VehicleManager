@@ -89,7 +89,7 @@ namespace VehicleSimulator.UserInterface
 		{
 			try
 			{
-
+				UpdateGui_InitializeDgvVehicleState();
 			}
 			catch (Exception Ex)
 			{
@@ -119,6 +119,64 @@ namespace VehicleSimulator.UserInterface
 		private void UpdateGui_ControlBackColor(Control Control, Color BackColor)
 		{
 			Control.InvokeIfNecessary((c) => c.BackColor = BackColor);
+		}
+		private void UpdateGui_InitializeDgvVehicleState()
+		{
+			DataGridView dgv = dgvVehicleState;
+
+			dgv.RowHeadersVisible = false;
+			dgv.AllowUserToAddRows = false;
+			dgv.AllowUserToResizeRows = false;
+			dgv.AllowUserToResizeColumns = false;
+			dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+			dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			dgv.MultiSelect = false;
+
+			dgv.Columns.Add("Keyword", "Keyword");
+			dgv.Columns[0].Width = 200;
+			dgv.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			dgv.Columns.Add("Value", "Value");
+			dgv.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+			foreach (DataGridViewColumn column in dgv.Columns)
+			{
+				column.SortMode = DataGridViewColumnSortMode.NotSortable;
+				column.ReadOnly = true;
+			}
+
+			dgv.Rows.Add("Name");
+			dgv.Rows.Add("State");
+			dgv.Rows.Add("Position");
+			dgv.Rows.Add("Toward");
+			dgv.Rows.Add("Target");
+			dgv.Rows.Add("Buffer Target");
+			dgv.Rows.Add("Translation Velocity");
+			dgv.Rows.Add("Rotation Velocity");
+			dgv.Rows.Add("Map Match");
+			dgv.Rows.Add("Battery");
+			dgv.Rows.Add("Path Blocked");
+			dgv.Rows.Add("Alarm Message");
+			dgv.Rows.Add("Safety Frame Radius");
+			dgv.Rows.Add("Is Intervene Available");
+			dgv.Rows.Add("Is Being Intervened");
+			dgv.Rows.Add("Intervene Command");
+			dgv.Rows.Add("Path");
+		}
+		private void UpdateGui_UpdateDataGridViewColumnsValue(DataGridView Dgv, int ColIdx, string[] Values)
+		{
+			Dgv.InvokeIfNecessary(() =>
+			{
+				if (Values != null && Dgv.Rows.Count == Values.Length && Dgv.Columns.Count > ColIdx)
+				{
+					for (int i = 0; i < Dgv.Rows.Count; ++i)
+					{
+						if (Dgv.Rows[i].Cells[ColIdx].Value?.ToString() != Values[i])
+						{
+							Dgv.Rows[i].Cells[ColIdx].Value = Values[i];
+						}
+					}
+				}
+			});
 		}
 
 		#region VehicleSimulatorProcess
@@ -204,6 +262,7 @@ namespace VehicleSimulator.UserInterface
 		private void HandleEvent_VehicleSimulatorProcessVehicleSimulatorInfoStateUpdated(DateTime OccurTime, string Name, IVehicleSimulatorInfo VehicleSimulatorInfo)
 		{
 			UpdateGui_ToolStripItemText(statusStrip1, statusLabelLocation, $"({VehicleSimulatorInfo.mPosition.mX},{VehicleSimulatorInfo.mPosition.mY},{VehicleSimulatorInfo.mToward.ToString("F2")})");
+			UpdateGui_UpdateDataGridViewColumnsValue(dgvVehicleState, 1, VehicleSimulatorInfo.ToStringArray());
 		}
 		private void HandleEvent_VehicleSimulatorProcessCommunicatorClientSystemStarted(DateTime OccurTime)
 		{

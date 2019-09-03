@@ -53,5 +53,6 @@ namespace VehicleSimulator.Interface
 		void ResumeMove();
 		void SetInterveneCommand(string Command, params string[] Paras);
 		string ToString();
+		string[] ToStringArray();
 	}
 }

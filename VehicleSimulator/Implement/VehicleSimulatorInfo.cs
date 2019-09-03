@@ -363,6 +363,31 @@ namespace VehicleSimulator.Implement
 			result = $"{mName} ({mPosition.mX}, {mPosition.mY}, {mToward.ToString("F2")}) {mState}";
 			return result;
 		}
+		public string[] ToStringArray()
+		{
+			string[] result = null;
+			result = new string[]
+			{
+				mName,
+				mState,
+				mPosition.ToString(),
+				mToward.ToString("F2"),
+				mTarget,
+				mBufferTarget?.ToString(),
+				mTranslationVelocity.ToString("F2"),
+				mRotationVeloctiy.ToString("F2"),
+				mMapMatch.ToString("F2"),
+				mBattery.ToString("F2"),
+				mPathBlocked.ToString(),
+				mAlarmMessage,
+				mSafetyFrameRadius.ToString(),
+				mIsInterveneAvailable.ToString(),
+				mIsBeingIntervened.ToString(),
+				mInterveneCommand,
+				ConvertToString(mPath)
+			};
+			return result;
+		}
 
 		private void InitializeThread()
 		{
@@ -597,6 +622,18 @@ namespace VehicleSimulator.Implement
 		private static bool IsApproximatelyEqual(int X1, int Y1, double Toward1, int X2, int Y2, double Toward2)
 		{
 			return X1 == X2 && Y1 == Y2 && IsApproximatelyEqual(Toward1, Toward2);
+		}
+		private static string ConvertToString(IEnumerable<IPoint2D> Points)
+		{
+			string result = string.Empty;
+			if (Points != null && Points.Count() > 0)
+			{
+				for (int i = 0; i < Points.Count(); ++i)
+				{
+					result += Points.ElementAt(i).ToString();
+				}
+			}
+			return result;
 		}
 	}
 }
