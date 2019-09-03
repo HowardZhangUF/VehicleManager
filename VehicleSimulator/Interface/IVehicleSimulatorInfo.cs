@@ -36,7 +36,7 @@ namespace VehicleSimulator.Interface
 		/// <summary>是否可被干預</summary>
 		bool mIsInterveneAvailable { get; set; }
 		/// <summary>是否被干預中</summary>
-		bool mIsIntervening { get; set; }
+		bool mIsBeingIntervened { get; set; }
 		/// <summary>目前被干預中的指令。沒有被干預時，此值會為空字串</summary>
 		string mInterveneCommand { get; set; }
 		/// <summary>路徑</summary>

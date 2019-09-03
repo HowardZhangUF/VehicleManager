@@ -194,7 +194,7 @@ namespace VehicleSimulator.Implement
 				result.X = VehicleSimulatorInfo.mPosition.mX;
 				result.Y = VehicleSimulatorInfo.mPosition.mY;
 				result.IsInterveneAvailable = VehicleSimulatorInfo.mIsInterveneAvailable;
-				result.IsBeingIntervened = VehicleSimulatorInfo.mIsIntervening;
+				result.IsBeingIntervened = VehicleSimulatorInfo.mIsBeingIntervened;
 				result.InterveneCommand = VehicleSimulatorInfo.mInterveneCommand;
 			}
 			return result;

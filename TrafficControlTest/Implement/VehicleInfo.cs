@@ -142,17 +142,17 @@ namespace TrafficControlTest.Implement
 				}
 			}
 		}
-		public bool mIsIntervening
+		public bool mIsBeingIntervened
 		{
 			get
 			{
-				return _IsIntervene;
+				return _IsBeingIntervened;
 			}
 			private set
 			{
-				if (_IsIntervene != value)
+				if (_IsBeingIntervened != value)
 				{
-					_IsIntervene = value;
+					_IsBeingIntervened = value;
 					mLastUpdated = DateTime.Now;
 				}
 			}
@@ -316,7 +316,7 @@ namespace TrafficControlTest.Implement
 		private string _AlarmMessage = string.Empty;
 		private int _SafetyFrameRadius = 500;
 		private bool _IsInterveneAvailable = false;
-		private bool _IsIntervene = false;
+		private bool _IsBeingIntervened = false;
 		private string _InterveneCommand = string.Empty;
 		private IEnumerable<IPoint2D> _Path = null;
 		private IEnumerable<IPoint2D> _PathDetail = null;
@@ -336,7 +336,7 @@ namespace TrafficControlTest.Implement
 		{
 			mName = Name;
 		}
-		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsIntervening, string InterveneCommand)
+		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand)
 		{
 			mState = State;
 			mPosition = Position;
@@ -346,7 +346,7 @@ namespace TrafficControlTest.Implement
 			mTarget = Target;
 			mAlarmMessage = AlarmMessage;
 			mIsInterveneAvailable = IsInterveneAvailable;
-			mIsIntervening = IsIntervening;
+			mIsBeingIntervened = IsBeingIntervened;
 			mInterveneCommand = InterveneCommand;
 			RaiseEvent_StateUpdated();
 		}
@@ -372,7 +372,7 @@ namespace TrafficControlTest.Implement
 			result += $"Battery: {mBattery.ToString("F2")}, ";
 			result += $"Path: {((mPath != null && mPath.Count() > 0) ? Library.Library.ConvertToString(mPath) : string.Empty)}, ";
 			result += $"IsInterveneAvailable: {mIsInterveneAvailable.ToString()}, ";
-			result += $"IsIntervening: {mIsIntervening.ToString()}, ";
+			result += $"IsBeingIntervened: {mIsBeingIntervened.ToString()}, ";
 			result += $"InterveneCommand: {mInterveneCommand}.";
 			return result;
 		}

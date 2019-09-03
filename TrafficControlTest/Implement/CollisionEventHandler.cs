@@ -122,7 +122,7 @@ namespace TrafficControlTest.Implement
 		}
 		private void UninterveneVehicle(IVehicleInfo VehicleInfo)
 		{
-			if (VehicleInfo != null && VehicleInfo.mIsIntervening)
+			if (VehicleInfo != null && VehicleInfo.mIsBeingIntervened)
 			{
 				if (VehicleInfo.mInterveneCommand.StartsWith("Insert"))
 				{

@@ -224,17 +224,17 @@ namespace VehicleSimulator.Implement
 				}
 			}
 		}
-		public bool mIsIntervening
+		public bool mIsBeingIntervened
 		{
 			get
 			{
-				return _IsIntervening;
+				return _IsBeingIntervened;
 			}
 			set
 			{
-				if (_IsIntervening != value)
+				if (_IsBeingIntervened != value)
 				{
-					_IsIntervening = value;
+					_IsBeingIntervened = value;
 					RaiseEvent_StateUpdated();
 				}
 			}
@@ -283,7 +283,7 @@ namespace VehicleSimulator.Implement
 		private string _AlarmMessage = string.Empty;
 		private int _SafetyFrameRadius = 500;
 		private bool _IsInterveneAvailable = true;
-		private bool _IsIntervening = false;
+		private bool _IsBeingIntervened = false;
 		private string _InterveneCommand = string.Empty;
 		private IEnumerable<IPoint2D> _Path = null;
 		private Thread mThdMoveAlongPath = null;
@@ -384,25 +384,25 @@ namespace VehicleSimulator.Implement
 		}
 		private void SetInterveneCommand_Insert(int x, int y)
 		{
-			if (mIsIntervening) ClearInterveneCommand();
+			if (mIsBeingIntervened) ClearInterveneCommand();
 			mBufferTarget = GenerateIPoint2D(x, y);
-			mIsIntervening = true;
+			mIsBeingIntervened = true;
 			mInterveneCommand = $"Insert:({mBufferTarget.mX},{mBufferTarget.mY})";
 		}
 		private void SetInterveneCommand_CancelInsert()
 		{
-			if (mIsIntervening) ClearInterveneCommand();
+			if (mIsBeingIntervened) ClearInterveneCommand();
 		}
 		private void SetInterveneCommand_Pause()
 		{
-			if (mIsIntervening) ClearInterveneCommand();
+			if (mIsBeingIntervened) ClearInterveneCommand();
 			PauseMove();
-			mIsIntervening = true;
+			mIsBeingIntervened = true;
 			mInterveneCommand = "Pause";
 		}
 		private void SetInterveneCommand_Resume()
 		{
-			if (mIsIntervening) ClearInterveneCommand();
+			if (mIsBeingIntervened) ClearInterveneCommand();
 		}
 		private void ClearInterveneCommand()
 		{
@@ -417,7 +417,7 @@ namespace VehicleSimulator.Implement
 					ResumeMove();
 				}
 			}
-			mIsIntervening = false;
+			mIsBeingIntervened = false;
 			mInterveneCommand = string.Empty;
 		}
 		protected virtual void RaiseEvent_StateUpdated(bool Sync = true)
@@ -464,7 +464,7 @@ namespace VehicleSimulator.Implement
 					if (mBufferTarget != null)
 					{
 						mBufferTarget = null;
-						if (mIsIntervening) SetInterveneCommand_CancelInsert();
+						if (mIsBeingIntervened) SetInterveneCommand_CancelInsert();
 					}
 					else
 					{
