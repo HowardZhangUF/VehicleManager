@@ -339,19 +339,19 @@ namespace VehicleSimulator.Implement
 		{
 			if (mIsInterveneAvailable)
 			{
-				if (Command == "Insert" && Paras != null && Paras.Length == 2)
+				if (Command == "InsertMovingBuffer" && Paras != null && Paras.Length == 2)
 				{
 					SetInterveneCommand_Insert(int.Parse(Paras[0]), int.Parse(Paras[1]));
 				}
-				else if (Command == "CancelInsert" && (Paras == null || Paras.Length == 0))
+				else if (Command == "RemoveMovingBuffer" && (Paras == null || Paras.Length == 0))
 				{
 					SetInterveneCommand_CancelInsert();
 				}
-				else if (Command == "Pause" && (Paras == null || Paras.Length == 0))
+				else if (Command == "PauseMoving" && (Paras == null || Paras.Length == 0))
 				{
 					SetInterveneCommand_Pause();
 				}
-				else if (Command == "Resume" && (Paras == null || Paras.Length == 0))
+				else if (Command == "ResumeMoving" && (Paras == null || Paras.Length == 0))
 				{
 					SetInterveneCommand_Resume();
 				}

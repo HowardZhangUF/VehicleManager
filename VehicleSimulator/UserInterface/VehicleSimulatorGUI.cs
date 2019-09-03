@@ -266,20 +266,20 @@ namespace VehicleSimulator.UserInterface
 		{
 			if (GetCoordinate(txtInterveneParameter.Text, out string X, out string Y))
 			{
-				VehicleSimulatorIntervene("Insert", X, Y);
+				VehicleSimulatorIntervene("InsertMovingBuffer", X, Y);
 			}
 		}
 		private void btnVehicleSimulatorInterveneCancelInsert_Click(object sender, EventArgs e)
 		{
-			VehicleSimulatorIntervene("CancelInsert");
+			VehicleSimulatorIntervene("RemoveMovingBuffer");
 		}
 		private void btnVehicleSimulatorIntervenePause_Click(object sender, EventArgs e)
 		{
-			VehicleSimulatorIntervene("Pause");
+			VehicleSimulatorIntervene("PauseMoving");
 		}
 		private void btnVehicleSimulatorInterveneResume_Click(object sender, EventArgs e)
 		{
-			VehicleSimulatorIntervene("Resume");
+			VehicleSimulatorIntervene("ResumeMoving");
 		}
 	}
 }

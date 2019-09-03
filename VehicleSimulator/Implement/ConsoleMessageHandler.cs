@@ -105,7 +105,7 @@ namespace VehicleSimulator.Implement
 					if (coordinate.Length == 2)
 					{
 						Data.Response = true;
-						rVehicleSimulatorInfo.SetInterveneCommand("Insert", coordinate[0], coordinate[1]);
+						rVehicleSimulatorInfo.SetInterveneCommand("InsertMovingBuffer", coordinate[0], coordinate[1]);
 					}
 				}
 			}
@@ -119,7 +119,7 @@ namespace VehicleSimulator.Implement
 					if (rVehicleSimulatorInfo.mBufferTarget != null)
 					{
 						Data.Response = true;
-						rVehicleSimulatorInfo.SetInterveneCommand("CancelInsert");
+						rVehicleSimulatorInfo.SetInterveneCommand("RemoveMovingBuffer");
 					}
 				}
 			}
@@ -131,7 +131,7 @@ namespace VehicleSimulator.Implement
 				if (Data.Require == null)
 				{
 					Data.Response = true;
-					rVehicleSimulatorInfo.SetInterveneCommand("Pause");
+					rVehicleSimulatorInfo.SetInterveneCommand("PauseMoving");
 				}
 			}
 		}
@@ -142,7 +142,7 @@ namespace VehicleSimulator.Implement
 				if (Data.Require == null)
 				{
 					Data.Response = true;
-					rVehicleSimulatorInfo.SetInterveneCommand("Resume");
+					rVehicleSimulatorInfo.SetInterveneCommand("ResumeMoving");
 				}
 			}
 		}
