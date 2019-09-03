@@ -75,7 +75,10 @@ namespace TrafficControlTest.Implement
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
+			// 當 CollisionEvent 消失時，移除跟該 CollisionEvent 有關的 VehicleControl
 			RemoveRelatedVehicleControl(CollisionPair);
+			// 當 CollisionEvent 消失時，讓跟該 CollisionEvent 有關的 Vehicle 恢復成沒有被干預的狀態
+			UninterveneVehicle(CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
@@ -110,6 +113,27 @@ namespace TrafficControlTest.Implement
 			{
 				string controlName = rVehicleControlManager.GetViaCause(CollisionPair.mName).mName;
 				rVehicleControlManager.Remove(controlName);
+			}
+		}
+		private void UninterveneVehicle(ICollisionPair CollisionPair)
+		{
+			UninterveneVehicle(CollisionPair.mVehicle1);
+			UninterveneVehicle(CollisionPair.mVehicle2);
+		}
+		private void UninterveneVehicle(IVehicleInfo VehicleInfo)
+		{
+			if (VehicleInfo != null && VehicleInfo.mIsIntervening)
+			{
+				if (VehicleInfo.mInterveneCommand.StartsWith("Insert"))
+				{
+					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.RemoveMovingBuffer, null, string.Empty, string.Empty);
+					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+				}
+				else if (VehicleInfo.mInterveneCommand.StartsWith("Pause"))
+				{
+					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, string.Empty, string.Empty);
+					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+				}
 			}
 		}
 		private bool IsProcessNecessary(ICollisionPair CollisionPair)
