@@ -54,6 +54,7 @@
 			this.btnVehicleSimulatorIntervenePause = new System.Windows.Forms.Button();
 			this.btnVehicleSimulatorInterveneResume = new System.Windows.Forms.Button();
 			this.dgvVehicleState = new System.Windows.Forms.DataGridView();
+			this.menuShowVehicleStateDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -133,7 +134,8 @@
 			// 
 			this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuHostConnection});
+            this.menuHostConnection,
+            this.menuShowVehicleStateDetail});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(629, 27);
@@ -153,7 +155,7 @@
 			// menuHostConnect
 			// 
 			this.menuHostConnect.Name = "menuHostConnect";
-			this.menuHostConnect.Size = new System.Drawing.Size(166, 26);
+			this.menuHostConnect.Size = new System.Drawing.Size(216, 26);
 			this.menuHostConnect.Text = "Connect";
 			this.menuHostConnect.Click += new System.EventHandler(this.menuHostConnect_Click);
 			// 
@@ -327,6 +329,14 @@
 			this.dgvVehicleState.Size = new System.Drawing.Size(601, 521);
 			this.dgvVehicleState.TabIndex = 6;
 			// 
+			// menuShowVehicleStateDetail
+			// 
+			this.menuShowVehicleStateDetail.BackColor = System.Drawing.Color.LightPink;
+			this.menuShowVehicleStateDetail.Name = "menuShowVehicleStateDetail";
+			this.menuShowVehicleStateDetail.Size = new System.Drawing.Size(104, 23);
+			this.menuShowVehicleStateDetail.Text = "Show Detail";
+			this.menuShowVehicleStateDetail.Click += new System.EventHandler(this.menuShowVehicleStateDetail_Click);
+			// 
 			// VehicleSimulatorGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -383,5 +393,6 @@
 		private System.Windows.Forms.Button btnVehicleSimulatorInterveneResume;
 		private System.Windows.Forms.ToolStripStatusLabel statusLabelLocation;
 		private System.Windows.Forms.DataGridView dgvVehicleState;
+		private System.Windows.Forms.ToolStripMenuItem menuShowVehicleStateDetail;
 	}
 }

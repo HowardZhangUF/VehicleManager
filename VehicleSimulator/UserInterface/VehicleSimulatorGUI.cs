@@ -16,6 +16,9 @@ namespace VehicleSimulator.UserInterface
 {
 	public partial class VehicleSimulatorGUI : Form
 	{
+		public int dgvVehicleStateHeight = 0;
+		public bool showVehicleStateDetail = false;
+
 		public VehicleSimulatorGUI()
 		{
 			InitializeComponent();
@@ -90,7 +93,12 @@ namespace VehicleSimulator.UserInterface
 			try
 			{
 				UpdateGui_InitializeDgvVehicleState();
+				UpdateGui_ToolStripItemText(statusStrip1, statusLabelLocation, $"{mCore.GetVehicleState().mName} ({mCore.GetVehicleState().mPosition.mX},{mCore.GetVehicleState().mPosition.mY},{mCore.GetVehicleState().mToward.ToString("F2")})");
 				UpdateGui_UpdateDataGridViewColumnsValue(dgvVehicleState, 1, mCore.GetVehicleState().ToStringArray());
+				dgvVehicleStateHeight = dgvVehicleState.Height;
+				showVehicleStateDetail = true;
+
+				UpdateGui_DisplayVehicleStateDetail(false);
 			}
 			catch (Exception Ex)
 			{
@@ -179,6 +187,29 @@ namespace VehicleSimulator.UserInterface
 				}
 			});
 		}
+		private void UpdateGui_DisplayVehicleStateDetail(bool Display)
+		{
+			this.InvokeIfNecessary(() =>
+			{
+				if (Display != showVehicleStateDetail)
+				{
+					if (Display)
+					{
+						UpdateGui_ToolStripItemBackColor(menuStrip1, menuShowVehicleStateDetail, Color.LightGreen);
+						UpdateGui_ToolStripItemText(menuStrip1, menuShowVehicleStateDetail, "Hide Detail");
+						Height += dgvVehicleStateHeight;
+						showVehicleStateDetail = true;
+					}
+					else
+					{
+						UpdateGui_ToolStripItemBackColor(menuStrip1, menuShowVehicleStateDetail, Color.LightPink);
+						UpdateGui_ToolStripItemText(menuStrip1, menuShowVehicleStateDetail, "Show Detail");
+						Height -= dgvVehicleStateHeight;
+						showVehicleStateDetail = false;
+					}
+				}
+			});
+		}
 
 		#region VehicleSimulatorProcess
 		private Base.VehicleSimulatorProcess mCore;
@@ -262,7 +293,7 @@ namespace VehicleSimulator.UserInterface
 		}
 		private void HandleEvent_VehicleSimulatorProcessVehicleSimulatorInfoStateUpdated(DateTime OccurTime, string Name, IVehicleSimulatorInfo VehicleSimulatorInfo)
 		{
-			UpdateGui_ToolStripItemText(statusStrip1, statusLabelLocation, $"({VehicleSimulatorInfo.mPosition.mX},{VehicleSimulatorInfo.mPosition.mY},{VehicleSimulatorInfo.mToward.ToString("F2")})");
+			UpdateGui_ToolStripItemText(statusStrip1, statusLabelLocation, $"{VehicleSimulatorInfo.mName} ({VehicleSimulatorInfo.mPosition.mX},{VehicleSimulatorInfo.mPosition.mY},{VehicleSimulatorInfo.mToward.ToString("F2")})");
 			UpdateGui_UpdateDataGridViewColumnsValue(dgvVehicleState, 1, VehicleSimulatorInfo.ToStringArray());
 		}
 		private void HandleEvent_VehicleSimulatorProcessCommunicatorClientSystemStarted(DateTime OccurTime)
@@ -302,6 +333,10 @@ namespace VehicleSimulator.UserInterface
 			{
 				mCore.CommunicatorClientStartConnect(Ip, Port);
 			}
+		}
+		private void menuShowVehicleStateDetail_Click(object sender, EventArgs e)
+		{
+			UpdateGui_DisplayVehicleStateDetail(!showVehicleStateDetail);
 		}
 		private void btnVehicleSimulatorStartMove_Click(object sender, EventArgs e)
 		{
