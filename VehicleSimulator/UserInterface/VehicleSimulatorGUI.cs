@@ -90,6 +90,7 @@ namespace VehicleSimulator.UserInterface
 			try
 			{
 				UpdateGui_InitializeDgvVehicleState();
+				UpdateGui_UpdateDataGridViewColumnsValue(dgvVehicleState, 1, mCore.GetVehicleState().ToStringArray());
 			}
 			catch (Exception Ex)
 			{

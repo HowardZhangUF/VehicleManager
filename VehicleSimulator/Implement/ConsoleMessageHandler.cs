@@ -137,7 +137,7 @@ namespace VehicleSimulator.Implement
 		}
 		private void HandleSerializableData_Intervene(ResumeMoving Data)
 		{
-			if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mIsInterveneAvailable && rVehicleSimulatorInfo.mIsBeingIntervened && rVehicleSimulatorInfo.mInterveneCommand == "Pause")
+			if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mIsInterveneAvailable && rVehicleSimulatorInfo.mIsBeingIntervened && rVehicleSimulatorInfo.mInterveneCommand == "PauseMoving")
 			{
 				if (Data.Require == null)
 				{

@@ -83,6 +83,10 @@ namespace VehicleSimulator.Base
 				mVehicleStateReporter.Stop();
 			}
 		}
+		public IVehicleSimulatorInfo GetVehicleState()
+		{
+			return mVehicleSimulatorInfo;
+		}
 
 		private void Constructor()
 		{

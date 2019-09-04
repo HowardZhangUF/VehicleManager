@@ -202,7 +202,7 @@ namespace VehicleSimulator.Implement
 		private AGVPath ConvertToAGVPath(IVehicleSimulatorInfo VehicleSimulatorInfo)
 		{
 			AGVPath result = null;
-			if (VehicleSimulatorInfo != null && VehicleSimulatorInfo.mPath != null && VehicleSimulatorInfo.mPath.Count() > 0)
+			if ((VehicleSimulatorInfo != null && VehicleSimulatorInfo.mPath != null && VehicleSimulatorInfo.mPath.Count() > 0) || VehicleSimulatorInfo.mBufferTarget != null)
 			{
 				result = new AGVPath();
 				result.Name = VehicleSimulatorInfo.mName;

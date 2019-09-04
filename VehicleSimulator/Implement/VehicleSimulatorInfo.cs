@@ -412,7 +412,8 @@ namespace VehicleSimulator.Implement
 			if (mIsBeingIntervened) ClearInterveneCommand();
 			mBufferTarget = GenerateIPoint2D(x, y);
 			mIsBeingIntervened = true;
-			mInterveneCommand = $"Insert:({mBufferTarget.mX},{mBufferTarget.mY})";
+			mInterveneCommand = $"InsertMovingBuffer:({mBufferTarget.mX},{mBufferTarget.mY})";
+			if (mThdMoveAlongPath == null || !mThdMoveAlongPath.IsAlive) StartMove(null);
 		}
 		private void SetInterveneCommand_CancelInsert()
 		{
@@ -423,7 +424,7 @@ namespace VehicleSimulator.Implement
 			if (mIsBeingIntervened) ClearInterveneCommand();
 			PauseMove();
 			mIsBeingIntervened = true;
-			mInterveneCommand = "Pause";
+			mInterveneCommand = "PauseMoving";
 		}
 		private void SetInterveneCommand_Resume()
 		{
@@ -463,7 +464,7 @@ namespace VehicleSimulator.Implement
 			{
 				Subtask_Move((double)interval / 1000);
 
-				if (_Path == null || _Path.Count() == 0)
+				if ((_Path == null || _Path.Count() == 0) && mBufferTarget == null)
 				{
 					mState = "Idle";
 					break;
@@ -474,7 +475,7 @@ namespace VehicleSimulator.Implement
 		}
 		private void Subtask_Move(double Time)
 		{
-			if (_Path != null && _Path.Count() > 0 && mState == "Running")
+			if ((_Path != null && _Path.Count() > 0 && mState == "Running") || mBufferTarget != null)
 			{
 				IPoint2D targetPoint = mBufferTarget != null ? mBufferTarget : _Path.First();
 				double targetToward = CalculateVectorAngleInDegree(_Position.mX, _Position.mY, targetPoint.mX, targetPoint.mY);
