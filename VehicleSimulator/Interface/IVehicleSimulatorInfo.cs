@@ -10,39 +10,38 @@ namespace VehicleSimulator.Interface
 
 		string mName { get; }
 		/// <summary>當前狀態</summary>
-		string mState { get; set; }
+		string mState { get; }
 		/// <summary>位置 (mm)</summary>
-		IPoint2D mPosition { get; set; }
+		IPoint2D mPosition { get; }
 		/// <summary>面向 (degree)</summary>
-		double mToward { get; set; }
+		double mToward { get; }
 		/// <summary>當前移動目標點</summary>
-		string mTarget { get; set; }
+		string mTarget { get; }
 		/// <summary>當前移動目標 Buffer 點</summary>
-		IPoint2D mBufferTarget { get; set; }
+		IPoint2D mBufferTarget { get; }
 		/// <summary>平移速度(mm/s)</summary>
-		double mTranslationVelocity { get; set; }
+		double mTranslationVelocity { get; }
 		/// <summary>旋轉速度(mm/s)</summary>
-		double mRotationVeloctiy { get; set; }
+		double mRotationVelocity { get; }
 		/// <summary>匹配度 (%)</summary>
-		double mMapMatch { get; set; }
+		double mMapMatch { get; }
 		/// <summary>電池電量 (%)</summary>
-		double mBattery { get; set; }
+		double mBattery { get; }
 		/// <summary>前方是否有物體擋住導致無法移動</summary>
-		bool mPathBlocked { get; set; }
+		bool mPathBlocked { get; }
 		/// <summary>錯誤訊息</summary>
-		string mAlarmMessage { get; set; }
+		string mAlarmMessage { get; }
 		/// <summary>安全框半徑</summary>
-		int mSafetyFrameRadius { get; set; }
+		int mSafetyFrameRadius { get; }
 		/// <summary>是否可被干預</summary>
-		bool mIsInterveneAvailable { get; set; }
+		bool mIsInterveneAvailable { get; }
 		/// <summary>是否被干預中</summary>
-		bool mIsBeingIntervened { get; set; }
+		bool mIsBeingIntervened { get; }
 		/// <summary>目前被干預中的指令。沒有被干預時，此值會為空字串</summary>
-		string mInterveneCommand { get; set; }
+		string mInterveneCommand { get; }
 		/// <summary>路徑</summary>
 		IEnumerable<IPoint2D> mPath { get; }
 
-		void Set(string mName);
 		/// <summary>設定路徑並開始移動</summary>
 		void StartMove(IEnumerable<IPoint2D> Path);
 		/// <summary>停止移動</summary>

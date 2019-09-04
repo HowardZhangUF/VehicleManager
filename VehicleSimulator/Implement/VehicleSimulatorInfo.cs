@@ -14,325 +14,84 @@ namespace VehicleSimulator.Implement
 	{
 		public event EventHandlerIVehicleSimulator StateUpdated;
 
-		public string mName
-		{
-			get
-			{
-				return _Name;
-			}
-			private set
-			{
-				if (!string.IsNullOrEmpty(value))
-				{
-					_Name = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public string mState
-		{
-			get
-			{
-				return _State;
-			}
-			set
-			{
-				if (!string.IsNullOrEmpty(value) && _State != value)
-				{
-					_State = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public IPoint2D mPosition
-		{
-			get
-			{
-				return _Position;
-			}
-			set
-			{
-				if (value != null)
-				{
-					_Position = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public double mToward
-		{
-			get
-			{
-				return _Toward;
-			}
-			set
-			{
-				if (_Toward != value)
-				{
-					_Toward = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public string mTarget
-		{
-			get
-			{
-				return _Target;
-			}
-			set
-			{
-				if (_Target != value)
-				{
-					_Target = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public IPoint2D mBufferTarget
-		{
-			get
-			{
-				return _BufferTarget;
-			}
-			set
-			{
-				if (_BufferTarget != value)
-				{
-					_BufferTarget = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public double mTranslationVelocity
-		{
-			get
-			{
-				return _TranslationVelocity;
-			}
-			set
-			{
-				if (_TranslationVelocity != value)
-				{
-					_TranslationVelocity = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public double mRotationVeloctiy
-		{
-			get
-			{
-				return _RotationVeloctiy;
-			}
-			set
-			{
-				if (_RotationVeloctiy != value)
-				{
-					_RotationVeloctiy = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public double mMapMatch
-		{
-			get
-			{
-				return _MapMatch;
-			}
-			set
-			{
-				if (_MapMatch != value)
-				{
-					_MapMatch = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public double mBattery
-		{
-			get
-			{
-				return _Battery;
-			}
-			set
-			{
-				if (_Battery != value)
-				{
-					_Battery = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public bool mPathBlocked
-		{
-			get
-			{
-				return _PathBlocked;
-			}
-			set
-			{
-				if (_PathBlocked != value)
-				{
-					_PathBlocked = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public string mAlarmMessage
-		{
-			get
-			{
-				return _AlarmMessage;
-			}
-			set
-			{
-				if (_AlarmMessage != value)
-				{
-					_AlarmMessage = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public int mSafetyFrameRadius
-		{
-			get
-			{
-				return _SafetyFrameRadius;
-			}
-			set
-			{
-				if (_SafetyFrameRadius != value)
-				{
-					_SafetyFrameRadius = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public bool mIsInterveneAvailable
-		{
-			get
-			{
-				return _IsInterveneAvailable;
-			}
-			set
-			{
-				if (_IsInterveneAvailable != value)
-				{
-					_IsInterveneAvailable = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public bool mIsBeingIntervened
-		{
-			get
-			{
-				return _IsBeingIntervened;
-			}
-			set
-			{
-				if (_IsBeingIntervened != value)
-				{
-					_IsBeingIntervened = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public string mInterveneCommand
-		{
-			get
-			{
-				return _InterveneCommand;
-			}
-			set
-			{
-				if (_InterveneCommand != value)
-				{
-					_InterveneCommand = value;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public IEnumerable<IPoint2D> mPath
-		{
-			get
-			{
-				return _Path;
-			}
-			private set
-			{
-				if (value != null)
-				{
-					_Path = value;
-				}
-			}
-		}
+		public const double MAX_TRANSLATION_VELOCITY = 700.0f;
+		public const double MAX_ROTATION_VELOCITY = 30.0f;
 
-		private string _Name = string.Empty;
-		private string _State = string.Empty;
-		private IPoint2D _Position = null;
-		private double _Toward = 0.0f;
-		private string _Target = string.Empty;
-		private IPoint2D _BufferTarget = null;
-		private double _TranslationVelocity = 700.0f;
-		private double _RotationVeloctiy = 30.0f;
-		private double _MapMatch = 0.0f;
-		private double _Battery = 73.1f;
-		private bool _PathBlocked = false;
-		private string _AlarmMessage = string.Empty;
-		private int _SafetyFrameRadius = 500;
-		private bool _IsInterveneAvailable = true;
-		private bool _IsBeingIntervened = false;
-		private string _InterveneCommand = string.Empty;
-		private IEnumerable<IPoint2D> _Path = null;
+		public string mName { get; private set; } = string.Empty;
+		public string mState { get; private set; } = string.Empty; // Running, Pausing, Idling
+		public IPoint2D mPosition { get; private set; } = null;
+		public double mToward { get; private set; } = 0.0f;
+		public string mTarget { get; private set; } = string.Empty;
+		public IPoint2D mBufferTarget { get; private set; } = null;
+		public double mTranslationVelocity { get; private set; } = 0.0f;
+		public double mRotationVelocity { get; private set; } = 0.0f;
+		public double mMapMatch { get; private set; } = 0.0f;
+		public double mBattery { get; private set; } = 0.0f;
+		public bool mPathBlocked { get; private set; } = false;
+		public string mAlarmMessage { get; private set; } = string.Empty;
+		public int mSafetyFrameRadius { get; private set; } = 0;
+		public bool mIsInterveneAvailable { get; private set; } = false;
+		public bool mIsBeingIntervened { get; private set; } = false;
+		public string mInterveneCommand { get; private set; } = string.Empty;
+		public IEnumerable<IPoint2D> mPath { get; private set; } = null;
+
 		private Thread mThdMoveAlongPath = null;
 		private bool[] mThdMoveAlongPathExitFlag = null;
 
 		public VehicleSimulatorInfo(string Name)
 		{
-			Set(Name);
-			_Position = GenerateIPoint2D(0, 0);
-			_Path = new List<IPoint2D>();
-		}
-		public void Set(string Name)
-		{
 			mName = Name;
+			mState = "Idling";
+			mPosition = GenerateIPoint2D(0, 0);
+			mBattery = 73.7f;
+			mSafetyFrameRadius = 500;
+			mIsInterveneAvailable = true;
+			mPath = new List<IPoint2D>();
+			RaiseEvent_StateUpdated();
+
+			InitializeThread();
+		}
+		~VehicleSimulatorInfo()
+		{
+			DestroyThread();
 		}
 		public void StartMove(IEnumerable<IPoint2D> Path)
 		{
 			mPath = Path;
-			if (mState != "Pausing") mState = "Running";
-			mTranslationVelocity = 700.0f;
-			mRotationVeloctiy = 30.0f;
-			if (mThdMoveAlongPath == null || !mThdMoveAlongPath.IsAlive) InitializeThread();
+			mTranslationVelocity = MAX_TRANSLATION_VELOCITY;
+			mRotationVelocity = MAX_ROTATION_VELOCITY;
+			if (mInterveneCommand != "PauseMoving") mState = "Running";
+			RaiseEvent_StateUpdated();
 		}
 		public void StopMove()
 		{
-			if (mThdMoveAlongPath != null) DestroyThread();
-			List<IPoint2D> tmp = _Path.ToList();
+			if (mIsBeingIntervened) ClearInterveneCommand();
+			List<IPoint2D> tmp = mPath.ToList();
 			tmp.Clear();
-			_Path = tmp;
+			mPath = tmp;
 			mTranslationVelocity = 0.0f;
-			mRotationVeloctiy = 0.0f;
-			mState = "Idle";
+			mRotationVelocity = 0.0f;
+			mState = "Idling";
+			RaiseEvent_StateUpdated();
 		}
 		public void PauseMove()
 		{
 			if (mState == "Running")
 			{
 				mTranslationVelocity = 0.0f;
-				mRotationVeloctiy = 0.0f;
+				mRotationVelocity = 0.0f;
 				mState = "Pausing";
+				RaiseEvent_StateUpdated();
 			}
 		}
 		public void ResumeMove()
 		{
 			if (mState == "Pausing")
 			{
-				mTranslationVelocity = 700.0f;
-				mRotationVeloctiy = 30.0f;
+				mTranslationVelocity = MAX_TRANSLATION_VELOCITY;
+				mRotationVelocity = MAX_ROTATION_VELOCITY;
 				mState = "Running";
+				RaiseEvent_StateUpdated();
 			}
 		}
 		public void SetInterveneCommand(string Command, params string[] Paras)
@@ -375,7 +134,7 @@ namespace VehicleSimulator.Implement
 				mTarget,
 				mBufferTarget?.ToString(),
 				mTranslationVelocity.ToString("F2"),
-				mRotationVeloctiy.ToString("F2"),
+				mRotationVelocity.ToString("F2"),
 				mMapMatch.ToString("F2"),
 				mBattery.ToString("F2"),
 				mPathBlocked.ToString(),
@@ -410,10 +169,13 @@ namespace VehicleSimulator.Implement
 		private void SetInterveneCommand_Insert(int x, int y)
 		{
 			if (mIsBeingIntervened) ClearInterveneCommand();
+			mTranslationVelocity = MAX_TRANSLATION_VELOCITY;
+			mRotationVelocity = MAX_ROTATION_VELOCITY;
 			mBufferTarget = GenerateIPoint2D(x, y);
 			mIsBeingIntervened = true;
 			mInterveneCommand = $"InsertMovingBuffer:({mBufferTarget.mX},{mBufferTarget.mY})";
-			if (mThdMoveAlongPath == null || !mThdMoveAlongPath.IsAlive) StartMove(null);
+			mState = "Running";
+			RaiseEvent_StateUpdated();
 		}
 		private void SetInterveneCommand_CancelInsert()
 		{
@@ -425,6 +187,7 @@ namespace VehicleSimulator.Implement
 			PauseMove();
 			mIsBeingIntervened = true;
 			mInterveneCommand = "PauseMoving";
+			RaiseEvent_StateUpdated();
 		}
 		private void SetInterveneCommand_Resume()
 		{
@@ -434,17 +197,18 @@ namespace VehicleSimulator.Implement
 		{
 			if (!string.IsNullOrEmpty(mInterveneCommand))
 			{
-				if (mInterveneCommand.StartsWith("Insert"))
+				if (mInterveneCommand.StartsWith("InsertMovingBuffer"))
 				{
 					mBufferTarget = null;
 				}
-				else if (mInterveneCommand.StartsWith("Pause"))
+				else if (mInterveneCommand.StartsWith("PauseMoving"))
 				{
 					ResumeMove();
 				}
 			}
 			mIsBeingIntervened = false;
 			mInterveneCommand = string.Empty;
+			RaiseEvent_StateUpdated();
 		}
 		protected virtual void RaiseEvent_StateUpdated(bool Sync = true)
 		{
@@ -460,14 +224,19 @@ namespace VehicleSimulator.Implement
 		private void Task_MoveAlongPath(bool[] ExitFlag)
 		{
 			int interval = 200;
-			while (!ExitFlag[0] && (mState == "Running" || mState == "Pausing"))
+			while (!ExitFlag[0])
 			{
-				Subtask_Move((double)interval / 1000);
-
-				if ((_Path == null || _Path.Count() == 0) && mBufferTarget == null)
+				if (mState == "Running")
 				{
-					mState = "Idle";
-					break;
+					if (mBufferTarget == null && (mPath == null || mPath.Count() == 0))
+					{
+						mState = "Idling";
+						RaiseEvent_StateUpdated();
+					}
+					else
+					{
+						Subtask_Move((double)interval / 1000);
+					}
 				}
 
 				Thread.Sleep(interval);
@@ -475,17 +244,17 @@ namespace VehicleSimulator.Implement
 		}
 		private void Subtask_Move(double Time)
 		{
-			if ((_Path != null && _Path.Count() > 0 && mState == "Running") || mBufferTarget != null)
+			if (mBufferTarget != null || (mPath != null && mPath.Count() > 0))
 			{
-				IPoint2D targetPoint = mBufferTarget != null ? mBufferTarget : _Path.First();
-				double targetToward = CalculateVectorAngleInDegree(_Position.mX, _Position.mY, targetPoint.mX, targetPoint.mY);
+				IPoint2D targetPoint = mBufferTarget != null ? mBufferTarget : mPath.First();
+				double targetToward = CalculateVectorAngleInDegree(mPosition.mX, mPosition.mY, targetPoint.mX, targetPoint.mY);
 
-				GetNextMove(_Position.mX, _Position.mY, mToward, targetPoint.mX, targetPoint.mY, targetToward, _TranslationVelocity, _RotationVeloctiy, Time, out int NextX, out int NextY, out double NextToward);
+				GetNextMove(mPosition.mX, mPosition.mY, mToward, targetPoint.mX, targetPoint.mY, targetToward, mTranslationVelocity, mRotationVelocity, Time, out int NextX, out int NextY, out double NextToward);
 
 				mPosition = GenerateIPoint2D(NextX, NextY);
 				mToward = NextToward;
 
-				if (IsApproximatelyEqual(_Position.mX, _Position.mY, _Toward, targetPoint.mX, targetPoint.mY, targetToward))
+				if (IsApproximatelyEqual(mPosition.mX, mPosition.mY, mToward, targetPoint.mX, targetPoint.mY, targetToward))
 				{
 					if (mBufferTarget != null)
 					{
@@ -494,11 +263,12 @@ namespace VehicleSimulator.Implement
 					}
 					else
 					{
-						List<IPoint2D> tmp = _Path.ToList();
+						List<IPoint2D> tmp = mPath.ToList();
 						tmp.RemoveAt(0);
-						_Path = tmp;
+						mPath = tmp;
 					}
 				}
+				RaiseEvent_StateUpdated();
 			}
 		}
 		private static void GetNextMove(int CurrentX, int CurrentY, double CurrentToward, int TargetX, int TargetY, double TargetToward, double TranslationVelocity, double RotationVelocity, double Time, out int NextX, out int NextY, out double NextToward)
