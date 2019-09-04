@@ -235,7 +235,7 @@ namespace TrafficControlTest.UserInterface
 				{
 					GLCMD.CMD.AddAGV(mIconIdsOfVehicle[VehicleInfo.mName], VehicleInfo.mName, VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY, VehicleInfo.mToward);
 				}
-				if (VehicleInfo.mPosition != null && VehicleInfo.mPath != null && VehicleInfo.mPath.Count() > 0)
+				if (VehicleInfo.mPosition != null && VehicleInfo.mPath != null)
 				{
 					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mIconIdsOfVehiclePath[VehicleInfo.mName], true, (line) =>
 					{
