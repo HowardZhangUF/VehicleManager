@@ -41,6 +41,7 @@
 			this.menuHostConnection = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuHostConnect = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuHostIpPort = new System.Windows.Forms.ToolStripTextBox();
+			this.menuShowVehicleStateDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.btnVehicleSimulatorStartMove = new System.Windows.Forms.Button();
 			this.txtVehicleSimulatorPath = new System.Windows.Forms.TextBox();
@@ -54,7 +55,6 @@
 			this.btnVehicleSimulatorIntervenePause = new System.Windows.Forms.Button();
 			this.btnVehicleSimulatorInterveneResume = new System.Windows.Forms.Button();
 			this.dgvVehicleState = new System.Windows.Forms.DataGridView();
-			this.menuShowVehicleStateDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -108,6 +108,7 @@
 			this.statusStrip1.Location = new System.Drawing.Point(0, 666);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(629, 24);
+			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -155,7 +156,7 @@
 			// menuHostConnect
 			// 
 			this.menuHostConnect.Name = "menuHostConnect";
-			this.menuHostConnect.Size = new System.Drawing.Size(216, 26);
+			this.menuHostConnect.Size = new System.Drawing.Size(166, 26);
 			this.menuHostConnect.Text = "Connect";
 			this.menuHostConnect.Click += new System.EventHandler(this.menuHostConnect_Click);
 			// 
@@ -164,6 +165,14 @@
 			this.menuHostIpPort.Name = "menuHostIpPort";
 			this.menuHostIpPort.Size = new System.Drawing.Size(100, 27);
 			this.menuHostIpPort.Text = "127.0.0.1:8000";
+			// 
+			// menuShowVehicleStateDetail
+			// 
+			this.menuShowVehicleStateDetail.BackColor = System.Drawing.Color.LightPink;
+			this.menuShowVehicleStateDetail.Name = "menuShowVehicleStateDetail";
+			this.menuShowVehicleStateDetail.Size = new System.Drawing.Size(104, 23);
+			this.menuShowVehicleStateDetail.Text = "Show Detail";
+			this.menuShowVehicleStateDetail.Click += new System.EventHandler(this.menuShowVehicleStateDetail_Click);
 			// 
 			// tableLayoutPanel1
 			// 
@@ -329,14 +338,6 @@
 			this.dgvVehicleState.Size = new System.Drawing.Size(601, 521);
 			this.dgvVehicleState.TabIndex = 6;
 			// 
-			// menuShowVehicleStateDetail
-			// 
-			this.menuShowVehicleStateDetail.BackColor = System.Drawing.Color.LightPink;
-			this.menuShowVehicleStateDetail.Name = "menuShowVehicleStateDetail";
-			this.menuShowVehicleStateDetail.Size = new System.Drawing.Size(104, 23);
-			this.menuShowVehicleStateDetail.Text = "Show Detail";
-			this.menuShowVehicleStateDetail.Click += new System.EventHandler(this.menuShowVehicleStateDetail_Click);
-			// 
 			// VehicleSimulatorGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -346,8 +347,10 @@
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.menuStrip1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.ImeMode = System.Windows.Forms.ImeMode.Off;
 			this.MainMenuStrip = this.menuStrip1;
+			this.MaximizeBox = false;
 			this.Name = "VehicleSimulatorGUI";
 			this.Text = "VehicleSimulatorGUI";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VehicleSimulatorGUI_FormClosing);
