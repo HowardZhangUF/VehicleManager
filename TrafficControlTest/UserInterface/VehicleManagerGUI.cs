@@ -43,7 +43,9 @@ namespace TrafficControlTest.UserInterface
 		{
 			try
 			{
-
+				btnDisplayManualControl_Click(null, null);
+				btnDisplayMap_Click(null, null);
+				btnDisplayPnlLeftMain_Click(null, null);
 			}
 			catch (Exception Ex)
 			{
@@ -90,6 +92,51 @@ namespace TrafficControlTest.UserInterface
 			}
 		}
 
+		private void btnFormMinimize_Click(object sender, EventArgs e)
+		{
+			WindowState = FormWindowState.Minimized;
+		}
+		private void btnFormClose_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+		private void btnDisplayPnlLeftMain_Click(object sender, EventArgs e)
+		{
+			UpdateGui_DisplayPnlLeftMain(!pnlLeftMainDisplay);
+		}
+		private void btnDisplayManualControl_Click(object sender, EventArgs e)
+		{
+			if (!pnlLeftMainDisplay) UpdateGui_DisplayPnlLeftMain(true);
+			pnlLeftSideMarker.Height = btnDisplayManualControl.Height;
+			pnlLeftSideMarker.Top = btnDisplayManualControl.Top;
+		}
+		private void btnDisplayMap_Click(object sender, EventArgs e)
+		{
+			pnlTopMarker.Width = btnDisplayMap.Width;
+			pnlTopMarker.Left = btnDisplayMap.Left;
+		}
+		private void btnDisplayVehicle_Click(object sender, EventArgs e)
+		{
+			pnlTopMarker.Width = btnDisplayVehicle.Width;
+			pnlTopMarker.Left = btnDisplayVehicle.Left;
+		}
+		private void btnDisplayMission_Click(object sender, EventArgs e)
+		{
+			pnlTopMarker.Width = btnDisplayMission.Width;
+			pnlTopMarker.Left = btnDisplayMission.Left;
+		}
+		private void btnDisplaySetting_Click(object sender, EventArgs e)
+		{
+			pnlTopMarker.Width = btnDisplaySetting.Width;
+			pnlTopMarker.Left = btnDisplaySetting.Left;
+		}
+		private void btnDisplayLog_Click(object sender, EventArgs e)
+		{
+			pnlTopMarker.Width = btnDisplayLog.Width;
+			pnlTopMarker.Left = btnDisplayLog.Left;
+		}
+
+		#region General
 		private void UpdateGui_ClearComboBoxItems(ComboBox ComboBox)
 		{
 			ComboBox.InvokeIfNecessary(() => ComboBox.Items.Clear());
@@ -103,8 +150,9 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_ClearComboBoxItems(ComboBox);
 			ComboBox.InvokeIfNecessary(() => ComboBox.Items.AddRange(Items));
 		}
+		#endregion
 
-		private void UpdateVehicleNameList()
+		private void UpdateGui_UpdateVehicleNameList()
 		{
 			string[] vehicleNames = mCore.GetVehicleNameList()?.ToArray();
 			if (vehicleNames == null || vehicleNames.Length == 0)
@@ -117,6 +165,28 @@ namespace TrafficControlTest.UserInterface
 				UpdateGui_ClearComboBoxSelectedItem(cbVehicleList);
 			}
 		}
+		private void UpdateGui_DisplayPnlLeftMain(bool Display)
+		{
+			if (Display)
+			{
+				if (pnlLeftMainDisplay == false)
+				{
+					pnlLeftMain.Width = pnlLeftMainWidth;
+					pnlLeftMainDisplay = true;
+				}
+			}
+			else
+			{
+				if (pnlLeftMainDisplay == true)
+				{
+					pnlLeftMain.Width = 0;
+					pnlLeftMainDisplay = false;
+				}
+			}
+		}
+
+		bool pnlLeftMainDisplay = true;
+		int pnlLeftMainWidth = 400;
 
 		#region VehicleManagerProcess
 		VehicleManagerProcess mCore;
@@ -164,12 +234,12 @@ namespace TrafficControlTest.UserInterface
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			RegisterIconId(VehicleInfo);
-			UpdateVehicleNameList();
+			UpdateGui_UpdateVehicleNameList();
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			EraseIcon(VehicleInfo);
-			UpdateVehicleNameList();
+			UpdateGui_UpdateVehicleNameList();
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
