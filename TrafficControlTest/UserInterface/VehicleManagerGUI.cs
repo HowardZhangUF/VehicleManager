@@ -7,11 +7,15 @@ using System.Linq;
 using System.Windows.Forms;
 using TrafficControlTest.Base;
 using TrafficControlTest.Interface;
+using TrafficControlTest.UserControl;
+using static TrafficControlTest.UserControl.UCVehicleInfoList;
 
 namespace TrafficControlTest.UserInterface
 {
 	public partial class VehicleManagerGUI : Form
 	{
+		private object mLockOfPnlVehicleOverviewControls = new object();
+
 		public VehicleManagerGUI()
 		{
 			InitializeComponent();
@@ -110,7 +114,7 @@ namespace TrafficControlTest.UserInterface
 			pnlLeftSideMarker.Height = btnDisplayVehicleOverview.Height;
 			pnlLeftSideMarker.Top = btnDisplayVehicleOverview.Top;
 
-			ucVehicleInfoList1.BringToFront();
+			pnlVehicleOverview.BringToFront();
 		}
 		private void btnDisplayManualControl_Click(object sender, EventArgs e)
 		{
@@ -118,7 +122,7 @@ namespace TrafficControlTest.UserInterface
 			pnlLeftSideMarker.Height = btnDisplayManualControl.Height;
 			pnlLeftSideMarker.Top = btnDisplayManualControl.Top;
 
-			ucVehicleManualControl1.BringToFront();
+			pnlVehicleManualControl.BringToFront();
 		}
 		private void btnDisplayAbout_Click(object sender, EventArgs e)
 		{
@@ -126,7 +130,7 @@ namespace TrafficControlTest.UserInterface
 			pnlLeftSideMarker.Height = btnDisplayAbout.Height;
 			pnlLeftSideMarker.Top = btnDisplayAbout.Top;
 
-			ucAbout1.BringToFront();
+			pnlAbout.BringToFront();
 		}
 		private void btnDisplayMap_Click(object sender, EventArgs e)
 		{
@@ -202,18 +206,67 @@ namespace TrafficControlTest.UserInterface
 				}
 			}
 		}
+
+		#region PnlVehicleOverview
 		private void UpdateGui_AddVehicleOverview(string Id, string Battery, string State)
 		{
-			ucVehicleInfoList1.InvokeIfNecessary(() => ucVehicleInfoList1.Add(Id, Battery, State));
+			pnlVehicleOverview.InvokeIfNecessary(() =>
+			{
+				UCVehicleInfo ucVehicleInfo = new UCVehicleInfo() { mId = Id, mBattery = Battery, mState = State, mBorderColor = System.Drawing.Color.FromArgb(255, 125, 0) };
+				string tmpName = ucVehicleInfo.Name;
+				lock (mLockOfPnlVehicleOverviewControls)
+				{
+					if (!pnlVehicleOverview.Controls.ContainsKey(tmpName))
+					{
+						pnlVehicleOverview.Controls.Add(ucVehicleInfo);
+						pnlVehicleOverview.Controls[tmpName].Dock = DockStyle.Top;
+						pnlVehicleOverview.Controls[tmpName].Height = UCVehicleInfo.DefaultHeight;
+					}
+				}
+			});
 		}
-		private void UpdateGui_SetVehicleOverview(string Id, UserControl.UCVehicleInfoList.Property Property, string Value)
+		private void UpdateGui_SetVehicleOverview(string Id, Property Property, string Value)
 		{
-			ucVehicleInfoList1.InvokeIfNecessary(() => ucVehicleInfoList1.Set(Id, Property, Value));
+			pnlVehicleOverview.InvokeIfNecessary(() =>
+			{
+				string tmpName = UCVehicleInfo.PreFix + Id;
+				lock (mLockOfPnlVehicleOverviewControls)
+				{
+					if (pnlVehicleOverview.Controls.ContainsKey(tmpName))
+					{
+						switch (Property)
+						{
+							case Property.Id:
+								(pnlVehicleOverview.Controls[tmpName] as UCVehicleInfo).mId = Value;
+								break;
+							case Property.Battery:
+								(pnlVehicleOverview.Controls[tmpName] as UCVehicleInfo).mBattery = Value;
+								break;
+							case Property.State:
+								(pnlVehicleOverview.Controls[tmpName] as UCVehicleInfo).mState = Value;
+								break;
+							default:
+								break;
+						}
+					}
+				}
+			});
 		}
 		private void UpdateGui_RemoveVehicleOverview(string Id)
 		{
-			ucVehicleInfoList1.InvokeIfNecessary(() => ucVehicleInfoList1.Remove(Id));
+			pnlVehicleOverview.InvokeIfNecessary(() =>
+			{
+				string tmpName = UCVehicleInfo.PreFix + Id;
+				lock (mLockOfPnlVehicleOverviewControls)
+				{
+					if (pnlVehicleOverview.Controls.ContainsKey(tmpName))
+					{
+						pnlVehicleOverview.Controls.RemoveByKey(tmpName);
+					}
+				}
+			});
 		}
+		#endregion
 
 		bool pnlLeftMainDisplay = true;
 		int pnlLeftMainWidth = 400;

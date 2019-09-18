@@ -51,10 +51,6 @@
 			this.btnDisplayVehicleOverview = new System.Windows.Forms.Button();
 			this.btnDisplayPnlLeftMain = new System.Windows.Forms.Button();
 			this.btnDisplaySetting = new System.Windows.Forms.Button();
-			this.pnlLeftMain = new System.Windows.Forms.Panel();
-			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
-			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UCVehicleManualControl();
-			this.ucVehicleInfoList1 = new TrafficControlTest.UserControl.UCVehicleInfoList();
 			this.pnlTop = new System.Windows.Forms.Panel();
 			this.pnlTopMarker = new System.Windows.Forms.Panel();
 			this.btnDisplayLog = new System.Windows.Forms.Button();
@@ -62,12 +58,20 @@
 			this.btnDisplayVehicle = new System.Windows.Forms.Button();
 			this.btnDisplayMap = new System.Windows.Forms.Button();
 			this.pnlRightMain = new System.Windows.Forms.Panel();
+			this.pnlLeftMain = new System.Windows.Forms.Panel();
+			this.pnlAbout = new System.Windows.Forms.Panel();
+			this.label3 = new System.Windows.Forms.Label();
+			this.pnlVehicleManualControl = new System.Windows.Forms.Panel();
+			this.label2 = new System.Windows.Forms.Label();
+			this.pnlVehicleOverview = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlLeftSide.SuspendLayout();
-			this.pnlLeftMain.SuspendLayout();
 			this.pnlTop.SuspendLayout();
 			this.pnlRightMain.SuspendLayout();
+			this.pnlLeftMain.SuspendLayout();
+			this.pnlAbout.SuspendLayout();
+			this.pnlVehicleManualControl.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gluiCtrl1
@@ -360,49 +364,6 @@
 			this.btnDisplaySetting.UseVisualStyleBackColor = true;
 			this.btnDisplaySetting.Click += new System.EventHandler(this.btnDisplaySetting_Click);
 			// 
-			// pnlLeftMain
-			// 
-			this.pnlLeftMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.pnlLeftMain.Controls.Add(this.ucAbout1);
-			this.pnlLeftMain.Controls.Add(this.ucVehicleManualControl1);
-			this.pnlLeftMain.Controls.Add(this.ucVehicleInfoList1);
-			this.pnlLeftMain.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlLeftMain.Location = new System.Drawing.Point(50, 50);
-			this.pnlLeftMain.Name = "pnlLeftMain";
-			this.pnlLeftMain.Size = new System.Drawing.Size(400, 650);
-			this.pnlLeftMain.TabIndex = 6;
-			// 
-			// ucAbout1
-			// 
-			this.ucAbout1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.ucAbout1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ucAbout1.ForeColor = System.Drawing.Color.White;
-			this.ucAbout1.Location = new System.Drawing.Point(0, 0);
-			this.ucAbout1.Name = "ucAbout1";
-			this.ucAbout1.Size = new System.Drawing.Size(400, 650);
-			this.ucAbout1.TabIndex = 7;
-			// 
-			// ucVehicleManualControl1
-			// 
-			this.ucVehicleManualControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.ucVehicleManualControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ucVehicleManualControl1.ForeColor = System.Drawing.Color.White;
-			this.ucVehicleManualControl1.Location = new System.Drawing.Point(0, 0);
-			this.ucVehicleManualControl1.Name = "ucVehicleManualControl1";
-			this.ucVehicleManualControl1.Size = new System.Drawing.Size(400, 650);
-			this.ucVehicleManualControl1.TabIndex = 6;
-			// 
-			// ucVehicleInfoList1
-			// 
-			this.ucVehicleInfoList1.AutoScroll = true;
-			this.ucVehicleInfoList1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.ucVehicleInfoList1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ucVehicleInfoList1.ForeColor = System.Drawing.Color.White;
-			this.ucVehicleInfoList1.Location = new System.Drawing.Point(0, 0);
-			this.ucVehicleInfoList1.Name = "ucVehicleInfoList1";
-			this.ucVehicleInfoList1.Size = new System.Drawing.Size(400, 650);
-			this.ucVehicleInfoList1.TabIndex = 5;
-			// 
 			// pnlTop
 			// 
 			this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
@@ -505,6 +466,63 @@
 			this.pnlRightMain.Size = new System.Drawing.Size(850, 600);
 			this.pnlRightMain.TabIndex = 8;
 			// 
+			// pnlLeftMain
+			// 
+			this.pnlLeftMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.pnlLeftMain.Controls.Add(this.pnlAbout);
+			this.pnlLeftMain.Controls.Add(this.pnlVehicleManualControl);
+			this.pnlLeftMain.Controls.Add(this.pnlVehicleOverview);
+			this.pnlLeftMain.Dock = System.Windows.Forms.DockStyle.Left;
+			this.pnlLeftMain.Location = new System.Drawing.Point(50, 50);
+			this.pnlLeftMain.Name = "pnlLeftMain";
+			this.pnlLeftMain.Size = new System.Drawing.Size(400, 650);
+			this.pnlLeftMain.TabIndex = 6;
+			// 
+			// pnlAbout
+			// 
+			this.pnlAbout.Controls.Add(this.label3);
+			this.pnlAbout.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlAbout.Location = new System.Drawing.Point(0, 0);
+			this.pnlAbout.Name = "pnlAbout";
+			this.pnlAbout.Size = new System.Drawing.Size(400, 650);
+			this.pnlAbout.TabIndex = 1;
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(30, 30);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(42, 15);
+			this.label3.TabIndex = 0;
+			this.label3.Text = "About";
+			// 
+			// pnlVehicleManualControl
+			// 
+			this.pnlVehicleManualControl.Controls.Add(this.label2);
+			this.pnlVehicleManualControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlVehicleManualControl.Location = new System.Drawing.Point(0, 0);
+			this.pnlVehicleManualControl.Name = "pnlVehicleManualControl";
+			this.pnlVehicleManualControl.Size = new System.Drawing.Size(400, 650);
+			this.pnlVehicleManualControl.TabIndex = 0;
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(30, 30);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(97, 15);
+			this.label2.TabIndex = 0;
+			this.label2.Text = "Vehicle Control";
+			// 
+			// pnlVehicleOverview
+			// 
+			this.pnlVehicleOverview.AutoScroll = true;
+			this.pnlVehicleOverview.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlVehicleOverview.Location = new System.Drawing.Point(0, 0);
+			this.pnlVehicleOverview.Name = "pnlVehicleOverview";
+			this.pnlVehicleOverview.Size = new System.Drawing.Size(400, 650);
+			this.pnlVehicleOverview.TabIndex = 0;
+			// 
 			// VehicleManagerGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -529,9 +547,13 @@
 			this.tableLayoutPanel1.PerformLayout();
 			this.pnlTopSide.ResumeLayout(false);
 			this.pnlLeftSide.ResumeLayout(false);
-			this.pnlLeftMain.ResumeLayout(false);
 			this.pnlTop.ResumeLayout(false);
 			this.pnlRightMain.ResumeLayout(false);
+			this.pnlLeftMain.ResumeLayout(false);
+			this.pnlAbout.ResumeLayout(false);
+			this.pnlAbout.PerformLayout();
+			this.pnlVehicleManualControl.ResumeLayout(false);
+			this.pnlVehicleManualControl.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -550,7 +572,6 @@
 		private System.Windows.Forms.Panel pnlTopSide;
 		private System.Windows.Forms.Panel pnlBtmSide;
 		private System.Windows.Forms.Panel pnlLeftSide;
-		private System.Windows.Forms.Panel pnlLeftMain;
 		private System.Windows.Forms.Panel pnlTop;
 		private System.Windows.Forms.Panel pnlRightMain;
 		private System.Windows.Forms.Button btnDisplayPnlLeftMain;
@@ -568,8 +589,11 @@
 		private System.Windows.Forms.Button btnDisplayVehicle;
 		private System.Windows.Forms.Button btnDisplayManualControl;
 		private System.Windows.Forms.Button btnDisplayVehicleOverview;
-		private UserControl.UCVehicleInfoList ucVehicleInfoList1;
-		private UserControl.UCVehicleManualControl ucVehicleManualControl1;
-		private UserControl.UCAbout ucAbout1;
+		private System.Windows.Forms.Panel pnlLeftMain;
+		private System.Windows.Forms.Panel pnlVehicleOverview;
+		private System.Windows.Forms.Panel pnlVehicleManualControl;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Panel pnlAbout;
+		private System.Windows.Forms.Label label3;
 	}
 }
