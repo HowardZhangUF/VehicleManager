@@ -104,7 +104,6 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_DisplayPnlLeftMain(!pnlLeftMainDisplay);
 		}
-
 		private void btnDisplayVehicleOverview_Click(object sender, EventArgs e)
 		{
 			if (!pnlLeftMainDisplay) UpdateGui_DisplayPnlLeftMain(true);
@@ -112,7 +111,6 @@ namespace TrafficControlTest.UserInterface
 			pnlLeftSideMarker.Top = btnDisplayVehicleOverview.Top;
 
 			ucVehicleInfoList1.BringToFront();
-			pnlLeftSideMarker.BringToFront();
 		}
 		private void btnDisplayManualControl_Click(object sender, EventArgs e)
 		{
@@ -120,7 +118,15 @@ namespace TrafficControlTest.UserInterface
 			pnlLeftSideMarker.Height = btnDisplayManualControl.Height;
 			pnlLeftSideMarker.Top = btnDisplayManualControl.Top;
 
-			pnlLeftSideMarker.BringToFront();
+			ucVehicleManualControl1.BringToFront();
+		}
+		private void btnDisplayAbout_Click(object sender, EventArgs e)
+		{
+			if (!pnlLeftMainDisplay) UpdateGui_DisplayPnlLeftMain(true);
+			pnlLeftSideMarker.Height = btnDisplayAbout.Height;
+			pnlLeftSideMarker.Top = btnDisplayAbout.Top;
+
+			ucAbout1.BringToFront();
 		}
 		private void btnDisplayMap_Click(object sender, EventArgs e)
 		{

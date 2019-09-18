@@ -112,6 +112,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrashCan\TrafficControlTestProcess.cs" />
     <Compile Include="TrashCan\TrafficController.cs" />
+    <Compile Include="UserControl\UCAbout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UCAbout.Designer.cs">
+      <DependentUpon>UCAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UCVehicleManualControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UCVehicleManualControl.Designer.cs">
+      <DependentUpon>UCVehicleManualControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UCVehicleInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,6 +156,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UserControl\UCAbout.resx">
+      <DependentUpon>UCAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UCVehicleManualControl.resx">
+      <DependentUpon>UCVehicleManualControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UCVehicleInfo.resx">
       <DependentUpon>UCVehicleInfo.cs</DependentUpon>
     </EmbeddedResource>

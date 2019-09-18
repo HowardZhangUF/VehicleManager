@@ -39,11 +39,11 @@
 			this.btnInterveneResumeMoving = new System.Windows.Forms.Button();
 			this.cbVehicleList = new System.Windows.Forms.ComboBox();
 			this.pnlTopSide = new System.Windows.Forms.Panel();
-			this.btnAbout = new System.Windows.Forms.Button();
 			this.lblFormTitle = new System.Windows.Forms.Label();
 			this.lblFormIcon = new System.Windows.Forms.Label();
 			this.btnFormMinimize = new System.Windows.Forms.Button();
 			this.btnFormClose = new System.Windows.Forms.Button();
+			this.btnDisplayAbout = new System.Windows.Forms.Button();
 			this.pnlBtmSide = new System.Windows.Forms.Panel();
 			this.pnlLeftSide = new System.Windows.Forms.Panel();
 			this.pnlLeftSideMarker = new System.Windows.Forms.Panel();
@@ -52,6 +52,8 @@
 			this.btnDisplayPnlLeftMain = new System.Windows.Forms.Button();
 			this.btnDisplaySetting = new System.Windows.Forms.Button();
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
+			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
+			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UCVehicleManualControl();
 			this.ucVehicleInfoList1 = new TrafficControlTest.UserControl.UCVehicleInfoList();
 			this.pnlTop = new System.Windows.Forms.Panel();
 			this.pnlTopMarker = new System.Windows.Forms.Panel();
@@ -197,7 +199,6 @@
 			// pnlTopSide
 			// 
 			this.pnlTopSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-			this.pnlTopSide.Controls.Add(this.btnAbout);
 			this.pnlTopSide.Controls.Add(this.lblFormTitle);
 			this.pnlTopSide.Controls.Add(this.lblFormIcon);
 			this.pnlTopSide.Controls.Add(this.btnFormMinimize);
@@ -207,22 +208,6 @@
 			this.pnlTopSide.Name = "pnlTopSide";
 			this.pnlTopSide.Size = new System.Drawing.Size(1300, 50);
 			this.pnlTopSide.TabIndex = 3;
-			// 
-			// btnAbout
-			// 
-			this.btnAbout.Dock = System.Windows.Forms.DockStyle.Right;
-			this.btnAbout.FlatAppearance.BorderSize = 0;
-			this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnAbout.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnAbout.Image")));
-			this.btnAbout.Location = new System.Drawing.Point(1060, 0);
-			this.btnAbout.Name = "btnAbout";
-			this.btnAbout.Size = new System.Drawing.Size(140, 50);
-			this.btnAbout.TabIndex = 7;
-			this.btnAbout.Text = "  About";
-			this.btnAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.btnAbout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-			this.btnAbout.UseVisualStyleBackColor = true;
 			// 
 			// lblFormTitle
 			// 
@@ -272,6 +257,22 @@
 			this.btnFormClose.UseVisualStyleBackColor = true;
 			this.btnFormClose.Click += new System.EventHandler(this.btnFormClose_Click);
 			// 
+			// btnDisplayAbout
+			// 
+			this.btnDisplayAbout.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.btnDisplayAbout.FlatAppearance.BorderSize = 0;
+			this.btnDisplayAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDisplayAbout.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnDisplayAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayAbout.Image")));
+			this.btnDisplayAbout.Location = new System.Drawing.Point(0, 600);
+			this.btnDisplayAbout.Name = "btnDisplayAbout";
+			this.btnDisplayAbout.Size = new System.Drawing.Size(50, 50);
+			this.btnDisplayAbout.TabIndex = 7;
+			this.btnDisplayAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.btnDisplayAbout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+			this.btnDisplayAbout.UseVisualStyleBackColor = true;
+			this.btnDisplayAbout.Click += new System.EventHandler(this.btnDisplayAbout_Click);
+			// 
 			// pnlBtmSide
 			// 
 			this.pnlBtmSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
@@ -285,6 +286,7 @@
 			// 
 			this.pnlLeftSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.pnlLeftSide.Controls.Add(this.pnlLeftSideMarker);
+			this.pnlLeftSide.Controls.Add(this.btnDisplayAbout);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayManualControl);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayVehicleOverview);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayPnlLeftMain);
@@ -361,12 +363,34 @@
 			// pnlLeftMain
 			// 
 			this.pnlLeftMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.pnlLeftMain.Controls.Add(this.ucAbout1);
+			this.pnlLeftMain.Controls.Add(this.ucVehicleManualControl1);
 			this.pnlLeftMain.Controls.Add(this.ucVehicleInfoList1);
 			this.pnlLeftMain.Dock = System.Windows.Forms.DockStyle.Left;
 			this.pnlLeftMain.Location = new System.Drawing.Point(50, 50);
 			this.pnlLeftMain.Name = "pnlLeftMain";
 			this.pnlLeftMain.Size = new System.Drawing.Size(400, 650);
 			this.pnlLeftMain.TabIndex = 6;
+			// 
+			// ucAbout1
+			// 
+			this.ucAbout1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucAbout1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucAbout1.ForeColor = System.Drawing.Color.White;
+			this.ucAbout1.Location = new System.Drawing.Point(0, 0);
+			this.ucAbout1.Name = "ucAbout1";
+			this.ucAbout1.Size = new System.Drawing.Size(400, 650);
+			this.ucAbout1.TabIndex = 7;
+			// 
+			// ucVehicleManualControl1
+			// 
+			this.ucVehicleManualControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucVehicleManualControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucVehicleManualControl1.ForeColor = System.Drawing.Color.White;
+			this.ucVehicleManualControl1.Location = new System.Drawing.Point(0, 0);
+			this.ucVehicleManualControl1.Name = "ucVehicleManualControl1";
+			this.ucVehicleManualControl1.Size = new System.Drawing.Size(400, 650);
+			this.ucVehicleManualControl1.TabIndex = 6;
 			// 
 			// ucVehicleInfoList1
 			// 
@@ -540,10 +564,12 @@
 		private System.Windows.Forms.Button btnDisplayLog;
 		private System.Windows.Forms.Label lblFormIcon;
 		private System.Windows.Forms.Label lblFormTitle;
-		private System.Windows.Forms.Button btnAbout;
+		private System.Windows.Forms.Button btnDisplayAbout;
 		private System.Windows.Forms.Button btnDisplayVehicle;
 		private System.Windows.Forms.Button btnDisplayManualControl;
 		private System.Windows.Forms.Button btnDisplayVehicleOverview;
 		private UserControl.UCVehicleInfoList ucVehicleInfoList1;
+		private UserControl.UCVehicleManualControl ucVehicleManualControl1;
+		private UserControl.UCAbout ucAbout1;
 	}
 }
