@@ -96,6 +96,10 @@ namespace TrafficControlTest.Base
 				}
 			}
 		}
+		public int GetVehicleCount()
+		{
+			return mVehicleInfoManager.GetNames() == null ? 0 : mVehicleInfoManager.GetNames().Count;
+		}
 		public List<string> GetVehicleNameList()
 		{
 			return mVehicleInfoManager.GetNames();

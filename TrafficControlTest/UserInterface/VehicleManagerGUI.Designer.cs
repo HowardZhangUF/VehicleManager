@@ -82,8 +82,15 @@
 			this.pnlRightMainBottom = new System.Windows.Forms.Panel();
 			this.pnlRightMainLeft = new System.Windows.Forms.Panel();
 			this.pnlRightMainRight = new System.Windows.Forms.Panel();
+			this.pnlConnection = new System.Windows.Forms.Panel();
+			this.pnlConnectionTop = new System.Windows.Forms.Panel();
+			this.pnlConnectionBottom = new System.Windows.Forms.Panel();
+			this.pnlConnectionLeft = new System.Windows.Forms.Panel();
+			this.pnlConnectionRight = new System.Windows.Forms.Panel();
+			this.lblConnection = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.pnlTopSide.SuspendLayout();
+			this.pnlBtmSide.SuspendLayout();
 			this.pnlLeftSide.SuspendLayout();
 			this.pnlTop.SuspendLayout();
 			this.pnlRightMain.SuspendLayout();
@@ -95,6 +102,7 @@
 			this.pnlMission.SuspendLayout();
 			this.pnlSetting.SuspendLayout();
 			this.pnlLog.SuspendLayout();
+			this.pnlConnection.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gluiCtrl1
@@ -302,6 +310,7 @@
 			// pnlBtmSide
 			// 
 			this.pnlBtmSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+			this.pnlBtmSide.Controls.Add(this.pnlConnection);
 			this.pnlBtmSide.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.pnlBtmSide.Location = new System.Drawing.Point(0, 700);
 			this.pnlBtmSide.Name = "pnlBtmSide";
@@ -325,7 +334,7 @@
 			// pnlLeftSideMarker
 			// 
 			this.pnlLeftSideMarker.BackColor = System.Drawing.Color.Aqua;
-			this.pnlLeftSideMarker.Location = new System.Drawing.Point(46, 0);
+			this.pnlLeftSideMarker.Location = new System.Drawing.Point(0, 0);
 			this.pnlLeftSideMarker.Name = "pnlLeftSideMarker";
 			this.pnlLeftSideMarker.Size = new System.Drawing.Size(4, 650);
 			this.pnlLeftSideMarker.TabIndex = 4;
@@ -712,6 +721,63 @@
 			this.pnlRightMainRight.Size = new System.Drawing.Size(2, 596);
 			this.pnlRightMainRight.TabIndex = 3;
 			// 
+			// pnlConnection
+			// 
+			this.pnlConnection.Controls.Add(this.lblConnection);
+			this.pnlConnection.Controls.Add(this.pnlConnectionRight);
+			this.pnlConnection.Controls.Add(this.pnlConnectionLeft);
+			this.pnlConnection.Controls.Add(this.pnlConnectionBottom);
+			this.pnlConnection.Controls.Add(this.pnlConnectionTop);
+			this.pnlConnection.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlConnection.Location = new System.Drawing.Point(1250, 0);
+			this.pnlConnection.Name = "pnlConnection";
+			this.pnlConnection.Size = new System.Drawing.Size(50, 50);
+			this.pnlConnection.TabIndex = 0;
+			// 
+			// pnlConnectionTop
+			// 
+			this.pnlConnectionTop.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnlConnectionTop.Location = new System.Drawing.Point(0, 0);
+			this.pnlConnectionTop.Name = "pnlConnectionTop";
+			this.pnlConnectionTop.Size = new System.Drawing.Size(50, 5);
+			this.pnlConnectionTop.TabIndex = 1;
+			// 
+			// pnlConnectionBottom
+			// 
+			this.pnlConnectionBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlConnectionBottom.Location = new System.Drawing.Point(0, 45);
+			this.pnlConnectionBottom.Name = "pnlConnectionBottom";
+			this.pnlConnectionBottom.Size = new System.Drawing.Size(50, 5);
+			this.pnlConnectionBottom.TabIndex = 1;
+			// 
+			// pnlConnectionLeft
+			// 
+			this.pnlConnectionLeft.Dock = System.Windows.Forms.DockStyle.Left;
+			this.pnlConnectionLeft.Location = new System.Drawing.Point(0, 5);
+			this.pnlConnectionLeft.Name = "pnlConnectionLeft";
+			this.pnlConnectionLeft.Size = new System.Drawing.Size(5, 40);
+			this.pnlConnectionLeft.TabIndex = 1;
+			// 
+			// pnlConnectionRight
+			// 
+			this.pnlConnectionRight.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlConnectionRight.Location = new System.Drawing.Point(45, 5);
+			this.pnlConnectionRight.Name = "pnlConnectionRight";
+			this.pnlConnectionRight.Size = new System.Drawing.Size(5, 40);
+			this.pnlConnectionRight.TabIndex = 1;
+			// 
+			// lblConnection
+			// 
+			this.lblConnection.BackColor = System.Drawing.Color.DarkRed;
+			this.lblConnection.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lblConnection.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblConnection.Location = new System.Drawing.Point(5, 5);
+			this.lblConnection.Name = "lblConnection";
+			this.lblConnection.Size = new System.Drawing.Size(40, 40);
+			this.lblConnection.TabIndex = 2;
+			this.lblConnection.Text = "0";
+			this.lblConnection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// VehicleManagerGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -735,6 +801,7 @@
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			this.pnlTopSide.ResumeLayout(false);
+			this.pnlBtmSide.ResumeLayout(false);
 			this.pnlLeftSide.ResumeLayout(false);
 			this.pnlTop.ResumeLayout(false);
 			this.pnlRightMain.ResumeLayout(false);
@@ -753,6 +820,7 @@
 			this.pnlSetting.PerformLayout();
 			this.pnlLog.ResumeLayout(false);
 			this.pnlLog.PerformLayout();
+			this.pnlConnection.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -812,5 +880,11 @@
 		private System.Windows.Forms.Panel pnlRightMainLeft;
 		private System.Windows.Forms.Panel pnlRightMainBottom;
 		private System.Windows.Forms.Panel pnlRightMainTop;
+		private System.Windows.Forms.Panel pnlConnection;
+		private System.Windows.Forms.Panel pnlConnectionRight;
+		private System.Windows.Forms.Panel pnlConnectionTop;
+		private System.Windows.Forms.Panel pnlConnectionLeft;
+		private System.Windows.Forms.Panel pnlConnectionBottom;
+		private System.Windows.Forms.Label lblConnection;
 	}
 }
