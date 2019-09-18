@@ -64,6 +64,24 @@
 			this.pnlVehicleManualControl = new System.Windows.Forms.Panel();
 			this.label2 = new System.Windows.Forms.Label();
 			this.pnlVehicleOverview = new System.Windows.Forms.Panel();
+			this.pnlMap = new System.Windows.Forms.Panel();
+			this.label4 = new System.Windows.Forms.Label();
+			this.pnlVehicle = new System.Windows.Forms.Panel();
+			this.label5 = new System.Windows.Forms.Label();
+			this.pnlMission = new System.Windows.Forms.Panel();
+			this.label6 = new System.Windows.Forms.Label();
+			this.pnlSetting = new System.Windows.Forms.Panel();
+			this.label7 = new System.Windows.Forms.Label();
+			this.pnlLog = new System.Windows.Forms.Panel();
+			this.label8 = new System.Windows.Forms.Label();
+			this.pnlLeftMainTop = new System.Windows.Forms.Panel();
+			this.pnlLeftMainBottom = new System.Windows.Forms.Panel();
+			this.pnlLeftMainLeft = new System.Windows.Forms.Panel();
+			this.pnlLeftMainRight = new System.Windows.Forms.Panel();
+			this.pnlRightMainTop = new System.Windows.Forms.Panel();
+			this.pnlRightMainBottom = new System.Windows.Forms.Panel();
+			this.pnlRightMainLeft = new System.Windows.Forms.Panel();
+			this.pnlRightMainRight = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlLeftSide.SuspendLayout();
@@ -72,6 +90,11 @@
 			this.pnlLeftMain.SuspendLayout();
 			this.pnlAbout.SuspendLayout();
 			this.pnlVehicleManualControl.SuspendLayout();
+			this.pnlMap.SuspendLayout();
+			this.pnlVehicle.SuspendLayout();
+			this.pnlMission.SuspendLayout();
+			this.pnlSetting.SuspendLayout();
+			this.pnlLog.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gluiCtrl1
@@ -84,7 +107,7 @@
 			this.gluiCtrl1.Name = "gluiCtrl1";
 			this.gluiCtrl1.ShowAxis = true;
 			this.gluiCtrl1.ShowGrid = true;
-			this.gluiCtrl1.Size = new System.Drawing.Size(606, 600);
+			this.gluiCtrl1.Size = new System.Drawing.Size(846, 596);
 			this.gluiCtrl1.TabIndex = 1;
 			this.gluiCtrl1.Zoom = 10D;
 			this.gluiCtrl1.LoadMapEvent += new GLUI.LoadMapEvent(this.gluiCtrl1_LoadMapEvent);
@@ -101,8 +124,7 @@
 			this.tableLayoutPanel1.Controls.Add(this.btnIntervenePauseMoving, 0, 5);
 			this.tableLayoutPanel1.Controls.Add(this.btnInterveneResumeMoving, 0, 6);
 			this.tableLayoutPanel1.Controls.Add(this.cbVehicleList, 0, 1);
-			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(606, 0);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(149, 205);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 7;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -112,7 +134,7 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(244, 600);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(244, 439);
 			this.tableLayoutPanel1.TabIndex = 2;
 			// 
 			// label1
@@ -122,7 +144,7 @@
 			this.label1.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.label1.Location = new System.Drawing.Point(3, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(238, 102);
+			this.label1.Size = new System.Drawing.Size(238, 70);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Intervene Command";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -132,7 +154,7 @@
 			this.txtInterveneMovingBuffer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.txtInterveneMovingBuffer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtInterveneMovingBuffer.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.txtInterveneMovingBuffer.Location = new System.Drawing.Point(3, 147);
+			this.txtInterveneMovingBuffer.Location = new System.Drawing.Point(3, 115);
 			this.txtInterveneMovingBuffer.Name = "txtInterveneMovingBuffer";
 			this.txtInterveneMovingBuffer.Size = new System.Drawing.Size(238, 40);
 			this.txtInterveneMovingBuffer.TabIndex = 1;
@@ -142,9 +164,9 @@
 			// 
 			this.btnInterveneInsertMovingBuffer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnInterveneInsertMovingBuffer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnInterveneInsertMovingBuffer.Location = new System.Drawing.Point(3, 192);
+			this.btnInterveneInsertMovingBuffer.Location = new System.Drawing.Point(3, 160);
 			this.btnInterveneInsertMovingBuffer.Name = "btnInterveneInsertMovingBuffer";
-			this.btnInterveneInsertMovingBuffer.Size = new System.Drawing.Size(238, 96);
+			this.btnInterveneInsertMovingBuffer.Size = new System.Drawing.Size(238, 64);
 			this.btnInterveneInsertMovingBuffer.TabIndex = 2;
 			this.btnInterveneInsertMovingBuffer.Text = "Insert Moving Buffer";
 			this.btnInterveneInsertMovingBuffer.UseVisualStyleBackColor = true;
@@ -154,9 +176,9 @@
 			// 
 			this.btnInterveneRemoveMovingBuffer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnInterveneRemoveMovingBuffer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnInterveneRemoveMovingBuffer.Location = new System.Drawing.Point(3, 294);
+			this.btnInterveneRemoveMovingBuffer.Location = new System.Drawing.Point(3, 230);
 			this.btnInterveneRemoveMovingBuffer.Name = "btnInterveneRemoveMovingBuffer";
-			this.btnInterveneRemoveMovingBuffer.Size = new System.Drawing.Size(238, 96);
+			this.btnInterveneRemoveMovingBuffer.Size = new System.Drawing.Size(238, 64);
 			this.btnInterveneRemoveMovingBuffer.TabIndex = 2;
 			this.btnInterveneRemoveMovingBuffer.Text = "Remove Moving Buffer";
 			this.btnInterveneRemoveMovingBuffer.UseVisualStyleBackColor = true;
@@ -166,9 +188,9 @@
 			// 
 			this.btnIntervenePauseMoving.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnIntervenePauseMoving.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnIntervenePauseMoving.Location = new System.Drawing.Point(3, 396);
+			this.btnIntervenePauseMoving.Location = new System.Drawing.Point(3, 300);
 			this.btnIntervenePauseMoving.Name = "btnIntervenePauseMoving";
-			this.btnIntervenePauseMoving.Size = new System.Drawing.Size(238, 96);
+			this.btnIntervenePauseMoving.Size = new System.Drawing.Size(238, 64);
 			this.btnIntervenePauseMoving.TabIndex = 2;
 			this.btnIntervenePauseMoving.Text = "Pause Moving";
 			this.btnIntervenePauseMoving.UseVisualStyleBackColor = true;
@@ -178,9 +200,9 @@
 			// 
 			this.btnInterveneResumeMoving.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnInterveneResumeMoving.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnInterveneResumeMoving.Location = new System.Drawing.Point(3, 498);
+			this.btnInterveneResumeMoving.Location = new System.Drawing.Point(3, 370);
 			this.btnInterveneResumeMoving.Name = "btnInterveneResumeMoving";
-			this.btnInterveneResumeMoving.Size = new System.Drawing.Size(238, 99);
+			this.btnInterveneResumeMoving.Size = new System.Drawing.Size(238, 66);
 			this.btnInterveneResumeMoving.TabIndex = 2;
 			this.btnInterveneResumeMoving.Text = "Resume Moving";
 			this.btnInterveneResumeMoving.UseVisualStyleBackColor = true;
@@ -195,7 +217,7 @@
 			this.cbVehicleList.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.cbVehicleList.ForeColor = System.Drawing.Color.White;
 			this.cbVehicleList.FormattingEnabled = true;
-			this.cbVehicleList.Location = new System.Drawing.Point(3, 105);
+			this.cbVehicleList.Location = new System.Drawing.Point(3, 73);
 			this.cbVehicleList.Name = "cbVehicleList";
 			this.cbVehicleList.Size = new System.Drawing.Size(238, 35);
 			this.cbVehicleList.TabIndex = 3;
@@ -458,8 +480,15 @@
 			// pnlRightMain
 			// 
 			this.pnlRightMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.pnlRightMain.Controls.Add(this.gluiCtrl1);
-			this.pnlRightMain.Controls.Add(this.tableLayoutPanel1);
+			this.pnlRightMain.Controls.Add(this.pnlLog);
+			this.pnlRightMain.Controls.Add(this.pnlSetting);
+			this.pnlRightMain.Controls.Add(this.pnlMission);
+			this.pnlRightMain.Controls.Add(this.pnlVehicle);
+			this.pnlRightMain.Controls.Add(this.pnlMap);
+			this.pnlRightMain.Controls.Add(this.pnlRightMainRight);
+			this.pnlRightMain.Controls.Add(this.pnlRightMainLeft);
+			this.pnlRightMain.Controls.Add(this.pnlRightMainBottom);
+			this.pnlRightMain.Controls.Add(this.pnlRightMainTop);
 			this.pnlRightMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlRightMain.Location = new System.Drawing.Point(450, 100);
 			this.pnlRightMain.Name = "pnlRightMain";
@@ -472,6 +501,10 @@
 			this.pnlLeftMain.Controls.Add(this.pnlAbout);
 			this.pnlLeftMain.Controls.Add(this.pnlVehicleManualControl);
 			this.pnlLeftMain.Controls.Add(this.pnlVehicleOverview);
+			this.pnlLeftMain.Controls.Add(this.pnlLeftMainRight);
+			this.pnlLeftMain.Controls.Add(this.pnlLeftMainLeft);
+			this.pnlLeftMain.Controls.Add(this.pnlLeftMainBottom);
+			this.pnlLeftMain.Controls.Add(this.pnlLeftMainTop);
 			this.pnlLeftMain.Dock = System.Windows.Forms.DockStyle.Left;
 			this.pnlLeftMain.Location = new System.Drawing.Point(50, 50);
 			this.pnlLeftMain.Name = "pnlLeftMain";
@@ -482,9 +515,9 @@
 			// 
 			this.pnlAbout.Controls.Add(this.label3);
 			this.pnlAbout.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlAbout.Location = new System.Drawing.Point(0, 0);
+			this.pnlAbout.Location = new System.Drawing.Point(2, 2);
 			this.pnlAbout.Name = "pnlAbout";
-			this.pnlAbout.Size = new System.Drawing.Size(400, 650);
+			this.pnlAbout.Size = new System.Drawing.Size(396, 646);
 			this.pnlAbout.TabIndex = 1;
 			// 
 			// label3
@@ -499,10 +532,11 @@
 			// pnlVehicleManualControl
 			// 
 			this.pnlVehicleManualControl.Controls.Add(this.label2);
+			this.pnlVehicleManualControl.Controls.Add(this.tableLayoutPanel1);
 			this.pnlVehicleManualControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlVehicleManualControl.Location = new System.Drawing.Point(0, 0);
+			this.pnlVehicleManualControl.Location = new System.Drawing.Point(2, 2);
 			this.pnlVehicleManualControl.Name = "pnlVehicleManualControl";
-			this.pnlVehicleManualControl.Size = new System.Drawing.Size(400, 650);
+			this.pnlVehicleManualControl.Size = new System.Drawing.Size(396, 646);
 			this.pnlVehicleManualControl.TabIndex = 0;
 			// 
 			// label2
@@ -518,10 +552,165 @@
 			// 
 			this.pnlVehicleOverview.AutoScroll = true;
 			this.pnlVehicleOverview.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlVehicleOverview.Location = new System.Drawing.Point(0, 0);
+			this.pnlVehicleOverview.Location = new System.Drawing.Point(2, 2);
 			this.pnlVehicleOverview.Name = "pnlVehicleOverview";
-			this.pnlVehicleOverview.Size = new System.Drawing.Size(400, 650);
+			this.pnlVehicleOverview.Size = new System.Drawing.Size(396, 646);
 			this.pnlVehicleOverview.TabIndex = 0;
+			// 
+			// pnlMap
+			// 
+			this.pnlMap.Controls.Add(this.gluiCtrl1);
+			this.pnlMap.Controls.Add(this.label4);
+			this.pnlMap.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlMap.Location = new System.Drawing.Point(2, 2);
+			this.pnlMap.Name = "pnlMap";
+			this.pnlMap.Size = new System.Drawing.Size(846, 596);
+			this.pnlMap.TabIndex = 0;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(30, 30);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(33, 15);
+			this.label4.TabIndex = 0;
+			this.label4.Text = "Map";
+			// 
+			// pnlVehicle
+			// 
+			this.pnlVehicle.Controls.Add(this.label5);
+			this.pnlVehicle.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlVehicle.Location = new System.Drawing.Point(2, 2);
+			this.pnlVehicle.Name = "pnlVehicle";
+			this.pnlVehicle.Size = new System.Drawing.Size(846, 596);
+			this.pnlVehicle.TabIndex = 1;
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(30, 30);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(50, 15);
+			this.label5.TabIndex = 0;
+			this.label5.Text = "Vehicle";
+			// 
+			// pnlMission
+			// 
+			this.pnlMission.Controls.Add(this.label6);
+			this.pnlMission.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlMission.Location = new System.Drawing.Point(2, 2);
+			this.pnlMission.Name = "pnlMission";
+			this.pnlMission.Size = new System.Drawing.Size(846, 596);
+			this.pnlMission.TabIndex = 1;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(30, 30);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(52, 15);
+			this.label6.TabIndex = 0;
+			this.label6.Text = "Mission";
+			// 
+			// pnlSetting
+			// 
+			this.pnlSetting.Controls.Add(this.label7);
+			this.pnlSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlSetting.Location = new System.Drawing.Point(2, 2);
+			this.pnlSetting.Name = "pnlSetting";
+			this.pnlSetting.Size = new System.Drawing.Size(846, 596);
+			this.pnlSetting.TabIndex = 1;
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(30, 30);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(47, 15);
+			this.label7.TabIndex = 0;
+			this.label7.Text = "Setting";
+			// 
+			// pnlLog
+			// 
+			this.pnlLog.Controls.Add(this.label8);
+			this.pnlLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlLog.Location = new System.Drawing.Point(2, 2);
+			this.pnlLog.Name = "pnlLog";
+			this.pnlLog.Size = new System.Drawing.Size(846, 596);
+			this.pnlLog.TabIndex = 1;
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(30, 30);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(30, 15);
+			this.label8.TabIndex = 0;
+			this.label8.Text = "Log";
+			// 
+			// pnlLeftMainTop
+			// 
+			this.pnlLeftMainTop.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnlLeftMainTop.Location = new System.Drawing.Point(0, 0);
+			this.pnlLeftMainTop.Name = "pnlLeftMainTop";
+			this.pnlLeftMainTop.Size = new System.Drawing.Size(400, 2);
+			this.pnlLeftMainTop.TabIndex = 0;
+			// 
+			// pnlLeftMainBottom
+			// 
+			this.pnlLeftMainBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlLeftMainBottom.Location = new System.Drawing.Point(0, 648);
+			this.pnlLeftMainBottom.Name = "pnlLeftMainBottom";
+			this.pnlLeftMainBottom.Size = new System.Drawing.Size(400, 2);
+			this.pnlLeftMainBottom.TabIndex = 0;
+			// 
+			// pnlLeftMainLeft
+			// 
+			this.pnlLeftMainLeft.Dock = System.Windows.Forms.DockStyle.Left;
+			this.pnlLeftMainLeft.Location = new System.Drawing.Point(0, 2);
+			this.pnlLeftMainLeft.Name = "pnlLeftMainLeft";
+			this.pnlLeftMainLeft.Size = new System.Drawing.Size(2, 646);
+			this.pnlLeftMainLeft.TabIndex = 0;
+			// 
+			// pnlLeftMainRight
+			// 
+			this.pnlLeftMainRight.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlLeftMainRight.Location = new System.Drawing.Point(398, 2);
+			this.pnlLeftMainRight.Name = "pnlLeftMainRight";
+			this.pnlLeftMainRight.Size = new System.Drawing.Size(2, 646);
+			this.pnlLeftMainRight.TabIndex = 0;
+			// 
+			// pnlRightMainTop
+			// 
+			this.pnlRightMainTop.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnlRightMainTop.Location = new System.Drawing.Point(0, 0);
+			this.pnlRightMainTop.Name = "pnlRightMainTop";
+			this.pnlRightMainTop.Size = new System.Drawing.Size(850, 2);
+			this.pnlRightMainTop.TabIndex = 2;
+			// 
+			// pnlRightMainBottom
+			// 
+			this.pnlRightMainBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlRightMainBottom.Location = new System.Drawing.Point(0, 598);
+			this.pnlRightMainBottom.Name = "pnlRightMainBottom";
+			this.pnlRightMainBottom.Size = new System.Drawing.Size(850, 2);
+			this.pnlRightMainBottom.TabIndex = 3;
+			// 
+			// pnlRightMainLeft
+			// 
+			this.pnlRightMainLeft.Dock = System.Windows.Forms.DockStyle.Left;
+			this.pnlRightMainLeft.Location = new System.Drawing.Point(0, 2);
+			this.pnlRightMainLeft.Name = "pnlRightMainLeft";
+			this.pnlRightMainLeft.Size = new System.Drawing.Size(2, 596);
+			this.pnlRightMainLeft.TabIndex = 3;
+			// 
+			// pnlRightMainRight
+			// 
+			this.pnlRightMainRight.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlRightMainRight.Location = new System.Drawing.Point(848, 2);
+			this.pnlRightMainRight.Name = "pnlRightMainRight";
+			this.pnlRightMainRight.Size = new System.Drawing.Size(2, 596);
+			this.pnlRightMainRight.TabIndex = 3;
 			// 
 			// VehicleManagerGUI
 			// 
@@ -554,6 +743,16 @@
 			this.pnlAbout.PerformLayout();
 			this.pnlVehicleManualControl.ResumeLayout(false);
 			this.pnlVehicleManualControl.PerformLayout();
+			this.pnlMap.ResumeLayout(false);
+			this.pnlMap.PerformLayout();
+			this.pnlVehicle.ResumeLayout(false);
+			this.pnlVehicle.PerformLayout();
+			this.pnlMission.ResumeLayout(false);
+			this.pnlMission.PerformLayout();
+			this.pnlSetting.ResumeLayout(false);
+			this.pnlSetting.PerformLayout();
+			this.pnlLog.ResumeLayout(false);
+			this.pnlLog.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -595,5 +794,23 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Panel pnlAbout;
 		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Panel pnlLog;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Panel pnlSetting;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Panel pnlMission;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Panel pnlVehicle;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Panel pnlMap;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Panel pnlLeftMainTop;
+		private System.Windows.Forms.Panel pnlLeftMainRight;
+		private System.Windows.Forms.Panel pnlLeftMainLeft;
+		private System.Windows.Forms.Panel pnlLeftMainBottom;
+		private System.Windows.Forms.Panel pnlRightMainRight;
+		private System.Windows.Forms.Panel pnlRightMainLeft;
+		private System.Windows.Forms.Panel pnlRightMainBottom;
+		private System.Windows.Forms.Panel pnlRightMainTop;
 	}
 }

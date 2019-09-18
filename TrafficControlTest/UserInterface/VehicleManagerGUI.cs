@@ -136,26 +136,36 @@ namespace TrafficControlTest.UserInterface
 		{
 			pnlTopMarker.Width = btnDisplayMap.Width;
 			pnlTopMarker.Left = btnDisplayMap.Left;
+
+			pnlMap.BringToFront();
 		}
 		private void btnDisplayVehicle_Click(object sender, EventArgs e)
 		{
 			pnlTopMarker.Width = btnDisplayVehicle.Width;
 			pnlTopMarker.Left = btnDisplayVehicle.Left;
+
+			pnlVehicle.BringToFront();
 		}
 		private void btnDisplayMission_Click(object sender, EventArgs e)
 		{
 			pnlTopMarker.Width = btnDisplayMission.Width;
 			pnlTopMarker.Left = btnDisplayMission.Left;
+
+			pnlMission.BringToFront();
 		}
 		private void btnDisplaySetting_Click(object sender, EventArgs e)
 		{
 			pnlTopMarker.Width = btnDisplaySetting.Width;
 			pnlTopMarker.Left = btnDisplaySetting.Left;
+
+			pnlSetting.BringToFront();
 		}
 		private void btnDisplayLog_Click(object sender, EventArgs e)
 		{
 			pnlTopMarker.Width = btnDisplayLog.Width;
 			pnlTopMarker.Left = btnDisplayLog.Left;
+
+			pnlLog.BringToFront();
 		}
 
 		#region General
