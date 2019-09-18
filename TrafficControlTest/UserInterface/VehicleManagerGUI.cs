@@ -43,7 +43,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			try
 			{
-				btnDisplayManualControl_Click(null, null);
+				btnDisplayVehicleOverview_Click(null, null);
 				btnDisplayMap_Click(null, null);
 				btnDisplayPnlLeftMain_Click(null, null);
 			}
@@ -104,11 +104,23 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_DisplayPnlLeftMain(!pnlLeftMainDisplay);
 		}
+
+		private void btnDisplayVehicleOverview_Click(object sender, EventArgs e)
+		{
+			if (!pnlLeftMainDisplay) UpdateGui_DisplayPnlLeftMain(true);
+			pnlLeftSideMarker.Height = btnDisplayVehicleOverview.Height;
+			pnlLeftSideMarker.Top = btnDisplayVehicleOverview.Top;
+
+			ucVehicleInfoList1.BringToFront();
+			pnlLeftSideMarker.BringToFront();
+		}
 		private void btnDisplayManualControl_Click(object sender, EventArgs e)
 		{
 			if (!pnlLeftMainDisplay) UpdateGui_DisplayPnlLeftMain(true);
 			pnlLeftSideMarker.Height = btnDisplayManualControl.Height;
 			pnlLeftSideMarker.Top = btnDisplayManualControl.Top;
+
+			pnlLeftSideMarker.BringToFront();
 		}
 		private void btnDisplayMap_Click(object sender, EventArgs e)
 		{
@@ -171,7 +183,7 @@ namespace TrafficControlTest.UserInterface
 			{
 				if (pnlLeftMainDisplay == false)
 				{
-					pnlLeftMain.Width = pnlLeftMainWidth;
+					pnlLeftMain.InvokeIfNecessary(() => pnlLeftMain.Width = pnlLeftMainWidth);
 					pnlLeftMainDisplay = true;
 				}
 			}
@@ -179,10 +191,22 @@ namespace TrafficControlTest.UserInterface
 			{
 				if (pnlLeftMainDisplay == true)
 				{
-					pnlLeftMain.Width = 0;
+					pnlLeftMain.InvokeIfNecessary(() => pnlLeftMain.Width = 0);
 					pnlLeftMainDisplay = false;
 				}
 			}
+		}
+		private void UpdateGui_AddVehicleOverview(string Id, string Battery, string State)
+		{
+			ucVehicleInfoList1.InvokeIfNecessary(() => ucVehicleInfoList1.Add(Id, Battery, State));
+		}
+		private void UpdateGui_SetVehicleOverview(string Id, UserControl.UCVehicleInfoList.Property Property, string Value)
+		{
+			ucVehicleInfoList1.InvokeIfNecessary(() => ucVehicleInfoList1.Set(Id, Property, Value));
+		}
+		private void UpdateGui_RemoveVehicleOverview(string Id)
+		{
+			ucVehicleInfoList1.InvokeIfNecessary(() => ucVehicleInfoList1.Remove(Id));
 		}
 
 		bool pnlLeftMainDisplay = true;
@@ -235,15 +259,19 @@ namespace TrafficControlTest.UserInterface
 		{
 			RegisterIconId(VehicleInfo);
 			UpdateGui_UpdateVehicleNameList();
+			UpdateGui_AddVehicleOverview(VehicleInfo.mName, VehicleInfo.mBattery.ToString("F2"), VehicleInfo.mState);
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			EraseIcon(VehicleInfo);
 			UpdateGui_UpdateVehicleNameList();
+			UpdateGui_RemoveVehicleOverview(VehicleInfo.mName);
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			PrintIcon(VehicleInfo);
+			UpdateGui_SetVehicleOverview(VehicleInfo.mName, UserControl.UCVehicleInfoList.Property.Battery, VehicleInfo.mBattery.ToString("F2"));
+			UpdateGui_SetVehicleOverview(VehicleInfo.mName, UserControl.UCVehicleInfoList.Property.State, VehicleInfo.mState);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
