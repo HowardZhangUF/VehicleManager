@@ -10,7 +10,7 @@ using TrafficControlTest.Base;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
 using TrafficControlTest.UserControl;
-using static TrafficControlTest.UserControl.UCVehicleInfoList;
+using static TrafficControlTest.UserControl.UCVehicleInfo;
 
 namespace TrafficControlTest.UserInterface
 {
@@ -368,8 +368,8 @@ namespace TrafficControlTest.UserInterface
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			PrintIcon(VehicleInfo);
-			UpdateGui_SetVehicleOverview(VehicleInfo.mName, UserControl.UCVehicleInfoList.Property.Battery, VehicleInfo.mBattery.ToString("F2"));
-			UpdateGui_SetVehicleOverview(VehicleInfo.mName, UserControl.UCVehicleInfoList.Property.State, VehicleInfo.mState);
+			UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));
+			UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mState);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{

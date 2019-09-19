@@ -7,18 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static TrafficControlTest.UserControl.UCVehicleInfo;
 
 namespace TrafficControlTest.UserControl
 {
 	public partial class UCVehicleInfoList : System.Windows.Forms.UserControl
 	{
-		public enum Property
-		{
-			Id,
-			Battery,
-			State
-		}
-
 		private object mLock = new object();
 
 		public UCVehicleInfoList()

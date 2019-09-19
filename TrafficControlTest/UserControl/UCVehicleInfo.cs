@@ -12,6 +12,13 @@ namespace TrafficControlTest.UserControl
 {
 	public partial class UCVehicleInfo : System.Windows.Forms.UserControl
 	{
+		public enum Property
+		{
+			Id,
+			Battery,
+			State
+		}
+
 		public static int DefaultHeight = 100;
 		public static string PreFix = "UCVehicleInfo";
 

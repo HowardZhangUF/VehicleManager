@@ -112,16 +112,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrashCan\TrafficControlTestProcess.cs" />
     <Compile Include="TrashCan\TrafficController.cs" />
-    <Compile Include="UserControl\UCAbout.cs">
+    <Compile Include="TrashCan\UCAbout.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCAbout.Designer.cs">
+    <Compile Include="TrashCan\UCAbout.Designer.cs">
       <DependentUpon>UCAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCVehicleManualControl.cs">
+    <Compile Include="TrashCan\UCVehicleManualControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCVehicleManualControl.Designer.cs">
+    <Compile Include="TrashCan\UCVehicleManualControl.Designer.cs">
       <DependentUpon>UCVehicleManualControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\UCVehicleInfo.cs">
@@ -130,10 +130,10 @@
     <Compile Include="UserControl\UCVehicleInfo.Designer.cs">
       <DependentUpon>UCVehicleInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCVehicleInfoList.cs">
+    <Compile Include="TrashCan\UCVehicleInfoList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCVehicleInfoList.Designer.cs">
+    <Compile Include="TrashCan\UCVehicleInfoList.Designer.cs">
       <DependentUpon>UCVehicleInfoList.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\VehicleManagerGUI.cs">
@@ -156,16 +156,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControl\UCAbout.resx">
+    <EmbeddedResource Include="TrashCan\UCAbout.resx">
       <DependentUpon>UCAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCVehicleManualControl.resx">
+    <EmbeddedResource Include="TrashCan\UCVehicleManualControl.resx">
       <DependentUpon>UCVehicleManualControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UCVehicleInfo.resx">
       <DependentUpon>UCVehicleInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCVehicleInfoList.resx">
+    <EmbeddedResource Include="TrashCan\UCVehicleInfoList.resx">
       <DependentUpon>UCVehicleInfoList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\VehicleManagerGUI.resx">
