@@ -45,6 +45,12 @@
 			this.btnFormClose = new System.Windows.Forms.Button();
 			this.btnDisplayAbout = new System.Windows.Forms.Button();
 			this.pnlBtmSide = new System.Windows.Forms.Panel();
+			this.pnlConnection = new System.Windows.Forms.Panel();
+			this.lblConnection = new System.Windows.Forms.Label();
+			this.pnlConnectionRight = new System.Windows.Forms.Panel();
+			this.pnlConnectionLeft = new System.Windows.Forms.Panel();
+			this.pnlConnectionBottom = new System.Windows.Forms.Panel();
+			this.pnlConnectionTop = new System.Windows.Forms.Panel();
 			this.pnlLeftSide = new System.Windows.Forms.Panel();
 			this.pnlLeftSideMarker = new System.Windows.Forms.Panel();
 			this.btnDisplayManualControl = new System.Windows.Forms.Button();
@@ -58,51 +64,55 @@
 			this.btnDisplayVehicle = new System.Windows.Forms.Button();
 			this.btnDisplayMap = new System.Windows.Forms.Button();
 			this.pnlRightMain = new System.Windows.Forms.Panel();
+			this.pnlLog = new System.Windows.Forms.Panel();
+			this.label8 = new System.Windows.Forms.Label();
+			this.pnlSetting = new System.Windows.Forms.Panel();
+			this.label7 = new System.Windows.Forms.Label();
+			this.pnlMission = new System.Windows.Forms.Panel();
+			this.label6 = new System.Windows.Forms.Label();
+			this.pnlVehicle = new System.Windows.Forms.Panel();
+			this.label5 = new System.Windows.Forms.Label();
+			this.pnlMap = new System.Windows.Forms.Panel();
+			this.label4 = new System.Windows.Forms.Label();
+			this.pnlRightMainRight = new System.Windows.Forms.Panel();
+			this.pnlRightMainLeft = new System.Windows.Forms.Panel();
+			this.pnlRightMainBottom = new System.Windows.Forms.Panel();
+			this.pnlRightMainTop = new System.Windows.Forms.Panel();
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
 			this.pnlAbout = new System.Windows.Forms.Panel();
+			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.pbCastecLogo = new System.Windows.Forms.PictureBox();
+			this.lblCastecHyperlink = new System.Windows.Forms.Label();
+			this.lblProgramName = new System.Windows.Forms.Label();
+			this.lblProgramVersion = new System.Windows.Forms.Label();
+			this.lblProgramCopyRight = new System.Windows.Forms.Label();
+			this.lblIcons8Hyperlink = new System.Windows.Forms.Label();
+			this.lblIcons8License = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.pnlVehicleManualControl = new System.Windows.Forms.Panel();
 			this.label2 = new System.Windows.Forms.Label();
 			this.pnlVehicleOverview = new System.Windows.Forms.Panel();
-			this.pnlMap = new System.Windows.Forms.Panel();
-			this.label4 = new System.Windows.Forms.Label();
-			this.pnlVehicle = new System.Windows.Forms.Panel();
-			this.label5 = new System.Windows.Forms.Label();
-			this.pnlMission = new System.Windows.Forms.Panel();
-			this.label6 = new System.Windows.Forms.Label();
-			this.pnlSetting = new System.Windows.Forms.Panel();
-			this.label7 = new System.Windows.Forms.Label();
-			this.pnlLog = new System.Windows.Forms.Panel();
-			this.label8 = new System.Windows.Forms.Label();
-			this.pnlLeftMainTop = new System.Windows.Forms.Panel();
-			this.pnlLeftMainBottom = new System.Windows.Forms.Panel();
-			this.pnlLeftMainLeft = new System.Windows.Forms.Panel();
 			this.pnlLeftMainRight = new System.Windows.Forms.Panel();
-			this.pnlRightMainTop = new System.Windows.Forms.Panel();
-			this.pnlRightMainBottom = new System.Windows.Forms.Panel();
-			this.pnlRightMainLeft = new System.Windows.Forms.Panel();
-			this.pnlRightMainRight = new System.Windows.Forms.Panel();
-			this.pnlConnection = new System.Windows.Forms.Panel();
-			this.pnlConnectionTop = new System.Windows.Forms.Panel();
-			this.pnlConnectionBottom = new System.Windows.Forms.Panel();
-			this.pnlConnectionLeft = new System.Windows.Forms.Panel();
-			this.pnlConnectionRight = new System.Windows.Forms.Panel();
-			this.lblConnection = new System.Windows.Forms.Label();
+			this.pnlLeftMainLeft = new System.Windows.Forms.Panel();
+			this.pnlLeftMainBottom = new System.Windows.Forms.Panel();
+			this.pnlLeftMainTop = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlBtmSide.SuspendLayout();
+			this.pnlConnection.SuspendLayout();
 			this.pnlLeftSide.SuspendLayout();
 			this.pnlTop.SuspendLayout();
 			this.pnlRightMain.SuspendLayout();
+			this.pnlLog.SuspendLayout();
+			this.pnlSetting.SuspendLayout();
+			this.pnlMission.SuspendLayout();
+			this.pnlVehicle.SuspendLayout();
+			this.pnlMap.SuspendLayout();
 			this.pnlLeftMain.SuspendLayout();
 			this.pnlAbout.SuspendLayout();
+			this.tableLayoutPanel2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbCastecLogo)).BeginInit();
 			this.pnlVehicleManualControl.SuspendLayout();
-			this.pnlMap.SuspendLayout();
-			this.pnlVehicle.SuspendLayout();
-			this.pnlMission.SuspendLayout();
-			this.pnlSetting.SuspendLayout();
-			this.pnlLog.SuspendLayout();
-			this.pnlConnection.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gluiCtrl1
@@ -317,6 +327,63 @@
 			this.pnlBtmSide.Size = new System.Drawing.Size(1300, 50);
 			this.pnlBtmSide.TabIndex = 4;
 			// 
+			// pnlConnection
+			// 
+			this.pnlConnection.Controls.Add(this.lblConnection);
+			this.pnlConnection.Controls.Add(this.pnlConnectionRight);
+			this.pnlConnection.Controls.Add(this.pnlConnectionLeft);
+			this.pnlConnection.Controls.Add(this.pnlConnectionBottom);
+			this.pnlConnection.Controls.Add(this.pnlConnectionTop);
+			this.pnlConnection.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlConnection.Location = new System.Drawing.Point(1250, 0);
+			this.pnlConnection.Name = "pnlConnection";
+			this.pnlConnection.Size = new System.Drawing.Size(50, 50);
+			this.pnlConnection.TabIndex = 0;
+			// 
+			// lblConnection
+			// 
+			this.lblConnection.BackColor = System.Drawing.Color.DarkRed;
+			this.lblConnection.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lblConnection.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblConnection.Location = new System.Drawing.Point(5, 5);
+			this.lblConnection.Name = "lblConnection";
+			this.lblConnection.Size = new System.Drawing.Size(40, 40);
+			this.lblConnection.TabIndex = 2;
+			this.lblConnection.Text = "0";
+			this.lblConnection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pnlConnectionRight
+			// 
+			this.pnlConnectionRight.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlConnectionRight.Location = new System.Drawing.Point(45, 5);
+			this.pnlConnectionRight.Name = "pnlConnectionRight";
+			this.pnlConnectionRight.Size = new System.Drawing.Size(5, 40);
+			this.pnlConnectionRight.TabIndex = 1;
+			// 
+			// pnlConnectionLeft
+			// 
+			this.pnlConnectionLeft.Dock = System.Windows.Forms.DockStyle.Left;
+			this.pnlConnectionLeft.Location = new System.Drawing.Point(0, 5);
+			this.pnlConnectionLeft.Name = "pnlConnectionLeft";
+			this.pnlConnectionLeft.Size = new System.Drawing.Size(5, 40);
+			this.pnlConnectionLeft.TabIndex = 1;
+			// 
+			// pnlConnectionBottom
+			// 
+			this.pnlConnectionBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlConnectionBottom.Location = new System.Drawing.Point(0, 45);
+			this.pnlConnectionBottom.Name = "pnlConnectionBottom";
+			this.pnlConnectionBottom.Size = new System.Drawing.Size(50, 5);
+			this.pnlConnectionBottom.TabIndex = 1;
+			// 
+			// pnlConnectionTop
+			// 
+			this.pnlConnectionTop.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnlConnectionTop.Location = new System.Drawing.Point(0, 0);
+			this.pnlConnectionTop.Name = "pnlConnectionTop";
+			this.pnlConnectionTop.Size = new System.Drawing.Size(50, 5);
+			this.pnlConnectionTop.TabIndex = 1;
+			// 
 			// pnlLeftSide
 			// 
 			this.pnlLeftSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
@@ -504,6 +571,129 @@
 			this.pnlRightMain.Size = new System.Drawing.Size(850, 600);
 			this.pnlRightMain.TabIndex = 8;
 			// 
+			// pnlLog
+			// 
+			this.pnlLog.Controls.Add(this.label8);
+			this.pnlLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlLog.Location = new System.Drawing.Point(2, 2);
+			this.pnlLog.Name = "pnlLog";
+			this.pnlLog.Size = new System.Drawing.Size(846, 596);
+			this.pnlLog.TabIndex = 1;
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(30, 30);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(30, 15);
+			this.label8.TabIndex = 0;
+			this.label8.Text = "Log";
+			// 
+			// pnlSetting
+			// 
+			this.pnlSetting.Controls.Add(this.label7);
+			this.pnlSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlSetting.Location = new System.Drawing.Point(2, 2);
+			this.pnlSetting.Name = "pnlSetting";
+			this.pnlSetting.Size = new System.Drawing.Size(846, 596);
+			this.pnlSetting.TabIndex = 1;
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(30, 30);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(47, 15);
+			this.label7.TabIndex = 0;
+			this.label7.Text = "Setting";
+			// 
+			// pnlMission
+			// 
+			this.pnlMission.Controls.Add(this.label6);
+			this.pnlMission.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlMission.Location = new System.Drawing.Point(2, 2);
+			this.pnlMission.Name = "pnlMission";
+			this.pnlMission.Size = new System.Drawing.Size(846, 596);
+			this.pnlMission.TabIndex = 1;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(30, 30);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(52, 15);
+			this.label6.TabIndex = 0;
+			this.label6.Text = "Mission";
+			// 
+			// pnlVehicle
+			// 
+			this.pnlVehicle.Controls.Add(this.label5);
+			this.pnlVehicle.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlVehicle.Location = new System.Drawing.Point(2, 2);
+			this.pnlVehicle.Name = "pnlVehicle";
+			this.pnlVehicle.Size = new System.Drawing.Size(846, 596);
+			this.pnlVehicle.TabIndex = 1;
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(30, 30);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(50, 15);
+			this.label5.TabIndex = 0;
+			this.label5.Text = "Vehicle";
+			// 
+			// pnlMap
+			// 
+			this.pnlMap.Controls.Add(this.gluiCtrl1);
+			this.pnlMap.Controls.Add(this.label4);
+			this.pnlMap.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlMap.Location = new System.Drawing.Point(2, 2);
+			this.pnlMap.Name = "pnlMap";
+			this.pnlMap.Size = new System.Drawing.Size(846, 596);
+			this.pnlMap.TabIndex = 0;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(30, 30);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(33, 15);
+			this.label4.TabIndex = 0;
+			this.label4.Text = "Map";
+			// 
+			// pnlRightMainRight
+			// 
+			this.pnlRightMainRight.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlRightMainRight.Location = new System.Drawing.Point(848, 2);
+			this.pnlRightMainRight.Name = "pnlRightMainRight";
+			this.pnlRightMainRight.Size = new System.Drawing.Size(2, 596);
+			this.pnlRightMainRight.TabIndex = 3;
+			// 
+			// pnlRightMainLeft
+			// 
+			this.pnlRightMainLeft.Dock = System.Windows.Forms.DockStyle.Left;
+			this.pnlRightMainLeft.Location = new System.Drawing.Point(0, 2);
+			this.pnlRightMainLeft.Name = "pnlRightMainLeft";
+			this.pnlRightMainLeft.Size = new System.Drawing.Size(2, 596);
+			this.pnlRightMainLeft.TabIndex = 3;
+			// 
+			// pnlRightMainBottom
+			// 
+			this.pnlRightMainBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlRightMainBottom.Location = new System.Drawing.Point(0, 598);
+			this.pnlRightMainBottom.Name = "pnlRightMainBottom";
+			this.pnlRightMainBottom.Size = new System.Drawing.Size(850, 2);
+			this.pnlRightMainBottom.TabIndex = 3;
+			// 
+			// pnlRightMainTop
+			// 
+			this.pnlRightMainTop.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnlRightMainTop.Location = new System.Drawing.Point(0, 0);
+			this.pnlRightMainTop.Name = "pnlRightMainTop";
+			this.pnlRightMainTop.Size = new System.Drawing.Size(850, 2);
+			this.pnlRightMainTop.TabIndex = 2;
+			// 
 			// pnlLeftMain
 			// 
 			this.pnlLeftMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
@@ -522,6 +712,7 @@
 			// 
 			// pnlAbout
 			// 
+			this.pnlAbout.Controls.Add(this.tableLayoutPanel2);
 			this.pnlAbout.Controls.Add(this.label3);
 			this.pnlAbout.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlAbout.Location = new System.Drawing.Point(2, 2);
@@ -529,14 +720,118 @@
 			this.pnlAbout.Size = new System.Drawing.Size(396, 646);
 			this.pnlAbout.TabIndex = 1;
 			// 
+			// tableLayoutPanel2
+			// 
+			this.tableLayoutPanel2.ColumnCount = 2;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5.263158F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 94.73684F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.Controls.Add(this.pbCastecLogo, 1, 6);
+			this.tableLayoutPanel2.Controls.Add(this.lblCastecHyperlink, 1, 7);
+			this.tableLayoutPanel2.Controls.Add(this.lblProgramName, 1, 1);
+			this.tableLayoutPanel2.Controls.Add(this.lblProgramVersion, 1, 2);
+			this.tableLayoutPanel2.Controls.Add(this.lblProgramCopyRight, 1, 3);
+			this.tableLayoutPanel2.Controls.Add(this.lblIcons8Hyperlink, 1, 5);
+			this.tableLayoutPanel2.Controls.Add(this.lblIcons8License, 1, 4);
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 60);
+			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+			this.tableLayoutPanel2.RowCount = 8;
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(396, 335);
+			this.tableLayoutPanel2.TabIndex = 1;
+			// 
+			// pbCastecLogo
+			// 
+			this.pbCastecLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbCastecLogo.Image")));
+			this.pbCastecLogo.Location = new System.Drawing.Point(23, 233);
+			this.pbCastecLogo.Name = "pbCastecLogo";
+			this.pbCastecLogo.Size = new System.Drawing.Size(160, 54);
+			this.pbCastecLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pbCastecLogo.TabIndex = 9;
+			this.pbCastecLogo.TabStop = false;
+			// 
+			// lblCastecHyperlink
+			// 
+			this.lblCastecHyperlink.AutoSize = true;
+			this.lblCastecHyperlink.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.lblCastecHyperlink.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblCastecHyperlink.ForeColor = System.Drawing.Color.DodgerBlue;
+			this.lblCastecHyperlink.Location = new System.Drawing.Point(23, 295);
+			this.lblCastecHyperlink.Name = "lblCastecHyperlink";
+			this.lblCastecHyperlink.Size = new System.Drawing.Size(201, 19);
+			this.lblCastecHyperlink.TabIndex = 8;
+			this.lblCastecHyperlink.Text = "http://www.castec.com.tw/";
+			// 
+			// lblProgramName
+			// 
+			this.lblProgramName.AutoSize = true;
+			this.lblProgramName.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblProgramName.Location = new System.Drawing.Point(23, 30);
+			this.lblProgramName.Name = "lblProgramName";
+			this.lblProgramName.Size = new System.Drawing.Size(180, 24);
+			this.lblProgramName.TabIndex = 2;
+			this.lblProgramName.Text = "Vehicle Manager";
+			// 
+			// lblProgramVersion
+			// 
+			this.lblProgramVersion.AutoSize = true;
+			this.lblProgramVersion.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblProgramVersion.Location = new System.Drawing.Point(23, 60);
+			this.lblProgramVersion.Name = "lblProgramVersion";
+			this.lblProgramVersion.Size = new System.Drawing.Size(53, 19);
+			this.lblProgramVersion.TabIndex = 3;
+			this.lblProgramVersion.Text = "v1.0.0";
+			// 
+			// lblProgramCopyRight
+			// 
+			this.lblProgramCopyRight.AutoSize = true;
+			this.lblProgramCopyRight.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblProgramCopyRight.Location = new System.Drawing.Point(23, 85);
+			this.lblProgramCopyRight.Name = "lblProgramCopyRight";
+			this.lblProgramCopyRight.Size = new System.Drawing.Size(368, 19);
+			this.lblProgramCopyRight.TabIndex = 4;
+			this.lblProgramCopyRight.Text = "Copyright (C) 2019 CASTEC International Corp.";
+			// 
+			// lblIcons8Hyperlink
+			// 
+			this.lblIcons8Hyperlink.AutoSize = true;
+			this.lblIcons8Hyperlink.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.lblIcons8Hyperlink.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblIcons8Hyperlink.ForeColor = System.Drawing.Color.DodgerBlue;
+			this.lblIcons8Hyperlink.Location = new System.Drawing.Point(23, 170);
+			this.lblIcons8Hyperlink.Name = "lblIcons8Hyperlink";
+			this.lblIcons8Hyperlink.Size = new System.Drawing.Size(146, 19);
+			this.lblIcons8Hyperlink.TabIndex = 6;
+			this.lblIcons8Hyperlink.Text = "https://icons8.com/";
+			// 
+			// lblIcons8License
+			// 
+			this.lblIcons8License.AutoSize = true;
+			this.lblIcons8License.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblIcons8License.Location = new System.Drawing.Point(23, 145);
+			this.lblIcons8License.Name = "lblIcons8License";
+			this.lblIcons8License.Size = new System.Drawing.Size(130, 19);
+			this.lblIcons8License.TabIndex = 5;
+			this.lblIcons8License.Text = "Icon by icons8";
+			// 
 			// label3
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(30, 30);
+			this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+			this.label3.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label3.Location = new System.Drawing.Point(0, 0);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(42, 15);
+			this.label3.Size = new System.Drawing.Size(396, 60);
 			this.label3.TabIndex = 0;
-			this.label3.Text = "About";
+			this.label3.Text = "    About";
+			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// pnlVehicleManualControl
 			// 
@@ -566,112 +861,13 @@
 			this.pnlVehicleOverview.Size = new System.Drawing.Size(396, 646);
 			this.pnlVehicleOverview.TabIndex = 0;
 			// 
-			// pnlMap
+			// pnlLeftMainRight
 			// 
-			this.pnlMap.Controls.Add(this.gluiCtrl1);
-			this.pnlMap.Controls.Add(this.label4);
-			this.pnlMap.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlMap.Location = new System.Drawing.Point(2, 2);
-			this.pnlMap.Name = "pnlMap";
-			this.pnlMap.Size = new System.Drawing.Size(846, 596);
-			this.pnlMap.TabIndex = 0;
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(30, 30);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(33, 15);
-			this.label4.TabIndex = 0;
-			this.label4.Text = "Map";
-			// 
-			// pnlVehicle
-			// 
-			this.pnlVehicle.Controls.Add(this.label5);
-			this.pnlVehicle.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlVehicle.Location = new System.Drawing.Point(2, 2);
-			this.pnlVehicle.Name = "pnlVehicle";
-			this.pnlVehicle.Size = new System.Drawing.Size(846, 596);
-			this.pnlVehicle.TabIndex = 1;
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(30, 30);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(50, 15);
-			this.label5.TabIndex = 0;
-			this.label5.Text = "Vehicle";
-			// 
-			// pnlMission
-			// 
-			this.pnlMission.Controls.Add(this.label6);
-			this.pnlMission.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlMission.Location = new System.Drawing.Point(2, 2);
-			this.pnlMission.Name = "pnlMission";
-			this.pnlMission.Size = new System.Drawing.Size(846, 596);
-			this.pnlMission.TabIndex = 1;
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(30, 30);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(52, 15);
-			this.label6.TabIndex = 0;
-			this.label6.Text = "Mission";
-			// 
-			// pnlSetting
-			// 
-			this.pnlSetting.Controls.Add(this.label7);
-			this.pnlSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlSetting.Location = new System.Drawing.Point(2, 2);
-			this.pnlSetting.Name = "pnlSetting";
-			this.pnlSetting.Size = new System.Drawing.Size(846, 596);
-			this.pnlSetting.TabIndex = 1;
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(30, 30);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(47, 15);
-			this.label7.TabIndex = 0;
-			this.label7.Text = "Setting";
-			// 
-			// pnlLog
-			// 
-			this.pnlLog.Controls.Add(this.label8);
-			this.pnlLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlLog.Location = new System.Drawing.Point(2, 2);
-			this.pnlLog.Name = "pnlLog";
-			this.pnlLog.Size = new System.Drawing.Size(846, 596);
-			this.pnlLog.TabIndex = 1;
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(30, 30);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(30, 15);
-			this.label8.TabIndex = 0;
-			this.label8.Text = "Log";
-			// 
-			// pnlLeftMainTop
-			// 
-			this.pnlLeftMainTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlLeftMainTop.Location = new System.Drawing.Point(0, 0);
-			this.pnlLeftMainTop.Name = "pnlLeftMainTop";
-			this.pnlLeftMainTop.Size = new System.Drawing.Size(400, 2);
-			this.pnlLeftMainTop.TabIndex = 0;
-			// 
-			// pnlLeftMainBottom
-			// 
-			this.pnlLeftMainBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlLeftMainBottom.Location = new System.Drawing.Point(0, 648);
-			this.pnlLeftMainBottom.Name = "pnlLeftMainBottom";
-			this.pnlLeftMainBottom.Size = new System.Drawing.Size(400, 2);
-			this.pnlLeftMainBottom.TabIndex = 0;
+			this.pnlLeftMainRight.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlLeftMainRight.Location = new System.Drawing.Point(398, 2);
+			this.pnlLeftMainRight.Name = "pnlLeftMainRight";
+			this.pnlLeftMainRight.Size = new System.Drawing.Size(2, 646);
+			this.pnlLeftMainRight.TabIndex = 0;
 			// 
 			// pnlLeftMainLeft
 			// 
@@ -681,102 +877,21 @@
 			this.pnlLeftMainLeft.Size = new System.Drawing.Size(2, 646);
 			this.pnlLeftMainLeft.TabIndex = 0;
 			// 
-			// pnlLeftMainRight
+			// pnlLeftMainBottom
 			// 
-			this.pnlLeftMainRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlLeftMainRight.Location = new System.Drawing.Point(398, 2);
-			this.pnlLeftMainRight.Name = "pnlLeftMainRight";
-			this.pnlLeftMainRight.Size = new System.Drawing.Size(2, 646);
-			this.pnlLeftMainRight.TabIndex = 0;
+			this.pnlLeftMainBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlLeftMainBottom.Location = new System.Drawing.Point(0, 648);
+			this.pnlLeftMainBottom.Name = "pnlLeftMainBottom";
+			this.pnlLeftMainBottom.Size = new System.Drawing.Size(400, 2);
+			this.pnlLeftMainBottom.TabIndex = 0;
 			// 
-			// pnlRightMainTop
+			// pnlLeftMainTop
 			// 
-			this.pnlRightMainTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlRightMainTop.Location = new System.Drawing.Point(0, 0);
-			this.pnlRightMainTop.Name = "pnlRightMainTop";
-			this.pnlRightMainTop.Size = new System.Drawing.Size(850, 2);
-			this.pnlRightMainTop.TabIndex = 2;
-			// 
-			// pnlRightMainBottom
-			// 
-			this.pnlRightMainBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlRightMainBottom.Location = new System.Drawing.Point(0, 598);
-			this.pnlRightMainBottom.Name = "pnlRightMainBottom";
-			this.pnlRightMainBottom.Size = new System.Drawing.Size(850, 2);
-			this.pnlRightMainBottom.TabIndex = 3;
-			// 
-			// pnlRightMainLeft
-			// 
-			this.pnlRightMainLeft.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlRightMainLeft.Location = new System.Drawing.Point(0, 2);
-			this.pnlRightMainLeft.Name = "pnlRightMainLeft";
-			this.pnlRightMainLeft.Size = new System.Drawing.Size(2, 596);
-			this.pnlRightMainLeft.TabIndex = 3;
-			// 
-			// pnlRightMainRight
-			// 
-			this.pnlRightMainRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlRightMainRight.Location = new System.Drawing.Point(848, 2);
-			this.pnlRightMainRight.Name = "pnlRightMainRight";
-			this.pnlRightMainRight.Size = new System.Drawing.Size(2, 596);
-			this.pnlRightMainRight.TabIndex = 3;
-			// 
-			// pnlConnection
-			// 
-			this.pnlConnection.Controls.Add(this.lblConnection);
-			this.pnlConnection.Controls.Add(this.pnlConnectionRight);
-			this.pnlConnection.Controls.Add(this.pnlConnectionLeft);
-			this.pnlConnection.Controls.Add(this.pnlConnectionBottom);
-			this.pnlConnection.Controls.Add(this.pnlConnectionTop);
-			this.pnlConnection.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlConnection.Location = new System.Drawing.Point(1250, 0);
-			this.pnlConnection.Name = "pnlConnection";
-			this.pnlConnection.Size = new System.Drawing.Size(50, 50);
-			this.pnlConnection.TabIndex = 0;
-			// 
-			// pnlConnectionTop
-			// 
-			this.pnlConnectionTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlConnectionTop.Location = new System.Drawing.Point(0, 0);
-			this.pnlConnectionTop.Name = "pnlConnectionTop";
-			this.pnlConnectionTop.Size = new System.Drawing.Size(50, 5);
-			this.pnlConnectionTop.TabIndex = 1;
-			// 
-			// pnlConnectionBottom
-			// 
-			this.pnlConnectionBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlConnectionBottom.Location = new System.Drawing.Point(0, 45);
-			this.pnlConnectionBottom.Name = "pnlConnectionBottom";
-			this.pnlConnectionBottom.Size = new System.Drawing.Size(50, 5);
-			this.pnlConnectionBottom.TabIndex = 1;
-			// 
-			// pnlConnectionLeft
-			// 
-			this.pnlConnectionLeft.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlConnectionLeft.Location = new System.Drawing.Point(0, 5);
-			this.pnlConnectionLeft.Name = "pnlConnectionLeft";
-			this.pnlConnectionLeft.Size = new System.Drawing.Size(5, 40);
-			this.pnlConnectionLeft.TabIndex = 1;
-			// 
-			// pnlConnectionRight
-			// 
-			this.pnlConnectionRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlConnectionRight.Location = new System.Drawing.Point(45, 5);
-			this.pnlConnectionRight.Name = "pnlConnectionRight";
-			this.pnlConnectionRight.Size = new System.Drawing.Size(5, 40);
-			this.pnlConnectionRight.TabIndex = 1;
-			// 
-			// lblConnection
-			// 
-			this.lblConnection.BackColor = System.Drawing.Color.DarkRed;
-			this.lblConnection.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lblConnection.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblConnection.Location = new System.Drawing.Point(5, 5);
-			this.lblConnection.Name = "lblConnection";
-			this.lblConnection.Size = new System.Drawing.Size(40, 40);
-			this.lblConnection.TabIndex = 2;
-			this.lblConnection.Text = "0";
-			this.lblConnection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.pnlLeftMainTop.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnlLeftMainTop.Location = new System.Drawing.Point(0, 0);
+			this.pnlLeftMainTop.Name = "pnlLeftMainTop";
+			this.pnlLeftMainTop.Size = new System.Drawing.Size(400, 2);
+			this.pnlLeftMainTop.TabIndex = 0;
 			// 
 			// VehicleManagerGUI
 			// 
@@ -802,25 +917,27 @@
 			this.tableLayoutPanel1.PerformLayout();
 			this.pnlTopSide.ResumeLayout(false);
 			this.pnlBtmSide.ResumeLayout(false);
+			this.pnlConnection.ResumeLayout(false);
 			this.pnlLeftSide.ResumeLayout(false);
 			this.pnlTop.ResumeLayout(false);
 			this.pnlRightMain.ResumeLayout(false);
-			this.pnlLeftMain.ResumeLayout(false);
-			this.pnlAbout.ResumeLayout(false);
-			this.pnlAbout.PerformLayout();
-			this.pnlVehicleManualControl.ResumeLayout(false);
-			this.pnlVehicleManualControl.PerformLayout();
-			this.pnlMap.ResumeLayout(false);
-			this.pnlMap.PerformLayout();
-			this.pnlVehicle.ResumeLayout(false);
-			this.pnlVehicle.PerformLayout();
-			this.pnlMission.ResumeLayout(false);
-			this.pnlMission.PerformLayout();
-			this.pnlSetting.ResumeLayout(false);
-			this.pnlSetting.PerformLayout();
 			this.pnlLog.ResumeLayout(false);
 			this.pnlLog.PerformLayout();
-			this.pnlConnection.ResumeLayout(false);
+			this.pnlSetting.ResumeLayout(false);
+			this.pnlSetting.PerformLayout();
+			this.pnlMission.ResumeLayout(false);
+			this.pnlMission.PerformLayout();
+			this.pnlVehicle.ResumeLayout(false);
+			this.pnlVehicle.PerformLayout();
+			this.pnlMap.ResumeLayout(false);
+			this.pnlMap.PerformLayout();
+			this.pnlLeftMain.ResumeLayout(false);
+			this.pnlAbout.ResumeLayout(false);
+			this.tableLayoutPanel2.ResumeLayout(false);
+			this.tableLayoutPanel2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbCastecLogo)).EndInit();
+			this.pnlVehicleManualControl.ResumeLayout(false);
+			this.pnlVehicleManualControl.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -886,5 +1003,13 @@
 		private System.Windows.Forms.Panel pnlConnectionLeft;
 		private System.Windows.Forms.Panel pnlConnectionBottom;
 		private System.Windows.Forms.Label lblConnection;
+		private System.Windows.Forms.Label lblProgramCopyRight;
+		private System.Windows.Forms.Label lblProgramVersion;
+		private System.Windows.Forms.Label lblProgramName;
+		private System.Windows.Forms.Label lblIcons8Hyperlink;
+		private System.Windows.Forms.Label lblIcons8License;
+		private System.Windows.Forms.Label lblCastecHyperlink;
+		private System.Windows.Forms.PictureBox pbCastecLogo;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 	}
 }
