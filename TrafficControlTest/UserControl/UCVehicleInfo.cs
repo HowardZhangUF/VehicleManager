@@ -47,5 +47,9 @@ namespace TrafficControlTest.UserControl
 		{
 			InitializeComponent();
 		}
+		public override string ToString()
+		{
+			return $"{mId}/{mBattery}/{mState}";
+		}
 	}
 }

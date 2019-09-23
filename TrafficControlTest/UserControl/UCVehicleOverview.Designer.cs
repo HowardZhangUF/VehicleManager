@@ -1,6 +1,6 @@
 ﻿namespace TrafficControlTest.UserControl
 {
-	partial class UCVehicleManualControl
+	partial class UCVehicleOverview
 	{
 		/// <summary> 
 		/// 設計工具所需的變數。
@@ -28,33 +28,36 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.label1 = new System.Windows.Forms.Label();
+			this.lblTitle = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
-			// label1
+			// lblTitle
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(30, 30);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(97, 15);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "Vehicle Control";
+			this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
+			this.lblTitle.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblTitle.ForeColor = System.Drawing.Color.White;
+			this.lblTitle.Location = new System.Drawing.Point(0, 0);
+			this.lblTitle.Name = "lblTitle";
+			this.lblTitle.Size = new System.Drawing.Size(400, 60);
+			this.lblTitle.TabIndex = 3;
+			this.lblTitle.Text = "    Vehicle Overview";
+			this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// UCVehicleControl
+			// UCVehicleOverview
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+			this.AutoScroll = true;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.Controls.Add(this.label1);
+			this.Controls.Add(this.lblTitle);
 			this.ForeColor = System.Drawing.Color.White;
-			this.Name = "UCVehicleControl";
+			this.Name = "UCVehicleOverview";
 			this.Size = new System.Drawing.Size(400, 650);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label lblTitle;
 	}
 }

@@ -30,14 +30,6 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VehicleManagerGUI));
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
-			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.label1 = new System.Windows.Forms.Label();
-			this.txtInterveneMovingBuffer = new System.Windows.Forms.TextBox();
-			this.btnInterveneInsertMovingBuffer = new System.Windows.Forms.Button();
-			this.btnInterveneRemoveMovingBuffer = new System.Windows.Forms.Button();
-			this.btnIntervenePauseMoving = new System.Windows.Forms.Button();
-			this.btnInterveneResumeMoving = new System.Windows.Forms.Button();
-			this.cbVehicleList = new System.Windows.Forms.ComboBox();
 			this.pnlTopSide = new System.Windows.Forms.Panel();
 			this.lblFormTitle = new System.Windows.Forms.Label();
 			this.lblFormIcon = new System.Windows.Forms.Label();
@@ -53,7 +45,7 @@
 			this.pnlConnectionTop = new System.Windows.Forms.Panel();
 			this.pnlLeftSide = new System.Windows.Forms.Panel();
 			this.pnlLeftSideMarker = new System.Windows.Forms.Panel();
-			this.btnDisplayManualControl = new System.Windows.Forms.Button();
+			this.btnDisplayVehicleManualControl = new System.Windows.Forms.Button();
 			this.btnDisplayVehicleOverview = new System.Windows.Forms.Button();
 			this.btnDisplayPnlLeftMain = new System.Windows.Forms.Button();
 			this.btnDisplaySetting = new System.Windows.Forms.Button();
@@ -79,24 +71,9 @@
 			this.pnlRightMainBottom = new System.Windows.Forms.Panel();
 			this.pnlRightMainTop = new System.Windows.Forms.Panel();
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
-			this.pnlAbout = new System.Windows.Forms.Panel();
-			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-			this.pbCastecLogo = new System.Windows.Forms.PictureBox();
-			this.lblCastecHyperlink = new System.Windows.Forms.Label();
-			this.lblProgramName = new System.Windows.Forms.Label();
-			this.lblProgramVersion = new System.Windows.Forms.Label();
-			this.lblProgramCopyRight = new System.Windows.Forms.Label();
-			this.lblIcons8Hyperlink = new System.Windows.Forms.Label();
-			this.lblIcons8License = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.pnlVehicleManualControl = new System.Windows.Forms.Panel();
-			this.label2 = new System.Windows.Forms.Label();
-			this.pnlVehicleOverview = new System.Windows.Forms.Panel();
-			this.pnlLeftMainRight = new System.Windows.Forms.Panel();
-			this.pnlLeftMainLeft = new System.Windows.Forms.Panel();
-			this.pnlLeftMainBottom = new System.Windows.Forms.Panel();
-			this.pnlLeftMainTop = new System.Windows.Forms.Panel();
-			this.tableLayoutPanel1.SuspendLayout();
+			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
+			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UCVehicleManualControl();
+			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UCVehicleOverview();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlBtmSide.SuspendLayout();
 			this.pnlConnection.SuspendLayout();
@@ -109,10 +86,6 @@
 			this.pnlVehicle.SuspendLayout();
 			this.pnlMap.SuspendLayout();
 			this.pnlLeftMain.SuspendLayout();
-			this.pnlAbout.SuspendLayout();
-			this.tableLayoutPanel2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbCastecLogo)).BeginInit();
-			this.pnlVehicleManualControl.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gluiCtrl1
@@ -129,116 +102,6 @@
 			this.gluiCtrl1.TabIndex = 1;
 			this.gluiCtrl1.Zoom = 10D;
 			this.gluiCtrl1.LoadMapEvent += new GLUI.LoadMapEvent(this.gluiCtrl1_LoadMapEvent);
-			// 
-			// tableLayoutPanel1
-			// 
-			this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.tableLayoutPanel1.ColumnCount = 1;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.txtInterveneMovingBuffer, 0, 2);
-			this.tableLayoutPanel1.Controls.Add(this.btnInterveneInsertMovingBuffer, 0, 3);
-			this.tableLayoutPanel1.Controls.Add(this.btnInterveneRemoveMovingBuffer, 0, 4);
-			this.tableLayoutPanel1.Controls.Add(this.btnIntervenePauseMoving, 0, 5);
-			this.tableLayoutPanel1.Controls.Add(this.btnInterveneResumeMoving, 0, 6);
-			this.tableLayoutPanel1.Controls.Add(this.cbVehicleList, 0, 1);
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(149, 205);
-			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 7;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(244, 439);
-			this.tableLayoutPanel1.TabIndex = 2;
-			// 
-			// label1
-			// 
-			this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.label1.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label1.Location = new System.Drawing.Point(3, 0);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(238, 70);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Intervene Command";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// txtInterveneMovingBuffer
-			// 
-			this.txtInterveneMovingBuffer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.txtInterveneMovingBuffer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtInterveneMovingBuffer.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.txtInterveneMovingBuffer.Location = new System.Drawing.Point(3, 115);
-			this.txtInterveneMovingBuffer.Name = "txtInterveneMovingBuffer";
-			this.txtInterveneMovingBuffer.Size = new System.Drawing.Size(238, 40);
-			this.txtInterveneMovingBuffer.TabIndex = 1;
-			this.txtInterveneMovingBuffer.Text = "-9000,7000";
-			// 
-			// btnInterveneInsertMovingBuffer
-			// 
-			this.btnInterveneInsertMovingBuffer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnInterveneInsertMovingBuffer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnInterveneInsertMovingBuffer.Location = new System.Drawing.Point(3, 160);
-			this.btnInterveneInsertMovingBuffer.Name = "btnInterveneInsertMovingBuffer";
-			this.btnInterveneInsertMovingBuffer.Size = new System.Drawing.Size(238, 64);
-			this.btnInterveneInsertMovingBuffer.TabIndex = 2;
-			this.btnInterveneInsertMovingBuffer.Text = "Insert Moving Buffer";
-			this.btnInterveneInsertMovingBuffer.UseVisualStyleBackColor = true;
-			this.btnInterveneInsertMovingBuffer.Click += new System.EventHandler(this.btnInterveneInsertMovingBuffer_Click);
-			// 
-			// btnInterveneRemoveMovingBuffer
-			// 
-			this.btnInterveneRemoveMovingBuffer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnInterveneRemoveMovingBuffer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnInterveneRemoveMovingBuffer.Location = new System.Drawing.Point(3, 230);
-			this.btnInterveneRemoveMovingBuffer.Name = "btnInterveneRemoveMovingBuffer";
-			this.btnInterveneRemoveMovingBuffer.Size = new System.Drawing.Size(238, 64);
-			this.btnInterveneRemoveMovingBuffer.TabIndex = 2;
-			this.btnInterveneRemoveMovingBuffer.Text = "Remove Moving Buffer";
-			this.btnInterveneRemoveMovingBuffer.UseVisualStyleBackColor = true;
-			this.btnInterveneRemoveMovingBuffer.Click += new System.EventHandler(this.btnInterveneRemoveMovingBuffer_Click);
-			// 
-			// btnIntervenePauseMoving
-			// 
-			this.btnIntervenePauseMoving.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnIntervenePauseMoving.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnIntervenePauseMoving.Location = new System.Drawing.Point(3, 300);
-			this.btnIntervenePauseMoving.Name = "btnIntervenePauseMoving";
-			this.btnIntervenePauseMoving.Size = new System.Drawing.Size(238, 64);
-			this.btnIntervenePauseMoving.TabIndex = 2;
-			this.btnIntervenePauseMoving.Text = "Pause Moving";
-			this.btnIntervenePauseMoving.UseVisualStyleBackColor = true;
-			this.btnIntervenePauseMoving.Click += new System.EventHandler(this.btnIntervenePauseMoving_Click);
-			// 
-			// btnInterveneResumeMoving
-			// 
-			this.btnInterveneResumeMoving.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnInterveneResumeMoving.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnInterveneResumeMoving.Location = new System.Drawing.Point(3, 370);
-			this.btnInterveneResumeMoving.Name = "btnInterveneResumeMoving";
-			this.btnInterveneResumeMoving.Size = new System.Drawing.Size(238, 66);
-			this.btnInterveneResumeMoving.TabIndex = 2;
-			this.btnInterveneResumeMoving.Text = "Resume Moving";
-			this.btnInterveneResumeMoving.UseVisualStyleBackColor = true;
-			this.btnInterveneResumeMoving.Click += new System.EventHandler(this.btnInterveneResumeMoving_Click);
-			// 
-			// cbVehicleList
-			// 
-			this.cbVehicleList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.cbVehicleList.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.cbVehicleList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbVehicleList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.cbVehicleList.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.cbVehicleList.ForeColor = System.Drawing.Color.White;
-			this.cbVehicleList.FormattingEnabled = true;
-			this.cbVehicleList.Location = new System.Drawing.Point(3, 73);
-			this.cbVehicleList.Name = "cbVehicleList";
-			this.cbVehicleList.Size = new System.Drawing.Size(238, 35);
-			this.cbVehicleList.TabIndex = 3;
 			// 
 			// pnlTopSide
 			// 
@@ -389,7 +252,7 @@
 			this.pnlLeftSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.pnlLeftSide.Controls.Add(this.pnlLeftSideMarker);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayAbout);
-			this.pnlLeftSide.Controls.Add(this.btnDisplayManualControl);
+			this.pnlLeftSide.Controls.Add(this.btnDisplayVehicleManualControl);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayVehicleOverview);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayPnlLeftMain);
 			this.pnlLeftSide.Dock = System.Windows.Forms.DockStyle.Left;
@@ -406,18 +269,18 @@
 			this.pnlLeftSideMarker.Size = new System.Drawing.Size(4, 650);
 			this.pnlLeftSideMarker.TabIndex = 4;
 			// 
-			// btnDisplayManualControl
+			// btnDisplayVehicleManualControl
 			// 
-			this.btnDisplayManualControl.Dock = System.Windows.Forms.DockStyle.Top;
-			this.btnDisplayManualControl.FlatAppearance.BorderSize = 0;
-			this.btnDisplayManualControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnDisplayManualControl.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayManualControl.Image")));
-			this.btnDisplayManualControl.Location = new System.Drawing.Point(0, 100);
-			this.btnDisplayManualControl.Name = "btnDisplayManualControl";
-			this.btnDisplayManualControl.Size = new System.Drawing.Size(50, 50);
-			this.btnDisplayManualControl.TabIndex = 1;
-			this.btnDisplayManualControl.UseVisualStyleBackColor = true;
-			this.btnDisplayManualControl.Click += new System.EventHandler(this.btnDisplayManualControl_Click);
+			this.btnDisplayVehicleManualControl.Dock = System.Windows.Forms.DockStyle.Top;
+			this.btnDisplayVehicleManualControl.FlatAppearance.BorderSize = 0;
+			this.btnDisplayVehicleManualControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDisplayVehicleManualControl.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayVehicleManualControl.Image")));
+			this.btnDisplayVehicleManualControl.Location = new System.Drawing.Point(0, 100);
+			this.btnDisplayVehicleManualControl.Name = "btnDisplayVehicleManualControl";
+			this.btnDisplayVehicleManualControl.Size = new System.Drawing.Size(50, 50);
+			this.btnDisplayVehicleManualControl.TabIndex = 1;
+			this.btnDisplayVehicleManualControl.UseVisualStyleBackColor = true;
+			this.btnDisplayVehicleManualControl.Click += new System.EventHandler(this.btnDisplayVehicleManualControl_Click);
 			// 
 			// btnDisplayVehicleOverview
 			// 
@@ -697,201 +560,47 @@
 			// pnlLeftMain
 			// 
 			this.pnlLeftMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.pnlLeftMain.Controls.Add(this.pnlAbout);
-			this.pnlLeftMain.Controls.Add(this.pnlVehicleManualControl);
-			this.pnlLeftMain.Controls.Add(this.pnlVehicleOverview);
-			this.pnlLeftMain.Controls.Add(this.pnlLeftMainRight);
-			this.pnlLeftMain.Controls.Add(this.pnlLeftMainLeft);
-			this.pnlLeftMain.Controls.Add(this.pnlLeftMainBottom);
-			this.pnlLeftMain.Controls.Add(this.pnlLeftMainTop);
+			this.pnlLeftMain.Controls.Add(this.ucAbout1);
+			this.pnlLeftMain.Controls.Add(this.ucVehicleManualControl1);
+			this.pnlLeftMain.Controls.Add(this.ucVehicleOverview1);
 			this.pnlLeftMain.Dock = System.Windows.Forms.DockStyle.Left;
 			this.pnlLeftMain.Location = new System.Drawing.Point(50, 50);
 			this.pnlLeftMain.Name = "pnlLeftMain";
 			this.pnlLeftMain.Size = new System.Drawing.Size(400, 650);
 			this.pnlLeftMain.TabIndex = 6;
 			// 
-			// pnlAbout
+			// ucAbout1
 			// 
-			this.pnlAbout.Controls.Add(this.tableLayoutPanel2);
-			this.pnlAbout.Controls.Add(this.label3);
-			this.pnlAbout.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlAbout.Location = new System.Drawing.Point(2, 2);
-			this.pnlAbout.Name = "pnlAbout";
-			this.pnlAbout.Size = new System.Drawing.Size(396, 646);
-			this.pnlAbout.TabIndex = 1;
+			this.ucAbout1.AutoScroll = true;
+			this.ucAbout1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucAbout1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucAbout1.ForeColor = System.Drawing.Color.White;
+			this.ucAbout1.Location = new System.Drawing.Point(0, 0);
+			this.ucAbout1.Name = "ucAbout1";
+			this.ucAbout1.Size = new System.Drawing.Size(400, 650);
+			this.ucAbout1.TabIndex = 2;
 			// 
-			// tableLayoutPanel2
+			// ucVehicleManualControl1
 			// 
-			this.tableLayoutPanel2.ColumnCount = 2;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5.263158F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 94.73684F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.Controls.Add(this.pbCastecLogo, 1, 6);
-			this.tableLayoutPanel2.Controls.Add(this.lblCastecHyperlink, 1, 7);
-			this.tableLayoutPanel2.Controls.Add(this.lblProgramName, 1, 1);
-			this.tableLayoutPanel2.Controls.Add(this.lblProgramVersion, 1, 2);
-			this.tableLayoutPanel2.Controls.Add(this.lblProgramCopyRight, 1, 3);
-			this.tableLayoutPanel2.Controls.Add(this.lblIcons8Hyperlink, 1, 5);
-			this.tableLayoutPanel2.Controls.Add(this.lblIcons8License, 1, 4);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 60);
-			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 8;
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(396, 335);
-			this.tableLayoutPanel2.TabIndex = 1;
+			this.ucVehicleManualControl1.AutoScroll = true;
+			this.ucVehicleManualControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucVehicleManualControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucVehicleManualControl1.ForeColor = System.Drawing.Color.White;
+			this.ucVehicleManualControl1.Location = new System.Drawing.Point(0, 0);
+			this.ucVehicleManualControl1.Name = "ucVehicleManualControl1";
+			this.ucVehicleManualControl1.Size = new System.Drawing.Size(400, 650);
+			this.ucVehicleManualControl1.TabIndex = 1;
 			// 
-			// pbCastecLogo
+			// ucVehicleOverview1
 			// 
-			this.pbCastecLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbCastecLogo.Image")));
-			this.pbCastecLogo.Location = new System.Drawing.Point(23, 233);
-			this.pbCastecLogo.Name = "pbCastecLogo";
-			this.pbCastecLogo.Size = new System.Drawing.Size(160, 54);
-			this.pbCastecLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pbCastecLogo.TabIndex = 9;
-			this.pbCastecLogo.TabStop = false;
-			// 
-			// lblCastecHyperlink
-			// 
-			this.lblCastecHyperlink.AutoSize = true;
-			this.lblCastecHyperlink.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.lblCastecHyperlink.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblCastecHyperlink.ForeColor = System.Drawing.Color.DodgerBlue;
-			this.lblCastecHyperlink.Location = new System.Drawing.Point(23, 295);
-			this.lblCastecHyperlink.Name = "lblCastecHyperlink";
-			this.lblCastecHyperlink.Size = new System.Drawing.Size(201, 19);
-			this.lblCastecHyperlink.TabIndex = 8;
-			this.lblCastecHyperlink.Text = "http://www.castec.com.tw/";
-			// 
-			// lblProgramName
-			// 
-			this.lblProgramName.AutoSize = true;
-			this.lblProgramName.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblProgramName.Location = new System.Drawing.Point(23, 30);
-			this.lblProgramName.Name = "lblProgramName";
-			this.lblProgramName.Size = new System.Drawing.Size(180, 24);
-			this.lblProgramName.TabIndex = 2;
-			this.lblProgramName.Text = "Vehicle Manager";
-			// 
-			// lblProgramVersion
-			// 
-			this.lblProgramVersion.AutoSize = true;
-			this.lblProgramVersion.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblProgramVersion.Location = new System.Drawing.Point(23, 60);
-			this.lblProgramVersion.Name = "lblProgramVersion";
-			this.lblProgramVersion.Size = new System.Drawing.Size(53, 19);
-			this.lblProgramVersion.TabIndex = 3;
-			this.lblProgramVersion.Text = "v1.0.0";
-			// 
-			// lblProgramCopyRight
-			// 
-			this.lblProgramCopyRight.AutoSize = true;
-			this.lblProgramCopyRight.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblProgramCopyRight.Location = new System.Drawing.Point(23, 85);
-			this.lblProgramCopyRight.Name = "lblProgramCopyRight";
-			this.lblProgramCopyRight.Size = new System.Drawing.Size(368, 19);
-			this.lblProgramCopyRight.TabIndex = 4;
-			this.lblProgramCopyRight.Text = "Copyright (C) 2019 CASTEC International Corp.";
-			// 
-			// lblIcons8Hyperlink
-			// 
-			this.lblIcons8Hyperlink.AutoSize = true;
-			this.lblIcons8Hyperlink.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.lblIcons8Hyperlink.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblIcons8Hyperlink.ForeColor = System.Drawing.Color.DodgerBlue;
-			this.lblIcons8Hyperlink.Location = new System.Drawing.Point(23, 170);
-			this.lblIcons8Hyperlink.Name = "lblIcons8Hyperlink";
-			this.lblIcons8Hyperlink.Size = new System.Drawing.Size(146, 19);
-			this.lblIcons8Hyperlink.TabIndex = 6;
-			this.lblIcons8Hyperlink.Text = "https://icons8.com/";
-			// 
-			// lblIcons8License
-			// 
-			this.lblIcons8License.AutoSize = true;
-			this.lblIcons8License.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblIcons8License.Location = new System.Drawing.Point(23, 145);
-			this.lblIcons8License.Name = "lblIcons8License";
-			this.lblIcons8License.Size = new System.Drawing.Size(130, 19);
-			this.lblIcons8License.TabIndex = 5;
-			this.lblIcons8License.Text = "Icon by icons8";
-			// 
-			// label3
-			// 
-			this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-			this.label3.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label3.Location = new System.Drawing.Point(0, 0);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(396, 60);
-			this.label3.TabIndex = 0;
-			this.label3.Text = "    About";
-			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// pnlVehicleManualControl
-			// 
-			this.pnlVehicleManualControl.Controls.Add(this.label2);
-			this.pnlVehicleManualControl.Controls.Add(this.tableLayoutPanel1);
-			this.pnlVehicleManualControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlVehicleManualControl.Location = new System.Drawing.Point(2, 2);
-			this.pnlVehicleManualControl.Name = "pnlVehicleManualControl";
-			this.pnlVehicleManualControl.Size = new System.Drawing.Size(396, 646);
-			this.pnlVehicleManualControl.TabIndex = 0;
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(30, 30);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(97, 15);
-			this.label2.TabIndex = 0;
-			this.label2.Text = "Vehicle Control";
-			// 
-			// pnlVehicleOverview
-			// 
-			this.pnlVehicleOverview.AutoScroll = true;
-			this.pnlVehicleOverview.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlVehicleOverview.Location = new System.Drawing.Point(2, 2);
-			this.pnlVehicleOverview.Name = "pnlVehicleOverview";
-			this.pnlVehicleOverview.Size = new System.Drawing.Size(396, 646);
-			this.pnlVehicleOverview.TabIndex = 0;
-			// 
-			// pnlLeftMainRight
-			// 
-			this.pnlLeftMainRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlLeftMainRight.Location = new System.Drawing.Point(398, 2);
-			this.pnlLeftMainRight.Name = "pnlLeftMainRight";
-			this.pnlLeftMainRight.Size = new System.Drawing.Size(2, 646);
-			this.pnlLeftMainRight.TabIndex = 0;
-			// 
-			// pnlLeftMainLeft
-			// 
-			this.pnlLeftMainLeft.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlLeftMainLeft.Location = new System.Drawing.Point(0, 2);
-			this.pnlLeftMainLeft.Name = "pnlLeftMainLeft";
-			this.pnlLeftMainLeft.Size = new System.Drawing.Size(2, 646);
-			this.pnlLeftMainLeft.TabIndex = 0;
-			// 
-			// pnlLeftMainBottom
-			// 
-			this.pnlLeftMainBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlLeftMainBottom.Location = new System.Drawing.Point(0, 648);
-			this.pnlLeftMainBottom.Name = "pnlLeftMainBottom";
-			this.pnlLeftMainBottom.Size = new System.Drawing.Size(400, 2);
-			this.pnlLeftMainBottom.TabIndex = 0;
-			// 
-			// pnlLeftMainTop
-			// 
-			this.pnlLeftMainTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlLeftMainTop.Location = new System.Drawing.Point(0, 0);
-			this.pnlLeftMainTop.Name = "pnlLeftMainTop";
-			this.pnlLeftMainTop.Size = new System.Drawing.Size(400, 2);
-			this.pnlLeftMainTop.TabIndex = 0;
+			this.ucVehicleOverview1.AutoScroll = true;
+			this.ucVehicleOverview1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucVehicleOverview1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucVehicleOverview1.ForeColor = System.Drawing.Color.White;
+			this.ucVehicleOverview1.Location = new System.Drawing.Point(0, 0);
+			this.ucVehicleOverview1.Name = "ucVehicleOverview1";
+			this.ucVehicleOverview1.Size = new System.Drawing.Size(400, 650);
+			this.ucVehicleOverview1.TabIndex = 0;
 			// 
 			// VehicleManagerGUI
 			// 
@@ -913,8 +622,6 @@
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VehicleManagerGUI_FormClosing);
 			this.Load += new System.EventHandler(this.VehicleManagerGUI_Load);
-			this.tableLayoutPanel1.ResumeLayout(false);
-			this.tableLayoutPanel1.PerformLayout();
 			this.pnlTopSide.ResumeLayout(false);
 			this.pnlBtmSide.ResumeLayout(false);
 			this.pnlConnection.ResumeLayout(false);
@@ -932,12 +639,6 @@
 			this.pnlMap.ResumeLayout(false);
 			this.pnlMap.PerformLayout();
 			this.pnlLeftMain.ResumeLayout(false);
-			this.pnlAbout.ResumeLayout(false);
-			this.tableLayoutPanel2.ResumeLayout(false);
-			this.tableLayoutPanel2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbCastecLogo)).EndInit();
-			this.pnlVehicleManualControl.ResumeLayout(false);
-			this.pnlVehicleManualControl.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -945,14 +646,6 @@
 		#endregion
 
 		private GLUI.GLUICtrl gluiCtrl1;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox txtInterveneMovingBuffer;
-		private System.Windows.Forms.Button btnInterveneInsertMovingBuffer;
-		private System.Windows.Forms.Button btnInterveneRemoveMovingBuffer;
-		private System.Windows.Forms.Button btnIntervenePauseMoving;
-		private System.Windows.Forms.Button btnInterveneResumeMoving;
-		private System.Windows.Forms.ComboBox cbVehicleList;
 		private System.Windows.Forms.Panel pnlTopSide;
 		private System.Windows.Forms.Panel pnlBtmSide;
 		private System.Windows.Forms.Panel pnlLeftSide;
@@ -971,14 +664,8 @@
 		private System.Windows.Forms.Label lblFormTitle;
 		private System.Windows.Forms.Button btnDisplayAbout;
 		private System.Windows.Forms.Button btnDisplayVehicle;
-		private System.Windows.Forms.Button btnDisplayManualControl;
+		private System.Windows.Forms.Button btnDisplayVehicleManualControl;
 		private System.Windows.Forms.Button btnDisplayVehicleOverview;
-		private System.Windows.Forms.Panel pnlLeftMain;
-		private System.Windows.Forms.Panel pnlVehicleOverview;
-		private System.Windows.Forms.Panel pnlVehicleManualControl;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Panel pnlAbout;
-		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Panel pnlLog;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Panel pnlSetting;
@@ -989,10 +676,6 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Panel pnlMap;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Panel pnlLeftMainTop;
-		private System.Windows.Forms.Panel pnlLeftMainRight;
-		private System.Windows.Forms.Panel pnlLeftMainLeft;
-		private System.Windows.Forms.Panel pnlLeftMainBottom;
 		private System.Windows.Forms.Panel pnlRightMainRight;
 		private System.Windows.Forms.Panel pnlRightMainLeft;
 		private System.Windows.Forms.Panel pnlRightMainBottom;
@@ -1003,13 +686,9 @@
 		private System.Windows.Forms.Panel pnlConnectionLeft;
 		private System.Windows.Forms.Panel pnlConnectionBottom;
 		private System.Windows.Forms.Label lblConnection;
-		private System.Windows.Forms.Label lblProgramCopyRight;
-		private System.Windows.Forms.Label lblProgramVersion;
-		private System.Windows.Forms.Label lblProgramName;
-		private System.Windows.Forms.Label lblIcons8Hyperlink;
-		private System.Windows.Forms.Label lblIcons8License;
-		private System.Windows.Forms.Label lblCastecHyperlink;
-		private System.Windows.Forms.PictureBox pbCastecLogo;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+		private System.Windows.Forms.Panel pnlLeftMain;
+		private UserControl.UCVehicleOverview ucVehicleOverview1;
+		private UserControl.UCVehicleManualControl ucVehicleManualControl1;
+		private UserControl.UCAbout ucAbout1;
 	}
 }
