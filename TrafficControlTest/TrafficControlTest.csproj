@@ -51,14 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implement\CollisionEventHandler.cs" />
-    <Compile Include="Implement\VehicleControl.cs" />
-    <Compile Include="Implement\VehicleControlHandler.cs" />
-    <Compile Include="Implement\VehicleControlManager.cs" />
-    <Compile Include="Interface\ICollisionEventHandler.cs" />
-    <Compile Include="Interface\IVehicleControl.cs" />
-    <Compile Include="Interface\IVehicleControlHandler.cs" />
-    <Compile Include="Interface\IVehicleControlManager.cs" />
+    <Compile Include="Module\CollisionEventManager\Implement\CollisionEventHandler.cs" />
+    <Compile Include="Module\InterveneManager\Implement\VehicleControl.cs" />
+    <Compile Include="Module\InterveneManager\Implement\VehicleControlHandler.cs" />
+    <Compile Include="Module\InterveneManager\Implement\VehicleControlManager.cs" />
+    <Compile Include="Module\CollisionEventManager\Interface\ICollisionEventHandler.cs" />
+    <Compile Include="Module\InterveneManager\Interface\IVehicleControl.cs" />
+    <Compile Include="Module\InterveneManager\Interface\IVehicleControlHandler.cs" />
+    <Compile Include="Module\InterveneManager\Interface\IVehicleControlManager.cs" />
     <Compile Include="TrashCan\AGVInfo.cs" />
     <Compile Include="TrashCan\AGVInfoManager.cs" />
     <Compile Include="TrashCan\AGVMonitor.cs" />
@@ -67,41 +67,41 @@
     <Compile Include="TrashCan\CollisionPair.cs" />
     <Compile Include="TrashCan\DebugMessage.cs" />
     <Compile Include="Library\Extension.cs" />
-    <Compile Include="Implement\CollisionEventDetector.cs" />
-    <Compile Include="Implement\CollisionEventManager.cs" />
-    <Compile Include="Implement\CommunicatorClient.cs" />
-    <Compile Include="Implement\TimePeriod.cs" />
-    <Compile Include="Implement\TowardPoint2D.cs" />
-    <Compile Include="Implement\VehicleCommunicator.cs" />
-    <Compile Include="Implement\VehicleInfo.cs" />
-    <Compile Include="Implement\VehicleInfoManager.cs" />
-    <Compile Include="Implement\VehicleMessageAnalyzer.cs" />
-    <Compile Include="Interface\ICollisionEventDetector.cs" />
-    <Compile Include="Interface\ICollisionEventManager.cs" />
-    <Compile Include="Interface\ICommunicatorClient.cs" />
-    <Compile Include="Interface\ITimePeriod.cs" />
-    <Compile Include="Interface\ITowardPoint2D.cs" />
-    <Compile Include="Interface\IVehicleMessageAnalyzer.cs" />
+    <Compile Include="Module\CollisionEventManager\Implement\CollisionEventDetector.cs" />
+    <Compile Include="Module\CollisionEventManager\Implement\CollisionEventManager.cs" />
+    <Compile Include="Module\General\Implement\CommunicatorClient.cs" />
+    <Compile Include="Module\General\Implement\TimePeriod.cs" />
+    <Compile Include="Module\General\Implement\TowardPoint2D.cs" />
+    <Compile Include="Module\General\Implement\VehicleCommunicator.cs" />
+    <Compile Include="Module\VehicleInfoManager\Implement\VehicleInfo.cs" />
+    <Compile Include="Module\VehicleInfoManager\Implement\VehicleInfoManager.cs" />
+    <Compile Include="Module\VehicleInfoManager\Implement\VehicleMessageAnalyzer.cs" />
+    <Compile Include="Module\CollisionEventManager\Interface\ICollisionEventDetector.cs" />
+    <Compile Include="Module\CollisionEventManager\Interface\ICollisionEventManager.cs" />
+    <Compile Include="Module\General\Interface\ICommunicatorClient.cs" />
+    <Compile Include="Module\General\Interface\ITimePeriod.cs" />
+    <Compile Include="Module\General\Interface\ITowardPoint2D.cs" />
+    <Compile Include="Module\VehicleInfoManager\Interface\IVehicleMessageAnalyzer.cs" />
     <Compile Include="Library\IntMath.cs" />
-    <Compile Include="Implement\CollisionPair.cs" />
-    <Compile Include="Interface\ICollisionPair.cs" />
-    <Compile Include="Interface\IPathOverlapPair.cs" />
-    <Compile Include="Interface\IPathRegionOverlapPair.cs" />
-    <Compile Include="Interface\IPoint2D.cs" />
-    <Compile Include="Interface\IRectangle2D.cs" />
-    <Compile Include="Interface\IVector2D.cs" />
-    <Compile Include="Interface\IVehicleCommunicator.cs" />
-    <Compile Include="Interface\IVehicleInfo.cs" />
-    <Compile Include="Interface\IVehicleInfoManager.cs" />
+    <Compile Include="Module\CollisionEventManager\Implement\CollisionPair.cs" />
+    <Compile Include="Module\CollisionEventManager\Interface\ICollisionPair.cs" />
+    <Compile Include="Module\CollisionEventManager\Interface\IPathOverlapPair.cs" />
+    <Compile Include="Module\CollisionEventManager\Interface\IPathRegionOverlapPair.cs" />
+    <Compile Include="Module\General\Interface\IPoint2D.cs" />
+    <Compile Include="Module\General\Interface\IRectangle2D.cs" />
+    <Compile Include="Module\General\Interface\IVector2D.cs" />
+    <Compile Include="Module\General\Interface\IVehicleCommunicator.cs" />
+    <Compile Include="Module\VehicleInfoManager\Interface\IVehicleInfo.cs" />
+    <Compile Include="Module\VehicleInfoManager\Interface\IVehicleInfoManager.cs" />
     <Compile Include="Library\Library.cs" />
-    <Compile Include="Implement\PathOverlapPair.cs" />
-    <Compile Include="Implement\PathRegionOverlapPair.cs" />
-    <Compile Include="Implement\Vector2D.cs" />
+    <Compile Include="Module\CollisionEventManager\Implement\PathOverlapPair.cs" />
+    <Compile Include="Module\CollisionEventManager\Implement\PathRegionOverlapPair.cs" />
+    <Compile Include="Module\General\Implement\Vector2D.cs" />
     <Compile Include="TrashCan\PathOverlapPair.cs" />
     <Compile Include="TrashCan\PathRegionOverlapPair.cs" />
-    <Compile Include="Implement\Point2D.cs" />
+    <Compile Include="Module\General\Implement\Point2D.cs" />
     <Compile Include="TrashCan\Rectangle.cs" />
-    <Compile Include="Implement\Rectangle2D.cs" />
+    <Compile Include="Module\General\Implement\Rectangle2D.cs" />
     <Compile Include="TrashCan\TrafficControlTestGUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -269,7 +269,14 @@
       <Name>Serialization</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Module\MissionManager\Implement\" />
+    <Folder Include="Module\MissionManager\Interface\" />
+    <Folder Include="Module\RoadOccupiedEventManager\Implement\" />
+    <Folder Include="Module\RoadOccupiedEventManager\Interface\" />
+    <Folder Include="Module\SingleVehicleEventManager\Implement\" />
+    <Folder Include="Module\SingleVehicleEventManager\Interface\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
