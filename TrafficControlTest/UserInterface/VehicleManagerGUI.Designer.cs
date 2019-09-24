@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VehicleManagerGUI));
-			this.gluiCtrl1 = new GLUI.GLUICtrl();
 			this.pnlTopSide = new System.Windows.Forms.Panel();
 			this.lblFormTitle = new System.Windows.Forms.Label();
 			this.lblFormIcon = new System.Windows.Forms.Label();
@@ -56,52 +55,23 @@
 			this.btnDisplayVehicle = new System.Windows.Forms.Button();
 			this.btnDisplayMap = new System.Windows.Forms.Button();
 			this.pnlRightMain = new System.Windows.Forms.Panel();
-			this.pnlLog = new System.Windows.Forms.Panel();
-			this.label8 = new System.Windows.Forms.Label();
-			this.pnlSetting = new System.Windows.Forms.Panel();
-			this.label7 = new System.Windows.Forms.Label();
-			this.pnlMission = new System.Windows.Forms.Panel();
-			this.label6 = new System.Windows.Forms.Label();
-			this.pnlVehicle = new System.Windows.Forms.Panel();
-			this.label5 = new System.Windows.Forms.Label();
-			this.pnlMap = new System.Windows.Forms.Panel();
-			this.label4 = new System.Windows.Forms.Label();
-			this.pnlRightMainRight = new System.Windows.Forms.Panel();
-			this.pnlRightMainLeft = new System.Windows.Forms.Panel();
-			this.pnlRightMainBottom = new System.Windows.Forms.Panel();
-			this.pnlRightMainTop = new System.Windows.Forms.Panel();
+			this.ucMap1 = new TrafficControlTest.UserControl.UCMap();
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
 			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
 			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UCVehicleManualControl();
 			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UCVehicleOverview();
+			this.ucVehicle1 = new TrafficControlTest.UserControl.UCVehicle();
+			this.ucMission1 = new TrafficControlTest.UserControl.UCMission();
+			this.ucSetting1 = new TrafficControlTest.UserControl.UCSetting();
+			this.ucLog1 = new TrafficControlTest.UserControl.UCLog();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlBtmSide.SuspendLayout();
 			this.pnlConnection.SuspendLayout();
 			this.pnlLeftSide.SuspendLayout();
 			this.pnlTop.SuspendLayout();
 			this.pnlRightMain.SuspendLayout();
-			this.pnlLog.SuspendLayout();
-			this.pnlSetting.SuspendLayout();
-			this.pnlMission.SuspendLayout();
-			this.pnlVehicle.SuspendLayout();
-			this.pnlMap.SuspendLayout();
 			this.pnlLeftMain.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// gluiCtrl1
-			// 
-			this.gluiCtrl1.AllowObjectMenu = true;
-			this.gluiCtrl1.AllowUndoMenu = true;
-			this.gluiCtrl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.gluiCtrl1.Location = new System.Drawing.Point(0, 0);
-			this.gluiCtrl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.gluiCtrl1.Name = "gluiCtrl1";
-			this.gluiCtrl1.ShowAxis = true;
-			this.gluiCtrl1.ShowGrid = true;
-			this.gluiCtrl1.Size = new System.Drawing.Size(846, 596);
-			this.gluiCtrl1.TabIndex = 1;
-			this.gluiCtrl1.Zoom = 10D;
-			this.gluiCtrl1.LoadMapEvent += new GLUI.LoadMapEvent(this.gluiCtrl1_LoadMapEvent);
 			// 
 			// pnlTopSide
 			// 
@@ -419,143 +389,27 @@
 			// pnlRightMain
 			// 
 			this.pnlRightMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.pnlRightMain.Controls.Add(this.pnlLog);
-			this.pnlRightMain.Controls.Add(this.pnlSetting);
-			this.pnlRightMain.Controls.Add(this.pnlMission);
-			this.pnlRightMain.Controls.Add(this.pnlVehicle);
-			this.pnlRightMain.Controls.Add(this.pnlMap);
-			this.pnlRightMain.Controls.Add(this.pnlRightMainRight);
-			this.pnlRightMain.Controls.Add(this.pnlRightMainLeft);
-			this.pnlRightMain.Controls.Add(this.pnlRightMainBottom);
-			this.pnlRightMain.Controls.Add(this.pnlRightMainTop);
+			this.pnlRightMain.Controls.Add(this.ucLog1);
+			this.pnlRightMain.Controls.Add(this.ucSetting1);
+			this.pnlRightMain.Controls.Add(this.ucMission1);
+			this.pnlRightMain.Controls.Add(this.ucVehicle1);
+			this.pnlRightMain.Controls.Add(this.ucMap1);
 			this.pnlRightMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlRightMain.Location = new System.Drawing.Point(450, 100);
 			this.pnlRightMain.Name = "pnlRightMain";
 			this.pnlRightMain.Size = new System.Drawing.Size(850, 600);
 			this.pnlRightMain.TabIndex = 8;
 			// 
-			// pnlLog
+			// ucMap1
 			// 
-			this.pnlLog.Controls.Add(this.label8);
-			this.pnlLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlLog.Location = new System.Drawing.Point(2, 2);
-			this.pnlLog.Name = "pnlLog";
-			this.pnlLog.Size = new System.Drawing.Size(846, 596);
-			this.pnlLog.TabIndex = 1;
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(30, 30);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(30, 15);
-			this.label8.TabIndex = 0;
-			this.label8.Text = "Log";
-			// 
-			// pnlSetting
-			// 
-			this.pnlSetting.Controls.Add(this.label7);
-			this.pnlSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlSetting.Location = new System.Drawing.Point(2, 2);
-			this.pnlSetting.Name = "pnlSetting";
-			this.pnlSetting.Size = new System.Drawing.Size(846, 596);
-			this.pnlSetting.TabIndex = 1;
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(30, 30);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(47, 15);
-			this.label7.TabIndex = 0;
-			this.label7.Text = "Setting";
-			// 
-			// pnlMission
-			// 
-			this.pnlMission.Controls.Add(this.label6);
-			this.pnlMission.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlMission.Location = new System.Drawing.Point(2, 2);
-			this.pnlMission.Name = "pnlMission";
-			this.pnlMission.Size = new System.Drawing.Size(846, 596);
-			this.pnlMission.TabIndex = 1;
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(30, 30);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(52, 15);
-			this.label6.TabIndex = 0;
-			this.label6.Text = "Mission";
-			// 
-			// pnlVehicle
-			// 
-			this.pnlVehicle.Controls.Add(this.label5);
-			this.pnlVehicle.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlVehicle.Location = new System.Drawing.Point(2, 2);
-			this.pnlVehicle.Name = "pnlVehicle";
-			this.pnlVehicle.Size = new System.Drawing.Size(846, 596);
-			this.pnlVehicle.TabIndex = 1;
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(30, 30);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(50, 15);
-			this.label5.TabIndex = 0;
-			this.label5.Text = "Vehicle";
-			// 
-			// pnlMap
-			// 
-			this.pnlMap.Controls.Add(this.gluiCtrl1);
-			this.pnlMap.Controls.Add(this.label4);
-			this.pnlMap.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlMap.Location = new System.Drawing.Point(2, 2);
-			this.pnlMap.Name = "pnlMap";
-			this.pnlMap.Size = new System.Drawing.Size(846, 596);
-			this.pnlMap.TabIndex = 0;
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(30, 30);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(33, 15);
-			this.label4.TabIndex = 0;
-			this.label4.Text = "Map";
-			// 
-			// pnlRightMainRight
-			// 
-			this.pnlRightMainRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlRightMainRight.Location = new System.Drawing.Point(848, 2);
-			this.pnlRightMainRight.Name = "pnlRightMainRight";
-			this.pnlRightMainRight.Size = new System.Drawing.Size(2, 596);
-			this.pnlRightMainRight.TabIndex = 3;
-			// 
-			// pnlRightMainLeft
-			// 
-			this.pnlRightMainLeft.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlRightMainLeft.Location = new System.Drawing.Point(0, 2);
-			this.pnlRightMainLeft.Name = "pnlRightMainLeft";
-			this.pnlRightMainLeft.Size = new System.Drawing.Size(2, 596);
-			this.pnlRightMainLeft.TabIndex = 3;
-			// 
-			// pnlRightMainBottom
-			// 
-			this.pnlRightMainBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlRightMainBottom.Location = new System.Drawing.Point(0, 598);
-			this.pnlRightMainBottom.Name = "pnlRightMainBottom";
-			this.pnlRightMainBottom.Size = new System.Drawing.Size(850, 2);
-			this.pnlRightMainBottom.TabIndex = 3;
-			// 
-			// pnlRightMainTop
-			// 
-			this.pnlRightMainTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlRightMainTop.Location = new System.Drawing.Point(0, 0);
-			this.pnlRightMainTop.Name = "pnlRightMainTop";
-			this.pnlRightMainTop.Size = new System.Drawing.Size(850, 2);
-			this.pnlRightMainTop.TabIndex = 2;
+			this.ucMap1.AutoScroll = true;
+			this.ucMap1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucMap1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucMap1.ForeColor = System.Drawing.Color.White;
+			this.ucMap1.Location = new System.Drawing.Point(0, 0);
+			this.ucMap1.Name = "ucMap1";
+			this.ucMap1.Size = new System.Drawing.Size(850, 600);
+			this.ucMap1.TabIndex = 0;
 			// 
 			// pnlLeftMain
 			// 
@@ -602,6 +456,50 @@
 			this.ucVehicleOverview1.Size = new System.Drawing.Size(400, 650);
 			this.ucVehicleOverview1.TabIndex = 0;
 			// 
+			// ucVehicle1
+			// 
+			this.ucVehicle1.AutoScroll = true;
+			this.ucVehicle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucVehicle1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucVehicle1.ForeColor = System.Drawing.Color.White;
+			this.ucVehicle1.Location = new System.Drawing.Point(0, 0);
+			this.ucVehicle1.Name = "ucVehicle1";
+			this.ucVehicle1.Size = new System.Drawing.Size(850, 600);
+			this.ucVehicle1.TabIndex = 1;
+			// 
+			// ucMission1
+			// 
+			this.ucMission1.AutoScroll = true;
+			this.ucMission1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucMission1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucMission1.ForeColor = System.Drawing.Color.White;
+			this.ucMission1.Location = new System.Drawing.Point(0, 0);
+			this.ucMission1.Name = "ucMission1";
+			this.ucMission1.Size = new System.Drawing.Size(850, 600);
+			this.ucMission1.TabIndex = 2;
+			// 
+			// ucSetting1
+			// 
+			this.ucSetting1.AutoScroll = true;
+			this.ucSetting1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucSetting1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucSetting1.ForeColor = System.Drawing.Color.White;
+			this.ucSetting1.Location = new System.Drawing.Point(0, 0);
+			this.ucSetting1.Name = "ucSetting1";
+			this.ucSetting1.Size = new System.Drawing.Size(850, 600);
+			this.ucSetting1.TabIndex = 3;
+			// 
+			// ucLog1
+			// 
+			this.ucLog1.AutoScroll = true;
+			this.ucLog1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucLog1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucLog1.ForeColor = System.Drawing.Color.White;
+			this.ucLog1.Location = new System.Drawing.Point(0, 0);
+			this.ucLog1.Name = "ucLog1";
+			this.ucLog1.Size = new System.Drawing.Size(850, 600);
+			this.ucLog1.TabIndex = 4;
+			// 
 			// VehicleManagerGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -628,24 +526,12 @@
 			this.pnlLeftSide.ResumeLayout(false);
 			this.pnlTop.ResumeLayout(false);
 			this.pnlRightMain.ResumeLayout(false);
-			this.pnlLog.ResumeLayout(false);
-			this.pnlLog.PerformLayout();
-			this.pnlSetting.ResumeLayout(false);
-			this.pnlSetting.PerformLayout();
-			this.pnlMission.ResumeLayout(false);
-			this.pnlMission.PerformLayout();
-			this.pnlVehicle.ResumeLayout(false);
-			this.pnlVehicle.PerformLayout();
-			this.pnlMap.ResumeLayout(false);
-			this.pnlMap.PerformLayout();
 			this.pnlLeftMain.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
-
-		private GLUI.GLUICtrl gluiCtrl1;
 		private System.Windows.Forms.Panel pnlTopSide;
 		private System.Windows.Forms.Panel pnlBtmSide;
 		private System.Windows.Forms.Panel pnlLeftSide;
@@ -666,20 +552,6 @@
 		private System.Windows.Forms.Button btnDisplayVehicle;
 		private System.Windows.Forms.Button btnDisplayVehicleManualControl;
 		private System.Windows.Forms.Button btnDisplayVehicleOverview;
-		private System.Windows.Forms.Panel pnlLog;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Panel pnlSetting;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Panel pnlMission;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Panel pnlVehicle;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Panel pnlMap;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Panel pnlRightMainRight;
-		private System.Windows.Forms.Panel pnlRightMainLeft;
-		private System.Windows.Forms.Panel pnlRightMainBottom;
-		private System.Windows.Forms.Panel pnlRightMainTop;
 		private System.Windows.Forms.Panel pnlConnection;
 		private System.Windows.Forms.Panel pnlConnectionRight;
 		private System.Windows.Forms.Panel pnlConnectionTop;
@@ -690,5 +562,10 @@
 		private UserControl.UCVehicleOverview ucVehicleOverview1;
 		private UserControl.UCVehicleManualControl ucVehicleManualControl1;
 		private UserControl.UCAbout ucAbout1;
+		private UserControl.UCMap ucMap1;
+		private UserControl.UCLog ucLog1;
+		private UserControl.UCSetting ucSetting1;
+		private UserControl.UCMission ucMission1;
+		private UserControl.UCVehicle ucVehicle1;
 	}
 }

@@ -1,7 +1,4 @@
-﻿using Geometry;
-using GLCore;
-using GLStyle;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -34,13 +31,13 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void Constructor()
 		{
-			Constructor_GLUI();
+			ucMap1.Constructor("Style.ini");
 			Constructor_VehicleManagerProcess();
 		}
 		private void Destructor()
 		{
 			Destructor_VehicleManagerProcess();
-			Destructor_GLUI();
+			ucMap1.Destructor();
 		}
 		private void HandleException(Exception Ex)
 		{
@@ -127,38 +124,23 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void btnDisplayMap_Click(object sender, EventArgs e)
 		{
-			pnlTopMarker.Width = btnDisplayMap.Width;
-			pnlTopMarker.Left = btnDisplayMap.Left;
-
-			pnlMap.BringToFront();
+			UpdateGui_DisplayMap();
 		}
 		private void btnDisplayVehicle_Click(object sender, EventArgs e)
 		{
-			pnlTopMarker.Width = btnDisplayVehicle.Width;
-			pnlTopMarker.Left = btnDisplayVehicle.Left;
-
-			pnlVehicle.BringToFront();
+			UpdateGui_DisplayVehicle();
 		}
 		private void btnDisplayMission_Click(object sender, EventArgs e)
 		{
-			pnlTopMarker.Width = btnDisplayMission.Width;
-			pnlTopMarker.Left = btnDisplayMission.Left;
-
-			pnlMission.BringToFront();
+			UpdateGui_DisplayMission();
 		}
 		private void btnDisplaySetting_Click(object sender, EventArgs e)
 		{
-			pnlTopMarker.Width = btnDisplaySetting.Width;
-			pnlTopMarker.Left = btnDisplaySetting.Left;
-
-			pnlSetting.BringToFront();
+			UpdateGui_DisplaySetting();
 		}
 		private void btnDisplayLog_Click(object sender, EventArgs e)
 		{
-			pnlTopMarker.Width = btnDisplayLog.Width;
-			pnlTopMarker.Left = btnDisplayLog.Left;
-
-			pnlLog.BringToFront();
+			UpdateGui_DisplayLog();
 		}
 
 		#region UpdateGui Functions
@@ -184,6 +166,65 @@ namespace TrafficControlTest.UserInterface
 		{
 			Control.InvokeIfNecessary(() => { if (Control.BackColor != Color) Control.BackColor = Color; });
 		}
+		#endregion
+
+		#region PnlRightMain
+		private void UpdateGui_DisplayMap()
+		{
+			pnlTopMarker.Width = btnDisplayMap.Width;
+			pnlTopMarker.Left = btnDisplayMap.Left;
+			ucMap1.BringToFront();
+		}
+		private void UpdateGui_DisplayVehicle()
+		{
+			pnlTopMarker.Width = btnDisplayVehicle.Width;
+			pnlTopMarker.Left = btnDisplayVehicle.Left;
+			ucVehicle1.BringToFront();
+		}
+		private void UpdateGui_DisplayMission()
+		{
+			pnlTopMarker.Width = btnDisplayMission.Width;
+			pnlTopMarker.Left = btnDisplayMission.Left;
+			ucMission1.BringToFront();
+		}
+		private void UpdateGui_DisplaySetting()
+		{
+			pnlTopMarker.Width = btnDisplaySetting.Width;
+			pnlTopMarker.Left = btnDisplaySetting.Left;
+			ucSetting1.BringToFront();
+		}
+		private void UpdateGui_DisplayLog()
+		{
+			pnlTopMarker.Width = btnDisplayLog.Width;
+			pnlTopMarker.Left = btnDisplayLog.Left;
+			ucLog1.BringToFront();
+		}
+		#region Map
+		private void UpdateGui_MapRegisterIconId(IVehicleInfo VehicleInfo)
+		{
+			ucMap1.RegisterIconId(VehicleInfo);
+		}
+		private void UpdateGui_MapPrintIcon(IVehicleInfo VehicleInfo)
+		{
+			ucMap1.PrintIcon(VehicleInfo);
+		}
+		private void UpdateGui_MapEraseIcon(IVehicleInfo VehicleInfo)
+		{
+			ucMap1.EraseIcon(VehicleInfo);
+		}
+		private void UpdateGui_MapRegisterIconId(ICollisionPair CollisionPair)
+		{
+			ucMap1.RegisterIconId(CollisionPair);
+		}
+		private void UpdateGui_MapPrintIcon(ICollisionPair CollisionPair)
+		{
+			ucMap1.PrintIcon(CollisionPair);
+		}
+		private void UpdateGui_MapEraseIcon(ICollisionPair CollisionPair)
+		{
+			ucMap1.EraseIcon(CollisionPair);
+		}
+		#endregion
 		#endregion
 
 		#region PnlLeftMain
@@ -279,7 +320,7 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void UpdateGui_UpdateGoalList()
 		{
-			string[] goalList = GLCMD.CMD.SingleTowerPairInfo.Select((o) => o.Name).ToArray();
+			string[] goalList = ucMap1.GetGoalList();
 			ucVehicleManualControl1.InvokeIfNecessary(() =>
 			{
 				ucVehicleManualControl1.UpdateGoalList(goalList);
@@ -348,7 +389,7 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			RegisterIconId(VehicleInfo);
+			UpdateGui_MapRegisterIconId(VehicleInfo);
 			UpdateGui_UpdateVehicleNameList();
 			UpdateGui_AddVehicleOverview(VehicleInfo.mName, VehicleInfo.mBattery.ToString("F2"), VehicleInfo.mState);
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
@@ -356,7 +397,7 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			EraseIcon(VehicleInfo);
+			UpdateGui_MapEraseIcon(VehicleInfo);
 			UpdateGui_UpdateVehicleNameList();
 			UpdateGui_RemoveVehicleOverview(VehicleInfo.mName);
 			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetVehicleCount() > 0 ? Color.DarkGreen : Color.DarkOrange);
@@ -364,163 +405,26 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			PrintIcon(VehicleInfo);
+			UpdateGui_MapPrintIcon(VehicleInfo);
 			UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));
 			UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mState);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			RegisterIconId(CollisionPair);
+			UpdateGui_MapRegisterIconId(CollisionPair);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			EraseIcon(CollisionPair);
+			UpdateGui_MapEraseIcon(CollisionPair);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			PrintIcon(CollisionPair);
+			UpdateGui_MapPrintIcon(CollisionPair);
 		}
 
 		private void SendCommandToVehicle(string VehicleName, string Command, params string[] Paras)
 		{
 			mCore.SendCommand(VehicleName, Command, Paras);
-		}
-		#endregion
-
-		#region GLUI
-		private Dictionary<string, int> mIconIdsOfVehicle = new Dictionary<string, int>();
-		private Dictionary<string, int> mIconIdsOfVehiclePath = new Dictionary<string, int>();
-		private Dictionary<string, int> mIconIdsOfVehiclePathPoints = new Dictionary<string, int>();
-		private Dictionary<string, int> mIconIdsOfCollisionRegion = new Dictionary<string, int>();
-
-		private void gluiCtrl1_LoadMapEvent(object sender, GLUI.LoadMapEventArgs e)
-		{
-
-		}
-		private void Constructor_GLUI()
-		{
-			StyleManager.LoadStyle("Style.ini");
-		}
-		private void Destructor_GLUI()
-		{
-
-		}
-		/// <summary>註冊圖像 ID</summary>
-		private void RegisterIconId(IVehicleInfo VehicleInfo)
-		{
-			if (VehicleInfo != null && !string.IsNullOrEmpty(VehicleInfo.mName))
-			{
-				int VehicleIconId = GLCMD.CMD.SerialNumber.Next();
-				int VehiclePathIconId = GLCMD.CMD.AddMultiStripLine("Path", null);
-				int VehiclePathPointsIconId = GLCMD.CMD.AddMultiPair("PathPoint", null);
-
-				mIconIdsOfVehicle.Add(VehicleInfo.mName, VehicleIconId);
-				mIconIdsOfVehiclePath.Add(VehicleInfo.mName, VehiclePathIconId);
-				mIconIdsOfVehiclePathPoints.Add(VehicleInfo.mName, VehiclePathPointsIconId);
-			}
-		}
-		/// <summary>把圖像加入至地圖</summary>
-		private void PrintIcon(IVehicleInfo VehicleInfo)
-		{
-			if (VehicleInfo != null && !string.IsNullOrEmpty(VehicleInfo.mName))
-			{
-				if (VehicleInfo.mPosition != null)
-				{
-					GLCMD.CMD.AddAGV(mIconIdsOfVehicle[VehicleInfo.mName], VehicleInfo.mName, VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY, VehicleInfo.mToward);
-				}
-				if (VehicleInfo.mPosition != null && VehicleInfo.mPath != null)
-				{
-					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mIconIdsOfVehiclePath[VehicleInfo.mName], true, (line) =>
-					{
-						line.Clear();
-						line.AddRangeIfNotNull(GetPath(VehicleInfo));
-					});
-					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mIconIdsOfVehiclePathPoints[VehicleInfo.mName], true, (line) =>
-					{
-						line.Clear();
-						line.AddRangeIfNotNull(GetPathDetail(VehicleInfo));
-					});
-				}
-			}
-		}
-		/// <summary>把圖像從地圖中移除</summary>
-		private void EraseIcon(IVehicleInfo VehicleInfo)
-		{
-			if (VehicleInfo != null && !string.IsNullOrEmpty(VehicleInfo.mName))
-			{
-				GLCMD.CMD.DeleteAGV(mIconIdsOfVehicle[VehicleInfo.mName]);
-				GLCMD.CMD.DeleteMulti(mIconIdsOfVehiclePath[VehicleInfo.mName]);
-				GLCMD.CMD.DeleteMulti(mIconIdsOfVehiclePathPoints[VehicleInfo.mName]);
-
-				mIconIdsOfVehicle.Remove(VehicleInfo.mName);
-				mIconIdsOfVehiclePath.Remove(VehicleInfo.mName);
-				mIconIdsOfVehiclePathPoints.Remove(VehicleInfo.mName);
-			}
-		}
-		private void RegisterIconId(ICollisionPair CollisionPair)
-		{
-			if (CollisionPair != null && CollisionPair.mCollisionRegion != null && !string.IsNullOrEmpty(CollisionPair.mName))
-			{
-				int id = GLCMD.CMD.AddMultiArea("CollisionArea", GetRegion(CollisionPair));
-				mIconIdsOfCollisionRegion.Add(CollisionPair.mName, id);
-			}
-		}
-		private void PrintIcon(ICollisionPair CollisionPair)
-		{
-			if (CollisionPair != null && CollisionPair.mCollisionRegion != null && !string.IsNullOrEmpty(CollisionPair.mName))
-			{
-				GLCMD.CMD.SaftyEditMultiGeometry<IArea>(mIconIdsOfCollisionRegion[CollisionPair.mName], true, (area) =>
-				{
-					area.Clear();
-					area.AddRangeIfNotNull(GetRegion(CollisionPair));
-				});
-			}
-		}
-		private void EraseIcon(ICollisionPair CollisionPair)
-		{
-			if (CollisionPair != null && CollisionPair.mCollisionRegion != null && !string.IsNullOrEmpty(CollisionPair.mName))
-			{
-				GLCMD.CMD.DeleteMulti(mIconIdsOfCollisionRegion[CollisionPair.mName]);
-				mIconIdsOfCollisionRegion.Remove(CollisionPair.mName);
-			}
-		}
-		private IEnumerable<IPair> GetPath(IVehicleInfo VehicleInfo)
-		{
-			List<IPair> result = null;
-			if (VehicleInfo.mPath != null && VehicleInfo.mPath.Count() > 0)
-			{
-				result = new List<IPair>();
-				result.Add(new Pair(VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY));
-				for (int i = 0; i < VehicleInfo.mPath.Count(); ++i)
-				{
-					result.Add(new Pair(VehicleInfo.mPath.ElementAt(i).mX, VehicleInfo.mPath.ElementAt(i).mY));
-				}
-			}
-			return result;
-		}
-		private IEnumerable<IPair> GetPathDetail(IVehicleInfo VehicleInfo)
-		{
-			List<IPair> result = null;
-			if (VehicleInfo.mPathDetail != null && VehicleInfo.mPathDetail.Count() > 0)
-			{
-				result = new List<IPair>();
-				result.Add(new Pair(VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY));
-				for (int i = 0; i < VehicleInfo.mPathDetail.Count(); ++i)
-				{
-					result.Add(new Pair(VehicleInfo.mPathDetail.ElementAt(i).mX, VehicleInfo.mPathDetail.ElementAt(i).mY));
-				}
-			}
-			return result;
-		}
-		private IEnumerable<IArea> GetRegion(ICollisionPair CollisionPair)
-		{
-			List<IArea> result = null;
-			if (CollisionPair != null && CollisionPair.mCollisionRegion != null)
-			{
-				result = new List<IArea>();
-				result.Add(new Area(CollisionPair.mCollisionRegion.mMinX, CollisionPair.mCollisionRegion.mMinY, CollisionPair.mCollisionRegion.mMaxX, CollisionPair.mCollisionRegion.mMaxY));
-			}
-			return result;
 		}
 		#endregion
 	}

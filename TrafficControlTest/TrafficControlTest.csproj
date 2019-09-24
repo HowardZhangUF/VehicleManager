@@ -118,6 +118,36 @@
     <Compile Include="UserControl\UCAbout.Designer.cs">
       <DependentUpon>UCAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UCLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UCLog.Designer.cs">
+      <DependentUpon>UCLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UCMap.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UCMap.Designer.cs">
+      <DependentUpon>UCMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UCMission.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UCMission.Designer.cs">
+      <DependentUpon>UCMission.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UCSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UCSetting.Designer.cs">
+      <DependentUpon>UCSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UCVehicle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UCVehicle.Designer.cs">
+      <DependentUpon>UCVehicle.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UCVehicleManualControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -164,6 +194,21 @@
     </Compile>
     <EmbeddedResource Include="UserControl\UCAbout.resx">
       <DependentUpon>UCAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UCLog.resx">
+      <DependentUpon>UCLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UCMap.resx">
+      <DependentUpon>UCMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UCMission.resx">
+      <DependentUpon>UCMission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UCSetting.resx">
+      <DependentUpon>UCSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UCVehicle.resx">
+      <DependentUpon>UCVehicle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UCVehicleManualControl.resx">
       <DependentUpon>UCVehicleManualControl.cs</DependentUpon>
