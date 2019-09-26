@@ -59,6 +59,12 @@
     <Compile Include="Module\InterveneManager\Interface\IVehicleControl.cs" />
     <Compile Include="Module\InterveneManager\Interface\IVehicleControlHandler.cs" />
     <Compile Include="Module\InterveneManager\Interface\IVehicleControlManager.cs" />
+    <Compile Include="Module\MissionManager\Implement\Mission.cs" />
+    <Compile Include="Module\MissionManager\Implement\MissionState.cs" />
+    <Compile Include="Module\MissionManager\Implement\MissionStateManager.cs" />
+    <Compile Include="Module\MissionManager\Interface\IMission.cs" />
+    <Compile Include="Module\MissionManager\Interface\IMissionState.cs" />
+    <Compile Include="Module\MissionManager\Interface\IMissionStateManager.cs" />
     <Compile Include="TrashCan\AGVInfo.cs" />
     <Compile Include="TrashCan\AGVInfoManager.cs" />
     <Compile Include="TrashCan\AGVMonitor.cs" />
@@ -270,8 +276,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Module\MissionManager\Implement\" />
-    <Folder Include="Module\MissionManager\Interface\" />
     <Folder Include="Module\RoadOccupiedEventManager\Implement\" />
     <Folder Include="Module\RoadOccupiedEventManager\Interface\" />
     <Folder Include="Module\SingleVehicleEventManager\Implement\" />

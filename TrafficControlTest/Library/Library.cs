@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Implement;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Module.MissionManager.Implement;
+using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Library
 {
@@ -116,6 +118,18 @@ namespace TrafficControlTest.Library
 		public static IVehicleControlHandler GenerateIVehicleControlHandler(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
 		{
 			return new VehicleControlHandler(VehicleControlManager, VehicleInfoManager, VehicleCommunicator);
+		}
+		public static IMission GenerateIMission(string MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters, string SourceIpPort)
+		{
+			return new Mission(MissionType, MissionId, Priority, VehicleId, Parameters, SourceIpPort);
+		}
+		public static IMissionState GenerateIMissionState(IMission Mission)
+		{
+			return new MissionState(Mission);
+		}
+		public static IMissionStateManager GenerateIMissionStateManager()
+		{
+			return new MissionStateManager();
 		}
 		#endregion
 
@@ -897,5 +911,11 @@ namespace TrafficControlTest.Library
 	{
 		public delegate void EventHandlerIVehicleControl(DateTime OccurTime, string Name, IVehicleControl VehicleControl);
 		public delegate void EventHandlerIVehicleControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl);
+	}
+
+	public static class EventHandlerLibrary
+	{
+		public delegate void EventHandlerIMissionState(DateTime OccurTime, string MissionId, IMissionState MissionState);
+		public delegate void EventHandlerIMissionStateStateUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState);
 	}
 }
