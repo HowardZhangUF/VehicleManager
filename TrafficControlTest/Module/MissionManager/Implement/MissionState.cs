@@ -14,10 +14,12 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public event EventHandlerIMissionStateStateUpdated StateUpdated;
 
 		public IMission mMission { get; private set; }
+		public string mSourceIpPort { get; private set; }
 		public string mMissionId { get; private set; }
 		public string mExecutorId { get; private set; }
 		public SendState mSendState { get; private set; }
 		public ExecuteState mExecuteState { get; private set; }
+		public DateTime mReceivedTimestamp { get; private set; }
 		public DateTime mExecutionStartTimestamp { get; private set; }
 		public DateTime mExecutionStopTimestamp { get; private set; }
 		public DateTime mLastUpdate { get; private set; }
@@ -33,6 +35,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			mExecutorId = string.Empty;
 			mSendState = SendState.Unsend;
 			mExecuteState = ExecuteState.Unexecute;
+			mReceivedTimestamp = DateTime.Now;
 			mExecutionStartTimestamp = DateTime.Now;
 			mExecutionStopTimestamp = DateTime.Now;
 			mLastUpdate = DateTime.Now;
@@ -44,6 +47,15 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				mMission.UpdatePriority(Priority);
 				mLastUpdate = DateTime.Now;
 				RaiseEvent_StateUpdated("Priority");
+			}
+		}
+		public void UpdateSourceIpPort(string SourceIpPort)
+		{
+			if (!string.IsNullOrEmpty(SourceIpPort) && mSourceIpPort != SourceIpPort)
+			{
+				mSourceIpPort = SourceIpPort;
+				mLastUpdate = DateTime.Now;
+				RaiseEvent_StateUpdated("SourceIpPort");
 			}
 		}
 		public void UpdateExecutorId(string ExecutorId)

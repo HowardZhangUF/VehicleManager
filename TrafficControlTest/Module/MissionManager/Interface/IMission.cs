@@ -13,10 +13,8 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 		int mPriority { get; }
 		string mVehicleId { get; }
 		string[] mParameters { get; }
-		string mSourceIpPort { get; }
-		DateTime mReceivedTimestamp { get; }
 
-		void Set(string MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters, string SourceIpPort);
+		void Set(string MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters);
 		void UpdatePriority(int Priority);
 	}
 }

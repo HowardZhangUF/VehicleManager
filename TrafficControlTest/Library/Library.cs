@@ -37,6 +37,41 @@ namespace TrafficControlTest.Library
 				return (T)formatter.Deserialize(ms);
 			}
 		}
+		public static bool ConvertToDictionary(string Source, out Dictionary<string, string> ResultDictionary, string SeperateSymbol = " ", string EqualSymbol = "=")
+		{
+			ResultDictionary = null;
+			string[] datas = Source.Split(new string[] { SeperateSymbol }, StringSplitOptions.RemoveEmptyEntries);
+			if (datas.Length > 0)
+			{
+				for (int i = 0; i < datas.Length; ++i)
+				{
+					if (datas[i].Contains(EqualSymbol))
+					{
+						if (ResultDictionary == null) ResultDictionary = new Dictionary<string, string>();
+						int equalIndex = datas[i].LastIndexOf(EqualSymbol);
+						string key = datas[i].Substring(0, equalIndex);
+						string value = datas[i].Substring(equalIndex + 1);
+						if (!ResultDictionary.Keys.Contains(key))
+						{
+							ResultDictionary.Add(key, value);
+						}
+						else
+						{
+							// 若有重複的 Key 則創建字典失敗。代表 Source 有重複資訊
+							ResultDictionary = null;
+							break;
+						}
+					}
+					else
+					{
+						// 若有子字串中不包含 EqualSymbol 則創建字典失敗。代表 Source 有多餘資訊
+						ResultDictionary = null;
+						break;
+					}
+				}
+			}
+			return (ResultDictionary == null || ResultDictionary.Count == 0) ? false : true;
+		}
 
 		#region Factory
 		public static IPoint2D GenerateIPoint2D(int X, int Y)
@@ -119,9 +154,9 @@ namespace TrafficControlTest.Library
 		{
 			return new VehicleControlHandler(VehicleControlManager, VehicleInfoManager, VehicleCommunicator);
 		}
-		public static IMission GenerateIMission(string MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters, string SourceIpPort)
+		public static IMission GenerateIMission(string MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
 		{
-			return new Mission(MissionType, MissionId, Priority, VehicleId, Parameters, SourceIpPort);
+			return new Mission(MissionType, MissionId, Priority, VehicleId, Parameters);
 		}
 		public static IMissionState GenerateIMissionState(IMission Mission)
 		{
@@ -130,6 +165,25 @@ namespace TrafficControlTest.Library
 		public static IMissionStateManager GenerateIMissionStateManager()
 		{
 			return new MissionStateManager();
+		}
+		public static IMissionAnalyzer GetMissionAnalyzer(string MissionType)
+		{
+			IMissionAnalyzer result = null;
+			switch (MissionType)
+			{
+				case "Goto":
+					result = GotoMissionAnalyzer.mInstance;
+					break;
+				case "GotoPoint":
+					result = GotoPointMissionAnalyzer.mInstance;
+					break;
+				case "Dock":
+					result = DockMissionAnalyzer.mInstance;
+					break;
+				default:
+					break;
+			}
+			return result;
 		}
 		#endregion
 

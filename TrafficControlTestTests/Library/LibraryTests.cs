@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Module.MissionManager.Implement;
+using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Library.Tests
 {
@@ -29,6 +31,18 @@ namespace TrafficControlTest.Library.Tests
 
 			ITimePeriod timePeriod = Library.GenerateITimePeriod(new DateTime(2001, 5, 4, 23, 56, 07), new DateTime(2002, 4, 7, 11, 50, 59));
 			if (timePeriod == null || timePeriod.mStart.ToString("yyyy/MM/dd HH:mm:ss") != "2001/05/04 23:56:07" || timePeriod.mEnd.ToString("yyyy/MM/dd HH:mm:ss") != "2002/04/07 11:50:59") Assert.Fail();
+
+			string tmp1 = "Command=Goto Target=Goal1 CommandID=Cmd003 VehicleID=Vehicle918";
+			string tmp2 = "Command=Goto Target=Goal1 CommandID=Cmd003 VehicleID=Vehicle918 Command=Goto";
+			string tmp3 = "Command=Goto Target=Goal1 CommandID=Cmd003 VehicleID=Vehicle918 asfxwer";
+			if (!Library.ConvertToDictionary(tmp1, out Dictionary<string, string> dic1)) Assert.Fail();
+			if (dic1.Count != 4) Assert.Fail();
+			if (!dic1.Keys.Contains("Command") || dic1["Command"] != "Goto") Assert.Fail();
+			if (!dic1.Keys.Contains("Target") || dic1["Target"] != "Goal1") Assert.Fail();
+			if (!dic1.Keys.Contains("CommandID") || dic1["CommandID"] != "Cmd003") Assert.Fail();
+			if (!dic1.Keys.Contains("VehicleID") || dic1["VehicleID"] != "Vehicle918") Assert.Fail();
+			if (Library.ConvertToDictionary(tmp2, out Dictionary<string, string> dic2)) Assert.Fail();
+			if (Library.ConvertToDictionary(tmp3, out Dictionary<string, string> dic3)) Assert.Fail();
 		}
 
 		[TestMethod()]
@@ -168,6 +182,222 @@ namespace TrafficControlTest.Library.Tests
 			rectangles1.Add(Library.GenerateIRectangle2D(point8, point0));
 			List<IRectangle2D> mergedRectangles2 = Library.MergeRectangle(rectangles1).ToList();
 			if (mergedRectangles2.Count != 1 || !mergedRectangles2.Any((o) => o.ToString() == Library.GenerateIRectangle2D(Library.GenerateIPoint2D(90, 40), point4).ToString())) Assert.Fail();
+		}
+
+		[TestMethod()]
+		public void ClassGotoMissionAnalyzer()
+		{
+			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer("Goto");
+			string tmp1 = "Mission=Goto Target=Goal1";
+			string tmp2 = "Mission=Goto Target=Goal1 MissionID=Miss001";
+			string tmp3 = "Mission=Goto Target=Goal1 MissionID=Miss001 VehicleID=Vehicle918";
+			string tmp4 = "Mission=Goto Target=Goal1 MissionID=Miss001 VehicleID=Vehicle918 Priority=18";
+			string tmp5 = "Target=Goal1 MissionID=Miss001 VehicleID=Vehicle918 Priority=18"; // 缺少 Mission
+			string tmp6 = "Mission=Goto MissionID=Miss001 VehicleID=Vehicle918 Priority=18"; // 缺少 Target
+			string tmp7 = "Mission=Goto Target=Goal1 MissionID=Miss001 VehicleID=Vehicle918 Priority=999"; // 錯誤的 Priority
+			string tmp8 = "Mission=Goto Target=Goal1 MissionID=Miss001 VehicleID=Vehicle918 Priority=ABC"; // 錯誤的 Priority
+			string tmp9 = "Mission=Goto Target=Goal1 MissionID=Miss001 VehicleID=Vehicle918 Priority=18 abcde"; // 錯誤的訊息格式
+			string tmp10 = "Mission=Goto Target=Goal1 Target=Goal2 MissionID=Miss001 VehicleID=Vehicle918 Priority=18"; // 重複的項目
+
+			if (missionAnalyzer.TryParse(tmp1, out IMission mission1, out string detail1) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission1.mMissionType != "Goto") Assert.Fail();
+			if (mission1.mParameters.Length != 1 || mission1.mParameters[0] != "Goal1") Assert.Fail();
+			if (mission1.mMissionId != string.Empty) Assert.Fail();
+			if (mission1.mVehicleId != string.Empty) Assert.Fail();
+			if (mission1.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail1)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp2, out IMission mission2, out string detail2) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission2.mMissionType != "Goto") Assert.Fail();
+			if (mission2.mParameters.Length != 1 || mission2.mParameters[0] != "Goal1") Assert.Fail();
+			if (mission2.mMissionId != "Miss001") Assert.Fail();
+			if (mission2.mVehicleId != string.Empty) Assert.Fail();
+			if (mission2.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail2)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp3, out IMission mission3, out string detail3) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission3.mMissionType != "Goto") Assert.Fail();
+			if (mission3.mParameters.Length != 1 || mission3.mParameters[0] != "Goal1") Assert.Fail();
+			if (mission3.mMissionId != "Miss001") Assert.Fail();
+			if (mission3.mVehicleId != "Vehicle918") Assert.Fail();
+			if (mission3.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail3)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp4, out IMission mission4, out string detail4) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission4.mMissionType != "Goto") Assert.Fail();
+			if (mission4.mParameters.Length != 1 || mission4.mParameters[0] != "Goal1") Assert.Fail();
+			if (mission4.mMissionId != "Miss001") Assert.Fail();
+			if (mission4.mVehicleId != "Vehicle918") Assert.Fail();
+			if (mission4.mPriority != 18) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail4)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission5 != null) Assert.Fail();
+			if (detail5 != "Can Not Find the Command Type.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission6 != null) Assert.Fail();
+			if (detail6 != "Lack Of \"Target\" Parameters.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission7 != null) Assert.Fail();
+			if (detail7 != "Parameter \"Priority\" Value Error.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp8, out IMission mission8, out string detail8) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission8 != null) Assert.Fail();
+			if (detail8 != "Parameter \"Priority\" Value Error.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp9, out IMission mission9, out string detail9) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission9 != null) Assert.Fail();
+			if (detail9 != "Data Syntax Error.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp10, out IMission mission10, out string detail10) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission10 != null) Assert.Fail();
+			if (detail10 != "Data Syntax Error.") Assert.Fail();
+		}
+
+		[TestMethod()]
+		public void ClassGotoPointMissionAnalyzer()
+		{
+			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer("GotoPoint");
+			string tmp1 = "Mission=GotoPoint X=123 Y=456";
+			string tmp2 = "Mission=GotoPoint X=123 Y=456 Head=270";
+			string tmp3 = "Mission=GotoPoint X=123 Y=456 Head=270 MissionID=Miss009";
+			string tmp4 = "Mission=GotoPoint X=123 Y=456 Head=270 MissionID=Miss009 VehicleID=Vehicle915";
+			string tmp5 = "Mission=GotoPoint X=123 Y=456 Head=270 MissionID=Miss009 VehicleID=Vehicle915 Priority=3";
+			string tmp6 = "X=123 Y=456 Head=270 MissionID=Miss009 VehicleID=Vehicle915 Priority=3"; // 缺少 Mission
+			string tmp7 = "Mission=GotoPoint Y=456 Head=270 MissionID=Miss009 VehicleID=Vehicle915 Priority=3"; // 缺少 X
+			string tmp8 = "Mission=GotoPoint X=123 Head=270 MissionID=Miss009 VehicleID=Vehicle915 Priority=3"; // 缺少 Y
+			string tmp9 = "Mission=GotoPoint Head=270 MissionID=Miss009 VehicleID=Vehicle915 Priority=3"; // 缺少 X, Y
+			string tmp10 = "Mission=GotoPoint X=AAA Y=BBB Head=CCC MissionID=Miss009 VehicleID=Vehicle915 Priority=DDD"; // 錯誤的 X, Y, Head, Priority
+			string tmp11 = "Mission=GotoPoint X=123 Y=456 Head=270 MissionID=Miss009 VehicleID=Vehicle915 Priority=3 abcde"; // 錯誤的訊息格式
+			string tmp12 = "Mission=GotoPoint X=123 X=789 Y=456 Head=270 MissionID=Miss009 VehicleID=Vehicle915 Priority=3"; // 重複的項目
+
+			if (missionAnalyzer.TryParse(tmp1, out IMission mission1, out string detail1) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission1.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission1.mParameters.Length != 3 || mission1.mParameters[0] != "123" || mission1.mParameters[1] != "456" || mission1.mParameters[2] != int.MaxValue.ToString()) Assert.Fail();
+			if (mission1.mMissionId != string.Empty) Assert.Fail();
+			if (mission1.mVehicleId != string.Empty) Assert.Fail();
+			if (mission1.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail1)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp2, out IMission mission2, out string detail2) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission2.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission2.mParameters.Length != 3 || mission2.mParameters[0] != "123" || mission2.mParameters[1] != "456" || mission2.mParameters[2] != "270") Assert.Fail();
+			if (mission2.mMissionId != string.Empty) Assert.Fail();
+			if (mission2.mVehicleId != string.Empty) Assert.Fail();
+			if (mission2.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail2)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp3, out IMission mission3, out string detail3) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission3.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission3.mParameters.Length != 3 || mission3.mParameters[0] != "123" || mission3.mParameters[1] != "456" || mission3.mParameters[2] != "270") Assert.Fail();
+			if (mission3.mMissionId != "Miss009") Assert.Fail();
+			if (mission3.mVehicleId != string.Empty) Assert.Fail();
+			if (mission3.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail3)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp4, out IMission mission4, out string detail4) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission4.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission4.mParameters.Length != 3 || mission4.mParameters[0] != "123" || mission4.mParameters[1] != "456" || mission4.mParameters[2] != "270") Assert.Fail();
+			if (mission4.mMissionId != "Miss009") Assert.Fail();
+			if (mission4.mVehicleId != "Vehicle915") Assert.Fail();
+			if (mission4.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail4)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission5.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission5.mParameters.Length != 3 || mission5.mParameters[0] != "123" || mission5.mParameters[1] != "456" || mission5.mParameters[2] != "270") Assert.Fail();
+			if (mission5.mMissionId != "Miss009") Assert.Fail();
+			if (mission5.mVehicleId != "Vehicle915") Assert.Fail();
+			if (mission5.mPriority != 3) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail5)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission6 != null) Assert.Fail();
+			if (detail6 != "Can Not Find the Command Type.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission7 != null) Assert.Fail();
+			if (detail7 != "Lack Of \"X\" Parameters.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp8, out IMission mission8, out string detail8) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission8 != null) Assert.Fail();
+			if (detail8 != "Lack Of \"Y\" Parameters.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp9, out IMission mission9, out string detail9) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission9 != null) Assert.Fail();
+			if (detail9 != "Lack Of \"X, Y\" Parameters.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp10, out IMission mission10, out string detail10) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission10 != null) Assert.Fail();
+			if (detail10 != "Parameter \"X, Y, Head, Priority\" Value Error.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp11, out IMission mission11, out string detail11) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission11 != null) Assert.Fail();
+			if (detail11 != "Data Syntax Error.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp12, out IMission mission12, out string detail12) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission12 != null) Assert.Fail();
+			if (detail12 != "Data Syntax Error.") Assert.Fail();
+		}
+
+		[TestMethod()]
+		public void ClassDockMissionAnalyzer()
+		{
+			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer("Dock");
+			string tmp1 = "Mission=Dock VehicleID=Vehicle863";
+			string tmp2 = "Mission=Dock VehicleID=Vehicle863 MissionID=Miss123";
+			string tmp3 = "Mission=Dock VehicleID=Vehicle863 MissionID=Miss123 Priority=3";
+			string tmp4 = "VehicleID=Vehicle863 MissionID=Miss123 Priority=3"; // 缺少 Mission
+			string tmp5 = "Mission=Dock MissionID=Miss123 Priority=3"; // 缺少 VehicleID
+			string tmp6 = "Mission=Dock VehicleID=Vehicle863 MissionID=Miss123 Priority=DDD"; // 錯誤的 Priority
+			string tmp7 = "Mission=Dock VehicleID=Vehicle863 MissionID=Miss123 Priority=3 abcde"; // 錯誤的訊息格式
+			string tmp8 = "Mission=Dock VehicleID=Vehicle863 VehicleID=Vehicle773 MissionID=Miss123 Priority=3"; // 重複的項目
+
+			if (missionAnalyzer.TryParse(tmp1, out IMission mission1, out string detail1) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission1.mMissionType != "Dock") Assert.Fail();
+			if (mission1.mParameters != null) Assert.Fail();
+			if (mission1.mMissionId != string.Empty) Assert.Fail();
+			if (mission1.mVehicleId != "Vehicle863") Assert.Fail();
+			if (mission1.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail1)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp2, out IMission mission2, out string detail2) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission2.mMissionType != "Dock") Assert.Fail();
+			if (mission2.mParameters != null) Assert.Fail();
+			if (mission2.mMissionId != "Miss123") Assert.Fail();
+			if (mission2.mVehicleId != "Vehicle863") Assert.Fail();
+			if (mission2.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail2)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp3, out IMission mission3, out string detail3) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission3.mMissionType != "Dock") Assert.Fail();
+			if (mission3.mParameters != null) Assert.Fail();
+			if (mission3.mMissionId != "Miss123") Assert.Fail();
+			if (mission3.mVehicleId != "Vehicle863") Assert.Fail();
+			if (mission3.mPriority != 3) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail3)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp4, out IMission mission4, out string detail4) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission4 != null) Assert.Fail();
+			if (detail4 != "Can Not Find the Command Type.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission5 != null) Assert.Fail();
+			if (detail5 != "Lack Of \"VehicleID\" Parameters.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission6 != null) Assert.Fail();
+			if (detail6 != "Parameter \"Priority\" Value Error.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission7 != null) Assert.Fail();
+			if (detail7 != "Data Syntax Error.") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp8, out IMission mission8, out string detail8) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission8 != null) Assert.Fail();
+			if (detail8 != "Data Syntax Error.") Assert.Fail();
 		}
 	}
 }
