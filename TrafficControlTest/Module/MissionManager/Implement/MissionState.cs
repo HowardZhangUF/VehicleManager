@@ -31,7 +31,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public void Set(IMission Mission)
 		{
 			mMission = Mission;
-			mMissionId = Mission.mMissionId;
+			mMissionId = string.IsNullOrEmpty(Mission.mMissionId) ? $"Cmd{DateTime.Now.ToString("yyyyMMddHHmmssfff")}" : Mission.mMissionId;
 			mExecutorId = string.Empty;
 			mSendState = SendState.Unsend;
 			mExecuteState = ExecuteState.Unexecute;
