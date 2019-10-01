@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Implement;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Module.General.Implement;
+using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.MissionManager.Implement;
 using TrafficControlTest.Module.MissionManager.Interface;
 
@@ -184,6 +186,10 @@ namespace TrafficControlTest.Library
 					break;
 			}
 			return result;
+		}
+		public static IHostCommunicator GenerateIHostCommunicator()
+		{
+			return new HostCommunicator();
 		}
 		#endregion
 
@@ -971,5 +977,7 @@ namespace TrafficControlTest.Library
 	{
 		public delegate void EventHandlerIMissionState(DateTime OccurTime, string MissionId, IMissionState MissionState);
 		public delegate void EventHandlerIMissionStateStateUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState);
+		public delegate void EventHandlerSentString(DateTime OccurTime, string IpPort, string Data);
+		public delegate void EventHandlerReceivedString(DateTime OccurTime, string IpPort, string Data);
 	}
 }
