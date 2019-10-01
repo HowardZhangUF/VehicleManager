@@ -65,10 +65,12 @@
     <Compile Include="Module\MissionManager\Implement\DockMissionAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Implement\GotoMissionAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Implement\GotoPointMissionAnalyzer.cs" />
+    <Compile Include="Module\MissionManager\Implement\HostMessageAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Implement\Mission.cs" />
     <Compile Include="Module\MissionManager\Implement\MissionAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Implement\MissionState.cs" />
     <Compile Include="Module\MissionManager\Implement\MissionStateManager.cs" />
+    <Compile Include="Module\MissionManager\Interface\IHostMessageAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Interface\IMission.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionState.cs" />

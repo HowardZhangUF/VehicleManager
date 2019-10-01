@@ -191,6 +191,10 @@ namespace TrafficControlTest.Library
 		{
 			return new HostCommunicator();
 		}
+		public static IHostMessageAnalyzer GenerateIHostMessageAnalyzer(IHostCommunicator HostCommunicator, IMissionStateManager MissionStateManager, IMissionAnalyzer[] MissionAnalyzers)
+		{
+			return new HostMessageAnalyzer(HostCommunicator, MissionStateManager, MissionAnalyzers);
+		}
 		#endregion
 
 		#region IPoint2D
