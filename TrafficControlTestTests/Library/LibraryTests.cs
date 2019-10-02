@@ -233,27 +233,27 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission5 != null) Assert.Fail();
-			if (detail5 != "Can Not Find the Command Type.") Assert.Fail();
+			if (detail5 != "Can Not Find the Command Type") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission6 != null) Assert.Fail();
-			if (detail6 != "Lack Of \"Target\" Parameters.") Assert.Fail();
+			if (detail6 != "Lack Of \"Target\" Parameters") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission7 != null) Assert.Fail();
-			if (detail7 != "Parameter \"Priority\" Value Error.") Assert.Fail();
+			if (detail7 != "Parameter \"Priority\" Value Error") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp8, out IMission mission8, out string detail8) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission8 != null) Assert.Fail();
-			if (detail8 != "Parameter \"Priority\" Value Error.") Assert.Fail();
+			if (detail8 != "Parameter \"Priority\" Value Error") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp9, out IMission mission9, out string detail9) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission9 != null) Assert.Fail();
-			if (detail9 != "Data Syntax Error.") Assert.Fail();
+			if (detail9 != "Data Syntax Error") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp10, out IMission mission10, out string detail10) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission10 != null) Assert.Fail();
-			if (detail10 != "Data Syntax Error.") Assert.Fail();
+			if (detail10 != "Data Syntax Error") Assert.Fail();
 		}
 
 		[TestMethod()]
@@ -315,31 +315,31 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission6 != null) Assert.Fail();
-			if (detail6 != "Can Not Find the Command Type.") Assert.Fail();
+			if (detail6 != "Can Not Find the Command Type") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission7 != null) Assert.Fail();
-			if (detail7 != "Lack Of \"X\" Parameters.") Assert.Fail();
+			if (detail7 != "Lack Of \"X\" Parameters") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp8, out IMission mission8, out string detail8) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission8 != null) Assert.Fail();
-			if (detail8 != "Lack Of \"Y\" Parameters.") Assert.Fail();
+			if (detail8 != "Lack Of \"Y\" Parameters") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp9, out IMission mission9, out string detail9) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission9 != null) Assert.Fail();
-			if (detail9 != "Lack Of \"X, Y\" Parameters.") Assert.Fail();
+			if (detail9 != "Lack Of \"X, Y\" Parameters") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp10, out IMission mission10, out string detail10) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission10 != null) Assert.Fail();
-			if (detail10 != "Parameter \"X, Y, Head, Priority\" Value Error.") Assert.Fail();
+			if (detail10 != "Parameter \"X, Y, Head, Priority\" Value Error") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp11, out IMission mission11, out string detail11) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission11 != null) Assert.Fail();
-			if (detail11 != "Data Syntax Error.") Assert.Fail();
+			if (detail11 != "Data Syntax Error") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp12, out IMission mission12, out string detail12) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission12 != null) Assert.Fail();
-			if (detail12 != "Data Syntax Error.") Assert.Fail();
+			if (detail12 != "Data Syntax Error") Assert.Fail();
 		}
 
 		[TestMethod()]
@@ -381,23 +381,23 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp4, out IMission mission4, out string detail4) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission4 != null) Assert.Fail();
-			if (detail4 != "Can Not Find the Command Type.") Assert.Fail();
+			if (detail4 != "Can Not Find the Command Type") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission5 != null) Assert.Fail();
-			if (detail5 != "Lack Of \"VehicleID\" Parameters.") Assert.Fail();
+			if (detail5 != "Lack Of \"VehicleID\" Parameters") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission6 != null) Assert.Fail();
-			if (detail6 != "Parameter \"Priority\" Value Error.") Assert.Fail();
+			if (detail6 != "Parameter \"Priority\" Value Error") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission7 != null) Assert.Fail();
-			if (detail7 != "Data Syntax Error.") Assert.Fail();
+			if (detail7 != "Data Syntax Error") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp8, out IMission mission8, out string detail8) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission8 != null) Assert.Fail();
-			if (detail8 != "Data Syntax Error.") Assert.Fail();
+			if (detail8 != "Data Syntax Error") Assert.Fail();
 		}
 	}
 }
