@@ -20,7 +20,9 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		public void Set(IHostCommunicator HostCommunicator)
 		{
+			UnsubscribeEvent_IHostCommunicator(rHostCommunicator);
 			rHostCommunicator = HostCommunicator;
+			SubscribeEvent_IHostCommunicator(rHostCommunicator);
 		}
 		public void Set(IMissionStateManager MissionStateManager)
 		{
@@ -72,14 +74,21 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				string replyMsg = string.Empty;
 				foreach (IMissionAnalyzer missionAnalyzer in rMissionAnalyzers)
 				{
-					if (IpPort.Contains(missionAnalyzer.mKeyword))
+					if (Data.Contains(missionAnalyzer.mKeyword))
 					{
 						if (missionAnalyzer.TryParse(Data, out IMission Mission, out string AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
 						{
 							IMissionState missionState = Library.Library.GenerateIMissionState(Mission);
 							missionState.UpdateSourceIpPort(IpPort);
-							rMissionStateManager.Add(missionState.mMissionId, missionState);
-							replyMsg = $"Event=MissionAccepted";
+							if (!rMissionStateManager.IsExist(missionState.mMissionId))
+							{
+								rMissionStateManager.Add(missionState.mMissionId, missionState);
+								replyMsg = $"Event=MissionAccepted";
+							}
+							else
+							{
+								replyMsg = $"Event=MissionRejected Reason=[Mission ID Duplicated]";
+							}
 						}
 						else
 						{
@@ -88,7 +97,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 						break;
 					}
 				}
-				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Event=MissionRejected Reason=UnknownMessage";
+				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Event=MissionRejected Reason=[Unknown Message]";
 				rHostCommunicator.SendString(IpPort, replyMsg);
 			}
 		}
