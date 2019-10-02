@@ -11,9 +11,9 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 {
 	public class MissionStateManager : IMissionStateManager
 	{
-		public event EventHandlerIMissionState MissionStateAdded;
-		public event EventHandlerIMissionState MissionStateRemoved;
-		public event EventHandlerIMissionStateStateUpdated MissionStateStateUpdated;
+		public event EventHandlerIMissionState ItemAdded;
+		public event EventHandlerIMissionState ItemRemoved;
+		public event EventHandlerIMissionStateStateUpdated ItemUpdated;
 
 		public IMissionState this[string MissionId] => Get(MissionId);
 
@@ -76,7 +76,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				{
 					mMissionStates.Add(MissionId, MissionState);
 					SubscribeEvent_IMissionState(mMissionStates[MissionId]);
-					RaiseEvent_MissionStateAdded(mMissionStates[MissionId].mMissionId, mMissionStates[MissionId]);
+					RaiseEvent_ItemAdded(mMissionStates[MissionId].mMissionId, mMissionStates[MissionId]);
 				}
 			}
 		}
@@ -89,7 +89,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					IMissionState tmpData = mMissionStates[MissionId];
 					UnsubscribeEvent_IMissionState(mMissionStates[MissionId]);
 					mMissionStates.Remove(MissionId);
-					RaiseEvent_MissionStateRemoved(MissionId, tmpData);
+					RaiseEvent_ItemRemoved(MissionId, tmpData);
 				}
 			}
 		}
@@ -138,42 +138,42 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				MissionState.StateUpdated -= HandleEvent_MissionStateStateUpdated;
 			}
 		}
-		protected virtual void RaiseEvent_MissionStateAdded(string MissionId, IMissionState MissionState, bool Sync = true)
+		protected virtual void RaiseEvent_ItemAdded(string MissionId, IMissionState MissionState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				MissionStateAdded?.Invoke(DateTime.Now, MissionId, MissionState);
+				ItemAdded?.Invoke(DateTime.Now, MissionId, MissionState);
 			}
 			else
 			{
-				Task.Run(() => { MissionStateAdded?.Invoke(DateTime.Now, MissionId, MissionState); });
+				Task.Run(() => { ItemAdded?.Invoke(DateTime.Now, MissionId, MissionState); });
 			}
 		}
-		protected virtual void RaiseEvent_MissionStateRemoved(string MissionId, IMissionState MissionState, bool Sync = true)
+		protected virtual void RaiseEvent_ItemRemoved(string MissionId, IMissionState MissionState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				MissionStateRemoved?.Invoke(DateTime.Now, MissionId, MissionState);
+				ItemRemoved?.Invoke(DateTime.Now, MissionId, MissionState);
 			}
 			else
 			{
-				Task.Run(() => { MissionStateRemoved?.Invoke(DateTime.Now, MissionId, MissionState); });
+				Task.Run(() => { ItemRemoved?.Invoke(DateTime.Now, MissionId, MissionState); });
 			}
 		}
-		protected virtual void RaiseEvent_MissionStateStateUpdated(string MissionId, string StateName, IMissionState MissionState, bool Sync = true)
+		protected virtual void RaiseEvent_ItemUpdated(string MissionId, string StateName, IMissionState MissionState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				MissionStateStateUpdated?.Invoke(DateTime.Now, MissionId, StateName, MissionState);
+				ItemUpdated?.Invoke(DateTime.Now, MissionId, StateName, MissionState);
 			}
 			else
 			{
-				Task.Run(() => { MissionStateStateUpdated?.Invoke(DateTime.Now, MissionId, StateName, MissionState); });
+				Task.Run(() => { ItemUpdated?.Invoke(DateTime.Now, MissionId, StateName, MissionState); });
 			}
 		}
 		private void HandleEvent_MissionStateStateUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
 		{
-			RaiseEvent_MissionStateStateUpdated(MissionId, StateName, MissionState);
+			RaiseEvent_ItemUpdated(MissionId, StateName, MissionState);
 		}
 	}
 }

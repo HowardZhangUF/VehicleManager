@@ -9,9 +9,9 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 {
 	public interface IMissionStateManager
 	{
-		event EventHandlerIMissionState MissionStateAdded;
-		event EventHandlerIMissionState MissionStateRemoved;
-		event EventHandlerIMissionStateStateUpdated MissionStateStateUpdated;
+		event EventHandlerIMissionState ItemAdded;
+		event EventHandlerIMissionState ItemRemoved;
+		event EventHandlerIMissionStateStateUpdated ItemUpdated;
 
 		bool IsExist(string MissionId);
 		IMissionState this[string MissionId] { get; }
