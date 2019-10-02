@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General.Interface;
+using TrafficControlTest.Module.MissionManager.Interface;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.EventHandlerLibraryOfICollisionEventManager;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleControl;
@@ -32,6 +35,15 @@ namespace TrafficControlTest.Base
 		public event EventHandlerIVehicleControlStateUpdated VehicleControlManagerControlStateUpdated;
 		public event EventHandlerDateTime VehicleControlHandlerSystemStarted;
 		public event EventHandlerDateTime VehicleControlHandlerSystemStopped;
+		public event EventHandlerIMissionState MissionStateManagerItemAdded;
+		public event EventHandlerIMissionState MissionStateManagerItemRemoved;
+		public event EventHandlerIMissionStateStateUpdated MissionStateManagerItemUpdated;
+		public event EventHandlerDateTime HostCommunicatorSystemStarted;
+		public event EventHandlerDateTime HostCommunicatorSystemStopped;
+		public event EventHandlerRemoteConnectState HostCommunicatorRemoteConnectStateChanged;
+		public event EventHandlerLocalListenState HostCommunicatorLocalListenStateChanged;
+		public event EventHandlerSentString HostCommunicatorSentString;
+		public event EventHandlerReceivedString HostCommunicatorReceivedString;
 
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
@@ -41,6 +53,9 @@ namespace TrafficControlTest.Base
 		private IVehicleControlManager mVehicleControlManager = null;
 		private ICollisionEventHandler mCollisionEventHandler = null;
 		private IVehicleControlHandler mVehicleControlHandler = null;
+		private IMissionStateManager mMissionStateManager = null;
+		private IHostCommunicator mHostCommunicator = null;
+		private IHostMessageAnalyzer mHostMessageAnalyzer = null;
 
 		public VehicleManagerProcess()
 		{
@@ -104,6 +119,14 @@ namespace TrafficControlTest.Base
 		{
 			return mVehicleInfoManager.GetNames();
 		}
+		public void HostCommunicatorStartListen(int Port)
+		{
+			mHostCommunicator.StartListen(Port);
+		}
+		public void HostCommunicatorStopListen()
+		{
+			mHostCommunicator.StopListen();
+		}
 
 		private void Constructor()
 		{
@@ -138,6 +161,18 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
 			mVehicleControlHandler = GenerateIVehicleControlHandler(mVehicleControlManager, mVehicleInfoManager, mVehicleCommunicator);
 			SubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
+
+			UnsubscribeEvent_IMissionStateManager(mMissionStateManager);
+			mMissionStateManager = GenerateIMissionStateManager();
+			SubscribeEvent_IMissionStateManager(mMissionStateManager);
+
+			UnsubscribeEvent_IHostCommunicator(mHostCommunicator);
+			mHostCommunicator = GenerateIHostCommunicator();
+			SubscribeEvent_IHostCommunicator(mHostCommunicator);
+
+			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
+			mHostMessageAnalyzer = GenerateIHostMessageAnalyzer(mHostCommunicator, mMissionStateManager, GetMissionAnalyzers());
+			SubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 		}
 		private void Destructor()
 		{
@@ -164,6 +199,15 @@ namespace TrafficControlTest.Base
 
 			UnsubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
 			mVehicleControlHandler = null;
+
+			UnsubscribeEvent_IMissionStateManager(mMissionStateManager);
+			mMissionStateManager = null;
+
+			UnsubscribeEvent_IHostCommunicator(mHostCommunicator);
+			mHostCommunicator = null;
+
+			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
+			mHostMessageAnalyzer = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -301,6 +345,62 @@ namespace TrafficControlTest.Base
 			{
 				VehicleControlHandler.SystemStarted -= HandleEvent_VehicleControlHandlerSystemStarted;
 				VehicleControlHandler.SystemStopped -= HandleEvent_VehicleControlHandlerSystemStopped;
+			}
+		}
+		private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
+		{
+			if (MissionStateManager != null)
+			{
+				MissionStateManager.ItemAdded += HandleEvent_MissionStateManagerItemAdded;
+				MissionStateManager.ItemRemoved += HandleEvent_MissionStateManagerItemRemoved;
+				MissionStateManager.ItemUpdated += HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
+		{
+			if (MissionStateManager != null)
+			{
+				MissionStateManager.ItemAdded -= HandleEvent_MissionStateManagerItemAdded;
+				MissionStateManager.ItemRemoved -= HandleEvent_MissionStateManagerItemRemoved;
+				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
+		{
+			if (HostCommunicator != null)
+			{
+				HostCommunicator.SystemStarted += HandleEvent_HostCommunicatorSystemStarted;
+				HostCommunicator.SystemStopped += HandleEvent_HostCommunicatorSystemStopped;
+				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
+				HostCommunicator.RemoteConnectStateChanged += HandleEvent_HostCommunicatorRemoteConnectStateChanged;
+				HostCommunicator.SentString += HandleEvent_HostCommunicatorSentString;
+				HostCommunicator.ReceivedString += HandleEvent_HostCommunicatorReceivedString;
+			}
+		}
+		private void UnsubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
+		{
+			if (HostCommunicator != null)
+			{
+				HostCommunicator.SystemStarted -= HandleEvent_HostCommunicatorSystemStarted;
+				HostCommunicator.SystemStopped -= HandleEvent_HostCommunicatorSystemStopped;
+				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
+				HostCommunicator.RemoteConnectStateChanged -= HandleEvent_HostCommunicatorRemoteConnectStateChanged;
+				HostCommunicator.SentString -= HandleEvent_HostCommunicatorSentString;
+				HostCommunicator.ReceivedString -= HandleEvent_HostCommunicatorReceivedString;
+			}
+		}
+		private void SubscribeEvent_IHostMessageAnalyzer(IHostMessageAnalyzer HostMessageAnalyzer)
+		{
+			if (HostMessageAnalyzer != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_IHostMessageAnalyzer(IHostMessageAnalyzer HostMessageAnalyzer)
+		{
+			if (HostMessageAnalyzer != null)
+			{
+
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
@@ -512,6 +612,105 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { VehicleControlHandlerSystemStopped?.Invoke(OccurTime); });
 			}
 		}
+		protected virtual void RaiseEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState, bool Sync = true)
+		{
+			if (Sync)
+			{
+				MissionStateManagerItemAdded?.Invoke(OccurTime, MissionId, MissionState);
+			}
+			else
+			{
+				Task.Run(() => { MissionStateManagerItemAdded?.Invoke(OccurTime, MissionId, MissionState); });
+			}
+		}
+		protected virtual void RaiseEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState, bool Sync = true)
+		{
+			if (Sync)
+			{
+				MissionStateManagerItemRemoved?.Invoke(OccurTime, MissionId, MissionState);
+			}
+			else
+			{
+				Task.Run(() => { MissionStateManagerItemRemoved?.Invoke(OccurTime, MissionId, MissionState); });
+			}
+		}
+		protected virtual void RaiseEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState, bool Sync = true)
+		{
+			if (Sync)
+			{
+				MissionStateManagerItemUpdated?.Invoke(OccurTime, MissionId, StateName, MissionState);
+			}
+			else
+			{
+				Task.Run(() => { MissionStateManagerItemUpdated?.Invoke(OccurTime, MissionId, StateName, MissionState); });
+			}
+		}
+		protected virtual void RaiseEvent_HostCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
+		{
+			if (Sync)
+			{
+				HostCommunicatorSystemStarted?.Invoke(OccurTime);
+			}
+			else
+			{
+				Task.Run(() => { HostCommunicatorSystemStarted?.Invoke(OccurTime); });
+			}
+		}
+		protected virtual void RaiseEvent_HostCommunicatorSystemStopped(DateTime OccurTime, bool Sync = true)
+		{
+			if (Sync)
+			{
+				HostCommunicatorSystemStopped?.Invoke(OccurTime);
+			}
+			else
+			{
+				Task.Run(() => { HostCommunicatorSystemStopped?.Invoke(OccurTime); });
+			}
+		}
+		protected virtual void RaiseEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, bool Sync = true)
+		{
+			if (Sync)
+			{
+				HostCommunicatorLocalListenStateChanged?.Invoke(OccurTime, NewState);
+			}
+			else
+			{
+				Task.Run(() => { HostCommunicatorLocalListenStateChanged?.Invoke(OccurTime, NewState); });
+			}
+		}
+		protected virtual void RaiseEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState, bool Sync = true)
+		{
+			if (Sync)
+			{
+				HostCommunicatorRemoteConnectStateChanged?.Invoke(OccurTime, IpPort, NewState);
+			}
+			else
+			{
+				Task.Run(() => { HostCommunicatorRemoteConnectStateChanged?.Invoke(OccurTime, IpPort, NewState); });
+			}
+		}
+		protected virtual void RaiseEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data, bool Sync = true)
+		{
+			if (Sync)
+			{
+				HostCommunicatorSentString?.Invoke(OccurTime, IpPort, Data);
+			}
+			else
+			{
+				Task.Run(() => { HostCommunicatorSentString?.Invoke(OccurTime, IpPort, Data); });
+			}
+		}
+		protected virtual void RaiseEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data, bool Sync = true)
+		{
+			if (Sync)
+			{
+				HostCommunicatorReceivedString?.Invoke(OccurTime, IpPort, Data);
+			}
+			else
+			{
+				Task.Run(() => { HostCommunicatorReceivedString?.Invoke(OccurTime, IpPort, Data); });
+			}
+		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage("VehicleCommunicator", "System Started.");
@@ -606,6 +805,51 @@ namespace TrafficControlTest.Base
 		{
 			HandleDebugMessage("VehicleControlHandler", "System Stopped.");
 			RaiseEvent_VehicleControlHandlerSystemStopped(OccurTime);
+		}
+		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
+		{
+			HandleDebugMessage("MissionStateManager", $"Item Added. MissionID: {MissionId}, Info: {MissionState.ToString()}");
+			RaiseEvent_MissionStateManagerItemAdded(OccurTime, MissionId, MissionState);
+		}
+		private void HandleEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
+		{
+			HandleDebugMessage("MissionStateManager", $"Item Removed. MissionID: {MissionId}, Info: {MissionState.ToString()}");
+			RaiseEvent_MissionStateManagerItemRemoved(OccurTime, MissionId, MissionState);
+		}
+		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
+		{
+			HandleDebugMessage("MissionStateManager", $"Item Updated. MissionID: {MissionId}, StateName: {StateName}, Info: {MissionState.ToString()}");
+			RaiseEvent_MissionStateManagerItemUpdated(OccurTime, MissionId, StateName, MissionState);
+		}
+		private void HandleEvent_HostCommunicatorSystemStarted(DateTime OccurTime)
+		{
+			HandleDebugMessage("HostCommunicator", $"System Started.");
+			RaiseEvent_HostCommunicatorSystemStarted(OccurTime);
+		}
+		private void HandleEvent_HostCommunicatorSystemStopped(DateTime OccurTime)
+		{
+			HandleDebugMessage("HostCommunicator", $"System Stopped.");
+			RaiseEvent_HostCommunicatorSystemStopped(OccurTime);
+		}
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState)
+		{
+			HandleDebugMessage("HostCommunicator", $"Local Listen State Changed. State: {NewState.ToString()}");
+			RaiseEvent_HostCommunicatorLocalListenStateChanged(OccurTime, NewState);
+		}
+		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
+		{
+			HandleDebugMessage("HostCommunicator", $"Remote Connect State Changed. IPPort: {IpPort}, State: {NewState}");
+			RaiseEvent_HostCommunicatorRemoteConnectStateChanged(OccurTime, IpPort, NewState);
+		}
+		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
+		{
+			HandleDebugMessage("HostCommunicator", $"Sent String. IPPort: {IpPort}, Data: {Data}");
+			RaiseEvent_HostCommunicatorSentString(OccurTime, IpPort, Data);
+		}
+		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
+		{
+			HandleDebugMessage("HostCommunicator", $"Received String. IPPort: {IpPort}, Data: {Data}");
+			RaiseEvent_HostCommunicatorReceivedString(OccurTime, IpPort, Data);
 		}
 		private void HandleDebugMessage(string Message)
 		{
