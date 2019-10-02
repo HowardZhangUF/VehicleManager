@@ -72,11 +72,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (rMissionAnalyzers != null && rMissionAnalyzers.Count() > 0)
 			{
 				string replyMsg = string.Empty;
-				foreach (IMissionAnalyzer missionAnalyzer in rMissionAnalyzers)
+				for (int i = 0; i < rMissionAnalyzers.Length; ++i)
 				{
-					if (Data.Contains(missionAnalyzer.mKeyword))
+					if (Data.Contains(rMissionAnalyzers[i].mKeyword))
 					{
-						if (missionAnalyzer.TryParse(Data, out IMission Mission, out string AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
+						if (rMissionAnalyzers[i].TryParse(Data, out IMission Mission, out string AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
 						{
 							IMissionState missionState = Library.Library.GenerateIMissionState(Mission);
 							missionState.UpdateSourceIpPort(IpPort);

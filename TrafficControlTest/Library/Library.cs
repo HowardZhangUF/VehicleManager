@@ -189,7 +189,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IMissionAnalyzer[] GetMissionAnalyzers()
 		{
-			return new MissionAnalyzer[] { GotoMissionAnalyzer.mInstance, GotoPointMissionAnalyzer.mInstance, DockMissionAnalyzer.mInstance };
+			return new IMissionAnalyzer[] { DockMissionAnalyzer.mInstance, GotoPointMissionAnalyzer.mInstance, GotoMissionAnalyzer.mInstance };
 		}
 		public static IHostCommunicator GenerateIHostCommunicator()
 		{
