@@ -28,20 +28,39 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.dgvMission = new System.Windows.Forms.DataGridView();
+			((System.ComponentModel.ISupportInitialize)(this.dgvMission)).BeginInit();
 			this.SuspendLayout();
+			// 
+			// dgvMission
+			// 
+			this.dgvMission.AllowUserToAddRows = false;
+			this.dgvMission.AllowUserToDeleteRows = false;
+			this.dgvMission.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvMission.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dgvMission.Location = new System.Drawing.Point(0, 0);
+			this.dgvMission.Name = "dgvMission";
+			this.dgvMission.ReadOnly = true;
+			this.dgvMission.RowTemplate.Height = 27;
+			this.dgvMission.Size = new System.Drawing.Size(850, 600);
+			this.dgvMission.TabIndex = 0;
 			// 
 			// UCMission
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.AutoScroll = true;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.Controls.Add(this.dgvMission);
 			this.ForeColor = System.Drawing.Color.White;
 			this.Name = "UCMission";
 			this.Size = new System.Drawing.Size(850, 600);
+			((System.ComponentModel.ISupportInitialize)(this.dgvMission)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
+
+		private System.Windows.Forms.DataGridView dgvMission;
 	}
 }

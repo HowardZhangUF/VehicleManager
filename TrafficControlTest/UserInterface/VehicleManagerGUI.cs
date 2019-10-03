@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using TrafficControlTest.Base;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.MissionManager.Interface;
 using TrafficControlTest.UserControl;
 using static TrafficControlTest.UserControl.UCVehicleInfo;
 
@@ -225,6 +226,54 @@ namespace TrafficControlTest.UserInterface
 			ucMap1.EraseIcon(CollisionPair);
 		}
 		#endregion
+		#region Mission
+		private void UpdateGui_AddMission(string MissionId, IMissionState MissionState)
+		{
+			ucMission1.InvokeIfNecessary(() =>
+			{
+				ucMission1.AddRow(MissionId, MissionState.ToStringArray());
+			});
+		}
+		private void UpdateGui_RemoveMission(string MissionId)
+		{
+			ucMission1.InvokeIfNecessary(() =>
+			{
+				ucMission1.RemoveRow(MissionId);
+			});
+		}
+		private void UpdateGui_UpdateMission(string MissionId, string StateName, IMissionState MissionState)
+		{
+			ucMission1.InvokeIfNecessary(() =>
+			{
+				string newValue = null;
+				if (StateName == "Priority")
+				{
+					newValue = MissionState.mMission.mPriority.ToString();
+				}
+				else if (StateName == "SourceIpPort")
+				{
+					newValue = MissionState.mSourceIpPort;
+				}
+				else if (StateName == "ExecutorId")
+				{
+					newValue = MissionState.mExecutorId;
+				}
+				else if (StateName.StartsWith("SendState"))
+				{
+					newValue = $"{MissionState.mSendState.ToString()} / {MissionState.mExecuteState.ToString()}";
+				}
+				else if (StateName.StartsWith("ExecuteState"))
+				{
+					newValue = $"{MissionState.mSendState.ToString()} / {MissionState.mExecuteState.ToString()}";
+				}
+
+				if (newValue != null)
+				{
+					ucMission1.UpdateRow(MissionId, StateName, newValue);
+				}
+			});
+		}
+		#endregion
 		#endregion
 
 		#region PnlLeftMain
@@ -339,6 +388,7 @@ namespace TrafficControlTest.UserInterface
 			mCore.VehicleCommunicatorStartListen(8000);
 			mCore.CollisionEventDetectorStart();
 			mCore.VehicleControlHandlerStart();
+			mCore.HostCommunicatorStartListen(9000);
 			SubscribeEvent_VehicleManagerProcess(mCore);
 		}
 		private void Destructor_VehicleManagerProcess()
@@ -347,6 +397,7 @@ namespace TrafficControlTest.UserInterface
 			mCore.VehicleCommunicatorStopListen();
 			mCore.CollisionEventDetectorStop();
 			mCore.VehicleControlHandlerStop();
+			mCore.HostCommunicatorStopListen();
 			mCore = null;
 		}
 		private void SubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
@@ -360,6 +411,9 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.CollisionEventManagerCollisionEventAdded += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventRemoved += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventStateUpdated += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated;
+				VehicleManagerProcess.MissionStateManagerItemAdded += HandleEvent_VehicleManagerProcessMissionStateManagerItemAdded;
+				VehicleManagerProcess.MissionStateManagerItemRemoved += HandleEvent_VehicleManagerProcessMissionStateManagerItemRemoved;
+				VehicleManagerProcess.MissionStateManagerItemUpdated += HandleEvent_VehicleManagerProcessMissionStateManagerItemUpdated;
 			}
 		}
 		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
@@ -373,6 +427,9 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.CollisionEventManagerCollisionEventAdded -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventRemoved -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventStateUpdated -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated;
+				VehicleManagerProcess.MissionStateManagerItemAdded -= HandleEvent_VehicleManagerProcessMissionStateManagerItemAdded;
+				VehicleManagerProcess.MissionStateManagerItemRemoved -= HandleEvent_VehicleManagerProcessMissionStateManagerItemRemoved;
+				VehicleManagerProcess.MissionStateManagerItemUpdated -= HandleEvent_VehicleManagerProcessMissionStateManagerItemUpdated;
 			}
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState)
@@ -420,6 +477,18 @@ namespace TrafficControlTest.UserInterface
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
 			UpdateGui_MapPrintIcon(CollisionPair);
+		}
+		private void HandleEvent_VehicleManagerProcessMissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
+		{
+			UpdateGui_AddMission(MissionId, MissionState);
+		}
+		private void HandleEvent_VehicleManagerProcessMissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
+		{
+			UpdateGui_RemoveMission(MissionId);
+		}
+		private void HandleEvent_VehicleManagerProcessMissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
+		{
+			UpdateGui_UpdateMission(MissionId, StateName, MissionState);
 		}
 
 		private void SendCommandToVehicle(string VehicleName, string Command, params string[] Paras)

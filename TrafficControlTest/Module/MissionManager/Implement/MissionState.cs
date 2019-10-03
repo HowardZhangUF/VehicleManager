@@ -31,7 +31,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public void Set(IMission Mission)
 		{
 			mMission = Mission;
-			mMissionId = string.IsNullOrEmpty(Mission.mMissionId) ? $"Cmd{DateTime.Now.ToString("yyyyMMddHHmmssfff")}" : Mission.mMissionId;
+			mMissionId = string.IsNullOrEmpty(Mission.mMissionId) ? $"Mission{DateTime.Now.ToString("yyyyMMddHHmmssfff")}" : Mission.mMissionId;
 			mExecutorId = string.Empty;
 			mSendState = SendState.Unsend;
 			mExecuteState = ExecuteState.Unexecute;
@@ -98,7 +98,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public string[] ToStringArray()
 		{
 			string[] result = null;
-			result = new string[] { mMissionId, mExecutorId, mSendState.ToString(), mExecuteState.ToString(), mExecutionStartTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff"), mExecutionStopTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff"), mLastUpdate.ToString("yyyy/MM/dd HH:mm:ss.fff") };
+			result = new string[] { mMissionId, mMission.mPriority.ToString(), mMission.mMissionType, mMission.mVehicleId, mMission.mParameters == null ? string.Empty : string.Join(", ", mMission.mParameters), $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mSourceIpPort, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
 			return result;
 		}
 
