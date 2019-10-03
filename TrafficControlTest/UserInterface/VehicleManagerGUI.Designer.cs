@@ -455,6 +455,7 @@
 			this.ucVehicleOverview1.Name = "ucVehicleOverview1";
 			this.ucVehicleOverview1.Size = new System.Drawing.Size(400, 650);
 			this.ucVehicleOverview1.TabIndex = 0;
+			this.ucVehicleOverview1.DoubleClickOnVehicleInfo += new TrafficControlTest.UserControl.UCVehicleOverview.EventHandlerString(this.ucVehicleOverview1_DoubleClickOnVehicleInfo);
 			// 
 			// ucVehicle1
 			// 

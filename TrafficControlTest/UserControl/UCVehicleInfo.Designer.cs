@@ -59,6 +59,7 @@
 			this.lblId.TabIndex = 0;
 			this.lblId.Text = "ID";
 			this.lblId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.lblId.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// lblBattery
 			// 
@@ -71,6 +72,7 @@
 			this.lblBattery.TabIndex = 1;
 			this.lblBattery.Text = "100 %";
 			this.lblBattery.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			this.lblBattery.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// pnlTop
 			// 
@@ -119,6 +121,7 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(380, 50);
 			this.tableLayoutPanel1.TabIndex = 5;
+			this.tableLayoutPanel1.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// tableLayoutPanel2
 			// 
@@ -133,6 +136,7 @@
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(380, 30);
 			this.tableLayoutPanel2.TabIndex = 6;
+			this.tableLayoutPanel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// lblState
 			// 
@@ -145,6 +149,7 @@
 			this.lblState.TabIndex = 0;
 			this.lblState.Text = "State";
 			this.lblState.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.lblState.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// pnlSecondTop
 			// 

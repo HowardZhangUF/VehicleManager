@@ -116,6 +116,22 @@ namespace TrafficControlTest.UserControl
 				mIconIdsOfCollisionRegion.Remove(CollisionPair.mName);
 			}
 		}
+		public void FocusPoint(int X, int Y)
+		{
+			gluiCtrl1.Focus(X, Y);
+		}
+		public bool FocusVehicle(string VehicleName)
+		{
+			if (GLCMD.CMD.ContainsAGV(VehicleName, out int x, out int y, out double toward))
+			{
+				gluiCtrl1.Focus(x, y);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 
 		private static IEnumerable<IPair> GetPath(IVehicleInfo VehicleInfo)
 		{

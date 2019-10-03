@@ -13,6 +13,9 @@ namespace TrafficControlTest.UserControl
 {
 	public partial class UCVehicleOverview : System.Windows.Forms.UserControl
 	{
+		public delegate void EventHandlerString(string VehicleName);
+		public event EventHandlerString DoubleClickOnVehicleInfo;
+
 		private object mLock = new object();
 		private List<UCVehicleInfo> mControls = new List<UCVehicleInfo>();
 
@@ -49,6 +52,7 @@ namespace TrafficControlTest.UserControl
 						Controls.SetChildIndex(mControls[i], mControls.Count - 1 - i);
 					}
 					Visible = true;
+					SubscribeEvent_UCVehicleInfo(ucVehicleInfo);
 				}
 			}
 		}
@@ -93,9 +97,45 @@ namespace TrafficControlTest.UserControl
 			{
 				if (mControls.FirstOrDefault((o) => o.mId == Id) != null && Controls.ContainsKey(tmpName))
 				{
+					UnsubscribeEvent_UCVehicleInfo(Controls[tmpName] as UCVehicleInfo);
 					mControls.Remove(mControls.FirstOrDefault((o) => o.mId == Id));
 					Controls.RemoveByKey(tmpName);
 				}
+			}
+		}
+
+		private void SubscribeEvent_UCVehicleInfo(UCVehicleInfo UCVehicleInfo)
+		{
+			if (UCVehicleInfo != null)
+			{
+				UCVehicleInfo.DoubleClickOnControl += HandleEvent_UCVehicleInfoDoubleClickOnControl;
+			}
+		}
+		private void UnsubscribeEvent_UCVehicleInfo(UCVehicleInfo UCVehicleInfo)
+		{
+			if (UCVehicleInfo != null)
+			{
+				UCVehicleInfo.DoubleClickOnControl -= HandleEvent_UCVehicleInfoDoubleClickOnControl;
+			}
+		}
+		protected virtual void RaiseEvent_DoubleClickOnVehicleInfo(string VehicleName, bool Sync = true)
+		{
+			if (Sync)
+			{
+				DoubleClickOnVehicleInfo?.Invoke(VehicleName);
+			}
+			else
+			{
+				Task.Run(() => { DoubleClickOnVehicleInfo?.Invoke(VehicleName); });
+			}
+		}
+		private void HandleEvent_UCVehicleInfoDoubleClickOnControl(object sender, EventArgs e)
+		{
+			if (sender is UCVehicleInfo)
+			{
+				string controlName = (sender as UCVehicleInfo).Name;
+				string vehicleName = controlName.Replace(UCVehicleInfo.PreFix, string.Empty);
+				RaiseEvent_DoubleClickOnVehicleInfo(vehicleName);
 			}
 		}
 	}

@@ -12,6 +12,8 @@ namespace TrafficControlTest.UserControl
 {
 	public partial class UCVehicleInfo : System.Windows.Forms.UserControl
 	{
+		public event EventHandler DoubleClickOnControl;
+
 		public enum Property
 		{
 			Id,
@@ -50,6 +52,11 @@ namespace TrafficControlTest.UserControl
 		public override string ToString()
 		{
 			return $"{mId}/{mBattery}/{mState}";
+		}
+
+		protected virtual void Control_DoubleClick(object Sender, EventArgs E)
+		{
+			DoubleClickOnControl?.Invoke(this, E);
 		}
 	}
 }

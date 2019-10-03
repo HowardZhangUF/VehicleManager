@@ -143,6 +143,10 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_DisplayLog();
 		}
+		private void ucVehicleOverview1_DoubleClickOnVehicleInfo(string VehicleName)
+		{
+			UpdateGui_MapFocusVehicle(VehicleName);
+		}
 
 		#region UpdateGui Functions
 		#region General
@@ -224,6 +228,19 @@ namespace TrafficControlTest.UserInterface
 		private void UpdateGui_MapEraseIcon(ICollisionPair CollisionPair)
 		{
 			ucMap1.EraseIcon(CollisionPair);
+		}
+		private void UpdateGui_MapFocusVehicle(string VehicleName)
+		{
+			ucMap1.InvokeIfNecessary(() =>
+			{
+				if (ucMap1.FocusVehicle(VehicleName))
+				{
+					if (pnlTopMarker.Left != btnDisplayMap.Left)
+					{
+						UpdateGui_DisplayMap();
+					}
+				}
+			});
 		}
 		#endregion
 		#region Mission
