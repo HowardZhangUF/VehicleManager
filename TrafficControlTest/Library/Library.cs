@@ -199,6 +199,10 @@ namespace TrafficControlTest.Library
 		{
 			return new HostMessageAnalyzer(HostCommunicator, MissionStateManager, MissionAnalyzers);
 		}
+		public static IMissionDispatcher GenerateIMissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
+		{
+			return new MissionDispatcher(MissionStateManager, VehicleInfoManager, VehicleCommunicator);
+		}
 		#endregion
 
 		#region IPoint2D

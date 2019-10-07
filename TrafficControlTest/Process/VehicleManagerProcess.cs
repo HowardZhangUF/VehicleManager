@@ -46,6 +46,8 @@ namespace TrafficControlTest.Base
 		public event EventHandlerLocalListenState HostCommunicatorLocalListenStateChanged;
 		public event EventHandlerSentString HostCommunicatorSentString;
 		public event EventHandlerReceivedString HostCommunicatorReceivedString;
+		public event EventHandlerDateTime MissionDispatcherSystemStarted;
+		public event EventHandlerDateTime MissionDispatcherSystemStopped;
 
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
@@ -58,6 +60,7 @@ namespace TrafficControlTest.Base
 		private IMissionStateManager mMissionStateManager = null;
 		private IHostCommunicator mHostCommunicator = null;
 		private IHostMessageAnalyzer mHostMessageAnalyzer = null;
+		private IMissionDispatcher mMissionDispatcher = null;
 
 		public VehicleManagerProcess()
 		{
@@ -129,6 +132,14 @@ namespace TrafficControlTest.Base
 		{
 			mHostCommunicator.StopListen();
 		}
+		public void MissionDispatcherStart()
+		{
+			mMissionDispatcher.Start();
+		}
+		public void MissionDispatcherStop()
+		{
+			mMissionDispatcher.Stop();
+		}
 
 		private void Constructor()
 		{
@@ -175,6 +186,10 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 			mHostMessageAnalyzer = GenerateIHostMessageAnalyzer(mHostCommunicator, mMissionStateManager, GetMissionAnalyzers());
 			SubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
+
+			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
+			mMissionDispatcher = GenerateIMissionDispatcher(mMissionStateManager, mVehicleInfoManager, mVehicleCommunicator);
+			SubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 		}
 		private void Destructor()
 		{
@@ -210,6 +225,9 @@ namespace TrafficControlTest.Base
 
 			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 			mHostMessageAnalyzer = null;
+
+			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
+			mMissionDispatcher = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -407,6 +425,22 @@ namespace TrafficControlTest.Base
 			if (HostMessageAnalyzer != null)
 			{
 
+			}
+		}
+		private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
+		{
+			if (MissionDispatcher != null)
+			{
+				MissionDispatcher.SystemStarted += HandleEvent_MissionDispatcherSystemStarted;
+				MissionDispatcher.SystemStopped += HandleEvent_MissionDispatcherSystemStopped;
+			}
+		}
+		private void UnsubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
+		{
+			if (MissionDispatcher != null)
+			{
+				MissionDispatcher.SystemStarted -= HandleEvent_MissionDispatcherSystemStarted;
+				MissionDispatcher.SystemStopped -= HandleEvent_MissionDispatcherSystemStopped;
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
@@ -739,6 +773,28 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { HostCommunicatorReceivedString?.Invoke(OccurTime, IpPort, Data); });
 			}
 		}
+		protected virtual void RaiseEvent_MissionDispatcherSystemStarted(DateTime OccurTime, bool Sync = true)
+		{
+			if (Sync)
+			{
+				MissionDispatcherSystemStarted?.Invoke(OccurTime);
+			}
+			else
+			{
+				Task.Run(() => { MissionDispatcherSystemStarted?.Invoke(OccurTime); });
+			}
+		}
+		protected virtual void RaiseEvent_MissionDispatcherSystemStopped(DateTime OccurTime, bool Sync = true)
+		{
+			if (Sync)
+			{
+				MissionDispatcherSystemStopped?.Invoke(OccurTime);
+			}
+			else
+			{
+				Task.Run(() => { MissionDispatcherSystemStopped?.Invoke(OccurTime); });
+			}
+		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage("VehicleCommunicator", "System Started.");
@@ -888,6 +944,16 @@ namespace TrafficControlTest.Base
 		{
 			HandleDebugMessage("HostCommunicator", $"Received String. IPPort: {IpPort}, Data: {Data}");
 			RaiseEvent_HostCommunicatorReceivedString(OccurTime, IpPort, Data);
+		}
+		private void HandleEvent_MissionDispatcherSystemStarted(DateTime OccurTime)
+		{
+			HandleDebugMessage("MissionDispatcher", $"System Started.");
+			RaiseEvent_MissionDispatcherSystemStarted(OccurTime);
+		}
+		private void HandleEvent_MissionDispatcherSystemStopped(DateTime OccurTime)
+		{
+			HandleDebugMessage("MissionDispatcher", $"System Stopped.");
+			RaiseEvent_MissionDispatcherSystemStopped(OccurTime);
 		}
 		private void HandleDebugMessage(string Message)
 		{

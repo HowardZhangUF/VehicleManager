@@ -68,11 +68,13 @@
     <Compile Include="Module\MissionManager\Implement\HostMessageAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Implement\Mission.cs" />
     <Compile Include="Module\MissionManager\Implement\MissionAnalyzer.cs" />
+    <Compile Include="Module\MissionManager\Implement\MissionDispatcher.cs" />
     <Compile Include="Module\MissionManager\Implement\MissionState.cs" />
     <Compile Include="Module\MissionManager\Implement\MissionStateManager.cs" />
     <Compile Include="Module\MissionManager\Interface\IHostMessageAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Interface\IMission.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionAnalyzer.cs" />
+    <Compile Include="Module\MissionManager\Interface\IMissionDispatcher.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionState.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionStateManager.cs" />
     <Compile Include="TrashCan\AGVInfo.cs" />

@@ -406,11 +406,13 @@ namespace TrafficControlTest.UserInterface
 			mCore.CollisionEventDetectorStart();
 			mCore.VehicleControlHandlerStart();
 			mCore.HostCommunicatorStartListen(9000);
+			mCore.MissionDispatcherStart();
 			SubscribeEvent_VehicleManagerProcess(mCore);
 		}
 		private void Destructor_VehicleManagerProcess()
 		{
 			UnsubscribeEvent_VehicleManagerProcess(mCore);
+			mCore.MissionDispatcherStop();
 			mCore.VehicleCommunicatorStopListen();
 			mCore.CollisionEventDetectorStop();
 			mCore.VehicleControlHandlerStop();
