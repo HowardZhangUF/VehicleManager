@@ -35,15 +35,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
-			UnsubscribeEvent_IVehicleInfoManager(VehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
-			SubscribeEvent_IVehicleInfoManager(VehicleInfoManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator)
 		{
-			UnsubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
 			rVehicleCommunicator = VehicleCommunicator;
-			SubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
 		}
 		public void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
 		{
@@ -60,36 +56,6 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			DestroyThread();
 		}
 
-		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
-		{
-			if (VehicleInfoManager != null)
-			{
-				VehicleInfoManager.VehicleStateUpdated += HandleEvent_VehicleInfoManagerVehicleStateUpdated;
-			}
-		}
-		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
-		{
-			if (VehicleInfoManager != null)
-			{
-				VehicleInfoManager.VehicleStateUpdated -= HandleEvent_VehicleInfoManagerVehicleStateUpdated;
-			}
-		}
-		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
-		{
-			if (VehicleCommunicator != null)
-			{
-				VehicleCommunicator.SentSerializableDataSuccessed += HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-				VehicleCommunicator.SentSerializableDataFailed += HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
-			}
-		}
-		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
-		{
-			if (VehicleCommunicator != null)
-			{
-				VehicleCommunicator.SentSerializableDataSuccessed -= HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
-			}
-		}
 		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
 		{
 			if (Sync)
@@ -110,58 +76,6 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			else
 			{
 				Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
-			}
-		}
-		// 未完成，檢查任務完成的條件太隨便
-		private void HandleEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
-		{
-			if (rMissionStateManager.mCount > 0)
-			{
-				IMissionState missionState = rMissionStateManager.GetList().FirstOrDefault(o => o.mExecuteState == ExecuteState.Executing && o.mExecutorId == Name);
-				if (missionState != null)
-				{
-					switch (missionState.mMission.mMissionType)
-					{
-						case "Goto":
-							if (VehicleInfo.mState == "Idle")
-							{
-								missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-							}
-							break;
-						case "GotoPoint":
-							if (VehicleInfo.mState == "Idle")
-							{
-								missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-							}
-							break;
-						case "Dock":
-							if (VehicleInfo.mState == "Docked")
-							{
-								missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-							}
-							break;
-					}
-				}
-			}
-		}
-		// 未完成，這個感覺不應該放在這個 Class 裡面
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
-		{
-			string missionId = GetMissionId(IpPort, Data);
-			if (!string.IsNullOrEmpty(missionId))
-			{
-				rMissionStateManager.Get(missionId).UpdateSendState(Interface.SendState.SendSuccessed);
-				rMissionStateManager.Get(missionId).UpdateExecuteState(ExecuteState.Executing);
-			}
-		}
-		// 未完成，這個感覺不應該放在這個 Class 裡面
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
-		{
-			string missionId = GetMissionId(IpPort, Data);
-			if (!string.IsNullOrEmpty(missionId))
-			{
-				rMissionStateManager.Get(missionId).UpdateSendState(Interface.SendState.SendFailed);
-				rMissionStateManager.Get(missionId).UpdateExecuteState(ExecuteState.Unexecute);
 			}
 		}
 		private void InitializeThread()
@@ -235,29 +149,6 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					rVehicleCommunicator.SendSerializableData_Dock(IpPort);
 					break;
 			}
-		}
-		/// <summary>透過 Serializable 物件的來源及其本身判斷是哪個任務的相關訊息並輸出任務識別碼</summary>
-		private string GetMissionId(string IpPort, object Data)
-		{
-			string vehicleId = rVehicleInfoManager.GetByIpPort(IpPort).mName;
-			string missionId = null;
-			if (Data is GoTo)
-			{
-				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "Goto" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
-			}
-			else if (Data is GoToPoint)
-			{
-				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "GotoPoint" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
-			}
-			else if (Data is GoToTowardPoint)
-			{
-				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "GotoPoint" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
-			}
-			else if (Data is Charge)
-			{
-				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "Dock" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
-			}
-			return missionId;
 		}
 		private static List<IMissionState> ExtractExecutableMissions(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager)
 		{

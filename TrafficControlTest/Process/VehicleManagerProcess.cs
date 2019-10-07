@@ -61,6 +61,7 @@ namespace TrafficControlTest.Base
 		private IHostCommunicator mHostCommunicator = null;
 		private IHostMessageAnalyzer mHostMessageAnalyzer = null;
 		private IMissionDispatcher mMissionDispatcher = null;
+		private IMissionUpdater mMissionUpdater = null;
 
 		public VehicleManagerProcess()
 		{
@@ -190,6 +191,10 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 			mMissionDispatcher = GenerateIMissionDispatcher(mMissionStateManager, mVehicleInfoManager, mVehicleCommunicator);
 			SubscribeEvent_IMissionDispatcher(mMissionDispatcher);
+
+			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
+			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager);
+			SubscribeEvent_IMissionUpdater(mMissionUpdater);
 		}
 		private void Destructor()
 		{
@@ -441,6 +446,20 @@ namespace TrafficControlTest.Base
 			{
 				MissionDispatcher.SystemStarted -= HandleEvent_MissionDispatcherSystemStarted;
 				MissionDispatcher.SystemStopped -= HandleEvent_MissionDispatcherSystemStopped;
+			}
+		}
+		private void SubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
+		{
+			if (MissionUpdater != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
+		{
+			if (MissionUpdater != null)
+			{
+
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)

@@ -71,12 +71,14 @@
     <Compile Include="Module\MissionManager\Implement\MissionDispatcher.cs" />
     <Compile Include="Module\MissionManager\Implement\MissionState.cs" />
     <Compile Include="Module\MissionManager\Implement\MissionStateManager.cs" />
+    <Compile Include="Module\MissionManager\Implement\MissionUpdater.cs" />
     <Compile Include="Module\MissionManager\Interface\IHostMessageAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Interface\IMission.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionAnalyzer.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionDispatcher.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionState.cs" />
     <Compile Include="Module\MissionManager\Interface\IMissionStateManager.cs" />
+    <Compile Include="Module\MissionManager\Interface\IMissionUpdater.cs" />
     <Compile Include="TrashCan\AGVInfo.cs" />
     <Compile Include="TrashCan\AGVInfoManager.cs" />
     <Compile Include="TrashCan\AGVMonitor.cs" />
