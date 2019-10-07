@@ -277,7 +277,7 @@ namespace TrafficControlTest.UserControl
 			{
 				for (int i = 0; i < dgvMission.Rows.Count; ++i)
 				{
-					if (dgvMission.Rows[i].Cells[ColumnIndex].ToString() == CellValue)
+					if (dgvMission.Rows[i].Cells[ColumnIndex].Value.ToString() == CellValue)
 					{
 						result = i;
 						break;
