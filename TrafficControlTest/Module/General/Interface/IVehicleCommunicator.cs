@@ -8,12 +8,12 @@ namespace TrafficControlTest.Interface
 	{
 		event EventHandlerDateTime SystemStarted;
 		event EventHandlerDateTime SystemStopped;
-
 		event EventHandlerRemoteConnectState RemoteConnectStateChanged;
 		event EventHandlerLocalListenState LocalListenStateChanged;
-
 		event EventHandlerSentSerializableData SentSerializableData;
 		event EventHandlerReceivedSerializableData ReceivedSerializableData;
+		event EventHandlerSentSerializableData SentSerializableDataSuccessed;
+		event EventHandlerSentSerializableData SentSerializableDataFailed;
 
 		/// <summary>監聽狀態</summary>
 		ListenState mListenState { get; }

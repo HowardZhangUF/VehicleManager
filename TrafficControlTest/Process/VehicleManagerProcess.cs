@@ -22,6 +22,8 @@ namespace TrafficControlTest.Base
 		public event EventHandlerRemoteConnectState VehicleCommunicatorRemoteConnectStateChagned;
 		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableData;
 		public event EventHandlerReceivedSerializableData VehicleCommunicatorReceivedSerializableData;
+		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableDataSuccessed;
+		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableDataFailed;
 		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleAdded;
 		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleRemoved;
 		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleStateUpdated;
@@ -219,6 +221,8 @@ namespace TrafficControlTest.Base
 				VehicleCommunicator.RemoteConnectStateChanged += HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
 				VehicleCommunicator.SentSerializableData += HandleEvent_VehicleCommunicatorSentSerializableData;
 				VehicleCommunicator.ReceivedSerializableData += HandleEvent_VehicleCommunicatorReceivedSerializableData;
+				VehicleCommunicator.SentSerializableDataSuccessed += HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
+				VehicleCommunicator.SentSerializableDataFailed += HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -231,6 +235,8 @@ namespace TrafficControlTest.Base
 				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
 				VehicleCommunicator.SentSerializableData -= HandleEvent_VehicleCommunicatorSentSerializableData;
 				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
+				VehicleCommunicator.SentSerializableDataSuccessed -= HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
+				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
 			}
 		}
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -467,6 +473,28 @@ namespace TrafficControlTest.Base
 			else
 			{
 				Task.Run(() => { VehicleCommunicatorReceivedSerializableData?.Invoke(OccurTime, IpPort, Data); });
+			}
+		}
+		protected virtual void RaiseEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data, bool Sync = true)
+		{
+			if (Sync)
+			{
+				VehicleCommunicatorSentSerializableDataSuccessed?.Invoke(OccurTime, IpPort, Data);
+			}
+			else
+			{
+				Task.Run(() => { VehicleCommunicatorSentSerializableDataSuccessed?.Invoke(OccurTime, IpPort, Data); });
+			}
+		}
+		protected virtual void RaiseEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data, bool Sync = true)
+		{
+			if (Sync)
+			{
+				VehicleCommunicatorSentSerializableDataFailed?.Invoke(OccurTime, IpPort, Data);
+			}
+			else
+			{
+				Task.Run(() => { VehicleCommunicatorSentSerializableDataFailed?.Invoke(OccurTime, IpPort, Data); });
 			}
 		}
 		protected virtual void RaiseEvent_VehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
@@ -740,6 +768,16 @@ namespace TrafficControlTest.Base
 		{
 			//HandleDebugMessage("VehicleCommunicator", $"Received Serializable Data. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
 			RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
+		}
+		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
+		{
+			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Successed. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
+			RaiseEvent_VehicleCommunicatorSentSerializableDataSuccessed(OccurTime, IpPort, Data);
+		}
+		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
+		{
+			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Failed. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
+			RaiseEvent_VehicleCommunicatorSentSerializableDataFailed(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{

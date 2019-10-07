@@ -20,6 +20,8 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerLocalListenState LocalListenStateChanged;
 		public event EventHandlerSentSerializableData SentSerializableData;
 		public event EventHandlerReceivedSerializableData ReceivedSerializableData;
+		public event EventHandlerSentSerializableData SentSerializableDataSuccessed;
+		public event EventHandlerSentSerializableData SentSerializableDataFailed;
 
 		public ListenState mListenState { get { return mSocketServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
 		public int mClientCount { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? 0 : mSocketServer.ClientCount; } }
@@ -56,7 +58,7 @@ namespace TrafficControlTest.Implement
 			{
 				if (Data is Serializable)
 				{
-					mSocketServer.Send(IpPort, Data as Serializable);
+					mSocketServer.SendAndWaitAck(IpPort, Data as Serializable);
 					RaiseEvent_SentSerializableData(IpPort, Data);
 				}
 			}
@@ -121,6 +123,8 @@ namespace TrafficControlTest.Implement
 				SerialServer.ConnectStatusChangedEvent += HandleEvent_SerialServerEvent;
 				SerialServer.ListenStatusChangedEvent += HandleEvent_SerialServerEvent;
 				SerialServer.ReceivedSerialDataEvent += HandleEvent_SerialServerEvent;
+				SerialServer.SentSerializableDataSuccessed += HandleEvent_SerialServerEvent;
+				SerialServer.SentSerializableDataFailed += HandleEvent_SerialServerEvent;
 			}
 		}
 		private void UnsubscribeEvent_SerialServer(SerialServer SerialServer)
@@ -130,6 +134,8 @@ namespace TrafficControlTest.Implement
 				SerialServer.ConnectStatusChangedEvent -= HandleEvent_SerialServerEvent;
 				SerialServer.ListenStatusChangedEvent -= HandleEvent_SerialServerEvent;
 				SerialServer.ReceivedSerialDataEvent -= HandleEvent_SerialServerEvent;
+				SerialServer.SentSerializableDataSuccessed -= HandleEvent_SerialServerEvent;
+				SerialServer.SentSerializableDataFailed -= HandleEvent_SerialServerEvent;
 			}
 		}
 		private void InitializeThread()
@@ -216,6 +222,28 @@ namespace TrafficControlTest.Implement
 				Task.Run(() => { ReceivedSerializableData?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
+		protected virtual void RaiseEvent_SentSerializableDataSuccessed(string IpPort, object Data, bool Sync = true)
+		{
+			if (Sync)
+			{
+				SentSerializableDataSuccessed?.Invoke(DateTime.Now, IpPort, Data);
+			}
+			else
+			{
+				Task.Run(() => { SentSerializableDataSuccessed?.Invoke(DateTime.Now, IpPort, Data); });
+			}
+		}
+		protected virtual void RaiseEvent_SentSerializableDataFailed(string IpPort, object Data, bool Sync = true)
+		{
+			if (Sync)
+			{
+				SentSerializableDataFailed?.Invoke(DateTime.Now, IpPort, Data);
+			}
+			else
+			{
+				Task.Run(() => { SentSerializableDataFailed?.Invoke(DateTime.Now, IpPort, Data); });
+			}
+		}
 		private void HandleEvent_SerialServerEvent(object Sender, EventArgs E)
 		{
 			lock(mLockOfSerialServerEvents)
@@ -237,6 +265,14 @@ namespace TrafficControlTest.Implement
 			{
 				HandleSerialServerEvent(E as ReceivedSerialDataEventArgs);
 			}
+			else if (E is SentSerializableDataSuccessedEventArgs)
+			{
+				HandleSerialServerEvent(E as SentSerializableDataSuccessedEventArgs);
+			}
+			else if (E is SentSerializableDataFailedEventArgs)
+			{
+				HandleSerialServerEvent(E as SentSerializableDataFailedEventArgs);
+			}
 			else
 			{
 				Console.WriteLine("Received Unknown Serial Data.");
@@ -253,6 +289,14 @@ namespace TrafficControlTest.Implement
 		private void HandleSerialServerEvent(ReceivedSerialDataEventArgs E)
 		{
 			RaiseEvent_ReceivedSerializableData(E.RemoteInfo.ToString(), E.Data);
+		}
+		private void HandleSerialServerEvent(SentSerializableDataSuccessedEventArgs E)
+		{
+			RaiseEvent_SentSerializableDataSuccessed(E.RemoteInfo.ToString(), E.Data);
+		}
+		private void HandleSerialServerEvent(SentSerializableDataFailedEventArgs E)
+		{
+			RaiseEvent_SentSerializableDataFailed(E.RemoteInfo.ToString(), E.Data);
 		}
 		private void Task_HandleSerialServerEvents(bool[] ExitFlag)
 		{
