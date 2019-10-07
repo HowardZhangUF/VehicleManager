@@ -15,6 +15,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public event EventHandlerIMissionState ItemRemoved;
 		public event EventHandlerIMissionStateStateUpdated ItemUpdated;
 
+		public int mCount { get { return mMissionStates.Count; } }
 		public IMissionState this[string MissionId] => Get(MissionId);
 
 		private Dictionary<string, IMissionState> mMissionStates = new Dictionary<string, IMissionState>();

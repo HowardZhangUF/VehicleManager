@@ -13,6 +13,8 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 		event EventHandlerIMissionState ItemRemoved;
 		event EventHandlerIMissionStateStateUpdated ItemUpdated;
 
+		int mCount { get; }
+
 		bool IsExist(string MissionId);
 		IMissionState this[string MissionId] { get; }
 		IMissionState Get(string MissionId);
