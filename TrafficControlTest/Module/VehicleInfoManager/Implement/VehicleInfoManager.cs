@@ -16,6 +16,7 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerIVehicleInfo VehicleRemoved;
 		public event EventHandlerIVehicleInfo VehicleStateUpdated;
 
+		public int mCount { get { return mVehicleInfos.Count; } }
 		public IVehicleInfo this[string Name] => Get(Name);
 
 		private Dictionary<string, IVehicleInfo> mVehicleInfos = new Dictionary<string, IVehicleInfo>();

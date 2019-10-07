@@ -9,6 +9,8 @@ namespace TrafficControlTest.Interface
 		event EventHandlerIVehicleInfo VehicleRemoved;
 		event EventHandlerIVehicleInfo VehicleStateUpdated;
 
+		int mCount { get; }
+
 		/// <summary>檢查指定 Vehicle 是否在線上(透過 Vehicle 名稱)</summary>
 		bool IsExist(string Name);
 		/// <summary>檢查指定 Vehicle 是否在線上(透過 Vehicle IP:Port)</summary>
