@@ -61,6 +61,22 @@ namespace TrafficControlTest.Implement
 				}
 			}
 		}
+		public void SendSerializableData_Goto(string IpPort, string Target)
+		{
+			SendSerializableData(IpPort, new GoTo(Target));
+		}
+		public void SendSerializableData_GotoPoint(string IpPort, int X, int Y)
+		{
+			SendSerializableData(IpPort, new GoToPoint(new List<int> { X, Y }));
+		}
+		public void SendSerializableData_GotoTowardPoint(string IpPort, int X, int Y, int Toward)
+		{
+			SendSerializableData(IpPort, new GoToTowardPoint(new List<int> { X, Y, Toward }));
+		}
+		public void SendSerializableData_Dock(string IpPort)
+		{
+			SendSerializableData(IpPort, new Charge(null));
+		}
 		public void SendSerializableData_InsertMovingBuffer(string IpPort, string Buffer)
 		{
 			SendSerializableData(IpPort, new InsertMovingBuffer(Buffer));

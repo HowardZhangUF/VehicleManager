@@ -25,6 +25,14 @@ namespace TrafficControlTest.Interface
 		void StopListen();
 		/// <summary>向指定 IP:Port 傳送序列化資料</summary>
 		void SendSerializableData(string IpPort, object Data);
+		/// <summary>向指定 IP:Port 傳送序列化資料 Goto</summary>
+		void SendSerializableData_Goto(string IpPort, string Target);
+		/// <summary>向指定 IP:Port 傳送序列化資料 GotoPoint</summary>
+		void SendSerializableData_GotoPoint(string IpPort, int X, int Y);
+		/// <summary>向指定 IP:Port 傳送序列化資料 GotoTowardPoint</summary>
+		void SendSerializableData_GotoTowardPoint(string IpPort, int X, int Y, int Toward);
+		/// <summary>向指定 IP:Port 傳送序列化資料 Dock</summary>
+		void SendSerializableData_Dock(string IpPort);
 		/// <summary>向指定 IP:Port 傳送序列化資料 InsertMovingBuffer</summary>
 		void SendSerializableData_InsertMovingBuffer(string IpPort, string Buffer);
 		/// <summary>向指定 IP:Port 傳送序列化資料 RemoveMovingBuffer</summary>
