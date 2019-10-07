@@ -89,7 +89,14 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			// Export Result
 			if (errorItem.Count == 0)
 			{
-				Mission = GenerateIMission(mKeyword, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { xValue.ToString(), yValue.ToString(), headValue.ToString() });
+				if (headValue == int.MaxValue)
+				{
+					Mission = GenerateIMission(mKeyword, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { xValue.ToString(), yValue.ToString() });
+				}
+				else
+				{
+					Mission = GenerateIMission(mKeyword, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { xValue.ToString(), yValue.ToString(), headValue.ToString() });
+				}
 				return MissionAnalyzeResult.Successed;
 			}
 			else
