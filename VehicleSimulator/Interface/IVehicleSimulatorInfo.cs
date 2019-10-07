@@ -50,6 +50,8 @@ namespace VehicleSimulator.Interface
 		void PauseMove();
 		/// <summary>繼續移動</summary>
 		void ResumeMove();
+		void Dock();
+		void Undock();
 		void SetInterveneCommand(string Command, params string[] Paras);
 		string ToString();
 		string[] ToStringArray();

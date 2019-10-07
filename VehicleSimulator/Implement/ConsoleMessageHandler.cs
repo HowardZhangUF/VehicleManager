@@ -94,6 +94,34 @@ namespace VehicleSimulator.Implement
 				HandleSerializableData_Intervene(msg);
 				rCommunicatorClient.SendSerializableData(msg);
 			}
+			else if (Data is GoTo)
+			{
+				GoTo msg = Data as GoTo;
+				msg.Response = false;
+				HandleSerializableData_GoTo(msg);
+				rCommunicatorClient.SendSerializableData(msg);
+			}
+			else if (Data is GoToPoint)
+			{
+				GoToPoint msg = Data as GoToPoint;
+				msg.Response = false;
+				HandleSerializableData_GoToPoint(msg);
+				rCommunicatorClient.SendSerializableData(msg);
+			}
+			else if (Data is GoToTowardPoint)
+			{
+				GoToTowardPoint msg = Data as GoToTowardPoint;
+				msg.Response = false;
+				HandleSerializableData_GoToTowardPoint(msg);
+				rCommunicatorClient.SendSerializableData(msg);
+			}
+			else if (Data is Charge)
+			{
+				Charge msg = Data as Charge;
+				msg.Response = false;
+				HandleSerializableData_Charge(msg);
+				rCommunicatorClient.SendSerializableData(msg);
+			}
 		}
 		private void HandleSerializableData_Intervene(InsertMovingBuffer Data)
 		{
@@ -143,6 +171,50 @@ namespace VehicleSimulator.Implement
 				{
 					Data.Response = true;
 					rVehicleSimulatorInfo.SetInterveneCommand("ResumeMoving");
+				}
+			}
+		}
+		private void HandleSerializableData_GoTo(GoTo Data)
+		{
+			if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mState == "Idling")
+			{
+				if (!string.IsNullOrEmpty(Data.Require))
+				{
+					Data.Response = true;
+					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(int.Parse(DateTime.Now.ToString("ssff")), int.Parse(DateTime.Now.ToString("sfff"))) });
+				}
+			}
+		}
+		private void HandleSerializableData_GoToPoint(GoToPoint Data)
+		{
+			if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mState == "Idling")
+			{
+				if (Data.Require != null && Data.Require.Count == 2)
+				{
+					Data.Response = true;
+					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(Data.Require[0], Data.Require[1]) });
+				}
+			}
+		}
+		private void HandleSerializableData_GoToTowardPoint(GoToTowardPoint Data)
+		{
+			if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mState == "Idling")
+			{
+				if (Data.Require != null && Data.Require.Count == 3)
+				{
+					Data.Response = true;
+					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(Data.Require[0], Data.Require[1]) });
+				}
+			}
+		}
+		private void HandleSerializableData_Charge(Charge Data)
+		{
+			if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mState == "Idling")
+			{
+				if (Data.Require == null)
+				{
+					Data.Response = true;
+					rVehicleSimulatorInfo.Dock();
 				}
 			}
 		}

@@ -94,6 +94,22 @@ namespace VehicleSimulator.Implement
 				RaiseEvent_StateUpdated();
 			}
 		}
+		public void Dock()
+		{
+			if (mState == "Idling")
+			{
+				mState = "Charge";
+				RaiseEvent_StateUpdated();
+			}
+		}
+		public void Undock()
+		{
+			if (mState == "Charge")
+			{
+				mState = "Idling";
+				RaiseEvent_StateUpdated();
+			}
+		}
 		public void SetInterveneCommand(string Command, params string[] Paras)
 		{
 			if (mIsInterveneAvailable)
