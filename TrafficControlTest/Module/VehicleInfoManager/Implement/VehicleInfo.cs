@@ -11,321 +11,55 @@ namespace TrafficControlTest.Implement
 	{
 		public event EventHandlerIVehicleInfo StateUpdated;
 
-		public string mName
-		{
-			get { return _Name; }
-			private set
-			{
-				if (!string.IsNullOrEmpty(value))
-				{
-					_Name = value;
-					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public string mState
-		{
-			get { return _State; }
-			private set
-			{
-				if (!string.IsNullOrEmpty(value) && _State != value)
-				{
-					mLastState = _State;
-					_State = value;
-					mStateStartTimestamp = DateTime.Now;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
+		public string mName { get; private set; }
+		public string mState { get; private set; }
 		public string mLastState { get; private set; }
-		public TimeSpan mStateDuration
-		{
-			get { return DateTime.Now.Subtract(mStateStartTimestamp); }
-		}
-		public IPoint2D mPosition
-		{
-			get { return _Position; }
-			private set
-			{
-				if (value != null && (_Position == null || (_Position.mX != value.mX || _Position.mY != value.mY)))
-				{
-					_Position = value;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
-		public double mToward
-		{
-			get { return _Toward; }
-			private set
-			{
-				if (_Toward != value)
-				{
-					_Toward = value;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
-		public string mTarget
-		{
-			get { return _Target; }
-			private set
-			{
-				if (!string.IsNullOrEmpty(value) && _Target != value)
-				{
-					mLastTarget = _Target;
-					_Target = value;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
+		public TimeSpan mStateDuration { get { return DateTime.Now.Subtract(mStateStartTimestamp); } }
+		public IPoint2D mPosition { get; private set; }
+		public double mToward { get; private set; }
+		public string mTarget { get; private set; }
 		public string mLastTarget { get; private set; }
-		public double mVelocity
-		{
-			get { return _Velocity; }
-			private set
-			{
-				_Velocity = value;
-				if (mLastVelocity.Count > mVelocifyDataCount) mLastVelocity.RemoveAt(0);
-				mLastVelocity.Add(value);
-				mLastUpdated = DateTime.Now;
-			}
-		}
-		public double mAverageVelocity
-		{
-			get { return mLastVelocity.Sum() / mLastVelocity.Count; }
-		}
-		public double mMapMatch
-		{
-			get
-			{
-				return _MapMatch;
-			}
-			set
-			{
-				if (_MapMatch != value)
-				{
-					_MapMatch = value;
-					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public double mBattery
-		{
-			get
-			{
-				return _Battery;
-			}
-			private set
-			{
-				if (_Battery != value)
-				{
-					_Battery = value;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
-		public bool mIsInterveneAvailable
-		{
-			get
-			{
-				return _IsInterveneAvailable;
-			}
-			private set
-			{
-				if (_IsInterveneAvailable != value)
-				{
-					_IsInterveneAvailable = value;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
-		public bool mIsBeingIntervened
-		{
-			get
-			{
-				return _IsBeingIntervened;
-			}
-			private set
-			{
-				if (_IsBeingIntervened != value)
-				{
-					_IsBeingIntervened = value;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
-		public string mInterveneCommand
-		{
-			get
-			{
-				return _InterveneCommand;
-			}
-			private set
-			{
-				if (!string.IsNullOrEmpty(value) && _InterveneCommand != value)
-				{
-					_InterveneCommand = value;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
-		public bool mPathBlocked
-		{
-			get
-			{
-				return _PathBlocked;
-			}
-			set
-			{
-				if (_PathBlocked != value)
-				{
-					_PathBlocked = value;
-					if (_PathBlocked == true) mPathBlockedStartTimestamp = DateTime.Now;
-					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public TimeSpan mPathBlockedDuration
-		{
-			get { return DateTime.Now.Subtract(mPathBlockedStartTimestamp); }
-		}
-		public string mAlarmMessage
-		{
-			get
-			{
-				return _AlarmMessage;
-			}
-			private set
-			{
-				if (!string.IsNullOrEmpty(value) && _AlarmMessage != value)
-				{
-					_AlarmMessage = value;
-					mLastUpdated = DateTime.Now;
-				}
-			}
-		}
-		public int mSafetyFrameRadius
-		{
-			get
-			{
-				return _SafetyFrameRadius;
-			}
-			set
-			{
-				if (_SafetyFrameRadius != value)
-				{
-					_SafetyFrameRadius = value;
-					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
-		public int mBufferFrameRadius { get; set; } = 500;
-		public int mTotalFrameRadius
-		{
-			get
-			{
-				return mSafetyFrameRadius + mBufferFrameRadius;
-			}
-		}
-		public IEnumerable<IPoint2D> mPath
-		{
-			get
-			{
-				return _Path;
-			}
-			set
-			{
-				if (value != null)
-				{
-					_Path = value;
-					_PathDetail = null;
-					_PathRegion = null;
-					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
+		public double mVelocity { get; private set; }
+		public double mAverageVelocity { get { return mLastVelocity.Sum() / mLastVelocity.Count; } }
+		public double mMapMatch { get; private set; }
+		public double mBattery { get; private set; }
+		public bool mIsInterveneAvailable { get; private set; }
+		public bool mIsBeingIntervened { get; private set; }
+		public string mInterveneCommand { get; private set; }
+		public bool mPathBlocked { get; private set; }
+		public TimeSpan mPathBlockedDuration { get { return DateTime.Now.Subtract(mPathBlockedStartTimestamp); } }
+		public string mAlarmMessage { get; private set; }
+		public int mSafetyFrameRadius { get; private set; } = 500;
+		public int mBufferFrameRadius { get; private set; } = 500;
+		public int mTotalFrameRadius { get { return mSafetyFrameRadius + mBufferFrameRadius; } }
+		public IEnumerable<IPoint2D> mPath { get; private set; }
 		public IEnumerable<IPoint2D> mPathDetail
 		{
 			get
 			{
-				if (_PathDetail == null) _PathDetail = CalculatePathDetail(_Path, (mSafetyFrameRadius + mBufferFrameRadius) / 10);
+				if (_PathDetail == null) _PathDetail = CalculatePathDetail(mPosition, mPath, (mSafetyFrameRadius + mBufferFrameRadius) / 10);
 				return _PathDetail;
-			}
-			private set
-			{
-				if (value != null)
-				{
-					_PathDetail = value;
-					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated();
-				}
 			}
 		}
 		public IRectangle2D mPathRegion
 		{
 			get
 			{
-				if (_PathRegion == null) _PathRegion = CalculatePathRegion(_Path, mSafetyFrameRadius + mBufferFrameRadius);
+				if (_PathRegion == null) _PathRegion = CalculatePathRegion(mPosition, mPath, mSafetyFrameRadius + mBufferFrameRadius);
 				return _PathRegion;
 			}
-			private set
-			{
-				if (value != null)
-				{
-					_PathRegion = value;
-					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated();
-				}
-			}
 		}
-		public string mIpPort
-		{
-			get
-			{
-				return _IpPort;
-			}
-			private set
-			{
-				if (!string.IsNullOrEmpty(value) && _IpPort != value)
-				{
-					_IpPort = value;
-					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated();
-				}
-			}
-		}
+		public string mIpPort { get; private set; }
 		public DateTime mLastUpdated { get; private set; }
 		public int mVehicleIconId { get; set; }
 		public int mPathIconId { get; set; }
 
-		private string _Name = string.Empty;
-		private string _State = string.Empty;
-		private IPoint2D _Position = null;
-		private double _Toward = 0.0f;
-		private string _Target = string.Empty;
-		private double _Velocity = 0.0f;
-		private double _MapMatch = 0.0f;
-		private double _Battery = 0.0f;
-		private bool _PathBlocked = false;
-		private string _AlarmMessage = string.Empty;
-		private int _SafetyFrameRadius = 500;
-		private bool _IsInterveneAvailable = false;
-		private bool _IsBeingIntervened = false;
-		private string _InterveneCommand = string.Empty;
-		private IEnumerable<IPoint2D> _Path = null;
 		private IEnumerable<IPoint2D> _PathDetail = null;
 		private IRectangle2D _PathRegion = null;
-		private string _IpPort = string.Empty;
 
 		private DateTime mStateStartTimestamp = DateTime.Now;
 		private List<double> mLastVelocity = new List<double>();
-		private int mVelocifyDataCount = 10;
+		private int mVelocityDataCount = 10;
 		private DateTime mPathBlockedStartTimestamp = DateTime.Now;
 
 		public VehicleInfo(string Name)
@@ -335,28 +69,47 @@ namespace TrafficControlTest.Implement
 		public void Set(string Name)
 		{
 			mName = Name;
+			mLastUpdated = DateTime.Now;
+			RaiseEvent_StateUpdated();
 		}
 		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand)
 		{
-			mState = State;
-			mPosition = Position;
-			mToward = Toward;
-			mBattery = Battery;
-			mVelocity = Velocity;
-			mTarget = Target;
-			mAlarmMessage = AlarmMessage;
-			mIsInterveneAvailable = IsInterveneAvailable;
-			mIsBeingIntervened = IsBeingIntervened;
-			mInterveneCommand = InterveneCommand;
-			RaiseEvent_StateUpdated();
+			List<string> updatedItems = new List<string>();
+
+			if (UpdateState(State)) updatedItems.Add("State");
+			if (UpdatePosition(Position)) updatedItems.Add("Position");
+			if (UpdateToward(Toward)) updatedItems.Add("Toward");
+			if (UpdateBattery(Battery)) updatedItems.Add("Battery");
+			if (UpdateVelocity(Velocity)) updatedItems.Add("Velocity");
+			if (UpdateTarget(Target)) updatedItems.Add("Target");
+			if (UpdateAlarmMessage(AlarmMessage)) updatedItems.Add("AlarmMessage");
+			if (UpdateIsInterveneAvailable(IsInterveneAvailable)) updatedItems.Add("IsInterveneAvailable");
+			if (UpdateIsBeingIntervened(IsBeingIntervened)) updatedItems.Add("IsBeingIntervened");
+			if (UpdateInterveneCommand(InterveneCommand)) updatedItems.Add("InterveneCommand");
+
+			if (updatedItems.Count > 0)
+			{
+				Console.WriteLine($"UpdatedItems: {string.Join(",", updatedItems)}");
+				mLastUpdated = DateTime.Now;
+				RaiseEvent_StateUpdated();
+			}
 		}
 		public void Update(IEnumerable<IPoint2D> Path)
 		{
-			mPath = Path;
+			if (UpdatePath(Path))
+			{
+				Console.WriteLine($"UpdatedItems: Path");
+				mLastUpdated = DateTime.Now;
+				RaiseEvent_StateUpdated();
+			}
 		}
 		public void Update(string IpPort)
 		{
-			mIpPort = IpPort;
+			if (UpdateIpPort(IpPort))
+			{
+				mLastUpdated = DateTime.Now;
+				RaiseEvent_StateUpdated();
+			}
 		}
 		public override string ToString()
 		{
@@ -388,14 +141,14 @@ namespace TrafficControlTest.Implement
 				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mName, this));
 			}
 		}
-		private IEnumerable<IPoint2D> CalculatePathDetail(IEnumerable<IPoint2D> Path, int Interval)
+		private static IEnumerable<IPoint2D> CalculatePathDetail(IPoint2D CurrentPosition, IEnumerable<IPoint2D> Path, int Interval)
 		{
 			List<IPoint2D> result = null;
 			if (Path != null && Path.Count() > 0)
 			{
 				result = new List<IPoint2D>();
 				List<IPoint2D> tmpPath = Path.ToList();
-				tmpPath.Insert(0, mPosition);
+				tmpPath.Insert(0, CurrentPosition);
 				result.Add(tmpPath[0]);
 				for (int i = 1; i < tmpPath.Count; ++i)
 				{
@@ -405,15 +158,161 @@ namespace TrafficControlTest.Implement
 			}
 			return result;
 		}
-		private IRectangle2D CalculatePathRegion(IEnumerable<IPoint2D> Path, int Amplify)
+		private static IRectangle2D CalculatePathRegion(IPoint2D CurrentPosition, IEnumerable<IPoint2D> Path, int Amplify)
 		{
 			IRectangle2D result = null;
 			if (Path != null && Path.Count() > 0)
 			{
 				List<IPoint2D> tmpPath = Path.ToList();
-				tmpPath.Insert(0, mPosition);
+				tmpPath.Insert(0, CurrentPosition);
 				result = Library.Library.GetCoverRectangle(tmpPath);
 				result = Library.Library.GetAmplifyRectangle(result, Amplify, Amplify);
+			}
+			return result;
+		}
+		private static string ConvertToString(IEnumerable<IPoint2D> Points)
+		{
+			if (Points == null || Points.Count() == 0) return string.Empty;
+			else return string.Join(string.Empty, Points.Select(o => o.ToString()));
+		}
+		private bool UpdateState(string NewState)
+		{
+			bool result = false;
+			if (!string.IsNullOrEmpty(NewState) && mState != NewState)
+			{
+				mLastState = mState;
+				mState = NewState;
+				mStateStartTimestamp = DateTime.Now;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdatePosition(IPoint2D NewPosition)
+		{
+			bool result = false;
+			if (NewPosition != null && (mPosition == null || (mPosition.mX != NewPosition.mX && mPosition.mY != NewPosition.mY)))
+			{
+				mPosition = NewPosition;
+				_PathDetail = null;
+				_PathRegion = null;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateToward(double NewToward)
+		{
+			bool result = false;
+			if (mToward.ToString("F2") != NewToward.ToString("F2"))
+			{
+				mToward = NewToward;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateTarget(string NewTarget)
+		{
+			bool result = false;
+			if (mTarget != NewTarget)
+			{
+				mLastTarget = mTarget;
+				mTarget = NewTarget;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateBattery(double NewBattery)
+		{
+			bool result = false;
+			if (mBattery.ToString("F2") != NewBattery.ToString("F2"))
+			{
+				mBattery = NewBattery;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateVelocity(double NewVelocity)
+		{
+			bool result = false;
+			mLastVelocity.Add(NewVelocity);
+			if (mLastVelocity.Count > mVelocityDataCount) mLastVelocity.RemoveAt(0);
+			if (mVelocity.ToString("F2") != NewVelocity.ToString("F2"))
+			{
+				mVelocity = NewVelocity;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateAlarmMessage(string NewAlarmMessage)
+		{
+			bool result = false;
+			if (mAlarmMessage != NewAlarmMessage)
+			{
+				mAlarmMessage = NewAlarmMessage;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateIsInterveneAvailable(bool NewIsInterveneAvailable)
+		{
+			bool result = false;
+			if (mIsInterveneAvailable != NewIsInterveneAvailable)
+			{
+				mIsInterveneAvailable = NewIsInterveneAvailable;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateIsBeingIntervened(bool NewIsBeingIntervened)
+		{
+			bool result = false;
+			if (mIsBeingIntervened != NewIsBeingIntervened)
+			{
+				mIsBeingIntervened = NewIsBeingIntervened;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateInterveneCommand(string NewInterveneCommand)
+		{
+			bool result = false;
+			if (NewInterveneCommand != null && mInterveneCommand != NewInterveneCommand)
+			{
+				mInterveneCommand = NewInterveneCommand;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdatePath(IEnumerable<IPoint2D> NewPath)
+		{
+			bool result = false;
+			if (mPath != null && mPath.Count() == 0 && NewPath != null && NewPath.Count() == 0) return result;
+			if ((mPath == null && NewPath != null) || (mPath != null && NewPath != null && ConvertToString(mPath) != ConvertToString(NewPath)))
+			{
+				mPath = NewPath;
+				_PathDetail = null;
+				_PathRegion = null;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdatePathBlocked(bool NewPathBlocked)
+		{
+			bool result = false;
+			if (mPathBlocked != NewPathBlocked)
+			{
+				mPathBlocked = NewPathBlocked;
+				if (mPathBlocked == true) mPathBlockedStartTimestamp = DateTime.Now;
+				result = true;
+			}
+			return result;
+		}
+		private bool UpdateIpPort(string NewIpPort)
+		{
+			bool result = false;
+			if (!string.IsNullOrEmpty(NewIpPort) && mIpPort != NewIpPort)
+			{
+				mIpPort = NewIpPort;
+				result = true;
 			}
 			return result;
 		}

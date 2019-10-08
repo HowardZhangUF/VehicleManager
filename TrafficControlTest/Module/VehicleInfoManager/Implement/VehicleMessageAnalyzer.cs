@@ -74,10 +74,6 @@ namespace TrafficControlTest.Implement
 					UpdateIVehicleInfo(IpPort, Data as AGVPath);
 				}
 			}
-			else
-			{
-				Console.WriteLine("Received Unknown Data.");
-			}
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVStatus AgvStatus)
 		{

@@ -29,17 +29,17 @@ namespace TrafficControlTest.Interface
 		/// <summary>平均速度 (mm/s) 。收集最近 n 秒內的速度數據來做平均</summary>
 		double mAverageVelocity { get; }
 		/// <summary>匹配度 (%)</summary>
-		double mMapMatch { get; set; }
+		double mMapMatch { get; }
 		/// <summary>電池電量 (%)</summary>
 		double mBattery { get; }
 		/// <summary>前方是否有物體擋住導致無法移動</summary>
-		bool mPathBlocked { get; set; }
+		bool mPathBlocked { get; }
 		/// <summary>有物體擋住導致無法移動持續時間</summary>
 		TimeSpan mPathBlockedDuration { get; }
 		/// <summary>錯誤訊息</summary>
 		string mAlarmMessage { get; }
 		/// <summary>安全框半徑</summary>
-		int mSafetyFrameRadius { get; set; }
+		int mSafetyFrameRadius { get; }
 		/// <summary>Buffer 框半徑</summary>
 		int mBufferFrameRadius { get; }
 		/// <summary>車框半徑。車框 = 車身安全框 + Buffer 框</summary>
@@ -51,7 +51,7 @@ namespace TrafficControlTest.Interface
 		/// <summary>目前被干預中的指令。沒有被干預時，此值會為空字串</summary>
 		string mInterveneCommand { get; }
 		/// <summary>路徑</summary>
-		IEnumerable<IPoint2D> mPath { get; set; }
+		IEnumerable<IPoint2D> mPath { get; }
 		/// <summary>路徑(詳細)</summary>
 		IEnumerable<IPoint2D> mPathDetail { get; }
 		/// <summary>路徑範圍</summary>
@@ -61,9 +61,9 @@ namespace TrafficControlTest.Interface
 		/// <summary>上次更新時間</summary>
 		DateTime mLastUpdated { get; }
 		/// <summary>車圖像識別碼</summary>
-		int mVehicleIconId { get; set; }
+		int mVehicleIconId { get; }
 		/// <summary>路徑線圖像識別碼</summary>
-		int mPathIconId { get; set; }
+		int mPathIconId { get; }
 
 		void Set(string Name);
 		void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand);
