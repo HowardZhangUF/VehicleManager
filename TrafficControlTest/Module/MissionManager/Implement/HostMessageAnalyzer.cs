@@ -87,17 +87,17 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 							}
 							else
 							{
-								replyMsg = $"Event=MissionRejected Reason=[Mission ID Duplicated]";
+								replyMsg = $"Event=MissionRejected Reason=MissionIDDuplicated";
 							}
 						}
 						else
 						{
-							replyMsg = $"Event=MissionRejected Reason=[{AnalyzedFailedDetail}]";
+							replyMsg = $"Event=MissionRejected Reason={AnalyzedFailedDetail}";
 						}
 						break;
 					}
 				}
-				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Event=MissionRejected Reason=[Unknown Message]";
+				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Event=MissionRejected Reason=UnknownMessage";
 				string serial = GetSerial(Data);
 				if (!string.IsNullOrEmpty(serial)) replyMsg = $"Serial={serial} {replyMsg}";
 				rHostCommunicator.SendString(IpPort, replyMsg);

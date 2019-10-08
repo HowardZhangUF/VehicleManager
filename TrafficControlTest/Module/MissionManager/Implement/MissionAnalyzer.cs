@@ -127,19 +127,19 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					else
 					{
 						result = MissionAnalyzeResult.Failed;
-						AnalyzeFailedDetail = $"Lack Of \"{string.Join(", ", lackedNecessaryItem)}\" Parameters";
+						AnalyzeFailedDetail = $"LackOf\"{string.Join(",", lackedNecessaryItem)}\"Parameters";
 					}
 				}
 				else
 				{
 					result = MissionAnalyzeResult.Failed;
-					AnalyzeFailedDetail = $"Data Syntax Error";
+					AnalyzeFailedDetail = $"DataSyntaxError";
 				}
 			}
 			else
 			{
 				result = MissionAnalyzeResult.Failed;
-				AnalyzeFailedDetail = $"Can Not Find the Command Type";
+				AnalyzeFailedDetail = $"CanNotFindTheCommandType";
 			}
 			return result;
 		}

@@ -65,7 +65,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			}
 			else
 			{
-				AnalyzeFailedDetail = $"Parameter \"{string.Join(", ", errorItem)}\" Value Error";
+				AnalyzeFailedDetail = $"Parameter\"{string.Join(",", errorItem)}\"ValueError";
 				return MissionAnalyzeResult.Failed;
 			}
 		}
