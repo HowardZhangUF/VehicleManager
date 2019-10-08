@@ -233,7 +233,7 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission5 != null) Assert.Fail();
-			if (detail5 != "CanNotFindTheCommandType") Assert.Fail();
+			if (detail5 != "CanNotFindTheMissionType") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission6 != null) Assert.Fail();
@@ -315,7 +315,7 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission6 != null) Assert.Fail();
-			if (detail6 != "CanNotFindTheCommandType") Assert.Fail();
+			if (detail6 != "CanNotFindTheMissionType") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission7 != null) Assert.Fail();
@@ -381,7 +381,7 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp4, out IMission mission4, out string detail4) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission4 != null) Assert.Fail();
-			if (detail4 != "CanNotFindTheCommandType") Assert.Fail();
+			if (detail4 != "CanNotFindTheMissionType") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission5 != null) Assert.Fail();

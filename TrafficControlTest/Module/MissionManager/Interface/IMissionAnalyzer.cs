@@ -15,6 +15,7 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 	public interface IMissionAnalyzer
 	{
 		string mKeyword { get; }
+		string mKeyItem { get; }
 
 		MissionAnalyzeResult TryParse(string Message, out IMission Mission, out string AnalyzeFailedDetail);
 	}

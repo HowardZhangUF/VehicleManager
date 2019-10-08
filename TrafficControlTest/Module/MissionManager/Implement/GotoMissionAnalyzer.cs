@@ -12,7 +12,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 	{
 		public static GotoMissionAnalyzer mInstance = new GotoMissionAnalyzer();
 		public override string mKeyword { get; } = "Goto";
-		protected override string mKeyItem { get; } = "Mission";
+		public override string mKeyItem { get; } = "Mission";
 		protected override string[] mNecessaryItem { get; } = new string[] { "Target" };
 		protected override string[] mOptionalItem { get; } = new string[] { "MissionID", "VehicleID", "Priority" };
 

@@ -74,7 +74,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				string replyMsg = string.Empty;
 				for (int i = 0; i < rMissionAnalyzers.Length; ++i)
 				{
-					if (Data.Contains(rMissionAnalyzers[i].mKeyword))
+					if (Data.Contains($"{rMissionAnalyzers[i].mKeyItem}={rMissionAnalyzers[i].mKeyword}"))
 					{
 						if (rMissionAnalyzers[i].TryParse(Data, out IMission Mission, out string AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
 						{

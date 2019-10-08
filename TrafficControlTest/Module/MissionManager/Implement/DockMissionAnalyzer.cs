@@ -12,7 +12,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 	{
 		public static DockMissionAnalyzer mInstance = new DockMissionAnalyzer();
 		public override string mKeyword { get; } = "Dock";
-		protected override string mKeyItem { get; } = "Mission";
+		public override string mKeyItem { get; } = "Mission";
 		protected override string[] mNecessaryItem { get; } = new string[] { "VehicleID" };
 		protected override string[] mOptionalItem { get; } = new string[] { "MissionID", "Priority" };
 

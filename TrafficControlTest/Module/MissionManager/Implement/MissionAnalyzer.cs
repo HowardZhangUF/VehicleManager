@@ -11,8 +11,8 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 	public abstract class MissionAnalyzer : IMissionAnalyzer
 	{
 		public abstract string mKeyword { get; }
+		public abstract string mKeyItem { get; }
 		public static int mPriorityDefault = 50;
-		protected abstract string mKeyItem { get; }
 		protected abstract string[] mNecessaryItem { get; }
 		protected abstract string[] mOptionalItem { get; }
 		protected static int mPriorityMax = 99;
@@ -92,7 +92,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		protected MissionAnalyzeResult FillDictionaryUsingString(string Message, ref string AnalyzeFailedDetail)
 		{
 			MissionAnalyzeResult result = MissionAnalyzeResult.Failed;
-			if (Message.Contains(mKeyword))
+			if (Message.Contains($"{mKeyItem}={mKeyword}"))
 			{
 				if (ConvertToDictionary(Message, out Dictionary<string, string> MessageDictionary))
 				{
@@ -139,7 +139,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			else
 			{
 				result = MissionAnalyzeResult.Failed;
-				AnalyzeFailedDetail = $"CanNotFindTheCommandType";
+				AnalyzeFailedDetail = $"CanNotFindTheMissionType";
 			}
 			return result;
 		}
