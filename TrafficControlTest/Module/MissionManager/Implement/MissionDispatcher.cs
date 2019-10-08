@@ -117,11 +117,14 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager);
 			if (executableMissions != null && executableMissions.Count > 0)
 			{
-				IMissionState mission = executableMissions.OrderBy(o => o.mMission.mPriority).First();
-				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetList().First(o => o.mState == "Idle").mName : mission.mMission.mVehicleId;
-				SendMission(vehicleId, mission.mMission);
-				mission.UpdateSendState(Interface.SendState.Sending);
-				mission.UpdateExecutorId(vehicleId);
+				IMissionState mission = executableMissions.OrderBy(o => o.mMission.mPriority).ThenBy(o => o.mReceivedTimestamp).First();
+				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetList().FirstOrDefault(o => o.mState == "Idle")?.mName : mission.mMission.mVehicleId;
+				if (!string.IsNullOrEmpty(vehicleId))
+				{
+					SendMission(vehicleId, mission.mMission);
+					mission.UpdateSendState(Interface.SendState.Sending);
+					mission.UpdateExecutorId(vehicleId);
+				}
 			}
 		}
 		private void SendMission(string VehicleId, IMission Mission)
