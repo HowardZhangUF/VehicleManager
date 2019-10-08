@@ -83,7 +83,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 							if (!rMissionStateManager.IsExist(missionState.mMissionId))
 							{
 								rMissionStateManager.Add(missionState.mMissionId, missionState);
-								replyMsg = $"Event=MissionAccepted";
+								replyMsg = $"Event=MissionAccepted MissionID={missionState.mMissionId}";
 							}
 							else
 							{
@@ -98,8 +98,28 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					}
 				}
 				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Event=MissionRejected Reason=[Unknown Message]";
+				string serial = GetSerial(Data);
+				if (!string.IsNullOrEmpty(serial)) replyMsg = $"Serial={serial} {replyMsg}";
 				rHostCommunicator.SendString(IpPort, replyMsg);
 			}
+		}
+		private static string GetSerial(string Data)
+		{
+			string result = null;
+			if (Data.Contains("Serial="))
+			{
+				int beginIndex = Data.IndexOf("Serial=") + "Serial=".Length;
+				int endIndex = Data.IndexOf(" ", beginIndex);
+				if (endIndex == -1)
+				{
+					result = Data.Substring(beginIndex);
+				}
+				else
+				{
+					result = Data.Substring(beginIndex, endIndex - beginIndex);
+				}
+			}
+			return result;
 		}
 	}
 }

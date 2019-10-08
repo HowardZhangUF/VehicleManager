@@ -275,7 +275,7 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp1, out IMission mission1, out string detail1) != MissionAnalyzeResult.Successed) Assert.Fail();
 			if (mission1.mMissionType != "GotoPoint") Assert.Fail();
-			if (mission1.mParameters.Length != 3 || mission1.mParameters[0] != "123" || mission1.mParameters[1] != "456" || mission1.mParameters[2] != int.MaxValue.ToString()) Assert.Fail();
+			if (mission1.mParameters.Length != 2 || mission1.mParameters[0] != "123" || mission1.mParameters[1] != "456") Assert.Fail();
 			if (mission1.mMissionId != string.Empty) Assert.Fail();
 			if (mission1.mVehicleId != string.Empty) Assert.Fail();
 			if (mission1.mPriority != MissionAnalyzer.mPriorityDefault) Assert.Fail();
