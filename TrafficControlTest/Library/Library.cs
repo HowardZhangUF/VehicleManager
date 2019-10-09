@@ -962,11 +962,13 @@ namespace TrafficControlTest.Library
 	public static class EventHandlerLibraryOfIVehicleInfo
 	{
 		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo);
+		public delegate void EventHandlerIVehicleInfoStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo);
 	}
 
 	public static class EventHandlerLibraryOfIVehicleInfoManager
 	{
 		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo);
+		public delegate void EventHandlerIVehicleInfoStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo);
 	}
 
 	public static class EventHandlerLibraryOfIVehicleCommunicator

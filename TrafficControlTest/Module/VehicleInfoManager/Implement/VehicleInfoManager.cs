@@ -14,7 +14,7 @@ namespace TrafficControlTest.Implement
 	{
 		public event EventHandlerIVehicleInfo VehicleAdded;
 		public event EventHandlerIVehicleInfo VehicleRemoved;
-		public event EventHandlerIVehicleInfo VehicleStateUpdated;
+		public event EventHandlerIVehicleInfoStateUpdated VehicleStateUpdated;
 
 		public int mCount { get { return mVehicleInfos.Count; } }
 		public IVehicleInfo this[string Name] => Get(Name);
@@ -153,20 +153,20 @@ namespace TrafficControlTest.Implement
 				Task.Run(() => { VehicleRemoved?.Invoke(DateTime.Now, Name, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleStateUpdated(string Name, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleStateUpdated(string Name, string StateName, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleStateUpdated?.Invoke(DateTime.Now, Name, VehicleInfo);
+				VehicleStateUpdated?.Invoke(DateTime.Now, Name, StateName, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleStateUpdated?.Invoke(DateTime.Now, Name, VehicleInfo); });
+				Task.Run(() => { VehicleStateUpdated?.Invoke(DateTime.Now, Name, StateName, VehicleInfo); });
 			}
 		}
-		private void HandleEvent_VehicleInfoStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
-			RaiseEvent_VehicleStateUpdated(Name, VehicleInfo);
+			RaiseEvent_VehicleStateUpdated(Name, StateName, VehicleInfo);
 		}
 	}
 }

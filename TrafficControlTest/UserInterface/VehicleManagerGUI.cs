@@ -479,7 +479,7 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetVehicleCount() > 0 ? Color.DarkGreen : Color.DarkOrange);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleCount().ToString());
 		}
-		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
 			UpdateGui_MapPrintIcon(VehicleInfo);
 			UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));

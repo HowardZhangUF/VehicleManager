@@ -9,7 +9,7 @@ namespace TrafficControlTest.Implement
 {
 	class VehicleInfo : IVehicleInfo
 	{
-		public event EventHandlerIVehicleInfo StateUpdated;
+		public event EventHandlerIVehicleInfoStateUpdated StateUpdated;
 
 		public string mName { get; private set; }
 		public string mState { get; private set; }
@@ -70,7 +70,7 @@ namespace TrafficControlTest.Implement
 		{
 			mName = Name;
 			mLastUpdated = DateTime.Now;
-			RaiseEvent_StateUpdated();
+			RaiseEvent_StateUpdated("Name");
 		}
 		public void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand)
 		{
@@ -89,18 +89,16 @@ namespace TrafficControlTest.Implement
 
 			if (updatedItems.Count > 0)
 			{
-				Console.WriteLine($"UpdatedItems: {string.Join(",", updatedItems)}");
 				mLastUpdated = DateTime.Now;
-				RaiseEvent_StateUpdated();
+				RaiseEvent_StateUpdated(string.Join(",", updatedItems));
 			}
 		}
 		public void Update(IEnumerable<IPoint2D> Path)
 		{
 			if (UpdatePath(Path))
 			{
-				Console.WriteLine($"UpdatedItems: Path");
 				mLastUpdated = DateTime.Now;
-				RaiseEvent_StateUpdated();
+				RaiseEvent_StateUpdated("Path");
 			}
 		}
 		public void Update(string IpPort)
@@ -108,7 +106,7 @@ namespace TrafficControlTest.Implement
 			if (UpdateIpPort(IpPort))
 			{
 				mLastUpdated = DateTime.Now;
-				RaiseEvent_StateUpdated();
+				RaiseEvent_StateUpdated("IpPort");
 			}
 		}
 		public override string ToString()
@@ -130,15 +128,15 @@ namespace TrafficControlTest.Implement
 			return result;
 		}
 
-		protected virtual void RaiseEvent_StateUpdated(bool Sync = true)
+		protected virtual void RaiseEvent_StateUpdated(string StateName, bool Sync = true)
 		{
 			if (Sync)
 			{
-				StateUpdated?.Invoke(DateTime.Now, mName, this);
+				StateUpdated?.Invoke(DateTime.Now, mName, StateName, this);
 			}
 			else
 			{
-				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mName, this));
+				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mName, StateName, this));
 			}
 		}
 		private static IEnumerable<IPoint2D> CalculatePathDetail(IPoint2D CurrentPosition, IEnumerable<IPoint2D> Path, int Interval)

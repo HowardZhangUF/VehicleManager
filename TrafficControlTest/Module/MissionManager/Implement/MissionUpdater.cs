@@ -76,7 +76,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
 			if (rMissionStateManager.mCount > 0)
 			{

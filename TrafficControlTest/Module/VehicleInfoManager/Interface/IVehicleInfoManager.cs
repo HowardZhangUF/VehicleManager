@@ -7,7 +7,7 @@ namespace TrafficControlTest.Interface
 	{
 		event EventHandlerIVehicleInfo VehicleAdded;
 		event EventHandlerIVehicleInfo VehicleRemoved;
-		event EventHandlerIVehicleInfo VehicleStateUpdated;
+		event EventHandlerIVehicleInfoStateUpdated VehicleStateUpdated;
 
 		int mCount { get; }
 
