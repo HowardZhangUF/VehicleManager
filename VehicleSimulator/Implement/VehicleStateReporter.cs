@@ -58,14 +58,14 @@ namespace VehicleSimulator.Implement
 		{
 			if (VehicleSimulatorInfo != null)
 			{
-				// do nothing
+				VehicleSimulatorInfo.StateUpdated += HandleEvent_VehicleSimulatorInfoStateUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleSimulatorInfo(IVehicleSimulatorInfo VehicleSimulatorInfo)
 		{
 			if (VehicleSimulatorInfo != null)
 			{
-				// do nothing
+				VehicleSimulatorInfo.StateUpdated -= HandleEvent_VehicleSimulatorInfoStateUpdated;
 			}
 		}
 		private void SubscribeEvent_ICommunicatorClient(ICommunicatorClient CommunicatorClient)
@@ -81,6 +81,10 @@ namespace VehicleSimulator.Implement
 			{
 				CommunicatorClient.ConnectStateChanged += HandleEvent_CommunicatorClientConnectStateChanged;
 			}
+		}
+		private void HandleEvent_VehicleSimulatorInfoStateUpdated(DateTime OccurTime, string Name, IVehicleSimulatorInfo VehicleSimulatorInfo)
+		{
+			Subtask_ReportVehicleState();
 		}
 		private void HandleEvent_CommunicatorClientConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
