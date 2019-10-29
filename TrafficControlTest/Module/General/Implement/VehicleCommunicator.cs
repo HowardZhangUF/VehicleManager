@@ -25,6 +25,7 @@ namespace TrafficControlTest.Implement
 
 		public ListenState mListenState { get { return mSocketServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
 		public int mClientCount { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? 0 : mSocketServer.ClientCount; } }
+		public List<string> mClientAddressInfo { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? null : mSocketServer.ClientDictionary.Keys.ToList(); } }
 
 		private SerialServer mSocketServer = null;
 		private readonly Queue<EventArgs> mSerialServerEvents = new Queue<EventArgs>();

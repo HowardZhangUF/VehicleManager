@@ -1,4 +1,5 @@
-﻿using TrafficControlTest.Library;
+﻿using System.Collections.Generic;
+using TrafficControlTest.Library;
 using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
 
 namespace TrafficControlTest.Interface
@@ -19,6 +20,8 @@ namespace TrafficControlTest.Interface
 		ListenState mListenState { get; }
 		/// <summary>連線中的 Client 數量</summary>
 		int mClientCount { get; }
+		/// <summary>連線中的 Client 地址資訊 (IP:Port)</summary>
+		List<string> mClientAddressInfo { get; }
 		/// <summary>開始監聽</summary>
 		void StartListen(int Port);
 		/// <summary>停止監聽</summary>
