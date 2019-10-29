@@ -77,7 +77,7 @@ namespace TrafficControlTest.Implement
 		}
 		public void SendSerializableData_Dock(string IpPort)
 		{
-			SendSerializableData(IpPort, new Charge(null));
+
 		}
 		public void SendSerializableData_InsertMovingBuffer(string IpPort, string Buffer)
 		{

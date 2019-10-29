@@ -158,7 +158,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			string missionId = null;
 			if (Data is GoTo)
 			{
-				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "Goto" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
+				missionId = rMissionStateManager.GetList().First(o => (o.mMission.mMissionType == "Goto" || o.mMission.mMissionType == "Dock") && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
 			}
 			else if (Data is GoToPoint)
 			{
@@ -167,10 +167,6 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			else if (Data is GoToTowardPoint)
 			{
 				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "GotoPoint" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
-			}
-			else if (Data is Charge)
-			{
-				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "Dock" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
 			}
 			return missionId;
 		}

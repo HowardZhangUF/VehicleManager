@@ -115,13 +115,6 @@ namespace VehicleSimulator.Implement
 				HandleSerializableData_GoToTowardPoint(msg);
 				rCommunicatorClient.SendSerializableData(msg);
 			}
-			else if (Data is Charge)
-			{
-				Charge msg = Data as Charge;
-				msg.Response = false;
-				HandleSerializableData_Charge(msg);
-				rCommunicatorClient.SendSerializableData(msg);
-			}
 		}
 		private void HandleSerializableData_Intervene(InsertMovingBuffer Data)
 		{
@@ -204,17 +197,6 @@ namespace VehicleSimulator.Implement
 				{
 					Data.Response = true;
 					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(Data.Require[0], Data.Require[1]) });
-				}
-			}
-		}
-		private void HandleSerializableData_Charge(Charge Data)
-		{
-			if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mState == "Idling")
-			{
-				if (Data.Require == null)
-				{
-					Data.Response = true;
-					rVehicleSimulatorInfo.Dock();
 				}
 			}
 		}
