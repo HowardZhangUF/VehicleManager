@@ -1,5 +1,5 @@
 ﻿using TrafficControlTest.Interface;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace VehicleSimulator.Interface
 {

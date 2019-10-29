@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleControl;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Implement
 {

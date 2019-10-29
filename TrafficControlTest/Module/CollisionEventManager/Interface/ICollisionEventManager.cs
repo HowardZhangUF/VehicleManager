@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static TrafficControlTest.Library.EventHandlerLibraryOfICollisionEventManager;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
 {

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
-using static TrafficControlTest.Library.EventHandlerLibraryOfICollisionEventManager;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Implement
 {

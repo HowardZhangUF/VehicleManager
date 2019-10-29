@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;
 
 namespace TrafficControlTest.Implement

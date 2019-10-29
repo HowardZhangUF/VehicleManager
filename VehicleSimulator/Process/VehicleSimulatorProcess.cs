@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
 using VehicleSimulator.Interface;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;
 using static VehicleSimulator.Library.EventHandlerLibraryOfIVehicleSimulator;
 using static VehicleSimulator.Library.Library;

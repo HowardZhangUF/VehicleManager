@@ -6,10 +6,6 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
-using static TrafficControlTest.Library.EventHandlerLibraryOfICollisionEventManager;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleControl;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleInfoManager;
 using static TrafficControlTest.Library.Library;
 
 namespace TrafficControlTest.Base

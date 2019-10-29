@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleInfo;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
 {

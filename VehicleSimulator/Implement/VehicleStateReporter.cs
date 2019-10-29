@@ -13,8 +13,8 @@ namespace VehicleSimulator.Implement
 {
 	public class VehicleStateReporter : IVehicleStateReporter
 	{
-		public event EventHandlerLibraryOfIVehicleCommunicator.EventHandlerDateTime SystemStarted;
-		public event EventHandlerLibraryOfIVehicleCommunicator.EventHandlerDateTime SystemStopped;
+		public event EventHandlerLibrary.EventHandlerDateTime SystemStarted;
+		public event EventHandlerLibrary.EventHandlerDateTime SystemStopped;
 
 		public bool mIsExcuting { get { return (mThdReportVehicleState != null && mThdReportVehicleState.IsAlive == true) ? true : false; } }
 		public bool mAutoStart { get; set; } = true;

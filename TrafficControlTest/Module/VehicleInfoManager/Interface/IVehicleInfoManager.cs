@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleInfoManager;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
 {

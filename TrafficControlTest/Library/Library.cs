@@ -959,43 +959,25 @@ namespace TrafficControlTest.Library
 		#endregion
 	}
 
-	public static class EventHandlerLibraryOfIVehicleInfo
-	{
-		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo);
-		public delegate void EventHandlerIVehicleInfoStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo);
-	}
-
-	public static class EventHandlerLibraryOfIVehicleInfoManager
-	{
-		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo);
-		public delegate void EventHandlerIVehicleInfoStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo);
-	}
-
-	public static class EventHandlerLibraryOfIVehicleCommunicator
+	public static class EventHandlerLibrary
 	{
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);
 		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState);
 		public delegate void EventHandlerSentSerializableData(DateTime OccurTime, string IpPort, object Data);
 		public delegate void EventHandlerReceivedSerializableData(DateTime OccurTime, string IpPort, object Data);
-	}
-
-	public static class EventHandlerLibraryOfICollisionEventManager
-	{
-		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
-	}
-
-	public static class EventHandlerLibraryOfIVehicleControl
-	{
-		public delegate void EventHandlerIVehicleControl(DateTime OccurTime, string Name, IVehicleControl VehicleControl);
-		public delegate void EventHandlerIVehicleControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl);
-	}
-
-	public static class EventHandlerLibrary
-	{
-		public delegate void EventHandlerIMissionState(DateTime OccurTime, string MissionId, IMissionState MissionState);
-		public delegate void EventHandlerIMissionStateStateUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState);
 		public delegate void EventHandlerSentString(DateTime OccurTime, string IpPort, string Data);
 		public delegate void EventHandlerReceivedString(DateTime OccurTime, string IpPort, string Data);
+
+		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo);
+		public delegate void EventHandlerIVehicleInfoStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo);
+
+		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
+
+		public delegate void EventHandlerIVehicleControl(DateTime OccurTime, string Name, IVehicleControl VehicleControl);
+		public delegate void EventHandlerIVehicleControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl);
+
+		public delegate void EventHandlerIMissionState(DateTime OccurTime, string MissionId, IMissionState MissionState);
+		public delegate void EventHandlerIMissionStateStateUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState);
 	}
 }

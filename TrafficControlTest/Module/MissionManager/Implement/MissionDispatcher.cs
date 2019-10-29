@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.MissionManager.Interface;
-using static TrafficControlTest.Library.EventHandlerLibraryOfIVehicleCommunicator;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.MissionManager.Implement
 {
