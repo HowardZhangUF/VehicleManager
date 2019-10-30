@@ -82,7 +82,7 @@ namespace TrafficControlTest.Implement
 		}
 		public void SendSerializableData_InsertMovingBuffer(string IpPort, string Buffer)
 		{
-			SendSerializableData(IpPort, new InsertMovingBuffer(Buffer));
+			SendSerializableData(IpPort, new InsertMovingBuffer(Buffer.Split(',').Select(o => int.Parse(o)).ToList()));
 		}
 		public void SendSerializableData_RemoveMovingBuffer(string IpPort)
 		{

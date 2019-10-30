@@ -120,14 +120,10 @@ namespace VehicleSimulator.Implement
 		{
 			if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mIsInterveneAvailable)
 			{
-				if (Data.Require.Contains(","))
+				if (Data.Require.Count == 2)
 				{
-					string[] coordinate = Data.Require.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-					if (coordinate.Length == 2)
-					{
-						Data.Response = true;
-						rVehicleSimulatorInfo.SetInterveneCommand("InsertMovingBuffer", coordinate[0], coordinate[1]);
-					}
+					Data.Response = true;
+					rVehicleSimulatorInfo.SetInterveneCommand("InsertMovingBuffer", Data.Require[0].ToString(), Data.Require[1].ToString());
 				}
 			}
 		}
