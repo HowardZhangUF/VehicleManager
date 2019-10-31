@@ -3,25 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Module.General.Implement;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.MissionManager.Interface
 {
-	public interface IMissionStateManager
+	public interface IMissionStateManager : IItemManager<IMissionState>
 	{
-		event EventHandlerIMissionState ItemAdded;
-		event EventHandlerIMissionState ItemRemoved;
-		event EventHandlerIMissionStateStateUpdated ItemUpdated;
-
-		int mCount { get; }
-
-		bool IsExist(string MissionId);
 		IMissionState this[string MissionId] { get; }
-		IMissionState Get(string MissionId);
-		List<string> GetMissionIds();
-		List<IMissionState> GetList();
-		void Add(string MissionId, IMissionState MissionState);
-		void Remove(string MissionId);
 		void UpdateExecutorId(string MissionId, string ExecutorId);
 		void UpdateSendState(string MissionId, SendState SendState);
 		void UpdateExecuteState(string MissionId, ExecuteState ExecuteState);

@@ -50,14 +50,14 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			if (VehicleInfoManager != null)
 			{
-				VehicleInfoManager.VehicleStateUpdated += HandleEvent_VehicleInfoManagerVehicleStateUpdated;
+				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
 			if (VehicleInfoManager != null)
 			{
-				VehicleInfoManager.VehicleStateUpdated -= HandleEvent_VehicleInfoManagerVehicleStateUpdated;
+				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -76,11 +76,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
 			if (rMissionStateManager.mCount > 0)
 			{
-				IMissionState missionState = rMissionStateManager.GetList().FirstOrDefault(o => o.mExecuteState == ExecuteState.Executing && o.mExecutorId == Name);
+				IMissionState missionState = rMissionStateManager.GetItems().FirstOrDefault(o => o.mExecuteState == ExecuteState.Executing && o.mExecutorId == Name);
 				if (missionState != null)
 				{
 					switch (missionState.mMission.mMissionType)
@@ -122,8 +122,8 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			string missionId = GetMissionId(IpPort, Data);
 			if (!string.IsNullOrEmpty(missionId))
 			{
-				rMissionStateManager.Get(missionId).UpdateSendState(Interface.SendState.SendSuccessed);
-				rMissionStateManager.Get(missionId).UpdateExecuteState(ExecuteState.Executing);
+				rMissionStateManager.GetItem(missionId).UpdateSendState(Interface.SendState.SendSuccessed);
+				rMissionStateManager.GetItem(missionId).UpdateExecuteState(ExecuteState.Executing);
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
@@ -131,8 +131,8 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			string missionId = GetMissionId(IpPort, Data);
 			if (!string.IsNullOrEmpty(missionId))
 			{
-				rMissionStateManager.Get(missionId).UpdateSendState(Interface.SendState.SendFailed);
-				rMissionStateManager.Get(missionId).UpdateExecuteState(ExecuteState.Unexecute);
+				rMissionStateManager.GetItem(missionId).UpdateSendState(Interface.SendState.SendFailed);
+				rMissionStateManager.GetItem(missionId).UpdateExecuteState(ExecuteState.Unexecute);
 			}
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, string Target)
@@ -154,19 +154,19 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		/// <summary>透過 Serializable 物件的發送來源及其本身判斷是哪個任務的相關訊息並輸出任務識別碼</summary>
 		private string GetMissionId(string IpPort, object Data)
 		{
-			string vehicleId = rVehicleInfoManager.GetByIpPort(IpPort).mName;
+			string vehicleId = rVehicleInfoManager.GetItemByIpPort(IpPort).mName;
 			string missionId = null;
 			if (Data is GoTo)
 			{
-				missionId = rMissionStateManager.GetList().First(o => (o.mMission.mMissionType == "Goto" || o.mMission.mMissionType == "Dock") && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
+				missionId = rMissionStateManager.GetItems().First(o => (o.mMission.mMissionType == "Goto" || o.mMission.mMissionType == "Dock") && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mName;
 			}
 			else if (Data is GoToPoint)
 			{
-				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "GotoPoint" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
+				missionId = rMissionStateManager.GetItems().First(o => o.mMission.mMissionType == "GotoPoint" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mName;
 			}
 			else if (Data is GoToTowardPoint)
 			{
-				missionId = rMissionStateManager.GetList().First(o => o.mMission.mMissionType == "GotoPoint" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mMissionId;
+				missionId = rMissionStateManager.GetItems().First(o => o.mMission.mMissionType == "GotoPoint" && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mName;
 			}
 			return missionId;
 		}

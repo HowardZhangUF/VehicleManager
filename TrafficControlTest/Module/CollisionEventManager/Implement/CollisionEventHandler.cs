@@ -109,9 +109,9 @@ namespace TrafficControlTest.Implement
 		}
 		private void RemoveRelatedVehicleControl(ICollisionPair CollisionPair)
 		{
-			if (rVehicleControlManager.IsCauseExist(CollisionPair.mName))
+			if (rVehicleControlManager.IsExistByCauseId(CollisionPair.mName))
 			{
-				string controlName = rVehicleControlManager.GetViaCause(CollisionPair.mName).mName;
+				string controlName = rVehicleControlManager.GetItemByCauseId(CollisionPair.mName).mName;
 				rVehicleControlManager.Remove(controlName);
 			}
 		}

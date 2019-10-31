@@ -1,4 +1,5 @@
 ﻿using System;
+using TrafficControlTest.Module.General.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
@@ -25,12 +26,8 @@ namespace TrafficControlTest.Interface
 		ResumeMoving
 	}
 
-	public interface IVehicleControl
+	public interface IVehicleControl : IItem
 	{
-		event EventHandlerIVehicleControlStateUpdated StateUpdated;
-
-		/// <summary>識別碼</summary>
-		string mName { get; }
 		/// <summary>欲控制的車的識別碼</summary>
 		string mVehicleId { get; }
 		/// <summary>傳送狀態</summary>

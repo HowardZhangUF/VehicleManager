@@ -138,9 +138,9 @@ namespace TrafficControlTest.Implement
 		}
 		private void Subtask_DetectCollisionEvent()
 		{
-			if (rVehicleInfoManager != null && rVehicleInfoManager.GetNames() != null && rVehicleInfoManager.GetNames().Count > 0)
+			if (rVehicleInfoManager != null && rVehicleInfoManager.GetItemNames() != null && rVehicleInfoManager.GetItemNames().Count() > 0)
 			{
-				if (IsAnyCollisionPair(rVehicleInfoManager.GetList(), out IEnumerable<ICollisionPair> collisionPairs))
+				if (IsAnyCollisionPair(rVehicleInfoManager.GetItems(), out IEnumerable<ICollisionPair> collisionPairs))
 				{
 					if (rCollisionEventManager != null)
 					{

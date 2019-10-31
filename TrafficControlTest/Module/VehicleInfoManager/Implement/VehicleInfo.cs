@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Library;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Implement
 {
 	class VehicleInfo : IVehicleInfo
 	{
-		public event EventHandlerIVehicleInfoStateUpdated StateUpdated;
+		public event EventHandlerIItemUpdated Updated;
 
 		public string mName { get; private set; }
 		public string mState { get; private set; }
@@ -130,11 +131,11 @@ namespace TrafficControlTest.Implement
 		{
 			if (Sync)
 			{
-				StateUpdated?.Invoke(DateTime.Now, mName, StateName, this);
+				Updated?.Invoke(DateTime.Now, mName, StateName);
 			}
 			else
 			{
-				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mName, StateName, this));
+				Task.Run(() => Updated?.Invoke(DateTime.Now, mName, StateName));
 			}
 		}
 		private static IEnumerable<IPoint2D> CalculatePathDetail(IPoint2D CurrentPosition, IEnumerable<IPoint2D> Path, int Interval)

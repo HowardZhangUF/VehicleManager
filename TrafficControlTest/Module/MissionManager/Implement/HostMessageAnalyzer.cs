@@ -80,10 +80,10 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 						{
 							IMissionState missionState = Library.Library.GenerateIMissionState(Mission);
 							missionState.UpdateSourceIpPort(IpPort);
-							if (!rMissionStateManager.IsExist(missionState.mMissionId))
+							if (!rMissionStateManager.IsExist(missionState.mName))
 							{
-								rMissionStateManager.Add(missionState.mMissionId, missionState);
-								replyMsg = $"Event=MissionAccepted MissionID={missionState.mMissionId}";
+								rMissionStateManager.Add(missionState.mName, missionState);
+								replyMsg = $"Event=MissionAccepted MissionID={missionState.mName}";
 							}
 							else
 							{

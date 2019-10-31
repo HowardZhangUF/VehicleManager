@@ -424,9 +424,9 @@ namespace TrafficControlTest.UserInterface
 			if (VehicleManagerProcess != null)
 			{
 				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned += HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
-				VehicleManagerProcess.VehicleInfoManagerVehicleAdded += HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleAdded;
-				VehicleManagerProcess.VehicleInfoManagerVehicleRemoved += HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleRemoved;
-				VehicleManagerProcess.VehicleInfoManagerVehicleStateUpdated += HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated;
+				VehicleManagerProcess.VehicleInfoManagerItemAdded += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
+				VehicleManagerProcess.VehicleInfoManagerItemRemoved += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
+				VehicleManagerProcess.VehicleInfoManagerItemUpdated += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemUpdated;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventAdded += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventRemoved += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventStateUpdated += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated;
@@ -440,9 +440,9 @@ namespace TrafficControlTest.UserInterface
 			if (VehicleManagerProcess != null)
 			{
 				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned -= HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
-				VehicleManagerProcess.VehicleInfoManagerVehicleAdded -= HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleAdded;
-				VehicleManagerProcess.VehicleInfoManagerVehicleRemoved -= HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleRemoved;
-				VehicleManagerProcess.VehicleInfoManagerVehicleStateUpdated -= HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated;
+				VehicleManagerProcess.VehicleInfoManagerItemAdded -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
+				VehicleManagerProcess.VehicleInfoManagerItemRemoved -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
+				VehicleManagerProcess.VehicleInfoManagerItemUpdated -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemUpdated;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventAdded -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventRemoved -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved;
 				VehicleManagerProcess.CollisionEventManagerCollisionEventStateUpdated -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated;
@@ -463,7 +463,7 @@ namespace TrafficControlTest.UserInterface
 				UpdateGui_UpdateControlText(lblConnection, "0");
 			}
 		}
-		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			UpdateGui_MapRegisterIconId(VehicleInfo);
 			UpdateGui_UpdateVehicleNameList();
@@ -471,7 +471,7 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleNameList().Count.ToString());
 		}
-		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			UpdateGui_MapEraseIcon(VehicleInfo);
 			UpdateGui_UpdateVehicleNameList();
@@ -479,7 +479,7 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetVehicleCount() > 0 ? Color.DarkGreen : Color.DarkOrange);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleCount().ToString());
 		}
-		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
 			UpdateGui_MapPrintIcon(VehicleInfo);
 			UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));

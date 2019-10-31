@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using TrafficControlTest.Module.General.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
 {
-	public interface IVehicleInfo
+	public interface IVehicleInfo : IItem
 	{
-		event EventHandlerIVehicleInfoStateUpdated StateUpdated;
-
-		/// <summary>名稱</summary>
-		string mName { get; }
 		/// <summary>當前狀態</summary>
 		string mState { get; }
 		/// <summary>上一個狀態</summary>

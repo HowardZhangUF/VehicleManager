@@ -969,15 +969,11 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerSentString(DateTime OccurTime, string IpPort, string Data);
 		public delegate void EventHandlerReceivedString(DateTime OccurTime, string IpPort, string Data);
 
-		public delegate void EventHandlerIVehicleInfo(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo);
-		public delegate void EventHandlerIVehicleInfoStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo);
-
 		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
 
-		public delegate void EventHandlerIVehicleControl(DateTime OccurTime, string Name, IVehicleControl VehicleControl);
-		public delegate void EventHandlerIVehicleControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl);
+		public delegate void EventHandlerIItemUpdated(DateTime OccurTime, string Name, string StateName);
 
-		public delegate void EventHandlerIMissionState(DateTime OccurTime, string MissionId, IMissionState MissionState);
-		public delegate void EventHandlerIMissionStateStateUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState);
+		public delegate void EventHandlerItem<T>(DateTime OccurTime, string Name, T Item);
+		public delegate void EventHandlerItemUpdated<T>(DateTime OccurTime, string Name, string StateName, T Item);
 	}
 }

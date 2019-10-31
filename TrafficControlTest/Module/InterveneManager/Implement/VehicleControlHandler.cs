@@ -150,7 +150,7 @@ namespace TrafficControlTest.Implement
 				IEnumerable<IVehicleControl> vehicleControls = null;
 				while (!ExitFlag[0])
 				{
-					vehicleControls = rVehicleControlManager.GetList();
+					vehicleControls = rVehicleControlManager.GetItems();
 					HandleVehicleControls(vehicleControls);
 					vehicleControls = null;
 					Thread.Sleep(300);
@@ -177,7 +177,7 @@ namespace TrafficControlTest.Implement
 			if (VehicleControl.mSendState == SendState.Unsend)
 			{
 				string vehicleId = VehicleControl.mVehicleId;
-				string ipPort = rVehicleInfoManager.Get(vehicleId).mIpPort;
+				string ipPort = rVehicleInfoManager.GetItem(vehicleId).mIpPort;
 				string parameter = VehicleControl.mParameters == null ? null : VehicleControl.mParameters[0];
 				switch (VehicleControl.mCommand)
 				{

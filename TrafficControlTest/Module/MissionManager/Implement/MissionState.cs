@@ -11,11 +11,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 {
 	public class MissionState : IMissionState
 	{
-		public event EventHandlerIMissionStateStateUpdated StateUpdated;
+		public event EventHandlerIItemUpdated Updated;
 
 		public IMission mMission { get; private set; }
 		public string mSourceIpPort { get; private set; }
-		public string mMissionId { get; private set; }
+		public string mName { get; private set; }
 		public string mExecutorId { get; private set; }
 		public SendState mSendState { get; private set; }
 		public ExecuteState mExecuteState { get; private set; }
@@ -28,10 +28,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			Set(Mission);
 		}
+
 		public void Set(IMission Mission)
 		{
 			mMission = Mission;
-			mMissionId = string.IsNullOrEmpty(Mission.mMissionId) ? $"Mission{DateTime.Now.ToString("yyyyMMddHHmmssfff")}" : Mission.mMissionId;
+			mName = string.IsNullOrEmpty(Mission.mMissionId) ? $"Mission{DateTime.Now.ToString("yyyyMMddHHmmssfff")}" : Mission.mMissionId;
 			mExecutorId = string.Empty;
 			mSendState = SendState.Unsend;
 			mExecuteState = ExecuteState.Unexecute;
@@ -98,7 +99,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public string[] ToStringArray()
 		{
 			string[] result = null;
-			result = new string[] { mMissionId, mMission.mPriority.ToString(), mMission.mMissionType, mMission.mVehicleId, mMission.mParameters == null ? string.Empty : string.Join(", ", mMission.mParameters), $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mSourceIpPort, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
+			result = new string[] { mName, mMission.mPriority.ToString(), mMission.mMissionType, mMission.mVehicleId, mMission.mParameters == null ? string.Empty : string.Join(", ", mMission.mParameters), $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mSourceIpPort, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
 			return result;
 		}
 
@@ -106,11 +107,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			if (Sync)
 			{
-				StateUpdated?.Invoke(DateTime.Now, mMissionId, StateName, this);
+				Updated?.Invoke(DateTime.Now, mName, StateName);
 			}
 			else
 			{
-				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mMissionId, StateName, this));
+				Task.Run(() => Updated?.Invoke(DateTime.Now, mName, StateName));
 			}
 		}
 	}

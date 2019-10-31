@@ -57,7 +57,7 @@ namespace TrafficControlTest.Implement
 			{
 				if (rVehicleInfoManager.IsExistByIpPort(IpPort))
 				{
-					rVehicleInfoManager.Remove(rVehicleInfoManager.GetByIpPort(IpPort).mName);
+					rVehicleInfoManager.Remove(rVehicleInfoManager.GetItemByIpPort(IpPort).mName);
 				}
 			}
 		}
@@ -84,8 +84,8 @@ namespace TrafficControlTest.Implement
 				rVehicleInfoManager.Add(AgvStatus.Name, tmpData);
 			}
 
-			rVehicleInfoManager.Update(AgvStatus.Name, IpPort);
-			rVehicleInfoManager.Update(AgvStatus.Name, AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D((int)AgvStatus.X, (int)AgvStatus.Y), AgvStatus.Toward, AgvStatus.Battery, AgvStatus.Velocity, AgvStatus.GoalName, AgvStatus.AlarmMessage, AgvStatus.IsInterveneAvailable, AgvStatus.IsBeingIntervened, AgvStatus.InterveneCommand);
+			rVehicleInfoManager.UpdateItem(AgvStatus.Name, IpPort);
+			rVehicleInfoManager.UpdateItem(AgvStatus.Name, AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D((int)AgvStatus.X, (int)AgvStatus.Y), AgvStatus.Toward, AgvStatus.Battery, AgvStatus.Velocity, AgvStatus.GoalName, AgvStatus.AlarmMessage, AgvStatus.IsInterveneAvailable, AgvStatus.IsBeingIntervened, AgvStatus.InterveneCommand);
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVPath AgvPath)
 		{
@@ -96,8 +96,8 @@ namespace TrafficControlTest.Implement
 				rVehicleInfoManager.Add(AgvPath.Name, tmpData);
 			}
 
-			rVehicleInfoManager.Update(AgvPath.Name, IpPort);
-			rVehicleInfoManager.Update(AgvPath.Name, ConvertToPoints(AgvPath.PathX, AgvPath.PathY));
+			rVehicleInfoManager.UpdateItem(AgvPath.Name, IpPort);
+			rVehicleInfoManager.UpdateItem(AgvPath.Name, ConvertToPoints(AgvPath.PathX, AgvPath.PathY));
 		}
 		private IEnumerable<IPoint2D> ConvertToPoints(List<double> X, List<double> Y)
 		{

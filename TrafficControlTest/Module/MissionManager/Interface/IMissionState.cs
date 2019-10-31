@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Module.General.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.MissionManager.Interface
@@ -23,13 +24,10 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 		ExecuteFailed
 	}
 
-	public interface IMissionState
+	public interface IMissionState : IItem
 	{
-		event EventHandlerIMissionStateStateUpdated StateUpdated;
-
 		IMission mMission { get; }
 		string mSourceIpPort { get; }
-		string mMissionId { get; }
 		string mExecutorId { get; }
 		SendState mSendState { get; }
 		ExecuteState mExecuteState { get; }

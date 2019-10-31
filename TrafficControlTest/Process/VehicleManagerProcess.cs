@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
@@ -20,22 +21,22 @@ namespace TrafficControlTest.Base
 		public event EventHandlerReceivedSerializableData VehicleCommunicatorReceivedSerializableData;
 		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableDataSuccessed;
 		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableDataFailed;
-		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleAdded;
-		public event EventHandlerIVehicleInfo VehicleInfoManagerVehicleRemoved;
-		public event EventHandlerIVehicleInfoStateUpdated VehicleInfoManagerVehicleStateUpdated;
+		public event EventHandlerItem<IVehicleInfo> VehicleInfoManagerItemAdded;
+		public event EventHandlerItem<IVehicleInfo> VehicleInfoManagerItemRemoved;
+		public event EventHandlerItemUpdated<IVehicleInfo> VehicleInfoManagerItemUpdated;
 		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventAdded;
 		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventRemoved;
 		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventStateUpdated;
 		public event EventHandlerDateTime CollisionEventDetectorSystemStarted;
 		public event EventHandlerDateTime CollisionEventDetectorSystemStopped;
-		public event EventHandlerIVehicleControl VehicleControlManagerControlAdded;
-		public event EventHandlerIVehicleControl VehicleControlManagerControlRemoved;
-		public event EventHandlerIVehicleControlStateUpdated VehicleControlManagerControlStateUpdated;
+		public event EventHandlerItem<IVehicleControl> VehicleControlManagerItemAdded;
+		public event EventHandlerItem<IVehicleControl> VehicleControlManagerItemRemoved;
+		public event EventHandlerItemUpdated<IVehicleControl> VehicleControlManagerItemUpdated;
 		public event EventHandlerDateTime VehicleControlHandlerSystemStarted;
 		public event EventHandlerDateTime VehicleControlHandlerSystemStopped;
-		public event EventHandlerIMissionState MissionStateManagerItemAdded;
-		public event EventHandlerIMissionState MissionStateManagerItemRemoved;
-		public event EventHandlerIMissionStateStateUpdated MissionStateManagerItemUpdated;
+		public event EventHandlerItem<IMissionState> MissionStateManagerItemAdded;
+		public event EventHandlerItem<IMissionState> MissionStateManagerItemRemoved;
+		public event EventHandlerItemUpdated<IMissionState> MissionStateManagerItemUpdated;
 		public event EventHandlerDateTime HostCommunicatorSystemStarted;
 		public event EventHandlerDateTime HostCommunicatorSystemStopped;
 		public event EventHandlerRemoteConnectState HostCommunicatorRemoteConnectStateChanged;
@@ -97,29 +98,29 @@ namespace TrafficControlTest.Base
 			{
 				if (Command == "InsertMovingBuffer" && Paras != null && Paras.Length == 1)
 				{
-					mVehicleCommunicator.SendSerializableData_InsertMovingBuffer(mVehicleInfoManager.Get(VehicleName).mIpPort, Paras[0]);
+					mVehicleCommunicator.SendSerializableData_InsertMovingBuffer(mVehicleInfoManager.GetItem(VehicleName).mIpPort, Paras[0]);
 				}
 				else if (Command == "RemoveMovingBuffer")
 				{
-					mVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(mVehicleInfoManager.Get(VehicleName).mIpPort);
+					mVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(mVehicleInfoManager.GetItem(VehicleName).mIpPort);
 				}
 				else if (Command == "PauseMoving")
 				{
-					mVehicleCommunicator.SendSerializableData_PauseMoving(mVehicleInfoManager.Get(VehicleName).mIpPort);
+					mVehicleCommunicator.SendSerializableData_PauseMoving(mVehicleInfoManager.GetItem(VehicleName).mIpPort);
 				}
 				else if (Command == "ResumeMoving")
 				{
-					mVehicleCommunicator.SendSerializableData_ResumeMoving(mVehicleInfoManager.Get(VehicleName).mIpPort);
+					mVehicleCommunicator.SendSerializableData_ResumeMoving(mVehicleInfoManager.GetItem(VehicleName).mIpPort);
 				}
 			}
 		}
 		public int GetVehicleCount()
 		{
-			return mVehicleInfoManager.GetNames() == null ? 0 : mVehicleInfoManager.GetNames().Count;
+			return mVehicleInfoManager.mCount;
 		}
 		public List<string> GetVehicleNameList()
 		{
-			return mVehicleInfoManager.GetNames();
+			return mVehicleInfoManager.GetItemNames().ToList();
 		}
 		public void HostCommunicatorStartListen(int Port)
 		{
@@ -262,18 +263,18 @@ namespace TrafficControlTest.Base
 		{
 			if (VehicleInfoManager != null)
 			{
-				VehicleInfoManager.VehicleAdded += HandleEvent_VehicleInfoManagerVehicleAdded;
-				VehicleInfoManager.VehicleRemoved += HandleEvent_VehicleInfoManagerVehicleRemoved;
-				VehicleInfoManager.VehicleStateUpdated += HandleEvent_VehicleInfoManagerVehicleStateUpdated;
+				VehicleInfoManager.ItemAdded += HandleEvent_VehicleInfoManagerItemAdded;
+				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
+				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
 			if (VehicleInfoManager != null)
 			{
-				VehicleInfoManager.VehicleAdded -= HandleEvent_VehicleInfoManagerVehicleAdded;
-				VehicleInfoManager.VehicleRemoved -= HandleEvent_VehicleInfoManagerVehicleRemoved;
-				VehicleInfoManager.VehicleStateUpdated -= HandleEvent_VehicleInfoManagerVehicleStateUpdated;
+				VehicleInfoManager.ItemAdded -= HandleEvent_VehicleInfoManagerItemAdded;
+				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
+				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_IVehicleMessageAnalyzer(IVehicleMessageAnalyzer VehicleMessageAnalyzer)
@@ -328,18 +329,18 @@ namespace TrafficControlTest.Base
 		{
 			if (VehicleControlManager != null)
 			{
-				VehicleControlManager.ControlAdded += HandleEvent_VehicleControlManagerControlAdded;
-				VehicleControlManager.ControlRemoved += HandleEvent_VehicleControlManagerControlRemoved;
-				VehicleControlManager.ControlStateUpdated += HandleEvent_VehicleControlManagerControlStateUpdated;
+				VehicleControlManager.ItemAdded += HandleEvent_VehicleControlManagerItemAdded;
+				VehicleControlManager.ItemRemoved += HandleEvent_VehicleControlManagerItemRemoved;
+				VehicleControlManager.ItemUpdated += HandleEvent_VehicleControlManagerItemUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
 		{
 			if (VehicleControlManager != null)
 			{
-				VehicleControlManager.ControlAdded -= HandleEvent_VehicleControlManagerControlAdded;
-				VehicleControlManager.ControlRemoved -= HandleEvent_VehicleControlManagerControlRemoved;
-				VehicleControlManager.ControlStateUpdated -= HandleEvent_VehicleControlManagerControlStateUpdated;
+				VehicleControlManager.ItemAdded -= HandleEvent_VehicleControlManagerItemAdded;
+				VehicleControlManager.ItemRemoved -= HandleEvent_VehicleControlManagerItemRemoved;
+				VehicleControlManager.ItemUpdated -= HandleEvent_VehicleControlManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_ICollisionEventHandler(ICollisionEventHandler CollisionEventHandler)
@@ -546,37 +547,37 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { VehicleCommunicatorSentSerializableDataFailed?.Invoke(OccurTime, IpPort, Data); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleInfoManagerVehicleAdded?.Invoke(OccurTime, Name, VehicleInfo);
+				VehicleInfoManagerItemAdded?.Invoke(OccurTime, Name, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleInfoManagerVehicleAdded?.Invoke(OccurTime, Name, VehicleInfo); });
+				Task.Run(() => { VehicleInfoManagerItemAdded?.Invoke(OccurTime, Name, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleInfoManagerVehicleRemoved?.Invoke(OccurTime, Name, VehicleInfo);
+				VehicleInfoManagerItemRemoved?.Invoke(OccurTime, Name, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleInfoManagerVehicleRemoved?.Invoke(OccurTime, Name, VehicleInfo); });
+				Task.Run(() => { VehicleInfoManagerItemRemoved?.Invoke(OccurTime, Name, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleInfoManagerVehicleStateUpdated?.Invoke(OccurTime, Name, StateName, VehicleInfo);
+				VehicleInfoManagerItemUpdated?.Invoke(OccurTime, Name, StateName, VehicleInfo);
 			}
 			else
 			{
-				Task.Run(() => { VehicleInfoManagerVehicleStateUpdated?.Invoke(OccurTime, Name, StateName, VehicleInfo); });
+				Task.Run(() => { VehicleInfoManagerItemUpdated?.Invoke(OccurTime, Name, StateName, VehicleInfo); });
 			}
 		}
 		protected virtual void RaiseEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair, bool Sync = true)
@@ -634,37 +635,37 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { CollisionEventDetectorSystemStopped?.Invoke(OccurTime); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleControlManagerControlAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleControlManagerItemAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleControlManagerControlAdded?.Invoke(OccurTime, Name, VehicleControl);
+				VehicleControlManagerItemAdded?.Invoke(OccurTime, Name, VehicleControl);
 			}
 			else
 			{
-				Task.Run(() => { VehicleControlManagerControlAdded?.Invoke(OccurTime, Name, VehicleControl); });
+				Task.Run(() => { VehicleControlManagerItemAdded?.Invoke(OccurTime, Name, VehicleControl); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleControlManagerControlRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleControlManagerItemRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleControlManagerControlRemoved?.Invoke(OccurTime, Name, VehicleControl);
+				VehicleControlManagerItemRemoved?.Invoke(OccurTime, Name, VehicleControl);
 			}
 			else
 			{
-				Task.Run(() => { VehicleControlManagerControlRemoved?.Invoke(OccurTime, Name, VehicleControl); });
+				Task.Run(() => { VehicleControlManagerItemRemoved?.Invoke(OccurTime, Name, VehicleControl); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleControlManagerControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleControlManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleControlManagerControlStateUpdated?.Invoke(OccurTime, Name, StateName, VehicleControl);
+				VehicleControlManagerItemUpdated?.Invoke(OccurTime, Name, StateName, VehicleControl);
 			}
 			else
 			{
-				Task.Run(() => { VehicleControlManagerControlStateUpdated?.Invoke(OccurTime, Name, StateName, VehicleControl); });
+				Task.Run(() => { VehicleControlManagerItemUpdated?.Invoke(OccurTime, Name, StateName, VehicleControl); });
 			}
 		}
 		protected virtual void RaiseEvent_VehicleControlHandlerSystemStarted(DateTime OccurTime, bool Sync = true)
@@ -850,20 +851,20 @@ namespace TrafficControlTest.Base
 			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Failed. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
 			RaiseEvent_VehicleCommunicatorSentSerializableDataFailed(OccurTime, IpPort, Data);
 		}
-		private void HandleEvent_VehicleInfoManagerVehicleAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Vehicle Added. Name: {Name}, Info: {VehicleInfo.ToString()}");
-			RaiseEvent_VehicleInfoManagerVehicleAdded(OccurTime, Name, VehicleInfo);
+			HandleDebugMessage("VehicleInfoManager", $"Item Added. Name: {Name}, Info: {VehicleInfo.ToString()}");
+			RaiseEvent_VehicleInfoManagerItemAdded(OccurTime, Name, VehicleInfo);
 		}
-		private void HandleEvent_VehicleInfoManagerVehicleRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Vehicle Removed. Name: {Name}, Info: {VehicleInfo.ToString()}");
-			RaiseEvent_VehicleInfoManagerVehicleRemoved(OccurTime, Name, VehicleInfo);
+			HandleDebugMessage("VehicleInfoManager", $"Item Removed. Name: {Name}, Info: {VehicleInfo.ToString()}");
+			RaiseEvent_VehicleInfoManagerItemRemoved(OccurTime, Name, VehicleInfo);
 		}
-		private void HandleEvent_VehicleInfoManagerVehicleStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Vehicle State Updated. Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
-			RaiseEvent_VehicleInfoManagerVehicleStateUpdated(OccurTime, Name, StateName, VehicleInfo);
+			HandleDebugMessage("VehicleInfoManager", $"Item Updated. Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
+			RaiseEvent_VehicleInfoManagerItemUpdated(OccurTime, Name, StateName, VehicleInfo);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
@@ -890,20 +891,20 @@ namespace TrafficControlTest.Base
 			HandleDebugMessage("CollisionEventDetector", "System Stopped.");
 			RaiseEvent_CollisionEventDetectorSystemStopped(OccurTime);
 		}
-		private void HandleEvent_VehicleControlManagerControlAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
+		private void HandleEvent_VehicleControlManagerItemAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage("VehicleControlManager", $"Control Added. Name: {Name}, Info:\n{VehicleControl.ToString()}");
-			RaiseEvent_VehicleControlManagerControlAdded(OccurTime, Name, VehicleControl);
+			HandleDebugMessage("VehicleControlManager", $"Item Added. Name: {Name}, Info:\n{VehicleControl.ToString()}");
+			RaiseEvent_VehicleControlManagerItemAdded(OccurTime, Name, VehicleControl);
 		}
-		private void HandleEvent_VehicleControlManagerControlRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
+		private void HandleEvent_VehicleControlManagerItemRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage("VehicleControlManager", $"Control Removed. Name: {Name}, Info:\n{VehicleControl.ToString()}");
-			RaiseEvent_VehicleControlManagerControlRemoved(OccurTime, Name, VehicleControl);
+			HandleDebugMessage("VehicleControlManager", $"Item Removed. Name: {Name}, Info:\n{VehicleControl.ToString()}");
+			RaiseEvent_VehicleControlManagerItemRemoved(OccurTime, Name, VehicleControl);
 		}
-		private void HandleEvent_VehicleControlManagerControlStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl)
+		private void HandleEvent_VehicleControlManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage("VehicleControlManager", $"Control StateUpdated. Name: {Name}, StateName: {StateName}, Info:\n{VehicleControl.ToString()}");
-			RaiseEvent_VehicleControlManagerControlStateUpdated(OccurTime, Name, StateName, VehicleControl);
+			HandleDebugMessage("VehicleControlManager", $"Item StateUpdated. Name: {Name}, StateName: {StateName}, Info:\n{VehicleControl.ToString()}");
+			RaiseEvent_VehicleControlManagerItemUpdated(OccurTime, Name, StateName, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlHandlerSystemStarted(DateTime OccurTime)
 		{

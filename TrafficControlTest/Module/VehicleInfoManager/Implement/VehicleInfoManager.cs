@@ -6,167 +6,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Module.General.Implement;
 
 namespace TrafficControlTest.Implement
 {
-	public class VehicleInfoManager : IVehicleInfoManager
+	public class VehicleInfoManager : ItemManager<IVehicleInfo>, IVehicleInfoManager
 	{
-		public event EventHandlerIVehicleInfo VehicleAdded;
-		public event EventHandlerIVehicleInfo VehicleRemoved;
-		public event EventHandlerIVehicleInfoStateUpdated VehicleStateUpdated;
-
-		public int mCount { get { return mVehicleInfos.Count; } }
-		public IVehicleInfo this[string Name] => Get(Name);
-
-		private Dictionary<string, IVehicleInfo> mVehicleInfos = new Dictionary<string, IVehicleInfo>();
+		public IVehicleInfo this[string Name] { get { return GetItem(Name); } }
 
 		public VehicleInfoManager()
 		{
 		}
-		public bool IsExist(string Name)
-		{
-			return mVehicleInfos.Keys.Contains(Name);
-		}
 		public bool IsExistByIpPort(string IpPort)
 		{
-			return mVehicleInfos.Any((o) => o.Value.mIpPort == IpPort);
+			return mItems.Values.Any(o => o.mIpPort == IpPort);
 		}
-		public IVehicleInfo Get(string Name)
+		public IVehicleInfo GetItemByIpPort(string IpPort)
+		{
+			return (IsExistByIpPort(IpPort) ? mItems.Values.First((o) => o.mIpPort == IpPort) : null);
+		}
+		public void UpdateItem(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand)
 		{
 			if (IsExist(Name))
 			{
-				return mVehicleInfos[Name];
-			}
-			else
-			{
-				return null;
+				mItems[Name].Update(State, Position, Toward, Battery, Velocity, Target, AlarmMessage, IsInterveneAvailable, IsBeingIntervened, InterveneCommand);
 			}
 		}
-		public IVehicleInfo GetByIpPort(string IpPort)
-		{
-			if (IsExistByIpPort(IpPort))
-			{
-				return mVehicleInfos.First((o) => o.Value.mIpPort == IpPort).Value;
-			}
-			else
-			{
-				return null;
-			}
-		}
-		public List<string> GetNames()
-		{
-			if (mVehicleInfos.Count > 0)
-			{
-				return mVehicleInfos.Keys.ToList();
-			}
-			else
-			{
-				return null;
-			}
-		}
-		public List<IVehicleInfo> GetList()
-		{
-			if (mVehicleInfos.Count > 0)
-			{
-				return mVehicleInfos.Values.ToList();
-			}
-			else
-			{
-				return null;
-			}
-		}
-		public void Add(string Name, IVehicleInfo Data)
-		{
-			if (!IsExist(Name))
-			{
-				mVehicleInfos.Add(Name, Data);
-				SubscribeEvent_IVehicleInfo(mVehicleInfos[Name]);
-				RaiseEvent_VehicleAdded(mVehicleInfos[Name].mName, mVehicleInfos[Name]);
-			}
-		}
-		public void Remove(string Name)
+		public void UpdateItem(string Name, IEnumerable<IPoint2D> Path)
 		{
 			if (IsExist(Name))
 			{
-				IVehicleInfo tmpData = mVehicleInfos[Name];
-				UnsubscribeEvent_IVehicleInfo(mVehicleInfos[Name]);
-				mVehicleInfos.Remove(Name);
-				RaiseEvent_VehicleRemoved(Name, tmpData);
+				mItems[Name].Update(Path);
 			}
 		}
-		public void Update(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand)
+		public void UpdateItem(string Name, string IpPort)
 		{
 			if (IsExist(Name))
 			{
-				mVehicleInfos[Name].Update(State, Position, Toward, Battery, Velocity, Target, AlarmMessage, IsInterveneAvailable, IsBeingIntervened, InterveneCommand);
+				mItems[Name].Update(IpPort);
 			}
-		}
-		public void Update(string Name, IEnumerable<IPoint2D> Path)
-		{
-			if (IsExist(Name))
-			{
-				mVehicleInfos[Name].Update(Path);
-			}
-		}
-		public void Update(string Name, string IpPort)
-		{
-			if (IsExist(Name))
-			{
-				mVehicleInfos[Name].Update(IpPort);
-			}
-		}
-
-		private void SubscribeEvent_IVehicleInfo(IVehicleInfo VehicleInfo)
-		{
-			if (VehicleInfo != null)
-			{
-				VehicleInfo.StateUpdated += HandleEvent_VehicleInfoStateUpdated;
-			}
-		}
-		private void UnsubscribeEvent_IVehicleInfo(IVehicleInfo VehicleInfo)
-		{
-			if (VehicleInfo != null)
-			{
-				VehicleInfo.StateUpdated -= HandleEvent_VehicleInfoStateUpdated;
-			}
-		}
-		protected virtual void RaiseEvent_VehicleAdded(string Name, IVehicleInfo VehicleInfo, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleAdded?.Invoke(DateTime.Now, Name, VehicleInfo);
-			}
-			else
-			{
-				Task.Run(() => { VehicleAdded?.Invoke(DateTime.Now, Name, VehicleInfo); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleRemoved(string Name, IVehicleInfo VehicleInfo, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleRemoved?.Invoke(DateTime.Now, Name, VehicleInfo);
-			}
-			else
-			{
-				Task.Run(() => { VehicleRemoved?.Invoke(DateTime.Now, Name, VehicleInfo); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleStateUpdated(string Name, string StateName, IVehicleInfo VehicleInfo, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleStateUpdated?.Invoke(DateTime.Now, Name, StateName, VehicleInfo);
-			}
-			else
-			{
-				Task.Run(() => { VehicleStateUpdated?.Invoke(DateTime.Now, Name, StateName, VehicleInfo); });
-			}
-		}
-		private void HandleEvent_VehicleInfoStateUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
-		{
-			RaiseEvent_VehicleStateUpdated(Name, StateName, VehicleInfo);
 		}
 	}
 }
