@@ -51,8 +51,6 @@ namespace TrafficControlTest.Implement
 		}
 		public string mIpPort { get; private set; }
 		public DateTime mLastUpdated { get; private set; }
-		public int mVehicleIconId { get; set; }
-		public int mPathIconId { get; set; }
 
 		private IEnumerable<IPoint2D> _PathDetail = null;
 		private IRectangle2D _PathRegion = null;

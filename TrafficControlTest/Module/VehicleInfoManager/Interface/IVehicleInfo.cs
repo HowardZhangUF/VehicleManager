@@ -60,10 +60,6 @@ namespace TrafficControlTest.Interface
 		string mIpPort { get; }
 		/// <summary>上次更新時間</summary>
 		DateTime mLastUpdated { get; }
-		/// <summary>車圖像識別碼</summary>
-		int mVehicleIconId { get; }
-		/// <summary>路徑線圖像識別碼</summary>
-		int mPathIconId { get; }
 
 		void Set(string Name);
 		void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand);

@@ -4,7 +4,11 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
 {
-	/// <summary>提供與 Vehicle 連線、溝通的方法</summary>
+	/// <summary>
+	/// - 提供監聽方法以供車子建立連線
+	/// - 提供傳送資料給車子的方法
+	/// - 當建立/中斷連線、送出/收到資料時會拋出事件
+	/// </summary>
 	public interface IVehicleCommunicator
 	{
 		event EventHandlerDateTime SystemStarted;
