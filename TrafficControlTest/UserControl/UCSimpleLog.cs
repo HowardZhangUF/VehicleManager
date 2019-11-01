@@ -43,12 +43,13 @@ namespace TrafficControlTest.UserControl
 				if (OrderAscending)
 				{
 					UpdateGui_InsertRow(dgvSimpleLog.RowCount, Date, Category, Message);
+					UpdateGui_RefreshDgvSimpleLogRowBackColor(dgvSimpleLog.RowCount - 1);
 				}
 				else
 				{
 					UpdateGui_InsertRow(0, Date, Category, Message);
+					UpdateGui_RefreshDgvSimpleLogRowBackColor(0);
 				}
-				UpdateGui_RefreshDgvSimpleLogRowsBackColor();
 				UpdateGui_AdjustRowCount(Maximum);
 			}
 		}
@@ -126,22 +127,26 @@ namespace TrafficControlTest.UserControl
 				dgvSimpleLog.Rows.Clear();
 			}
 		}
-		private void UpdateGui_RefreshDgvSimpleLogRowsBackColor()
-		{
-			for (int i = 0; i < dgvSimpleLog.RowCount; ++i)
-			{
-				UpdateGui_RefreshDgvSimpleLogRowBackColor(i);
-			}
-		}
 		private void UpdateGui_RefreshDgvSimpleLogRowBackColor(int RowIndex)
 		{
-			if (dgvSimpleLog.Rows[RowIndex].Cells[1].Value.ToString().Contains("Exception"))
+			// 僅有第一個 Row 與第二個 Row 會使用 RowCount 去計算其 Background Color 應為何值，
+			// 但從第三個 Row 開始，其 Background Color 要與前兩個或後兩個 Row 的 Background Color 一樣，
+			// 使用遞增排序時，新增的 Row 會在尾端，所以該 Row 的 Background Color 要與前兩個的 Row 的 Background Color 一樣
+			// 使用遞減排序時，新增的 Row 會在開頭，所以該 Row 的 Background Color 要與後兩個的 Row 的 Background Color 一樣
+			if (dgvSimpleLog.RowCount > 2)
 			{
-				if (dgvSimpleLog.Rows[RowIndex].DefaultCellStyle.BackColor != TableEvenRowBackColor) dgvSimpleLog.Rows[RowIndex].DefaultCellStyle.BackColor = TableEvenRowBackColor;
+				if (OrderAscending)
+				{
+					if (dgvSimpleLog.Rows[RowIndex].DefaultCellStyle.BackColor != dgvSimpleLog.Rows[RowIndex - 2].DefaultCellStyle.BackColor) dgvSimpleLog.Rows[RowIndex].DefaultCellStyle.BackColor = dgvSimpleLog.Rows[RowIndex - 2].DefaultCellStyle.BackColor;
+				}
+				else
+				{
+					if (dgvSimpleLog.Rows[RowIndex].DefaultCellStyle.BackColor != dgvSimpleLog.Rows[RowIndex + 2].DefaultCellStyle.BackColor) dgvSimpleLog.Rows[RowIndex].DefaultCellStyle.BackColor = dgvSimpleLog.Rows[RowIndex + 2].DefaultCellStyle.BackColor;
+				}
 			}
 			else
 			{
-				if (RowIndex % 2 == 0)
+				if (dgvSimpleLog.RowCount % 2 == 0)
 				{
 					if (dgvSimpleLog.Rows[RowIndex].DefaultCellStyle.BackColor != TableEvenRowBackColor) dgvSimpleLog.Rows[RowIndex].DefaultCellStyle.BackColor = TableEvenRowBackColor;
 				}
