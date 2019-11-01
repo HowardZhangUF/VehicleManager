@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TrafficControlTest.Implement.VehicleInfoManager" Collapsed="true">
+    <Position X="12.75" Y="12" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAACAAAAAAAAIAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Module\VehicleInfoManager\Implement\VehicleInfoManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.733" />
+  </Class>
+  <Class Name="TrafficControlTest.Module.General.Implement.ItemManager&lt;T&gt;" Collapsed="true">
+    <Position X="12.75" Y="10.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAQEAIAAAADAAAgAgAigAQADAABABAEAQ=</HashCode>
+      <FileName>Module\General\Implement\ItemManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TrafficControlTest.Module.MissionManager.Implement.MissionStateManager" Collapsed="true">
+    <Position X="16" Y="12" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAARAAAAAAACAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\MissionManager\Implement\MissionStateManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TrafficControlTest.Implement.VehicleControlManager" Collapsed="true">
+    <Position X="9.5" Y="12" Width="3" />
+    <InheritanceLine Type="TrafficControlTest.Module.General.Implement.ItemManager&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="14.25" Y="11.298" />
+        <Point X="14.25" Y="11.625" />
+        <Point X="11" Y="11.625" />
+        <Point X="11" Y="12" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAACAACAAAAAAAAACBAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\InterveneManager\Implement\VehicleControlManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TrafficControlTest.Implement.VehicleInfo" Collapsed="true">
+    <Position X="3.25" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAbECAkYSSQABCgUAAQICCBkAgAAAhAASAmgFRACAjA=</HashCode>
+      <FileName>Module\VehicleInfoManager\Implement\VehicleInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TrafficControlTest.Module.MissionManager.Implement.MissionState" Collapsed="true">
+    <Position X="6" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAARCACRAQAAAAAAAAgQABAAAAAQAgggQCAIAA=</HashCode>
+      <FileName>Module\MissionManager\Implement\MissionState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TrafficControlTest.Implement.VehicleControl" Collapsed="true">
+    <Position X="0.5" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAACAgAAAREAACBAAAAAAQAAAAAAAQAggAQCAAAA=</HashCode>
+      <FileName>Module\InterveneManager\Implement\VehicleControl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="TrafficControlTest.Interface.IVehicleInfoManager" Collapsed="true">
+    <Position X="12.75" Y="8.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAACAAAAAAAAIAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Module\VehicleInfoManager\Interface\IVehicleInfoManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TrafficControlTest.Module.General.Implement.IItemManager&lt;T&gt;" Collapsed="true">
+    <Position X="12.75" Y="7.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAQEAIAAAADAAAAAgAggAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Module\General\Interface\IItemManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TrafficControlTest.Module.MissionManager.Interface.IMissionStateManager" Collapsed="true">
+    <Position X="16" Y="8.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAARAAAAAAACAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\MissionManager\Interface\IMissionStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TrafficControlTest.Interface.IVehicleControlManager" Collapsed="true">
+    <Position X="9.5" Y="8.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAAAAAAAAACBAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\InterveneManager\Interface\IVehicleControlManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TrafficControlTest.Module.General.Interface.IItem" Collapsed="true">
+    <Position X="3.25" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAAA=</HashCode>
+      <FileName>Module\General\Interface\IItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TrafficControlTest.Module.MissionManager.Interface.IMissionState" Collapsed="true">
+    <Position X="6" Y="8.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAARCACRAQAAAAAAAAgQABAAAAAAAAggACAIAA=</HashCode>
+      <FileName>Module\MissionManager\Interface\IMissionState.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TrafficControlTest.Interface.IVehicleControl" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAACAgAAAREAACBAAAAAAQAAAAAAAAAAgAACAAAA=</HashCode>
+      <FileName>Module\InterveneManager\Interface\IVehicleControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TrafficControlTest.Interface.IVehicleInfo" Collapsed="true">
+    <Position X="3.25" Y="8.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AATACAEYSCQABAgEAAAIAABkAAAAAAAACAigFBAAAhA=</HashCode>
+      <FileName>Module\VehicleInfoManager\Interface\IVehicleInfo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>
