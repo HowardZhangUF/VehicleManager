@@ -8,10 +8,7 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Implement
 {
-	// 相同的東西有 add, remove, updated 事件， get(), getNames(), getList(), add(), remove() 方法
-	// 不同的有 update() 方法
-	// 不同的部分就特別使用 public interface IVehicleInfoManager : IItemManager<IVehicleInfo> 方法去額外宣告
-	public class ItemManager<T> : IItemManager<T> where T : IItem
+	public abstract class ItemManager<T> : IItemManager<T> where T : IItem
 	{
 		public event EventHandlerItem<T> ItemAdded;
 		public event EventHandlerItem<T> ItemRemoved;
