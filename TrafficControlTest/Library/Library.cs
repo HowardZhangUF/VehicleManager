@@ -961,6 +961,8 @@ namespace TrafficControlTest.Library
 
 	public static class EventHandlerLibrary
 	{
+		public delegate void EventHandlerDebugMessage(string OccurTime, string Category, string Message);
+
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);
 		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState);

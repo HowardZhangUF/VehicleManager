@@ -13,6 +13,7 @@ namespace TrafficControlTest.Base
 {
 	class VehicleManagerProcess
 	{
+		public event EventHandlerDebugMessage DebugMessage;
 		public event EventHandlerDateTime VehicleCommunicatorSystemStarted;
 		public event EventHandlerDateTime VehicleCommunicatorSystemStopped;
 		public event EventHandlerLocalListenState VehicleCommunicatorLocalListenStateChagned;
@@ -457,6 +458,17 @@ namespace TrafficControlTest.Base
 			if (MissionUpdater != null)
 			{
 
+			}
+		}
+		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string Message, bool Sync = true)
+		{
+			if (Sync)
+			{
+				DebugMessage?.Invoke(OccurTime, Category, Message);
+			}
+			else
+			{
+				Task.Run(() => { DebugMessage?.Invoke(OccurTime, Category, Message); });
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
@@ -973,11 +985,20 @@ namespace TrafficControlTest.Base
 		}
 		private void HandleDebugMessage(string Message)
 		{
-			Console.WriteLine(DateTime.Now.ToString(TIME_FORMAT) + " " + Message);
+			HandleDebugMessage("None", Message);
 		}
 		private void HandleDebugMessage(string Category, string Message)
 		{
-			HandleDebugMessage($"[{Category}] - {Message}");
+			HandleDebugMessage(DateTime.Now, Category, Message);
+		}
+		private void HandleDebugMessage(DateTime OccurTime, string Category, string Message)
+		{
+			HandleDebugMessage(OccurTime.ToString(TIME_FORMAT), Category, Message);
+		}
+		private void HandleDebugMessage(string OccurTime, string Category, string Message)
+		{
+			RaiseEvent_DebugMessage(OccurTime, Category, Message);
+			Console.WriteLine($"{OccurTime} [{Category}] - {Message}");
 		}
 	}
 }
