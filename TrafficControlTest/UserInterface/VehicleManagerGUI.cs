@@ -15,7 +15,9 @@ namespace TrafficControlTest.UserInterface
 	public partial class VehicleManagerGUI : Form
 	{
 		private bool pnlLeftMainDisplay = true;
+		private bool pnlBtmDisplay = true;
 		private int pnlLeftMainDefaultWidth = 400;
+		private int pnlBtmDefaultHeight = 250;
 
 		public VehicleManagerGUI()
 		{
@@ -52,6 +54,7 @@ namespace TrafficControlTest.UserInterface
 				btnDisplayVehicleOverview_Click(null, null);
 				btnDisplayMap_Click(null, null);
 				btnDisplayPnlLeftMain_Click(null, null);
+				btnDisplayPnlBtm_Click(null, null);
 			}
 			catch (Exception Ex)
 			{
@@ -146,6 +149,10 @@ namespace TrafficControlTest.UserInterface
 		private void ucVehicleOverview1_DoubleClickOnVehicleInfo(string VehicleName)
 		{
 			UpdateGui_MapFocusVehicle(VehicleName);
+		}
+		private void btnDisplayPnlBtm_Click(object sender, EventArgs e)
+		{
+			UpdateGui_DisplayPnlBtm(!pnlBtmDisplay);
 		}
 
 		#region UpdateGui Functions
@@ -394,6 +401,42 @@ namespace TrafficControlTest.UserInterface
 		}
 		#endregion
 		#endregion
+
+		#region PnlBtm
+		private void UpdateGui_DisplayPnlBtm(bool Display)
+		{
+			if (Display)
+			{
+				if (pnlBtmDisplay == false)
+				{
+					pnlBtm.InvokeIfNecessary(() => pnlBtm.Height = pnlBtmDefaultHeight);
+					pnlBtmDisplay = true;
+				}
+			}
+			else
+			{
+				if (pnlBtmDisplay == true)
+				{
+					pnlBtm.InvokeIfNecessary(() => pnlBtm.Height = 0);
+					pnlBtmDisplay = false;
+				}
+			}
+		}
+		private void UpdateGui_AddSimpleLog(string Date, string Category, string Message)
+		{
+			ucSimpleLog1.InvokeIfNecessary(() =>
+			{
+				ucSimpleLog1.AddSimpleLog(Date, Category, Message);
+			});
+		}
+		private void UpdateGui_ClearSimpleLog()
+		{
+			ucSimpleLog1.InvokeIfNecessary(() =>
+			{
+				ucSimpleLog1.ClearSimpleLog();
+			});
+		}
+		#endregion
 		#endregion
 
 		#region VehicleManagerProcess
@@ -423,6 +466,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			if (VehicleManagerProcess != null)
 			{
+				VehicleManagerProcess.DebugMessage += HandleEvent_VehicleManagerProcessDebugMessage;
 				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned += HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
 				VehicleManagerProcess.VehicleInfoManagerItemAdded += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
 				VehicleManagerProcess.VehicleInfoManagerItemRemoved += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
@@ -439,6 +483,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			if (VehicleManagerProcess != null)
 			{
+				VehicleManagerProcess.DebugMessage -= HandleEvent_VehicleManagerProcessDebugMessage;
 				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned -= HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
 				VehicleManagerProcess.VehicleInfoManagerItemAdded -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
 				VehicleManagerProcess.VehicleInfoManagerItemRemoved -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
@@ -450,6 +495,10 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.MissionStateManagerItemRemoved -= HandleEvent_VehicleManagerProcessMissionStateManagerItemRemoved;
 				VehicleManagerProcess.MissionStateManagerItemUpdated -= HandleEvent_VehicleManagerProcessMissionStateManagerItemUpdated;
 			}
+		}
+		private void HandleEvent_VehicleManagerProcessDebugMessage(string OccurTime, string Category, string Message)
+		{
+			UpdateGui_AddSimpleLog(OccurTime, Category, Message);
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState)
 		{
