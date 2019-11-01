@@ -445,21 +445,21 @@ namespace TrafficControlTest.UserInterface
 		private void Constructor_VehicleManagerProcess()
 		{
 			mCore = new VehicleManagerProcess();
+			SubscribeEvent_VehicleManagerProcess(mCore);
 			mCore.VehicleCommunicatorStartListen(8000);
 			mCore.CollisionEventDetectorStart();
 			mCore.VehicleControlHandlerStart();
 			mCore.HostCommunicatorStartListen(9000);
 			mCore.MissionDispatcherStart();
-			SubscribeEvent_VehicleManagerProcess(mCore);
 		}
 		private void Destructor_VehicleManagerProcess()
 		{
-			UnsubscribeEvent_VehicleManagerProcess(mCore);
 			mCore.MissionDispatcherStop();
 			mCore.VehicleCommunicatorStopListen();
 			mCore.CollisionEventDetectorStop();
 			mCore.VehicleControlHandlerStop();
 			mCore.HostCommunicatorStopListen();
+			UnsubscribeEvent_VehicleManagerProcess(mCore);
 			mCore = null;
 		}
 		private void SubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
