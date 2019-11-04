@@ -14,7 +14,7 @@ namespace TrafficControlTest.UserControl
 	{
 		public Color TableBackColor { get; set; } = Color.FromArgb(53, 53, 53);
 		public Color TableGridLineColor { get; set; } = Color.FromArgb(86, 86, 86);
-		public Color TableHeaderBackColor { get; set; } = Color.FromArgb(8, 122, 233);
+		public Color TableHeaderBackColor { get; set; } = Color.FromArgb(0, 122, 204);
 		public Color TableHeaderForeColor { get; set; } = Color.White;
 		public Color TableOddRowBackColor { get; set; } = Color.FromArgb(31, 31, 31);
 		public Color TableEvenRowBackColor { get; set; } = Color.FromArgb(42, 42, 42);

@@ -180,36 +180,57 @@ namespace TrafficControlTest.UserInterface
 		}
 		#endregion
 
+		#region PnlTop
+		private void UpdateGui_ResetPnlTopMenuButtonBackColor()
+		{
+			if (btnDisplayMap.BackColor != pnlTop.BackColor) btnDisplayMap.BackColor = pnlTop.BackColor;
+			if (btnDisplayVehicle.BackColor != pnlTop.BackColor) btnDisplayVehicle.BackColor = pnlTop.BackColor;
+			if (btnDisplayMission.BackColor != pnlTop.BackColor) btnDisplayMission.BackColor = pnlTop.BackColor;
+			if (btnDisplaySetting.BackColor != pnlTop.BackColor) btnDisplaySetting.BackColor = pnlTop.BackColor;
+			if (btnDisplayLog.BackColor != pnlTop.BackColor) btnDisplayLog.BackColor = pnlTop.BackColor;
+		}
+		private void UpdateGui_HighlightPnlTopMenuButton(Button button)
+		{
+			UpdateGui_ResetPnlTopMenuButtonBackColor();
+			if (button.BackColor != pnlTopMarker.BackColor) button.BackColor = pnlTopMarker.BackColor;
+		}
+		#endregion
+
 		#region PnlRightMain
 		private void UpdateGui_DisplayMap()
 		{
 			pnlTopMarker.Width = btnDisplayMap.Width;
 			pnlTopMarker.Left = btnDisplayMap.Left;
 			ucMap1.BringToFront();
+			UpdateGui_HighlightPnlTopMenuButton(btnDisplayMap);
 		}
 		private void UpdateGui_DisplayVehicle()
 		{
 			pnlTopMarker.Width = btnDisplayVehicle.Width;
 			pnlTopMarker.Left = btnDisplayVehicle.Left;
 			ucVehicle1.BringToFront();
+			UpdateGui_HighlightPnlTopMenuButton(btnDisplayVehicle);
 		}
 		private void UpdateGui_DisplayMission()
 		{
 			pnlTopMarker.Width = btnDisplayMission.Width;
 			pnlTopMarker.Left = btnDisplayMission.Left;
 			ucMission1.BringToFront();
+			UpdateGui_HighlightPnlTopMenuButton(btnDisplayMission);
 		}
 		private void UpdateGui_DisplaySetting()
 		{
 			pnlTopMarker.Width = btnDisplaySetting.Width;
 			pnlTopMarker.Left = btnDisplaySetting.Left;
 			ucSetting1.BringToFront();
+			UpdateGui_HighlightPnlTopMenuButton(btnDisplaySetting);
 		}
 		private void UpdateGui_DisplayLog()
 		{
 			pnlTopMarker.Width = btnDisplayLog.Width;
 			pnlTopMarker.Left = btnDisplayLog.Left;
 			ucLog1.BringToFront();
+			UpdateGui_HighlightPnlTopMenuButton(btnDisplayLog);
 		}
 		#region Map
 		private void UpdateGui_MapRegisterIconId(IVehicleInfo VehicleInfo)
@@ -409,7 +430,7 @@ namespace TrafficControlTest.UserInterface
 			{
 				if (pnlBtmDisplay == false)
 				{
-					pnlBtm.InvokeIfNecessary(() => pnlBtm.Height = pnlBtmDefaultHeight);
+					pnlBtm.InvokeIfNecessary(() => { pnlBtm.Height = pnlBtmDefaultHeight; btnDisplayPnlBtm.BackColor = pnlTopMarker.BackColor; });
 					pnlBtmDisplay = true;
 				}
 			}
@@ -417,7 +438,7 @@ namespace TrafficControlTest.UserInterface
 			{
 				if (pnlBtmDisplay == true)
 				{
-					pnlBtm.InvokeIfNecessary(() => pnlBtm.Height = 0);
+					pnlBtm.InvokeIfNecessary(() => { pnlBtm.Height = 0; btnDisplayPnlBtm.BackColor = pnlTop.BackColor; });
 					pnlBtmDisplay = false;
 				}
 			}
