@@ -343,42 +343,63 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void UpdateGui_DisplayVehicleOverview()
 		{
-			if (!pnlLeftMainDisplay) UpdateGui_DisplayPnlLeftMain(true);
-			pnlLeftSideMarker.InvokeIfNecessary(() =>
+			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayVehicleOverview.Top))
 			{
-				pnlLeftSideMarker.Height = btnDisplayVehicleOverview.Height;
-				pnlLeftSideMarker.Top = btnDisplayVehicleOverview.Top;
-			});
-			ucVehicleOverview1.InvokeIfNecessary(() =>
+				UpdateGui_DisplayPnlLeftMain(true);
+				pnlLeftSideMarker.InvokeIfNecessary(() =>
+				{
+					pnlLeftSideMarker.Height = btnDisplayVehicleOverview.Height;
+					pnlLeftSideMarker.Top = btnDisplayVehicleOverview.Top;
+				});
+				ucVehicleOverview1.InvokeIfNecessary(() =>
+				{
+					ucVehicleOverview1.BringToFront();
+				});
+			}
+			else
 			{
-				ucVehicleOverview1.BringToFront();
-			});
+				UpdateGui_DisplayPnlLeftMain(false);
+			}
 		}
 		private void UpdateGui_DisplayVehicleManualControl()
 		{
-			if (!pnlLeftMainDisplay) UpdateGui_DisplayPnlLeftMain(true);
-			pnlLeftSideMarker.InvokeIfNecessary(() =>
+			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayVehicleManualControl.Top))
 			{
-				pnlLeftSideMarker.Height = btnDisplayVehicleManualControl.Height;
-				pnlLeftSideMarker.Top = btnDisplayVehicleManualControl.Top;
-			});
-			ucVehicleManualControl1.InvokeIfNecessary(() =>
+				UpdateGui_DisplayPnlLeftMain(true);
+				pnlLeftSideMarker.InvokeIfNecessary(() =>
+				{
+					pnlLeftSideMarker.Height = btnDisplayVehicleManualControl.Height;
+					pnlLeftSideMarker.Top = btnDisplayVehicleManualControl.Top;
+				});
+				ucVehicleManualControl1.InvokeIfNecessary(() =>
+				{
+					ucVehicleManualControl1.BringToFront();
+				});
+			}
+			else
 			{
-				ucVehicleManualControl1.BringToFront();
-			});
+				UpdateGui_DisplayPnlLeftMain(false);
+			}
 		}
 		private void UpdateGui_DisplayAbout()
 		{
-			if (!pnlLeftMainDisplay) UpdateGui_DisplayPnlLeftMain(true);
-			pnlLeftSideMarker.InvokeIfNecessary(() =>
+			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayAbout.Top))
 			{
-				pnlLeftSideMarker.Height = btnDisplayAbout.Height;
-				pnlLeftSideMarker.Top = btnDisplayAbout.Top;
-			});
-			ucAbout1.InvokeIfNecessary(() =>
+				UpdateGui_DisplayPnlLeftMain(true);
+				pnlLeftSideMarker.InvokeIfNecessary(() =>
+				{
+					pnlLeftSideMarker.Height = btnDisplayAbout.Height;
+					pnlLeftSideMarker.Top = btnDisplayAbout.Top;
+				});
+				ucAbout1.InvokeIfNecessary(() =>
+				{
+					ucAbout1.BringToFront();
+				});
+			}
+			else
 			{
-				ucAbout1.BringToFront();
-			});
+				UpdateGui_DisplayPnlLeftMain(false);
+			}
 		}
 		#region VehicleOverview
 		private void UpdateGui_AddVehicleOverview(string Id, string Battery, string State)
