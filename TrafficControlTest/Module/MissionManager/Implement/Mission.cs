@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Library;
 using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Module.MissionManager.Implement
 {
 	public class Mission : IMission
 	{
-		public string mMissionType { get; private set; }
+		public MissionType mMissionType { get; private set; }
 		public string mMissionId { get; private set; }
 		public int mPriority { get; private set; }
 		public string mVehicleId { get; private set; }
 		public string[] mParameters { get; private set; }
 
-		public Mission(string MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
+		public Mission(MissionType MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
 		{
 			Set(MissionType, MissionId, Priority, VehicleId, Parameters);
 		}
-		public void Set(string MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
+		public void Set(MissionType MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
 		{
 			mMissionType = MissionType;
 			mMissionId = MissionId;

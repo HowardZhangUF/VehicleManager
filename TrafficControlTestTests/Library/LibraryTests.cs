@@ -187,7 +187,7 @@ namespace TrafficControlTest.Library.Tests
 		[TestMethod()]
 		public void ClassGotoMissionAnalyzer()
 		{
-			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer("Goto");
+			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer(MissionType.Goto);
 			string tmp1 = "Mission=Goto Target=Goal1";
 			string tmp2 = "Mission=Goto Target=Goal1 MissionID=Miss001";
 			string tmp3 = "Mission=Goto Target=Goal1 MissionID=Miss001 VehicleID=Vehicle918";
@@ -200,7 +200,7 @@ namespace TrafficControlTest.Library.Tests
 			string tmp10 = "Mission=Goto Target=Goal1 Target=Goal2 MissionID=Miss001 VehicleID=Vehicle918 Priority=18"; // 重複的項目
 
 			if (missionAnalyzer.TryParse(tmp1, out IMission mission1, out string detail1) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission1.mMissionType != "Goto") Assert.Fail();
+			if (mission1.mMissionType != MissionType.Goto) Assert.Fail();
 			if (mission1.mParameters.Length != 1 || mission1.mParameters[0] != "Goal1") Assert.Fail();
 			if (mission1.mMissionId != string.Empty) Assert.Fail();
 			if (mission1.mVehicleId != string.Empty) Assert.Fail();
@@ -208,7 +208,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail1)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp2, out IMission mission2, out string detail2) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission2.mMissionType != "Goto") Assert.Fail();
+			if (mission2.mMissionType != MissionType.Goto) Assert.Fail();
 			if (mission2.mParameters.Length != 1 || mission2.mParameters[0] != "Goal1") Assert.Fail();
 			if (mission2.mMissionId != "Miss001") Assert.Fail();
 			if (mission2.mVehicleId != string.Empty) Assert.Fail();
@@ -216,7 +216,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail2)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp3, out IMission mission3, out string detail3) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission3.mMissionType != "Goto") Assert.Fail();
+			if (mission3.mMissionType != MissionType.Goto) Assert.Fail();
 			if (mission3.mParameters.Length != 1 || mission3.mParameters[0] != "Goal1") Assert.Fail();
 			if (mission3.mMissionId != "Miss001") Assert.Fail();
 			if (mission3.mVehicleId != "Vehicle918") Assert.Fail();
@@ -224,7 +224,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail3)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp4, out IMission mission4, out string detail4) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission4.mMissionType != "Goto") Assert.Fail();
+			if (mission4.mMissionType != MissionType.Goto) Assert.Fail();
 			if (mission4.mParameters.Length != 1 || mission4.mParameters[0] != "Goal1") Assert.Fail();
 			if (mission4.mMissionId != "Miss001") Assert.Fail();
 			if (mission4.mVehicleId != "Vehicle918") Assert.Fail();
@@ -259,7 +259,7 @@ namespace TrafficControlTest.Library.Tests
 		[TestMethod()]
 		public void ClassGotoPointMissionAnalyzer()
 		{
-			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer("GotoPoint");
+			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer(MissionType.GotoPoint);
 			string tmp1 = "Mission=GotoPoint X=123 Y=456";
 			string tmp2 = "Mission=GotoPoint X=123 Y=456 Head=270";
 			string tmp3 = "Mission=GotoPoint X=123 Y=456 Head=270 MissionID=Miss009";
@@ -274,7 +274,7 @@ namespace TrafficControlTest.Library.Tests
 			string tmp12 = "Mission=GotoPoint X=123 X=789 Y=456 Head=270 MissionID=Miss009 VehicleID=Vehicle915 Priority=3"; // 重複的項目
 
 			if (missionAnalyzer.TryParse(tmp1, out IMission mission1, out string detail1) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission1.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission1.mMissionType != MissionType.GotoPoint) Assert.Fail();
 			if (mission1.mParameters.Length != 2 || mission1.mParameters[0] != "123" || mission1.mParameters[1] != "456") Assert.Fail();
 			if (mission1.mMissionId != string.Empty) Assert.Fail();
 			if (mission1.mVehicleId != string.Empty) Assert.Fail();
@@ -282,7 +282,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail1)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp2, out IMission mission2, out string detail2) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission2.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission2.mMissionType != MissionType.GotoPoint) Assert.Fail();
 			if (mission2.mParameters.Length != 3 || mission2.mParameters[0] != "123" || mission2.mParameters[1] != "456" || mission2.mParameters[2] != "270") Assert.Fail();
 			if (mission2.mMissionId != string.Empty) Assert.Fail();
 			if (mission2.mVehicleId != string.Empty) Assert.Fail();
@@ -290,7 +290,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail2)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp3, out IMission mission3, out string detail3) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission3.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission3.mMissionType != MissionType.GotoPoint) Assert.Fail();
 			if (mission3.mParameters.Length != 3 || mission3.mParameters[0] != "123" || mission3.mParameters[1] != "456" || mission3.mParameters[2] != "270") Assert.Fail();
 			if (mission3.mMissionId != "Miss009") Assert.Fail();
 			if (mission3.mVehicleId != string.Empty) Assert.Fail();
@@ -298,7 +298,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail3)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp4, out IMission mission4, out string detail4) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission4.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission4.mMissionType != MissionType.GotoPoint) Assert.Fail();
 			if (mission4.mParameters.Length != 3 || mission4.mParameters[0] != "123" || mission4.mParameters[1] != "456" || mission4.mParameters[2] != "270") Assert.Fail();
 			if (mission4.mMissionId != "Miss009") Assert.Fail();
 			if (mission4.mVehicleId != "Vehicle915") Assert.Fail();
@@ -306,7 +306,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail4)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission5.mMissionType != "GotoPoint") Assert.Fail();
+			if (mission5.mMissionType != MissionType.GotoPoint) Assert.Fail();
 			if (mission5.mParameters.Length != 3 || mission5.mParameters[0] != "123" || mission5.mParameters[1] != "456" || mission5.mParameters[2] != "270") Assert.Fail();
 			if (mission5.mMissionId != "Miss009") Assert.Fail();
 			if (mission5.mVehicleId != "Vehicle915") Assert.Fail();
@@ -345,7 +345,7 @@ namespace TrafficControlTest.Library.Tests
 		[TestMethod()]
 		public void ClassDockMissionAnalyzer()
 		{
-			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer("Dock");
+			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer(MissionType.Dock);
 			string tmp1 = "Mission=Dock VehicleID=Vehicle863";
 			string tmp2 = "Mission=Dock VehicleID=Vehicle863 MissionID=Miss123";
 			string tmp3 = "Mission=Dock VehicleID=Vehicle863 MissionID=Miss123 Priority=3";
@@ -356,7 +356,7 @@ namespace TrafficControlTest.Library.Tests
 			string tmp8 = "Mission=Dock VehicleID=Vehicle863 VehicleID=Vehicle773 MissionID=Miss123 Priority=3"; // 重複的項目
 
 			if (missionAnalyzer.TryParse(tmp1, out IMission mission1, out string detail1) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission1.mMissionType != "Dock") Assert.Fail();
+			if (mission1.mMissionType != MissionType.Dock) Assert.Fail();
 			if (mission1.mParameters != null) Assert.Fail();
 			if (mission1.mMissionId != string.Empty) Assert.Fail();
 			if (mission1.mVehicleId != "Vehicle863") Assert.Fail();
@@ -364,7 +364,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail1)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp2, out IMission mission2, out string detail2) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission2.mMissionType != "Dock") Assert.Fail();
+			if (mission2.mMissionType != MissionType.Dock) Assert.Fail();
 			if (mission2.mParameters != null) Assert.Fail();
 			if (mission2.mMissionId != "Miss123") Assert.Fail();
 			if (mission2.mVehicleId != "Vehicle863") Assert.Fail();
@@ -372,7 +372,7 @@ namespace TrafficControlTest.Library.Tests
 			if (!string.IsNullOrEmpty(detail2)) Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp3, out IMission mission3, out string detail3) != MissionAnalyzeResult.Successed) Assert.Fail();
-			if (mission3.mMissionType != "Dock") Assert.Fail();
+			if (mission3.mMissionType != MissionType.Dock) Assert.Fail();
 			if (mission3.mParameters != null) Assert.Fail();
 			if (mission3.mMissionId != "Miss123") Assert.Fail();
 			if (mission3.mVehicleId != "Vehicle863") Assert.Fail();

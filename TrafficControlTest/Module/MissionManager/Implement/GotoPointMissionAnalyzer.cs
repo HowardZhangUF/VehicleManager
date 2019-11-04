@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Library;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.Library;
 
@@ -11,8 +12,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 	public class GotoPointMissionAnalyzer : MissionAnalyzer
 	{
 		public static GotoPointMissionAnalyzer mInstance = new GotoPointMissionAnalyzer();
-		public override string mKeyword { get; } = "GotoPoint";
-		public override string mKeyItem { get; } = "Mission";
+		public override MissionType mMissionType { get; } = MissionType.GotoPoint;
 		protected override string[] mNecessaryItem { get; } = new string[] { "X", "Y" };
 		protected override string[] mOptionalItem { get; } = new string[] { "Head", "MissionID", "VehicleID", "Priority" };
 
@@ -91,11 +91,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			{
 				if (headValue == int.MaxValue)
 				{
-					Mission = GenerateIMission(mKeyword, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { xValue.ToString(), yValue.ToString() });
+					Mission = GenerateIMission(mMissionType, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { xValue.ToString(), yValue.ToString() });
 				}
 				else
 				{
-					Mission = GenerateIMission(mKeyword, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { xValue.ToString(), yValue.ToString(), headValue.ToString() });
+					Mission = GenerateIMission(mMissionType, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { xValue.ToString(), yValue.ToString(), headValue.ToString() });
 				}
 				return MissionAnalyzeResult.Successed;
 			}

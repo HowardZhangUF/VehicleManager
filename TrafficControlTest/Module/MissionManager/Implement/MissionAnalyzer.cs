@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Library;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.Library;
 
@@ -10,8 +11,9 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 {
 	public abstract class MissionAnalyzer : IMissionAnalyzer
 	{
-		public abstract string mKeyword { get; }
-		public abstract string mKeyItem { get; }
+		public abstract MissionType mMissionType { get; }
+		public virtual string mKeyword { get { return mMissionType.ToString(); } }
+		public virtual string mKeyItem { get; } = "Mission";
 		public static int mPriorityDefault = 50;
 		protected abstract string[] mNecessaryItem { get; }
 		protected abstract string[] mOptionalItem { get; }

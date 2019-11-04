@@ -99,7 +99,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public string[] ToStringArray()
 		{
 			string[] result = null;
-			result = new string[] { mName, mMission.mPriority.ToString(), mMission.mMissionType, mMission.mVehicleId, mMission.mParameters == null ? string.Empty : string.Join(", ", mMission.mParameters), $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mSourceIpPort, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
+			result = new string[] { mName, mMission.mPriority.ToString(), mMission.mMissionType.ToString(), mMission.mVehicleId, mMission.mParameters == null ? string.Empty : string.Join(", ", mMission.mParameters), $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mSourceIpPort, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
 			return result;
 		}
 

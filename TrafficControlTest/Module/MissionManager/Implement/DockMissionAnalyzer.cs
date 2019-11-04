@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Library;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.Library;
 
@@ -11,8 +12,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 	public class DockMissionAnalyzer : MissionAnalyzer
 	{
 		public static DockMissionAnalyzer mInstance = new DockMissionAnalyzer();
-		public override string mKeyword { get; } = "Dock";
-		public override string mKeyItem { get; } = "Mission";
+		public override MissionType mMissionType { get; } = MissionType.Dock;
 		protected override string[] mNecessaryItem { get; } = new string[] { "VehicleID" };
 		protected override string[] mOptionalItem { get; } = new string[] { "MissionID", "Priority" };
 
@@ -60,7 +60,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			// Export Result
 			if (errorItem.Count == 0)
 			{
-				Mission = GenerateIMission(mKeyword, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], null);
+				Mission = GenerateIMission(mMissionType, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], null);
 				return MissionAnalyzeResult.Successed;
 			}
 			else

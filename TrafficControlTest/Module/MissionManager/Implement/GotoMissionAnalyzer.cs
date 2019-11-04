@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Library;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.Library;
 
@@ -11,8 +12,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 	public class GotoMissionAnalyzer : MissionAnalyzer
 	{
 		public static GotoMissionAnalyzer mInstance = new GotoMissionAnalyzer();
-		public override string mKeyword { get; } = "Goto";
-		public override string mKeyItem { get; } = "Mission";
+		public override MissionType mMissionType { get; } = MissionType.Goto;
 		protected override string[] mNecessaryItem { get; } = new string[] { "Target" };
 		protected override string[] mOptionalItem { get; } = new string[] { "MissionID", "VehicleID", "Priority" };
 
@@ -60,7 +60,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			// Export Result
 			if (errorItem.Count == 0)
 			{
-				Mission = GenerateIMission(mKeyword, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { targetValue });
+				Mission = GenerateIMission(mMissionType, mItemCollection["MissionID"], priorityValue, mItemCollection["VehicleID"], new string[] { targetValue });
 				return MissionAnalyzeResult.Successed;
 			}
 			else

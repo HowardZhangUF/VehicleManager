@@ -24,6 +24,13 @@ namespace TrafficControlTest.Library
 		Listening
 	}
 
+	public enum MissionType
+	{
+		Goto,
+		GotoPoint,
+		Dock
+	}
+
 	public static class Library
 	{
 		public const string TIME_FORMAT = "yyyy/MM/dd HH:mm:ss.fff";
@@ -156,7 +163,7 @@ namespace TrafficControlTest.Library
 		{
 			return new VehicleControlHandler(VehicleControlManager, VehicleInfoManager, VehicleCommunicator);
 		}
-		public static IMission GenerateIMission(string MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
+		public static IMission GenerateIMission(MissionType MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
 		{
 			return new Mission(MissionType, MissionId, Priority, VehicleId, Parameters);
 		}
@@ -168,18 +175,18 @@ namespace TrafficControlTest.Library
 		{
 			return new MissionStateManager();
 		}
-		public static IMissionAnalyzer GetMissionAnalyzer(string MissionType)
+		public static IMissionAnalyzer GetMissionAnalyzer(MissionType MissionType)
 		{
 			IMissionAnalyzer result = null;
 			switch (MissionType)
 			{
-				case "Goto":
+				case MissionType.Goto:
 					result = GotoMissionAnalyzer.mInstance;
 					break;
-				case "GotoPoint":
+				case MissionType.GotoPoint:
 					result = GotoPointMissionAnalyzer.mInstance;
 					break;
-				case "Dock":
+				case MissionType.Dock:
 					result = DockMissionAnalyzer.mInstance;
 					break;
 				default:

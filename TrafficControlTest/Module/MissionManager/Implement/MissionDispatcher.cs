@@ -135,10 +135,10 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			switch (Mission.mMissionType)
 			{
-				case "Goto":
+				case MissionType.Goto:
 					rVehicleCommunicator.SendSerializableData_Goto(IpPort, Mission.mParameters[0]);
 					break;
-				case "GotoPoint":
+				case MissionType.GotoPoint:
 					if (Mission.mParameters.Length == 2)
 					{
 						rVehicleCommunicator.SendSerializableData_GotoPoint(IpPort, int.Parse(Mission.mParameters[0]), int.Parse(Mission.mParameters[1]));
@@ -148,7 +148,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 						rVehicleCommunicator.SendSerializableData_GotoTowardPoint(IpPort, int.Parse(Mission.mParameters[0]), int.Parse(Mission.mParameters[1]), int.Parse(Mission.mParameters[2]));
 					}
 					break;
-				case "Dock":
+				case MissionType.Dock:
 					rVehicleCommunicator.SendSerializableData_Dock(IpPort);
 					break;
 			}
