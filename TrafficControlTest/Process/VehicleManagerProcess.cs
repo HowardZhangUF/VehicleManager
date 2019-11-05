@@ -69,11 +69,11 @@ namespace TrafficControlTest.Base
 		{
 			Destructor();
 		}
-		public void VehicleCommunicatorSetConfigListenPort(int Port)
+		public void VehicleCommunicatorSetConfigOfListenPort(int Port)
 		{
 			mVehicleCommunicator.SetConfigOfListenPort(Port);
 		}
-		public int VehicleCommunicatorGetConfigListenPort()
+		public int VehicleCommunicatorGetConfigOfListenPort()
 		{
 			return mVehicleCommunicator.GetConfigOfListenPort();
 		}

@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Library\Configuration.cs" />
     <Compile Include="Module\CollisionEventManager\Implement\CollisionEventHandler.cs" />
     <Compile Include="Module\General\Implement\HostCommunicator.cs" />
     <Compile Include="Module\General\Interface\IItemManager.cs" />
