@@ -24,6 +24,7 @@ namespace TrafficControlTest.Module.General.Implement
 		public int mClientCout { get { return (mServer == null || mServer.ListenStatus == EListenStatus.Idle) ? 0 : mServer.ClientCount; } }
 
 		private Server mServer = null;
+		private int mListenPort = 9000;
 		private readonly Queue<EventArgs> mServerEvents = new Queue<EventArgs>();
 		private readonly object mLockOfServerEvents = new object();
 		private Thread mThdHandleServerEvents = null;
@@ -33,12 +34,20 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			Constructor();
 		}
-		public void StartListen(int Port)
+		public void SetConfigOfListenPort(int Port)
+		{
+			mListenPort = Port;
+		}
+		public int GetConfigOfListenPort()
+		{
+			return mListenPort;
+		}
+		public void StartListen()
 		{
 			if (mServer.ListenStatus == EListenStatus.Idle)
 			{
 				InitializeThread();
-				mServer.StartListening(Port);
+				mServer.StartListening(mListenPort);
 			}
 		}
 		public void StopListen()

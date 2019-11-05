@@ -131,9 +131,17 @@ namespace TrafficControlTest.Base
 		{
 			return mVehicleInfoManager.GetItemNames().ToList();
 		}
-		public void HostCommunicatorStartListen(int Port)
+		public void HostCommunicatorSetConfigOfListenPort(int Port)
 		{
-			mHostCommunicator.StartListen(Port);
+			mHostCommunicator.SetConfigOfListenPort(Port);
+		}
+		public int HostCommunicatorGetConfigOfListenPort()
+		{
+			return mHostCommunicator.GetConfigOfListenPort();
+		}
+		public void HostCommunicatorStartListen()
+		{
+			mHostCommunicator.StartListen();
 		}
 		public void HostCommunicatorStopListen()
 		{

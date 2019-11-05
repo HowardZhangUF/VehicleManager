@@ -492,7 +492,8 @@ namespace TrafficControlTest.UserInterface
 			mCore.VehicleCommunicatorStartListen();
 			mCore.CollisionEventDetectorStart();
 			mCore.VehicleControlHandlerStart();
-			mCore.HostCommunicatorStartListen(9000);
+			mCore.HostCommunicatorSetConfigOfListenPort(9000);
+			mCore.HostCommunicatorStartListen();
 			mCore.MissionDispatcherStart();
 		}
 		private void Destructor_VehicleManagerProcess()
