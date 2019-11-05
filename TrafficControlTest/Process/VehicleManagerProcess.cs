@@ -69,9 +69,17 @@ namespace TrafficControlTest.Base
 		{
 			Destructor();
 		}
-		public void VehicleCommunicatorStartListen(int Port)
+		public void VehicleCommunicatorSetConfigListenPort(int Port)
 		{
-			mVehicleCommunicator.StartListen(Port);
+			mVehicleCommunicator.SetConfigOfListenPort(Port);
+		}
+		public int VehicleCommunicatorGetConfigListenPort()
+		{
+			return mVehicleCommunicator.GetConfigOfListenPort();
+		}
+		public void VehicleCommunicatorStartListen()
+		{
+			mVehicleCommunicator.StartListen();
 		}
 		public void VehicleCommunicatorStopListen()
 		{

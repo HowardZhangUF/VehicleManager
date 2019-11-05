@@ -488,7 +488,8 @@ namespace TrafficControlTest.UserInterface
 		{
 			mCore = new VehicleManagerProcess();
 			SubscribeEvent_VehicleManagerProcess(mCore);
-			mCore.VehicleCommunicatorStartListen(8000);
+			mCore.VehicleCommunicatorSetConfigListenPort(8000);
+			mCore.VehicleCommunicatorStartListen();
 			mCore.CollisionEventDetectorStart();
 			mCore.VehicleControlHandlerStart();
 			mCore.HostCommunicatorStartListen(9000);

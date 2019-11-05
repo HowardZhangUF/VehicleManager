@@ -28,6 +28,7 @@ namespace TrafficControlTest.Implement
 		public List<string> mClientAddressInfo { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? null : mSocketServer.ClientDictionary.Keys.ToList(); } }
 
 		private SerialServer mSocketServer = null;
+		private int mListenPort { get; set; }
 		private readonly Queue<EventArgs> mSerialServerEvents = new Queue<EventArgs>();
 		private readonly object mLockOfSerialServerEvents = new object();
 		private Thread mThdHandleSerialServerEvents = null;
@@ -37,12 +38,20 @@ namespace TrafficControlTest.Implement
 		{
 			Constructor();
 		}
-		public void StartListen(int Port)
+		public void SetConfigOfListenPort(int Port)
+		{
+			mListenPort = Port;
+		}
+		public int GetConfigOfListenPort()
+		{
+			return mListenPort;
+		}
+		public void StartListen()
 		{
 			if (mSocketServer.ListenStatus == EListenStatus.Idle)
 			{
 				InitializeThread();
-				mSocketServer.StartListening(Port);
+				mSocketServer.StartListening(mListenPort);
 			}
 		}
 		public void StopListen()

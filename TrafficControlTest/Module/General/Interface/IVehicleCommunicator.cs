@@ -19,15 +19,20 @@ namespace TrafficControlTest.Interface
 		event EventHandlerReceivedSerializableData ReceivedSerializableData;
 		event EventHandlerSentSerializableData SentSerializableDataSuccessed;
 		event EventHandlerSentSerializableData SentSerializableDataFailed;
-
+		
 		/// <summary>監聽狀態</summary>
 		ListenState mListenState { get; }
 		/// <summary>連線中的 Client 數量</summary>
 		int mClientCount { get; }
 		/// <summary>連線中的 Client 地址資訊 (IP:Port)</summary>
 		List<string> mClientAddressInfo { get; }
+
+		/// <summary>設定監聽 Port 的值</summary>
+		void SetConfigOfListenPort(int Port);
+		/// <summary>取得監聽 Port 的值</summary>
+		int GetConfigOfListenPort();
 		/// <summary>開始監聽</summary>
-		void StartListen(int Port);
+		void StartListen();
 		/// <summary>停止監聽</summary>
 		void StopListen();
 		/// <summary>向指定 IP:Port 傳送序列化資料</summary>
