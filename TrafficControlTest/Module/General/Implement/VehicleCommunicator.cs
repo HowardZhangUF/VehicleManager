@@ -40,7 +40,7 @@ namespace TrafficControlTest.Implement
 		}
 		public void SetConfigOfListenPort(int Port)
 		{
-			mListenPort = Port;
+				mListenPort = Port;
 		}
 		public int GetConfigOfListenPort()
 		{
@@ -199,15 +199,15 @@ namespace TrafficControlTest.Implement
 				Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
 			}
 		}
-		protected virtual void RaiseEvent_LocalListenStateChanged(ListenState NewState, bool Sync = true)
+		protected virtual void RaiseEvent_LocalListenStateChanged(ListenState NewState, int Port, bool Sync = true)
 		{
 			if (Sync)
 			{
-				LocalListenStateChanged?.Invoke(DateTime.Now, NewState);
+				LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port);
 			}
 			else
 			{
-				Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState); });
+				Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableData(string IpPort, object Data, bool Sync = true)
@@ -294,7 +294,7 @@ namespace TrafficControlTest.Implement
 		}
 		private void HandleSerialServerEvent(ListenStatusChangedEventArgs E)
 		{
-			RaiseEvent_LocalListenStateChanged(E.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed);
+			RaiseEvent_LocalListenStateChanged(E.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed, mListenPort);
 		}
 		private void HandleSerialServerEvent(ReceivedSerialDataEventArgs E)
 		{

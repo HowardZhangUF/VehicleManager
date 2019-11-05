@@ -509,15 +509,15 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { VehicleCommunicatorSystemStopped?.Invoke(OccurTime); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleCommunicatorLocalListenStateChagned?.Invoke(OccurTime, NewState);
+				VehicleCommunicatorLocalListenStateChagned?.Invoke(OccurTime, NewState, Port);
 			}
 			else
 			{
-				Task.Run(() => { VehicleCommunicatorLocalListenStateChagned?.Invoke(OccurTime, NewState); });
+				Task.Run(() => { VehicleCommunicatorLocalListenStateChagned?.Invoke(OccurTime, NewState, Port); });
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorRemoteConnectStateChagned(DateTime OccurTime, string IpPort, ConnectState NewState, bool Sync = true)
@@ -773,15 +773,15 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { HostCommunicatorSystemStopped?.Invoke(OccurTime); });
 			}
 		}
-		protected virtual void RaiseEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, bool Sync = true)
+		protected virtual void RaiseEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port, bool Sync = true)
 		{
 			if (Sync)
 			{
-				HostCommunicatorLocalListenStateChanged?.Invoke(OccurTime, NewState);
+				HostCommunicatorLocalListenStateChanged?.Invoke(OccurTime, NewState, Port);
 			}
 			else
 			{
-				Task.Run(() => { HostCommunicatorLocalListenStateChanged?.Invoke(OccurTime, NewState); });
+				Task.Run(() => { HostCommunicatorLocalListenStateChanged?.Invoke(OccurTime, NewState, Port); });
 			}
 		}
 		protected virtual void RaiseEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState, bool Sync = true)
@@ -849,10 +849,10 @@ namespace TrafficControlTest.Base
 			HandleDebugMessage("VehicleCommunicator", "System Stopped.");
 			RaiseEvent_VehicleCommunicatorSystemStopped(OccurTime);
 		}
-		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState)
+		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Local Listen State Changed. State: {NewState.ToString()}");
-			RaiseEvent_VehicleCommunicatorLocalListenStateChanged(OccurTime, NewState);
+			HandleDebugMessage("VehicleCommunicator", $"Local Listen State Changed. State: {NewState.ToString()}, Port: {Port}");
+			RaiseEvent_VehicleCommunicatorLocalListenStateChanged(OccurTime, NewState, Port);
 		}
 		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
@@ -969,10 +969,10 @@ namespace TrafficControlTest.Base
 			HandleDebugMessage("HostCommunicator", $"System Stopped.");
 			RaiseEvent_HostCommunicatorSystemStopped(OccurTime);
 		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState)
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
 		{
-			HandleDebugMessage("HostCommunicator", $"Local Listen State Changed. State: {NewState.ToString()}");
-			RaiseEvent_HostCommunicatorLocalListenStateChanged(OccurTime, NewState);
+			HandleDebugMessage("HostCommunicator", $"Local Listen State Changed. State: {NewState.ToString()}, Port: {Port}");
+			RaiseEvent_HostCommunicatorLocalListenStateChanged(OccurTime, NewState, Port);
 		}
 		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{

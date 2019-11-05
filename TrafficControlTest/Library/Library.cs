@@ -972,7 +972,7 @@ namespace TrafficControlTest.Library
 
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);
-		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState);
+		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState, int Port);
 		public delegate void EventHandlerSentSerializableData(DateTime OccurTime, string IpPort, object Data);
 		public delegate void EventHandlerReceivedSerializableData(DateTime OccurTime, string IpPort, object Data);
 		public delegate void EventHandlerSentString(DateTime OccurTime, string IpPort, string Data);

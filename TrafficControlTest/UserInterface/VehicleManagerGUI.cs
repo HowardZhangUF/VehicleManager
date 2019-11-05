@@ -552,7 +552,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_AddSimpleLog(OccurTime, Category, Message);
 		}
-		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState)
+		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{
 			if (NewState == ListenState.Listening)
 			{
