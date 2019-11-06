@@ -74,34 +74,6 @@ namespace TrafficControlTest.UserInterface
 				HandleException(Ex);
 			}
 		}
-		//private void btnInterveneInsertMovingBuffer_Click(object sender, EventArgs e)
-		//{
-		//	if (cbVehicleList.SelectedItem != null && !string.IsNullOrEmpty(txtInterveneMovingBuffer.Text))
-		//	{
-		//		SendCommandToVehicle(cbVehicleList.SelectedItem.ToString(), "InsertMovingBuffer", txtInterveneMovingBuffer.Text);
-		//	}
-		//}
-		//private void btnInterveneRemoveMovingBuffer_Click(object sender, EventArgs e)
-		//{
-		//	if (cbVehicleList.SelectedItem != null)
-		//	{
-		//		SendCommandToVehicle(cbVehicleList.SelectedItem.ToString(), "RemoveMovingBuffer");
-		//	}
-		//}
-		//private void btnIntervenePauseMoving_Click(object sender, EventArgs e)
-		//{
-		//	if (cbVehicleList.SelectedItem != null)
-		//	{
-		//		SendCommandToVehicle(cbVehicleList.SelectedItem.ToString(), "PauseMoving");
-		//	}
-		//}
-		//private void btnInterveneResumeMoving_Click(object sender, EventArgs e)
-		//{
-		//	if (cbVehicleList.SelectedItem != null)
-		//	{
-		//		SendCommandToVehicle(cbVehicleList.SelectedItem.ToString(), "ResumeMoving");
-		//	}
-		//}
 
 		private void btnFormMinimize_Click(object sender, EventArgs e)
 		{
@@ -123,6 +95,10 @@ namespace TrafficControlTest.UserInterface
 		private void btnDisplayVehicleManualControl_Click(object sender, EventArgs e)
 		{
 			UpdateGui_DisplayVehicleManualControl();
+		}
+		private void btnDisplayVehicleApi_Click(object sender, EventArgs e)
+		{
+			UpdateGui_DisplayVehicleApi();
 		}
 		private void btnDisplayAbout_Click(object sender, EventArgs e)
 		{
@@ -148,13 +124,17 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_DisplayLog();
 		}
+		private void btnDisplayPnlBtm_Click(object sender, EventArgs e)
+		{
+			UpdateGui_DisplayPnlBtm(!pnlBtmDisplay);
+		}
 		private void ucVehicleOverview1_DoubleClickOnVehicleInfo(string VehicleName)
 		{
 			UpdateGui_MapFocusVehicle(VehicleName);
 		}
-		private void btnDisplayPnlBtm_Click(object sender, EventArgs e)
+		private void ucVehicleApi1_VehicleAction(string VehicleName, string Command, string[] Parameters)
 		{
-			UpdateGui_DisplayPnlBtm(!pnlBtmDisplay);
+			SendCommandToVehicle(VehicleName, Command, Parameters);
 		}
 
 		#region UpdateGui Functions
@@ -179,6 +159,27 @@ namespace TrafficControlTest.UserInterface
 		private void UpdateGui_UpdateControlBackColor(Control Control, Color Color)
 		{
 			Control.InvokeIfNecessary(() => { if (Control.BackColor != Color) Control.BackColor = Color; });
+		}
+
+		private void UpdateGui_UpdateVehicleNameList()
+		{
+			string[] vehicleNameList = mCore.GetVehicleNameList()?.ToArray();
+			ucVehicleManualControl1.InvokeIfNecessary(() =>
+			{
+				ucVehicleManualControl1.UpdateVehicleNameList(vehicleNameList);
+			});
+			ucVehicleApi1.InvokeIfNecessary(() =>
+			{
+				ucVehicleApi1.UpdateVehicleNameList(vehicleNameList);
+			});
+		}
+		private void UpdateGui_UpdateGoalNameList()
+		{
+			string[] goalList = ucMap1.GetGoalList();
+			ucVehicleManualControl1.InvokeIfNecessary(() =>
+			{
+				ucVehicleManualControl1.UpdateGoalList(goalList);
+			});
 		}
 		#endregion
 
@@ -383,6 +384,26 @@ namespace TrafficControlTest.UserInterface
 				UpdateGui_DisplayPnlLeftMain(false);
 			}
 		}
+		private void UpdateGui_DisplayVehicleApi()
+		{
+			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayVehicleApi.Top))
+			{
+				UpdateGui_DisplayPnlLeftMain(true);
+				pnlLeftSideMarker.InvokeIfNecessary(() =>
+				{
+					pnlLeftSideMarker.Height = btnDisplayVehicleApi.Height;
+					pnlLeftSideMarker.Top = btnDisplayVehicleApi.Top;
+				});
+				ucVehicleApi1.InvokeIfNecessary(() =>
+				{
+					ucVehicleApi1.BringToFront();
+				});
+			}
+			else
+			{
+				UpdateGui_DisplayPnlLeftMain(false);
+			}
+		}
 		private void UpdateGui_DisplayAbout()
 		{
 			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayAbout.Top))
@@ -423,24 +444,6 @@ namespace TrafficControlTest.UserInterface
 			ucVehicleOverview1.InvokeIfNecessary(() =>
 			{
 				ucVehicleOverview1.Remove(Id);
-			});
-		}
-		#endregion
-		#region VehicleManualControl
-		private void UpdateGui_UpdateVehicleNameList()
-		{
-			string[] vehicleNameList = mCore.GetVehicleNameList()?.ToArray();
-			ucVehicleManualControl1.InvokeIfNecessary(() =>
-			{
-				ucVehicleManualControl1.UpdateVehicleNameList(vehicleNameList);
-			});
-		}
-		private void UpdateGui_UpdateGoalList()
-		{
-			string[] goalList = ucMap1.GetGoalList();
-			ucVehicleManualControl1.InvokeIfNecessary(() =>
-			{
-				ucVehicleManualControl1.UpdateGoalList(goalList);
 			});
 		}
 		#endregion

@@ -91,7 +91,7 @@ namespace TrafficControlTest.Implement
 		}
 		public void SendSerializableData_Stop(string IpPort)
 		{
-			SendSerializableData_Stop(IpPort);
+			SendSerializableData(IpPort, new Stop(null));
 		}
 		public void SendSerializableData_InsertMovingBuffer(string IpPort, int X, int Y)
 		{

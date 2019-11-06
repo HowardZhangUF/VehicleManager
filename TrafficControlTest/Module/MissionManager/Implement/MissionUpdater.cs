@@ -159,15 +159,15 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			string missionId = null;
 			if (Data is GoTo)
 			{
-				missionId = rMissionStateManager.GetItems().First(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mName;
+				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId)?.mName;
 			}
 			else if (Data is GoToPoint)
 			{
-				missionId = rMissionStateManager.GetItems().First(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mName;
+				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId)?.mName;
 			}
 			else if (Data is GoToTowardPoint)
 			{
-				missionId = rMissionStateManager.GetItems().First(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId).mName;
+				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId)?.mName;
 			}
 			return missionId;
 		}

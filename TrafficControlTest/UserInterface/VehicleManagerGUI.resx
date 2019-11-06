@@ -191,6 +191,18 @@
         SUVORK5CYII=
 </value>
   </data>
+  <data name="btnDisplayVehicleApi.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAYBJREFUWEft
+        lsErBFEcx5eyIYriQEoc5OCgXMhdiRtyduLo4LT/gyIctpSrgwgn3JSDi1JOwsnFxUERkfH5vvfGrreb
+        3Zo1bZlPfdr3e2/m/b47Ozu7qYSqIAiCFhyK0UFMu/YmwD7GzaJrbwIc27lYybj2SYAkQMkAWluwwx+c
+        YT/2Yh9O4RWKNxxBrY3iO/qUHWAaa/HBVDmy2OZeN3AcO/AJxarbW2vFKCvAKza7YzbNTA417rFDwzPW
+        4YmpguDanXdnywLKCnCIadTlndBEHn4A0YS7dliZAPM4htq0AfUuQ/wAn6hjDkxVgQDasBPXUY0bcQ9D
+        FKALb53LqKt1jyJygHOswXDDSZyzQ0PWnW6grscts2KJHCCDuvv1VZL6xWzHDxT+FXjBfCIHGMAZVCO5
+        hgp0isK/B3wiBbhx8xe2/GYYl+ywZIBtt8eOLQv4NcAl6o+DzwqGAY5Q90Ux9CTsxlbUxxfpSfhXJAGS
+        ANUVQM/7x5idde0T/jWp1BcfDwsoyQBzCAAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="btnDisplayVehicleManualControl.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAU9JREFUWEft
