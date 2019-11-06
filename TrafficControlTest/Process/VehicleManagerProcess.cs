@@ -105,21 +105,57 @@ namespace TrafficControlTest.Base
 		{
 			if (mVehicleInfoManager.IsExist(VehicleName))
 			{
-				if (Command == "InsertMovingBuffer" && Paras != null && Paras.Length == 1)
+				string vehicleIpPort = mVehicleInfoManager.GetItem(VehicleName).mIpPort;
+				if (Command == "Goto" && Paras != null && Paras.Length == 1)
 				{
-					mVehicleCommunicator.SendSerializableData_InsertMovingBuffer(mVehicleInfoManager.GetItem(VehicleName).mIpPort, Paras[0]);
+					mVehicleCommunicator.SendSerializableData_Goto(vehicleIpPort, Paras[0]);
+				}
+				else if (Command == "GotoPoint" && Paras != null)
+				{
+					if (Paras.Length == 2)
+					{
+						mVehicleCommunicator.SendSerializableData_GotoPoint(vehicleIpPort, int.Parse(Paras[0]), int.Parse(Paras[1]));
+					}
+					else if (Paras.Length == 3)
+					{
+						mVehicleCommunicator.SendSerializableData_GotoTowardPoint(vehicleIpPort, int.Parse(Paras[0]), int.Parse(Paras[1]), int.Parse(Paras[2]));
+					}
+				}
+				else if (Command == "Stop")
+				{
+					mVehicleCommunicator.SendSerializableData_Stop(vehicleIpPort);
+				}
+				else if (Command == "InsertMovingBuffer" && Paras != null && Paras.Length == 2)
+				{
+					mVehicleCommunicator.SendSerializableData_InsertMovingBuffer(vehicleIpPort, int.Parse(Paras[0]), int.Parse(Paras[1]));
 				}
 				else if (Command == "RemoveMovingBuffer")
 				{
-					mVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(mVehicleInfoManager.GetItem(VehicleName).mIpPort);
+					mVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(vehicleIpPort);
 				}
 				else if (Command == "PauseMoving")
 				{
-					mVehicleCommunicator.SendSerializableData_PauseMoving(mVehicleInfoManager.GetItem(VehicleName).mIpPort);
+					mVehicleCommunicator.SendSerializableData_PauseMoving(vehicleIpPort);
 				}
 				else if (Command == "ResumeMoving")
 				{
-					mVehicleCommunicator.SendSerializableData_ResumeMoving(mVehicleInfoManager.GetItem(VehicleName).mIpPort);
+					mVehicleCommunicator.SendSerializableData_ResumeMoving(vehicleIpPort);
+				}
+				else if (Command == "RequestMapList")
+				{
+					mVehicleCommunicator.SendSerializableData_RequestMapList(vehicleIpPort);
+				}
+				else if (Command == "GetMap" && Paras != null && Paras.Length == 1)
+				{
+					mVehicleCommunicator.SendSerializableData_GetMap(vehicleIpPort, Paras[0]);
+				}
+				else if (Command == "UploadMapToAGV" && Paras != null && Paras.Length == 1)
+				{
+					mVehicleCommunicator.SendSerializableData_UploadMapToAGV(vehicleIpPort, Paras[0]);
+				}
+				else if (Command == "ChangeMap" && Paras != null && Paras.Length == 1)
+				{
+					mVehicleCommunicator.SendSerializableData_ChangeMap(vehicleIpPort, Paras[0]);
 				}
 			}
 		}

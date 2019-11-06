@@ -45,13 +45,23 @@ namespace TrafficControlTest.Interface
 		void SendSerializableData_GotoTowardPoint(string IpPort, int X, int Y, int Toward);
 		/// <summary>向指定 IP:Port 傳送序列化資料 Dock</summary>
 		void SendSerializableData_Dock(string IpPort);
+		/// <summary>向指定 IP:Port 傳送序列化資料 Stop</summary>
+		void SendSerializableData_Stop(string IpPort);
 		/// <summary>向指定 IP:Port 傳送序列化資料 InsertMovingBuffer</summary>
-		void SendSerializableData_InsertMovingBuffer(string IpPort, string Buffer);
+		void SendSerializableData_InsertMovingBuffer(string IpPort, int X, int Y);
 		/// <summary>向指定 IP:Port 傳送序列化資料 RemoveMovingBuffer</summary>
 		void SendSerializableData_RemoveMovingBuffer(string IpPort);
 		/// <summary>向指定 IP:Port 傳送序列化資料 PauseMoving</summary>
 		void SendSerializableData_PauseMoving(string IpPort);
 		/// <summary>向指定 IP:Port 傳送序列化資料 ResumeMoving</summary>
 		void SendSerializableData_ResumeMoving(string IpPort);
+		/// <summary>向指定 IP:Port 傳送序列化資料 RequestMapList</summary>
+		void SendSerializableData_RequestMapList(string IpPort);
+		/// <summary>向指定 IP:Port 傳送序列化資料 GetMap</summary>
+		void SendSerializableData_GetMap(string IpPort, string MapName);
+		/// <summary>向指定 IP:Port 傳送序列化資料 UploadMapToAGV</summary>
+		void SendSerializableData_UploadMapToAGV(string IpPort, string MapPath);
+		/// <summary>向指定 IP:Port 傳送序列化資料 ChangeMap</summary>
+		void SendSerializableData_ChangeMap(string IpPort, string MapName);
 	}
 }

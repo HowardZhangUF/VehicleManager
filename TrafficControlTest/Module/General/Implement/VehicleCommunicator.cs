@@ -89,9 +89,13 @@ namespace TrafficControlTest.Implement
 		{
 
 		}
-		public void SendSerializableData_InsertMovingBuffer(string IpPort, string Buffer)
+		public void SendSerializableData_Stop(string IpPort)
 		{
-			SendSerializableData(IpPort, new InsertMovingBuffer(Buffer.Split(',').Select(o => int.Parse(o)).ToList()));
+			SendSerializableData_Stop(IpPort);
+		}
+		public void SendSerializableData_InsertMovingBuffer(string IpPort, int X, int Y)
+		{
+			SendSerializableData(IpPort, new InsertMovingBuffer(new List<int>() { X, Y }));
 		}
 		public void SendSerializableData_RemoveMovingBuffer(string IpPort)
 		{
@@ -104,6 +108,22 @@ namespace TrafficControlTest.Implement
 		public void SendSerializableData_ResumeMoving(string IpPort)
 		{
 			SendSerializableData(IpPort, new ResumeMoving(null));
+		}
+		public void SendSerializableData_RequestMapList(string IpPort)
+		{
+			SendSerializableData(IpPort, new RequestMapList(null));
+		}
+		public void SendSerializableData_GetMap(string IpPort, string MapName)
+		{
+			SendSerializableData(IpPort, new GetMap(MapName));
+		}
+		public void SendSerializableData_UploadMapToAGV(string IpPort, string MapPath)
+		{
+			if (System.IO.File.Exists(MapPath)) SendSerializableData(IpPort, new UploadMapToAGV(new FileInfo(MapPath)));
+		}
+		public void SendSerializableData_ChangeMap(string IpPort, string MapName)
+		{
+			SendSerializableData(IpPort, new ChangeMap(MapName));
 		}
 
 		~VehicleCommunicator()
