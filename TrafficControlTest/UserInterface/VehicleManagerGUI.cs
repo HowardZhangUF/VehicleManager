@@ -128,6 +128,10 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_DisplayPnlBtm(!pnlBtmDisplay);
 		}
+		private void ucVehicle1_VehicleStateNeedToBeRefreshed(string VehicleName)
+		{
+			UpdateGui_UpdateVehicle(VehicleName, string.Empty, GetVehicleInfo(VehicleName));
+		}
 		private void ucVehicleOverview1_DoubleClickOnVehicleInfo(string VehicleName)
 		{
 			UpdateGui_MapFocusVehicle(VehicleName);
@@ -161,9 +165,25 @@ namespace TrafficControlTest.UserInterface
 			Control.InvokeIfNecessary(() => { if (Control.BackColor != Color) Control.BackColor = Color; });
 		}
 
+		private void UpdateGui_UpdateVehicleInfo(string VehicleName, string StateName, IVehicleInfo VehicleInfo)
+		{
+			if (VehicleInfo != null)
+			{
+				// Update Page of Vehicle
+				UpdateGui_UpdateVehicle(VehicleName, StateName, VehicleInfo);
+
+				// Update Page of Vehicle Overview
+				UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));
+				UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mState);
+			}
+		}
 		private void UpdateGui_UpdateVehicleNameList()
 		{
 			string[] vehicleNameList = mCore.GetVehicleNameList()?.ToArray();
+			ucVehicle1.InvokeIfNecessary(() =>
+			{
+				ucVehicle1.UpdateVehicleNameList(vehicleNameList);
+			});
 			ucVehicleManualControl1.InvokeIfNecessary(() =>
 			{
 				ucVehicleManualControl1.UpdateVehicleNameList(vehicleNameList);
@@ -272,6 +292,32 @@ namespace TrafficControlTest.UserInterface
 					}
 				}
 			});
+		}
+		#endregion
+		#region Vehicle
+		private void UpdateGui_UpdateVehicle(string VehicleName, string StateName, IVehicleInfo VehicleInfo)
+		{
+			if (VehicleInfo != null)
+			{
+				ucVehicle1.InvokeIfNecessary(() =>
+				{
+					if (ucVehicle1.CurrentVehicleName == VehicleName)
+					{
+						ucVehicle1.UpdateVehicleState(VehicleInfo.mState);
+						ucVehicle1.UpdateVehicleVelocity(VehicleInfo.mVelocity);
+						ucVehicle1.UpdateVehiclePosition(VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY);
+						ucVehicle1.UpdateVehicleToward(VehicleInfo.mToward);
+						ucVehicle1.UpdateVehicleTarget(VehicleInfo.mTarget);
+						ucVehicle1.UpdateVehiclePath(string.Join(string.Empty, VehicleInfo.mPath.Select(o => o.ToString())));
+						ucVehicle1.UpdateVehicleMatch(VehicleInfo.mMapMatch);
+						ucVehicle1.UpdateVehicleBattery(VehicleInfo.mBattery);
+						ucVehicle1.UpdateVehicleIntervenable(VehicleInfo.mIsInterveneAvailable);
+						ucVehicle1.UpdateVehicleIntervening(VehicleInfo.mIsBeingIntervened);
+						ucVehicle1.UpdateVehicleInterveneCommand(VehicleInfo.mInterveneCommand);
+						ucVehicle1.UpdateVehicleLastUpdateTime(VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT));
+					}
+				});
+			}
 		}
 		#endregion
 		#region Mission
@@ -586,8 +632,7 @@ namespace TrafficControlTest.UserInterface
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
 			UpdateGui_MapPrintIcon(VehicleInfo);
-			UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));
-			UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mState);
+			UpdateGui_UpdateVehicleInfo(Name, StateName, VehicleInfo);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
@@ -614,6 +659,10 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_UpdateMission(MissionId, StateName, MissionState);
 		}
 
+		private IVehicleInfo GetVehicleInfo(string VehicleName)
+		{
+			return mCore.GetVehicleInfo(VehicleName);
+		}
 		private void SendCommandToVehicle(string VehicleName, string Command, params string[] Paras)
 		{
 			mCore.SendCommand(VehicleName, Command, Paras);

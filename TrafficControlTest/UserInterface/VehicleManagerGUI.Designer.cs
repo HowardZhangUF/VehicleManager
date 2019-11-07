@@ -506,6 +506,7 @@
 			this.ucVehicle1.Name = "ucVehicle1";
 			this.ucVehicle1.Size = new System.Drawing.Size(850, 350);
 			this.ucVehicle1.TabIndex = 1;
+			this.ucVehicle1.VehicleStateNeedToBeRefreshed += new TrafficControlTest.UserControl.UCVehicle.EventHandlerString(this.ucVehicle1_VehicleStateNeedToBeRefreshed);
 			// 
 			// ucMap1
 			// 

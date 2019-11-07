@@ -167,6 +167,10 @@ namespace TrafficControlTest.Base
 		{
 			return mVehicleInfoManager.GetItemNames().ToList();
 		}
+		public IVehicleInfo GetVehicleInfo(string VehicleName)
+		{
+			return mVehicleInfoManager.GetItem(VehicleName);
+		}
 		public void HostCommunicatorSetConfigOfListenPort(int Port)
 		{
 			mHostCommunicator.SetConfigOfListenPort(Port);
@@ -902,8 +906,8 @@ namespace TrafficControlTest.Base
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
-			//HandleDebugMessage("VehicleCommunicator", $"Received Serializable Data. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
-			RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
+				//HandleDebugMessage("VehicleCommunicator", $"Received Serializable Data. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
+				RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
 		{
