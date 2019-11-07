@@ -86,55 +86,55 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void btnDisplayPnlLeftMain_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayPnlLeftMain(!pnlLeftMainDisplay);
+			UpdateGui_PnlLeftMain_DisplayPnlLeftMain(!pnlLeftMainDisplay);
 		}
 		private void btnDisplayVehicleOverview_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayVehicleOverview();
+			UpdateGui_PnlLeftMain_DisplayVehicleOverview();
 		}
 		private void btnDisplayVehicleManualControl_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayVehicleManualControl();
+			UpdateGui_PnlLeftMain_DisplayVehicleManualControl();
 		}
 		private void btnDisplayVehicleApi_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayVehicleApi();
+			UpdateGui_PnlLeftMain_DisplayVehicleApi();
 		}
 		private void btnDisplayAbout_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayAbout();
+			UpdateGui_PnlLeftMain_DisplayAbout();
 		}
 		private void btnDisplayMap_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayMap();
+			UpdateGui_PnlRightMain_DisplayMap();
 		}
 		private void btnDisplayVehicle_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayVehicle();
+			UpdateGui_PnlRightMain_DisplayVehicle();
 		}
 		private void btnDisplayMission_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayMission();
+			UpdateGui_PnlRightMain_DisplayMission();
 		}
 		private void btnDisplaySetting_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplaySetting();
+			UpdateGui_PnlRightMain_DisplaySetting();
 		}
 		private void btnDisplayLog_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayLog();
+			UpdateGui_PnlRightMain_DisplayLog();
 		}
 		private void btnDisplayPnlBtm_Click(object sender, EventArgs e)
 		{
-			UpdateGui_DisplayPnlBtm(!pnlBtmDisplay);
+			UpdateGui_PnlBtm_DisplayPnlBtm(!pnlBtmDisplay);
 		}
 		private void ucVehicle1_VehicleStateNeedToBeRefreshed(string VehicleName)
 		{
-			UpdateGui_UpdateVehicle(VehicleName, string.Empty, GetVehicleInfo(VehicleName));
+			UpdateGui_UcVehicle_UpdateVehicleInfo(VehicleName, string.Empty, GetVehicleInfo(VehicleName));
 		}
 		private void ucVehicleOverview1_DoubleClickOnVehicleInfo(string VehicleName)
 		{
-			UpdateGui_MapFocusVehicle(VehicleName);
+			UpdateGui_UcMap_MapFocusVehicle(VehicleName);
 		}
 		private void ucVehicleApi1_VehicleAction(string VehicleName, string Command, string[] Parameters)
 		{
@@ -143,19 +143,6 @@ namespace TrafficControlTest.UserInterface
 
 		#region UpdateGui Functions
 		#region General
-		private void UpdateGui_ClearComboBoxItems(ComboBox ComboBox)
-		{
-			ComboBox.InvokeIfNecessary(() => ComboBox.Items.Clear());
-		}
-		private void UpdateGui_ClearComboBoxSelectedItem(ComboBox ComboBox)
-		{
-			ComboBox.InvokeIfNecessary(() => ComboBox.SelectedItem = null);
-		}
-		private void UpdateGui_UpdateComboBoxItems(ComboBox ComboBox, string[] Items)
-		{
-			UpdateGui_ClearComboBoxItems(ComboBox);
-			ComboBox.InvokeIfNecessary(() => ComboBox.Items.AddRange(Items));
-		}
 		private void UpdateGui_UpdateControlText(Control Control, string Text)
 		{
 			Control.InvokeIfNecessary(() => { if (Control.Text != Text) Control.Text = Text; });
@@ -165,19 +152,19 @@ namespace TrafficControlTest.UserInterface
 			Control.InvokeIfNecessary(() => { if (Control.BackColor != Color) Control.BackColor = Color; });
 		}
 
-		private void UpdateGui_UpdateVehicleInfo(string VehicleName, string StateName, IVehicleInfo VehicleInfo)
+		private void UpdateGui_All_UpdateVehicleInfo(string VehicleName, string StateName, IVehicleInfo VehicleInfo)
 		{
 			if (VehicleInfo != null)
 			{
 				// Update Page of Vehicle
-				UpdateGui_UpdateVehicle(VehicleName, StateName, VehicleInfo);
+				UpdateGui_UcVehicle_UpdateVehicleInfo(VehicleName, StateName, VehicleInfo);
 
 				// Update Page of Vehicle Overview
-				UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));
-				UpdateGui_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mState);
+				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));
+				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mState);
 			}
 		}
-		private void UpdateGui_UpdateVehicleNameList()
+		private void UpdateGui_All_UpdateVehicleNameList()
 		{
 			string[] vehicleNameList = mCore.GetVehicleNameList()?.ToArray();
 			ucVehicle1.InvokeIfNecessary(() =>
@@ -193,7 +180,7 @@ namespace TrafficControlTest.UserInterface
 				ucVehicleApi1.UpdateVehicleNameList(vehicleNameList);
 			});
 		}
-		private void UpdateGui_UpdateGoalNameList()
+		private void UpdateGui_All_UpdateGoalNameList()
 		{
 			string[] goalList = ucMap1.GetGoalList();
 			ucVehicleManualControl1.InvokeIfNecessary(() =>
@@ -204,7 +191,7 @@ namespace TrafficControlTest.UserInterface
 		#endregion
 
 		#region PnlTop
-		private void UpdateGui_ResetPnlTopMenuButtonBackColor()
+		private void UpdateGui_PnlTop_ResetPnlTopMenuButtonBackColor()
 		{
 			if (btnDisplayMap.BackColor != pnlTop.BackColor) btnDisplayMap.BackColor = pnlTop.BackColor;
 			if (btnDisplayVehicle.BackColor != pnlTop.BackColor) btnDisplayVehicle.BackColor = pnlTop.BackColor;
@@ -212,75 +199,75 @@ namespace TrafficControlTest.UserInterface
 			if (btnDisplaySetting.BackColor != pnlTop.BackColor) btnDisplaySetting.BackColor = pnlTop.BackColor;
 			if (btnDisplayLog.BackColor != pnlTop.BackColor) btnDisplayLog.BackColor = pnlTop.BackColor;
 		}
-		private void UpdateGui_HighlightPnlTopMenuButton(Button button)
+		private void UpdateGui_PnlTop_HighlightPnlTopMenuButton(Button button)
 		{
-			UpdateGui_ResetPnlTopMenuButtonBackColor();
+			UpdateGui_PnlTop_ResetPnlTopMenuButtonBackColor();
 			if (button.BackColor != pnlTopMarker.BackColor) button.BackColor = pnlTopMarker.BackColor;
 		}
 		#endregion
 
 		#region PnlRightMain
-		private void UpdateGui_DisplayMap()
+		private void UpdateGui_PnlRightMain_DisplayMap()
 		{
 			pnlTopMarker.Width = btnDisplayMap.Width;
 			pnlTopMarker.Left = btnDisplayMap.Left;
 			ucMap1.BringToFront();
-			UpdateGui_HighlightPnlTopMenuButton(btnDisplayMap);
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayMap);
 		}
-		private void UpdateGui_DisplayVehicle()
+		private void UpdateGui_PnlRightMain_DisplayVehicle()
 		{
 			pnlTopMarker.Width = btnDisplayVehicle.Width;
 			pnlTopMarker.Left = btnDisplayVehicle.Left;
 			ucVehicle1.BringToFront();
-			UpdateGui_HighlightPnlTopMenuButton(btnDisplayVehicle);
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayVehicle);
 		}
-		private void UpdateGui_DisplayMission()
+		private void UpdateGui_PnlRightMain_DisplayMission()
 		{
 			pnlTopMarker.Width = btnDisplayMission.Width;
 			pnlTopMarker.Left = btnDisplayMission.Left;
 			ucMission1.BringToFront();
-			UpdateGui_HighlightPnlTopMenuButton(btnDisplayMission);
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayMission);
 		}
-		private void UpdateGui_DisplaySetting()
+		private void UpdateGui_PnlRightMain_DisplaySetting()
 		{
 			pnlTopMarker.Width = btnDisplaySetting.Width;
 			pnlTopMarker.Left = btnDisplaySetting.Left;
 			ucSetting1.BringToFront();
-			UpdateGui_HighlightPnlTopMenuButton(btnDisplaySetting);
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplaySetting);
 		}
-		private void UpdateGui_DisplayLog()
+		private void UpdateGui_PnlRightMain_DisplayLog()
 		{
 			pnlTopMarker.Width = btnDisplayLog.Width;
 			pnlTopMarker.Left = btnDisplayLog.Left;
 			ucLog1.BringToFront();
-			UpdateGui_HighlightPnlTopMenuButton(btnDisplayLog);
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayLog);
 		}
 		#region Map
-		private void UpdateGui_MapRegisterIconId(IVehicleInfo VehicleInfo)
+		private void UpdateGui_UcMap_MapRegisterIconId(IVehicleInfo VehicleInfo)
 		{
 			ucMap1.RegisterIconId(VehicleInfo);
 		}
-		private void UpdateGui_MapPrintIcon(IVehicleInfo VehicleInfo)
+		private void UpdateGui_UcMap_MapPrintIcon(IVehicleInfo VehicleInfo)
 		{
 			ucMap1.PrintIcon(VehicleInfo);
 		}
-		private void UpdateGui_MapEraseIcon(IVehicleInfo VehicleInfo)
+		private void UpdateGui_UcMap_MapEraseIcon(IVehicleInfo VehicleInfo)
 		{
 			ucMap1.EraseIcon(VehicleInfo);
 		}
-		private void UpdateGui_MapRegisterIconId(ICollisionPair CollisionPair)
+		private void UpdateGui_UcMap_MapRegisterIconId(ICollisionPair CollisionPair)
 		{
 			ucMap1.RegisterIconId(CollisionPair);
 		}
-		private void UpdateGui_MapPrintIcon(ICollisionPair CollisionPair)
+		private void UpdateGui_UcMap_MapPrintIcon(ICollisionPair CollisionPair)
 		{
 			ucMap1.PrintIcon(CollisionPair);
 		}
-		private void UpdateGui_MapEraseIcon(ICollisionPair CollisionPair)
+		private void UpdateGui_UcMap_MapEraseIcon(ICollisionPair CollisionPair)
 		{
 			ucMap1.EraseIcon(CollisionPair);
 		}
-		private void UpdateGui_MapFocusVehicle(string VehicleName)
+		private void UpdateGui_UcMap_MapFocusVehicle(string VehicleName)
 		{
 			ucMap1.InvokeIfNecessary(() =>
 			{
@@ -288,14 +275,14 @@ namespace TrafficControlTest.UserInterface
 				{
 					if (pnlTopMarker.Left != btnDisplayMap.Left)
 					{
-						UpdateGui_DisplayMap();
+						UpdateGui_PnlRightMain_DisplayMap();
 					}
 				}
 			});
 		}
 		#endregion
 		#region Vehicle
-		private void UpdateGui_UpdateVehicle(string VehicleName, string StateName, IVehicleInfo VehicleInfo)
+		private void UpdateGui_UcVehicle_UpdateVehicleInfo(string VehicleName, string StateName, IVehicleInfo VehicleInfo)
 		{
 			if (VehicleInfo != null)
 			{
@@ -321,21 +308,21 @@ namespace TrafficControlTest.UserInterface
 		}
 		#endregion
 		#region Mission
-		private void UpdateGui_AddMission(string MissionId, IMissionState MissionState)
+		private void UpdateGui_UcMission_AddMission(string MissionId, IMissionState MissionState)
 		{
 			ucMission1.InvokeIfNecessary(() =>
 			{
 				ucMission1.AddRow(MissionId, MissionState.ToStringArray());
 			});
 		}
-		private void UpdateGui_RemoveMission(string MissionId)
+		private void UpdateGui_UcMission_RemoveMission(string MissionId)
 		{
 			ucMission1.InvokeIfNecessary(() =>
 			{
 				ucMission1.RemoveRow(MissionId);
 			});
 		}
-		private void UpdateGui_UpdateMission(string MissionId, string StateName, IMissionState MissionState)
+		private void UpdateGui_UcMission_UpdateMission(string MissionId, string StateName, IMissionState MissionState)
 		{
 			ucMission1.InvokeIfNecessary(() =>
 			{
@@ -371,7 +358,7 @@ namespace TrafficControlTest.UserInterface
 		#endregion
 
 		#region PnlLeftMain
-		private void UpdateGui_DisplayPnlLeftMain(bool Display)
+		private void UpdateGui_PnlLeftMain_DisplayPnlLeftMain(bool Display)
 		{
 			if (Display)
 			{
@@ -390,11 +377,11 @@ namespace TrafficControlTest.UserInterface
 				}
 			}
 		}
-		private void UpdateGui_DisplayVehicleOverview()
+		private void UpdateGui_PnlLeftMain_DisplayVehicleOverview()
 		{
 			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayVehicleOverview.Top))
 			{
-				UpdateGui_DisplayPnlLeftMain(true);
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(true);
 				pnlLeftSideMarker.InvokeIfNecessary(() =>
 				{
 					pnlLeftSideMarker.Height = btnDisplayVehicleOverview.Height;
@@ -407,14 +394,14 @@ namespace TrafficControlTest.UserInterface
 			}
 			else
 			{
-				UpdateGui_DisplayPnlLeftMain(false);
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(false);
 			}
 		}
-		private void UpdateGui_DisplayVehicleManualControl()
+		private void UpdateGui_PnlLeftMain_DisplayVehicleManualControl()
 		{
 			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayVehicleManualControl.Top))
 			{
-				UpdateGui_DisplayPnlLeftMain(true);
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(true);
 				pnlLeftSideMarker.InvokeIfNecessary(() =>
 				{
 					pnlLeftSideMarker.Height = btnDisplayVehicleManualControl.Height;
@@ -427,14 +414,14 @@ namespace TrafficControlTest.UserInterface
 			}
 			else
 			{
-				UpdateGui_DisplayPnlLeftMain(false);
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(false);
 			}
 		}
-		private void UpdateGui_DisplayVehicleApi()
+		private void UpdateGui_PnlLeftMain_DisplayVehicleApi()
 		{
 			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayVehicleApi.Top))
 			{
-				UpdateGui_DisplayPnlLeftMain(true);
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(true);
 				pnlLeftSideMarker.InvokeIfNecessary(() =>
 				{
 					pnlLeftSideMarker.Height = btnDisplayVehicleApi.Height;
@@ -447,14 +434,14 @@ namespace TrafficControlTest.UserInterface
 			}
 			else
 			{
-				UpdateGui_DisplayPnlLeftMain(false);
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(false);
 			}
 		}
-		private void UpdateGui_DisplayAbout()
+		private void UpdateGui_PnlLeftMain_DisplayAbout()
 		{
 			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayAbout.Top))
 			{
-				UpdateGui_DisplayPnlLeftMain(true);
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(true);
 				pnlLeftSideMarker.InvokeIfNecessary(() =>
 				{
 					pnlLeftSideMarker.Height = btnDisplayAbout.Height;
@@ -467,25 +454,25 @@ namespace TrafficControlTest.UserInterface
 			}
 			else
 			{
-				UpdateGui_DisplayPnlLeftMain(false);
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(false);
 			}
 		}
 		#region VehicleOverview
-		private void UpdateGui_AddVehicleOverview(string Id, string Battery, string State)
+		private void UpdateGui_UcVehicleOverview_AddVehicleOverview(string Id, string Battery, string State)
 		{
 			ucVehicleOverview1.InvokeIfNecessary(() =>
 			{
 				ucVehicleOverview1.Add(Id, Battery, State);
 			});
 		}
-		private void UpdateGui_SetVehicleOverview(string Id, Property Property, string Value)
+		private void UpdateGui_UcVehicleOverview_SetVehicleOverview(string Id, Property Property, string Value)
 		{
 			ucVehicleOverview1.InvokeIfNecessary(() =>
 			{
 				ucVehicleOverview1.Set(Id, Property, Value);
 			});
 		}
-		private void UpdateGui_RemoveVehicleOverview(string Id)
+		private void UpdateGui_UcVehicleOverview_RemoveVehicleOverview(string Id)
 		{
 			ucVehicleOverview1.InvokeIfNecessary(() =>
 			{
@@ -496,7 +483,7 @@ namespace TrafficControlTest.UserInterface
 		#endregion
 
 		#region PnlBtm
-		private void UpdateGui_DisplayPnlBtm(bool Display)
+		private void UpdateGui_PnlBtm_DisplayPnlBtm(bool Display)
 		{
 			if (Display)
 			{
@@ -515,14 +502,14 @@ namespace TrafficControlTest.UserInterface
 				}
 			}
 		}
-		private void UpdateGui_AddSimpleLog(string Date, string Category, string Message)
+		private void UpdateGui_PnlBtm_AddSimpleLog(string Date, string Category, string Message)
 		{
 			ucSimpleLog1.InvokeIfNecessary(() =>
 			{
 				ucSimpleLog1.AddSimpleLog(Date, Category, Message);
 			});
 		}
-		private void UpdateGui_ClearSimpleLog()
+		private void UpdateGui_PnlBtm_ClearSimpleLog()
 		{
 			ucSimpleLog1.InvokeIfNecessary(() =>
 			{
@@ -599,7 +586,7 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessDebugMessage(string OccurTime, string Category, string Message)
 		{
-			UpdateGui_AddSimpleLog(OccurTime, Category, Message);
+			UpdateGui_PnlBtm_AddSimpleLog(OccurTime, Category, Message);
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{
@@ -615,48 +602,48 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_MapRegisterIconId(VehicleInfo);
-			UpdateGui_UpdateVehicleNameList();
-			UpdateGui_AddVehicleOverview(VehicleInfo.mName, VehicleInfo.mBattery.ToString("F2"), VehicleInfo.mState);
+			UpdateGui_UcMap_MapRegisterIconId(VehicleInfo);
+			UpdateGui_All_UpdateVehicleNameList();
+			UpdateGui_UcVehicleOverview_AddVehicleOverview(VehicleInfo.mName, VehicleInfo.mBattery.ToString("F2"), VehicleInfo.mState);
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleNameList().Count.ToString());
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_MapEraseIcon(VehicleInfo);
-			UpdateGui_UpdateVehicleNameList();
-			UpdateGui_RemoveVehicleOverview(VehicleInfo.mName);
+			UpdateGui_UcMap_MapEraseIcon(VehicleInfo);
+			UpdateGui_All_UpdateVehicleNameList();
+			UpdateGui_UcVehicleOverview_RemoveVehicleOverview(VehicleInfo.mName);
 			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetVehicleCount() > 0 ? Color.DarkGreen : Color.DarkOrange);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleCount().ToString());
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_MapPrintIcon(VehicleInfo);
-			UpdateGui_UpdateVehicleInfo(Name, StateName, VehicleInfo);
+			UpdateGui_UcMap_MapPrintIcon(VehicleInfo);
+			UpdateGui_All_UpdateVehicleInfo(Name, StateName, VehicleInfo);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			UpdateGui_MapRegisterIconId(CollisionPair);
+			UpdateGui_UcMap_MapRegisterIconId(CollisionPair);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			UpdateGui_MapEraseIcon(CollisionPair);
+			UpdateGui_UcMap_MapEraseIcon(CollisionPair);
 		}
 		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			UpdateGui_MapPrintIcon(CollisionPair);
+			UpdateGui_UcMap_MapPrintIcon(CollisionPair);
 		}
 		private void HandleEvent_VehicleManagerProcessMissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
-			UpdateGui_AddMission(MissionId, MissionState);
+			UpdateGui_UcMission_AddMission(MissionId, MissionState);
 		}
 		private void HandleEvent_VehicleManagerProcessMissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
-			UpdateGui_RemoveMission(MissionId);
+			UpdateGui_UcMission_RemoveMission(MissionId);
 		}
 		private void HandleEvent_VehicleManagerProcessMissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
 		{
-			UpdateGui_UpdateMission(MissionId, StateName, MissionState);
+			UpdateGui_UcMission_UpdateMission(MissionId, StateName, MissionState);
 		}
 
 		private IVehicleInfo GetVehicleInfo(string VehicleName)
