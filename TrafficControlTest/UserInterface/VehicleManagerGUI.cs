@@ -166,7 +166,7 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void UpdateGui_All_UpdateVehicleNameList()
 		{
-			string[] vehicleNameList = mCore.GetVehicleNameList()?.ToArray();
+			string[] vehicleNameList = GetVehicleNameList();
 			ucVehicle1.InvokeIfNecessary(() =>
 			{
 				ucVehicle1.UpdateVehicleNameList(vehicleNameList);
@@ -646,6 +646,10 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_UcMission_UpdateMission(MissionId, StateName, MissionState);
 		}
 
+		private string[] GetVehicleNameList()
+		{
+			return mCore.GetVehicleNameList()?.ToArray();
+		}
 		private IVehicleInfo GetVehicleInfo(string VehicleName)
 		{
 			return mCore.GetVehicleInfo(VehicleName);
