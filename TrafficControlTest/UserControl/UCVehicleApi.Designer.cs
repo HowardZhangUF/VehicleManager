@@ -128,9 +128,9 @@
 			// 
 			// cbLocalMapNameList
 			// 
+			this.cbLocalMapNameList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbLocalMapNameList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.tableLayoutPanel1.SetColumnSpan(this.cbLocalMapNameList, 2);
-			this.cbLocalMapNameList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.cbLocalMapNameList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbLocalMapNameList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.cbLocalMapNameList.Font = new System.Drawing.Font("新細明體", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -205,9 +205,9 @@
 			// 
 			// txtCoordinate1
 			// 
+			this.txtCoordinate1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtCoordinate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.tableLayoutPanel1.SetColumnSpan(this.txtCoordinate1, 2);
-			this.txtCoordinate1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtCoordinate1.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.txtCoordinate1.ForeColor = System.Drawing.Color.White;
 			this.txtCoordinate1.Location = new System.Drawing.Point(133, 78);
@@ -217,9 +217,9 @@
 			// 
 			// cbGoalNameList
 			// 
+			this.cbGoalNameList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbGoalNameList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.tableLayoutPanel1.SetColumnSpan(this.cbGoalNameList, 2);
-			this.cbGoalNameList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.cbGoalNameList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbGoalNameList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.cbGoalNameList.Font = new System.Drawing.Font("新細明體", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -296,8 +296,8 @@
 			// 
 			// txtCoordinate2
 			// 
+			this.txtCoordinate2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtCoordinate2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.txtCoordinate2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtCoordinate2.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.txtCoordinate2.ForeColor = System.Drawing.Color.White;
 			this.txtCoordinate2.Location = new System.Drawing.Point(193, 233);
@@ -407,9 +407,9 @@
 			// 
 			// cbRemoteMapNameList1
 			// 
+			this.cbRemoteMapNameList1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbRemoteMapNameList1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.tableLayoutPanel1.SetColumnSpan(this.cbRemoteMapNameList1, 2);
-			this.cbRemoteMapNameList1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.cbRemoteMapNameList1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbRemoteMapNameList1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.cbRemoteMapNameList1.Font = new System.Drawing.Font("新細明體", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -422,9 +422,9 @@
 			// 
 			// cbRemoteMapNameList2
 			// 
+			this.cbRemoteMapNameList2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbRemoteMapNameList2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.tableLayoutPanel1.SetColumnSpan(this.cbRemoteMapNameList2, 2);
-			this.cbRemoteMapNameList2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.cbRemoteMapNameList2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbRemoteMapNameList2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.cbRemoteMapNameList2.Font = new System.Drawing.Font("新細明體", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -452,8 +452,8 @@
 			// 
 			// cbVehicleNameList
 			// 
+			this.cbVehicleNameList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbVehicleNameList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.cbVehicleNameList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.cbVehicleNameList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbVehicleNameList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.cbVehicleNameList.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
