@@ -901,22 +901,25 @@ namespace TrafficControlTest.Base
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
+			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data. IPPort: {IpPort}, DataType: {Data.ToString()}");
 			RaiseEvent_VehicleCommunicatorSentSerializableData(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
-				//HandleDebugMessage("VehicleCommunicator", $"Received Serializable Data. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
+			if (!(Data is SerialData.AGVStatus) && !(Data is SerialData.AGVPath))
+			{
+				HandleDebugMessage("VehicleCommunicator", $"Received Serializable Data. IPPort: {IpPort}, DataType: {Data.ToString()}");
 				RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
+			}
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Successed. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
+			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Successed. IPPort: {IpPort}, DataType: {Data.ToString()}");
 			RaiseEvent_VehicleCommunicatorSentSerializableDataSuccessed(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Failed. IPPort: {IpPort}, DataType: {Data.GetType().ToString()}");
+			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Failed. IPPort: {IpPort}, DataType: {Data.ToString()}");
 			RaiseEvent_VehicleCommunicatorSentSerializableDataFailed(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
@@ -931,7 +934,7 @@ namespace TrafficControlTest.Base
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Item Updated. Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
+			//HandleDebugMessage("VehicleInfoManager", $"Item Updated. Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
 			RaiseEvent_VehicleInfoManagerItemUpdated(OccurTime, Name, StateName, VehicleInfo);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
