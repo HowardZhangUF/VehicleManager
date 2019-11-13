@@ -5,6 +5,11 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
 {
+	/// <summary>
+	/// - 儲存車子的資訊
+	/// - 儲存物件的識別碼
+	/// - 物件的資訊更新時會拋出事件
+	/// </summary>
 	public interface IVehicleInfo : IItem
 	{
 		/// <summary>當前狀態</summary>

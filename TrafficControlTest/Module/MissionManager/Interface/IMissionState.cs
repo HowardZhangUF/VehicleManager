@@ -24,6 +24,9 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 		ExecuteFailed
 	}
 
+	/// <summary>
+	/// - 儲存任務的資訊及狀態
+	/// </summary>
 	public interface IMissionState : IItem
 	{
 		IMission mMission { get; }

@@ -7,6 +7,9 @@ using TrafficControlTest.Library;
 
 namespace TrafficControlTest.Module.MissionManager.Interface
 {
+	/// <summary>
+	/// - 儲存任務的資訊
+	/// </summary>
 	public interface IMission
 	{
 		MissionType mMissionType { get; }

@@ -26,6 +26,11 @@ namespace TrafficControlTest.Interface
 		ResumeMoving
 	}
 
+	/// <summary>
+	/// - 儲存預計對車子進行的干預及其原因
+	/// - 儲存物件的識別碼
+	/// - 物件的資訊更新時會拋出事件
+	/// </summary>
 	public interface IVehicleControl : IItem
 	{
 		/// <summary>欲控制的車的識別碼</summary>

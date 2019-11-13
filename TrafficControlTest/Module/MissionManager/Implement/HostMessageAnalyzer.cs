@@ -8,6 +8,9 @@ using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Module.MissionManager.Implement
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class HostMessageAnalyzer : IHostMessageAnalyzer
 	{
 		private IHostCommunicator rHostCommunicator = null;

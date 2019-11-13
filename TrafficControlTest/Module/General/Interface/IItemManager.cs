@@ -5,6 +5,11 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Implement
 {
+	/// <summary>
+	/// - 儲存所有的 IItem
+	/// - 提供 Add(), Remove(), IsExist(), GetItem(), GetItems(), GetItemNames(), mCount 等方法、屬性供外部使用
+	/// - 當物件的資訊新增、移除、資訊更新時發生時會拋出事件
+	/// </summary>
 	public interface IItemManager<T> where T : IItem
 	{
 		event EventHandlerItem<T> ItemAdded;
