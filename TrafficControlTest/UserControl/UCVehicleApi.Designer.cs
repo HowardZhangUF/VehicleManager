@@ -101,7 +101,7 @@
 			this.tableLayoutPanel1.Controls.Add(this.cbRemoteMapNameList1, 2, 15);
 			this.tableLayoutPanel1.Controls.Add(this.cbRemoteMapNameList2, 2, 17);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 40);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 19;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
@@ -443,11 +443,11 @@
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
 			this.tableLayoutPanel2.Controls.Add(this.cbVehicleNameList, 1, 0);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 60);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(379, 40);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(400, 40);
 			this.tableLayoutPanel2.TabIndex = 7;
 			// 
 			// cbVehicleNameList
@@ -459,20 +459,19 @@
 			this.cbVehicleNameList.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.cbVehicleNameList.ForeColor = System.Drawing.Color.White;
 			this.cbVehicleNameList.FormattingEnabled = true;
-			this.cbVehicleNameList.Location = new System.Drawing.Point(40, 3);
+			this.cbVehicleNameList.Location = new System.Drawing.Point(43, 3);
 			this.cbVehicleNameList.Name = "cbVehicleNameList";
-			this.cbVehicleNameList.Size = new System.Drawing.Size(297, 35);
+			this.cbVehicleNameList.Size = new System.Drawing.Size(314, 35);
 			this.cbVehicleNameList.TabIndex = 3;
 			// 
 			// panel1
 			// 
 			this.panel1.AutoScroll = true;
 			this.panel1.Controls.Add(this.tableLayoutPanel1);
-			this.panel1.Controls.Add(this.tableLayoutPanel2);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(0, 60);
+			this.panel1.Location = new System.Drawing.Point(0, 100);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(400, 590);
+			this.panel1.Size = new System.Drawing.Size(400, 550);
 			this.panel1.TabIndex = 8;
 			// 
 			// UCVehicleApi
@@ -481,6 +480,7 @@
 			this.AutoScroll = true;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.tableLayoutPanel2);
 			this.Controls.Add(this.label1);
 			this.Name = "UCVehicleApi";
 			this.Size = new System.Drawing.Size(400, 650);
