@@ -18,10 +18,18 @@ namespace TrafficControlTest.Interface
 		/// <summary>取得指定 Vehicle 的資訊(透過 Vehicle IP:Port)</summary>
 		IVehicleInfo GetItemByIpPort(string IpPort);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
-		void UpdateItem(string Name, string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand);
+		void UpdateItem(string Name, string NewState, IPoint2D NewLocationCoordinate, double NewLocationToward, string NewTarget, double NewVelocity, double NewLocationScore, double NewBatteryValue, string NewAlarmMessage);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void UpdateItem(string Name, IEnumerable<IPoint2D> Path);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void UpdateItem(string Name, string IpPort);
+		/// <summary>更新指定 Vehicle 的資訊</summary>
+		void UpdateItemMissionId(string Name, string MissionId);
+		/// <summary>更新指定 Vehicle 的資訊</summary>
+		void UpdateItemInterveneCommand(string Name, string InterveneCommand);
+		/// <summary>更新指定 Vehicle 的資訊</summary>
+		void UpdateItemMapName(string Name, string MapName);
+		/// <summary>更新指定 Vehicle 的資訊</summary>
+		void UpdateItemMapNameList(string Name, IEnumerable<string> MapNameList);
 	}
 }

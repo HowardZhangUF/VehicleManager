@@ -34,6 +34,10 @@ namespace TrafficControlTest.Library
 	public static class Library
 	{
 		public const string TIME_FORMAT = "yyyy/MM/dd HH:mm:ss.fff";
+		public static double DefaultVehicleVelocityMaximum = 700.0f;
+		public static int DefaultVehicleSafetyFrameRadius = 500;
+		public static int DefaultVehicleBufferFrameRadius = 500;
+		public static int DefaultVehicleAverageVelocityDataCount = 10;
 
 		public static T GetDeepClone<T>(T o)
 		{
@@ -868,7 +872,7 @@ namespace TrafficControlTest.Library
 			if (Vehicle.mPath.Count() > 0)
 			{
 				List<IPoint2D> tmpPath = Vehicle.mPath.ToList();
-				tmpPath.Insert(0, Vehicle.mPosition);
+				tmpPath.Insert(0, Vehicle.mLocationCoordinate);
 				for (int i = 1; i < tmpPath.Count(); ++i)
 				{
 					IEnumerable<IPoint2D> intersectionPoints = GetIntersectionPoint(Region, tmpPath[i - 1], tmpPath[i]);

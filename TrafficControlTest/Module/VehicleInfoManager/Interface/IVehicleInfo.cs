@@ -13,60 +13,84 @@ namespace TrafficControlTest.Interface
 	public interface IVehicleInfo : IItem
 	{
 		/// <summary>當前狀態</summary>
-		string mState { get; }
+		string mCurrentState { get; }
 		/// <summary>上一個狀態</summary>
-		string mLastState { get; }
+		string mPreviousState { get; }
 		/// <summary>狀態持續時間</summary>
-		TimeSpan mStateDuration { get; }
+		TimeSpan mCurrentStateDuration { get; }
 		/// <summary>位置 (mm)</summary>
-		IPoint2D mPosition { get; }
+		IPoint2D mLocationCoordinate { get; }
 		/// <summary>面向 (degree)</summary>
-		double mToward { get; }
+		double mLocationToward { get; }
 		/// <summary>當前移動目標點</summary>
-		string mTarget { get; }
+		string mCurrentTarget { get; }
 		/// <summary>上一個移動目標點</summary>
-		string mLastTarget { get; }
-		/// <summary>速度(mm/s)</summary>
+		string mPreviousTarget { get; }
+		/// <summary>速度 (mm/s)</summary>
 		double mVelocity { get; }
-		/// <summary>平均速度 (mm/s) 。收集最近 n 秒內的速度數據來做平均</summary>
+		/// <summary>平均速度 (mm/s) 。收集最近 n 筆的速度數據來做平均</summary>
 		double mAverageVelocity { get; }
-		/// <summary>匹配度 (%)</summary>
-		double mMapMatch { get; }
+		/// <summary>定位分數 (%)</summary>
+		double mLocationScore { get; }
 		/// <summary>電池電量 (%)</summary>
-		double mBattery { get; }
-		/// <summary>前方是否有物體擋住導致無法移動</summary>
-		bool mPathBlocked { get; }
-		/// <summary>有物體擋住導致無法移動持續時間</summary>
-		TimeSpan mPathBlockedDuration { get; }
+		double mBatteryValue { get; }
 		/// <summary>錯誤訊息</summary>
 		string mAlarmMessage { get; }
-		/// <summary>安全框半徑</summary>
-		int mSafetyFrameRadius { get; }
-		/// <summary>Buffer 框半徑</summary>
-		int mBufferFrameRadius { get; }
-		/// <summary>車框半徑。車框 = 車身安全框 + Buffer 框</summary>
-		int mTotalFrameRadius { get; }
-		/// <summary>是否可被干預</summary>
-		bool mIsInterveneAvailable { get; }
-		/// <summary>是否被干預中</summary>
-		bool mIsBeingIntervened { get; }
-		/// <summary>目前被干預中的指令。沒有被干預時，此值會為空字串</summary>
-		string mInterveneCommand { get; }
 		/// <summary>路徑</summary>
-		IEnumerable<IPoint2D> mPath { get; }
-		/// <summary>路徑(詳細)</summary>
-		IEnumerable<IPoint2D> mPathDetail { get; }
-		/// <summary>路徑範圍</summary>
+		IList<IPoint2D> mPath { get; }
+		/// <summary>路徑(詳細)。透過 mPath 計算而得</summary>
+		IList<IPoint2D> mPathDetail { get; }
+		/// <summary>路徑範圍。透過 mPath 計算而得</summary>
 		IRectangle2D mPathRegion { get; }
 		/// <summary>IP:Port</summary>
 		string mIpPort { get; }
 		/// <summary>上次更新時間</summary>
 		DateTime mLastUpdated { get; }
 
+		/// <summary>當前執行的任務識別碼。沒有執行任務時為空值</summary>
+		string mCurrentMissionId { get; }
+		/// <summary>上一個執行的任務識別碼</summary>
+		string mPreviousMissionId { get; }
+		/// <summary>當前執行的干預指令。沒有執行干預時為空值</summary>
+		string mCurrentInterveneCommand { get; }
+		/// <summary>上一個執行的干預指令</summary>
+		string mPreviousInterveneCommand { get; }
+		/// <summary>當前使用的地圖的名稱</summary>
+		string mCurrentMapName { get; }
+		/// <summary>當前擁有的地圖名稱清單</summary>
+		IList<string> mCurrentMapNameList { get; }
+
+		/// <summary>速度最大值</summary>
+		double mVelocityMaximum { get; }
+		/// <summary>安全框半徑</summary>
+		int mSafetyFrameRadius { get; }
+		/// <summary>Buffer 框半徑</summary>
+		int mBufferFrameRadius { get; }
+		/// <summary>總車框半徑。總車框 = 車身安全框 + Buffer 框。在偵測碰撞事件時會使用到此資料</summary>
+		int mTotalFrameRadius { get; }
+
 		void Set(string Name);
-		void Update(string State, IPoint2D Position, double Toward, double Battery, double Velocity, string Target, string AlarmMessage, bool IsInterveneAvailable, bool IsBeingIntervened, string InterveneCommand);
-		void Update(IEnumerable<IPoint2D> Path);
-		void Update(string IpPort);
+		/// <summary>開始收集更新事件資訊</summary>
+		void BeginUpdate();
+		/// <summary>結束收集更新事件資訊並發出更新事件</summary>
+		void EndUpdate();
+		void UpdateCurrentState(string NewState);
+		void UpdateLocationCoordinate(IPoint2D NewLocationCoordinate);
+		void UpdateLocationToward(double NewLocationToward);
+		void UpdateCurrentTarget(string NewTarget);
+		void UpdateVelocity(double NewVelocity);
+		void UpdateLocationScore(double NewLocationScore);
+		void UpdateBatteryValue(double NewBattery);
+		void UpdateAlarmMessage(string NewAlarmMessage);
+		void UpdatePath(IEnumerable<IPoint2D> Path);
+		void UpdateIpPort(string IpPort);
+		void UpdateCurrentMissionId(string NewMissionId);
+		void UpdateCurrentInterveneCommand(string NewInterveneCommand);
+		void UpdateCurrentMapName(string NewMapName);
+		void UpdateCurrentMapNameList(IEnumerable<string> NewMapNameList);
+		void UpdateVelocityMaximum(double NewVelocityMaximum);
+		void UpdateSafetyFrameRadius(int NewSafetyFrameRadius);
+		void UpdateBufferFrameRadius(int NewBufferFrameRadius);
 		string ToString();
 	}
 }

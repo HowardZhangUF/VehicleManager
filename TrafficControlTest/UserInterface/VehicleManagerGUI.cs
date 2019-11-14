@@ -160,8 +160,8 @@ namespace TrafficControlTest.UserInterface
 				UpdateGui_UcVehicle_UpdateVehicleInfo(VehicleName, StateName, VehicleInfo);
 
 				// Update Page of Vehicle Overview
-				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBattery.ToString("F2"));
-				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mState);
+				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBatteryValue.ToString("F2"));
+				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mCurrentState);
 			}
 		}
 		private void UpdateGui_All_UpdateVehicleNameList()
@@ -290,17 +290,18 @@ namespace TrafficControlTest.UserInterface
 				{
 					if (ucVehicle1.CurrentVehicleName == VehicleName)
 					{
-						ucVehicle1.UpdateVehicleState(VehicleInfo.mState);
+						ucVehicle1.UpdateVehicleState(VehicleInfo.mCurrentState);
+						ucVehicle1.UpdateVehicleLocation(VehicleInfo.mLocationCoordinate.mX, VehicleInfo.mLocationCoordinate.mY, VehicleInfo.mLocationToward);
+						ucVehicle1.UpdateVehicleTarget(VehicleInfo.mCurrentTarget);
 						ucVehicle1.UpdateVehicleVelocity(VehicleInfo.mVelocity);
-						ucVehicle1.UpdateVehiclePosition(VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY);
-						ucVehicle1.UpdateVehicleToward(VehicleInfo.mToward);
-						ucVehicle1.UpdateVehicleTarget(VehicleInfo.mTarget);
+						ucVehicle1.UpdateVehicleLocationScore(VehicleInfo.mLocationScore);
+						ucVehicle1.UpdateVehicleBatteryValue(VehicleInfo.mBatteryValue);
+						ucVehicle1.UpdateVehicleAlarmMessage(VehicleInfo.mAlarmMessage);
 						ucVehicle1.UpdateVehiclePath(string.Join(string.Empty, VehicleInfo.mPath.Select(o => o.ToString())));
-						ucVehicle1.UpdateVehicleMatch(VehicleInfo.mMapMatch);
-						ucVehicle1.UpdateVehicleBattery(VehicleInfo.mBattery);
-						ucVehicle1.UpdateVehicleIntervenable(VehicleInfo.mIsInterveneAvailable);
-						ucVehicle1.UpdateVehicleIntervening(VehicleInfo.mIsBeingIntervened);
-						ucVehicle1.UpdateVehicleInterveneCommand(VehicleInfo.mInterveneCommand);
+						ucVehicle1.UpdateVehicleIpPort(VehicleInfo.mIpPort);
+						ucVehicle1.UpdateVehicleMissionId(VehicleInfo.mCurrentMissionId);
+						ucVehicle1.UpdateVehicleInterveneCommand(VehicleInfo.mCurrentInterveneCommand);
+						ucVehicle1.UpdateVehicleMapName(VehicleInfo.mCurrentMapName);
 						ucVehicle1.UpdateVehicleLastUpdateTime(VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT));
 					}
 				});
@@ -604,7 +605,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_UcMap_MapRegisterIconId(VehicleInfo);
 			UpdateGui_All_UpdateVehicleNameList();
-			UpdateGui_UcVehicleOverview_AddVehicleOverview(VehicleInfo.mName, VehicleInfo.mBattery.ToString("F2"), VehicleInfo.mState);
+			UpdateGui_UcVehicleOverview_AddVehicleOverview(VehicleInfo.mName, VehicleInfo.mBatteryValue.ToString("F2"), VehicleInfo.mCurrentState);
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleNameList().Count.ToString());
 		}

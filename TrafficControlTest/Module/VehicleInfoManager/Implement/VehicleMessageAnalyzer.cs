@@ -80,19 +80,19 @@ namespace TrafficControlTest.Implement
 			if (!rVehicleInfoManager.IsExist(AgvStatus.Name))
 			{
 				IVehicleInfo tmpData = Library.Library.GenerateIVehicleInfo(AgvStatus.Name);
-				tmpData.Update(IpPort);
+				tmpData.UpdateIpPort(IpPort);
 				rVehicleInfoManager.Add(AgvStatus.Name, tmpData);
 			}
 
 			rVehicleInfoManager.UpdateItem(AgvStatus.Name, IpPort);
-			rVehicleInfoManager.UpdateItem(AgvStatus.Name, AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D((int)AgvStatus.X, (int)AgvStatus.Y), AgvStatus.Toward, AgvStatus.Battery, AgvStatus.Velocity, AgvStatus.GoalName, AgvStatus.AlarmMessage, AgvStatus.IsInterveneAvailable, AgvStatus.IsBeingIntervened, AgvStatus.InterveneCommand);
+			rVehicleInfoManager.UpdateItem(AgvStatus.Name, AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D((int)AgvStatus.X, (int)AgvStatus.Y), AgvStatus.Toward, AgvStatus.GoalName, AgvStatus.Velocity, AgvStatus.MapMatch * 100, AgvStatus.Battery, AgvStatus.AlarmMessage);
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVPath AgvPath)
 		{
 			if (!rVehicleInfoManager.IsExist(AgvPath.Name))
 			{
 				IVehicleInfo tmpData = Library.Library.GenerateIVehicleInfo(AgvPath.Name);
-				tmpData.Update(IpPort);
+				tmpData.UpdateIpPort(IpPort);
 				rVehicleInfoManager.Add(AgvPath.Name, tmpData);
 			}
 

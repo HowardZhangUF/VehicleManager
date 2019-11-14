@@ -138,19 +138,19 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, string Target)
 		{
-			return VehicleInfo.mState == "Idle" && VehicleInfo.mTarget == Target;
+			return VehicleInfo.mCurrentState == "Idle" && VehicleInfo.mCurrentTarget == Target;
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, int X, int Y)
 		{
-			return VehicleInfo.mState == "Idle" && Math.Abs(VehicleInfo.mPosition.mX - X) < mToleranceOfX && Math.Abs(VehicleInfo.mPosition.mY - Y) < mToleranceOfY;
+			return VehicleInfo.mCurrentState == "Idle" && Math.Abs(VehicleInfo.mLocationCoordinate.mX - X) < mToleranceOfX && Math.Abs(VehicleInfo.mLocationCoordinate.mY - Y) < mToleranceOfY;
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, int X, int Y, int Toward)
 		{
-			return VehicleInfo.mState == "Idle" && Math.Abs(VehicleInfo.mPosition.mX - X) < mToleranceOfX && Math.Abs(VehicleInfo.mPosition.mY - Y) < mToleranceOfY && Math.Abs((int)(VehicleInfo.mToward) - Toward) < mToleranceOfToward;
+			return VehicleInfo.mCurrentState == "Idle" && Math.Abs(VehicleInfo.mLocationCoordinate.mX - X) < mToleranceOfX && Math.Abs(VehicleInfo.mLocationCoordinate.mY - Y) < mToleranceOfY && Math.Abs((int)(VehicleInfo.mLocationToward) - Toward) < mToleranceOfToward;
 		}
 		private bool IsVehicleDocked(IVehicleInfo VehicleInfo)
 		{
-			return VehicleInfo.mState == "Docked";
+			return VehicleInfo.mCurrentState == "Docked";
 		}
 		/// <summary>透過 Serializable 物件的發送來源及其本身判斷是哪個任務的相關訊息並輸出任務識別碼</summary>
 		private string GetMissionId(string IpPort, object Data)

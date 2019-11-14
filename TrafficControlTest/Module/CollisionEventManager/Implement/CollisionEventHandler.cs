@@ -122,14 +122,14 @@ namespace TrafficControlTest.Implement
 		}
 		private void UninterveneVehicle(IVehicleInfo VehicleInfo)
 		{
-			if (VehicleInfo != null && VehicleInfo.mIsBeingIntervened)
+			if (VehicleInfo != null && string.IsNullOrEmpty(VehicleInfo.mCurrentInterveneCommand))
 			{
-				if (VehicleInfo.mInterveneCommand.StartsWith("Insert"))
+				if (VehicleInfo.mCurrentInterveneCommand.StartsWith("Insert"))
 				{
 					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.RemoveMovingBuffer, null, string.Empty, string.Empty);
 					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
 				}
-				else if (VehicleInfo.mInterveneCommand.StartsWith("Pause"))
+				else if (VehicleInfo.mCurrentInterveneCommand.StartsWith("Pause"))
 				{
 					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, string.Empty, string.Empty);
 					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);

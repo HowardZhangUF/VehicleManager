@@ -56,11 +56,11 @@ namespace TrafficControlTest.UserControl
 		{
 			if (VehicleInfo != null && !string.IsNullOrEmpty(VehicleInfo.mName))
 			{
-				if (VehicleInfo.mPosition != null)
+				if (VehicleInfo.mLocationCoordinate != null)
 				{
-					GLCMD.CMD.AddAGV(mIconIdsOfVehicle[VehicleInfo.mName], VehicleInfo.mName, VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY, VehicleInfo.mToward);
+					GLCMD.CMD.AddAGV(mIconIdsOfVehicle[VehicleInfo.mName], VehicleInfo.mName, VehicleInfo.mLocationCoordinate.mX, VehicleInfo.mLocationCoordinate.mY, VehicleInfo.mLocationToward);
 				}
-				if (VehicleInfo.mPosition != null && VehicleInfo.mPath != null)
+				if (VehicleInfo.mLocationCoordinate != null && VehicleInfo.mPath != null)
 				{
 					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mIconIdsOfVehiclePath[VehicleInfo.mName], true, (line) =>
 					{
@@ -139,7 +139,7 @@ namespace TrafficControlTest.UserControl
 			if (VehicleInfo.mPath != null && VehicleInfo.mPath.Count() > 0)
 			{
 				result = new List<IPair>();
-				result.Add(new Pair(VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY));
+				result.Add(new Pair(VehicleInfo.mLocationCoordinate.mX, VehicleInfo.mLocationCoordinate.mY));
 				for (int i = 0; i < VehicleInfo.mPath.Count(); ++i)
 				{
 					result.Add(new Pair(VehicleInfo.mPath.ElementAt(i).mX, VehicleInfo.mPath.ElementAt(i).mY));
@@ -153,7 +153,7 @@ namespace TrafficControlTest.UserControl
 			if (VehicleInfo.mPathDetail != null && VehicleInfo.mPathDetail.Count() > 0)
 			{
 				result = new List<IPair>();
-				result.Add(new Pair(VehicleInfo.mPosition.mX, VehicleInfo.mPosition.mY));
+				result.Add(new Pair(VehicleInfo.mLocationCoordinate.mX, VehicleInfo.mLocationCoordinate.mY));
 				for (int i = 0; i < VehicleInfo.mPathDetail.Count(); ++i)
 				{
 					result.Add(new Pair(VehicleInfo.mPathDetail.ElementAt(i).mX, VehicleInfo.mPathDetail.ElementAt(i).mY));

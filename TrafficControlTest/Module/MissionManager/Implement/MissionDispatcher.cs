@@ -118,7 +118,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (executableMissions != null && executableMissions.Count > 0)
 			{
 				IMissionState mission = executableMissions.OrderBy(o => o.mMission.mPriority).ThenBy(o => o.mReceivedTimestamp).First();
-				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetItems().FirstOrDefault(o => o.mState == "Idle")?.mName : mission.mMission.mVehicleId;
+				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetItems().FirstOrDefault(o => o.mCurrentState == "Idle")?.mName : mission.mMission.mVehicleId;
 				if (!string.IsNullOrEmpty(vehicleId))
 				{
 					SendMission(vehicleId, mission.mMission);
@@ -159,7 +159,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (VehicleInfoManager == null || VehicleInfoManager.mCount == 0) return null;
 
 			List<IMissionState> result = null;
-			result = MissionStateManager.GetItems().Where(o => (o.mSendState == Interface.SendState.Unsend && o.mExecuteState == ExecuteState.Unexecute) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && VehicleInfoManager[o.mMission.mVehicleId].mState == "Idle"))).ToList();
+			result = MissionStateManager.GetItems().Where(o => (o.mSendState == Interface.SendState.Unsend && o.mExecuteState == ExecuteState.Unexecute) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle"))).ToList();
 			return result;
 		}
 	}

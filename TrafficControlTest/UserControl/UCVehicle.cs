@@ -53,45 +53,49 @@ namespace TrafficControlTest.UserControl
 		{
 			if (lblVehicleState.Text != State) lblVehicleState.Text = State;
 		}
-		public void UpdateVehicleVelocity(double Velocity)
+		public void UpdateVehicleLocation(int X, int Y, double Toward)
 		{
-			if (lblVehicleVelocity.Text != $"{Velocity.ToString("F2")} (m/s)") lblVehicleVelocity.Text = $"{Velocity.ToString("F2")} (m/s)";
-		}
-		public void UpdateVehiclePosition(int X, int Y)
-		{
-			if (lblVehiclePosition.Text != $"({X}, {Y})") lblVehiclePosition.Text = $"({X}, {Y})";
-		}
-		public void UpdateVehicleToward(double Toward)
-		{
-			if (lblVehicleToward.Text != $"{Toward.ToString("F2")} deg") lblVehicleToward.Text = $"{Toward.ToString("F2")} deg";
+			if (lblVehicleLocation.Text != $"({X}, {Y}, {Toward.ToString("F2")})") lblVehicleLocation.Text = $"({X}, {Y}, {Toward.ToString("F2")})";
 		}
 		public void UpdateVehicleTarget(string Target)
 		{
 			if (lblVehicleTarget.Text != Target) lblVehicleTarget.Text = Target;
 		}
+		public void UpdateVehicleVelocity(double Velocity)
+		{
+			if (lblVehicleVelocity.Text != $"{Velocity.ToString("F2")} (m/s)") lblVehicleVelocity.Text = $"{Velocity.ToString("F2")} (m/s)";
+		}
+		public void UpdateVehicleLocationScore(double LocationScore)
+		{
+			if (lblVehicleLocationScore.Text != $"{LocationScore.ToString("F2")} %") lblVehicleLocationScore.Text = $"{LocationScore.ToString("F2")} %";
+		}
+		public void UpdateVehicleBatteryValue(double BatteryValue)
+		{
+			if (lblVehicleBatteryValue.Text != $"{BatteryValue.ToString("F2")} %") lblVehicleBatteryValue.Text = $"{BatteryValue.ToString("F2")} %";
+		}
+		public void UpdateVehicleAlarmMessage(string AlarmMessage)
+		{
+			if (lblVehicleAlarmMessage.Text != AlarmMessage) lblVehicleAlarmMessage.Text = AlarmMessage;
+		}
 		public void UpdateVehiclePath(string Path)
 		{
 			if (lblVehiclePath.Text != Path) lblVehiclePath.Text = Path;
 		}
-		public void UpdateVehicleMatch(double Match)
+		public void UpdateVehicleIpPort(string IpPort)
 		{
-			if (lblVehicleMatch.Text != $"{Match.ToString("F2")} %") lblVehicleMatch.Text = $"{Match.ToString("F2")} %";
+			if (lblVehicleIpPort.Text != IpPort) lblVehicleIpPort.Text = IpPort;
 		}
-		public void UpdateVehicleBattery(double Battery)
+		public void UpdateVehicleMissionId(string MissionId)
 		{
-			if (lblVehicleBattery.Text != $"{Battery.ToString("F2")} %") lblVehicleBattery.Text = $"{Battery.ToString("F2")} %";
-		}
-		public void UpdateVehicleIntervenable(bool Intervenable)
-		{
-			if (lblVehicleIntervenable.Text != Intervenable.ToString()) lblVehicleIntervenable.Text = Intervenable.ToString();
+			if (lblVehicleMissionId.Text != MissionId) lblVehicleMissionId.Text = MissionId;
 		}
 		public void UpdateVehicleInterveneCommand(string InterveneCommand)
 		{
 			if (lblVehicleInterveneCommand.Text != InterveneCommand) lblVehicleInterveneCommand.Text = InterveneCommand;
 		}
-		public void UpdateVehicleIntervening(bool Intervening)
+		public void UpdateVehicleMapName(string MapName)
 		{
-			if (lblVehicleIntervening.Text != Intervening.ToString()) lblVehicleIntervening.Text = Intervening.ToString();
+			if (lblVehicleMapName.Text != MapName) lblVehicleMapName.Text = MapName;
 		}
 		public void UpdateVehicleLastUpdateTime(string Time)
 		{
@@ -126,16 +130,17 @@ namespace TrafficControlTest.UserControl
 		private void InitializeLabelText()
 		{
 			lblVehicleState.Text = string.Empty;
-			lblVehicleVelocity.Text = string.Empty;
-			lblVehiclePosition.Text = string.Empty;
-			lblVehicleToward.Text = string.Empty;
+			lblVehicleLocation.Text = string.Empty;
 			lblVehicleTarget.Text = string.Empty;
+			lblVehicleVelocity.Text = string.Empty;
+			lblVehicleBatteryValue.Text = string.Empty;
 			lblVehiclePath.Text = string.Empty;
-			lblVehicleMatch.Text = string.Empty;
-			lblVehicleBattery.Text = string.Empty;
-			lblVehicleIntervenable.Text = string.Empty;
+			lblVehicleLocationScore.Text = string.Empty;
+			lblVehicleAlarmMessage.Text = string.Empty;
+			lblVehicleIpPort.Text = string.Empty;
+			lblVehicleMissionId.Text = string.Empty;
+			lblVehicleMapName.Text = string.Empty;
 			lblVehicleInterveneCommand.Text = string.Empty;
-			lblVehicleIntervening.Text = string.Empty;
 			lblVehicleLastUpdateTime.Text = string.Empty;
 		}
 	}
