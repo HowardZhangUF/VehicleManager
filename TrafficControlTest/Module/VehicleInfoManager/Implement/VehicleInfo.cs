@@ -558,6 +558,7 @@ namespace TrafficControlTest.Implement
 			if (NewMapNameList != null)
 			{
 				mCurrentMapNameList = NewMapNameList.ToList();
+				result = true;
 			}
 			return result;
 		}
