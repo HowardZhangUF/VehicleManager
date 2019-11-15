@@ -140,6 +140,11 @@ namespace TrafficControlTest.UserInterface
 		{
 			SendCommandToVehicle(VehicleName, Command, Parameters);
 		}
+		private void ucVehicleApi1_VehicleStateNeedToBeRefreshed(string VehicleName)
+		{
+			UpdateGui_UcVehicleApi_UpdateRemoteMapNameList(VehicleName);
+			UpdateGui_UcVehicleApi_UpdateLocalMapNameList();
+		}
 
 		#region UpdateGui Functions
 		#region General
@@ -162,6 +167,13 @@ namespace TrafficControlTest.UserInterface
 				// Update Page of Vehicle Overview
 				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBatteryValue.ToString("F2"));
 				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mCurrentState);
+
+				// Update Page of Vehicle Api
+				if (StateName.Contains("CurrentMapNameList"))
+				{
+					UpdateGui_UcVehicleApi_UpdateRemoteMapNameList(VehicleName, VehicleInfo.mCurrentMapNameList);
+					UpdateGui_UcVehicleApi_UpdateLocalMapNameList();
+				}
 			}
 		}
 		private void UpdateGui_All_UpdateVehicleNameList()
@@ -478,6 +490,29 @@ namespace TrafficControlTest.UserInterface
 			ucVehicleOverview1.InvokeIfNecessary(() =>
 			{
 				ucVehicleOverview1.Remove(Id);
+			});
+		}
+		#endregion
+		#region VehicleApi
+		private void UpdateGui_UcVehicleApi_UpdateRemoteMapNameList(string VehicleName)
+		{
+			UpdateGui_UcVehicleApi_UpdateRemoteMapNameList(VehicleName, GetVehicleInfo(VehicleName).mCurrentMapNameList.ToArray());
+		}
+		private void UpdateGui_UcVehicleApi_UpdateRemoteMapNameList(string VehicleName, IEnumerable<string> MapNameList)
+		{
+			ucVehicleApi1.InvokeIfNecessary(() =>
+			{
+				if (ucVehicleApi1.CurrentVehicleName == VehicleName)
+				{
+					ucVehicleApi1.UpdateRemoteMapNameList(MapNameList.ToArray());
+				}
+			});
+		}
+		private void UpdateGui_UcVehicleApi_UpdateLocalMapNameList()
+		{
+			ucVehicleApi1.InvokeIfNecessary(() =>
+			{
+				ucVehicleApi1.UpdateLocalMapNameList(Library.Library.GetLocalMapNameList());
 			});
 		}
 		#endregion

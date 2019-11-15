@@ -463,6 +463,7 @@
 			this.cbVehicleNameList.Name = "cbVehicleNameList";
 			this.cbVehicleNameList.Size = new System.Drawing.Size(314, 35);
 			this.cbVehicleNameList.TabIndex = 3;
+			this.cbVehicleNameList.SelectedIndexChanged += new System.EventHandler(this.cbVehicleNameList_SelectedIndexChanged);
 			// 
 			// panel1
 			// 

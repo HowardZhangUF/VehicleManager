@@ -564,6 +564,7 @@
 			this.ucVehicleApi1.VehicleGetMap += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
 			this.ucVehicleApi1.VehicleUploadMap += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
 			this.ucVehicleApi1.VehicleChangeMap += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
+			this.ucVehicleApi1.VehicleStateNeedToBeRefreshed += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerString(this.ucVehicleApi1_VehicleStateNeedToBeRefreshed);
 			// 
 			// ucVehicleManualControl1
 			// 

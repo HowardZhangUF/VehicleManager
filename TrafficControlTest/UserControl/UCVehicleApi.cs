@@ -13,6 +13,7 @@ namespace TrafficControlTest.UserControl
 	public partial class UCVehicleApi : System.Windows.Forms.UserControl
 	{
 		public delegate void EventHandlerStringStringStrings(string VehicleName, string Command, params string[] Parameters);
+		public delegate void EventHandlerString(string VehicleName);
 
 		public event EventHandlerStringStringStrings VehicleGoto;
 		public event EventHandlerStringStringStrings VehicleGotoPoint;
@@ -26,6 +27,9 @@ namespace TrafficControlTest.UserControl
 		public event EventHandlerStringStringStrings VehicleGetMap;
 		public event EventHandlerStringStringStrings VehicleUploadMap;
 		public event EventHandlerStringStringStrings VehicleChangeMap;
+		public event EventHandlerString VehicleStateNeedToBeRefreshed;
+
+		public string CurrentVehicleName { get { return cbVehicleNameList.SelectedItem == null ? string.Empty : cbVehicleNameList.SelectedItem.ToString(); } }
 
 		public UCVehicleApi()
 		{
@@ -242,6 +246,17 @@ namespace TrafficControlTest.UserControl
 				Task.Run(() => { VehicleChangeMap?.Invoke(VehicleName, "ChangeMap", MapName); });
 			}
 		}
+		protected virtual void RaiseEvent_VehicleStateNeedToBeRefreshed(string VehicleName, bool Sync = true)
+		{
+			if (Sync)
+			{
+				VehicleStateNeedToBeRefreshed?.Invoke(VehicleName);
+			}
+			else
+			{
+				Task.Run(() => { VehicleStateNeedToBeRefreshed?.Invoke(VehicleName); });
+			}
+		}
 		private void btnVehicleGoto_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbGoalNameList.SelectedItem != null)
@@ -336,6 +351,13 @@ namespace TrafficControlTest.UserControl
 			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList2.SelectedItem != null)
 			{
 				RaiseEvent_VehicleChangeMap(cbVehicleNameList.SelectedItem.ToString(), cbRemoteMapNameList2.SelectedItem.ToString());
+			}
+		}
+		private void cbVehicleNameList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!string.IsNullOrEmpty(CurrentVehicleName))
+			{
+				RaiseEvent_VehicleStateNeedToBeRefreshed(CurrentVehicleName);
 			}
 		}
 	}
