@@ -229,6 +229,10 @@ namespace TrafficControlTest.Library
 		{
 			return new MissionUpdater(VehicleCommunicator, VehicleInfoManager, MissionStateManager);
 		}
+		public static IMapManager GenerateIMapManager(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		{
+			return new MapManager(VehicleCommunicator, VehicleInfoManager);
+		}
 		#endregion
 
 		#region IPoint2D
@@ -999,5 +1003,8 @@ namespace TrafficControlTest.Library
 
 		public delegate void EventHandlerItem<T>(DateTime OccurTime, string Name, T Item);
 		public delegate void EventHandlerItemUpdated<T>(DateTime OccurTime, string Name, string StateName, T Item);
+
+		public delegate void EventHandlerMapFileName(DateTime OccurTime, string MapFileName);
+		public delegate void EventHandlerVehicleNamesMapFileName(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName);
 	}
 }

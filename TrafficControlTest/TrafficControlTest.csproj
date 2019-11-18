@@ -54,11 +54,13 @@
     <Compile Include="Library\Configuration.cs" />
     <Compile Include="Module\CollisionEventManager\Implement\CollisionEventHandler.cs" />
     <Compile Include="Module\General\Implement\HostCommunicator.cs" />
+    <Compile Include="Module\General\Implement\MapManager.cs" />
     <Compile Include="Module\General\Interface\IItemManager.cs" />
     <Compile Include="Module\General\Implement\ItemManager.cs" />
     <Compile Include="Module\General\Interface\ICommunicatorServer.cs" />
     <Compile Include="Module\General\Interface\IHostCommunicator.cs" />
     <Compile Include="Module\General\Interface\IItem.cs" />
+    <Compile Include="Module\General\Interface\IMapManager.cs" />
     <Compile Include="Module\InterveneManager\Implement\VehicleControl.cs" />
     <Compile Include="Module\InterveneManager\Implement\VehicleControlHandler.cs" />
     <Compile Include="Module\InterveneManager\Implement\VehicleControlManager.cs" />
