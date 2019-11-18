@@ -11,8 +11,8 @@ namespace TrafficControlTest.Module.General.Interface
 	/// <summary>
 	///	- Reference: IVehicleCommunicator, IVehicleInfoManager
 	/// - 提供設定地圖檔資料夾路徑的功能。範例： .\\Map\\
-	/// - 提供取得本地地圖檔清單的功能。取得的清單僅有檔案名稱(含副檔名)，並非完整路徑
-	/// - 提供取得地圖檔完整路徑的功能。輸入範例： Test.map ，輸出範例： .\\Map\\Test.map
+	/// - 提供取得本地地圖檔清單的功能。取得的清單僅有檔案名稱(不含副檔名)，並非完整路徑
+	/// - 提供取得地圖檔完整路徑的功能。輸入範例： Test ，輸出範例： .\\Map\\Test.map
 	/// - 提供新增、移除地圖檔的功能。參數僅需輸入檔案名稱(含副檔名)，範例： Test.map
 	/// - 提供同步所有車的當前使用地圖的功能。輸入範例： Test.map
 	/// - 當新增、移除地圖檔時會拋出事件

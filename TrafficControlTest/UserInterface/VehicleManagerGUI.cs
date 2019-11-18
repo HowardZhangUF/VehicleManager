@@ -512,7 +512,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			ucVehicleApi1.InvokeIfNecessary(() =>
 			{
-				ucVehicleApi1.UpdateLocalMapNameList(Library.Library.GetLocalMapNameList());
+				ucVehicleApi1.UpdateLocalMapNameList(GetLocalMapNameList());
 			});
 		}
 		#endregion
@@ -565,6 +565,7 @@ namespace TrafficControlTest.UserInterface
 
 			mCore.VehicleCommunicatorSetConfigOfListenPort(int.Parse(GetConfigurationValue("VehicleCommunicator", "ListenPort")));
 			mCore.HostCommunicatorSetConfigOfListenPort(int.Parse(GetConfigurationValue("HostCommunicator", "ListenPort")));
+			mCore.MapManagerSetConfigOfMapDirectory(GetConfigurationValue("MapManager", "MapDirectory"));
 
 			mCore.VehicleCommunicatorStartListen();
 			mCore.CollisionEventDetectorStart();
@@ -582,6 +583,7 @@ namespace TrafficControlTest.UserInterface
 
 			SetConfigurationValue("HostCommunicator", "ListenPort", mCore.HostCommunicatorGetConfigOfListenPort().ToString());
 			SetConfigurationValue("VehicleCommunicator", "ListenPort", mCore.VehicleCommunicatorGetConfigOfListenPort().ToString());
+			SetConfigurationValue("MapManager", "MapDirectory", mCore.MapManagerGetConfigOfMapDirectory());
 
 			UnsubscribeEvent_VehicleManagerProcess(mCore);
 			mCore = null;
@@ -601,6 +603,8 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.MissionStateManagerItemAdded += HandleEvent_VehicleManagerProcessMissionStateManagerItemAdded;
 				VehicleManagerProcess.MissionStateManagerItemRemoved += HandleEvent_VehicleManagerProcessMissionStateManagerItemRemoved;
 				VehicleManagerProcess.MissionStateManagerItemUpdated += HandleEvent_VehicleManagerProcessMissionStateManagerItemUpdated;
+				VehicleManagerProcess.MapManagerMapFileAdded += HandleEvent_VehicleManagerProcessMapManagerMapFileAdded;
+				VehicleManagerProcess.MapManagerMapFileRemoved += HandleEvent_VehicleManagerProcessMapManagerMapFileRemoved;
 			}
 		}
 		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
@@ -618,6 +622,8 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.MissionStateManagerItemAdded -= HandleEvent_VehicleManagerProcessMissionStateManagerItemAdded;
 				VehicleManagerProcess.MissionStateManagerItemRemoved -= HandleEvent_VehicleManagerProcessMissionStateManagerItemRemoved;
 				VehicleManagerProcess.MissionStateManagerItemUpdated -= HandleEvent_VehicleManagerProcessMissionStateManagerItemUpdated;
+				VehicleManagerProcess.MapManagerMapFileAdded -= HandleEvent_VehicleManagerProcessMapManagerMapFileAdded;
+				VehicleManagerProcess.MapManagerMapFileRemoved -= HandleEvent_VehicleManagerProcessMapManagerMapFileRemoved;
 			}
 		}
 		private void HandleEvent_VehicleManagerProcessDebugMessage(string OccurTime, string Category, string Message)
@@ -681,6 +687,14 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_UcMission_UpdateMission(MissionId, StateName, MissionState);
 		}
+		private void HandleEvent_VehicleManagerProcessMapManagerMapFileAdded(DateTime OccurTime, string MapFileName)
+		{
+			UpdateGui_UcVehicleApi_UpdateLocalMapNameList();
+		}
+		private void HandleEvent_VehicleManagerProcessMapManagerMapFileRemoved(DateTime OccurTime, string MapFileName)
+		{
+			UpdateGui_UcVehicleApi_UpdateLocalMapNameList();
+		}
 
 		private string[] GetVehicleNameList()
 		{
@@ -689,6 +703,10 @@ namespace TrafficControlTest.UserInterface
 		private IVehicleInfo GetVehicleInfo(string VehicleName)
 		{
 			return mCore.GetVehicleInfo(VehicleName);
+		}
+		private string[] GetLocalMapNameList()
+		{
+			return mCore.MapManagerGetLocalMapNameList();
 		}
 		private void SendCommandToVehicle(string VehicleName, string Command, params string[] Paras)
 		{

@@ -27,9 +27,7 @@ namespace TrafficControlTest.Implement
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
-			Unsubscribe_IVehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
-			Subscribe_IVehicleInfoManager(rVehicleInfoManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
 		{
@@ -51,20 +49,6 @@ namespace TrafficControlTest.Implement
 			{
 				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChanged;
 				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
-			}
-		}
-		private void Subscribe_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
-		{
-			if (VehicleInfoManager != null)
-			{
-				VehicleInfoManager.ItemAdded += HandleEvent_VehicleInfoManagerItemAdded;
-			}
-		}
-		private void Unsubscribe_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
-		{
-			if (VehicleInfoManager != null)
-			{
-				VehicleInfoManager.ItemAdded -= HandleEvent_VehicleInfoManagerItemAdded;
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
@@ -93,15 +77,7 @@ namespace TrafficControlTest.Implement
 				{
 					UpdateIVehicleInfo(IpPort, (Data as RequestMapList).Response);
 				}
-				else if (Data is GetMap && (Data as GetMap).Response != null)
-				{
-					SaveMap((Data as GetMap).Response);
-				}
 			}
-		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
-		{
-			rVehicleCommunicator.SendSerializableData_RequestMapList(Item.mIpPort);
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVStatus AgvStatus)
 		{
@@ -153,11 +129,6 @@ namespace TrafficControlTest.Implement
 				tmpData.UpdateCurrentMapNameList(MapList);
 				tmpData.EndUpdate();
 			}
-		}
-		private void SaveMap(FileInfo MapFile)
-		{
-			if (!System.IO.Directory.Exists(Library.Library.DefaultLocalMapDirectory)) System.IO.Directory.CreateDirectory(Library.Library.DefaultLocalMapDirectory);
-			MapFile.SaveAs(Library.Library.DefaultLocalMapDirectory);
 		}
 	}
 }

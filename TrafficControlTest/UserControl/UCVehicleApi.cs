@@ -336,7 +336,7 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList1.SelectedItem != null)
 			{
-				RaiseEvent_VehicleGetMap(cbVehicleNameList.SelectedItem.ToString(), cbRemoteMapNameList1.SelectedItem.ToString());
+				RaiseEvent_VehicleGetMap(cbVehicleNameList.SelectedItem.ToString(), cbRemoteMapNameList1.SelectedItem.ToString().Replace("*", string.Empty));
 			}
 		}
 		private void btnVehicleUploadMap_Click(object sender, EventArgs e)
@@ -350,7 +350,7 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList2.SelectedItem != null)
 			{
-				RaiseEvent_VehicleChangeMap(cbVehicleNameList.SelectedItem.ToString(), cbRemoteMapNameList2.SelectedItem.ToString());
+				RaiseEvent_VehicleChangeMap(cbVehicleNameList.SelectedItem.ToString(), cbRemoteMapNameList2.SelectedItem.ToString().Replace("*", string.Empty));
 			}
 		}
 		private void cbVehicleNameList_SelectedIndexChanged(object sender, EventArgs e)

@@ -58,15 +58,16 @@ namespace TrafficControlTest.Module.General.Implement
 			if (Directory.Exists(mMapDirectory))
 			{
 				result = Directory.GetFiles(mMapDirectory, "*.map", System.IO.SearchOption.TopDirectoryOnly);
+				result = result.Select(o => o.Replace(mMapDirectory, string.Empty).Replace(".map", string.Empty)).ToArray();
 			}
 			return result;
 		}
 		public string GetMapFileFullPath(string MapFileName)
 		{
 			string result = string.Empty;
-			if (File.Exists(mMapDirectory + MapFileName))
+			if (File.Exists(mMapDirectory + MapFileName + ".map"))
 			{
-				result = mMapDirectory + MapFileName;
+				result = mMapDirectory + MapFileName + ".map";
 			}
 			return result;
 		}
@@ -74,6 +75,7 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			if (!string.IsNullOrEmpty(MapFileName) && MapData != null)
 			{
+				if (!Directory.Exists(mMapDirectory)) Directory.CreateDirectory(mMapDirectory);
 				File.WriteAllBytes(mMapDirectory + MapFileName, MapData);
 				RaiseEvent_MapFileAdded(MapFileName);
 			}

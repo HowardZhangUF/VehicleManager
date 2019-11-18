@@ -38,18 +38,7 @@ namespace TrafficControlTest.Library
 		public static int DefaultVehicleSafetyFrameRadius = 500;
 		public static int DefaultVehicleBufferFrameRadius = 500;
 		public static int DefaultVehicleAverageVelocityDataCount = 10;
-		public static string DefaultLocalMapDirectory = ".\\Map";
 
-		public static string[] GetLocalMapNameList()
-		{
-			string[] result = null;
-			if (System.IO.Directory.Exists(DefaultLocalMapDirectory))
-			{
-				result = System.IO.Directory.GetFiles(DefaultLocalMapDirectory);
-				result = result.Select(o => o.Replace($"{DefaultLocalMapDirectory}\\", string.Empty)).ToArray();
-			}
-			return result;
-		}
 		public static T GetDeepClone<T>(T o)
 		{
 			using (var ms = new System.IO.MemoryStream())
