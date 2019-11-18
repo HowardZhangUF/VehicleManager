@@ -80,14 +80,18 @@ namespace TrafficControlTest.UserControl
 			if (MapNameList == null || MapNameList.Count() == 0)
 			{
 				cbRemoteMapNameList1.Items.Clear();
+				cbRemoteMapNameList1.AdjustDropDownWidth();
 				cbRemoteMapNameList2.Items.Clear();
+				cbRemoteMapNameList2.AdjustDropDownWidth();
 			}
 			else
 			{
 				cbRemoteMapNameList1.Items.Clear();
 				cbRemoteMapNameList1.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
+				cbRemoteMapNameList1.AdjustDropDownWidth();
 				cbRemoteMapNameList2.Items.Clear();
 				cbRemoteMapNameList2.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
+				cbRemoteMapNameList2.AdjustDropDownWidth();
 			}
 		}
 		public void UpdateLocalMapNameList(string[] MapNameList)
@@ -95,11 +99,13 @@ namespace TrafficControlTest.UserControl
 			if (MapNameList == null || MapNameList.Count() == 0)
 			{
 				cbLocalMapNameList.Items.Clear();
+				cbLocalMapNameList.AdjustDropDownWidth();
 			}
 			else
 			{
 				cbLocalMapNameList.Items.Clear();
 				cbLocalMapNameList.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
+				cbLocalMapNameList.AdjustDropDownWidth();
 			}
 		}
 
