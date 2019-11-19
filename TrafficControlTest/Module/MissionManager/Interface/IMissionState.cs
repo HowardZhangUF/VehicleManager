@@ -27,6 +27,7 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 	/// <summary>
 	/// - 儲存任務的資訊及狀態
 	/// </summary>
+	/// <remarks>mName 即為 IMission 的 Mission ID ，但若該 Mission ID 為空，則會自行產生</remarks>
 	public interface IMissionState : IItem
 	{
 		IMission mMission { get; }

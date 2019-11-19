@@ -52,13 +52,13 @@ namespace TrafficControlTest.Base
 
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
-		private IVehicleInfoUpdater mVehicleInfoUpdater = null;
 		private ICollisionEventManager mCollisionEventManager = null;
 		private ICollisionEventDetector mCollisionEventDetector = null;
 		private IVehicleControlManager mVehicleControlManager = null;
 		private ICollisionEventHandler mCollisionEventHandler = null;
 		private IVehicleControlHandler mVehicleControlHandler = null;
 		private IMissionStateManager mMissionStateManager = null;
+		private IVehicleInfoUpdater mVehicleInfoUpdater = null;
 		private IHostCommunicator mHostCommunicator = null;
 		private IHostMessageAnalyzer mHostMessageAnalyzer = null;
 		private IMissionDispatcher mMissionDispatcher = null;
@@ -222,10 +222,6 @@ namespace TrafficControlTest.Base
 			mVehicleInfoManager = GenerateIVehicleInfoManager();
 			SubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
 
-			UnsubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
-			mVehicleInfoUpdater = GenerateIVehicleInfoUpdater(mVehicleCommunicator, mVehicleInfoManager);
-			SubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
-
 			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
 			mCollisionEventManager = GenerateICollisionEventManager();
 			SubscribeEvent_ICollisionEventManager(mCollisionEventManager);
@@ -249,6 +245,10 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IMissionStateManager(mMissionStateManager);
 			mMissionStateManager = GenerateIMissionStateManager();
 			SubscribeEvent_IMissionStateManager(mMissionStateManager);
+
+			UnsubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
+			mVehicleInfoUpdater = GenerateIVehicleInfoUpdater(mVehicleCommunicator, mMissionStateManager, mVehicleInfoManager);
+			SubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
 
 			UnsubscribeEvent_IHostCommunicator(mHostCommunicator);
 			mHostCommunicator = GenerateIHostCommunicator();
@@ -278,9 +278,6 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
 			mVehicleInfoManager = null;
 
-			UnsubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
-			mVehicleInfoUpdater = null;
-
 			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
 			mCollisionEventManager = null;
 
@@ -298,6 +295,9 @@ namespace TrafficControlTest.Base
 
 			UnsubscribeEvent_IMissionStateManager(mMissionStateManager);
 			mMissionStateManager = null;
+
+			UnsubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
+			mVehicleInfoUpdater = null;
 
 			UnsubscribeEvent_IHostCommunicator(mHostCommunicator);
 			mHostCommunicator = null;
@@ -352,20 +352,6 @@ namespace TrafficControlTest.Base
 				VehicleInfoManager.ItemAdded -= HandleEvent_VehicleInfoManagerItemAdded;
 				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
-			}
-		}
-		private void SubscribeEvent_IVehicleInfoUpdater(IVehicleInfoUpdater VehicleInfoUpdater)
-		{
-			if (VehicleInfoUpdater != null)
-			{
-
-			}
-		}
-		private void UnsubscribeEvent_IVehicleInfoUpdater(IVehicleInfoUpdater VehicleInfoUpdater)
-		{
-			if (VehicleInfoUpdater != null)
-			{
-
 			}
 		}
 		private void SubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
@@ -466,6 +452,20 @@ namespace TrafficControlTest.Base
 				MissionStateManager.ItemAdded -= HandleEvent_MissionStateManagerItemAdded;
 				MissionStateManager.ItemRemoved -= HandleEvent_MissionStateManagerItemRemoved;
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IVehicleInfoUpdater(IVehicleInfoUpdater VehicleInfoUpdater)
+		{
+			if (VehicleInfoUpdater != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_IVehicleInfoUpdater(IVehicleInfoUpdater VehicleInfoUpdater)
+		{
+			if (VehicleInfoUpdater != null)
+			{
+
 			}
 		}
 		private void SubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)

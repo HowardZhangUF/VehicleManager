@@ -7,17 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Implement
 {
 	public class VehicleInfoUpdater : IVehicleInfoUpdater
 	{
 		private IVehicleCommunicator rVehicleCommunicator = null;
+		private IMissionStateManager rMissionStateManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 
-		public VehicleInfoUpdater(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		public VehicleInfoUpdater(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager)
 		{
-			Set(VehicleCommunicator, VehicleInfoManager);
+			Set(VehicleCommunicator, MissionStateManager, VehicleInfoManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -25,13 +27,20 @@ namespace TrafficControlTest.Implement
 			rVehicleCommunicator = VehicleCommunicator;
 			Subscribe_IVehicleCommunicator(rVehicleCommunicator);
 		}
+		public void Set(IMissionStateManager MissionStateManager)
+		{
+			Unsubscribe_IMissionStateManager(rMissionStateManager);
+			rMissionStateManager = MissionStateManager;
+			Subscribe_IMissionStateManager(rMissionStateManager);
+		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
 			rVehicleInfoManager = VehicleInfoManager;
 		}
-		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		public void Set(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager)
 		{
 			Set(VehicleCommunicator);
+			Set(MissionStateManager);
 			Set(VehicleInfoManager);
 		}
 
@@ -49,6 +58,20 @@ namespace TrafficControlTest.Implement
 			{
 				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChanged;
 				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
+			}
+		}
+		private void Subscribe_IMissionStateManager(IMissionStateManager MissionStateManager)
+		{
+			if (MissionStateManager != null)
+			{
+				MissionStateManager.ItemUpdated += HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void Unsubscribe_IMissionStateManager(IMissionStateManager MissionStateManager)
+		{
+			if (MissionStateManager != null)
+			{
+				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
@@ -76,6 +99,24 @@ namespace TrafficControlTest.Implement
 				else if (Data is RequestMapList && (Data as RequestMapList).Response != null)
 				{
 					UpdateIVehicleInfo(IpPort, (Data as RequestMapList).Response);
+				}
+			}
+		}
+		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
+		{
+			if (StateName.Contains("ExecuteState"))
+			{
+				switch (Item.mExecuteState)
+				{
+					case ExecuteState.Unexecute:
+						break;
+					case ExecuteState.Executing:
+						rVehicleInfoManager.UpdateItemMissionId(Item.mExecutorId, Item.mName);
+						break;
+					case ExecuteState.ExecuteSuccessed:
+					case ExecuteState.ExecuteFailed:
+						rVehicleInfoManager.UpdateItemMissionId(Item.mExecutorId, string.Empty);
+						break;
 				}
 			}
 		}

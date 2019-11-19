@@ -79,42 +79,39 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
-			if (rMissionStateManager.mCount > 0)
+			if (rMissionStateManager.mCount > 0 && StateName.Contains("CurrentState") && !string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && rMissionStateManager.IsExist(VehicleInfo.mCurrentMissionId))
 			{
-				IMissionState missionState = rMissionStateManager.GetItems().FirstOrDefault(o => o.mExecuteState == ExecuteState.Executing && o.mExecutorId == Name);
-				if (missionState != null)
+				IMissionState missionState = rMissionStateManager[VehicleInfo.mCurrentMissionId];
+				switch (missionState.mMission.mMissionType)
 				{
-					switch (missionState.mMission.mMissionType)
-					{
-						case MissionType.Goto:
-							if (IsVehicleArrived(VehicleInfo, missionState.mMission.mParameters[0]))
+					case MissionType.Goto:
+						if (IsVehicleArrived(VehicleInfo, missionState.mMission.mParameters[0]))
+						{
+							missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						}
+						break;
+					case MissionType.GotoPoint:
+						if (missionState.mMission.mParameters.Length == 2)
+						{
+							if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1])))
 							{
 								missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
 							}
-							break;
-						case MissionType.GotoPoint:
-							if (missionState.mMission.mParameters.Length == 2)
-							{
-								if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1])))
-								{
-									missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-								}
-							}
-							else if (missionState.mMission.mParameters.Length == 3)
-							{
-								if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1]), int.Parse(missionState.mMission.mParameters[2])))
-								{
-									missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-								}
-							}
-							break;
-						case MissionType.Dock:
-							if (IsVehicleDocked(VehicleInfo))
+						}
+						else if (missionState.mMission.mParameters.Length == 3)
+						{
+							if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1]), int.Parse(missionState.mMission.mParameters[2])))
 							{
 								missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
 							}
-							break;
-					}
+						}
+						break;
+					case MissionType.Dock:
+						if (IsVehicleDocked(VehicleInfo))
+						{
+							missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						}
+						break;
 				}
 			}
 		}
@@ -159,15 +156,18 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			string missionId = null;
 			if (Data is GoTo)
 			{
-				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId)?.mName;
+				GoTo tmpData = Data as GoTo;
+				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require)?.mName;
 			}
 			else if (Data is GoToPoint)
 			{
-				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId)?.mName;
+				GoToPoint tmpData = Data as GoToPoint;
+				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString())?.mName;
 			}
 			else if (Data is GoToTowardPoint)
 			{
-				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId)?.mName;
+				GoToTowardPoint tmpData = Data as GoToTowardPoint;
+				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString() && o.mMission.mParameters[2] == tmpData.Require[2].ToString())?.mName;
 			}
 			return missionId;
 		}

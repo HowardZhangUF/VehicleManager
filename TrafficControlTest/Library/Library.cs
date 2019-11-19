@@ -139,9 +139,9 @@ namespace TrafficControlTest.Library
 		{
 			return new VehicleInfoManager();
 		}
-		public static IVehicleInfoUpdater GenerateIVehicleInfoUpdater(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		public static IVehicleInfoUpdater GenerateIVehicleInfoUpdater(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager)
 		{
-			return new VehicleInfoUpdater(VehicleCommunicator, VehicleInfoManager);
+			return new VehicleInfoUpdater(VehicleCommunicator, MissionStateManager, VehicleInfoManager);
 		}
 		public static ICollisionEventManager GenerateICollisionEventManager()
 		{
