@@ -22,7 +22,7 @@ namespace TrafficControlTest.Module.General.Interface
 	/// - 車子連線時，會發送詢問當前地圖資訊的要求
 	/// - 當車子當前使用地圖資訊改變時，會向車子要求當前地圖檔
 	/// </summary>
-	public interface IMapManager
+	public interface IMapFileManager
 	{
 		event EventHandlerMapFileName MapFileAdded;
 		event EventHandlerMapFileName MapFileRemoved;

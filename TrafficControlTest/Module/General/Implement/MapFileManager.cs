@@ -13,7 +13,7 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Implement
 {
-	public class MapManager : IMapManager
+	public class MapFileManager : IMapFileManager
 	{
 		public event EventHandlerMapFileName MapFileAdded;
 		public event EventHandlerMapFileName MapFileRemoved;
@@ -23,7 +23,7 @@ namespace TrafficControlTest.Module.General.Implement
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private string mMapDirectory { get; set; } = string.Empty;
 
-		public MapManager(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		public MapFileManager(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
 		{
 			Set(VehicleCommunicator, VehicleInfoManager);
 		}
