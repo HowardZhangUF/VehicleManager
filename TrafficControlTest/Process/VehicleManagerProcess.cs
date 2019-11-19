@@ -52,7 +52,7 @@ namespace TrafficControlTest.Base
 
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
-		private IVehicleMessageAnalyzer mVehicleMessageAnalyzer = null;
+		private IVehicleInfoUpdater mVehicleInfoUpdater = null;
 		private ICollisionEventManager mCollisionEventManager = null;
 		private ICollisionEventDetector mCollisionEventDetector = null;
 		private IVehicleControlManager mVehicleControlManager = null;
@@ -222,9 +222,9 @@ namespace TrafficControlTest.Base
 			mVehicleInfoManager = GenerateIVehicleInfoManager();
 			SubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
 
-			UnsubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
-			mVehicleMessageAnalyzer = GenerateIVehicleMessageAnalyzer(mVehicleCommunicator, mVehicleInfoManager);
-			SubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
+			UnsubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
+			mVehicleInfoUpdater = GenerateIVehicleInfoUpdater(mVehicleCommunicator, mVehicleInfoManager);
+			SubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
 
 			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
 			mCollisionEventManager = GenerateICollisionEventManager();
@@ -278,8 +278,8 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
 			mVehicleInfoManager = null;
 
-			UnsubscribeEvent_IVehicleMessageAnalyzer(mVehicleMessageAnalyzer);
-			mVehicleMessageAnalyzer = null;
+			UnsubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
+			mVehicleInfoUpdater = null;
 
 			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
 			mCollisionEventManager = null;
@@ -354,16 +354,16 @@ namespace TrafficControlTest.Base
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		private void SubscribeEvent_IVehicleMessageAnalyzer(IVehicleMessageAnalyzer VehicleMessageAnalyzer)
+		private void SubscribeEvent_IVehicleInfoUpdater(IVehicleInfoUpdater VehicleInfoUpdater)
 		{
-			if (VehicleMessageAnalyzer != null)
+			if (VehicleInfoUpdater != null)
 			{
 
 			}
 		}
-		private void UnsubscribeEvent_IVehicleMessageAnalyzer(IVehicleMessageAnalyzer VehicleMessageAnalyzer)
+		private void UnsubscribeEvent_IVehicleInfoUpdater(IVehicleInfoUpdater VehicleInfoUpdater)
 		{
-			if (VehicleMessageAnalyzer != null)
+			if (VehicleInfoUpdater != null)
 			{
 
 			}

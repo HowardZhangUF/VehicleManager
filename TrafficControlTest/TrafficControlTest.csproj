@@ -101,13 +101,13 @@
     <Compile Include="Module\General\Implement\VehicleCommunicator.cs" />
     <Compile Include="Module\VehicleInfoManager\Implement\VehicleInfo.cs" />
     <Compile Include="Module\VehicleInfoManager\Implement\VehicleInfoManager.cs" />
-    <Compile Include="Module\VehicleInfoManager\Implement\VehicleMessageAnalyzer.cs" />
+    <Compile Include="Module\VehicleInfoManager\Implement\VehicleInfoUpdater.cs" />
     <Compile Include="Module\CollisionEventManager\Interface\ICollisionEventDetector.cs" />
     <Compile Include="Module\CollisionEventManager\Interface\ICollisionEventManager.cs" />
     <Compile Include="Module\General\Interface\ICommunicatorClient.cs" />
     <Compile Include="Module\General\Interface\ITimePeriod.cs" />
     <Compile Include="Module\General\Interface\ITowardPoint2D.cs" />
-    <Compile Include="Module\VehicleInfoManager\Interface\IVehicleMessageAnalyzer.cs" />
+    <Compile Include="Module\VehicleInfoManager\Interface\IVehicleInfoUpdater.cs" />
     <Compile Include="Library\IntMath.cs" />
     <Compile Include="Module\CollisionEventManager\Implement\CollisionPair.cs" />
     <Compile Include="Module\CollisionEventManager\Interface\ICollisionPair.cs" />

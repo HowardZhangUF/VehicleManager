@@ -10,12 +10,12 @@ using TrafficControlTest.Library;
 
 namespace TrafficControlTest.Implement
 {
-	public class VehicleMessageAnalyzer : IVehicleMessageAnalyzer
+	public class VehicleInfoUpdater : IVehicleInfoUpdater
 	{
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 
-		public VehicleMessageAnalyzer(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		public VehicleInfoUpdater(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
 		{
 			Set(VehicleCommunicator, VehicleInfoManager);
 		}
