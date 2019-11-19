@@ -565,7 +565,7 @@ namespace TrafficControlTest.UserInterface
 
 			mCore.VehicleCommunicatorSetConfigOfListenPort(int.Parse(GetConfigurationValue("VehicleCommunicator", "ListenPort")));
 			mCore.HostCommunicatorSetConfigOfListenPort(int.Parse(GetConfigurationValue("HostCommunicator", "ListenPort")));
-			mCore.MapFileManagerSetConfigOfMapDirectory(GetConfigurationValue("MapFileManager", "MapDirectory"));
+			mCore.MapFileManagerSetConfigOfMapFileDirectory(GetConfigurationValue("MapFileManager", "MapFileDirectory"));
 
 			mCore.VehicleCommunicatorStartListen();
 			mCore.CollisionEventDetectorStart();
@@ -583,7 +583,7 @@ namespace TrafficControlTest.UserInterface
 
 			SetConfigurationValue("HostCommunicator", "ListenPort", mCore.HostCommunicatorGetConfigOfListenPort().ToString());
 			SetConfigurationValue("VehicleCommunicator", "ListenPort", mCore.VehicleCommunicatorGetConfigOfListenPort().ToString());
-			SetConfigurationValue("MapFileManager", "MapDirectory", mCore.MapFileManagerGetConfigOfMapDirectory());
+			SetConfigurationValue("MapFileManager", "MapFileDirectory", mCore.MapFileManagerGetConfigOfMapFileDirectory());
 
 			UnsubscribeEvent_VehicleManagerProcess(mCore);
 			mCore = null;

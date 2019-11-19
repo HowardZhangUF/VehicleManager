@@ -199,13 +199,13 @@ namespace TrafficControlTest.Base
 		{
 			mMissionDispatcher.Stop();
 		}
-		public void MapFileManagerSetConfigOfMapDirectory(string MapDirectory)
+		public void MapFileManagerSetConfigOfMapFileDirectory(string MapFileDirectory)
 		{
-			mMapFileManager.SetConfigOfMapDirectory(MapDirectory);
+			mMapFileManager.SetConfigOfMapFileDirectory(MapFileDirectory);
 		}
-		public string MapFileManagerGetConfigOfMapDirectory()
+		public string MapFileManagerGetConfigOfMapFileDirectory()
 		{
-			return mMapFileManager.GetConfigOfMapDirectory();
+			return mMapFileManager.GetConfigOfMapFileDirectory();
 		}
 		public string[] MapFileManagerGetLocalMapNameList()
 		{

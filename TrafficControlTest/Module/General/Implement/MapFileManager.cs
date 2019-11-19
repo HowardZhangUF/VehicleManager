@@ -21,7 +21,7 @@ namespace TrafficControlTest.Module.General.Implement
 
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
-		private string mMapDirectory { get; set; } = string.Empty;
+		private string mMapFileDirectory { get; set; } = string.Empty;
 
 		public MapFileManager(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
 		{
@@ -44,30 +44,30 @@ namespace TrafficControlTest.Module.General.Implement
 			Set(VehicleCommunicator);
 			Set(VehicleInfoManager);
 		}
-		public void SetConfigOfMapDirectory(string MapDirectory)
+		public void SetConfigOfMapFileDirectory(string MapFileDirectory)
 		{
-			mMapDirectory = MapDirectory;
+			mMapFileDirectory = MapFileDirectory;
 		}
-		public string GetConfigOfMapDirectory()
+		public string GetConfigOfMapFileDirectory()
 		{
-			return mMapDirectory;
+			return mMapFileDirectory;
 		}
 		public string[] GetLocalMapNameList()
 		{
 			string[] result = null;
-			if (Directory.Exists(mMapDirectory))
+			if (Directory.Exists(mMapFileDirectory))
 			{
-				result = Directory.GetFiles(mMapDirectory, "*.map", System.IO.SearchOption.TopDirectoryOnly);
-				result = result.Select(o => o.Replace(mMapDirectory, string.Empty).Replace(".map", string.Empty)).ToArray();
+				result = Directory.GetFiles(mMapFileDirectory, "*.map", System.IO.SearchOption.TopDirectoryOnly);
+				result = result.Select(o => o.Replace(mMapFileDirectory, string.Empty).Replace(".map", string.Empty)).ToArray();
 			}
 			return result;
 		}
 		public string GetMapFileFullPath(string MapFileName)
 		{
 			string result = string.Empty;
-			if (File.Exists(mMapDirectory + MapFileName + ".map"))
+			if (File.Exists(mMapFileDirectory + MapFileName + ".map"))
 			{
-				result = mMapDirectory + MapFileName + ".map";
+				result = mMapFileDirectory + MapFileName + ".map";
 			}
 			return result;
 		}
@@ -75,16 +75,16 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			if (!string.IsNullOrEmpty(MapFileName) && MapData != null)
 			{
-				if (!Directory.Exists(mMapDirectory)) Directory.CreateDirectory(mMapDirectory);
-				File.WriteAllBytes(mMapDirectory + MapFileName, MapData);
+				if (!Directory.Exists(mMapFileDirectory)) Directory.CreateDirectory(mMapFileDirectory);
+				File.WriteAllBytes(mMapFileDirectory + MapFileName, MapData);
 				RaiseEvent_MapFileAdded(MapFileName);
 			}
 		}
 		public void RemoveMapFile(string MapFileName)
 		{
-			if (File.Exists(mMapDirectory + MapFileName))
+			if (File.Exists(mMapFileDirectory + MapFileName))
 			{
-				File.Delete(mMapDirectory + MapFileName);
+				File.Delete(mMapFileDirectory + MapFileName);
 				RaiseEvent_MapFileRemoved(MapFileName);
 			}
 		}

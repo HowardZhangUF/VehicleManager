@@ -31,8 +31,8 @@ namespace TrafficControlTest.Module.General.Interface
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager);
-		void SetConfigOfMapDirectory(string MapDirectory);
-		string GetConfigOfMapDirectory();
+		void SetConfigOfMapFileDirectory(string MapFileDirectory);
+		string GetConfigOfMapFileDirectory();
 		string[] GetLocalMapNameList();
 		string GetMapFileFullPath(string MapFileName);
 		void AddMapFile(string MapFileName, byte[] MapData);
