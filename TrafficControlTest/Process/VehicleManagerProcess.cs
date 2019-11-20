@@ -49,6 +49,7 @@ namespace TrafficControlTest.Base
 		public event EventHandlerMapFileName MapFileManagerMapFileAdded;
 		public event EventHandlerMapFileName MapFileManagerMapFileRemoved;
 		public event EventHandlerVehicleNamesMapFileName MapFileManagerVehicleCurrentMapSynchronized;
+		public event EventHandlerMapFileName MapManagerMapLoaded;
 
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
@@ -64,6 +65,7 @@ namespace TrafficControlTest.Base
 		private IMissionDispatcher mMissionDispatcher = null;
 		private IMissionUpdater mMissionUpdater = null;
 		private IMapFileManager mMapFileManager = null;
+		private IMapManager mMapManager = null;
 
 		public VehicleManagerProcess()
 		{
@@ -211,6 +213,18 @@ namespace TrafficControlTest.Base
 		{
 			return mMapFileManager.GetLocalMapNameList();
 		}
+		public void MapManagerSetConfigOfAutoLoadMap(bool Enable)
+		{
+			mMapManager.SetConfigOfAutoLoadMap(Enable);
+		}
+		public bool MapManagerGetConfigOfAutoLoadMap()
+		{
+			return mMapManager.GetConfigOfAutoLoadMap();
+		}
+		public string[] MapManagerGetGoalNameList()
+		{
+			return mMapManager.GetGoalNameList();
+		}
 
 		private void Constructor()
 		{
@@ -269,6 +283,10 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IMapFileManager(mMapFileManager);
 			mMapFileManager = GenerateIMapFileManager(mVehicleCommunicator, mVehicleInfoManager);
 			SubscribeEvent_IMapFileManager(mMapFileManager);
+
+			UnsubscribeEvent_IMapManager(mMapManager);
+			mMapManager = GenerateIMapManager(mVehicleInfoManager, mMapFileManager);
+			SubscribeEvent_IMapManager(mMapManager);
 		}
 		private void Destructor()
 		{
@@ -552,6 +570,20 @@ namespace TrafficControlTest.Base
 				MapFileManager.MapFileAdded -= HandleEvent_MapFileManagerMapFileAdded;
 				MapFileManager.MapFileRemoved -= HandleEvent_MapFileManagerMapFileRemoved;
 				MapFileManager.VehicleCurrentMapSynchronized -= HandleEvent_MapFileManagerVehicleCurrentMapSynchronized;
+			}
+		}
+		private void SubscribeEvent_IMapManager(IMapManager MapManager)
+		{
+			if (MapManager != null)
+			{
+				MapManager.MapLoaded += HandleEvent_MapManagerMapLoaded;
+			}
+		}
+		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
+		{
+			if (MapManager != null)
+			{
+				MapManager.MapLoaded -= HandleEvent_MapManagerMapLoaded;
 			}
 		}
 		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string Message, bool Sync = true)
@@ -950,6 +982,17 @@ namespace TrafficControlTest.Base
 				Task.Run(() => { MapFileManagerVehicleCurrentMapSynchronized?.Invoke(OccurTime, VehicleNames, MapFileName); });
 			}
 		}
+		protected virtual void RaiseEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName, bool Sync = true)
+		{
+			if (Sync)
+			{
+				MapManagerMapLoaded?.Invoke(OccurTime, MapFileName);
+			}
+			else
+			{
+				Task.Run(() => { MapManagerMapLoaded?.Invoke(OccurTime, MapFileName); });
+			}
+		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage("VehicleCommunicator", "System Started.");
@@ -1127,6 +1170,11 @@ namespace TrafficControlTest.Base
 		{
 			HandleDebugMessage("MapFileManager", $"Vehicle Current Map Synchronized. VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
 			RaiseEvent_MapFileManagerVehicleCurrentMapSynchronized(OccurTime, VehicleNames, MapFileName);
+		}
+		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
+		{
+			HandleDebugMessage("MapManager", $"Map Loaded. MapFileName: {MapFileName}");
+			RaiseEvent_MapManagerMapLoaded(OccurTime, MapFileName);
 		}
 		private void HandleDebugMessage(string Message)
 		{

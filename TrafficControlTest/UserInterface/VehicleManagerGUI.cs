@@ -194,10 +194,14 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void UpdateGui_All_UpdateGoalNameList()
 		{
-			string[] goalList = ucMap1.GetGoalList();
+			string[] goalNameList = GetMapGoalNameList();
 			ucVehicleManualControl1.InvokeIfNecessary(() =>
 			{
-				ucVehicleManualControl1.UpdateGoalList(goalList);
+				ucVehicleManualControl1.UpdateGoalList(goalNameList);
+			});
+			ucVehicleApi1.InvokeIfNecessary(() =>
+			{
+				ucVehicleApi1.UpdateGoalNameList(goalNameList);
 			});
 		}
 		#endregion
@@ -566,6 +570,7 @@ namespace TrafficControlTest.UserInterface
 			mCore.VehicleCommunicatorSetConfigOfListenPort(int.Parse(GetConfigurationValue("VehicleCommunicator", "ListenPort")));
 			mCore.HostCommunicatorSetConfigOfListenPort(int.Parse(GetConfigurationValue("HostCommunicator", "ListenPort")));
 			mCore.MapFileManagerSetConfigOfMapFileDirectory(GetConfigurationValue("MapFileManager", "MapFileDirectory"));
+			mCore.MapManagerSetConfigOfAutoLoadMap(bool.Parse(GetConfigurationValue("MapManager", "AutoLoadMap")));
 
 			mCore.VehicleCommunicatorStartListen();
 			mCore.CollisionEventDetectorStart();
@@ -584,6 +589,7 @@ namespace TrafficControlTest.UserInterface
 			SetConfigurationValue("HostCommunicator", "ListenPort", mCore.HostCommunicatorGetConfigOfListenPort().ToString());
 			SetConfigurationValue("VehicleCommunicator", "ListenPort", mCore.VehicleCommunicatorGetConfigOfListenPort().ToString());
 			SetConfigurationValue("MapFileManager", "MapFileDirectory", mCore.MapFileManagerGetConfigOfMapFileDirectory());
+			SetConfigurationValue("MapManager", "AutoLoadMap", mCore.MapManagerGetConfigOfAutoLoadMap().ToString());
 
 			UnsubscribeEvent_VehicleManagerProcess(mCore);
 			mCore = null;
@@ -605,6 +611,7 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.MissionStateManagerItemUpdated += HandleEvent_VehicleManagerProcessMissionStateManagerItemUpdated;
 				VehicleManagerProcess.MapFileManagerMapFileAdded += HandleEvent_VehicleManagerProcessMapFileManagerMapFileAdded;
 				VehicleManagerProcess.MapFileManagerMapFileRemoved += HandleEvent_VehicleManagerProcessMapFileManagerMapFileRemoved;
+				VehicleManagerProcess.MapManagerMapLoaded += HandleEvent_VehicleManagerProcessMapManagerMapLoaded;
 			}
 		}
 		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
@@ -695,6 +702,10 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_UcVehicleApi_UpdateLocalMapNameList();
 		}
+		private void HandleEvent_VehicleManagerProcessMapManagerMapLoaded(DateTime OccurTime, string MapFileName)
+		{
+			UpdateGui_All_UpdateGoalNameList();
+		}
 
 		private string[] GetVehicleNameList()
 		{
@@ -707,6 +718,10 @@ namespace TrafficControlTest.UserInterface
 		private string[] GetLocalMapNameList()
 		{
 			return mCore.MapFileManagerGetLocalMapNameList();
+		}
+		private string[] GetMapGoalNameList()
+		{
+			return mCore.MapManagerGetGoalNameList();
 		}
 		private void SendCommandToVehicle(string VehicleName, string Command, params string[] Paras)
 		{

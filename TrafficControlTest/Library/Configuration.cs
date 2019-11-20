@@ -89,6 +89,7 @@ namespace TrafficControlTest.Library
 			mConfigs.Add("VehicleCommunicator/ListenPort", "8000");
 			mConfigs.Add("HostCommunicator/ListenPort", "9000");
 			mConfigs.Add("MapFileManager/MapFileDirectory", ".\\Map\\");
+			mConfigs.Add("MapManager/AutoLoadMap", "true");
 		}
 	}
 }

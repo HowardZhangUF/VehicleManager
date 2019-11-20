@@ -222,6 +222,10 @@ namespace TrafficControlTest.Library
 		{
 			return new MapFileManager(VehicleCommunicator, VehicleInfoManager);
 		}
+		public static IMapManager GenerateIMapManager(IVehicleInfoManager VehicleInfoManager, IMapFileManager MapFileManager)
+		{
+			return new MapManager(VehicleInfoManager, MapFileManager);
+		}
 		#endregion
 
 		#region IPoint2D
