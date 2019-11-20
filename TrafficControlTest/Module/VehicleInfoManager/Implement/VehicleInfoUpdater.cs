@@ -161,7 +161,7 @@ namespace TrafficControlTest.Implement
 				tmpData.BeginUpdate();
 				if (MapList.Any(o => o.EndsWith("*")))
 				{
-					tmpData.UpdateCurrentMapName(MapList.First(o => o.EndsWith("*")).Replace("*", ".map"));
+					tmpData.UpdateCurrentMapName(MapList.First(o => o.EndsWith("*")).TrimEnd('*'));
 				}
 				else
 				{

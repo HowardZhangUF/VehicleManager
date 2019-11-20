@@ -55,9 +55,9 @@ namespace TrafficControlTest.Interface
 		string mCurrentInterveneCommand { get; }
 		/// <summary>上一個執行的干預指令</summary>
 		string mPreviousInterveneCommand { get; }
-		/// <summary>當前使用的地圖的名稱</summary>
+		/// <summary>當前使用的地圖檔的名稱(不含副檔名)</summary>
 		string mCurrentMapName { get; }
-		/// <summary>當前擁有的地圖名稱清單</summary>
+		/// <summary>當前擁有的地圖檔名稱清單(不含副檔名)</summary>
 		IList<string> mCurrentMapNameList { get; }
 
 		/// <summary>速度最大值</summary>
