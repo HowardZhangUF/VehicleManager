@@ -226,6 +226,10 @@ namespace TrafficControlTest.Library
 		{
 			return new MapManager(VehicleInfoManager, MapFileManager);
 		}
+		public static IMissionStateReporter GenerateIMissionStateReporter(IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
+		{
+			return new MissionStateReporter(MissionStateManager, HostCommunicator);
+		}
 		#endregion
 
 		#region IPoint2D

@@ -66,6 +66,7 @@ namespace TrafficControlTest.Base
 		private IMissionUpdater mMissionUpdater = null;
 		private IMapFileManager mMapFileManager = null;
 		private IMapManager mMapManager = null;
+		private IMissionStateReporter mMissionStateReporter = null;
 
 		public VehicleManagerProcess()
 		{
@@ -287,6 +288,10 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IMapManager(mMapManager);
 			mMapManager = GenerateIMapManager(mVehicleInfoManager, mMapFileManager);
 			SubscribeEvent_IMapManager(mMapManager);
+
+			UnsubscribeEvent_IMissionStateReporter(mMissionStateReporter);
+			mMissionStateReporter = GenerateIMissionStateReporter(mMissionStateManager, mHostCommunicator);
+			SubscribeEvent_IMissionStateReporter(mMissionStateReporter);
 		}
 		private void Destructor()
 		{
@@ -325,6 +330,9 @@ namespace TrafficControlTest.Base
 
 			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 			mMissionDispatcher = null;
+
+			UnsubscribeEvent_IMissionStateReporter(mMissionStateReporter);
+			mMissionStateReporter = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -584,6 +592,20 @@ namespace TrafficControlTest.Base
 			if (MapManager != null)
 			{
 				MapManager.MapLoaded -= HandleEvent_MapManagerMapLoaded;
+			}
+		}
+		private void SubscribeEvent_IMissionStateReporter(IMissionStateReporter MissionStateReporter)
+		{
+			if (MissionStateReporter != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_IMissionStateReporter(IMissionStateReporter MissionStateReporter)
+		{
+			if (MissionStateReporter != null)
+			{
+
 			}
 		}
 		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string Message, bool Sync = true)
