@@ -75,35 +75,36 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (rMissionAnalyzers != null && rMissionAnalyzers.Count() > 0)
 			{
 				string replyMsg = string.Empty;
+				IMissionState missionState = null;
 				for (int i = 0; i < rMissionAnalyzers.Length; ++i)
 				{
 					if (Data.Contains($"{rMissionAnalyzers[i].mKeyItem}={rMissionAnalyzers[i].mKeyword}"))
 					{
 						if (rMissionAnalyzers[i].TryParse(Data, out IMission Mission, out string AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
 						{
-							IMissionState missionState = Library.Library.GenerateIMissionState(Mission);
-							missionState.UpdateSourceIpPort(IpPort);
-							if (!rMissionStateManager.IsExist(missionState.mName))
+							if (!rMissionStateManager.IsExist(Mission.mMissionId))
 							{
-								rMissionStateManager.Add(missionState.mName, missionState);
-								replyMsg = $"Event=MissionAccepted MissionID={missionState.mName}";
+								missionState = Library.Library.GenerateIMissionState(Mission);
+								missionState.UpdateSourceIpPort(IpPort);
+								replyMsg = $"Event=CommandAccepted MissionID={missionState.mName}";
 							}
 							else
 							{
-								replyMsg = $"Event=MissionRejected Reason=MissionIDDuplicated";
+								replyMsg = $"Event=CommandRejected Reason=MissionIDDuplicated";
 							}
 						}
 						else
 						{
-							replyMsg = $"Event=MissionRejected Reason={AnalyzedFailedDetail}";
+							replyMsg = $"Event=CommandRejected Reason={AnalyzedFailedDetail}";
 						}
 						break;
 					}
 				}
-				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Event=MissionRejected Reason=UnknownMessage";
+				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Event=CommandRejected Reason=UnknownCommand";
 				string serial = GetSerial(Data);
 				if (!string.IsNullOrEmpty(serial)) replyMsg = $"Serial={serial} {replyMsg}";
 				rHostCommunicator.SendString(IpPort, replyMsg);
+				if (missionState != null) rMissionStateManager.Add(missionState.mName, missionState);
 			}
 		}
 		private static string GetSerial(string Data)
