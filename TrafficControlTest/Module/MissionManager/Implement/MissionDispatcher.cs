@@ -118,7 +118,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (executableMissions != null && executableMissions.Count > 0)
 			{
 				IMissionState mission = executableMissions.OrderBy(o => o.mMission.mPriority).ThenBy(o => o.mReceivedTimestamp).First();
-				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetItems().FirstOrDefault(o => o.mCurrentState == "Idle")?.mName : mission.mMission.mVehicleId;
+				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetItems().FirstOrDefault(o => o.mCurrentState == "Idle" && o.mCurrentStateDuration.TotalSeconds > 1 && string.IsNullOrEmpty(o.mCurrentMissionId))?.mName : mission.mMission.mVehicleId;
 				if (!string.IsNullOrEmpty(vehicleId))
 				{
 					SendMission(vehicleId, mission.mMission);
