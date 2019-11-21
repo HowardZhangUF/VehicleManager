@@ -29,6 +29,7 @@ namespace TrafficControlTest.Module.General.Interface
 		int GetConfigOfListenPort();
 		void StartListen();
 		void StopListen();
+		void SendString(string Data);
 		void SendString(string IpPort, string Data);
 	}
 }

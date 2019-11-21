@@ -58,6 +58,13 @@ namespace TrafficControlTest.Module.General.Implement
 				DestroyThread();
 			}
 		}
+		public void SendString(string Data)
+		{
+			foreach (string ipPort in mServer.ClientDictionary.Keys)
+			{
+				SendString(ipPort, Data);
+			}
+		}
 		public void SendString(string IpPort, string Data)
 		{
 			if (mServer.ClientDictionary.Keys.Contains(IpPort))
