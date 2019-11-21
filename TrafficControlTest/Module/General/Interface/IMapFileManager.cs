@@ -28,6 +28,9 @@ namespace TrafficControlTest.Module.General.Interface
 		event EventHandlerMapFileName MapFileRemoved;
 		event EventHandlerVehicleNamesMapFileName VehicleCurrentMapSynchronized;
 
+		bool mIsGettingMap { get; }
+		IList<string> mMapsOfGetting { get; }
+
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager);

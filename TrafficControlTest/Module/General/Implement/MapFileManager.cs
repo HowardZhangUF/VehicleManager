@@ -19,6 +19,9 @@ namespace TrafficControlTest.Module.General.Implement
 		public event EventHandlerMapFileName MapFileRemoved;
 		public event EventHandlerVehicleNamesMapFileName VehicleCurrentMapSynchronized;
 
+		public bool mIsGettingMap { get { return (mMapsOfGetting.Count > 0); } }
+		public IList<string> mMapsOfGetting { get; } = new List<string>();
+
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private string mMapFileDirectory { get; set; } = string.Empty;
@@ -169,6 +172,7 @@ namespace TrafficControlTest.Module.General.Implement
 				{
 					GetMap tmpData = Data as GetMap;
 					AddMapFile(tmpData.Response.Name, tmpData.Response.Data);
+					if (mMapsOfGetting.Contains(Path.GetFileNameWithoutExtension(tmpData.Response.Name))) mMapsOfGetting.Remove(Path.GetFileNameWithoutExtension(tmpData.Response.Name));
 				}
 				else if (Data is UploadMapToAGV)
 				{
@@ -194,6 +198,7 @@ namespace TrafficControlTest.Module.General.Implement
 				if (tmpStateNames.Any(o => o == "CurrentMapName"))
 				{
 					rVehicleCommunicator.SendSerializableData_GetMap(Item.mIpPort, Item.mCurrentMapName);
+					mMapsOfGetting.Add(Item.mCurrentMapName);
 				}
 			}
 		}

@@ -119,19 +119,21 @@ namespace TrafficControlTest.Module.General.Implement
 				if (StateName.Contains("CurrentMapName") && StateName.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(o => o == "CurrentMapName"))
 				{
 					DateTime tmpTimestamp = DateTime.Now;
-					Task.Run(() =>
-					{
-						while (DateTime.Now.Subtract(tmpTimestamp).TotalMilliseconds < 5000)
-						{
-							if (rMapFileManager.GetLocalMapNameList().Any(o => o == Item.mCurrentMapName))
-							{
-								LoadMap(Item.mCurrentMapName);
-								break;
-							}
-							Thread.Sleep(600);
-						}
-					});
+					Task.Run(() => TryLoadMap(Item.mCurrentMapName));
 				}
+			}
+		}
+		private void TryLoadMap(string MapFileName)
+		{
+			DateTime tmpTimestamp = DateTime.Now;
+			while (DateTime.Now.Subtract(tmpTimestamp).TotalMilliseconds < 5000)
+			{
+				if (!rMapFileManager.mIsGettingMap && rMapFileManager.GetLocalMapNameList().Any(o => o == MapFileName))
+				{
+					LoadMap(MapFileName);
+					return;
+				}
+				Thread.Sleep(600);
 			}
 		}
 	}
