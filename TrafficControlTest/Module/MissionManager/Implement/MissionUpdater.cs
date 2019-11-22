@@ -12,9 +12,9 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 {
 	public class MissionUpdater : IMissionUpdater
 	{
-		private IMissionStateManager rMissionStateManager = null;
-		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
+		private IVehicleInfoManager rVehicleInfoManager = null;
+		private IMissionStateManager rMissionStateManager = null;
 
 		public int mToleranceOfX { get; } = 500;
 		public int mToleranceOfY { get; } = 500;
@@ -38,7 +38,9 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		public void Set(IMissionStateManager MissionStateManager)
 		{
+			UnsubscribeEvent_IMissionStateManager(rMissionStateManager);
 			rMissionStateManager = MissionStateManager;
+			SubscribeEvent_IMissionStateManager(rMissionStateManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
 		{
@@ -75,6 +77,20 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			{
 				VehicleCommunicator.SentSerializableDataSuccessed -= HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
 				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
+			}
+		}
+		private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
+		{
+			if (MissionStateManager != null)
+			{
+				MissionStateManager.ItemUpdated += HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
+		{
+			if (MissionStateManager != null)
+			{
+				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
@@ -131,6 +147,19 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			{
 				rMissionStateManager.GetItem(missionId).UpdateSendState(Interface.SendState.SendFailed);
 				rMissionStateManager.GetItem(missionId).UpdateExecuteState(ExecuteState.Unexecute);
+			}
+		}
+		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
+		{
+			if (StateName.Contains("ExecuteState"))
+			{
+				switch (Item.mExecuteState)
+				{
+					case ExecuteState.ExecuteSuccessed:
+					case ExecuteState.ExecuteFailed:
+						rMissionStateManager.Remove(Name);
+						break;
+				}
 			}
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, string Target)
