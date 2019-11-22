@@ -30,5 +30,6 @@ namespace TrafficControlTest.Module.General.Interface
 		void LoadMap(string MapFileName);
 		string GetCurrentMapName();
 		string[] GetGoalNameList();
+		int[] GetGoalCoordinate(string GoalName);
 	}
 }

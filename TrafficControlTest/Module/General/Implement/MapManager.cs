@@ -71,6 +71,18 @@ namespace TrafficControlTest.Module.General.Implement
 				return GLCMD.CMD.SingleTowerPairInfo.Select(o => o.Name).ToArray();
 			}
 		}
+		public int[] GetGoalCoordinate(string GoalName)
+		{
+			if (GLCMD.CMD.SingleTowerPairInfo.Any(o => o.Name == GoalName))
+			{
+				var goalData = GLCMD.CMD.SingleTowerPairInfo.First(o => o.Name == GoalName);
+				return new int[] { goalData.X, goalData.Y, (int)goalData.Toward };
+			}
+			else
+			{
+				return new int[] { 0, 0, 0 };
+			}
+		}
 
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
