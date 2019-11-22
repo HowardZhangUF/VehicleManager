@@ -214,9 +214,9 @@ namespace TrafficControlTest.Library
 		{
 			return new MissionDispatcher(MissionStateManager, VehicleInfoManager, VehicleCommunicator);
 		}
-		public static IMissionUpdater GenerateIMissionUpdater(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
+		public static IMissionUpdater GenerateIMissionUpdater(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
 		{
-			return new MissionUpdater(VehicleCommunicator, VehicleInfoManager, MissionStateManager);
+			return new MissionUpdater(VehicleCommunicator, VehicleInfoManager, MissionStateManager, MapManager);
 		}
 		public static IMapFileManager GenerateIMapFileManager(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
 		{

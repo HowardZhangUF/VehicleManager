@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Module.MissionManager.Implement
@@ -15,14 +16,15 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMissionStateManager rMissionStateManager = null;
+		private IMapManager rMapManager = null;
 
 		public int mToleranceOfX { get; } = 500;
 		public int mToleranceOfY { get; } = 500;
 		public int mToleranceOfToward { get; } = 5;
 
-		public MissionUpdater(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
+		public MissionUpdater(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
 		{
-			Set(VehicleCommunicator, VehicleInfoManager, MissionStateManager);
+			Set(VehicleCommunicator, VehicleInfoManager, MissionStateManager, MapManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -42,11 +44,16 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			rMissionStateManager = MissionStateManager;
 			SubscribeEvent_IMissionStateManager(rMissionStateManager);
 		}
-		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
+		public void Set(IMapManager MapManager)
+		{
+			rMapManager = MapManager;
+		}
+		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
 		{
 			Set(VehicleCommunicator);
 			Set(VehicleInfoManager);
 			Set(MissionStateManager);
+			Set(MapManager);
 		}
 
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -189,7 +196,8 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, string Target)
 		{
-			return VehicleInfo.mCurrentState == "Idle" && VehicleInfo.mCurrentTarget == Target;
+			int[] targetCoordinate = rMapManager.GetGoalCoordinate(Target);
+			return IsVehicleArrived(VehicleInfo, targetCoordinate[0], targetCoordinate[1], targetCoordinate[2]);
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, int X, int Y)
 		{
@@ -197,7 +205,10 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, int X, int Y, int Toward)
 		{
-			return VehicleInfo.mCurrentState == "Idle" && Math.Abs(VehicleInfo.mLocationCoordinate.mX - X) < mToleranceOfX && Math.Abs(VehicleInfo.mLocationCoordinate.mY - Y) < mToleranceOfY && Math.Abs((int)(VehicleInfo.mLocationToward) - Toward) < mToleranceOfToward;
+			int diffX = Math.Abs(VehicleInfo.mLocationCoordinate.mX - X);
+			int diffY = Math.Abs(VehicleInfo.mLocationCoordinate.mY - Y);
+			int diffToward = Math.Abs((int)(VehicleInfo.mLocationToward) - Toward);
+			return VehicleInfo.mCurrentState == "Idle" && diffX < mToleranceOfX && diffY < mToleranceOfY && ((diffToward < mToleranceOfToward) || (diffToward <= 360 && diffToward > (360 - mToleranceOfToward)));
 		}
 		private bool IsVehicleDocked(IVehicleInfo VehicleInfo)
 		{

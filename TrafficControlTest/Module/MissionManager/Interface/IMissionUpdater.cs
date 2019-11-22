@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Module.General.Interface;
 
 namespace TrafficControlTest.Module.MissionManager.Interface
 {
@@ -23,6 +24,7 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IMissionStateManager MissionStateManager);
-		void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager);
+		void Set(IMapManager MapManager);
+		void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager);
 	}
 }

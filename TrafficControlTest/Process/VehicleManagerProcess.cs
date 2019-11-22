@@ -63,10 +63,10 @@ namespace TrafficControlTest.Base
 		private IHostCommunicator mHostCommunicator = null;
 		private IHostMessageAnalyzer mHostMessageAnalyzer = null;
 		private IMissionDispatcher mMissionDispatcher = null;
-		private IMissionUpdater mMissionUpdater = null;
 		private IMapFileManager mMapFileManager = null;
 		private IMapManager mMapManager = null;
 		private IMissionStateReporter mMissionStateReporter = null;
+		private IMissionUpdater mMissionUpdater = null;
 
 		public VehicleManagerProcess()
 		{
@@ -277,10 +277,6 @@ namespace TrafficControlTest.Base
 			mMissionDispatcher = GenerateIMissionDispatcher(mMissionStateManager, mVehicleInfoManager, mVehicleCommunicator);
 			SubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 
-			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
-			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager);
-			SubscribeEvent_IMissionUpdater(mMissionUpdater);
-
 			UnsubscribeEvent_IMapFileManager(mMapFileManager);
 			mMapFileManager = GenerateIMapFileManager(mVehicleCommunicator, mVehicleInfoManager);
 			SubscribeEvent_IMapFileManager(mMapFileManager);
@@ -292,6 +288,10 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IMissionStateReporter(mMissionStateReporter);
 			mMissionStateReporter = GenerateIMissionStateReporter(mMissionStateManager, mHostCommunicator);
 			SubscribeEvent_IMissionStateReporter(mMissionStateReporter);
+
+			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
+			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager, mMapManager);
+			SubscribeEvent_IMissionUpdater(mMissionUpdater);
 		}
 		private void Destructor()
 		{
@@ -333,6 +333,9 @@ namespace TrafficControlTest.Base
 
 			UnsubscribeEvent_IMissionStateReporter(mMissionStateReporter);
 			mMissionStateReporter = null;
+
+			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
+			mMissionUpdater = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -548,20 +551,6 @@ namespace TrafficControlTest.Base
 				MissionDispatcher.SystemStopped -= HandleEvent_MissionDispatcherSystemStopped;
 			}
 		}
-		private void SubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
-		{
-			if (MissionUpdater != null)
-			{
-
-			}
-		}
-		private void UnsubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
-		{
-			if (MissionUpdater != null)
-			{
-
-			}
-		}
 		private void SubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
 		{
 			if (MapFileManager != null)
@@ -604,6 +593,20 @@ namespace TrafficControlTest.Base
 		private void UnsubscribeEvent_IMissionStateReporter(IMissionStateReporter MissionStateReporter)
 		{
 			if (MissionStateReporter != null)
+			{
+
+			}
+		}
+		private void SubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
+		{
+			if (MissionUpdater != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
+		{
+			if (MissionUpdater != null)
 			{
 
 			}
