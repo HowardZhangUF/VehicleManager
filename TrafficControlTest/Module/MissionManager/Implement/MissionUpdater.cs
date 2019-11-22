@@ -98,32 +98,57 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (rMissionStateManager.mCount > 0 && StateName.Contains("CurrentState") && !string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && rMissionStateManager.IsExist(VehicleInfo.mCurrentMissionId))
 			{
 				IMissionState missionState = rMissionStateManager[VehicleInfo.mCurrentMissionId];
-				switch (missionState.mMission.mMissionType)
+				switch (VehicleInfo.mCurrentState)
 				{
-					case MissionType.Goto:
-						if (IsVehicleArrived(VehicleInfo, missionState.mMission.mParameters[0]))
+					case "RouteNotFind":
+					case "ObstacleExists":
+					case "BumperTrigger":
+						missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						break;
+					case "Idle":
+						switch (missionState.mMission.mMissionType)
 						{
-							missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+							case MissionType.Goto:
+								if (IsVehicleArrived(VehicleInfo, missionState.mMission.mParameters[0]))
+								{
+									missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+								}
+								else
+								{
+									missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
+								}
+								break;
+							case MissionType.GotoPoint:
+								if (missionState.mMission.mParameters.Length == 2)
+								{
+									if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1])))
+									{
+										missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+									}
+									else
+									{
+										missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
+									}
+								}
+								else if (missionState.mMission.mParameters.Length == 3)
+								{
+									if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1]), int.Parse(missionState.mMission.mParameters[2])))
+									{
+										missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+									}
+									else
+									{
+										missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
+									}
+								}
+								break;
+							case MissionType.Dock:
+								missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
+								break;
 						}
 						break;
-					case MissionType.GotoPoint:
-						if (missionState.mMission.mParameters.Length == 2)
-						{
-							if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1])))
-							{
-								missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-							}
-						}
-						else if (missionState.mMission.mParameters.Length == 3)
-						{
-							if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1]), int.Parse(missionState.mMission.mParameters[2])))
-							{
-								missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-							}
-						}
-						break;
-					case MissionType.Dock:
-						if (IsVehicleDocked(VehicleInfo))
+					case "Charged":
+						if (missionState.mMission.mMissionType == MissionType.Dock)
 						{
 							missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
 						}
@@ -176,27 +201,30 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		private bool IsVehicleDocked(IVehicleInfo VehicleInfo)
 		{
-			return VehicleInfo.mCurrentState == "Docked";
+			return VehicleInfo.mCurrentState == "Charged";
 		}
 		/// <summary>透過 Serializable 物件的發送來源及其本身判斷是哪個任務的相關訊息並輸出任務識別碼</summary>
 		private string GetMissionId(string IpPort, object Data)
 		{
-			string vehicleId = rVehicleInfoManager.GetItemByIpPort(IpPort).mName;
+			string vehicleId = rVehicleInfoManager.GetItemByIpPort(IpPort)?.mName;
 			string missionId = null;
-			if (Data is GoTo)
+			if (!string.IsNullOrEmpty(vehicleId))
 			{
-				GoTo tmpData = Data as GoTo;
-				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require)?.mName;
-			}
-			else if (Data is GoToPoint)
-			{
-				GoToPoint tmpData = Data as GoToPoint;
-				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString())?.mName;
-			}
-			else if (Data is GoToTowardPoint)
-			{
-				GoToTowardPoint tmpData = Data as GoToTowardPoint;
-				missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString() && o.mMission.mParameters[2] == tmpData.Require[2].ToString())?.mName;
+				if (Data is GoTo)
+				{
+					GoTo tmpData = Data as GoTo;
+					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require)?.mName;
+				}
+				else if (Data is GoToPoint)
+				{
+					GoToPoint tmpData = Data as GoToPoint;
+					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString())?.mName;
+				}
+				else if (Data is GoToTowardPoint)
+				{
+					GoToTowardPoint tmpData = Data as GoToTowardPoint;
+					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString() && o.mMission.mParameters[2] == tmpData.Require[2].ToString())?.mName;
+				}
 			}
 			return missionId;
 		}
