@@ -611,15 +611,15 @@ namespace TrafficControlTest.Base
 
 			}
 		}
-		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string Message, bool Sync = true)
+		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
 		{
 			if (Sync)
 			{
-				DebugMessage?.Invoke(OccurTime, Category, Message);
+				DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message);
 			}
 			else
 			{
-				Task.Run(() => { DebugMessage?.Invoke(OccurTime, Category, Message); });
+				Task.Run(() => { DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message); });
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
@@ -1020,185 +1020,185 @@ namespace TrafficControlTest.Base
 		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
-			HandleDebugMessage("VehicleCommunicator", "System Started.");
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SystemStarted", string.Empty);
 			RaiseEvent_VehicleCommunicatorSystemStarted(OccurTime);
 		}
 		private void HandleEvent_VehicleCommunicatorSystemStopped(DateTime OccurTime)
 		{
-			HandleDebugMessage("VehicleCommunicator", "System Stopped.");
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SystemStopped", string.Empty);
 			RaiseEvent_VehicleCommunicatorSystemStopped(OccurTime);
 		}
 		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Local Listen State Changed. State: {NewState.ToString()}, Port: {Port}");
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "LocalListenStateChanged", $"State: {NewState.ToString()}, Port: {Port}");
 			RaiseEvent_VehicleCommunicatorLocalListenStateChanged(OccurTime, NewState, Port);
 		}
 		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Remote Connect State Changed. IPPort: {IpPort}, State: {NewState}");
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "RemoteConnectStateChanged", $"IPPort: {IpPort}, State: {NewState}");
 			RaiseEvent_VehicleCommunicatorRemoteConnectStateChagned(OccurTime, IpPort, NewState);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data. IPPort: {IpPort}, DataType: {Data.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
 			RaiseEvent_VehicleCommunicatorSentSerializableData(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
 			if (!(Data is SerialData.AGVStatus) && !(Data is SerialData.AGVPath))
 			{
-				HandleDebugMessage("VehicleCommunicator", $"Received Serializable Data. IPPort: {IpPort}, DataType: {Data.ToString()}");
+				HandleDebugMessage(OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
 				RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Successed. IPPort: {IpPort}, DataType: {Data.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentDataSuccessed", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
 			RaiseEvent_VehicleCommunicatorSentSerializableDataSuccessed(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
 		{
-			HandleDebugMessage("VehicleCommunicator", $"Sent Serializable Data Failed. IPPort: {IpPort}, DataType: {Data.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentDataFailed", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
 			RaiseEvent_VehicleCommunicatorSentSerializableDataFailed(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Item Added. Name: {Name}, Info: {VehicleInfo.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemAdded", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
 			RaiseEvent_VehicleInfoManagerItemAdded(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage("VehicleInfoManager", $"Item Removed. Name: {Name}, Info: {VehicleInfo.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemRemoved", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
 			RaiseEvent_VehicleInfoManagerItemRemoved(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
-			//HandleDebugMessage("VehicleInfoManager", $"Item Updated. Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
 			RaiseEvent_VehicleInfoManagerItemUpdated(OccurTime, Name, StateName, VehicleInfo);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			HandleDebugMessage("CollisionEventManager", $"Collision Event Added. Name: {Name}, Info:\n{CollisionPair.ToString()}");
+			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemAdded", $"Name: {Name}, Info:\n{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventAdded(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			HandleDebugMessage("CollisionEventManager", $"Collision Event Removed. Name: {Name}, Info:\n{CollisionPair.ToString()}");
+			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemRemoved", $"Name: {Name}, Info:\n{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventRemoved(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			//HandleDebugMessage("CollisionEventManager", $"Collision Event StateUpdated. Name: {Name}, Info:\n{CollisionPair.ToString()}");
+			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemUpdated", $"Name: {Name}, Info:\n{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventStateUpdated(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime)
 		{
-			HandleDebugMessage("CollisionEventDetector", "System Started.");
+			HandleDebugMessage(OccurTime, "CollisionEventDetector", "SystemStarted", string.Empty);
 			RaiseEvent_CollisionEventDetectorSystemStarted(OccurTime);
 		}
 		private void HandleEvent_CollisionEventDetectorSystemStopped(DateTime OccurTime)
 		{
-			HandleDebugMessage("CollisionEventDetector", "System Stopped.");
+			HandleDebugMessage(OccurTime, "CollisionEventDetector", "SystemStopped", string.Empty);
 			RaiseEvent_CollisionEventDetectorSystemStopped(OccurTime);
 		}
 		private void HandleEvent_VehicleControlManagerItemAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage("VehicleControlManager", $"Item Added. Name: {Name}, Info:\n{VehicleControl.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemAdded", $"Name: {Name}, Info:\n{VehicleControl.ToString()}");
 			RaiseEvent_VehicleControlManagerItemAdded(OccurTime, Name, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlManagerItemRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage("VehicleControlManager", $"Item Removed. Name: {Name}, Info:\n{VehicleControl.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemRemoved", $"Name: {Name}, Info:\n{VehicleControl.ToString()}");
 			RaiseEvent_VehicleControlManagerItemRemoved(OccurTime, Name, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage("VehicleControlManager", $"Item StateUpdated. Name: {Name}, StateName: {StateName}, Info:\n{VehicleControl.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info:\n{VehicleControl.ToString()}");
 			RaiseEvent_VehicleControlManagerItemUpdated(OccurTime, Name, StateName, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlHandlerSystemStarted(DateTime OccurTime)
 		{
-			HandleDebugMessage("VehicleControlHandler", "System Started.");
+			HandleDebugMessage(OccurTime, "VehicleControlHandler", "SystemStarted", string.Empty);
 			RaiseEvent_VehicleControlHandlerSystemStarted(OccurTime);
 		}
 		private void HandleEvent_VehicleControlHandlerSystemStopped(DateTime OccurTime)
 		{
-			HandleDebugMessage("VehicleControlHandler", "System Stopped.");
+			HandleDebugMessage(OccurTime, "VehicleControlHandler", "SystemStopped", string.Empty);
 			RaiseEvent_VehicleControlHandlerSystemStopped(OccurTime);
 		}
 		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
-			HandleDebugMessage("MissionStateManager", $"Item Added. MissionID: {MissionId}, Info: {MissionState.ToString()}");
+			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
 			RaiseEvent_MissionStateManagerItemAdded(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
-			HandleDebugMessage("MissionStateManager", $"Item Removed. MissionID: {MissionId}, Info: {MissionState.ToString()}");
+			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemRemoved", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
 			RaiseEvent_MissionStateManagerItemRemoved(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
 		{
-			HandleDebugMessage("MissionStateManager", $"Item Updated. MissionID: {MissionId}, StateName: {StateName}, Info: {MissionState.ToString()}");
+			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemUpdated", $"MissionID: {MissionId}, StateName: {StateName}, Info: {MissionState.ToString()}");
 			RaiseEvent_MissionStateManagerItemUpdated(OccurTime, MissionId, StateName, MissionState);
 		}
 		private void HandleEvent_HostCommunicatorSystemStarted(DateTime OccurTime)
 		{
-			HandleDebugMessage("HostCommunicator", $"System Started.");
+			HandleDebugMessage(OccurTime, "HostCommunicator", "SystemStarted", string.Empty);
 			RaiseEvent_HostCommunicatorSystemStarted(OccurTime);
 		}
 		private void HandleEvent_HostCommunicatorSystemStopped(DateTime OccurTime)
 		{
-			HandleDebugMessage("HostCommunicator", $"System Stopped.");
+			HandleDebugMessage(OccurTime, "HostCommunicator", "SystemStopped", string.Empty);
 			RaiseEvent_HostCommunicatorSystemStopped(OccurTime);
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
 		{
-			HandleDebugMessage("HostCommunicator", $"Local Listen State Changed. State: {NewState.ToString()}, Port: {Port}");
+			HandleDebugMessage(OccurTime, "HostCommunicator", "LocalListenStateChanged", $"State: {NewState.ToString()}, Port: {Port}");
 			RaiseEvent_HostCommunicatorLocalListenStateChanged(OccurTime, NewState, Port);
 		}
 		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
-			HandleDebugMessage("HostCommunicator", $"Remote Connect State Changed. IPPort: {IpPort}, State: {NewState}");
+			HandleDebugMessage(OccurTime, "HostCommunicator", "RemoteConnectStateChanged", $"IPPort: {IpPort}, State: {NewState}");
 			RaiseEvent_HostCommunicatorRemoteConnectStateChanged(OccurTime, IpPort, NewState);
 		}
 		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
 		{
-			HandleDebugMessage("HostCommunicator", $"Sent String. IPPort: {IpPort}, Data: {Data}");
+			HandleDebugMessage(OccurTime, "HostCommunicator", "SentString", $"IPPort: {IpPort}, Data: {Data}");
 			RaiseEvent_HostCommunicatorSentString(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
 		{
-			HandleDebugMessage("HostCommunicator", $"Received String. IPPort: {IpPort}, Data: {Data}");
+			HandleDebugMessage(OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {IpPort}, Data: {Data}");
 			RaiseEvent_HostCommunicatorReceivedString(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_MissionDispatcherSystemStarted(DateTime OccurTime)
 		{
-			HandleDebugMessage("MissionDispatcher", $"System Started.");
+			HandleDebugMessage(OccurTime, "MissionDispatcher", "SystemStarted", string.Empty);
 			RaiseEvent_MissionDispatcherSystemStarted(OccurTime);
 		}
 		private void HandleEvent_MissionDispatcherSystemStopped(DateTime OccurTime)
 		{
-			HandleDebugMessage("MissionDispatcher", $"System Stopped.");
+			HandleDebugMessage(OccurTime, "MissionDispatcher", "SystemStopped", string.Empty);
 			RaiseEvent_MissionDispatcherSystemStopped(OccurTime);
 		}
 		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{
-			HandleDebugMessage("MapFileManager", $"Map File Added. MapFileName: {MapFileName}");
+			HandleDebugMessage(OccurTime, "MapFileManager", "ItemAdded", $"MapFileName: {MapFileName}");
 			RaiseEvent_MapFileManagerMapFileAdded(OccurTime, MapFileName);
 		}
 		private void HandleEvent_MapFileManagerMapFileRemoved(DateTime OccurTime, string MapFileName)
 		{
-			HandleDebugMessage("MapFileManager", $"Map File Removed. MapFileName: {MapFileName}");
+			HandleDebugMessage(OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {MapFileName}");
 			RaiseEvent_MapFileManagerMapFileRemoved(OccurTime, MapFileName);
 		}
 		private void HandleEvent_MapFileManagerVehicleCurrentMapSynchronized(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName)
 		{
-			HandleDebugMessage("MapFileManager", $"Vehicle Current Map Synchronized. VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
+			HandleDebugMessage(OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
 			RaiseEvent_MapFileManagerVehicleCurrentMapSynchronized(OccurTime, VehicleNames, MapFileName);
 		}
 		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
 		{
-			HandleDebugMessage("MapManager", $"Map Loaded. MapFileName: {MapFileName}");
+			HandleDebugMessage(OccurTime, "MapManager", "MapLoaded", $"MapName: {MapFileName}");
 			RaiseEvent_MapManagerMapLoaded(OccurTime, MapFileName);
 		}
 		private void HandleDebugMessage(string Message)
@@ -1211,12 +1211,16 @@ namespace TrafficControlTest.Base
 		}
 		private void HandleDebugMessage(DateTime OccurTime, string Category, string Message)
 		{
-			HandleDebugMessage(OccurTime.ToString(TIME_FORMAT), Category, Message);
+			HandleDebugMessage(OccurTime, Category, "None", Message);
 		}
-		private void HandleDebugMessage(string OccurTime, string Category, string Message)
+		private void HandleDebugMessage(DateTime OccurTime, string Category, string SubCategory, string Message)
 		{
-			RaiseEvent_DebugMessage(OccurTime, Category, Message);
-			Console.WriteLine($"{OccurTime} [{Category}] - {Message}");
+			HandleDebugMessage(OccurTime.ToString(TIME_FORMAT), Category, SubCategory, Message);
+		}
+		private void HandleDebugMessage(string OccurTime, string Category, string SubCategory, string Message)
+		{
+			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
+			Console.WriteLine($"{OccurTime} [{Category}] [{SubCategory}] - {Message}");
 		}
 	}
 }

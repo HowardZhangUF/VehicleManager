@@ -33,7 +33,7 @@ namespace TrafficControlTest.Library
 
 	public static class Library
 	{
-		public const string TIME_FORMAT = "yyyy/MM/dd HH:mm:ss.fff";
+		public const string TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
 		public static double DefaultVehicleVelocityMaximum = 700.0f;
 		public static int DefaultVehicleSafetyFrameRadius = 500;
 		public static int DefaultVehicleBufferFrameRadius = 500;
@@ -984,7 +984,7 @@ namespace TrafficControlTest.Library
 
 	public static class EventHandlerLibrary
 	{
-		public delegate void EventHandlerDebugMessage(string OccurTime, string Category, string Message);
+		public delegate void EventHandlerDebugMessage(string OccurTime, string Category, string SubCategory, string Message);
 
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);

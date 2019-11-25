@@ -542,11 +542,11 @@ namespace TrafficControlTest.UserInterface
 				}
 			}
 		}
-		private void UpdateGui_PnlBtm_AddSimpleLog(string Date, string Category, string Message)
+		private void UpdateGui_PnlBtm_AddSimpleLog(string Date, string Category, string SubCategory, string Message)
 		{
 			ucSimpleLog1.InvokeIfNecessary(() =>
 			{
-				ucSimpleLog1.AddSimpleLog(Date, Category, Message);
+				ucSimpleLog1.AddSimpleLog(Date, Category, SubCategory, Message);
 			});
 		}
 		private void UpdateGui_PnlBtm_ClearSimpleLog()
@@ -633,9 +633,9 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.MapFileManagerMapFileRemoved -= HandleEvent_VehicleManagerProcessMapFileManagerMapFileRemoved;
 			}
 		}
-		private void HandleEvent_VehicleManagerProcessDebugMessage(string OccurTime, string Category, string Message)
+		private void HandleEvent_VehicleManagerProcessDebugMessage(string OccurTime, string Category, string SubCategory, string Message)
 		{
-			UpdateGui_PnlBtm_AddSimpleLog(OccurTime, Category, Message);
+			UpdateGui_PnlBtm_AddSimpleLog(OccurTime, Category, SubCategory, Message);
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{

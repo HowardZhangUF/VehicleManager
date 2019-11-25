@@ -36,18 +36,18 @@ namespace TrafficControlTest.UserControl
 			InitializeComponent();
 			UpdateGui_InitializeDgvLog();
 		}
-		public void AddSimpleLog(string Date, string Category, string Message)
+		public void AddSimpleLog(string Date, string Category, string SubCategory, string Message)
 		{
 			lock (mLockOfDgvSimpleLog)
 			{
 				if (OrderAscending)
 				{
-					UpdateGui_InsertRow(dgvSimpleLog.RowCount, Date, Category, Message);
+					UpdateGui_InsertRow(dgvSimpleLog.RowCount, Date, Category, SubCategory, Message);
 					UpdateGui_RefreshDgvSimpleLogRowBackColor(dgvSimpleLog.RowCount - 1);
 				}
 				else
 				{
-					UpdateGui_InsertRow(0, Date, Category, Message);
+					UpdateGui_InsertRow(0, Date, Category, SubCategory, Message);
 					UpdateGui_RefreshDgvSimpleLogRowBackColor(0);
 				}
 				UpdateGui_AdjustRowCount(Maximum);
@@ -96,8 +96,10 @@ namespace TrafficControlTest.UserControl
 			dgv.Columns[0].Width = 170;
 			dgv.Columns.Add("Category", "Category");
 			dgv.Columns[1].Width = 200;
+			dgv.Columns.Add("SubCategory", "SubCategory");
+			dgv.Columns[2].Width = 200;
 			dgv.Columns.Add("Message", "Message");
-			dgv.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+			dgv.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
 			foreach (DataGridViewColumn column in dgv.Columns)
 			{
