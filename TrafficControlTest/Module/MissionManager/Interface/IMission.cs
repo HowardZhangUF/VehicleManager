@@ -17,6 +17,7 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 		int mPriority { get; }
 		string mVehicleId { get; }
 		string[] mParameters { get; }
+		string mParametersString { get; }
 
 		void Set(MissionType MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters);
 		void UpdatePriority(int Priority);
