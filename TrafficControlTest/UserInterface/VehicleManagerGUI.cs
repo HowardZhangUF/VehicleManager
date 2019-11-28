@@ -313,7 +313,7 @@ namespace TrafficControlTest.UserInterface
 						ucVehicle1.UpdateVehicleLocationScore(VehicleInfo.mLocationScore);
 						ucVehicle1.UpdateVehicleBatteryValue(VehicleInfo.mBatteryValue);
 						ucVehicle1.UpdateVehicleAlarmMessage(VehicleInfo.mAlarmMessage);
-						ucVehicle1.UpdateVehiclePath(string.Join(string.Empty, VehicleInfo.mPath.Select(o => o.ToString())));
+						ucVehicle1.UpdateVehiclePath(VehicleInfo.mPathString);
 						ucVehicle1.UpdateVehicleIpPort(VehicleInfo.mIpPort);
 						ucVehicle1.UpdateVehicleMissionId(VehicleInfo.mCurrentMissionId);
 						ucVehicle1.UpdateVehicleInterveneCommand(VehicleInfo.mCurrentInterveneCommand);

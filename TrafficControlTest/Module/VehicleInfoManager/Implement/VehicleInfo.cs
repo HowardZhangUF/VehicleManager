@@ -42,6 +42,7 @@ namespace TrafficControlTest.Implement
 				return _PathRegion;
 			}
 		}
+		public string mPathString { get { return ConvertToString(mPath); } }
 		public string mIpPort { get; private set; } = string.Empty;
 		public DateTime mLastUpdated { get; private set; } = DateTime.Now;
 
@@ -357,7 +358,7 @@ namespace TrafficControlTest.Implement
 			result += $"LocationScore: {mLocationScore.ToString("F2")}, ";
 			result += $"BatteryValue: {mBatteryValue.ToString("F2")}, ";
 			result += $"AlarmMessage: {mAlarmMessage}, ";
-			result += $"Path: {((mPath != null && mPath.Count() > 0) ? Library.Library.ConvertToString(mPath) : string.Empty)}, ";
+			result += $"Path: {mPathString}, ";
 			result += $"IpPort: {mIpPort}, ";
 			result += $"MissionId: {mCurrentMissionId}, ";
 			result += $"InterveneCommand: {mCurrentInterveneCommand}, ";

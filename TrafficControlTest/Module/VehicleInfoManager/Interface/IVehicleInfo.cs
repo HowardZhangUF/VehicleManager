@@ -42,6 +42,8 @@ namespace TrafficControlTest.Interface
 		IList<IPoint2D> mPathDetail { get; }
 		/// <summary>路徑範圍。透過 mPath 計算而得</summary>
 		IRectangle2D mPathRegion { get; }
+		/// <summary>路徑字串。格式為 (X1,Y1)(X2,Y2)(X3,Y3)</summary>
+		string mPathString { get; }
 		/// <summary>IP:Port</summary>
 		string mIpPort { get; }
 		/// <summary>上次更新時間</summary>
