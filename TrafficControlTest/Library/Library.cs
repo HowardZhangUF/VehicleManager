@@ -230,6 +230,10 @@ namespace TrafficControlTest.Library
 		{
 			return new MissionStateReporter(MissionStateManager, HostCommunicator);
 		}
+		public static ILogRecorder GenerateILogRecorder()
+		{
+			return new LogRecorder();
+		}
 		#endregion
 
 		#region IPoint2D

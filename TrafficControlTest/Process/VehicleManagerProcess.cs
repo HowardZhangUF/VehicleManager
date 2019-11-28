@@ -51,6 +51,7 @@ namespace TrafficControlTest.Base
 		public event EventHandlerVehicleNamesMapFileName MapFileManagerVehicleCurrentMapSynchronized;
 		public event EventHandlerMapFileName MapManagerMapLoaded;
 
+		private ILogRecorder mLogRecorder = null;
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
 		private ICollisionEventManager mCollisionEventManager = null;
@@ -75,6 +76,14 @@ namespace TrafficControlTest.Base
 		~VehicleManagerProcess()
 		{
 			Destructor();
+		}
+		public void LogRecorderStart()
+		{
+			mLogRecorder.Start();
+		}
+		public void LogRecorderStop()
+		{
+			mLogRecorder.Stop();
 		}
 		public void VehicleCommunicatorSetConfigOfListenPort(int Port)
 		{
@@ -229,6 +238,8 @@ namespace TrafficControlTest.Base
 
 		private void Constructor()
 		{
+			mLogRecorder = GenerateILogRecorder();
+
 			UnsubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
 			mVehicleCommunicator = GenerateIVehicleCommunicator();
 			SubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
@@ -336,6 +347,8 @@ namespace TrafficControlTest.Base
 
 			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
 			mMissionUpdater = null;
+
+			mLogRecorder = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -1064,16 +1077,19 @@ namespace TrafficControlTest.Base
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemAdded", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
+			mLogRecorder.RecordVehicleInfo(DatabaseDataOperation.Add, VehicleInfo);
 			RaiseEvent_VehicleInfoManagerItemAdded(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemRemoved", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
+			mLogRecorder.RecordVehicleInfo(DatabaseDataOperation.Remove, VehicleInfo);
 			RaiseEvent_VehicleInfoManagerItemRemoved(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
+			mLogRecorder.RecordVehicleInfo(DatabaseDataOperation.Update, VehicleInfo);
 			RaiseEvent_VehicleInfoManagerItemUpdated(OccurTime, Name, StateName, VehicleInfo);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
@@ -1129,16 +1145,19 @@ namespace TrafficControlTest.Base
 		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
+			mLogRecorder.RecordMissionState(DatabaseDataOperation.Add, MissionState);
 			RaiseEvent_MissionStateManagerItemAdded(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemRemoved", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
+			mLogRecorder.RecordMissionState(DatabaseDataOperation.Remove, MissionState);
 			RaiseEvent_MissionStateManagerItemRemoved(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemUpdated", $"MissionID: {MissionId}, StateName: {StateName}, Info: {MissionState.ToString()}");
+			mLogRecorder.RecordMissionState(DatabaseDataOperation.Update, MissionState);
 			RaiseEvent_MissionStateManagerItemUpdated(OccurTime, MissionId, StateName, MissionState);
 		}
 		private void HandleEvent_HostCommunicatorSystemStarted(DateTime OccurTime)
@@ -1219,8 +1238,9 @@ namespace TrafficControlTest.Base
 		}
 		private void HandleDebugMessage(string OccurTime, string Category, string SubCategory, string Message)
 		{
-			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
 			Console.WriteLine($"{OccurTime} [{Category}] [{SubCategory}] - {Message}");
+			mLogRecorder.RecordGeneralLog(OccurTime, Category, SubCategory, Message);
+			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
 		}
 	}
 }

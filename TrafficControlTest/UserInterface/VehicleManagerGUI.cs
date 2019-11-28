@@ -81,7 +81,6 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void btnFormClose_Click(object sender, EventArgs e)
 		{
-			Destructor();
 			Close();
 		}
 		private void btnDisplayPnlLeftMain_Click(object sender, EventArgs e)
@@ -572,6 +571,7 @@ namespace TrafficControlTest.UserInterface
 			mCore.MapFileManagerSetConfigOfMapFileDirectory(GetConfigurationValue("MapFileManager", "MapFileDirectory"));
 			mCore.MapManagerSetConfigOfAutoLoadMap(bool.Parse(GetConfigurationValue("MapManager", "AutoLoadMap")));
 
+			mCore.LogRecorderStart();
 			mCore.VehicleCommunicatorStartListen();
 			mCore.CollisionEventDetectorStart();
 			mCore.VehicleControlHandlerStart();
@@ -585,6 +585,7 @@ namespace TrafficControlTest.UserInterface
 			mCore.CollisionEventDetectorStop();
 			mCore.VehicleControlHandlerStop();
 			mCore.HostCommunicatorStopListen();
+			mCore.LogRecorderStop();
 
 			SetConfigurationValue("HostCommunicator", "ListenPort", mCore.HostCommunicatorGetConfigOfListenPort().ToString());
 			SetConfigurationValue("VehicleCommunicator", "ListenPort", mCore.VehicleCommunicatorGetConfigOfListenPort().ToString());
