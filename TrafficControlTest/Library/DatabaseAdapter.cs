@@ -81,7 +81,7 @@ namespace TrafficControlTest.Library
 		/// <summary>Sql 指令處理執行緒的離開旗標</summary>
 		protected bool[] mThdProcessCmdsExitFlag = null;
 		/// <summary>Sql 指令處理週期 (ms)</summary>
-		protected int mPeriodOfProcessCmd = 100;
+		protected int mPeriodOfProcessCmd = 1000;
 		/// <summary>連線狀態測試週期 (ms)</summary>
 		protected int mPeriodOfTestConnectStatus = 5000;
 
@@ -190,8 +190,12 @@ namespace TrafficControlTest.Library
 		}
 		/// <summary>執行非查詢類 Sql 指令，並回傳受影響的資料行數</summary>
 		public abstract int ExecuteNonQueryCommand(string NonQueryCmd);
+		/// <summary>執行非查詢類 Sql 指令(複數)，並回傳受影響的資料行數(複數)。通常會使用 Transaction 加快執行速度</summary>
+		public abstract int[] ExecuteNonQueryCommands(IEnumerable<string> NonQueryCmds);
 		/// <summary>執行查詢類 Sql 指令，並回傳查詢結果</summary>
 		public abstract DataSet ExecuteQueryCommand(string QueryCmd);
+		/// <summary>執行查詢類 Sql 指令(複數)，並回傳查詢結果(複數)。通常會使用 Transaction 加快執行速度</summary>
+		public abstract DataSet[] ExecuteQueryCommands(IEnumerable<string> QueryCmds);
 
 		/// <summary>初始化執行緒</summary>
 		protected virtual void InitializeThread()
@@ -227,6 +231,16 @@ namespace TrafficControlTest.Library
 				HandleException(ex);
 			}
 		}
+		/// <summary>觸發事件 NonQueryCmdExecuted</summary>
+		protected virtual void RaiseEvent_NonQueryCmdExecuted(string SqlCmd, int Result)
+		{
+			NonQueryCmdExecuted?.Invoke(SqlCmd, Result);
+		}
+		/// <summary>觸發事件 QueryCmdExecuted</summary>
+		protected virtual void RaiseEvent_QueryCmdExecuted(string SqlCmd, DataSet Result)
+		{
+			QueryCmdExecuted?.Invoke(SqlCmd, Result);
+		}
 		/// <summary>從佇列中取出並執行 Sql 指令</summary>
 		protected virtual void DequeueAndExecuteSqlCmds()
 		{
@@ -245,27 +259,24 @@ namespace TrafficControlTest.Library
 		{
 			try
 			{
-				string tmpCmd = String.Empty;
+				List<string> tmpNonQueryCmds = null;
 				lock (mLockOfContainerOfNonQueryCmds)
 				{
-					if (mContainerOfNonQueryCmds.Count() <= 0)
+					if (mContainerOfNonQueryCmds.Count > 0)
 					{
-						return;
+						tmpNonQueryCmds = mContainerOfNonQueryCmds.ToList();
+						mContainerOfNonQueryCmds.Clear();
 					}
 					else
 					{
-						tmpCmd = mContainerOfNonQueryCmds.First();
+						return;
 					}
 				}
 
-				int result = ExecuteNonQueryCommand(tmpCmd);
-				if (result != mDefaultValueOfNonQueryCmdResult)
+				int[] tmpResults = ExecuteNonQueryCommands(tmpNonQueryCmds);
+				for (int i = 0; i < tmpNonQueryCmds.Count; ++i)
 				{
-					lock (mLockOfContainerOfNonQueryCmds)
-					{
-						mContainerOfNonQueryCmds.RemoveAt(0);
-					}
-					NonQueryCmdExecuted?.Invoke(tmpCmd, result);
+					RaiseEvent_NonQueryCmdExecuted(tmpNonQueryCmds[i], tmpResults[i]);
 				}
 			}
 			catch (Exception ex)
@@ -278,27 +289,24 @@ namespace TrafficControlTest.Library
 		{
 			try
 			{
-				string tmpCmd = String.Empty;
+				List<string> tmpQueryCmds = null;
 				lock (mLockOfContainerOfQueryCmds)
 				{
-					if (mContainerOfQueryCmds.Count() <= 0)
+					if (mContainerOfQueryCmds.Count > 0)
 					{
-						return;
+						tmpQueryCmds = mContainerOfQueryCmds.ToList();
+						mContainerOfQueryCmds.Clear();
 					}
 					else
 					{
-						tmpCmd = mContainerOfQueryCmds.First();
+						return;
 					}
 				}
 
-				DataSet result = ExecuteQueryCommand(tmpCmd);
-				if (result != mDefaultValueOfQueryCmdResult)
+				DataSet[] tmpResults = ExecuteQueryCommands(tmpQueryCmds);
+				for (int i = 0; i < tmpQueryCmds.Count; ++i)
 				{
-					lock (mLockOfContainerOfQueryCmds)
-					{
-						mContainerOfQueryCmds.RemoveAt(0);
-					}
-					QueryCmdExecuted?.Invoke(tmpCmd, result);
+					RaiseEvent_QueryCmdExecuted(tmpQueryCmds[i], tmpResults[i]);
 				}
 			}
 			catch (Exception ex)

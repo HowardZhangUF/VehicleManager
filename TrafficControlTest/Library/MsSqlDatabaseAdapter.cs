@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Net.NetworkInformation;
 
 namespace TrafficControlTest.Library
@@ -98,6 +100,37 @@ namespace TrafficControlTest.Library
 			}
 			return result;
 		}
+		public override int[] ExecuteNonQueryCommands(IEnumerable<string> NonQueryCmds)
+		{
+			List<int> result = new List<int>();
+			try
+			{
+				using (SqlConnection sql = new SqlConnection(mConnectionString))
+				{
+					if (sql.State == ConnectionState.Closed) sql.Open();
+					using (SqlTransaction sqlTrans = sql.BeginTransaction())
+					{
+						for (int i = 0; i < NonQueryCmds.Count(); ++i)
+						{
+							using (SqlCommand sqlc = new SqlCommand(NonQueryCmds.ElementAt(i), sql))
+							{
+								result.Add(sqlc.ExecuteNonQuery());
+							}
+						}
+						sqlTrans.Commit();
+					}
+				}
+			}
+			catch (SqlException ex)
+			{
+				HandleDbException(ex);
+			}
+			catch (Exception ex)
+			{
+				HandleException(ex);
+			}
+			return result.ToArray();
+		}
 		public override DataSet ExecuteQueryCommand(string QueryCmd)
 		{
 			DataSet result = mDefaultValueOfQueryCmdResult;
@@ -129,6 +162,44 @@ namespace TrafficControlTest.Library
 				HandleException(ex);
 			}
 			return result;
+		}
+		public override DataSet[] ExecuteQueryCommands(IEnumerable<string> QueryCmds)
+		{
+			List<DataSet> result = new List<DataSet>();
+			try
+			{
+				using (SqlConnection sql = new SqlConnection(mConnectionString))
+				{
+					if (sql.State == ConnectionState.Closed) sql.Open();
+					using (SqlTransaction sqlTrans = sql.BeginTransaction())
+					{
+						for (int i = 0; i < QueryCmds.Count(); ++i)
+						{
+							using (SqlCommand sqlc = new SqlCommand(QueryCmds.ElementAt(i), sql))
+							{
+								using (SqlDataAdapter sqlda = new SqlDataAdapter(sqlc))
+								{
+									DataSet tmpResult = new DataSet();
+									tmpResult.Clear();
+									sqlda.Fill(tmpResult);
+									result.Add(tmpResult);
+								}
+							}
+						}
+						sqlTrans.Commit();
+					}
+					
+				}
+			}
+			catch (SqlException ex)
+			{
+				HandleDbException(ex);
+			}
+			catch (Exception ex)
+			{
+				HandleException(ex);
+			}
+			return result.ToArray();
 		}
 	}
 }

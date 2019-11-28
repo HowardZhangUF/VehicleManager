@@ -77,6 +77,37 @@ namespace TrafficControlTest.Library
 			}
 			return result;
 		}
+		public override int[] ExecuteNonQueryCommands(IEnumerable<string> NonQueryCmds)
+		{
+			List<int> result = new List<int>();
+			try
+			{
+				using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+				{
+					if (sql.State == ConnectionState.Closed) sql.Open();
+					using (SQLiteTransaction sqlTrans = sql.BeginTransaction())
+					{
+						for (int i = 0; i < NonQueryCmds.Count(); ++i)
+						{
+							using (SQLiteCommand sqlc = new SQLiteCommand(NonQueryCmds.ElementAt(i), sql))
+							{
+								result.Add(sqlc.ExecuteNonQuery());
+							}
+						}
+						sqlTrans.Commit();
+					}
+				}
+			}
+			catch (SQLiteException ex)
+			{
+				HandleDbException(ex);
+			}
+			catch (Exception ex)
+			{
+				HandleException(ex);
+			}
+			return result.ToArray();
+		}
 		public override DataSet ExecuteQueryCommand(string QueryCmd)
 		{
 			DataSet result = mDefaultValueOfQueryCmdResult;
@@ -108,6 +139,44 @@ namespace TrafficControlTest.Library
 				HandleException(ex);
 			}
 			return result;
+		}
+		public override DataSet[] ExecuteQueryCommands(IEnumerable<string> QueryCmds)
+		{
+			List<DataSet> result = new List<DataSet>();
+			try
+			{
+				using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+				{
+					if (sql.State == ConnectionState.Closed) sql.Open();
+					using (SQLiteTransaction sqlTrans = sql.BeginTransaction())
+					{
+						for (int i = 0; i < QueryCmds.Count(); ++i)
+						{
+							using (SQLiteCommand sqlc = new SQLiteCommand(QueryCmds.ElementAt(i), sql))
+							{
+								using (SQLiteDataAdapter sqlda = new SQLiteDataAdapter(sqlc))
+								{
+									DataSet tmpResult = new DataSet();
+									tmpResult.Clear();
+									sqlda.Fill(tmpResult);
+									result.Add(tmpResult);
+								}
+							}
+						}
+						sqlTrans.Commit();
+					}
+				}
+			}
+			catch (SQLiteException ex)
+			{
+				HandleDbException(ex);
+			}
+			catch (Exception ex)
+			{
+				HandleException(ex);
+			}
+
+			return result.ToArray();
 		}
 	}
 }
