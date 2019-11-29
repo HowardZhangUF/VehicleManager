@@ -13,9 +13,10 @@ namespace TrafficControlTest.Module.General.Implement
 	public class LogRecorder : ILogRecorder
 	{
 		private DatabaseAdapter mDber;
+		private string mTableNameOfGeneralLog = "GeneralLog";
 		private string mTableNameOfVehicleState = "CurrentVehicleState";
 		private string mTableNameOfMissionState = "MissionState";
-
+		
 		public LogRecorder()
 		{
 			mDber = new SqliteDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
@@ -31,7 +32,7 @@ namespace TrafficControlTest.Module.General.Implement
 		}
 		public void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message)
 		{
-			mDber.EnqueueNonQueryCommand($"INSERT INTO {Category} VALUES ('{Timestamp}', '{SubCategory}', '{Message}')");
+			mDber.EnqueueNonQueryCommand($"INSERT INTO {mTableNameOfGeneralLog} VALUES ('{Timestamp}', '{Category}', '{SubCategory}', '{Message}')");
 		}
 		public void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo)
 		{
@@ -70,28 +71,13 @@ namespace TrafficControlTest.Module.General.Implement
 
 		private void InitializeDatabaseTable()
 		{
-			CreateTableOfGeneralLog("VehicleCommunicator");
-			CreateTableOfGeneralLog("VehicleInfoManager");
-			CreateTableOfGeneralLog("CollisionEventManager");
-			CreateTableOfGeneralLog("CollisionEventDetector");
-			CreateTableOfGeneralLog("VehicleControlManager");
-			CreateTableOfGeneralLog("CollisionEventHandler");
-			CreateTableOfGeneralLog("VehicleControlHandler");
-			CreateTableOfGeneralLog("MissionStateManager");
-			CreateTableOfGeneralLog("VehicleInfoUpdater");
-			CreateTableOfGeneralLog("HostCommunicator");
-			CreateTableOfGeneralLog("HostMessageAnalyzer");
-			CreateTableOfGeneralLog("MissionDispatcher");
-			CreateTableOfGeneralLog("MapFileManager");
-			CreateTableOfGeneralLog("MapManager");
-			CreateTableOfGeneralLog("MissionStateReporter");
-			CreateTableOfGeneralLog("MissionUpdater");
+			CreateTableOfGeneralLog();
 			CreateTableOfCurrentVehicleState();
 			CreateTableOfAllMissionState();
 		}
-		private void CreateTableOfGeneralLog(string TableName)
+		private void CreateTableOfGeneralLog()
 		{
-			mDber.ExecuteNonQueryCommand($"CREATE TABLE IF NOT EXISTS {TableName} (Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, SubCategory TEXT, Message TEXT);");
+			mDber.ExecuteNonQueryCommand($"CREATE TABLE IF NOT EXISTS {mTableNameOfGeneralLog} (Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, Category TEXT, SubCategory TEXT, Message TEXT);");
 		}
 		private void CreateTableOfCurrentVehicleState()
 		{
