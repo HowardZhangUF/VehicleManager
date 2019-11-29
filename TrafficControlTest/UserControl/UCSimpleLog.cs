@@ -93,7 +93,7 @@ namespace TrafficControlTest.UserControl
 			dgv.RowTemplate.Height = 25;
 
 			dgv.Columns.Add("Date", "Date");
-			dgv.Columns[0].Width = 170;
+			dgv.Columns[0].Width = 175;
 			dgv.Columns.Add("Category", "Category");
 			dgv.Columns[1].Width = 200;
 			dgv.Columns.Add("SubCategory", "SubCategory");
