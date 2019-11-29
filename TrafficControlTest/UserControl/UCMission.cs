@@ -16,10 +16,8 @@ namespace TrafficControlTest.UserControl
 		public Color TableGridLineColor { get; set; } = Color.FromArgb(86, 86, 86);
 		public Color TableHeaderBackColor { get; set; } = Color.FromArgb(0, 122, 204);
 		public Color TableHeaderForeColor { get; set; } = Color.White;
-		public Color TableOddRowBackColor { get; set; } = Color.FromArgb(31, 31, 31);
-		public Color TableEvenRowBackColor { get; set; } = Color.FromArgb(42, 42, 42);
-		public Color TableOddRowExecutingBackColor { get; set; } = Color.FromArgb(35, 128, 76);
-		public Color TableEvenRowExecutingBackColor { get; set; } = Color.FromArgb(46, 139, 87);
+		public Color TableRowUnexecuteBackColor { get; set; } = Color.FromArgb(31, 31, 31);
+		public Color TableRowExecutingBackColor { get; set; } = Color.FromArgb(35, 128, 76);
 		public Color TableRowForeColor { get; set; } = Color.White;
 
 		private object mLockOfDgvMission = new object();
@@ -183,9 +181,9 @@ namespace TrafficControlTest.UserControl
 			dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 			dgv.ColumnHeadersHeight = 60;
 
-			dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
+			dgv.CellBorderStyle = DataGridViewCellBorderStyle.Single;
 			dgv.DefaultCellStyle.Font = new Font(dgv.DefaultCellStyle.Font.FontFamily, 12, FontStyle.Regular);
-			dgv.DefaultCellStyle.BackColor = TableEvenRowBackColor;
+			dgv.DefaultCellStyle.BackColor = TableRowUnexecuteBackColor;
 			dgv.DefaultCellStyle.ForeColor = TableRowForeColor;
 			dgv.RowTemplate.Height = 40;
 
@@ -231,25 +229,11 @@ namespace TrafficControlTest.UserControl
 		{
 			if (dgvMission.Rows[RowIndex].Cells[5].Value.ToString().EndsWith("Executing"))
 			{
-				if (RowIndex % 2 == 0)
-				{
-					if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableEvenRowExecutingBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableEvenRowExecutingBackColor;
-				}
-				else
-				{
-					if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableOddRowExecutingBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableOddRowExecutingBackColor;
-				}
+				if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableRowExecutingBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableRowExecutingBackColor;
 			}
 			else
 			{
-				if (RowIndex % 2 == 0)
-				{
-					if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableEvenRowBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableEvenRowBackColor;
-				}
-				else
-				{
-					if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableOddRowBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableOddRowBackColor;
-				}
+				if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableRowUnexecuteBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableRowUnexecuteBackColor;
 			}
 		}
 		private void UpdateGui_InsertSampleDataToDgvMission()
