@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Library;
 using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Module.General.Interface
@@ -17,6 +18,7 @@ namespace TrafficControlTest.Module.General.Interface
 
 	public interface ILogRecorder
 	{
+		void Set(DatabaseAdapter DatabaseAdapter);
 		void Start();
 		void Stop();
 		void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message);

@@ -230,9 +230,13 @@ namespace TrafficControlTest.Library
 		{
 			return new MissionStateReporter(MissionStateManager, HostCommunicator);
 		}
-		public static ILogRecorder GenerateILogRecorder()
+		public static DatabaseAdapter GenerateDatabaseAdapter(string DatabaseServerAddressIp, string DatabaseServerAddressPort, string UserAccount, string UserPassword, string InitialDatabase, bool PingBeforeBuildConnection)
 		{
-			return new LogRecorder();
+			return new SqliteDatabaseAdapter(DatabaseServerAddressIp, DatabaseServerAddressPort, UserAccount, UserPassword, InitialDatabase, PingBeforeBuildConnection);
+		}
+		public static ILogRecorder GenerateILogRecorder(DatabaseAdapter DatabaseAdapter)
+		{
+			return new LogRecorder(DatabaseAdapter);
 		}
 		#endregion
 

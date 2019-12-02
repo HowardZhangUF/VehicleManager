@@ -51,6 +51,7 @@ namespace TrafficControlTest.Base
 		public event EventHandlerVehicleNamesMapFileName MapFileManagerVehicleCurrentMapSynchronized;
 		public event EventHandlerMapFileName MapManagerMapLoaded;
 
+		private DatabaseAdapter mDatabaseAdapter = null;
 		private ILogRecorder mLogRecorder = null;
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
@@ -238,7 +239,8 @@ namespace TrafficControlTest.Base
 
 		private void Constructor()
 		{
-			mLogRecorder = GenerateILogRecorder();
+			mDatabaseAdapter = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
+			mLogRecorder = GenerateILogRecorder(mDatabaseAdapter);
 
 			UnsubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
 			mVehicleCommunicator = GenerateIVehicleCommunicator();

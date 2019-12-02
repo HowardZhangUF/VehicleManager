@@ -12,27 +12,34 @@ namespace TrafficControlTest.Module.General.Implement
 {
 	public class LogRecorder : ILogRecorder
 	{
-		private DatabaseAdapter mDber;
+		private DatabaseAdapter rDatabaseAdapter = null;
 		private string mTableNameOfGeneralLog = "GeneralLog";
 		private string mTableNameOfVehicleState = "CurrentVehicleState";
 		private string mTableNameOfMissionState = "MissionState";
 		
-		public LogRecorder()
+		public LogRecorder(DatabaseAdapter DatabaseAdapter)
 		{
-			mDber = new SqliteDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
-			InitializeDatabaseTable();
+			Set(DatabaseAdapter);
+		}
+		public void Set(DatabaseAdapter DatabaseAdapter)
+		{
+			if (DatabaseAdapter != null)
+			{
+				rDatabaseAdapter = DatabaseAdapter;
+				InitializeDatabaseTable();
+			}
 		}
 		public void Start()
 		{
-			mDber.Start();
+			rDatabaseAdapter.Start();
 		}
 		public void Stop()
 		{
-			mDber.Stop();
+			rDatabaseAdapter.Stop();
 		}
 		public void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message)
 		{
-			mDber.EnqueueNonQueryCommand($"INSERT INTO {mTableNameOfGeneralLog} VALUES ('{Timestamp}', '{Category}', '{SubCategory}', '{Message}')");
+			rDatabaseAdapter.EnqueueNonQueryCommand($"INSERT INTO {mTableNameOfGeneralLog} VALUES ('{Timestamp}', '{Category}', '{SubCategory}', '{Message}')");
 		}
 		public void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo)
 		{
@@ -77,7 +84,7 @@ namespace TrafficControlTest.Module.General.Implement
 		}
 		private void CreateTableOfGeneralLog()
 		{
-			mDber.ExecuteNonQueryCommand($"CREATE TABLE IF NOT EXISTS {mTableNameOfGeneralLog} (Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, Category TEXT, SubCategory TEXT, Message TEXT);");
+			rDatabaseAdapter.ExecuteNonQueryCommand($"CREATE TABLE IF NOT EXISTS {mTableNameOfGeneralLog} (Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, Category TEXT, SubCategory TEXT, Message TEXT);");
 		}
 		private void CreateTableOfCurrentVehicleState()
 		{
@@ -99,7 +106,7 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += "InterveneCommand TEXT, ";
 			tmp += "MapName TEXT, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
-			mDber.ExecuteNonQueryCommand(tmp);
+			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
 		}
 		private void CreateTableOfAllMissionState()
 		{
@@ -118,7 +125,7 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += "ExecutionStartTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ExecutionStopTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
-			mDber.ExecuteNonQueryCommand(tmp);
+			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
 		}
 		private void VehicleInfoDataAdd(IVehicleInfo VehicleInfo)
 		{
@@ -140,13 +147,13 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += $"'{VehicleInfo.mCurrentInterveneCommand}', ";
 			tmp += $"'{VehicleInfo.mCurrentMapName}', ";
 			tmp += $"'{VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}')";
-			mDber.EnqueueNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void VehicleInfoDataRemove(IVehicleInfo VehicleInfo)
 		{
 			string tmp = string.Empty;
 			tmp += $"DELETE FROM {mTableNameOfVehicleState} WHERE ID = '{VehicleInfo.mName}'";
-			mDber.EnqueueNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void VehicleInfoDataUpdate(IVehicleInfo VehicleInfo)
 		{
@@ -168,7 +175,7 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += $"MapName = '{VehicleInfo.mCurrentMapName}', ";
 			tmp += $"LastUpdateTimestamp = '{VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}' ";
 			tmp += $"WHERE ID = '{VehicleInfo.mName}'";
-			mDber.EnqueueNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void MissionStateDataAdd(IMissionState MissionState)
 		{
@@ -187,7 +194,7 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += $"'{MissionState.mExecutionStartTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{MissionState.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{MissionState.mLastUpdate.ToString(Library.Library.TIME_FORMAT)}')";
-			mDber.EnqueueNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void MissionStateDataUpdate(IMissionState MissionState)
 		{
@@ -206,7 +213,7 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += $"ExecutionStopTimestamp = '{MissionState.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"LastUpdateTimestamp = '{MissionState.mLastUpdate.ToString(Library.Library.TIME_FORMAT)}' ";
 			tmp += $"WHERE ID = '{MissionState.mName}'";
-			mDber.EnqueueNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 	}
 }
