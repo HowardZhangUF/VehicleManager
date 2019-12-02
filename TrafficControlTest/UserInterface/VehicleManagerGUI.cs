@@ -37,6 +37,7 @@ namespace TrafficControlTest.UserInterface
 			Constructor_Configuration();
 			ucMap1.Constructor("Style.ini");
 			Constructor_VehicleManagerProcess();
+			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapter());
 		}
 		private void Destructor()
 		{

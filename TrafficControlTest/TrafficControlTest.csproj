@@ -178,6 +178,12 @@
     <Compile Include="UserControl\UCLog.Designer.cs">
       <DependentUpon>UCLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UCLogSearch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UCLogSearch.Designer.cs">
+      <DependentUpon>UCLogSearch.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UCMap.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -263,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UCLog.resx">
       <DependentUpon>UCLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UCLogSearch.resx">
+      <DependentUpon>UCLogSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UCMap.resx">
       <DependentUpon>UCMap.cs</DependentUpon>
