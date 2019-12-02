@@ -78,6 +78,10 @@ namespace TrafficControlTest.Base
 		{
 			Destructor();
 		}
+		public DatabaseAdapter GetReferenceOfDatabaseAdapter()
+		{
+			return mDatabaseAdapter;
+		}
 		public void LogRecorderStart()
 		{
 			mLogRecorder.Start();
