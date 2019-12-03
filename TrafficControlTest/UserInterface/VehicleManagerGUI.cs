@@ -36,6 +36,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			ucMap1.Constructor("Style.ini");
 			Constructor_VehicleManagerProcess();
+			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapter());
 			ucSimpleLog1.Set(mCore);
@@ -130,10 +131,6 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_PnlBtm_DisplayPnlBtm(!pnlBtmDisplay);
 		}
-		private void ucVehicle1_VehicleStateNeedToBeRefreshed(string VehicleName)
-		{
-			UpdateGui_UcVehicle_UpdateVehicleInfo(VehicleName, string.Empty, GetVehicleInfo(VehicleName));
-		}
 		private void ucVehicleOverview1_DoubleClickOnVehicleInfo(string VehicleName)
 		{
 			UpdateGui_UcMap_MapFocusVehicle(VehicleName);
@@ -163,9 +160,6 @@ namespace TrafficControlTest.UserInterface
 		{
 			if (VehicleInfo != null)
 			{
-				// Update Page of Vehicle
-				UpdateGui_UcVehicle_UpdateVehicleInfo(VehicleName, StateName, VehicleInfo);
-
 				// Update Page of Vehicle Overview
 				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBatteryValue.ToString("F2"));
 				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mCurrentState);
@@ -181,10 +175,6 @@ namespace TrafficControlTest.UserInterface
 		private void UpdateGui_All_UpdateVehicleNameList()
 		{
 			string[] vehicleNameList = GetVehicleNameList();
-			ucVehicle1.InvokeIfNecessary(() =>
-			{
-				ucVehicle1.UpdateVehicleNameList(vehicleNameList);
-			});
 			ucVehicleManualControl1.InvokeIfNecessary(() =>
 			{
 				ucVehicleManualControl1.UpdateVehicleNameList(vehicleNameList);
@@ -297,33 +287,6 @@ namespace TrafficControlTest.UserInterface
 					}
 				}
 			});
-		}
-		#endregion
-		#region Vehicle
-		private void UpdateGui_UcVehicle_UpdateVehicleInfo(string VehicleName, string StateName, IVehicleInfo VehicleInfo)
-		{
-			if (VehicleInfo != null)
-			{
-				ucVehicle1.InvokeIfNecessary(() =>
-				{
-					if (ucVehicle1.CurrentVehicleName == VehicleName)
-					{
-						ucVehicle1.UpdateVehicleState(VehicleInfo.mCurrentState);
-						ucVehicle1.UpdateVehicleLocation(VehicleInfo.mLocationCoordinate.mX, VehicleInfo.mLocationCoordinate.mY, VehicleInfo.mLocationToward);
-						ucVehicle1.UpdateVehicleTarget(VehicleInfo.mCurrentTarget);
-						ucVehicle1.UpdateVehicleVelocity(VehicleInfo.mVelocity);
-						ucVehicle1.UpdateVehicleLocationScore(VehicleInfo.mLocationScore);
-						ucVehicle1.UpdateVehicleBatteryValue(VehicleInfo.mBatteryValue);
-						ucVehicle1.UpdateVehicleAlarmMessage(VehicleInfo.mAlarmMessage);
-						ucVehicle1.UpdateVehiclePath(VehicleInfo.mPathString);
-						ucVehicle1.UpdateVehicleIpPort(VehicleInfo.mIpPort);
-						ucVehicle1.UpdateVehicleMissionId(VehicleInfo.mCurrentMissionId);
-						ucVehicle1.UpdateVehicleInterveneCommand(VehicleInfo.mCurrentInterveneCommand);
-						ucVehicle1.UpdateVehicleMapName(VehicleInfo.mCurrentMapName);
-						ucVehicle1.UpdateVehicleLastUpdateTime(VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT));
-					}
-				});
-			}
 		}
 		#endregion
 		#endregion

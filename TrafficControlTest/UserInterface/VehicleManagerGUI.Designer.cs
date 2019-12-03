@@ -61,7 +61,7 @@
 			this.ucLog1 = new TrafficControlTest.UserControl.UCLog();
 			this.ucSetting1 = new TrafficControlTest.UserControl.UCSetting();
 			this.ucMission1 = new TrafficControlTest.UserControl.UcMission();
-			this.ucVehicle1 = new TrafficControlTest.UserControl.UCVehicle();
+			this.ucVehicle1 = new TrafficControlTest.UserControl.UcVehicle();
 			this.ucMap1 = new TrafficControlTest.UserControl.UCMap();
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
 			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
@@ -504,7 +504,6 @@
 			this.ucVehicle1.Name = "ucVehicle1";
 			this.ucVehicle1.Size = new System.Drawing.Size(850, 350);
 			this.ucVehicle1.TabIndex = 1;
-			this.ucVehicle1.VehicleStateNeedToBeRefreshed += new TrafficControlTest.UserControl.UCVehicle.EventHandlerString(this.ucVehicle1_VehicleStateNeedToBeRefreshed);
 			// 
 			// ucMap1
 			// 
@@ -685,7 +684,7 @@
 		private UserControl.UCLog ucLog1;
 		private UserControl.UCSetting ucSetting1;
 		private UserControl.UcMission ucMission1;
-		private UserControl.UCVehicle ucVehicle1;
+		private UserControl.UcVehicle ucVehicle1;
 		private System.Windows.Forms.Panel pnlBtm;
 		private UserControl.UcSimpleLog ucSimpleLog1;
 		private System.Windows.Forms.Button btnDisplayPnlBtm;

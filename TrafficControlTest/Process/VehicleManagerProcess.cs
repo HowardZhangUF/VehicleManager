@@ -103,6 +103,10 @@ namespace TrafficControlTest.Process
 			VehicleCommunicatorStopListen();
 			LogRecorderStop();
 		}
+		public IVehicleInfoManager GetReferenceOfIVehicleInfoManager()
+		{
+			return mVehicleInfoManager;
+		}
 		public IMissionStateManager GetReferenceOfIMissionStateManager()
 		{
 			return mMissionStateManager;
