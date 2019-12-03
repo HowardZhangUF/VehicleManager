@@ -9,9 +9,9 @@ using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;
 
-namespace TrafficControlTest.Base
+namespace TrafficControlTest.Process
 {
-	class VehicleManagerProcess
+	public class VehicleManagerProcess
 	{
 		public event EventHandlerDebugMessage DebugMessage;
 		public event EventHandlerDateTime VehicleCommunicatorSystemStarted;
