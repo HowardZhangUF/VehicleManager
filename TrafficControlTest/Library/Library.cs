@@ -238,6 +238,10 @@ namespace TrafficControlTest.Library
 		{
 			return new LogRecorder(DatabaseAdapter);
 		}
+		public static IConfigurator GenerateIConfigurator(string FileName)
+		{
+			return new Configurator(FileName);
+		}
 		#endregion
 
 		#region IPoint2D

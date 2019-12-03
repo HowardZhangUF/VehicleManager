@@ -51,6 +51,7 @@ namespace TrafficControlTest.Base
 		public event EventHandlerVehicleNamesMapFileName MapFileManagerVehicleCurrentMapSynchronized;
 		public event EventHandlerMapFileName MapManagerMapLoaded;
 
+		private IConfigurator mConfigurator = null;
 		private DatabaseAdapter mDatabaseAdapter = null;
 		private ILogRecorder mLogRecorder = null;
 		private IVehicleCommunicator mVehicleCommunicator = null;
@@ -77,6 +78,30 @@ namespace TrafficControlTest.Base
 		~VehicleManagerProcess()
 		{
 			Destructor();
+		}
+		/// <summary>
+		/// 系統開始
+		/// </summary>
+		/// <remarks>
+		/// 系統開始不放在建構式，而是需要外部(介面層)呼叫才開始的原因為：為了讓外部(介面層)訂閱完此物件的所有事件，再讓此物件開始執行，避免外部(介面層)遺漏事件
+		/// </remarks>
+		public void Start()
+		{
+			LogRecorderStart();
+			VehicleCommunicatorStartListen();
+			CollisionEventDetectorStart();
+			VehicleControlHandlerStart();
+			HostCommunicatorStartListen();
+			MissionDispatcherStart();
+		}
+		public void Stop()
+		{
+			MissionDispatcherStop();
+			HostCommunicatorStopListen();
+			VehicleControlHandlerStop();
+			CollisionEventDetectorStop();
+			VehicleCommunicatorStopListen();
+			LogRecorderStop();
 		}
 		public DatabaseAdapter GetReferenceOfDatabaseAdapter()
 		{
@@ -243,6 +268,7 @@ namespace TrafficControlTest.Base
 
 		private void Constructor()
 		{
+			mConfigurator = GenerateIConfigurator("Application.config");
 			mDatabaseAdapter = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mLogRecorder = GenerateILogRecorder(mDatabaseAdapter);
 
@@ -309,9 +335,21 @@ namespace TrafficControlTest.Base
 			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
 			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager, mMapManager);
 			SubscribeEvent_IMissionUpdater(mMissionUpdater);
+
+			mConfigurator.Load();
+			mVehicleCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("VehicleCommunicator/ListenPort")));
+			mHostCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("HostCommunicator/ListenPort")));
+			mMapFileManager.SetConfigOfMapFileDirectory(mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
+			mMapManager.SetConfigOfAutoLoadMap(bool.Parse(mConfigurator.GetValue("MapManager/AutoLoadMap")));
 		}
 		private void Destructor()
 		{
+			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfigOfAutoLoadMap().ToString());
+			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfigOfMapFileDirectory());
+			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfigOfListenPort().ToString());
+			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfigOfListenPort().ToString());
+			mConfigurator.Save();
+
 			UnsubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
 			mVehicleCommunicator = null;
 
@@ -355,6 +393,8 @@ namespace TrafficControlTest.Base
 			mMissionUpdater = null;
 
 			mLogRecorder = null;
+			mDatabaseAdapter = null;
+			mConfigurator = null;
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{

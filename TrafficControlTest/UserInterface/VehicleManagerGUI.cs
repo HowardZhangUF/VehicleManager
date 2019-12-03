@@ -34,7 +34,6 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void Constructor()
 		{
-			Constructor_Configuration();
 			ucMap1.Constructor("Style.ini");
 			Constructor_VehicleManagerProcess();
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapter());
@@ -43,7 +42,6 @@ namespace TrafficControlTest.UserInterface
 		{
 			Destructor_VehicleManagerProcess();
 			ucMap1.Destructor();
-			Destructor_Configuration();
 		}
 		private void HandleException(Exception Ex)
 		{
@@ -566,33 +564,11 @@ namespace TrafficControlTest.UserInterface
 		{
 			mCore = new VehicleManagerProcess();
 			SubscribeEvent_VehicleManagerProcess(mCore);
-
-			mCore.VehicleCommunicatorSetConfigOfListenPort(int.Parse(GetConfigurationValue("VehicleCommunicator", "ListenPort")));
-			mCore.HostCommunicatorSetConfigOfListenPort(int.Parse(GetConfigurationValue("HostCommunicator", "ListenPort")));
-			mCore.MapFileManagerSetConfigOfMapFileDirectory(GetConfigurationValue("MapFileManager", "MapFileDirectory"));
-			mCore.MapManagerSetConfigOfAutoLoadMap(bool.Parse(GetConfigurationValue("MapManager", "AutoLoadMap")));
-
-			mCore.LogRecorderStart();
-			mCore.VehicleCommunicatorStartListen();
-			mCore.CollisionEventDetectorStart();
-			mCore.VehicleControlHandlerStart();
-			mCore.HostCommunicatorStartListen();
-			mCore.MissionDispatcherStart();
+			mCore.Start();
 		}
 		private void Destructor_VehicleManagerProcess()
 		{
-			mCore.MissionDispatcherStop();
-			mCore.VehicleCommunicatorStopListen();
-			mCore.CollisionEventDetectorStop();
-			mCore.VehicleControlHandlerStop();
-			mCore.HostCommunicatorStopListen();
-			mCore.LogRecorderStop();
-
-			SetConfigurationValue("HostCommunicator", "ListenPort", mCore.HostCommunicatorGetConfigOfListenPort().ToString());
-			SetConfigurationValue("VehicleCommunicator", "ListenPort", mCore.VehicleCommunicatorGetConfigOfListenPort().ToString());
-			SetConfigurationValue("MapFileManager", "MapFileDirectory", mCore.MapFileManagerGetConfigOfMapFileDirectory());
-			SetConfigurationValue("MapManager", "AutoLoadMap", mCore.MapManagerGetConfigOfAutoLoadMap().ToString());
-
+			mCore.Stop();
 			UnsubscribeEvent_VehicleManagerProcess(mCore);
 			mCore = null;
 		}
@@ -728,33 +704,6 @@ namespace TrafficControlTest.UserInterface
 		private void SendCommandToVehicle(string VehicleName, string Command, params string[] Paras)
 		{
 			mCore.SendCommand(VehicleName, Command, Paras);
-		}
-		#endregion
-
-		#region Configuration
-		private void Constructor_Configuration()
-		{
-			LoadConfiguration();
-		}
-		private void Destructor_Configuration()
-		{
-			SaveConfiguration();
-		}
-		private void LoadConfiguration()
-		{
-			Configuration.Load();
-		}
-		private void SaveConfiguration()
-		{
-			Configuration.Save();
-		}
-		private string GetConfigurationValue(string Category, string Name)
-		{
-			return Configuration.GetValue(Category, Name);
-		}
-		private void SetConfigurationValue(string Category, string Name, string Value)
-		{
-			Configuration.SetValue(Category, Name, Value);
 		}
 		#endregion
 	}
