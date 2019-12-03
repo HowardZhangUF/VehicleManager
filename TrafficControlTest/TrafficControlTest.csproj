@@ -203,11 +203,11 @@
     <Compile Include="UserControl\UCSetting.Designer.cs">
       <DependentUpon>UCSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCSimpleLog.cs">
+    <Compile Include="UserControl\UcSimpleLog.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCSimpleLog.Designer.cs">
-      <DependentUpon>UCSimpleLog.cs</DependentUpon>
+    <Compile Include="UserControl\UcSimpleLog.Designer.cs">
+      <DependentUpon>UcSimpleLog.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\UCVehicle.cs">
       <SubType>UserControl</SubType>
@@ -283,8 +283,8 @@
     <EmbeddedResource Include="UserControl\UCSetting.resx">
       <DependentUpon>UCSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCSimpleLog.resx">
-      <DependentUpon>UCSimpleLog.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl\UcSimpleLog.resx">
+      <DependentUpon>UcSimpleLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UCVehicle.resx">
       <DependentUpon>UCVehicle.cs</DependentUpon>

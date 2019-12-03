@@ -544,14 +544,14 @@ namespace TrafficControlTest.UserInterface
 		{
 			ucSimpleLog1.InvokeIfNecessary(() =>
 			{
-				ucSimpleLog1.AddSimpleLog(Date, Category, SubCategory, Message);
+				ucSimpleLog1.AddLog(Date, Category, SubCategory, Message);
 			});
 		}
 		private void UpdateGui_PnlBtm_ClearSimpleLog()
 		{
 			ucSimpleLog1.InvokeIfNecessary(() =>
 			{
-				ucSimpleLog1.ClearSimpleLog();
+				ucSimpleLog1.ClearLog();
 			});
 		}
 		#endregion

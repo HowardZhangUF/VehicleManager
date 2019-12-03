@@ -1,6 +1,6 @@
 ﻿namespace TrafficControlTest.UserControl
 {
-	partial class UCSimpleLog
+	partial class UcSimpleLog
 	{
 		/// <summary> 
 		/// 設計工具所需的變數。

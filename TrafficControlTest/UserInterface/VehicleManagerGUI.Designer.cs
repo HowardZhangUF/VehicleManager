@@ -69,7 +69,7 @@
 			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UCVehicleManualControl();
 			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UCVehicleOverview();
 			this.pnlBtm = new System.Windows.Forms.Panel();
-			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UCSimpleLog();
+			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlBtmSide.SuspendLayout();
 			this.pnlConnection.SuspendLayout();
@@ -687,7 +687,7 @@
 		private UserControl.UCMission ucMission1;
 		private UserControl.UCVehicle ucVehicle1;
 		private System.Windows.Forms.Panel pnlBtm;
-		private UserControl.UCSimpleLog ucSimpleLog1;
+		private UserControl.UcSimpleLog ucSimpleLog1;
 		private System.Windows.Forms.Button btnDisplayPnlBtm;
 		private System.Windows.Forms.Button btnLogin;
 		private System.Windows.Forms.Button btnDisplayVehicleApi;

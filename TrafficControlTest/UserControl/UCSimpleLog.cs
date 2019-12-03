@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TrafficControlTest.UserControl
 {
-	public partial class UCSimpleLog : System.Windows.Forms.UserControl
+	public partial class UcSimpleLog : System.Windows.Forms.UserControl
 	{
 		public bool OrderAscending { get; set; } = false;
 		public int Maximum { get; set; } = 200;
@@ -24,19 +24,13 @@ namespace TrafficControlTest.UserControl
 		public Color TableRowForeColor { get; set; } = Color.White;
 
 		private object mLockOfDgvSimpleLog = new object();
-		private Dictionary<string, int> mColumnHeaderDictionary = new Dictionary<string, int>()
-		{
-			{ "Date", 0 },
-			{ "Category", 1 },
-			{ "Message", 2 }
-		};
 
-		public UCSimpleLog()
+		public UcSimpleLog()
 		{
 			InitializeComponent();
-			UpdateGui_InitializeDgvLog();
+			UpdateGui_InitializeDgvSimpleLog();
 		}
-		public void AddSimpleLog(string Date, string Category, string SubCategory, string Message)
+		public void AddLog(string Date, string Category, string SubCategory, string Message)
 		{
 			lock (mLockOfDgvSimpleLog)
 			{
@@ -53,7 +47,7 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_AdjustRowCount(Maximum);
 			}
 		}
-		public void ClearSimpleLog()
+		public void ClearLog()
 		{
 			lock (mLockOfDgvSimpleLog)
 			{
@@ -61,7 +55,7 @@ namespace TrafficControlTest.UserControl
 			}
 		}
 
-		private void UpdateGui_InitializeDgvLog()
+		private void UpdateGui_InitializeDgvSimpleLog()
 		{
 			DataGridView dgv = dgvSimpleLog;
 
