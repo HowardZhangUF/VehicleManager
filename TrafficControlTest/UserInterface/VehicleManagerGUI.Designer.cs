@@ -62,7 +62,7 @@
 			this.ucSetting1 = new TrafficControlTest.UserControl.UCSetting();
 			this.ucMission1 = new TrafficControlTest.UserControl.UcMission();
 			this.ucVehicle1 = new TrafficControlTest.UserControl.UcVehicle();
-			this.ucMap1 = new TrafficControlTest.UserControl.UCMap();
+			this.ucMap1 = new TrafficControlTest.UserControl.UcMap();
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
 			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
 			this.ucVehicleApi1 = new TrafficControlTest.UserControl.UCVehicleApi();
@@ -680,7 +680,7 @@
 		private UserControl.UCVehicleOverview ucVehicleOverview1;
 		private UserControl.UCVehicleManualControl ucVehicleManualControl1;
 		private UserControl.UCAbout ucAbout1;
-		private UserControl.UCMap ucMap1;
+		private UserControl.UcMap ucMap1;
 		private UserControl.UCLog ucLog1;
 		private UserControl.UCSetting ucSetting1;
 		private UserControl.UcMission ucMission1;

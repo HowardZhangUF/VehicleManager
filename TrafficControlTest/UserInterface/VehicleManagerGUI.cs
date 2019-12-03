@@ -34,8 +34,9 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void Constructor()
 		{
-			ucMap1.Constructor("Style.ini");
 			Constructor_VehicleManagerProcess();
+			ucMap1.SetStyleFileName("Style.ini");
+			ucMap1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfICollisionEventManager());
 			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapter());
@@ -44,7 +45,6 @@ namespace TrafficControlTest.UserInterface
 		private void Destructor()
 		{
 			Destructor_VehicleManagerProcess();
-			ucMap1.Destructor();
 		}
 		private void HandleException(Exception Ex)
 		{
@@ -251,30 +251,6 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayLog);
 		}
 		#region Map
-		private void UpdateGui_UcMap_MapRegisterIconId(IVehicleInfo VehicleInfo)
-		{
-			ucMap1.RegisterIconId(VehicleInfo);
-		}
-		private void UpdateGui_UcMap_MapPrintIcon(IVehicleInfo VehicleInfo)
-		{
-			ucMap1.PrintIcon(VehicleInfo);
-		}
-		private void UpdateGui_UcMap_MapEraseIcon(IVehicleInfo VehicleInfo)
-		{
-			ucMap1.EraseIcon(VehicleInfo);
-		}
-		private void UpdateGui_UcMap_MapRegisterIconId(ICollisionPair CollisionPair)
-		{
-			ucMap1.RegisterIconId(CollisionPair);
-		}
-		private void UpdateGui_UcMap_MapPrintIcon(ICollisionPair CollisionPair)
-		{
-			ucMap1.PrintIcon(CollisionPair);
-		}
-		private void UpdateGui_UcMap_MapEraseIcon(ICollisionPair CollisionPair)
-		{
-			ucMap1.EraseIcon(CollisionPair);
-		}
 		private void UpdateGui_UcMap_MapFocusVehicle(string VehicleName)
 		{
 			ucMap1.InvokeIfNecessary(() =>
@@ -491,9 +467,6 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.VehicleInfoManagerItemAdded += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
 				VehicleManagerProcess.VehicleInfoManagerItemRemoved += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
 				VehicleManagerProcess.VehicleInfoManagerItemUpdated += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemUpdated;
-				VehicleManagerProcess.CollisionEventManagerCollisionEventAdded += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded;
-				VehicleManagerProcess.CollisionEventManagerCollisionEventRemoved += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved;
-				VehicleManagerProcess.CollisionEventManagerCollisionEventStateUpdated += HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated;
 				VehicleManagerProcess.MapFileManagerMapFileAdded += HandleEvent_VehicleManagerProcessMapFileManagerMapFileAdded;
 				VehicleManagerProcess.MapFileManagerMapFileRemoved += HandleEvent_VehicleManagerProcessMapFileManagerMapFileRemoved;
 				VehicleManagerProcess.MapManagerMapLoaded += HandleEvent_VehicleManagerProcessMapManagerMapLoaded;
@@ -507,9 +480,6 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.VehicleInfoManagerItemAdded -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
 				VehicleManagerProcess.VehicleInfoManagerItemRemoved -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
 				VehicleManagerProcess.VehicleInfoManagerItemUpdated -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemUpdated;
-				VehicleManagerProcess.CollisionEventManagerCollisionEventAdded -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded;
-				VehicleManagerProcess.CollisionEventManagerCollisionEventRemoved -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved;
-				VehicleManagerProcess.CollisionEventManagerCollisionEventStateUpdated -= HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated;
 				VehicleManagerProcess.MapFileManagerMapFileAdded -= HandleEvent_VehicleManagerProcessMapFileManagerMapFileAdded;
 				VehicleManagerProcess.MapFileManagerMapFileRemoved -= HandleEvent_VehicleManagerProcessMapFileManagerMapFileRemoved;
 			}
@@ -528,7 +498,6 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_UcMap_MapRegisterIconId(VehicleInfo);
 			UpdateGui_All_UpdateVehicleNameList();
 			UpdateGui_UcVehicleOverview_AddVehicleOverview(VehicleInfo.mName, VehicleInfo.mBatteryValue.ToString("F2"), VehicleInfo.mCurrentState);
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
@@ -536,7 +505,6 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_UcMap_MapEraseIcon(VehicleInfo);
 			UpdateGui_All_UpdateVehicleNameList();
 			UpdateGui_UcVehicleOverview_RemoveVehicleOverview(VehicleInfo.mName);
 			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetVehicleCount() > 0 ? Color.DarkGreen : Color.DarkOrange);
@@ -544,20 +512,7 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_UcMap_MapPrintIcon(VehicleInfo);
 			UpdateGui_All_UpdateVehicleInfo(Name, StateName, VehicleInfo);
-		}
-		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
-		{
-			UpdateGui_UcMap_MapRegisterIconId(CollisionPair);
-		}
-		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
-		{
-			UpdateGui_UcMap_MapEraseIcon(CollisionPair);
-		}
-		private void HandleEvent_VehicleManagerProcessCollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
-		{
-			UpdateGui_UcMap_MapPrintIcon(CollisionPair);
 		}
 		private void HandleEvent_VehicleManagerProcessMapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{

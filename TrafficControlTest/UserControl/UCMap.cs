@@ -14,28 +14,39 @@ using GLStyle;
 
 namespace TrafficControlTest.UserControl
 {
-	public partial class UCMap : System.Windows.Forms.UserControl
+	public partial class UcMap : System.Windows.Forms.UserControl
 	{
+		private IVehicleInfoManager rVehicleInfoManager = null;
+		private ICollisionEventManager rCollisionEventManager = null;
 		private Dictionary<string, int> mIconIdsOfVehicle = new Dictionary<string, int>();
 		private Dictionary<string, int> mIconIdsOfVehiclePath = new Dictionary<string, int>();
 		private Dictionary<string, int> mIconIdsOfVehiclePathPoints = new Dictionary<string, int>();
 		private Dictionary<string, int> mIconIdsOfCollisionRegion = new Dictionary<string, int>();
 
-		public UCMap()
+		public UcMap()
 		{
 			InitializeComponent();
 		}
-		public void Constructor(string StyleFile)
+		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
-			StyleManager.LoadStyle(StyleFile);
+			UnsubscribeEvent_IVehicleInfoManager(VehicleInfoManager);
+			rVehicleInfoManager = VehicleInfoManager;
+			SubscribeEvent_IVehicleInfoManager(VehicleInfoManager);
 		}
-		public void Destructor()
+		public void Set(ICollisionEventManager CollisionEventManager)
 		{
-
+			UnsubscribeEvent_ICollisionEventManager(CollisionEventManager);
+			rCollisionEventManager = CollisionEventManager;
+			SubscribeEvent_ICollisionEventManager(CollisionEventManager);
 		}
-		public string[] GetGoalList()
+		public void Set(IVehicleInfoManager VehicleInfoManager, ICollisionEventManager CollisionEventManager)
 		{
-			return GLCMD.CMD.SingleTowerPairInfo.Select((o) => o.Name)?.ToArray();
+			Set(VehicleInfoManager);
+			Set(CollisionEventManager);
+		}
+		public void SetStyleFileName(string StyleFileName)
+		{
+			StyleManager.LoadStyle(StyleFileName);
 		}
 		/// <summary>註冊圖像 ID</summary>
 		public void RegisterIconId(IVehicleInfo VehicleInfo)
@@ -133,6 +144,66 @@ namespace TrafficControlTest.UserControl
 			}
 		}
 
+		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
+		{
+			if (VehicleInfoManager != null)
+			{
+				VehicleInfoManager.ItemAdded += HandleEvent_VehicleInfoManagerItemAdded;
+				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
+				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
+		{
+			if (VehicleInfoManager != null)
+			{
+				VehicleInfoManager.ItemAdded -= HandleEvent_VehicleInfoManagerItemAdded;
+				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
+				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
+		{
+			if (CollisionEventManager != null)
+			{
+				CollisionEventManager.CollisionEventAdded += HandleEvent_CollisionEventManagerCollisionEventAdded;
+				CollisionEventManager.CollisionEventRemoved += HandleEvent_CollisionEventManagerCollisionEventRemoved;
+				CollisionEventManager.CollisionEventStateUpdated += HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+			}
+		}
+		private void UnsubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
+		{
+			if (CollisionEventManager != null)
+			{
+				CollisionEventManager.CollisionEventAdded -= HandleEvent_CollisionEventManagerCollisionEventAdded;
+				CollisionEventManager.CollisionEventRemoved -= HandleEvent_CollisionEventManagerCollisionEventRemoved;
+				CollisionEventManager.CollisionEventStateUpdated -= HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+			}
+		}
+		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		{
+			RegisterIconId(Item);
+		}
+		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		{
+			EraseIcon(Item);
+		}
+		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		{
+			PrintIcon(Item);
+		}
+		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		{
+			RegisterIconId(CollisionPair);
+		}
+		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		{
+			EraseIcon(CollisionPair);
+		}
+		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		{
+			PrintIcon(CollisionPair);
+		}
 		private static IEnumerable<IPair> GetPath(IVehicleInfo VehicleInfo)
 		{
 			List<IPair> result = null;

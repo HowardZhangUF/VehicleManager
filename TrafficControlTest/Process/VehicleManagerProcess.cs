@@ -107,6 +107,10 @@ namespace TrafficControlTest.Process
 		{
 			return mVehicleInfoManager;
 		}
+		public ICollisionEventManager GetReferenceOfICollisionEventManager()
+		{
+			return mCollisionEventManager;
+		}
 		public IMissionStateManager GetReferenceOfIMissionStateManager()
 		{
 			return mMissionStateManager;
