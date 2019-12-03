@@ -40,6 +40,7 @@ namespace TrafficControlTest.UserInterface
 			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapter());
+			ucVehicleOverview1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucSimpleLog1.Set(mCore);
 		}
 		private void Destructor()
@@ -160,10 +161,6 @@ namespace TrafficControlTest.UserInterface
 		{
 			if (VehicleInfo != null)
 			{
-				// Update Page of Vehicle Overview
-				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.Battery, VehicleInfo.mBatteryValue.ToString("F2"));
-				UpdateGui_UcVehicleOverview_SetVehicleOverview(VehicleInfo.mName, Property.State, VehicleInfo.mCurrentState);
-
 				// Update Page of Vehicle Api
 				if (StateName.Contains("CurrentMapNameList"))
 				{
@@ -367,29 +364,29 @@ namespace TrafficControlTest.UserInterface
 				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(false);
 			}
 		}
-		#region VehicleOverview
-		private void UpdateGui_UcVehicleOverview_AddVehicleOverview(string Id, string Battery, string State)
-		{
-			ucVehicleOverview1.InvokeIfNecessary(() =>
-			{
-				ucVehicleOverview1.Add(Id, Battery, State);
-			});
-		}
-		private void UpdateGui_UcVehicleOverview_SetVehicleOverview(string Id, Property Property, string Value)
-		{
-			ucVehicleOverview1.InvokeIfNecessary(() =>
-			{
-				ucVehicleOverview1.Set(Id, Property, Value);
-			});
-		}
-		private void UpdateGui_UcVehicleOverview_RemoveVehicleOverview(string Id)
-		{
-			ucVehicleOverview1.InvokeIfNecessary(() =>
-			{
-				ucVehicleOverview1.Remove(Id);
-			});
-		}
-		#endregion
+		//#region VehicleOverview
+		//private void UpdateGui_UcVehicleOverview_AddVehicleOverview(string Id, string Battery, string State)
+		//{
+		//	ucVehicleOverview1.InvokeIfNecessary(() =>
+		//	{
+		//		ucVehicleOverview1.Add(Id, Battery, State);
+		//	});
+		//}
+		//private void UpdateGui_UcVehicleOverview_SetVehicleOverview(string Id, Property Property, string Value)
+		//{
+		//	ucVehicleOverview1.InvokeIfNecessary(() =>
+		//	{
+		//		ucVehicleOverview1.Set(Id, Property, Value);
+		//	});
+		//}
+		//private void UpdateGui_UcVehicleOverview_RemoveVehicleOverview(string Id)
+		//{
+		//	ucVehicleOverview1.InvokeIfNecessary(() =>
+		//	{
+		//		ucVehicleOverview1.Remove(Id);
+		//	});
+		//}
+		//#endregion
 		#region VehicleApi
 		private void UpdateGui_UcVehicleApi_UpdateRemoteMapNameList(string VehicleName)
 		{
@@ -499,14 +496,12 @@ namespace TrafficControlTest.UserInterface
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			UpdateGui_All_UpdateVehicleNameList();
-			UpdateGui_UcVehicleOverview_AddVehicleOverview(VehicleInfo.mName, VehicleInfo.mBatteryValue.ToString("F2"), VehicleInfo.mCurrentState);
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleNameList().Count.ToString());
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			UpdateGui_All_UpdateVehicleNameList();
-			UpdateGui_UcVehicleOverview_RemoveVehicleOverview(VehicleInfo.mName);
 			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetVehicleCount() > 0 ? Color.DarkGreen : Color.DarkOrange);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleCount().ToString());
 		}

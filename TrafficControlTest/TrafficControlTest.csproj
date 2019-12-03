@@ -239,11 +239,11 @@
     <Compile Include="TrashCan\UCVehicleInfoList.Designer.cs">
       <DependentUpon>UCVehicleInfoList.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCVehicleOverview.cs">
+    <Compile Include="UserControl\UcVehicleOverview.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCVehicleOverview.Designer.cs">
-      <DependentUpon>UCVehicleOverview.cs</DependentUpon>
+    <Compile Include="UserControl\UcVehicleOverview.Designer.cs">
+      <DependentUpon>UcVehicleOverview.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\VehicleManagerGUI.cs">
       <SubType>Form</SubType>
@@ -301,8 +301,8 @@
     <EmbeddedResource Include="TrashCan\UCVehicleInfoList.resx">
       <DependentUpon>UCVehicleInfoList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCVehicleOverview.resx">
-      <DependentUpon>UCVehicleOverview.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl\UcVehicleOverview.resx">
+      <DependentUpon>UcVehicleOverview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\VehicleManagerGUI.resx">
       <DependentUpon>VehicleManagerGUI.cs</DependentUpon>

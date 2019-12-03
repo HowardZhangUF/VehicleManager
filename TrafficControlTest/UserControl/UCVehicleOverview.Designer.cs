@@ -1,6 +1,6 @@
 ﻿namespace TrafficControlTest.UserControl
 {
-	partial class UCVehicleOverview
+	partial class UcVehicleOverview
 	{
 		/// <summary> 
 		/// 設計工具所需的變數。

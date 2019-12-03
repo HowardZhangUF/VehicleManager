@@ -67,7 +67,7 @@
 			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
 			this.ucVehicleApi1 = new TrafficControlTest.UserControl.UCVehicleApi();
 			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UCVehicleManualControl();
-			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UCVehicleOverview();
+			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UcVehicleOverview();
 			this.pnlBtm = new System.Windows.Forms.Panel();
 			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
 			this.pnlTopSide.SuspendLayout();
@@ -584,7 +584,7 @@
 			this.ucVehicleOverview1.Name = "ucVehicleOverview1";
 			this.ucVehicleOverview1.Size = new System.Drawing.Size(400, 650);
 			this.ucVehicleOverview1.TabIndex = 0;
-			this.ucVehicleOverview1.DoubleClickOnVehicleInfo += new TrafficControlTest.UserControl.UCVehicleOverview.EventHandlerString(this.ucVehicleOverview1_DoubleClickOnVehicleInfo);
+			this.ucVehicleOverview1.DoubleClickOnVehicleInfo += new TrafficControlTest.UserControl.UcVehicleOverview.EventHandlerString(this.ucVehicleOverview1_DoubleClickOnVehicleInfo);
 			// 
 			// pnlBtm
 			// 
@@ -677,7 +677,7 @@
 		private System.Windows.Forms.Panel pnlConnectionBottom;
 		private System.Windows.Forms.Label lblConnection;
 		private System.Windows.Forms.Panel pnlLeftMain;
-		private UserControl.UCVehicleOverview ucVehicleOverview1;
+		private UserControl.UcVehicleOverview ucVehicleOverview1;
 		private UserControl.UCVehicleManualControl ucVehicleManualControl1;
 		private UserControl.UCAbout ucAbout1;
 		private UserControl.UcMap ucMap1;
