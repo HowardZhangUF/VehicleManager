@@ -103,6 +103,10 @@ namespace TrafficControlTest.Process
 			VehicleCommunicatorStopListen();
 			LogRecorderStop();
 		}
+		public IMissionStateManager GetReferenceOfIMissionStateManager()
+		{
+			return mMissionStateManager;
+		}
 		public DatabaseAdapter GetReferenceOfDatabaseAdapter()
 		{
 			return mDatabaseAdapter;

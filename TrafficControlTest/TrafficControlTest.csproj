@@ -191,11 +191,11 @@
     <Compile Include="UserControl\UCMap.Designer.cs">
       <DependentUpon>UCMap.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCMission.cs">
+    <Compile Include="UserControl\UcMission.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCMission.Designer.cs">
-      <DependentUpon>UCMission.cs</DependentUpon>
+    <Compile Include="UserControl\UcMission.Designer.cs">
+      <DependentUpon>UcMission.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\UCSetting.cs">
       <SubType>UserControl</SubType>
@@ -277,8 +277,8 @@
     <EmbeddedResource Include="UserControl\UCMap.resx">
       <DependentUpon>UCMap.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCMission.resx">
-      <DependentUpon>UCMission.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl\UcMission.resx">
+      <DependentUpon>UcMission.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UCSetting.resx">
       <DependentUpon>UCSetting.cs</DependentUpon>
