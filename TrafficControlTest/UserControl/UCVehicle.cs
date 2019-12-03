@@ -35,9 +35,9 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
-			UnsubscribeEvent_VehicleInfoManager(VehicleInfoManager);
+			UnsubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
-			SubscribeEvent_VehicleInfoManager(VehicleInfoManager);
+			SubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
 		}
 		public void UpdateGui_UpdateVehicleNameList(string[] VehicleNameList)
 		{

@@ -40,9 +40,9 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Set(IMissionStateManager MissionStateManager)
 		{
-			UnsubscribeEvent_IMissionStateManager(MissionStateManager);
+			UnsubscribeEvent_IMissionStateManager(rMissionStateManager);
 			rMissionStateManager = MissionStateManager;
-			SubscribeEvent_IMissionStateManager(MissionStateManager);
+			SubscribeEvent_IMissionStateManager(rMissionStateManager);
 		}
 		public void AddRow(string MissionId, string[] Datas)
 		{

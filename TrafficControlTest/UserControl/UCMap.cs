@@ -29,15 +29,15 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
-			UnsubscribeEvent_IVehicleInfoManager(VehicleInfoManager);
+			UnsubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
-			SubscribeEvent_IVehicleInfoManager(VehicleInfoManager);
+			SubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 		}
 		public void Set(ICollisionEventManager CollisionEventManager)
 		{
-			UnsubscribeEvent_ICollisionEventManager(CollisionEventManager);
+			UnsubscribeEvent_ICollisionEventManager(rCollisionEventManager);
 			rCollisionEventManager = CollisionEventManager;
-			SubscribeEvent_ICollisionEventManager(CollisionEventManager);
+			SubscribeEvent_ICollisionEventManager(rCollisionEventManager);
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager, ICollisionEventManager CollisionEventManager)
 		{

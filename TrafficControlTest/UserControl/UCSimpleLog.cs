@@ -34,9 +34,9 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Set(VehicleManagerProcess VehicleManagerProcess)
 		{
-			UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess);
+			UnsubscribeEvent_VehicleManagerProcess(rVehicleManagerProcess);
 			rVehicleManagerProcess = VehicleManagerProcess;
-			SubscribeEvent_VehicleManagerProcess(VehicleManagerProcess);
+			SubscribeEvent_VehicleManagerProcess(rVehicleManagerProcess);
 		}
 		public void AddLog(string Date, string Category, string SubCategory, string Message)
 		{
