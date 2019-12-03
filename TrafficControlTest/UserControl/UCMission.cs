@@ -49,7 +49,7 @@ namespace TrafficControlTest.UserControl
 					}
 					else
 					{
-						for (int i = 0; i < dgvMission.Rows.Count - 1; ++i)
+						for (int i = 0; i < dgvMission.Rows.Count; ++i)
 						{
 							int currPriority = int.Parse(dgvMission.Rows[i].Cells[mColumnHeaderDictionary["Priority"]].Value.ToString());
 							int newPriority = int.Parse(Datas[mColumnHeaderDictionary["Priority"]].ToString());
