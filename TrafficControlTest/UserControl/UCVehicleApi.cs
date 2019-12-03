@@ -7,267 +7,237 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TrafficControlTest.Interface;
+using TrafficControlTest.Module.General.Interface;
 
 namespace TrafficControlTest.UserControl
 {
-	public partial class UCVehicleApi : System.Windows.Forms.UserControl
+	public partial class UcVehicleApi : System.Windows.Forms.UserControl
 	{
-		public delegate void EventHandlerStringStringStrings(string VehicleName, string Command, params string[] Parameters);
-		public delegate void EventHandlerString(string VehicleName);
+		public string CurrentVehicleName
+		{
+			get
+			{
+				string result = null;
+				cbVehicleNameList.InvokeIfNecessary(() =>
+				{
+					result = cbVehicleNameList.SelectedItem == null ? string.Empty : cbVehicleNameList.SelectedItem.ToString();
+				});
+				return result;
+			}
+		}
 
-		public event EventHandlerStringStringStrings VehicleGoto;
-		public event EventHandlerStringStringStrings VehicleGotoPoint;
-		public event EventHandlerStringStringStrings VehicleDock;
-		public event EventHandlerStringStringStrings VehicleStop;
-		public event EventHandlerStringStringStrings VehicleInsertMovingBuffer;
-		public event EventHandlerStringStringStrings VehicleRemoveMovingBuffer;
-		public event EventHandlerStringStringStrings VehiclePause;
-		public event EventHandlerStringStringStrings VehicleResume;
-		public event EventHandlerStringStringStrings VehicleRequestMapList;
-		public event EventHandlerStringStringStrings VehicleGetMap;
-		public event EventHandlerStringStringStrings VehicleUploadMap;
-		public event EventHandlerStringStringStrings VehicleChangeMap;
-		public event EventHandlerString VehicleStateNeedToBeRefreshed;
+		private IVehicleInfoManager rVehicleInfoManager = null;
+		private IVehicleCommunicator rVehicleCommunicator = null;
+		private IMapFileManager rMapFileManager = null;
+		private IMapManager rMapManager = null;
 
-		public string CurrentVehicleName { get { return cbVehicleNameList.SelectedItem == null ? string.Empty : cbVehicleNameList.SelectedItem.ToString(); } }
-
-		public UCVehicleApi()
+		public UcVehicleApi()
 		{
 			InitializeComponent();
 
 			txtCoordinate1.KeyPress += ((sender, e) => { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ',') && (e.KeyChar != '-')) e.Handled = true; });
 			txtCoordinate2.KeyPress += ((sender, e) => { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ',') && (e.KeyChar != '-')) e.Handled = true; });
 		}
+		public void Set(IVehicleInfoManager VehicleInfoManager)
+		{
+			UnsubscribeEvent_IVehcileInfoManager(rVehicleInfoManager);
+			rVehicleInfoManager = VehicleInfoManager;
+			SubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
+		}
+		public void Set(IVehicleCommunicator VehicleCommunicator)
+		{
+			UnsubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
+			rVehicleCommunicator = VehicleCommunicator;
+			SubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
+		}
+		public void Set(IMapFileManager MapFileManager)
+		{
+			UnsubscribeEvent_IMapFileManager(rMapFileManager);
+			rMapFileManager = MapFileManager;
+			SubscribeEvent_IMapFileManager(rMapFileManager);
+		}
+		public void Set(IMapManager MapManager)
+		{
+			UnsubscribeEvent_IMapManager(rMapManager);
+			rMapManager = MapManager;
+			SubscribeEvent_IMapManager(rMapManager);
+		}
+		public void Set(IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IMapFileManager MapFileManager, IMapManager MapManager)
+		{
+			Set(VehicleInfoManager);
+			Set(VehicleCommunicator);
+			Set(MapFileManager);
+			Set(MapManager);
+		}
 		public void UpdateVehicleNameList(string[] VehicleNameList)
 		{
-			if (VehicleNameList == null || VehicleNameList.Count() == 0)
+			this.InvokeIfNecessary(() =>
 			{
-				cbVehicleNameList.Items.Clear();
-			}
-			else
-			{
-				string lastSelectedItemText = cbVehicleNameList.SelectedItem != null ? cbVehicleNameList.SelectedItem.ToString() : string.Empty;
-				cbVehicleNameList.SelectedIndex = -1;
-				cbVehicleNameList.Items.Clear();
-				cbVehicleNameList.Items.AddRange(VehicleNameList.OrderBy((o) => o).ToArray());
-				if (!string.IsNullOrEmpty(lastSelectedItemText))
+				if (VehicleNameList == null || VehicleNameList.Count() == 0)
 				{
-					for (int i = 0; i < cbVehicleNameList.Items.Count; ++i)
+					cbVehicleNameList.Items.Clear();
+				}
+				else
+				{
+					string lastSelectedItemText = cbVehicleNameList.SelectedItem != null ? rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort : string.Empty;
+					cbVehicleNameList.SelectedIndex = -1;
+					cbVehicleNameList.Items.Clear();
+					cbVehicleNameList.Items.AddRange(VehicleNameList.OrderBy((o) => o).ToArray());
+					if (!string.IsNullOrEmpty(lastSelectedItemText))
 					{
-						if (lastSelectedItemText == cbVehicleNameList.Items[i].ToString())
+						for (int i = 0; i < cbVehicleNameList.Items.Count; ++i)
 						{
-							cbVehicleNameList.SelectedIndex = i;
-							break;
+							if (lastSelectedItemText == cbVehicleNameList.Items[i].ToString())
+							{
+								cbVehicleNameList.SelectedIndex = i;
+								break;
+							}
 						}
 					}
 				}
-			}
+			});
 		}
 		public void UpdateGoalNameList(string[] GoalNameList)
 		{
-			if (GoalNameList == null || GoalNameList.Count() == 0)
+			this.InvokeIfNecessary(() =>
 			{
-				cbGoalNameList.Items.Clear();
-			}
-			else
-			{
-				cbGoalNameList.Items.Clear();
-				cbGoalNameList.Items.AddRange(GoalNameList.OrderBy((o) => o).ToArray());
-			}
+				if (GoalNameList == null || GoalNameList.Count() == 0)
+				{
+					cbGoalNameList.Items.Clear();
+				}
+				else
+				{
+					cbGoalNameList.Items.Clear();
+					cbGoalNameList.Items.AddRange(GoalNameList.OrderBy((o) => o).ToArray());
+				}
+			});
 		}
 		public void UpdateRemoteMapNameList(string[] MapNameList)
 		{
-			if (MapNameList == null || MapNameList.Count() == 0)
+			this.InvokeIfNecessary(() =>
 			{
-				cbRemoteMapNameList1.Items.Clear();
-				cbRemoteMapNameList1.AdjustDropDownWidth();
-				cbRemoteMapNameList2.Items.Clear();
-				cbRemoteMapNameList2.AdjustDropDownWidth();
-			}
-			else
-			{
-				cbRemoteMapNameList1.Items.Clear();
-				cbRemoteMapNameList1.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
-				cbRemoteMapNameList1.AdjustDropDownWidth();
-				cbRemoteMapNameList2.Items.Clear();
-				cbRemoteMapNameList2.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
-				cbRemoteMapNameList2.AdjustDropDownWidth();
-			}
+				if (MapNameList == null || MapNameList.Count() == 0)
+				{
+					cbRemoteMapNameList1.Items.Clear();
+					cbRemoteMapNameList1.AdjustDropDownWidth();
+					cbRemoteMapNameList2.Items.Clear();
+					cbRemoteMapNameList2.AdjustDropDownWidth();
+				}
+				else
+				{
+					cbRemoteMapNameList1.Items.Clear();
+					cbRemoteMapNameList1.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
+					cbRemoteMapNameList1.AdjustDropDownWidth();
+					cbRemoteMapNameList2.Items.Clear();
+					cbRemoteMapNameList2.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
+					cbRemoteMapNameList2.AdjustDropDownWidth();
+				}
+			});
 		}
 		public void UpdateLocalMapNameList(string[] MapNameList)
 		{
-			if (MapNameList == null || MapNameList.Count() == 0)
+			this.InvokeIfNecessary(() =>
 			{
-				cbLocalMapNameList.Items.Clear();
-				cbLocalMapNameList.AdjustDropDownWidth();
-			}
-			else
-			{
-				cbLocalMapNameList.Items.Clear();
-				cbLocalMapNameList.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
-				cbLocalMapNameList.AdjustDropDownWidth();
-			}
+				if (MapNameList == null || MapNameList.Count() == 0)
+				{
+					cbLocalMapNameList.Items.Clear();
+					cbLocalMapNameList.AdjustDropDownWidth();
+				}
+				else
+				{
+					cbLocalMapNameList.Items.Clear();
+					cbLocalMapNameList.Items.AddRange(MapNameList.OrderBy((o) => o).ToArray());
+					cbLocalMapNameList.AdjustDropDownWidth();
+				}
+			});
 		}
 
-		protected virtual void RaiseEvent_VehicleGoto(string VehicleName, string GoalName, bool Sync = true)
+		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
-			if (Sync)
+			if (VehicleInfoManager != null)
 			{
-				VehicleGoto?.Invoke(VehicleName, "Goto", GoalName);
-			}
-			else
-			{
-				Task.Run(() => { VehicleGoto?.Invoke(VehicleName, "Goto", GoalName); });
+				VehicleInfoManager.ItemAdded += HandleEvent_VehicleInfoManagerItemAdded;
+				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
+				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		protected virtual void RaiseEvent_VehicleGotoPoint(string VehicleName, string X, string Y, bool Sync = true)
+		private void UnsubscribeEvent_IVehcileInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
-			if (Sync)
+			if (VehicleInfoManager != null)
 			{
-				VehicleGotoPoint?.Invoke(VehicleName, "GotoPoint", X, Y);
-			}
-			else
-			{
-				Task.Run(() => { VehicleGotoPoint?.Invoke(VehicleName, "GotoPoint", X, Y); });
+				VehicleInfoManager.ItemAdded -= HandleEvent_VehicleInfoManagerItemAdded;
+				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
+				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		protected virtual void RaiseEvent_VehicleGotoPoint(string VehicleName, string X, string Y, string Toward, bool Sync = true)
+		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
-			if (Sync)
+			if (VehicleCommunicator != null)
 			{
-				VehicleGotoPoint?.Invoke(VehicleName, "GotoPoint", X, Y, Toward);
-			}
-			else
-			{
-				Task.Run(() => { VehicleGotoPoint?.Invoke(VehicleName, "GotoPoint", X, Y, Toward); });
+
 			}
 		}
-		protected virtual void RaiseEvent_VehicleDock(string VehicleName, bool Sync = true)
+		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
-			if (Sync)
+			if (VehicleCommunicator != null)
 			{
-				VehicleDock?.Invoke(VehicleName, "Dock");
-			}
-			else
-			{
-				Task.Run(() => { VehicleDock?.Invoke(VehicleName, "Dock"); });
+
 			}
 		}
-		protected virtual void RaiseEvent_VehicleStop(string VehicleName, bool Sync = true)
+		private void SubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
 		{
-			if (Sync)
+			if (MapFileManager != null)
 			{
-				VehicleStop?.Invoke(VehicleName, "Stop");
-			}
-			else
-			{
-				Task.Run(() => { VehicleStop?.Invoke(VehicleName, "Stop"); });
+				MapFileManager.MapFileAdded += HandleEvent_MapFileManagerMapFileAdded;
 			}
 		}
-		protected virtual void RaiseEvent_VehicleInsertMovingBuffer(string VehicleName, string X, string Y, bool Sync = true)
+		private void UnsubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
 		{
-			if (Sync)
+			if (MapFileManager != null)
 			{
-				VehicleInsertMovingBuffer?.Invoke(VehicleName, "InsertMovingBuffer", X, Y);
-			}
-			else
-			{
-				Task.Run(() => { VehicleInsertMovingBuffer?.Invoke(VehicleName, "InsertMovingBuffer", X, Y); });
+				MapFileManager.MapFileAdded -= HandleEvent_MapFileManagerMapFileAdded;
 			}
 		}
-		protected virtual void RaiseEvent_VehicleRemoveMovingBuffer(string VehicleName, bool Sync = true)
+		private void SubscribeEvent_IMapManager(IMapManager MapManager)
 		{
-			if (Sync)
+			if (MapManager != null)
 			{
-				VehicleRemoveMovingBuffer?.Invoke(VehicleName, "RemoveMovingBuffer");
-			}
-			else
-			{
-				Task.Run(() => { VehicleRemoveMovingBuffer?.Invoke(VehicleName, "RemoveMovingBuffer"); });
+
 			}
 		}
-		protected virtual void RaiseEvent_VehiclePause(string VehicleName, bool Sync = true)
+		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
 		{
-			if (Sync)
+			if (MapManager != null)
 			{
-				VehiclePause?.Invoke(VehicleName, "PauseMoving");
-			}
-			else
-			{
-				Task.Run(() => { VehiclePause?.Invoke(VehicleName, "PauseMoving"); });
+
 			}
 		}
-		protected virtual void RaiseEvent_VehicleResume(string VehicleName, bool Sync = true)
+		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
 		{
-			if (Sync)
+			UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
+		}
+		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		{
+			UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
+		}
+		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		{
+			if (StateName.Contains("CurrentMapNameList"))
 			{
-				VehicleResume?.Invoke(VehicleName, "ResumeMoving");
-			}
-			else
-			{
-				Task.Run(() => { VehicleResume?.Invoke(VehicleName, "ResumeMoving"); });
+				UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
+				UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());
 			}
 		}
-		protected virtual void RaiseEvent_VehicleRequestMapList(string VehicleName, bool Sync = true)
+		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{
-			if (Sync)
-			{
-				VehicleRequestMapList?.Invoke(VehicleName, "RequestMapList");
-			}
-			else
-			{
-				Task.Run(() => { VehicleRequestMapList?.Invoke(VehicleName, "RequestMapList"); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleGetMap(string VehicleName, string MapName, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleGetMap?.Invoke(VehicleName, "GetMap", MapName);
-			}
-			else
-			{
-				Task.Run(() => { VehicleGetMap?.Invoke(VehicleName, "GetMap", MapName); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleUploadMap(string VehicleName, string MapPath, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleUploadMap?.Invoke(VehicleName, "UploadMapToAGV", MapPath);
-			}
-			else
-			{
-				Task.Run(() => { VehicleUploadMap?.Invoke(VehicleName, "UploadMapToAGV", MapPath); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleChangeMap(string VehicleName, string MapName, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleChangeMap?.Invoke(VehicleName, "ChangeMap", MapName);
-			}
-			else
-			{
-				Task.Run(() => { VehicleChangeMap?.Invoke(VehicleName, "ChangeMap", MapName); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleStateNeedToBeRefreshed(string VehicleName, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleStateNeedToBeRefreshed?.Invoke(VehicleName);
-			}
-			else
-			{
-				Task.Run(() => { VehicleStateNeedToBeRefreshed?.Invoke(VehicleName); });
-			}
+			UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());
 		}
 		private void btnVehicleGoto_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbGoalNameList.SelectedItem != null)
 			{
-				RaiseEvent_VehicleGoto(cbVehicleNameList.SelectedItem.ToString(), cbGoalNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendSerializableData_Goto(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbGoalNameList.SelectedItem.ToString());
 			}
 		}
 		private void btnVehicleGotoPoint_Click(object sender, EventArgs e)
@@ -277,11 +247,11 @@ namespace TrafficControlTest.UserControl
 				string[] datas = txtCoordinate1.Text.Split(',');
 				if (datas.Length == 2)
 				{
-					RaiseEvent_VehicleGotoPoint(cbVehicleNameList.SelectedItem.ToString(), datas[0], datas[1]);
+					rVehicleCommunicator.SendSerializableData_GotoPoint(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]));
 				}
 				else if (datas.Length == 3)
 				{
-					RaiseEvent_VehicleGotoPoint(cbVehicleNameList.SelectedItem.ToString(), datas[0], datas[1], datas[2]);
+					rVehicleCommunicator.SendSerializableData_GotoTowardPoint(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]), int.Parse(datas[2]));
 				}
 			}
 		}
@@ -289,14 +259,14 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				RaiseEvent_VehicleDock(cbVehicleNameList.SelectedItem.ToString());
+
 			}
 		}
 		private void btnVehicleStop_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				RaiseEvent_VehicleStop(cbVehicleNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendSerializableData_Stop(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehicleInsertMovingBuffer_Click(object sender, EventArgs e)
@@ -306,7 +276,7 @@ namespace TrafficControlTest.UserControl
 				string[] datas = txtCoordinate2.Text.Split(',');
 				if (datas.Length == 2)
 				{
-					RaiseEvent_VehicleInsertMovingBuffer(cbVehicleNameList.SelectedItem.ToString(), datas[0], datas[1]);
+					rVehicleCommunicator.SendSerializableData_InsertMovingBuffer(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]));
 				}
 			}
 		}
@@ -314,56 +284,57 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				RaiseEvent_VehicleRemoveMovingBuffer(cbVehicleNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehiclePause_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				RaiseEvent_VehiclePause(cbVehicleNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendSerializableData_PauseMoving(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehicleResume_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				RaiseEvent_VehicleResume(cbVehicleNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendSerializableData_ResumeMoving(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehicleRequestMapList_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				RaiseEvent_VehicleRequestMapList(cbVehicleNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendSerializableData_RequestMapList(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehicleGetMap_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList1.SelectedItem != null)
 			{
-				RaiseEvent_VehicleGetMap(cbVehicleNameList.SelectedItem.ToString(), cbRemoteMapNameList1.SelectedItem.ToString().Replace("*", string.Empty));
+				rVehicleCommunicator.SendSerializableData_GetMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList1.SelectedItem.ToString().Replace("*", string.Empty));
 			}
 		}
 		private void btnVehicleUploadMap_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbLocalMapNameList.SelectedItem != null)
 			{
-				RaiseEvent_VehicleUploadMap(cbVehicleNameList.SelectedItem.ToString(), cbLocalMapNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendSerializableData_UploadMapToAGV(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, rMapFileManager.GetMapFileFullPath(cbLocalMapNameList.SelectedItem.ToString()));
 			}
 		}
 		private void btnVehicleChangeMap_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList2.SelectedItem != null)
 			{
-				RaiseEvent_VehicleChangeMap(cbVehicleNameList.SelectedItem.ToString(), cbRemoteMapNameList2.SelectedItem.ToString().Replace("*", string.Empty));
+				rVehicleCommunicator.SendSerializableData_ChangeMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList2.SelectedItem.ToString().Replace("*", string.Empty));
 			}
 		}
 		private void cbVehicleNameList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (!string.IsNullOrEmpty(CurrentVehicleName))
 			{
-				RaiseEvent_VehicleStateNeedToBeRefreshed(CurrentVehicleName);
+				UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
+				UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());
 			}
 		}
 	}

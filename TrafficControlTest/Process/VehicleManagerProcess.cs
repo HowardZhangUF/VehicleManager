@@ -103,6 +103,10 @@ namespace TrafficControlTest.Process
 			VehicleCommunicatorStopListen();
 			LogRecorderStop();
 		}
+		public IVehicleCommunicator GetReferenceOfIVehicleCommunicator()
+		{
+			return mVehicleCommunicator;
+		}
 		public IVehicleInfoManager GetReferenceOfIVehicleInfoManager()
 		{
 			return mVehicleInfoManager;
@@ -114,6 +118,14 @@ namespace TrafficControlTest.Process
 		public IMissionStateManager GetReferenceOfIMissionStateManager()
 		{
 			return mMissionStateManager;
+		}
+		public IMapFileManager GetReferenceOfIMapFileManager()
+		{
+			return mMapFileManager;
+		}
+		public IMapManager GetReferenceOfIMapManager()
+		{
+			return mMapManager;
 		}
 		public DatabaseAdapter GetReferenceOfDatabaseAdapter()
 		{

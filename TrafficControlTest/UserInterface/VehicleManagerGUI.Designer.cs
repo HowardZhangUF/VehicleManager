@@ -65,7 +65,7 @@
 			this.ucMap1 = new TrafficControlTest.UserControl.UcMap();
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
 			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
-			this.ucVehicleApi1 = new TrafficControlTest.UserControl.UCVehicleApi();
+			this.ucVehicleApi1 = new TrafficControlTest.UserControl.UcVehicleApi();
 			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UCVehicleManualControl();
 			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UcVehicleOverview();
 			this.pnlBtm = new System.Windows.Forms.Panel();
@@ -549,19 +549,6 @@
 			this.ucVehicleApi1.Name = "ucVehicleApi1";
 			this.ucVehicleApi1.Size = new System.Drawing.Size(400, 650);
 			this.ucVehicleApi1.TabIndex = 3;
-			this.ucVehicleApi1.VehicleGoto += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleGotoPoint += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleDock += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleStop += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleInsertMovingBuffer += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleRemoveMovingBuffer += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehiclePause += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleResume += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleRequestMapList += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleGetMap += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleUploadMap += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleChangeMap += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerStringStringStrings(this.ucVehicleApi1_VehicleAction);
-			this.ucVehicleApi1.VehicleStateNeedToBeRefreshed += new TrafficControlTest.UserControl.UCVehicleApi.EventHandlerString(this.ucVehicleApi1_VehicleStateNeedToBeRefreshed);
 			// 
 			// ucVehicleManualControl1
 			// 
@@ -690,6 +677,6 @@
 		private System.Windows.Forms.Button btnDisplayPnlBtm;
 		private System.Windows.Forms.Button btnLogin;
 		private System.Windows.Forms.Button btnDisplayVehicleApi;
-		private UserControl.UCVehicleApi ucVehicleApi1;
+		private UserControl.UcVehicleApi ucVehicleApi1;
 	}
 }
