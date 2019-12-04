@@ -61,7 +61,7 @@ namespace TrafficControlTest.UserControl
 							if (lastSelectedItemText == cbVehicleNameList.Items[i].ToString())
 							{
 								cbVehicleNameList.SelectedIndex = i;
-								break;
+								return;
 							}
 						}
 						InitializeLabelText();

@@ -82,7 +82,7 @@ namespace TrafficControlTest.UserControl
 				}
 				else
 				{
-					string lastSelectedItemText = cbVehicleNameList.SelectedItem != null ? rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort : string.Empty;
+					string lastSelectedItemText = cbVehicleNameList.SelectedItem != null ? cbVehicleNameList.SelectedItem.ToString() : string.Empty;
 					cbVehicleNameList.SelectedIndex = -1;
 					cbVehicleNameList.Items.Clear();
 					cbVehicleNameList.Items.AddRange(VehicleNameList.OrderBy((o) => o).ToArray());
