@@ -35,13 +35,11 @@
 			this.btnVehicleStop = new System.Windows.Forms.Button();
 			this.btnVehicleGotoPoint = new System.Windows.Forms.Button();
 			this.btnVehicleDock = new System.Windows.Forms.Button();
-			this.txtCoordinate1 = new System.Windows.Forms.TextBox();
 			this.cbGoalNameList = new System.Windows.Forms.ComboBox();
 			this.btnVehicleInsertMovingBuffer = new System.Windows.Forms.Button();
 			this.btnVehicleRemoveMovingBuffer = new System.Windows.Forms.Button();
 			this.btnVehiclePause = new System.Windows.Forms.Button();
 			this.btnVehicleResume = new System.Windows.Forms.Button();
-			this.txtCoordinate2 = new System.Windows.Forms.TextBox();
 			this.btnVehicleRequestMapList = new System.Windows.Forms.Button();
 			this.btnVehicleGetMap = new System.Windows.Forms.Button();
 			this.btnVehicleChangeMap = new System.Windows.Forms.Button();
@@ -54,6 +52,8 @@
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.cbVehicleNameList = new System.Windows.Forms.ComboBox();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.txtCoordinate1 = new TrafficControlTest.UserControl.TextBoxWithHint();
+			this.txtCoordinate2 = new TrafficControlTest.UserControl.TextBoxWithHint();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.panel1.SuspendLayout();
@@ -84,13 +84,11 @@
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleStop, 1, 5);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleGotoPoint, 1, 3);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleDock, 1, 4);
-			this.tableLayoutPanel1.Controls.Add(this.txtCoordinate1, 2, 3);
 			this.tableLayoutPanel1.Controls.Add(this.cbGoalNameList, 2, 2);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleInsertMovingBuffer, 1, 8);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleRemoveMovingBuffer, 1, 9);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehiclePause, 1, 10);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleResume, 1, 11);
-			this.tableLayoutPanel1.Controls.Add(this.txtCoordinate2, 3, 8);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleRequestMapList, 1, 14);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleGetMap, 1, 15);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleChangeMap, 1, 17);
@@ -100,6 +98,8 @@
 			this.tableLayoutPanel1.Controls.Add(this.label4, 1, 13);
 			this.tableLayoutPanel1.Controls.Add(this.cbRemoteMapNameList1, 2, 15);
 			this.tableLayoutPanel1.Controls.Add(this.cbRemoteMapNameList2, 2, 17);
+			this.tableLayoutPanel1.Controls.Add(this.txtCoordinate1, 2, 3);
+			this.tableLayoutPanel1.Controls.Add(this.txtCoordinate2, 3, 8);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -203,18 +203,6 @@
 			this.btnVehicleDock.UseVisualStyleBackColor = true;
 			this.btnVehicleDock.Click += new System.EventHandler(this.btnVehicleDock_Click);
 			// 
-			// txtCoordinate1
-			// 
-			this.txtCoordinate1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCoordinate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.tableLayoutPanel1.SetColumnSpan(this.txtCoordinate1, 2);
-			this.txtCoordinate1.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.txtCoordinate1.ForeColor = System.Drawing.Color.White;
-			this.txtCoordinate1.Location = new System.Drawing.Point(133, 78);
-			this.txtCoordinate1.Name = "txtCoordinate1";
-			this.txtCoordinate1.Size = new System.Drawing.Size(223, 40);
-			this.txtCoordinate1.TabIndex = 4;
-			// 
 			// cbGoalNameList
 			// 
 			this.cbGoalNameList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -293,17 +281,6 @@
 			this.btnVehicleResume.Text = "Resume";
 			this.btnVehicleResume.UseVisualStyleBackColor = true;
 			this.btnVehicleResume.Click += new System.EventHandler(this.btnVehicleResume_Click);
-			// 
-			// txtCoordinate2
-			// 
-			this.txtCoordinate2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCoordinate2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.txtCoordinate2.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.txtCoordinate2.ForeColor = System.Drawing.Color.White;
-			this.txtCoordinate2.Location = new System.Drawing.Point(193, 233);
-			this.txtCoordinate2.Name = "txtCoordinate2";
-			this.txtCoordinate2.Size = new System.Drawing.Size(163, 40);
-			this.txtCoordinate2.TabIndex = 10;
 			// 
 			// btnVehicleRequestMapList
 			// 
@@ -475,6 +452,29 @@
 			this.panel1.Size = new System.Drawing.Size(400, 550);
 			this.panel1.TabIndex = 8;
 			// 
+			// txtCoordinate1
+			// 
+			this.txtCoordinate1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtCoordinate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.tableLayoutPanel1.SetColumnSpan(this.txtCoordinate1, 2);
+			this.txtCoordinate1.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.txtCoordinate1.ForeColor = System.Drawing.Color.White;
+			this.txtCoordinate1.Location = new System.Drawing.Point(133, 78);
+			this.txtCoordinate1.Name = "txtCoordinate1";
+			this.txtCoordinate1.Size = new System.Drawing.Size(223, 40);
+			this.txtCoordinate1.TabIndex = 23;
+			// 
+			// txtCoordinate2
+			// 
+			this.txtCoordinate2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtCoordinate2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.txtCoordinate2.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.txtCoordinate2.ForeColor = System.Drawing.Color.White;
+			this.txtCoordinate2.Location = new System.Drawing.Point(193, 233);
+			this.txtCoordinate2.Name = "txtCoordinate2";
+			this.txtCoordinate2.Size = new System.Drawing.Size(163, 40);
+			this.txtCoordinate2.TabIndex = 24;
+			// 
 			// UcVehicleApi
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -505,7 +505,6 @@
 		private System.Windows.Forms.Button btnVehicleRemoveMovingBuffer;
 		private System.Windows.Forms.Button btnVehiclePause;
 		private System.Windows.Forms.Button btnVehicleResume;
-		private System.Windows.Forms.TextBox txtCoordinate2;
 		private System.Windows.Forms.Button btnVehicleRequestMapList;
 		private System.Windows.Forms.Button btnVehicleGetMap;
 		private System.Windows.Forms.Button btnVehicleChangeMap;
@@ -517,9 +516,10 @@
 		private System.Windows.Forms.ComboBox cbVehicleNameList;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Button btnVehicleGotoPoint;
-		private System.Windows.Forms.TextBox txtCoordinate1;
 		private System.Windows.Forms.ComboBox cbRemoteMapNameList1;
 		private System.Windows.Forms.ComboBox cbRemoteMapNameList2;
 		private System.Windows.Forms.ComboBox cbLocalMapNameList;
+		private TextBoxWithHint txtCoordinate1;
+		private TextBoxWithHint txtCoordinate2;
 	}
 }

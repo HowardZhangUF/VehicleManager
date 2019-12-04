@@ -36,6 +36,8 @@ namespace TrafficControlTest.UserControl
 		{
 			InitializeComponent();
 
+			txtCoordinate1.SetHintText("X,Y or X,Y,Head");
+			txtCoordinate2.SetHintText("X,Y");
 			txtCoordinate1.KeyPress += ((sender, e) => { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ',') && (e.KeyChar != '-')) e.Handled = true; });
 			txtCoordinate2.KeyPress += ((sender, e) => { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ',') && (e.KeyChar != '-')) e.Handled = true; });
 		}
