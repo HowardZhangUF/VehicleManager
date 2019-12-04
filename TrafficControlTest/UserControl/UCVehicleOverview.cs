@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static TrafficControlTest.UserControl.UCVehicleInfo;
+using static TrafficControlTest.UserControl.UcVehicleInfo;
 using TrafficControlTest.Interface;
 
 namespace TrafficControlTest.UserControl
@@ -19,7 +19,7 @@ namespace TrafficControlTest.UserControl
 
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private object mLock = new object();
-		private List<UCVehicleInfo> mControls = new List<UCVehicleInfo>();
+		private List<UcVehicleInfo> mControls = new List<UcVehicleInfo>();
 
 		public UcVehicleOverview()
 		{
@@ -33,7 +33,7 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Add(string Id, string Battery, string State)
 		{
-			UCVehicleInfo ucVehicleInfo = new UCVehicleInfo() { mId = Id, mBattery = Battery, mState = State, mBorderColor = Color.LightSalmon, Dock = DockStyle.Top, Height = UCVehicleInfo.DefaultHeight };
+			UcVehicleInfo ucVehicleInfo = new UcVehicleInfo() { mId = Id, mBattery = Battery, mState = State, mBorderColor = Color.LightSalmon, Dock = DockStyle.Top, Height = UcVehicleInfo.DefaultHeight };
 			string tmpName = ucVehicleInfo.Name;
 			lock (mLock)
 			{
@@ -60,14 +60,14 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Remove(string Id)
 		{
-			string tmpName = UCVehicleInfo.PreFix + Id;
+			string tmpName = UcVehicleInfo.PreFix + Id;
 			lock (mLock)
 			{
 				this.InvokeIfNecessary(() =>
 				{
 					if (mControls.FirstOrDefault((o) => o.mId == Id) != null && Controls.ContainsKey(tmpName))
 					{
-						UnsubscribeEvent_UCVehicleInfo(Controls[tmpName] as UCVehicleInfo);
+						UnsubscribeEvent_UCVehicleInfo(Controls[tmpName] as UcVehicleInfo);
 						mControls.Remove(mControls.FirstOrDefault((o) => o.mId == Id));
 						Controls.RemoveByKey(tmpName);
 					}
@@ -76,7 +76,7 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Update(string Id, Property Property, string Value)
 		{
-			string tmpName = UCVehicleInfo.PreFix + Id;
+			string tmpName = UcVehicleInfo.PreFix + Id;
 			lock (mLock)
 			{
 				this.InvokeIfNecessary(() =>
@@ -86,13 +86,13 @@ namespace TrafficControlTest.UserControl
 						switch (Property)
 						{
 							case Property.Id:
-								(Controls[tmpName] as UCVehicleInfo).mId = Value;
+								(Controls[tmpName] as UcVehicleInfo).mId = Value;
 								break;
 							case Property.Battery:
-								(Controls[tmpName] as UCVehicleInfo).mBattery = Value;
+								(Controls[tmpName] as UcVehicleInfo).mBattery = Value;
 								break;
 							case Property.State:
-								(Controls[tmpName] as UCVehicleInfo).mState = Value;
+								(Controls[tmpName] as UcVehicleInfo).mState = Value;
 								break;
 							default:
 								break;
@@ -120,14 +120,14 @@ namespace TrafficControlTest.UserControl
 				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		private void SubscribeEvent_UCVehicleInfo(UCVehicleInfo UCVehicleInfo)
+		private void SubscribeEvent_UCVehicleInfo(UcVehicleInfo UCVehicleInfo)
 		{
 			if (UCVehicleInfo != null)
 			{
 				UCVehicleInfo.DoubleClickOnControl += HandleEvent_UCVehicleInfoDoubleClickOnControl;
 			}
 		}
-		private void UnsubscribeEvent_UCVehicleInfo(UCVehicleInfo UCVehicleInfo)
+		private void UnsubscribeEvent_UCVehicleInfo(UcVehicleInfo UCVehicleInfo)
 		{
 			if (UCVehicleInfo != null)
 			{
@@ -147,10 +147,10 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_UCVehicleInfoDoubleClickOnControl(object sender, EventArgs e)
 		{
-			if (sender is UCVehicleInfo)
+			if (sender is UcVehicleInfo)
 			{
-				string controlName = (sender as UCVehicleInfo).Name;
-				string vehicleName = controlName.Replace(UCVehicleInfo.PreFix, string.Empty);
+				string controlName = (sender as UcVehicleInfo).Name;
+				string vehicleName = controlName.Replace(UcVehicleInfo.PreFix, string.Empty);
 				RaiseEvent_DoubleClickOnVehicleInfo(vehicleName);
 			}
 		}

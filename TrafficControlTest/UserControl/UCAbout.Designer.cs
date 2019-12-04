@@ -1,6 +1,6 @@
 ﻿namespace TrafficControlTest.UserControl
 {
-	partial class UCAbout
+	partial class UcAbout
 	{
 		/// <summary> 
 		/// 設計工具所需的變數。
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCAbout));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcAbout));
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.pbCastecLogo = new System.Windows.Forms.PictureBox();
 			this.lblCastecHyperlink = new System.Windows.Forms.Label();

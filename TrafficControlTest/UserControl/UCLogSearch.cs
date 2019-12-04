@@ -11,7 +11,7 @@ using TrafficControlTest.Library;
 
 namespace TrafficControlTest.UserControl
 {
-	public partial class UCLogSearch : System.Windows.Forms.UserControl
+	public partial class UcLogSearch : System.Windows.Forms.UserControl
 	{
 		public delegate void EventHandlerSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit);
 
@@ -29,7 +29,7 @@ namespace TrafficControlTest.UserControl
 
 		private DatabaseAdapter rDatabaseAdapter = null;
 
-		public UCLogSearch()
+		public UcLogSearch()
 		{
 			InitializeComponent();
 			UpdateGui_CbLimit_Initialize();

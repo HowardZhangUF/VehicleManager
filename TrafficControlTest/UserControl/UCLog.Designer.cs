@@ -1,6 +1,6 @@
 ﻿namespace TrafficControlTest.UserControl
 {
-	partial class UCLog
+	partial class UcLog
 	{
 		/// <summary> 
 		/// 設計工具所需的變數。
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCLog));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcLog));
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btnAddSearchPage = new System.Windows.Forms.Button();
 			this.panel2 = new System.Windows.Forms.Panel();

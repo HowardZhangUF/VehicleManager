@@ -17,18 +17,18 @@ namespace TrafficControlTest.UserControl
 	/// Button 的 Name 會為 DefaultName + Serial ，UcLogSearch 的 Name 會為 DefaultName + Serial ，兩者的 Serial 會相等。
 	/// Button 用來標示當前使用的 Search Page 與搜尋關鍵字， UcLogSearch 用來顯示搜尋結果。
 	/// </summary>
-	public partial class UCLog : System.Windows.Forms.UserControl
+	public partial class UcLog : System.Windows.Forms.UserControl
 	{
 		private DatabaseAdapter rDatabaseAdapter = null;
 		private List<Button> mButtons = new List<Button>();
-		private List<UCLogSearch> mUcLogSearches = new List<UCLogSearch>();
+		private List<UcLogSearch> mUcLogSearches = new List<UcLogSearch>();
 		private object mLock = new object();
 		private string mDefaultNameOfButton = "button";
 		private string mDefaultNameOfUcLogSearch = "ucLogSearch";
 		private int mSerial = 0;
 		private int mMaxCountOfSearchPage = 5;
 
-		public UCLog()
+		public UcLog()
 		{
 			InitializeComponent();
 		}
@@ -61,7 +61,7 @@ namespace TrafficControlTest.UserControl
 			btn.Click += HandleEvent_ButtonClick;
 
 			// 新增 UCLogSearch
-			UCLogSearch ucLogSearch = new UCLogSearch();
+			UcLogSearch ucLogSearch = new UcLogSearch();
 			ucLogSearch.Dock = DockStyle.Fill;
 			ucLogSearch.Name = $"{mDefaultNameOfUcLogSearch}{GetSerial().ToString()}";
 			ucLogSearch.ClickOnCloseButton += HandleEvent_UcLogSearchClickOnCloseButton;
@@ -97,7 +97,7 @@ namespace TrafficControlTest.UserControl
 			if (panel1.Controls.ContainsKey($"{mDefaultNameOfButton}{Serial}") && panel2.Controls.ContainsKey($"{mDefaultNameOfUcLogSearch}{Serial}"))
 			{
 				Button tmpButton = (panel1.Controls[$"{mDefaultNameOfButton}{Serial}"] as Button);
-				UCLogSearch tmpUcLogSearch = (panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"] as UCLogSearch);
+				UcLogSearch tmpUcLogSearch = (panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"] as UcLogSearch);
 				int tmpIndex = mButtons.IndexOf(tmpButton);
 
 				// 取消訂閱事件
@@ -135,7 +135,7 @@ namespace TrafficControlTest.UserControl
 
 				// 顯示對應的 UcLogSearch
 				panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"].BringToFront();
-				(panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"] as UCLogSearch).FocusOnSearchTextBox();
+				(panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"] as UcLogSearch).FocusOnSearchTextBox();
 			}
 		}
 		private void UpdateGui_ButtonAndUcLogSearch_UpdateButtonText(string Serial, string NewText)

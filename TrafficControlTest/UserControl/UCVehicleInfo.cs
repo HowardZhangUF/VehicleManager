@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TrafficControlTest.UserControl
 {
-	public partial class UCVehicleInfo : System.Windows.Forms.UserControl
+	public partial class UcVehicleInfo : System.Windows.Forms.UserControl
 	{
 		public event EventHandler DoubleClickOnControl;
 
@@ -45,7 +45,7 @@ namespace TrafficControlTest.UserControl
 			set { pnlSecondTop.BackColor = value; pnlSecondBottom.BackColor = value; pnlSecondLeft.BackColor = value; pnlSecondRight.BackColor = value; }
 		}
 
-		public UCVehicleInfo()
+		public UcVehicleInfo()
 		{
 			InitializeComponent();
 		}

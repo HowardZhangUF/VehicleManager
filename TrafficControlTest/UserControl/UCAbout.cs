@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace TrafficControlTest.UserControl
 {
-	public partial class UCAbout : System.Windows.Forms.UserControl
+	public partial class UcAbout : System.Windows.Forms.UserControl
 	{
-		public UCAbout()
+		public UcAbout()
 		{
 			InitializeComponent();
 		}

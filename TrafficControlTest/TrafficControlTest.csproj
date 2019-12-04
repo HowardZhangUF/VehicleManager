@@ -170,23 +170,23 @@
     <Compile Include="UserControl\TextBoxWithHint.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UserControl\UCAbout.cs">
+    <Compile Include="UserControl\UcAbout.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCAbout.Designer.cs">
-      <DependentUpon>UCAbout.cs</DependentUpon>
+    <Compile Include="UserControl\UcAbout.Designer.cs">
+      <DependentUpon>UcAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCLog.cs">
+    <Compile Include="UserControl\UcLog.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCLog.Designer.cs">
-      <DependentUpon>UCLog.cs</DependentUpon>
+    <Compile Include="UserControl\UcLog.Designer.cs">
+      <DependentUpon>UcLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCLogSearch.cs">
+    <Compile Include="UserControl\UcLogSearch.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCLogSearch.Designer.cs">
-      <DependentUpon>UCLogSearch.cs</DependentUpon>
+    <Compile Include="UserControl\UcLogSearch.Designer.cs">
+      <DependentUpon>UcLogSearch.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\UcMap.cs">
       <SubType>UserControl</SubType>
@@ -200,11 +200,11 @@
     <Compile Include="UserControl\UcMission.Designer.cs">
       <DependentUpon>UcMission.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCSetting.cs">
+    <Compile Include="UserControl\UcSetting.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCSetting.Designer.cs">
-      <DependentUpon>UCSetting.cs</DependentUpon>
+    <Compile Include="UserControl\UcSetting.Designer.cs">
+      <DependentUpon>UcSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\UcSimpleLog.cs">
       <SubType>UserControl</SubType>
@@ -230,11 +230,11 @@
     <Compile Include="UserControl\UcVehicleManualControl.Designer.cs">
       <DependentUpon>UcVehicleManualControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\UCVehicleInfo.cs">
+    <Compile Include="UserControl\UcVehicleInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\UCVehicleInfo.Designer.cs">
-      <DependentUpon>UCVehicleInfo.cs</DependentUpon>
+    <Compile Include="UserControl\UcVehicleInfo.Designer.cs">
+      <DependentUpon>UcVehicleInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="TrashCan\UCVehicleInfoList.cs">
       <SubType>UserControl</SubType>
@@ -268,14 +268,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControl\UCAbout.resx">
-      <DependentUpon>UCAbout.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl\UcAbout.resx">
+      <DependentUpon>UcAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCLog.resx">
-      <DependentUpon>UCLog.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl\UcLog.resx">
+      <DependentUpon>UcLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCLogSearch.resx">
-      <DependentUpon>UCLogSearch.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl\UcLogSearch.resx">
+      <DependentUpon>UcLogSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcMap.resx">
       <DependentUpon>UcMap.cs</DependentUpon>
@@ -283,8 +283,8 @@
     <EmbeddedResource Include="UserControl\UcMission.resx">
       <DependentUpon>UcMission.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCSetting.resx">
-      <DependentUpon>UCSetting.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl\UcSetting.resx">
+      <DependentUpon>UcSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcSimpleLog.resx">
       <DependentUpon>UcSimpleLog.cs</DependentUpon>
@@ -298,8 +298,8 @@
     <EmbeddedResource Include="UserControl\UcVehicleManualControl.resx">
       <DependentUpon>UcVehicleManualControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\UCVehicleInfo.resx">
-      <DependentUpon>UCVehicleInfo.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl\UcVehicleInfo.resx">
+      <DependentUpon>UcVehicleInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TrashCan\UCVehicleInfoList.resx">
       <DependentUpon>UCVehicleInfoList.cs</DependentUpon>

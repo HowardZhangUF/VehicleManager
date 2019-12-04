@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static TrafficControlTest.UserControl.UCVehicleInfo;
+using static TrafficControlTest.UserControl.UcVehicleInfo;
 
 namespace TrafficControlTest.UserControl
 {
@@ -24,13 +24,13 @@ namespace TrafficControlTest.UserControl
 			bool result = false;
 			lock (mLock)
 			{
-				result = Controls.ContainsKey(UCVehicleInfo.PreFix + Id);
+				result = Controls.ContainsKey(UcVehicleInfo.PreFix + Id);
 			}
 			return result;
 		}
 		public void Add(string Id, string Battery, string State)
 		{
-			UCVehicleInfo ucVehicleInfo = new UCVehicleInfo() { mId = Id, mBattery = Battery, mState = State, mBorderColor = Color.LightSalmon };
+			UcVehicleInfo ucVehicleInfo = new UcVehicleInfo() { mId = Id, mBattery = Battery, mState = State, mBorderColor = Color.LightSalmon };
 			string tmpName = ucVehicleInfo.Name;
 			lock (mLock)
 			{
@@ -38,23 +38,23 @@ namespace TrafficControlTest.UserControl
 				{
 					Controls.Add(ucVehicleInfo);
 					Controls[tmpName].Dock = DockStyle.Top;
-					Controls[tmpName].Height = UCVehicleInfo.DefaultHeight;
+					Controls[tmpName].Height = UcVehicleInfo.DefaultHeight;
 				}
 			}
 		}
-		public UCVehicleInfo Get(string Id)
+		public UcVehicleInfo Get(string Id)
 		{
-			UCVehicleInfo result = null;
-			string tmpName = UCVehicleInfo.PreFix + Id;
+			UcVehicleInfo result = null;
+			string tmpName = UcVehicleInfo.PreFix + Id;
 			lock (mLock)
 			{
-				result = Controls.ContainsKey(tmpName) ? (Controls[tmpName] as UCVehicleInfo) : null;
+				result = Controls.ContainsKey(tmpName) ? (Controls[tmpName] as UcVehicleInfo) : null;
 			}
 			return result;
 		}
 		public void Set(string Id, Property Property, string Value)
 		{
-			string tmpName = UCVehicleInfo.PreFix + Id;
+			string tmpName = UcVehicleInfo.PreFix + Id;
 			lock (mLock)
 			{
 				if (Controls.ContainsKey(tmpName))
@@ -62,13 +62,13 @@ namespace TrafficControlTest.UserControl
 					switch (Property)
 					{
 						case Property.Id:
-							(Controls[tmpName] as UCVehicleInfo).mId = Value;
+							(Controls[tmpName] as UcVehicleInfo).mId = Value;
 							break;
 						case Property.Battery:
-							(Controls[tmpName] as UCVehicleInfo).mBattery = Value;
+							(Controls[tmpName] as UcVehicleInfo).mBattery = Value;
 							break;
 						case Property.State:
-							(Controls[tmpName] as UCVehicleInfo).mState = Value;
+							(Controls[tmpName] as UcVehicleInfo).mState = Value;
 							break;
 						default:
 							break;
@@ -78,7 +78,7 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Remove(string Id)
 		{
-			string tmpName = UCVehicleInfo.PreFix + Id;
+			string tmpName = UcVehicleInfo.PreFix + Id;
 			lock (mLock)
 			{
 				if (Controls.ContainsKey(tmpName))
