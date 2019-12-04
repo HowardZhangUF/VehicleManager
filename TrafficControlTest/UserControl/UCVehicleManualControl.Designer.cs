@@ -1,6 +1,6 @@
 ﻿namespace TrafficControlTest.UserControl
 {
-	partial class UCVehicleManualControl
+	partial class UcVehicleManualControl
 	{
 		/// <summary> 
 		/// 設計工具所需的變數。
@@ -32,10 +32,10 @@
 			this.cbVehicleNameList = new System.Windows.Forms.ComboBox();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.lbGoalList = new System.Windows.Forms.ListBox();
+			this.lbGoalNameList = new System.Windows.Forms.ListBox();
 			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
+			this.btnGoto = new System.Windows.Forms.Button();
+			this.btnStop = new System.Windows.Forms.Button();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel4.SuspendLayout();
@@ -88,7 +88,7 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
-			this.tableLayoutPanel1.Controls.Add(this.lbGoalList, 1, 1);
+			this.tableLayoutPanel1.Controls.Add(this.lbGoalNameList, 1, 1);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 1, 2);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 100);
@@ -101,27 +101,27 @@
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(400, 550);
 			this.tableLayoutPanel1.TabIndex = 8;
 			// 
-			// lbGoalList
+			// lbGoalNameList
 			// 
-			this.lbGoalList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.lbGoalList.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbGoalList.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lbGoalList.ForeColor = System.Drawing.Color.White;
-			this.lbGoalList.FormattingEnabled = true;
-			this.lbGoalList.ItemHeight = 20;
-			this.lbGoalList.Location = new System.Drawing.Point(23, 23);
-			this.lbGoalList.Name = "lbGoalList";
-			this.lbGoalList.ScrollAlwaysVisible = true;
-			this.lbGoalList.Size = new System.Drawing.Size(354, 454);
-			this.lbGoalList.TabIndex = 1;
+			this.lbGoalNameList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.lbGoalNameList.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbGoalNameList.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lbGoalNameList.ForeColor = System.Drawing.Color.White;
+			this.lbGoalNameList.FormattingEnabled = true;
+			this.lbGoalNameList.ItemHeight = 20;
+			this.lbGoalNameList.Location = new System.Drawing.Point(23, 23);
+			this.lbGoalNameList.Name = "lbGoalNameList";
+			this.lbGoalNameList.ScrollAlwaysVisible = true;
+			this.lbGoalNameList.Size = new System.Drawing.Size(354, 454);
+			this.lbGoalNameList.TabIndex = 1;
 			// 
 			// tableLayoutPanel4
 			// 
 			this.tableLayoutPanel4.ColumnCount = 2;
 			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel4.Controls.Add(this.button1, 0, 0);
-			this.tableLayoutPanel4.Controls.Add(this.button2, 1, 0);
+			this.tableLayoutPanel4.Controls.Add(this.btnGoto, 0, 0);
+			this.tableLayoutPanel4.Controls.Add(this.btnStop, 1, 0);
 			this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel4.Location = new System.Drawing.Point(23, 483);
 			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -130,27 +130,29 @@
 			this.tableLayoutPanel4.Size = new System.Drawing.Size(354, 44);
 			this.tableLayoutPanel4.TabIndex = 5;
 			// 
-			// button1
+			// btnGoto
 			// 
-			this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.button1.Location = new System.Drawing.Point(3, 3);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(171, 38);
-			this.button1.TabIndex = 5;
-			this.button1.Text = "Goto";
-			this.button1.UseVisualStyleBackColor = true;
+			this.btnGoto.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnGoto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnGoto.Location = new System.Drawing.Point(3, 3);
+			this.btnGoto.Name = "btnGoto";
+			this.btnGoto.Size = new System.Drawing.Size(171, 38);
+			this.btnGoto.TabIndex = 5;
+			this.btnGoto.Text = "Goto";
+			this.btnGoto.UseVisualStyleBackColor = true;
+			this.btnGoto.Click += new System.EventHandler(this.btnGoto_Click);
 			// 
-			// button2
+			// btnStop
 			// 
-			this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.button2.Location = new System.Drawing.Point(180, 3);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(171, 38);
-			this.button2.TabIndex = 4;
-			this.button2.Text = "Stop";
-			this.button2.UseVisualStyleBackColor = true;
+			this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnStop.Location = new System.Drawing.Point(180, 3);
+			this.btnStop.Name = "btnStop";
+			this.btnStop.Size = new System.Drawing.Size(171, 38);
+			this.btnStop.TabIndex = 4;
+			this.btnStop.Text = "Stop";
+			this.btnStop.UseVisualStyleBackColor = true;
+			this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
 			// 
 			// UCVehicleManualControl
 			// 
@@ -176,9 +178,9 @@
 		private System.Windows.Forms.ComboBox cbVehicleNameList;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.ListBox lbGoalList;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.ListBox lbGoalNameList;
+		private System.Windows.Forms.Button btnStop;
+		private System.Windows.Forms.Button btnGoto;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
 	}
 }

@@ -66,7 +66,7 @@
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
 			this.ucAbout1 = new TrafficControlTest.UserControl.UCAbout();
 			this.ucVehicleApi1 = new TrafficControlTest.UserControl.UcVehicleApi();
-			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UCVehicleManualControl();
+			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UcVehicleManualControl();
 			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UcVehicleOverview();
 			this.pnlBtm = new System.Windows.Forms.Panel();
 			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
@@ -665,7 +665,7 @@
 		private System.Windows.Forms.Label lblConnection;
 		private System.Windows.Forms.Panel pnlLeftMain;
 		private UserControl.UcVehicleOverview ucVehicleOverview1;
-		private UserControl.UCVehicleManualControl ucVehicleManualControl1;
+		private UserControl.UcVehicleManualControl ucVehicleManualControl1;
 		private UserControl.UCAbout ucAbout1;
 		private UserControl.UcMap ucMap1;
 		private UserControl.UCLog ucLog1;

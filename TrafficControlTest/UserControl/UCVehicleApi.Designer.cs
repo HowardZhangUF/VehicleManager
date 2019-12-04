@@ -475,7 +475,7 @@
 			this.panel1.Size = new System.Drawing.Size(400, 550);
 			this.panel1.TabIndex = 8;
 			// 
-			// UCVehicleApi
+			// UcVehicleApi
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.AutoScroll = true;
@@ -483,7 +483,7 @@
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.tableLayoutPanel2);
 			this.Controls.Add(this.label1);
-			this.Name = "UCVehicleApi";
+			this.Name = "UcVehicleApi";
 			this.Size = new System.Drawing.Size(400, 650);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();

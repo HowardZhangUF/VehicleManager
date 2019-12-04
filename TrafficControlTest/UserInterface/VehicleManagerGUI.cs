@@ -38,6 +38,7 @@ namespace TrafficControlTest.UserInterface
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapter());
 			ucVehicleOverview1.Set(mCore.GetReferenceOfIVehicleInfoManager());
+			ucVehicleManualControl1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMapManager());
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());
 			ucSimpleLog1.Set(mCore);
 		}
@@ -144,23 +145,6 @@ namespace TrafficControlTest.UserInterface
 		private void UpdateGui_UpdateControlBackColor(Control Control, Color Color)
 		{
 			Control.InvokeIfNecessary(() => { if (Control.BackColor != Color) Control.BackColor = Color; });
-		}
-
-		private void UpdateGui_All_UpdateVehicleNameList()
-		{
-			string[] vehicleNameList = GetVehicleNameList();
-			ucVehicleManualControl1.InvokeIfNecessary(() =>
-			{
-				ucVehicleManualControl1.UpdateVehicleNameList(vehicleNameList);
-			});
-		}
-		private void UpdateGui_All_UpdateGoalNameList()
-		{
-			string[] goalNameList = GetMapGoalNameList();
-			ucVehicleManualControl1.InvokeIfNecessary(() =>
-			{
-				ucVehicleManualControl1.UpdateGoalList(goalNameList);
-			});
 		}
 		#endregion
 
@@ -386,7 +370,6 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned += HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
 				VehicleManagerProcess.VehicleInfoManagerItemAdded += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
 				VehicleManagerProcess.VehicleInfoManagerItemRemoved += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
-				VehicleManagerProcess.MapManagerMapLoaded += HandleEvent_VehicleManagerProcessMapManagerMapLoaded;
 			}
 		}
 		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
@@ -396,7 +379,6 @@ namespace TrafficControlTest.UserInterface
 				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned -= HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
 				VehicleManagerProcess.VehicleInfoManagerItemAdded -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
 				VehicleManagerProcess.VehicleInfoManagerItemRemoved -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
-				VehicleManagerProcess.MapManagerMapLoaded -= HandleEvent_VehicleManagerProcessMapManagerMapLoaded;
 			}
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
@@ -413,19 +395,13 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_All_UpdateVehicleNameList();
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleNameList().Count.ToString());
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_All_UpdateVehicleNameList();
 			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetVehicleCount() > 0 ? Color.DarkGreen : Color.DarkOrange);
 			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleCount().ToString());
-		}
-		private void HandleEvent_VehicleManagerProcessMapManagerMapLoaded(DateTime OccurTime, string MapFileName)
-		{
-			UpdateGui_All_UpdateGoalNameList();
 		}
 
 		private string[] GetVehicleNameList()
