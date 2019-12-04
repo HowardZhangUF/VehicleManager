@@ -167,6 +167,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrashCan\TrafficControlTestProcess.cs" />
     <Compile Include="TrashCan\TrafficController.cs" />
+    <Compile Include="UserControl\TextBoxWithHint.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UserControl\UCAbout.cs">
       <SubType>UserControl</SubType>
     </Compile>
