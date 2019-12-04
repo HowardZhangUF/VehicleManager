@@ -128,4 +128,14 @@
         SUVORK5CYII=
 </value>
   </data>
+  <data name="panel3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAEDSURBVFhH7ZS9EsFQEEbjGdQYWp2HM6PRqvyNF1B7CrVGqfD/ADqDynX2ZgsygkhuMkbOzDdJ
+        dnP3bJN4OT+PMaZLlmT9JgdyIiM9Gh+GFUlUZno8GRjYIpMXWZB7xnrULYgKZGCVPle9DvUVdyAJyrfk
+        4t86XgCByPtW5SPyCjnbJ5cLMDwo35CK9twuwOBQucC9uwUY+lIu8OxmAQa+lQvUkl+AYc/kZW0/QD3Z
+        BRj0sVygd7RvGdPTUjwYdC+Xf32oXKDfJnPS0NL3MCSSPFGQ5XIhU/mKZCovacs9yHK58F/yptX67ElN
+        W+mAcGrVxuxIVcvpgbROOiS97zwnWzzvBq0at/LN9JZDAAAAAElFTkSuQmCC
+</value>
+  </data>
 </root>
