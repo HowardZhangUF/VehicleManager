@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcVehicleInfo));
 			this.lblId = new System.Windows.Forms.Label();
 			this.lblBattery = new System.Windows.Forms.Label();
 			this.pnlTop = new System.Windows.Forms.Panel();
@@ -47,6 +48,7 @@
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.lblState = new System.Windows.Forms.Label();
 			this.lblTarget = new System.Windows.Forms.Label();
+			this.panel2 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.panel1.SuspendLayout();
@@ -58,7 +60,8 @@
 			this.lblId.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblId.Location = new System.Drawing.Point(3, 0);
 			this.lblId.Name = "lblId";
-			this.lblId.Size = new System.Drawing.Size(274, 50);
+			this.tableLayoutPanel1.SetRowSpan(this.lblId, 2);
+			this.lblId.Size = new System.Drawing.Size(289, 50);
 			this.lblId.TabIndex = 0;
 			this.lblId.Text = "ID";
 			this.lblId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -66,12 +69,13 @@
 			// 
 			// lblBattery
 			// 
-			this.lblBattery.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lblBattery.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.lblBattery.AutoSize = true;
 			this.lblBattery.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblBattery.ForeColor = System.Drawing.Color.White;
-			this.lblBattery.Location = new System.Drawing.Point(283, 0);
+			this.lblBattery.Location = new System.Drawing.Point(323, 5);
 			this.lblBattery.Name = "lblBattery";
-			this.lblBattery.Size = new System.Drawing.Size(94, 50);
+			this.lblBattery.Size = new System.Drawing.Size(49, 15);
 			this.lblBattery.TabIndex = 1;
 			this.lblBattery.Text = "100 %";
 			this.lblBattery.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -111,17 +115,19 @@
 			// 
 			// tableLayoutPanel1
 			// 
-			this.tableLayoutPanel1.ColumnCount = 2;
+			this.tableLayoutPanel1.ColumnCount = 3;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
 			this.tableLayoutPanel1.Controls.Add(this.lblId, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.lblBattery, 1, 0);
+			this.tableLayoutPanel1.Controls.Add(this.lblBattery, 2, 0);
+			this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 10);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 1;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.RowCount = 2;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(380, 50);
 			this.tableLayoutPanel1.TabIndex = 5;
 			this.tableLayoutPanel1.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
@@ -242,6 +248,16 @@
 			this.lblTarget.Text = "Target";
 			this.lblTarget.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
+			// panel2
+			// 
+			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
+			this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel2.Location = new System.Drawing.Point(298, 3);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(19, 19);
+			this.panel2.TabIndex = 2;
+			// 
 			// UcVehicleInfo
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -264,6 +280,7 @@
 			this.Name = "UcVehicleInfo";
 			this.Size = new System.Drawing.Size(400, 100);
 			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel1.PerformLayout();
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
@@ -292,5 +309,6 @@
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label lblTarget;
 		private System.Windows.Forms.Label lblState;
+		private System.Windows.Forms.Panel panel2;
 	}
 }
