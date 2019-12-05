@@ -15,7 +15,6 @@ namespace TrafficControlTest.UserControl
 	{
 		public delegate void EventHandlerSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit);
 
-		public event EventHandler ClickOnCloseButton;
 		public event EventHandlerSearchSuccessed SearchSuccessed;
 
 		public Color TableBackColor { get; set; } = Color.FromArgb(53, 53, 53);
@@ -80,131 +79,154 @@ namespace TrafficControlTest.UserControl
 		}
 		private void UpdateGui_CbLimit_Initialize()
 		{
-			cbLimit.Items.Add("100");
-			cbLimit.Items.Add("300");
-			cbLimit.Items.Add("500");
-			cbLimit.Items.Add("1000");
-			cbLimit.SelectedIndex = 0;
+			this.InvokeIfNecessary(() =>
+			{
+				cbLimit.Items.Add("100");
+				cbLimit.Items.Add("300");
+				cbLimit.Items.Add("500");
+				cbLimit.Items.Add("1000");
+				cbLimit.SelectedIndex = 0;
+			});
 		}
 		private void UpdateGui_DgvLogSearchResult_Initialize()
 		{
-			DataGridView dgv = dgvLogSearchResult;
-
-			dgv.SelectionChanged += ((sender, e) => dgv.ClearSelection());
-
-			dgv.RowHeadersVisible = false;
-			dgv.AllowUserToAddRows = false;
-			dgv.AllowUserToResizeRows = false;
-			dgv.AllowUserToResizeColumns = false;
-			dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-			dgv.MultiSelect = false;
-			dgv.BackgroundColor = TableBackColor;
-			dgv.GridColor = TableGridLineColor;
-			dgv.BorderStyle = BorderStyle.None;
-
-			dgv.EnableHeadersVisualStyles = false;
-			dgv.ColumnHeadersDefaultCellStyle.Font = new Font(dgv.ColumnHeadersDefaultCellStyle.Font.FontFamily, 12, FontStyle.Bold);
-			dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dgv.ColumnHeadersDefaultCellStyle.BackColor = TableHeaderBackColor;
-			dgv.ColumnHeadersDefaultCellStyle.ForeColor = TableHeaderForeColor;
-			dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-			dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-			dgv.ColumnHeadersHeight = 60;
-
-			dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
-			dgv.DefaultCellStyle.Font = new Font(dgv.DefaultCellStyle.Font.FontFamily, 12, FontStyle.Regular);
-			dgv.DefaultCellStyle.BackColor = TableEvenRowBackColor;
-			dgv.DefaultCellStyle.ForeColor = TableRowForeColor;
-			dgv.RowTemplate.Height = 25;
-
-			dgv.Columns.Add("No", "No");
-			dgv.Columns[0].Width = 50;
-			dgv.Columns.Add("Date", "Date");
-			dgv.Columns[1].Width = 175;
-			dgv.Columns.Add("Category", "Category");
-			dgv.Columns[2].Width = 200;
-			dgv.Columns.Add("SubCategory", "SubCategory");
-			dgv.Columns[3].Width = 200;
-			dgv.Columns.Add("Message", "Message");
-			dgv.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-			foreach (DataGridViewColumn column in dgv.Columns)
+			this.InvokeIfNecessary(() =>
 			{
-				column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-				column.SortMode = DataGridViewColumnSortMode.NotSortable;
-				column.ReadOnly = true;
-			}
+				DataGridView dgv = dgvLogSearchResult;
+
+				dgv.SelectionChanged += ((sender, e) => dgv.ClearSelection());
+
+				dgv.RowHeadersVisible = false;
+				dgv.AllowUserToAddRows = false;
+				dgv.AllowUserToResizeRows = false;
+				dgv.AllowUserToResizeColumns = false;
+				dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+				dgv.MultiSelect = false;
+				dgv.BackgroundColor = TableBackColor;
+				dgv.GridColor = TableGridLineColor;
+				dgv.BorderStyle = BorderStyle.None;
+
+				dgv.EnableHeadersVisualStyles = false;
+				dgv.ColumnHeadersDefaultCellStyle.Font = new Font(dgv.ColumnHeadersDefaultCellStyle.Font.FontFamily, 12, FontStyle.Bold);
+				dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+				dgv.ColumnHeadersDefaultCellStyle.BackColor = TableHeaderBackColor;
+				dgv.ColumnHeadersDefaultCellStyle.ForeColor = TableHeaderForeColor;
+				dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+				dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+				dgv.ColumnHeadersHeight = 60;
+
+				dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
+				dgv.DefaultCellStyle.Font = new Font(dgv.DefaultCellStyle.Font.FontFamily, 12, FontStyle.Regular);
+				dgv.DefaultCellStyle.BackColor = TableEvenRowBackColor;
+				dgv.DefaultCellStyle.ForeColor = TableRowForeColor;
+				dgv.RowTemplate.Height = 25;
+
+				dgv.Columns.Add("No", "No");
+				dgv.Columns[0].Width = 50;
+				dgv.Columns.Add("Date", "Date");
+				dgv.Columns[1].Width = 175;
+				dgv.Columns.Add("Category", "Category");
+				dgv.Columns[2].Width = 200;
+				dgv.Columns.Add("SubCategory", "SubCategory");
+				dgv.Columns[3].Width = 200;
+				dgv.Columns.Add("Message", "Message");
+				dgv.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+				foreach (DataGridViewColumn column in dgv.Columns)
+				{
+					column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+					column.SortMode = DataGridViewColumnSortMode.NotSortable;
+					column.ReadOnly = true;
+				}
+			});
 		}
 		private void UpdateGui_DgvLogSearchResult_AddRow(params string[] RowData)
 		{
-			dgvLogSearchResult.Rows.Add(RowData);
-			UpdateGui_DgvLogSearchResult_RefreshRowBackColor(dgvLogSearchResult.Rows.Count - 1);
+			this.InvokeIfNecessary(() =>
+			{
+				dgvLogSearchResult.Rows.Add(RowData);
+				UpdateGui_DgvLogSearchResult_RefreshRowBackColor(dgvLogSearchResult.Rows.Count - 1);
+			});
 		}
 		private void UpdateGui_DgvLogSearchResult_AddRows(DataRowCollection DataRows)
 		{
-			for (int i = 0; i < DataRows.Count; ++i)
+			this.InvokeIfNecessary(() =>
 			{
-				List<string> datas = new List<string>();
-				datas.Add((i + 1).ToString());
-				for (int j = 0; j < DataRows[i].ItemArray.Length; ++j)
+				for (int i = 0; i < DataRows.Count; ++i)
 				{
-					if (DataRows[i].ItemArray[j] is DateTime)
+					List<string> datas = new List<string>();
+					datas.Add((i + 1).ToString());
+					for (int j = 0; j < DataRows[i].ItemArray.Length; ++j)
 					{
-						datas.Add(Convert.ToDateTime(DataRows[i].ItemArray[j]).ToString(Library.Library.TIME_FORMAT));
+						if (DataRows[i].ItemArray[j] is DateTime)
+						{
+							datas.Add(Convert.ToDateTime(DataRows[i].ItemArray[j]).ToString(Library.Library.TIME_FORMAT));
+						}
+						else
+						{
+							datas.Add(DataRows[i].ItemArray[j].ToString());
+						}
 					}
-					else
-					{
-						datas.Add(DataRows[i].ItemArray[j].ToString());
-					}
+					UpdateGui_DgvLogSearchResult_AddRow(datas.ToArray());
 				}
-				UpdateGui_DgvLogSearchResult_AddRow(datas.ToArray());
-			}
+			});
 		}
 		private void UpdateGui_DgvLogSearchResult_InsertRow(int RowIndex, params string[] RowData)
 		{
-			if (RowIndex <= dgvLogSearchResult.Rows.Count)
+			this.InvokeIfNecessary(() =>
 			{
-				dgvLogSearchResult.Rows.Insert(RowIndex, RowData);
-			}
+				if (RowIndex <= dgvLogSearchResult.Rows.Count)
+				{
+					dgvLogSearchResult.Rows.Insert(RowIndex, RowData);
+				}
+			});
 		}
 		private void UpdateGui_DgvLogSearchResult_RemoveRow(int RowIndex)
 		{
-			if (RowIndex < dgvLogSearchResult.Rows.Count)
+			this.InvokeIfNecessary(() =>
 			{
-				dgvLogSearchResult.Rows.RemoveAt(RowIndex);
-			}
+				if (RowIndex < dgvLogSearchResult.Rows.Count)
+				{
+					dgvLogSearchResult.Rows.RemoveAt(RowIndex);
+				}
+			});
 		}
 		private void UpdateGui_DgvLogSearchResult_ClearRows()
 		{
-			if (dgvLogSearchResult.Rows.Count > 0)
+			this.InvokeIfNecessary(() =>
 			{
-				dgvLogSearchResult.Rows.Clear();
-			}
+				if (dgvLogSearchResult.Rows.Count > 0)
+				{
+					dgvLogSearchResult.Rows.Clear();
+				}
+			});
 		}
 		private void UpdateGui_DgvLogSearchResult_RefreshRowsBackColor()
 		{
-			if (dgvLogSearchResult != null && dgvLogSearchResult.Rows != null && dgvLogSearchResult.Rows.Count > 0)
+			this.InvokeIfNecessary(() =>
 			{
-				for (int i = 0; i < dgvLogSearchResult.Rows.Count; ++i)
+				if (dgvLogSearchResult != null && dgvLogSearchResult.Rows != null && dgvLogSearchResult.Rows.Count > 0)
 				{
-					UpdateGui_DgvLogSearchResult_RefreshRowBackColor(i);
+					for (int i = 0; i < dgvLogSearchResult.Rows.Count; ++i)
+					{
+						UpdateGui_DgvLogSearchResult_RefreshRowBackColor(i);
+					}
 				}
-			}
+			});
 		}
 		private void UpdateGui_DgvLogSearchResult_RefreshRowBackColor(int RowIndex)
 		{
-			if (RowIndex % 2 == 0)
+			this.InvokeIfNecessary(() =>
 			{
-				if (dgvLogSearchResult.Rows[RowIndex].DefaultCellStyle.BackColor != TableEvenRowBackColor) dgvLogSearchResult.Rows[RowIndex].DefaultCellStyle.BackColor = TableEvenRowBackColor;
-			}
-			else
-			{
-				if (dgvLogSearchResult.Rows[RowIndex].DefaultCellStyle.BackColor != TableOddRowBackColor) dgvLogSearchResult.Rows[RowIndex].DefaultCellStyle.BackColor = TableOddRowBackColor;
-			}
-		}
-		private void btnClose_Click(object sender, EventArgs e)
-		{
-			ClickOnCloseButton?.Invoke(this, e);
+				if (RowIndex % 2 == 0)
+				{
+					if (dgvLogSearchResult.Rows[RowIndex].DefaultCellStyle.BackColor != TableEvenRowBackColor) dgvLogSearchResult.Rows[RowIndex].DefaultCellStyle.BackColor = TableEvenRowBackColor;
+				}
+				else
+				{
+					if (dgvLogSearchResult.Rows[RowIndex].DefaultCellStyle.BackColor != TableOddRowBackColor) dgvLogSearchResult.Rows[RowIndex].DefaultCellStyle.BackColor = TableOddRowBackColor;
+				}
+			});
 		}
 		private void txtSearch_KeyDown(object sender, KeyEventArgs e)
 		{

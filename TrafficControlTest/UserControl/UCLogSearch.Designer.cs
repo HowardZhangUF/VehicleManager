@@ -34,7 +34,6 @@
 			this.btnSearch = new System.Windows.Forms.Button();
 			this.txtSearch = new System.Windows.Forms.TextBox();
 			this.cbLimit = new System.Windows.Forms.ComboBox();
-			this.btnClose = new System.Windows.Forms.Button();
 			this.dgvLogSearchResult = new System.Windows.Forms.DataGridView();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -45,7 +44,6 @@
 			// 
 			this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 			this.panel1.Controls.Add(this.tableLayoutPanel1);
-			this.panel1.Controls.Add(this.btnClose);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
@@ -109,19 +107,6 @@
 			this.cbLimit.TabIndex = 7;
 			this.cbLimit.SelectedIndexChanged += new System.EventHandler(this.cbLimit_SelectedIndexChanged);
 			// 
-			// btnClose
-			// 
-			this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
-			this.btnClose.FlatAppearance.BorderSize = 0;
-			this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
-			this.btnClose.Location = new System.Drawing.Point(800, 0);
-			this.btnClose.Name = "btnClose";
-			this.btnClose.Size = new System.Drawing.Size(50, 50);
-			this.btnClose.TabIndex = 0;
-			this.btnClose.UseVisualStyleBackColor = true;
-			this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-			// 
 			// dgvLogSearchResult
 			// 
 			this.dgvLogSearchResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -132,13 +117,13 @@
 			this.dgvLogSearchResult.Size = new System.Drawing.Size(850, 500);
 			this.dgvLogSearchResult.TabIndex = 1;
 			// 
-			// UCLogSearch
+			// UcLogSearch
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 			this.Controls.Add(this.dgvLogSearchResult);
 			this.Controls.Add(this.panel1);
-			this.Name = "UCLogSearch";
+			this.Name = "UcLogSearch";
 			this.Size = new System.Drawing.Size(850, 550);
 			this.panel1.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
@@ -151,7 +136,6 @@
 		#endregion
 
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button btnClose;
 		private System.Windows.Forms.TextBox txtSearch;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.DataGridView dgvLogSearchResult;

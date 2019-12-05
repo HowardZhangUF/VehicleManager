@@ -19,129 +19,88 @@ namespace TrafficControlTest.UserControl
 	/// </summary>
 	public partial class UcLog : System.Windows.Forms.UserControl
 	{
-		private DatabaseAdapter rDatabaseAdapter = null;
 		private List<Button> mButtons = new List<Button>();
 		private List<UcLogSearch> mUcLogSearches = new List<UcLogSearch>();
-		private object mLock = new object();
 		private string mDefaultNameOfButton = "button";
 		private string mDefaultNameOfUcLogSearch = "ucLogSearch";
-		private int mSerial = 0;
-		private int mMaxCountOfSearchPage = 5;
+		private int mMaxCountOfSearchPage = 3;
 
 		public UcLog()
 		{
 			InitializeComponent();
+			InitializeSearchPageControls();
 		}
 		public void Set(DatabaseAdapter DatabaseAdapter)
 		{
-			rDatabaseAdapter = DatabaseAdapter;
-		}
-
-		private int GetSerial()
-		{
-			return mSerial;
-		}
-		private void UpdateSerial()
-		{
-			mSerial = (mSerial == int.MaxValue) ? 0 : mSerial + 1;
-		}
-		private void UpdateGui_ButtonAndUcLogSearch_Add()
-		{
-			// 新增 Button
-			Button btn = new Button();
-			btn.Name = $"{mDefaultNameOfButton}{GetSerial().ToString()}";
-			btn.FlatStyle = FlatStyle.Flat;
-			btn.FlatAppearance.BorderSize = 0;
-			btn.Text = string.Empty;
-			btn.Dock = DockStyle.Left;
-			btn.Font = new Font("新細明體", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 136);
-			btn.MinimumSize = new Size(200, 50);
-			btn.AutoSize = true;
-			btn.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			btn.Click += HandleEvent_ButtonClick;
-
-			// 新增 UCLogSearch
-			UcLogSearch ucLogSearch = new UcLogSearch();
-			ucLogSearch.Dock = DockStyle.Fill;
-			ucLogSearch.Name = $"{mDefaultNameOfUcLogSearch}{GetSerial().ToString()}";
-			ucLogSearch.ClickOnCloseButton += HandleEvent_UcLogSearchClickOnCloseButton;
-			ucLogSearch.SearchSuccessed += HandleEvent_UcLogSearchSearchSuccessed;
-			ucLogSearch.Set(rDatabaseAdapter);
-
-			// 加入 Button 與 UCLogSearch 控制項
-			lock (mLock)
+			if (DatabaseAdapter != null)
 			{
-				mButtons.Add(btn);
-				panel1.Controls.Add(btn);
-				mUcLogSearches.Add(ucLogSearch);
-				panel2.Controls.Add(ucLogSearch);
-			}
-
-			// 調整 Button 的 ChildIndex
-			for (int i = 0; i < mButtons.Count; ++i)
-			{
-				panel1.Controls.SetChildIndex(mButtons[i], mButtons.Count - 1 - i);
-			}
-
-			// 顯示最新加入的 UCLogSearch
-			UpdateGui_ButtonAndUcLogSearch_ChangeButtonBackColorAndDisplayUcLogSearch(GetSerial().ToString());
-
-			// UcLogSearch 做一次預設搜尋
-			ucLogSearch.DoDefaultSearch();
-
-			// 更新序列號
-			UpdateSerial();
-		}
-		private void UpdateGui_ButtonAndUcLogSearch_Remove(string Serial)
-		{
-			if (panel1.Controls.ContainsKey($"{mDefaultNameOfButton}{Serial}") && panel2.Controls.ContainsKey($"{mDefaultNameOfUcLogSearch}{Serial}"))
-			{
-				Button tmpButton = (panel1.Controls[$"{mDefaultNameOfButton}{Serial}"] as Button);
-				UcLogSearch tmpUcLogSearch = (panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"] as UcLogSearch);
-				int tmpIndex = mButtons.IndexOf(tmpButton);
-
-				// 取消訂閱事件
-				tmpButton.Click -= HandleEvent_ButtonClick;
-				tmpUcLogSearch.ClickOnCloseButton -= HandleEvent_UcLogSearchClickOnCloseButton;
-				tmpUcLogSearch.SearchSuccessed -= HandleEvent_UcLogSearchSearchSuccessed;
-
-				// 移除控制項
-				lock (mLock)
+				for (int i = 0; i < mMaxCountOfSearchPage; ++i)
 				{
-					mButtons.Remove(tmpButton);
-					mUcLogSearches.Remove(tmpUcLogSearch);
-					panel1.Controls.Remove(tmpButton);
-					panel2.Controls.Remove(tmpUcLogSearch);
-				}
-
-				// 顯示其他剩餘的 UCLogSearch
-				if (mButtons.Count > 0)
-				{
-					int nextIndex = (tmpIndex == mButtons.Count) ? tmpIndex - 1 : tmpIndex;
-					UpdateGui_ButtonAndUcLogSearch_ChangeButtonBackColorAndDisplayUcLogSearch(mUcLogSearches[nextIndex].Name.Replace(mDefaultNameOfUcLogSearch, string.Empty));
+					mUcLogSearches[i].Set(DatabaseAdapter);
+					mUcLogSearches[i].DoDefaultSearch();
+					UpdateGui_ButtonAndUcLogSearch_ChangeButtonBackColorAndDisplayUcLogSearch(i.ToString());
 				}
 			}
+		}
+
+		private void InitializeSearchPageControls()
+		{
+			for (int i = 0; i < mMaxCountOfSearchPage; ++i)
+			{
+				mButtons.Add(GenerateButton(i.ToString()));
+				mUcLogSearches.Add(GenerateUcLogSearch(i.ToString()));
+				panel1.Controls.Add(mButtons[i]);
+				panel2.Controls.Add(mUcLogSearches[i]);
+			}
+		}
+		private Button GenerateButton(string Serial)
+		{
+			Button result = new Button();
+			result.Name = $"{mDefaultNameOfButton}{Serial}";
+			result.FlatStyle = FlatStyle.Flat;
+			result.FlatAppearance.BorderSize = 0;
+			result.Text = string.Empty;
+			result.Dock = DockStyle.Left;
+			result.Font = new Font("新細明體", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 136);
+			result.MinimumSize = new Size(200, 50);
+			result.AutoSize = true;
+			result.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			result.Click += HandleEvent_ButtonClick;
+			return result;
+		}
+		private UcLogSearch GenerateUcLogSearch(string Serial)
+		{
+			UcLogSearch result = new UcLogSearch();
+			result.Dock = DockStyle.Fill;
+			result.Name = $"{mDefaultNameOfUcLogSearch}{Serial}";
+			result.SearchSuccessed += HandleEvent_UcLogSearchSearchSuccessed;
+			return result;
 		}
 		private void UpdateGui_ButtonAndUcLogSearch_ChangeButtonBackColorAndDisplayUcLogSearch(string Serial)
 		{
-			if (panel1.Controls.ContainsKey($"{mDefaultNameOfButton}{Serial}") && panel2.Controls.ContainsKey($"{mDefaultNameOfUcLogSearch}{Serial}"))
+			this.InvokeIfNecessary(() =>
 			{
-				// 調整按鈕背景色
-				foreach (Control ctrl in panel1.Controls)
+				if (panel1.Controls.ContainsKey($"{mDefaultNameOfButton}{Serial}") && panel2.Controls.ContainsKey($"{mDefaultNameOfUcLogSearch}{Serial}"))
 				{
-					ctrl.BackColor = panel1.BackColor;
-				}
-				panel1.Controls[$"{mDefaultNameOfButton}{Serial}"].BackColor = Color.FromArgb(0, 122, 204);
+					// 調整按鈕背景色
+					foreach (Control ctrl in panel1.Controls)
+					{
+						ctrl.BackColor = panel1.BackColor;
+					}
+					panel1.Controls[$"{mDefaultNameOfButton}{Serial}"].BackColor = Color.FromArgb(0, 122, 204);
 
-				// 顯示對應的 UcLogSearch
-				panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"].BringToFront();
-				(panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"] as UcLogSearch).FocusOnSearchTextBox();
-			}
+					// 顯示對應的 UcLogSearch
+					panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"].BringToFront();
+					(panel2.Controls[$"{mDefaultNameOfUcLogSearch}{Serial}"] as UcLogSearch).FocusOnSearchTextBox();
+				}
+			});
 		}
 		private void UpdateGui_ButtonAndUcLogSearch_UpdateButtonText(string Serial, string NewText)
 		{
-			Button tmpButton = (panel1.Controls[$"{mDefaultNameOfButton}{Serial}"] as Button);
-			tmpButton.Text = NewText;
+			this.InvokeIfNecessary(() =>
+			{
+				(panel1.Controls[$"{mDefaultNameOfButton}{Serial}"] as Button).Text = NewText;
+			});
 		}
 		private void HandleEvent_ButtonClick(object sender, EventArgs e)
 		{
@@ -151,24 +110,10 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_ButtonAndUcLogSearch_ChangeButtonBackColorAndDisplayUcLogSearch(tmpSerial);
 			}
 		}
-		private void HandleEvent_UcLogSearchClickOnCloseButton(object sender, EventArgs e)
-		{
-			UpdateGui_ButtonAndUcLogSearch_Remove((sender as Control).Name.Replace(mDefaultNameOfUcLogSearch, string.Empty));
-		}
 		private void HandleEvent_UcLogSearchSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit)
 		{
-			UpdateGui_ButtonAndUcLogSearch_UpdateButtonText((Sender as Control).Name.Replace(mDefaultNameOfUcLogSearch, string.Empty), Keyword);
-		}
-		private void btnAddSearchPage_Click(object sender, EventArgs e)
-		{
-			if (mButtons.Count < 5 && mUcLogSearches.Count < 5)
-			{
-				UpdateGui_ButtonAndUcLogSearch_Add();
-			}
-			else
-			{
-				MessageBox.Show($"Can't Add Search Page Anymore!\r\nMaximum: {mMaxCountOfSearchPage.ToString()}", string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			}
+			string tmpSerial = (Sender as Control).Name.Replace(mDefaultNameOfUcLogSearch, string.Empty);
+			UpdateGui_ButtonAndUcLogSearch_UpdateButtonText(tmpSerial, Keyword);
 		}
 	}
 }
