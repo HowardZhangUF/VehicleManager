@@ -18,11 +18,12 @@ namespace TrafficControlTest.UserControl
 		{
 			Id,
 			Battery,
-			State
+			State,
+			Target
 		}
 
 		public static int DefaultHeight = 100;
-		public static string PreFix = "UCVehicleInfo";
+		public static string PreFix = "UcVehicleInfo";
 
 		public string mId
 		{
@@ -39,6 +40,11 @@ namespace TrafficControlTest.UserControl
 			get { return lblState.Text; }
 			set { if (lblState.Text != value) { lblState.Text = value; } }
 		}
+		public string mTarget
+		{
+			get { return lblTarget.Text; }
+			set { if (lblTarget.Text != value) { lblTarget.Text = value; } }
+		}
 		public Color mBorderColor
 		{
 			get { return pnlTop.BackColor; }
@@ -51,7 +57,7 @@ namespace TrafficControlTest.UserControl
 		}
 		public override string ToString()
 		{
-			return $"{mId}/{mBattery}/{mState}";
+			return string.IsNullOrEmpty(mTarget) ? $"{mId}/{mBattery}/{mState}" : $"{mId}/{mBattery}/{mState}/{mTarget}";
 		}
 
 		protected virtual void Control_DoubleClick(object Sender, EventArgs E)

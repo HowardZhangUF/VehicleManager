@@ -31,9 +31,9 @@ namespace TrafficControlTest.UserControl
 			rVehicleInfoManager = VehicleInfoManager;
 			SubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
 		}
-		public void Add(string Id, string Battery, string State)
+		public void Add(string Id, string Battery, string State, string Target)
 		{
-			UcVehicleInfo ucVehicleInfo = new UcVehicleInfo() { mId = Id, mBattery = Battery, mState = State, mBorderColor = Color.LightSalmon, Dock = DockStyle.Top, Height = UcVehicleInfo.DefaultHeight };
+			UcVehicleInfo ucVehicleInfo = new UcVehicleInfo() { mId = Id, mBattery = Battery, mState = State, mTarget = Target, mBorderColor = Color.LightSalmon, Dock = DockStyle.Top, Height = UcVehicleInfo.DefaultHeight };
 			string tmpName = ucVehicleInfo.Name;
 			lock (mLock)
 			{
@@ -93,6 +93,9 @@ namespace TrafficControlTest.UserControl
 								break;
 							case Property.State:
 								(Controls[tmpName] as UcVehicleInfo).mState = Value;
+								break;
+							case Property.Target:
+								(Controls[tmpName] as UcVehicleInfo).mTarget = Value;
 								break;
 							default:
 								break;
@@ -156,7 +159,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
 		{
-			Add(Item.mName, Item.mBatteryValue.ToString("F2"), Item.mCurrentState);
+			Add(Item.mName, Item.mBatteryValue.ToString("F2"), Item.mCurrentState, Item.mCurrentTarget);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
 		{
@@ -164,8 +167,9 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
 		{
-			Update(Item.mName, Property.Battery, Item.mBatteryValue.ToString("F2"));
-			Update(Item.mName, Property.State, Item.mCurrentState);
+			if (StateName.Contains("BatteryValue")) Update(Item.mName, Property.Battery, Item.mBatteryValue.ToString("F2"));
+			if (StateName.Contains("CurrentState")) Update(Item.mName, Property.State, Item.mCurrentState);
+			if (StateName.Contains("CurrentTarget")) Update(Item.mName, Property.Target, Item.mCurrentTarget);
 		}
 	}
 }

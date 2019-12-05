@@ -35,8 +35,6 @@
 			this.pnlLeft = new System.Windows.Forms.Panel();
 			this.pnlRight = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-			this.lblState = new System.Windows.Forms.Label();
 			this.pnlSecondTop = new System.Windows.Forms.Panel();
 			this.pnlSecondBottom = new System.Windows.Forms.Panel();
 			this.pnlSecondRight = new System.Windows.Forms.Panel();
@@ -45,8 +43,13 @@
 			this.pnlThirdBottom = new System.Windows.Forms.Panel();
 			this.pnlThirdLeft = new System.Windows.Forms.Panel();
 			this.pnlThirdRight = new System.Windows.Forms.Panel();
+			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.lblState = new System.Windows.Forms.Label();
+			this.lblTarget = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// lblId
@@ -123,34 +126,6 @@
 			this.tableLayoutPanel1.TabIndex = 5;
 			this.tableLayoutPanel1.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
-			// tableLayoutPanel2
-			// 
-			this.tableLayoutPanel2.ColumnCount = 2;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-			this.tableLayoutPanel2.Controls.Add(this.lblState, 0, 0);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(10, 60);
-			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 1;
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(380, 30);
-			this.tableLayoutPanel2.TabIndex = 6;
-			this.tableLayoutPanel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
-			// lblState
-			// 
-			this.lblState.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lblState.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblState.ForeColor = System.Drawing.Color.LightGray;
-			this.lblState.Location = new System.Drawing.Point(3, 0);
-			this.lblState.Name = "lblState";
-			this.lblState.Size = new System.Drawing.Size(274, 30);
-			this.lblState.TabIndex = 0;
-			this.lblState.Text = "State";
-			this.lblState.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.lblState.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
 			// pnlSecondTop
 			// 
 			this.pnlSecondTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -215,7 +190,59 @@
 			this.pnlThirdRight.Size = new System.Drawing.Size(4, 80);
 			this.pnlThirdRight.TabIndex = 10;
 			// 
-			// UCVehicleInfo
+			// tableLayoutPanel2
+			// 
+			this.tableLayoutPanel2.ColumnCount = 2;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+			this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(10, 60);
+			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+			this.tableLayoutPanel2.RowCount = 1;
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(380, 30);
+			this.tableLayoutPanel2.TabIndex = 6;
+			this.tableLayoutPanel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.lblTarget);
+			this.panel1.Controls.Add(this.lblState);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel1.Location = new System.Drawing.Point(3, 3);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(274, 24);
+			this.panel1.TabIndex = 0;
+			this.panel1.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// lblState
+			// 
+			this.lblState.AutoSize = true;
+			this.lblState.Dock = System.Windows.Forms.DockStyle.Left;
+			this.lblState.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblState.ForeColor = System.Drawing.Color.LightGray;
+			this.lblState.Location = new System.Drawing.Point(0, 0);
+			this.lblState.Name = "lblState";
+			this.lblState.Size = new System.Drawing.Size(55, 24);
+			this.lblState.TabIndex = 0;
+			this.lblState.Text = "State";
+			this.lblState.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// lblTarget
+			// 
+			this.lblTarget.AutoSize = true;
+			this.lblTarget.Dock = System.Windows.Forms.DockStyle.Left;
+			this.lblTarget.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblTarget.ForeColor = System.Drawing.Color.LightGray;
+			this.lblTarget.Location = new System.Drawing.Point(55, 0);
+			this.lblTarget.Name = "lblTarget";
+			this.lblTarget.Size = new System.Drawing.Size(69, 24);
+			this.lblTarget.TabIndex = 0;
+			this.lblTarget.Text = "Target";
+			this.lblTarget.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// UcVehicleInfo
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
@@ -234,10 +261,12 @@
 			this.Controls.Add(this.pnlBottom);
 			this.Controls.Add(this.pnlTop);
 			this.ForeColor = System.Drawing.Color.White;
-			this.Name = "UCVehicleInfo";
+			this.Name = "UcVehicleInfo";
 			this.Size = new System.Drawing.Size(400, 100);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -251,8 +280,6 @@
 		private System.Windows.Forms.Panel pnlLeft;
 		private System.Windows.Forms.Panel pnlRight;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-		private System.Windows.Forms.Label lblState;
 		private System.Windows.Forms.Panel pnlSecondTop;
 		private System.Windows.Forms.Panel pnlSecondBottom;
 		private System.Windows.Forms.Panel pnlSecondRight;
@@ -261,5 +288,9 @@
 		private System.Windows.Forms.Panel pnlThirdBottom;
 		private System.Windows.Forms.Panel pnlThirdLeft;
 		private System.Windows.Forms.Panel pnlThirdRight;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Label lblTarget;
+		private System.Windows.Forms.Label lblState;
 	}
 }
