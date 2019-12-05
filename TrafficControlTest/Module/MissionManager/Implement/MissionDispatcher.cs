@@ -121,9 +121,9 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetItems().FirstOrDefault(o => o.mCurrentState == "Idle" && o.mCurrentStateDuration.TotalSeconds > 1 && string.IsNullOrEmpty(o.mCurrentMissionId))?.mName : mission.mMission.mVehicleId;
 				if (!string.IsNullOrEmpty(vehicleId))
 				{
-					SendMission(vehicleId, mission.mMission);
 					mission.UpdateSendState(Interface.SendState.Sending);
 					mission.UpdateExecutorId(vehicleId);
+					SendMission(vehicleId, mission.mMission);
 				}
 			}
 		}

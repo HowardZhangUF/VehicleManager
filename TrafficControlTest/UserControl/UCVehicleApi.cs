@@ -205,14 +205,14 @@ namespace TrafficControlTest.UserControl
 		{
 			if (MapManager != null)
 			{
-
+				MapManager.MapLoaded += HandleEvent_MapManagerMapLoaded;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
 		{
 			if (MapManager != null)
 			{
-
+				MapManager.MapLoaded -= HandleEvent_MapManagerMapLoaded;
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
@@ -225,7 +225,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
 		{
-			if (StateName.Contains("CurrentMapNameList"))
+			if (!string.IsNullOrEmpty(CurrentVehicleName) && StateName.Contains("CurrentMapNameList"))
 			{
 				UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
 				UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());
@@ -234,6 +234,10 @@ namespace TrafficControlTest.UserControl
 		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{
 			UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());
+		}
+		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
+		{
+			UpdateGoalNameList(rMapManager.GetGoalNameList());
 		}
 		private void btnVehicleGoto_Click(object sender, EventArgs e)
 		{
