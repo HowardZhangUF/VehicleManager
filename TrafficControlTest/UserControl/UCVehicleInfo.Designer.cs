@@ -49,6 +49,8 @@
 			this.lblState = new System.Windows.Forms.Label();
 			this.lblTarget = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.lblLocationScore = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.panel1.SuspendLayout();
@@ -122,6 +124,8 @@
 			this.tableLayoutPanel1.Controls.Add(this.lblId, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.lblBattery, 2, 0);
 			this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
+			this.tableLayoutPanel1.Controls.Add(this.panel3, 1, 1);
+			this.tableLayoutPanel1.Controls.Add(this.lblLocationScore, 2, 1);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 10);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -257,6 +261,30 @@
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(19, 19);
 			this.panel2.TabIndex = 2;
+			this.panel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// panel3
+			// 
+			this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
+			this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel3.Location = new System.Drawing.Point(298, 28);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(19, 19);
+			this.panel3.TabIndex = 3;
+			this.panel3.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// lblLocationScore
+			// 
+			this.lblLocationScore.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.lblLocationScore.AutoSize = true;
+			this.lblLocationScore.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblLocationScore.Location = new System.Drawing.Point(323, 30);
+			this.lblLocationScore.Name = "lblLocationScore";
+			this.lblLocationScore.Size = new System.Drawing.Size(49, 15);
+			this.lblLocationScore.TabIndex = 4;
+			this.lblLocationScore.Text = "100 %";
+			this.lblLocationScore.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// UcVehicleInfo
 			// 
@@ -310,5 +338,7 @@
 		private System.Windows.Forms.Label lblTarget;
 		private System.Windows.Forms.Label lblState;
 		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.Label lblLocationScore;
 	}
 }

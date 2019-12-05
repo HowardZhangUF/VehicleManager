@@ -18,6 +18,7 @@ namespace TrafficControlTest.UserControl
 		{
 			Id,
 			Battery,
+			LocationScore,
 			State,
 			Target
 		}
@@ -34,6 +35,11 @@ namespace TrafficControlTest.UserControl
 		{
 			get { return lblBattery.Text.Replace(" %", string.Empty); }
 			set { if (lblBattery.Text.Replace(" %", string.Empty) != value) { lblBattery.Text = value + " %"; } }
+		}
+		public string mLocationScore
+		{
+			get { return lblLocationScore.Text.Replace(" %", string.Empty); }
+			set { if (lblLocationScore.Text.Replace(" %", string.Empty) != value) { lblLocationScore.Text = value + " %"; } }
 		}
 		public string mState
 		{
@@ -57,7 +63,7 @@ namespace TrafficControlTest.UserControl
 		}
 		public override string ToString()
 		{
-			return string.IsNullOrEmpty(mTarget) ? $"{mId}/{mBattery}/{mState}" : $"{mId}/{mBattery}/{mState}/{mTarget}";
+			return string.IsNullOrEmpty(mTarget) ? $"{mId}/{mBattery}/{mLocationScore}/{mState}" : $"{mId}/{mBattery}/{mLocationScore}/{mState}/{mTarget}";
 		}
 
 		protected virtual void Control_DoubleClick(object Sender, EventArgs E)

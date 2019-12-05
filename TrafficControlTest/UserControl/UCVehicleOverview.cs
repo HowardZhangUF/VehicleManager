@@ -31,9 +31,9 @@ namespace TrafficControlTest.UserControl
 			rVehicleInfoManager = VehicleInfoManager;
 			SubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
 		}
-		public void Add(string Id, string Battery, string State, string Target)
+		public void Add(string Id, string Battery, string LocationScore, string State, string Target)
 		{
-			UcVehicleInfo ucVehicleInfo = new UcVehicleInfo() { mId = Id, mBattery = Battery, mState = State, mTarget = Target, mBorderColor = Color.LightSalmon, Dock = DockStyle.Top, Height = UcVehicleInfo.DefaultHeight };
+			UcVehicleInfo ucVehicleInfo = new UcVehicleInfo() { mId = Id, mBattery = Battery, mLocationScore = LocationScore, mState = State, mTarget = Target, mBorderColor = Color.LightSalmon, Dock = DockStyle.Top, Height = UcVehicleInfo.DefaultHeight };
 			string tmpName = ucVehicleInfo.Name;
 			lock (mLock)
 			{
@@ -90,6 +90,9 @@ namespace TrafficControlTest.UserControl
 								break;
 							case Property.Battery:
 								(Controls[tmpName] as UcVehicleInfo).mBattery = Value;
+								break;
+							case Property.LocationScore:
+								(Controls[tmpName] as UcVehicleInfo).mLocationScore = Value;
 								break;
 							case Property.State:
 								(Controls[tmpName] as UcVehicleInfo).mState = Value;
@@ -159,7 +162,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
 		{
-			Add(Item.mName, Item.mBatteryValue.ToString("F2"), Item.mCurrentState, Item.mCurrentTarget);
+			Add(Item.mName, Item.mBatteryValue.ToString("F2"), Item.mLocationScore.ToString("F2"), Item.mCurrentState, Item.mCurrentTarget);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
 		{
@@ -168,6 +171,7 @@ namespace TrafficControlTest.UserControl
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
 		{
 			if (StateName.Contains("BatteryValue")) Update(Item.mName, Property.Battery, Item.mBatteryValue.ToString("F2"));
+			if (StateName.Contains("LocationScore")) Update(Item.mName, Property.LocationScore, Item.mLocationScore.ToString("F2"));
 			if (StateName.Contains("CurrentState")) Update(Item.mName, Property.State, Item.mCurrentState);
 			if (StateName.Contains("CurrentTarget")) Update(Item.mName, Property.Target, Item.mCurrentTarget);
 		}
