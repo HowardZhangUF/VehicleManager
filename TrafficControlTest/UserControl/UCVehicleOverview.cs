@@ -95,7 +95,20 @@ namespace TrafficControlTest.UserControl
 								(Controls[tmpName] as UcVehicleInfo).mLocationScore = Value;
 								break;
 							case Property.State:
-								(Controls[tmpName] as UcVehicleInfo).mState = Value;
+								UcVehicleInfo tmpObj = (Controls[tmpName] as UcVehicleInfo);
+								tmpObj.mState = Value;
+								switch (tmpObj.mState)
+								{
+									case "Idle":
+										tmpObj.mBorderColor = Color.Lime;
+										break;
+									case "Running":
+										tmpObj.mBorderColor = Color.Yellow;
+										break;
+									default:
+										tmpObj.mBorderColor = Color.Red;
+										break;
+								}
 								break;
 							case Property.Target:
 								(Controls[tmpName] as UcVehicleInfo).mTarget = Value;
