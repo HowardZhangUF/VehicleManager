@@ -1,6 +1,6 @@
 ﻿namespace TrafficControlTest.UserControl
 {
-	partial class UcLogSearch
+	partial class UcSearch
 	{
 		/// <summary> 
 		/// 設計工具所需的變數。
@@ -28,16 +28,16 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcLogSearch));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcSearch));
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.btnSearch = new System.Windows.Forms.Button();
 			this.txtSearch = new System.Windows.Forms.TextBox();
 			this.cbLimit = new System.Windows.Forms.ComboBox();
-			this.dgvLogSearchResult = new System.Windows.Forms.DataGridView();
+			this.dgvSearchResult = new System.Windows.Forms.DataGridView();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgvLogSearchResult)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dgvSearchResult)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -48,7 +48,7 @@
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(850, 50);
-			this.panel1.TabIndex = 0;
+			this.panel1.TabIndex = 1;
 			// 
 			// tableLayoutPanel1
 			// 
@@ -107,28 +107,29 @@
 			this.cbLimit.TabIndex = 7;
 			this.cbLimit.SelectedIndexChanged += new System.EventHandler(this.cbLimit_SelectedIndexChanged);
 			// 
-			// dgvLogSearchResult
+			// dgvSearchResult
 			// 
-			this.dgvLogSearchResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvLogSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dgvLogSearchResult.Location = new System.Drawing.Point(0, 50);
-			this.dgvLogSearchResult.Name = "dgvLogSearchResult";
-			this.dgvLogSearchResult.RowTemplate.Height = 27;
-			this.dgvLogSearchResult.Size = new System.Drawing.Size(850, 500);
-			this.dgvLogSearchResult.TabIndex = 1;
+			this.dgvSearchResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dgvSearchResult.Location = new System.Drawing.Point(0, 50);
+			this.dgvSearchResult.Name = "dgvSearchResult";
+			this.dgvSearchResult.RowTemplate.Height = 27;
+			this.dgvSearchResult.Size = new System.Drawing.Size(850, 500);
+			this.dgvSearchResult.TabIndex = 2;
 			// 
-			// UcLogSearch
+			// UcSearch
 			// 
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			this.Controls.Add(this.dgvLogSearchResult);
+			this.Controls.Add(this.dgvSearchResult);
 			this.Controls.Add(this.panel1);
-			this.Name = "UcLogSearch";
+			this.Name = "UcSearch";
 			this.Size = new System.Drawing.Size(850, 550);
 			this.panel1.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgvLogSearchResult)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dgvSearchResult)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -136,10 +137,10 @@
 		#endregion
 
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.TextBox txtSearch;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.DataGridView dgvLogSearchResult;
-		private System.Windows.Forms.ComboBox cbLimit;
 		private System.Windows.Forms.Button btnSearch;
+		private System.Windows.Forms.TextBox txtSearch;
+		private System.Windows.Forms.ComboBox cbLimit;
+		private System.Windows.Forms.DataGridView dgvSearchResult;
 	}
 }
