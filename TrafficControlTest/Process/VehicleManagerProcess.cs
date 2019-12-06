@@ -1128,11 +1128,8 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
-			if (!(Data is SerialData.AGVStatus) && !(Data is SerialData.AGVPath))
-			{
-				HandleDebugMessage(OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
-				RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
-			}
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
+			RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
 		{
