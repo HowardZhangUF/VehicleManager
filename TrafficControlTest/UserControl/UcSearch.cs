@@ -25,6 +25,7 @@ namespace TrafficControlTest.UserControl
 		public Color TableEvenRowBackColor { get; set; } = Color.FromArgb(42, 42, 42);
 		public Color TableExceptionRowBackColor { get; set; } = Color.FromArgb(178, 34, 34);
 		public Color TableRowForeColor { get; set; } = Color.White;
+		public abstract string mKeyword { get; }
 
 		private DatabaseAdapter rDatabaseAdapter = null;
 
@@ -56,6 +57,17 @@ namespace TrafficControlTest.UserControl
 
 		protected abstract string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit);
 		protected abstract void UpdateGui_DgvSearchResult_Initialize();
+		protected virtual void RaiseEvent_SearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit, bool Sync = true)
+		{
+			if (Sync)
+			{
+				SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit);
+			}
+			else
+			{
+				Task.Run(() => { SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit); });
+			}
+		}
 
 		private void SearchAndDisplayResult()
 		{
@@ -72,11 +84,15 @@ namespace TrafficControlTest.UserControl
 			{
 				UpdateGui_DgvSearchResult_ClearRows();
 				UpdateGui_DgvSearchResult_AddRows(searchResult.Rows);
-				SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit);
+				RaiseEvent_SearchSuccessed(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit);
 			}
 			else
 			{
-				MessageBox.Show("No Matches!", string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				// 如果做 Default Search 時沒有找到資料，則代表資料庫剛建立所以沒有資料，此時不跳出提醒視窗
+				if (!string.IsNullOrEmpty(Keyword))
+				{
+					MessageBox.Show("No Matches!", string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
 			}
 		}
 		private void UpdateGui_CbLimit_Initialize()

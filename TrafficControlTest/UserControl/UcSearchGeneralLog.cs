@@ -10,6 +10,8 @@ namespace TrafficControlTest.UserControl
 {
 	public class UcSearchGeneralLog : UcSearch
 	{
+		public override string mKeyword { get; } = "General";
+
 		public UcSearchGeneralLog() : base() { }
 
 		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit)

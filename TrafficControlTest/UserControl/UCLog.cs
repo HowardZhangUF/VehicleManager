@@ -12,18 +12,17 @@ using TrafficControlTest.Library;
 namespace TrafficControlTest.UserControl
 {
 	/// <summary>
-	/// 可動態新增、移除 Search Page ，至多有 n 個 Search Page 。
-	/// Search Page 由一個上方 Panel 的 Button 與下方 Panel 的 UcSearchGeneralLog 兩個元件組成。
-	/// Button 的 Name 會為 DefaultName + Serial ，UcSearchGeneralLog 的 Name 會為 DefaultName + Serial ，兩者的 Serial 會相等。
-	/// Button 用來標示當前使用的 Search Page 與搜尋關鍵字， UcSearchGeneralLog 用來顯示搜尋結果。
+	/// Search Page 由一個上方 Panel 的 Button 與下方 Panel 的 UcSearch 兩個元件組成。
+	/// Button 的 Name 會為 DefaultName + Serial ，UcSearch 的 Name 會為 DefaultName + Serial ，兩者的 Serial 會相等。
+	/// Button 用來標示當前使用的 Search Page 與搜尋關鍵字， UcSearch 用來顯示搜尋結果。
 	/// </summary>
 	public partial class UcLog : System.Windows.Forms.UserControl
 	{
 		private List<Button> mButtons = new List<Button>();
 		private List<UcSearch> mUcSearches = new List<UcSearch>();
 		private string mDefaultNameOfButton = "button";
-		private string mDefaultNameOfUcSearch = "UcSearch";
-		private int mMaxCountOfSearchPage = 3;
+		private string mDefaultNameOfUcSearch = "ucSearch";
+		private int mSerial = 0;
 
 		public UcLog()
 		{
@@ -34,7 +33,7 @@ namespace TrafficControlTest.UserControl
 		{
 			if (DatabaseAdapter != null)
 			{
-				for (int i = 0; i < mMaxCountOfSearchPage; ++i)
+				for (int i = 0; i < mUcSearches.Count; ++i)
 				{
 					mUcSearches[i].Set(DatabaseAdapter);
 					mUcSearches[i].DoDefaultSearch();
@@ -43,15 +42,36 @@ namespace TrafficControlTest.UserControl
 			}
 		}
 
+		private int GetSerial()
+		{
+			return mSerial;
+		}
+		private void UpdateSerial()
+		{
+			mSerial += 1;
+		}
 		private void InitializeSearchPageControls()
 		{
-			for (int i = 0; i < mMaxCountOfSearchPage; ++i)
-			{
-				mButtons.Add(GenerateButton(i.ToString()));
-				mUcSearches.Add(GenerateUcSearch(i.ToString()));
-				panel1.Controls.Add(mButtons[i]);
-				panel2.Controls.Add(mUcSearches[i]);
-			}
+			AddSearchPageOfGeneralLog();
+			AddSearchPageOfGeneralLog();
+			AddSearchPageOfGeneralLog();
+			AddSearchPageOfMissionState();
+		}
+		private void AddSearchPageOfGeneralLog()
+		{
+			mButtons.Add(GenerateButton(GetSerial().ToString()));
+			mUcSearches.Add(GenerateUcSearchGeneralLog(GetSerial().ToString()));
+			panel1.Controls.Add(mButtons[GetSerial()]);
+			panel2.Controls.Add(mUcSearches[GetSerial()]);
+			UpdateSerial();
+		}
+		private void AddSearchPageOfMissionState()
+		{
+			mButtons.Add(GenerateButton(GetSerial().ToString()));
+			mUcSearches.Add(GenerateUcSearchMissionState(GetSerial().ToString()));
+			panel1.Controls.Add(mButtons[GetSerial()]);
+			panel2.Controls.Add(mUcSearches[GetSerial()]);
+			UpdateSerial();
 		}
 		private Button GenerateButton(string Serial)
 		{
@@ -59,7 +79,7 @@ namespace TrafficControlTest.UserControl
 			result.Name = $"{mDefaultNameOfButton}{Serial}";
 			result.FlatStyle = FlatStyle.Flat;
 			result.FlatAppearance.BorderSize = 0;
-			result.Text = string.Empty;
+			result.Text = "None";
 			result.Dock = DockStyle.Left;
 			result.Font = new Font("新細明體", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 136);
 			result.MinimumSize = new Size(200, 50);
@@ -68,9 +88,17 @@ namespace TrafficControlTest.UserControl
 			result.Click += HandleEvent_ButtonClick;
 			return result;
 		}
-		private UcSearch GenerateUcSearch(string Serial)
+		private UcSearch GenerateUcSearchGeneralLog(string Serial)
 		{
 			UcSearch result = new UcSearchGeneralLog();
+			result.Dock = DockStyle.Fill;
+			result.Name = $"{mDefaultNameOfUcSearch}{Serial}";
+			result.SearchSuccessed += HandleEvent_UcSearchSearchSuccessed;
+			return result;
+		}
+		private UcSearch GenerateUcSearchMissionState(string Serial)
+		{
+			UcSearch result = new UcSearchMissionState();
 			result.Dock = DockStyle.Fill;
 			result.Name = $"{mDefaultNameOfUcSearch}{Serial}";
 			result.SearchSuccessed += HandleEvent_UcSearchSearchSuccessed;
@@ -113,7 +141,7 @@ namespace TrafficControlTest.UserControl
 		private void HandleEvent_UcSearchSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit)
 		{
 			string tmpSerial = (Sender as Control).Name.Replace(mDefaultNameOfUcSearch, string.Empty);
-			UpdateGui_ButtonAndUcSearch_UpdateButtonText(tmpSerial, Keyword);
+			UpdateGui_ButtonAndUcSearch_UpdateButtonText(tmpSerial, (Sender as UcSearch).mKeyword+ " - " + Keyword);
 		}
 	}
 }

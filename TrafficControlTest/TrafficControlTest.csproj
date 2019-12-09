@@ -203,6 +203,9 @@
     <Compile Include="UserControl\UcSearchGeneralLog.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UserControl\UcSearchMissionState.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControl\UcSetting.cs">
       <SubType>UserControl</SubType>
     </Compile>
