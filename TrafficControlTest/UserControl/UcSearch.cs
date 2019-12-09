@@ -126,7 +126,15 @@ namespace TrafficControlTest.UserControl
 					{
 						if (DataRows[i].ItemArray[j] is DateTime)
 						{
-							datas.Add(Convert.ToDateTime(DataRows[i].ItemArray[j]).ToString(Library.Library.TIME_FORMAT));
+							DateTime tmp = Convert.ToDateTime(DataRows[i].ItemArray[j]);
+							if (tmp == DateTime.MinValue)
+							{
+								datas.Add(string.Empty);
+							}
+							else
+							{
+								datas.Add(tmp.ToString(Library.Library.TIME_FORMAT));
+							}
 						}
 						else
 						{

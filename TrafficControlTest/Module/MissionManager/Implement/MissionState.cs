@@ -37,8 +37,8 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			mSendState = SendState.Unsend;
 			mExecuteState = ExecuteState.Unexecute;
 			mReceivedTimestamp = DateTime.Now;
-			mExecutionStartTimestamp = DateTime.Now;
-			mExecutionStopTimestamp = DateTime.Now;
+			mExecutionStartTimestamp = DateTime.MinValue;
+			mExecutionStopTimestamp = DateTime.MinValue;
 			mLastUpdate = DateTime.Now;
 		}
 		public void UpdatePriority(int Priority)
