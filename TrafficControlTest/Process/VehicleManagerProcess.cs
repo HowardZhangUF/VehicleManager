@@ -296,6 +296,8 @@ namespace TrafficControlTest.Process
 			mDatabaseAdapter = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mLogRecorder = GenerateILogRecorder(mDatabaseAdapter);
 
+			SubscribeEvent_Exception();
+
 			UnsubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
 			mVehicleCommunicator = GenerateIVehicleCommunicator();
 			SubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
@@ -419,6 +421,17 @@ namespace TrafficControlTest.Process
 			mLogRecorder = null;
 			mDatabaseAdapter = null;
 			mConfigurator = null;
+		}
+		private void SubscribeEvent_Exception()
+		{
+			System.Windows.Forms.Application.ThreadException += (sender, e) => 
+			{
+				System.IO.File.AppendAllText($"Exception{DateTime.Now.ToString("yyyyMMdd")}.txt", $"{DateTime.Now.ToString(TIME_FORMAT)} - {e.Exception.ToString()}\r\n");
+			};
+			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+			{
+				System.IO.File.AppendAllText($"Exception{DateTime.Now.ToString("yyyyMMdd")}.txt", $"{DateTime.Now.ToString(TIME_FORMAT)} - {e.ExceptionObject.ToString()}\r\n");
+			};
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
