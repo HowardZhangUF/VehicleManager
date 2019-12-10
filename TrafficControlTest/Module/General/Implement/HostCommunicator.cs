@@ -20,6 +20,19 @@ namespace TrafficControlTest.Module.General.Implement
 		public event EventHandlerSentString SentString;
 		public event EventHandlerReceivedString ReceivedString;
 
+		public bool mIsExecuting
+		{
+			get
+			{
+				return _IsExecuting;
+			}
+			private set
+			{
+				_IsExecuting = value;
+				if (_IsExecuting) RaiseEvent_SystemStarted();
+				else RaiseEvent_SystemStopped();
+			}
+		}
 		public ListenState mListenState { get { return mServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
 		public int mClientCout { get { return (mServer == null || mServer.ListenStatus == EListenStatus.Idle) ? 0 : mServer.ClientCount; } }
 
@@ -29,6 +42,7 @@ namespace TrafficControlTest.Module.General.Implement
 		private readonly object mLockOfServerEvents = new object();
 		private Thread mThdHandleServerEvents = null;
 		private bool[] mThdHandleServerEventsExitFlag = null;
+		private bool _IsExecuting = false;
 
 		public HostCommunicator()
 		{
@@ -54,8 +68,8 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			if (mServer.ListenStatus == EListenStatus.Listening)
 			{
-				mServer.StopListen();
 				DestroyThread();
+				mServer.StopListen();
 			}
 		}
 		public void SendString(string Data)
@@ -234,7 +248,7 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			try
 			{
-				RaiseEvent_SystemStarted();
+				mIsExecuting = true;
 				while (!ExitFlag[0])
 				{
 					Subtask_HandleServerEvents();
@@ -244,7 +258,7 @@ namespace TrafficControlTest.Module.General.Implement
 			finally
 			{
 				Subtask_HandleServerEvents();
-				RaiseEvent_SystemStopped();
+				mIsExecuting = false;
 			}
 		}
 		private void Subtask_HandleServerEvents()

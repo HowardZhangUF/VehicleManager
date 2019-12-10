@@ -23,6 +23,19 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerSentSerializableData SentSerializableDataSuccessed;
 		public event EventHandlerSentSerializableData SentSerializableDataFailed;
 
+		public bool mIsExecuting
+		{
+			get
+			{
+				return _IsExecuting;
+			}
+			private set
+			{
+				_IsExecuting = value;
+				if (_IsExecuting) RaiseEvent_SystemStarted();
+				else RaiseEvent_SystemStopped();
+			}
+		}
 		public ListenState mListenState { get { return mSocketServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
 		public int mClientCount { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? 0 : mSocketServer.ClientCount; } }
 		public List<string> mClientAddressInfo { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? null : mSocketServer.ClientDictionary.Keys.ToList(); } }
@@ -33,6 +46,7 @@ namespace TrafficControlTest.Implement
 		private readonly object mLockOfSerialServerEvents = new object();
 		private Thread mThdHandleSerialServerEvents = null;
 		private bool[] mThdHandleSerialServerEventsExitFlag = null;
+		private bool _IsExecuting = false;
 
 		public VehicleCommunicator()
 		{
@@ -58,8 +72,8 @@ namespace TrafficControlTest.Implement
 		{
 			if (mSocketServer.ListenStatus == EListenStatus.Listening)
 			{
-				mSocketServer.StopListen();
 				DestroyThread();
+				mSocketServer.StopListen();
 			}
 		}
 		public void SendSerializableData(string IpPort, object Data)
@@ -332,7 +346,7 @@ namespace TrafficControlTest.Implement
 		{
 			try
 			{
-				RaiseEvent_SystemStarted();
+				mIsExecuting = true;
 				while (!ExitFlag[0])
 				{
 					Subtask_HandleSerialServerEvents();
@@ -342,7 +356,7 @@ namespace TrafficControlTest.Implement
 			finally
 			{
 				Subtask_HandleSerialServerEvents();
-				RaiseEvent_SystemStopped();
+				mIsExecuting = false;
 			}
 		}
 		private void Subtask_HandleSerialServerEvents()

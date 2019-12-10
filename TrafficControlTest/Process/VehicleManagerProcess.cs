@@ -51,6 +51,14 @@ namespace TrafficControlTest.Process
 		public event EventHandlerVehicleNamesMapFileName MapFileManagerVehicleCurrentMapSynchronized;
 		public event EventHandlerMapFileName MapManagerMapLoaded;
 
+		public bool mIsAllStopped
+		{
+			get
+			{
+				return !mVehicleCommunicator.mIsExecuting && !mCollisionEventDetector.mIsExecuting && !mVehicleControlHandler.mIsExecuting && !mHostCommunicator.mIsExecuting && !mMissionDispatcher.mIsExecuting;
+			}
+		}
+
 		private IConfigurator mConfigurator = null;
 		private DatabaseAdapter mDatabaseAdapter = null;
 		private ILogRecorder mLogRecorder = null;
@@ -101,6 +109,14 @@ namespace TrafficControlTest.Process
 			VehicleControlHandlerStop();
 			CollisionEventDetectorStop();
 			VehicleCommunicatorStopListen();
+
+			DateTime tmp = DateTime.Now;
+			while (!mIsAllStopped)
+			{
+				if (DateTime.Now.Subtract(tmp).TotalSeconds > 5) break;
+				System.Threading.Thread.Sleep(100);
+			}
+
 			LogRecorderStop();
 		}
 		public IVehicleCommunicator GetReferenceOfIVehicleCommunicator()

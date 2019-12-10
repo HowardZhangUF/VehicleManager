@@ -14,12 +14,25 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerDateTime SystemStarted;
 		public event EventHandlerDateTime SystemStopped;
 
-		public bool mIsExcuting { get { return (mThdDetectCollisionEvent != null && mThdDetectCollisionEvent.IsAlive == true) ? true : false; } }
+		public bool mIsExecuting
+		{
+			get
+			{
+				return _IsExecuting;
+			}
+			private set
+			{
+				_IsExecuting = value;
+				if (_IsExecuting) RaiseEvent_SystemStarted();
+				else RaiseEvent_SystemStopped();
+			}
+		}
 
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private ICollisionEventManager rCollisionEventManager = null;
 		private Thread mThdDetectCollisionEvent = null;
 		private bool[] mThdDetectCollisionEventExitFlag = null;
+		private bool _IsExecuting = false;
 
 		public CollisionEventDetector(IVehicleInfoManager VehicleInfoManager, ICollisionEventManager CollisionEventManager)
 		{
@@ -123,7 +136,7 @@ namespace TrafficControlTest.Implement
 		{
 			try
 			{
-				RaiseEvent_SystemStarted();
+				mIsExecuting = true;
 				while (!ExitFlag[0])
 				{
 					Subtask_DetectCollisionEvent();
@@ -133,7 +146,7 @@ namespace TrafficControlTest.Implement
 			finally
 			{
 				Subtask_DetectCollisionEvent();
-				RaiseEvent_SystemStopped();
+				mIsExecuting = false;
 			}
 		}
 		private void Subtask_DetectCollisionEvent()

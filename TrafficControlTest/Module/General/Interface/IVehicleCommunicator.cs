@@ -19,7 +19,8 @@ namespace TrafficControlTest.Interface
 		event EventHandlerReceivedSerializableData ReceivedSerializableData;
 		event EventHandlerSentSerializableData SentSerializableDataSuccessed;
 		event EventHandlerSentSerializableData SentSerializableDataFailed;
-		
+
+		bool mIsExecuting { get; }
 		/// <summary>監聽狀態</summary>
 		ListenState mListenState { get; }
 		/// <summary>連線中的 Client 數量</summary>

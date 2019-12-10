@@ -17,13 +17,26 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public event EventHandlerDateTime SystemStarted;
 		public event EventHandlerDateTime SystemStopped;
 
-		public bool mIsExecuting { get { return (mThdDispatchMission != null && mThdDispatchMission.IsAlive == true) ? true : false; } }
+		public bool mIsExecuting
+		{
+			get
+			{
+				return _IsExecuting;
+			}
+			private set
+			{
+				_IsExecuting = value;
+				if (_IsExecuting) RaiseEvent_SystemStarted();
+				else RaiseEvent_SystemStopped();
+			}
+		}
 
 		private IMissionStateManager rMissionStateManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private Thread mThdDispatchMission = null;
 		private bool[] mThdDispatchMissionExitFlag = null;
+		private bool _IsExecuting = false;
 
 		public MissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
 		{
@@ -100,7 +113,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			try
 			{
-				RaiseEvent_SystemStarted();
+				mIsExecuting = true;
 				while (!ExitFlag[0])
 				{
 					Subtask_DispatchMission();
@@ -109,7 +122,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			}
 			finally
 			{
-				RaiseEvent_SystemStopped();
+				mIsExecuting = false;
 			}
 		}
 		private void Subtask_DispatchMission()

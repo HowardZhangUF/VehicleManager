@@ -15,13 +15,26 @@ namespace TrafficControlTest.Implement
 		public event EventHandlerDateTime SystemStarted;
 		public event EventHandlerDateTime SystemStopped;
 
-		public bool mIsExcuting { get { return (mThdHandleVehicleControl != null && mThdHandleVehicleControl.IsAlive == true) ? true : false; } }
+		public bool mIsExecuting
+		{
+			get
+			{
+				return _IsExecuting;
+			}
+			private set
+			{
+				_IsExecuting = value;
+				if (_IsExecuting) RaiseEvent_SystemStarted();
+				else RaiseEvent_SystemStopped();
+			}
+		}
 
 		private IVehicleControlManager rVehicleControlManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private Thread mThdHandleVehicleControl = null;
 		private bool[] mThdHandleVehicleControlExitFlag = null;
+		private bool _IsExecuting = false;
 
 		public VehicleControlHandler(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
 		{
@@ -146,7 +159,7 @@ namespace TrafficControlTest.Implement
 		{
 			try
 			{
-				RaiseEvent_SystemStarted();
+				mIsExecuting = true;
 				IEnumerable<IVehicleControl> vehicleControls = null;
 				while (!ExitFlag[0])
 				{
@@ -158,8 +171,7 @@ namespace TrafficControlTest.Implement
 			}
 			finally
 			{
-
-				RaiseEvent_SystemStopped();
+				mIsExecuting = false;
 			}
 		}
 		private void HandleVehicleControls(IEnumerable<IVehicleControl> VehicleControls)

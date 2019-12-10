@@ -22,6 +22,7 @@ namespace TrafficControlTest.Module.General.Interface
 		event EventHandlerSentString SentString;
 		event EventHandlerReceivedString ReceivedString;
 
+		bool mIsExecuting { get; }
 		ListenState mListenState { get; }
 		int mClientCout { get; }
 

@@ -12,7 +12,7 @@ namespace TrafficControlTest.Interface
 		event EventHandlerDateTime SystemStarted;
 		event EventHandlerDateTime SystemStopped;
 
-		bool mIsExcuting { get; }
+		bool mIsExecuting { get; }
 
 		void Set(IVehicleControlManager VehicleControlManager);
 		void Set(IVehicleInfoManager VehicleInfoManager);

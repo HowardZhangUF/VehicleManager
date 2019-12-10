@@ -70,8 +70,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			try
 			{
-				VehicleManagerProcessStop();
-				Destructor();
+
 			}
 			catch (Exception Ex)
 			{
@@ -85,7 +84,12 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void btnFormClose_Click(object sender, EventArgs e)
 		{
-			Close();
+			System.Threading.Tasks.Task.Run(() =>
+			{
+				VehicleManagerProcessStop();
+				Destructor();
+				this.InvokeIfNecessary(() => Close());
+			});
 		}
 		private void btnDisplayPnlLeftMain_Click(object sender, EventArgs e)
 		{
