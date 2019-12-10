@@ -25,12 +25,13 @@ namespace TrafficControlTest.UserControl
 		private object mLockOfDgvMission = new object();
 		private Dictionary<string, int> mColumnHeaderDictionary = new Dictionary<string, int>()
 		{
-			{ "MissionID", 0 },
-			{ "Priority", 1 },
-			{ "SendState", 5 },
-			{ "ExecuteState", 5 },
-			{ "ExecutorId", 6 },
-			{ "SourceIpPort", 7 }
+			{ "ID", 0 },
+			{ "HostMissionID", 1 },
+			{ "Priority", 2 },
+			{ "SendState", 6 },
+			{ "ExecuteState", 6 },
+			{ "ExecutorId", 7 },
+			{ "SourceIpPort", 8 }
 		};
 
 		public UcMission()
@@ -44,11 +45,11 @@ namespace TrafficControlTest.UserControl
 			rMissionStateManager = MissionStateManager;
 			SubscribeEvent_IMissionStateManager(rMissionStateManager);
 		}
-		public void AddRow(string MissionId, string[] Datas)
+		public void AddRow(string Id, string[] Datas)
 		{
 			lock (mLockOfDgvMission)
 			{
-				int rowIndex = GetRowIndex(MissionId);
+				int rowIndex = GetRowIndex(Id);
 				if (rowIndex < 0)
 				{
 					if (dgvMission.Rows.Count == 0)
@@ -75,11 +76,11 @@ namespace TrafficControlTest.UserControl
 				}
 			}
 		}
-		public void RemoveRow(string MissionId)
+		public void RemoveRow(string Id)
 		{
 			lock (mLockOfDgvMission)
 			{
-				int rowIndex = GetRowIndex(MissionId);
+				int rowIndex = GetRowIndex(Id);
 				if (rowIndex >= 0 && rowIndex < dgvMission.Columns.Count)
 				{
 					UpdateGui_RemoveRow(rowIndex);
@@ -87,11 +88,11 @@ namespace TrafficControlTest.UserControl
 				}
 			}
 		}
-		public void UpdateRow(string MissionId, string StateName, string NewValue)
+		public void UpdateRow(string Id, string StateName, string NewValue)
 		{
 			lock (mLockOfDgvMission)
 			{
-				int rowIndex = GetRowIndex(MissionId);
+				int rowIndex = GetRowIndex(Id);
 				if (rowIndex >= 0 && rowIndex < dgvMission.Columns.Count)
 				{
 					if (StateName == "Priority")
@@ -100,8 +101,8 @@ namespace TrafficControlTest.UserControl
 						{
 							dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["Priority"]].Value = NewValue;
 							string[] tmp = ConvertToStringArray(dgvMission.Rows[rowIndex].Cells);
-							RemoveRow(MissionId);
-							AddRow(MissionId, tmp);
+							RemoveRow(Id);
+							AddRow(Id, tmp);
 							UpdateGui_RefreshDgvMissionRowsBackColor();
 						}
 					}
@@ -261,22 +262,22 @@ namespace TrafficControlTest.UserControl
 				dgv.DefaultCellStyle.ForeColor = TableRowForeColor;
 				dgv.RowTemplate.Height = 40;
 
-				dgv.Columns.Add("MissionID", "MissionID");
+				dgv.Columns.Add("ID", "ID");
 				dgv.Columns[0].Width = 210;
+				dgv.Columns.Add("HostMissionID", "HostMissionID");
+				dgv.Columns[1].Width = 210;
 				dgv.Columns.Add("Priority", "Priority");
-				dgv.Columns[1].Width = 70;
+				dgv.Columns[2].Width = 70;
 				dgv.Columns.Add("Type", "Type");
-				dgv.Columns[2].Width = 100;
+				dgv.Columns[3].Width = 100;
 				dgv.Columns.Add("Vehicle", "Vehicle");
-				dgv.Columns[3].Width = 130;
+				dgv.Columns[4].Width = 130;
 				dgv.Columns.Add("Parameter", "Parameter");
-				dgv.Columns[4].Width = 160;
+				dgv.Columns[5].Width = 160;
 				dgv.Columns.Add("State", "State");
-				dgv.Columns[5].Width = 240;
+				dgv.Columns[6].Width = 240;
 				dgv.Columns.Add("Executor", "Executor");
-				dgv.Columns[6].Width = 130;
-				dgv.Columns.Add("From", "From");
-				dgv.Columns[7].Width = 180;
+				dgv.Columns[7].Width = 130;
 				dgv.Columns.Add("ReceivedTime", "ReceivedTime");
 				dgv.Columns[8].Width = 190;
 				dgv.Columns.Add("FillColumn", "");
@@ -307,7 +308,7 @@ namespace TrafficControlTest.UserControl
 		{
 			dgvMission.InvokeIfNecessary(() =>
 			{
-				if (dgvMission.Rows[RowIndex].Cells[5].Value.ToString().EndsWith("Executing"))
+				if (dgvMission.Rows[RowIndex].Cells[mColumnHeaderDictionary["ExecuteState"]].Value.ToString().EndsWith("Executing"))
 				{
 					if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableRowExecutingBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableRowExecutingBackColor;
 				}
@@ -334,9 +335,9 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_RefreshDgvMissionRowsBackColor();
 			});
 		}
-		private int GetRowIndex(string MissionId)
+		private int GetRowIndex(string Id)
 		{
-			return GetRowIndex(mColumnHeaderDictionary["MissionID"], MissionId);
+			return GetRowIndex(mColumnHeaderDictionary["ID"], Id);
 		}
 		private int GetRowIndex(int ColumnIndex, string CellValue)
 		{

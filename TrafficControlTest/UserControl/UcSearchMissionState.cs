@@ -64,30 +64,32 @@ namespace TrafficControlTest.UserControl
 				dgv.Columns[0].Width = 50;
 				dgv.Columns.Add("ID", "ID");
 				dgv.Columns[1].Width = 200;
+				dgv.Columns.Add("HostMissionID", "HostMissionID");
+				dgv.Columns[2].Width = 200;
 				dgv.Columns.Add("Type", "Type");
-				dgv.Columns[2].Width = 80;
+				dgv.Columns[3].Width = 80;
 				dgv.Columns.Add("Priority", "Priority");
-				dgv.Columns[3].Width = 70;
+				dgv.Columns[4].Width = 70;
 				dgv.Columns.Add("VehicleID", "VehicleID");
-				dgv.Columns[4].Width = 130;
+				dgv.Columns[5].Width = 130;
 				dgv.Columns.Add("Parameters", "Parameters");
-				dgv.Columns[5].Width = 160;
+				dgv.Columns[6].Width = 160;
 				dgv.Columns.Add("SourceIPPort", "SourceIPPort");
-				dgv.Columns[6].Width = 180;
+				dgv.Columns[7].Width = 180;
 				dgv.Columns.Add("ExecutorID", "ExecutorID");
-				dgv.Columns[7].Width = 130;
+				dgv.Columns[8].Width = 130;
 				dgv.Columns.Add("SendState", "SendState");
-				dgv.Columns[8].Width = 110;
+				dgv.Columns[9].Width = 110;
 				dgv.Columns.Add("ExecuteState", "ExecuteState");
-				dgv.Columns[9].Width = 130;
+				dgv.Columns[10].Width = 130;
 				dgv.Columns.Add("ReceiveTimestamp", "ReceiveTimestamp");
-				dgv.Columns[10].Width = 180;
-				dgv.Columns.Add("StartTimestamp", "StartTimestamp");
 				dgv.Columns[11].Width = 180;
-				dgv.Columns.Add("StopTimestamp", "StopTimestamp");
+				dgv.Columns.Add("StartTimestamp", "StartTimestamp");
 				dgv.Columns[12].Width = 180;
-				dgv.Columns.Add("LastUpdateTimestamp", "LastUpdateTimestamp");
+				dgv.Columns.Add("StopTimestamp", "StopTimestamp");
 				dgv.Columns[13].Width = 180;
+				dgv.Columns.Add("LastUpdateTimestamp", "LastUpdateTimestamp");
+				dgv.Columns[14].Width = 180;
 
 				foreach (DataGridViewColumn column in dgv.Columns)
 				{

@@ -27,7 +27,10 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 	/// <summary>
 	/// - 儲存任務的資訊及狀態
 	/// </summary>
-	/// <remarks>mName 即為 IMission 的 Mission ID ，但若該 Mission ID 為空，則會自行產生</remarks>
+	/// <remarks>
+	/// mName 為根據時間產生的流水號，其為唯一，
+	/// mMission.mMissionId 為客戶指令給的 MissionID 。
+	/// </remarks>
 	public interface IMissionState : IItem
 	{
 		IMission mMission { get; }
@@ -41,6 +44,7 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 		DateTime mLastUpdate { get; }
 
 		void Set(IMission Mission);
+		string GetMissionId();
 		void UpdatePriority(int Priority);
 		void UpdateSourceIpPort(string SourceIpPort);
 		void UpdateExecutorId(string ExecutorId);

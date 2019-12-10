@@ -112,7 +112,8 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			string tmp = string.Empty;
 			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNameOfMissionState} (";
-			tmp += "ID TEXT, ";
+			tmp += "ID TEXT PRIMARY KEY, ";
+			tmp += "HostMissionID Text,";
 			tmp += "Type TEXT, ";
 			tmp += "Priority INTEGER, ";
 			tmp += "VehicleID TEXT, ";
@@ -182,6 +183,7 @@ namespace TrafficControlTest.Module.General.Implement
 			string tmp = string.Empty;
 			tmp += $"INSERT INTO {mTableNameOfMissionState} VALUES (";
 			tmp += $"'{MissionState.mName}', ";
+			tmp += $"'{MissionState.mMission.mMissionId}', ";
 			tmp += $"'{MissionState.mMission.mMissionType}', ";
 			tmp += $"{MissionState.mMission.mPriority.ToString()}, ";
 			tmp += $"'{MissionState.mMission.mVehicleId}', ";
@@ -200,11 +202,7 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			string tmp = string.Empty;
 			tmp += $"UPDATE {mTableNameOfMissionState} SET ";
-			tmp += $"Type = '{MissionState.mMission.mMissionType}', ";
 			tmp += $"Priority = {MissionState.mMission.mPriority.ToString()}, ";
-			tmp += $"VehicleID = '{MissionState.mMission.mVehicleId}', ";
-			tmp += $"Parameters = '{MissionState.mMission.mParametersString}', ";
-			tmp += $"SourceIPPort = '{MissionState.mSourceIpPort}', ";
 			tmp += $"ExecutorID = '{MissionState.mExecutorId}', ";
 			tmp += $"SendState = '{MissionState.mSendState.ToString()}', ";
 			tmp += $"ExecuteState = '{MissionState.mExecuteState.ToString()}', ";

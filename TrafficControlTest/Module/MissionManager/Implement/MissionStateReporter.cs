@@ -67,7 +67,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string Name, IMissionState Item)
 		{
-			rHostCommunicator.SendString($"Event=MissionCreated MissionID={Name}");
+			rHostCommunicator.SendString($"Event=MissionCreated MissionID={Item.GetMissionId()}");
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
 		{
@@ -77,13 +77,13 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				switch (Item.mExecuteState)
 				{
 					case ExecuteState.Executing:
-						msg = $"Event=MissionStarted MissionID={Name}";
+						msg = $"Event=MissionStarted MissionID={Item.GetMissionId()}";
 						break;
 					case ExecuteState.ExecuteSuccessed:
-						msg = $"Event=MissionCompleted Result=Successed MissionID={Name}";
+						msg = $"Event=MissionCompleted Result=Successed MissionID={Item.GetMissionId()}";
 						break;
 					case ExecuteState.ExecuteFailed:
-						msg = $"Event=MissionCompleted Result=Failed MissionID={Name}";
+						msg = $"Event=MissionCompleted Result=Failed MissionID={Item.GetMissionId()}";
 						break;
 				}
 				if (!string.IsNullOrEmpty(msg))
