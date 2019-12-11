@@ -55,6 +55,12 @@ namespace TrafficControlTest.Library
 
 		/// <summary>儲存檔案的資料夾名稱</summary>
 		public static string mDirectoryNameOfFiles = ".\\Database";
+		/// <summary>儲存未執行非查詢類 Sql 指令的檔案名稱</summary>
+		public static string mFileNameOfNonQueryCmds = "RemainingNonQueryCommands.txt";
+		/// <summary>儲存未執行查詢類 Sql 指令的檔案名稱</summary>
+		public static string mFileNameOfQueryCmds = "RemainingQueryCommands.txt";
+		/// <summary>儲存例外記錄的檔案名稱</summary>
+		public static string mFileNameOfExceptionRecord = "Exception.txt";
 
 		protected bool _mIsConnected = false;
 		protected bool _IsExecuting = false;
@@ -73,11 +79,11 @@ namespace TrafficControlTest.Library
 		/// <summary>初始資料庫</summary>
 		protected string mInitialDatabase = string.Empty;
 		/// <summary>尚未執行 Sql 指令(非查詢類)的檔案名稱</summary>
-		protected string mFilePathOfNonQueryCmds = $"{mDirectoryNameOfFiles}\\RemainingNonQueryCommands.txt";
+		protected string mFilePathOfNonQueryCmds = $"{mDirectoryNameOfFiles}\\{mFileNameOfNonQueryCmds}";
 		/// <summary>尚未執行 Sql 指令(查詢類)的檔案名稱</summary>
-		protected string mFilePathOfQueryCmds = $"{mDirectoryNameOfFiles}\\RemainingQueryCommands.txt";
+		protected string mFilePathOfQueryCmds = $"{mDirectoryNameOfFiles}\\{mFileNameOfQueryCmds}";
 		/// <summary>儲存例外資訊的檔案名稱</summary>
-		protected string mFilePathOfExceptionRecord = $"{mDirectoryNameOfFiles}\\Exception.txt";
+		protected string mFilePathOfExceptionRecord = $"{mDirectoryNameOfFiles}\\{mFileNameOfExceptionRecord}";
 		/// <summary>非查詢類 Sql 指令結果預設值</summary>
 		protected int mDefaultValueOfNonQueryCmdResult = -1;
 		/// <summary>查詢類 Sql 指令結果預設值</summary>
