@@ -18,6 +18,8 @@ namespace TrafficControlTest.Module.General.Interface
 
 	public interface ILogRecorder
 	{
+		bool mIsExecuting { get; }
+
 		void Set(DatabaseAdapter DatabaseAdapter);
 		void Start();
 		void Stop();

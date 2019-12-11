@@ -12,6 +12,8 @@ namespace TrafficControlTest.Module.General.Implement
 {
 	public class LogRecorder : ILogRecorder
 	{
+		public bool mIsExecuting { get { return rDatabaseAdapter != null ? rDatabaseAdapter.mIsExecuting : false; } }
+
 		private DatabaseAdapter rDatabaseAdapter = null;
 		private string mTableNameOfGeneralLog = "GeneralLog";
 		private string mTableNameOfVehicleState = "CurrentVehicleState";

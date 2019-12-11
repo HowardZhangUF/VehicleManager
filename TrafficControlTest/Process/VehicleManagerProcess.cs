@@ -118,6 +118,12 @@ namespace TrafficControlTest.Process
 			}
 
 			LogRecorderStop();
+			tmp = DateTime.Now;
+			while (mLogRecorder.mIsExecuting)
+			{
+				if (DateTime.Now.Subtract(tmp).TotalSeconds > 5) break;
+				System.Threading.Thread.Sleep(100);
+			}
 		}
 		public IVehicleCommunicator GetReferenceOfIVehicleCommunicator()
 		{
