@@ -17,6 +17,7 @@ namespace TrafficControlTest.Module.General.Implement
 		private DatabaseAdapter rDatabaseAdapter = null;
 		private string mTableNameOfGeneralLog = "GeneralLog";
 		private string mTableNameOfVehicleState = "CurrentVehicleState";
+		private string mTableNamePrefixOfHistoryVehicleInfo = "HistoryVehicleInfoOf";
 		private string mTableNameOfMissionState = "MissionState";
 		
 		public LogRecorder(DatabaseAdapter DatabaseAdapter)
@@ -39,6 +40,29 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			rDatabaseAdapter.Stop();
 		}
+		public void CreateTableOfHistoryVehicleInfo(string VehicleName)
+		{
+			string tmp = string.Empty;
+			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNamePrefixOfHistoryVehicleInfo}{VehicleName} (";
+			tmp += "RecordTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+			tmp += "ID TEXT, ";
+			tmp += "State TEXT, ";
+			tmp += "X INTEGER, ";
+			tmp += "Y INTEGER, ";
+			tmp += "Toward INTEGER, ";
+			tmp += "Target TEXT, ";
+			tmp += "Velocity REAL, ";
+			tmp += "LocationScore REAL, ";
+			tmp += "BatteryValue REAL, ";
+			tmp += "AlarmMessage TEXT, ";
+			tmp += "Path TEXT, ";
+			tmp += "IPPort TEXT, ";
+			tmp += "MissionID TEXT, ";
+			tmp += "InterveneCommand TEXT, ";
+			tmp += "MapName TEXT, ";
+			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
+			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+		}
 		public void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message)
 		{
 			rDatabaseAdapter.EnqueueNonQueryCommand($"INSERT INTO {mTableNameOfGeneralLog} VALUES ('{Timestamp}', '{Category}', '{SubCategory}', '{Message}')");
@@ -55,6 +79,21 @@ namespace TrafficControlTest.Module.General.Implement
 					break;
 				case DatabaseDataOperation.Update:
 					VehicleInfoDataUpdate(VehicleInfo);
+					break;
+			}
+		}
+		public void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo)
+		{
+			switch (Action)
+			{
+				case DatabaseDataOperation.Add:
+					HistoryVehicleInfoDataAdd(Timestamp, VehicleInfo);
+					break;
+				case DatabaseDataOperation.Remove:
+					// do nothing
+					break;
+				case DatabaseDataOperation.Update:
+					// do nothing
 					break;
 			}
 		}
@@ -178,6 +217,29 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += $"MapName = '{VehicleInfo.mCurrentMapName}', ";
 			tmp += $"LastUpdateTimestamp = '{VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}' ";
 			tmp += $"WHERE ID = '{VehicleInfo.mName}'";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void HistoryVehicleInfoDataAdd(DateTime Timestamp, IVehicleInfo VehicleInfo)
+		{
+			string tmp = string.Empty;
+			tmp += $"INSERT INTO {mTableNameOfVehicleState}{VehicleInfo.mName} VALUES (";
+			tmp += $"'{Timestamp.ToString(Library.Library.TIME_FORMAT)}')";
+			tmp += $"'{VehicleInfo.mName}', ";
+			tmp += $"'{VehicleInfo.mCurrentState}', ";
+			tmp += $"{VehicleInfo.mLocationCoordinate.mX.ToString()}, ";
+			tmp += $"{VehicleInfo.mLocationCoordinate.mY.ToString()}, ";
+			tmp += $"{((int)VehicleInfo.mLocationToward).ToString()}, ";
+			tmp += $"'{VehicleInfo.mCurrentTarget}', ";
+			tmp += $"{VehicleInfo.mVelocity.ToString("F2")}, ";
+			tmp += $"{VehicleInfo.mLocationScore.ToString("F2")}, ";
+			tmp += $"{VehicleInfo.mBatteryValue.ToString("F2")}, ";
+			tmp += $"'{VehicleInfo.mAlarmMessage}', ";
+			tmp += $"'{VehicleInfo.mPathString}', ";
+			tmp += $"'{VehicleInfo.mIpPort}', ";
+			tmp += $"'{VehicleInfo.mCurrentMissionId}', ";
+			tmp += $"'{VehicleInfo.mCurrentInterveneCommand}', ";
+			tmp += $"'{VehicleInfo.mCurrentMapName}', ";
+			tmp += $"'{VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}')";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void MissionStateDataAdd(IMissionState MissionState)

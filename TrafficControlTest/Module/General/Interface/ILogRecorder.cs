@@ -23,8 +23,10 @@ namespace TrafficControlTest.Module.General.Interface
 		void Set(DatabaseAdapter DatabaseAdapter);
 		void Start();
 		void Stop();
+		void CreateTableOfHistoryVehicleInfo(string VehicleName);
 		void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message);
 		void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo);
+		void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo);
 		void RecordMissionState(DatabaseDataOperation Action, IMissionState MissionState);
 	}
 }
