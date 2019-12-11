@@ -154,14 +154,23 @@ namespace TrafficControlTest.Library
 				HandleException(ex);
 			}
 		}
-		/// <summary>執行緒開始執行</summary>
+		/// <summary>從檔案讀取尚未執行的 Sql 指令。執行緒開始執行</summary>
 		public virtual void Start()
 		{
+			ReadRemainingSqlCmdsFromFile();
 			InitializeThread();
 		}
-		/// <summary>執行緒停止執行</summary>
+		/// <summary>執行尚未執行的 Sql 指令或是將尚未執行的 Sql 指令寫入檔案。執行緒停止執行</summary>
 		public virtual void Stop()
 		{
+			if (mIsConnected)
+			{
+				DequeueAndExecuteSqlCmds();
+			}
+			else
+			{
+				WriteRemainingSqlCmdsToFile();
+			}
 			DestroyThread();
 		}
 		/// <summary>建立連線，並回傳建立結果</summary>
@@ -231,11 +240,6 @@ namespace TrafficControlTest.Library
 		{
 			try
 			{
-				if (mIsConnected)
-				{
-					DequeueAndExecuteSqlCmds();
-				}
-
 				if (mThdProcessCmds != null)
 				{
 					if (mThdProcessCmds.IsAlive)
@@ -458,7 +462,6 @@ namespace TrafficControlTest.Library
 			try
 			{
 				mIsExecuting = true;
-				ReadRemainingSqlCmdsFromFile();
 				while (!ExitFlag[0])
 				{
 					try
@@ -488,15 +491,7 @@ namespace TrafficControlTest.Library
 			}
 			finally
 			{
-				try
-				{
-					WriteRemainingSqlCmdsToFile();
-					mIsExecuting = false;
-				}
-				catch (Exception ex)
-				{
-					HandleException(ex);
-				}
+				mIsExecuting = false;
 			}
 		}
 
