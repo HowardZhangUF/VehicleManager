@@ -230,7 +230,7 @@
 			this.btnVehicleInsertMovingBuffer.Name = "btnVehicleInsertMovingBuffer";
 			this.btnVehicleInsertMovingBuffer.Size = new System.Drawing.Size(164, 34);
 			this.btnVehicleInsertMovingBuffer.TabIndex = 6;
-			this.btnVehicleInsertMovingBuffer.Text = "InsertMovinghBuffer";
+			this.btnVehicleInsertMovingBuffer.Text = "InsertMovingBuffer";
 			this.btnVehicleInsertMovingBuffer.UseVisualStyleBackColor = true;
 			this.btnVehicleInsertMovingBuffer.Click += new System.EventHandler(this.btnVehicleInsertMovingBuffer_Click);
 			// 
