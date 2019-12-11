@@ -217,6 +217,11 @@ namespace TrafficControlTest.Library
 		{
 			try
 			{
+				if (mIsConnected)
+				{
+					DequeueAndExecuteSqlCmds();
+				}
+
 				if (mThdProcessCmds != null)
 				{
 					if (mThdProcessCmds.IsAlive)
