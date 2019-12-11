@@ -39,11 +39,25 @@ namespace TrafficControlTest.Library
 				}
 			}
 		}
+		public bool mIsExecuting
+		{
+			get
+			{
+				return _IsExecuting;
+			}
+			private set
+			{
+				_IsExecuting = value;
+				if (_IsExecuting) SystemStarted?.Invoke(DateTime.Now);
+				else SystemStopped?.Invoke(DateTime.Now);
+			}
+		}
 
 		/// <summary>儲存檔案的資料夾名稱</summary>
 		public static string mDirectoryNameOfFiles = ".\\Database";
 
 		protected bool _mIsConnected = false;
+		protected bool _IsExecuting = false;
 		/// <summary>是否使用 Ping 來測試連線的旗標</summary>
 		protected bool mPingBeforeBuildConnection = false;
 		/// <summary>資料庫連線字串</summary>
@@ -443,7 +457,7 @@ namespace TrafficControlTest.Library
 		{
 			try
 			{
-				SystemStarted?.Invoke(DateTime.Now);
+				mIsExecuting = true;
 				ReadRemainingSqlCmdsFromFile();
 				while (!ExitFlag[0])
 				{
@@ -477,7 +491,7 @@ namespace TrafficControlTest.Library
 				try
 				{
 					WriteRemainingSqlCmdsToFile();
-					SystemStopped?.Invoke(DateTime.Now);
+					mIsExecuting = false;
 				}
 				catch (Exception ex)
 				{
