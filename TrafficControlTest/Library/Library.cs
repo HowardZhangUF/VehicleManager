@@ -238,6 +238,10 @@ namespace TrafficControlTest.Library
 		{
 			return new LogRecorder(DatabaseAdapter);
 		}
+		public static IEventRecorder GenerateIEventRecorder(DatabaseAdapter DatabaseAdapter)
+		{
+			return new EventRecorder(DatabaseAdapter);
+		}
 		public static IConfigurator GenerateIConfigurator(string FileName)
 		{
 			return new Configurator(FileName);

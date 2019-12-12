@@ -75,11 +75,13 @@
     <Compile Include="Library\SqliteDatabaseAdapter.cs" />
     <Compile Include="Module\CollisionEventManager\Implement\CollisionEventHandler.cs" />
     <Compile Include="Module\General\Implement\Configurator.cs" />
+    <Compile Include="Module\General\Implement\EventRecorder.cs" />
     <Compile Include="Module\General\Implement\HostCommunicator.cs" />
     <Compile Include="Module\General\Implement\LogRecorder.cs" />
     <Compile Include="Module\General\Implement\MapFileManager.cs" />
     <Compile Include="Module\General\Implement\MapManager.cs" />
     <Compile Include="Module\General\Interface\IConfigurator.cs" />
+    <Compile Include="Module\General\Interface\IEventRecorder.cs" />
     <Compile Include="Module\General\Interface\IItemManager.cs" />
     <Compile Include="Module\General\Implement\ItemManager.cs" />
     <Compile Include="Module\General\Interface\ICommunicatorServer.cs" />
