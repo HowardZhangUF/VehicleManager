@@ -50,12 +50,14 @@ namespace TrafficControlTest.Process
 		public event EventHandlerMapFileName MapFileManagerMapFileRemoved;
 		public event EventHandlerVehicleNamesMapFileName MapFileManagerVehicleCurrentMapSynchronized;
 		public event EventHandlerMapFileName MapManagerMapLoaded;
+		public event EventHandlerDateTime ImportantEventRecorderSystemStarted;
+		public event EventHandlerDateTime ImportantEventRecorderSystemStopped;
 
 		public bool mIsAllStopped
 		{
 			get
 			{
-				return !mVehicleCommunicator.mIsExecuting && !mCollisionEventDetector.mIsExecuting && !mVehicleControlHandler.mIsExecuting && !mHostCommunicator.mIsExecuting && !mMissionDispatcher.mIsExecuting;
+				return !mImportantEventRecorder.mIsExecuting && !mVehicleCommunicator.mIsExecuting && !mCollisionEventDetector.mIsExecuting && !mVehicleControlHandler.mIsExecuting && !mHostCommunicator.mIsExecuting && !mMissionDispatcher.mIsExecuting;
 			}
 		}
 
@@ -64,6 +66,7 @@ namespace TrafficControlTest.Process
 		private DatabaseAdapter mDatabaseAdapterOfEventRecord = null;
 		private ILogRecorder mLogRecorder = null;
 		private IEventRecorder mEventRecorder = null;
+		private IImportantEventRecorder mImportantEventRecorder = null;
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
 		private ICollisionEventManager mCollisionEventManager = null;
@@ -99,6 +102,7 @@ namespace TrafficControlTest.Process
 		{
 			LogRecorderStart();
 			EventRecorderStart();
+			ImportantEventRecorderStart();
 			VehicleCommunicatorStartListen();
 			CollisionEventDetectorStart();
 			VehicleControlHandlerStart();
@@ -112,6 +116,7 @@ namespace TrafficControlTest.Process
 			VehicleControlHandlerStop();
 			CollisionEventDetectorStop();
 			VehicleCommunicatorStopListen();
+			ImportantEventRecorderStop();
 
 			DateTime tmp = DateTime.Now;
 			while (!mIsAllStopped)
@@ -327,6 +332,14 @@ namespace TrafficControlTest.Process
 		{
 			return mMapManager.GetGoalNameList();
 		}
+		public void ImportantEventRecorderStart()
+		{
+			mImportantEventRecorder.Start();
+		}
+		public void ImportantEventRecorderStop()
+		{
+			mImportantEventRecorder.Stop();
+		}
 
 		private void Constructor()
 		{
@@ -402,6 +415,10 @@ namespace TrafficControlTest.Process
 			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager, mMapManager);
 			SubscribeEvent_IMissionUpdater(mMissionUpdater);
 
+			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
+			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mVehicleInfoManager, mMissionStateManager);
+			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
+
 			mConfigurator.Load();
 			mVehicleCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("VehicleCommunicator/ListenPort")));
 			mHostCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("HostCommunicator/ListenPort")));
@@ -457,6 +474,9 @@ namespace TrafficControlTest.Process
 
 			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
 			mMissionUpdater = null;
+
+			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
+			mImportantEventRecorder = null;
 
 			mEventRecorder = null;
 			mLogRecorder = null;
@@ -747,6 +767,22 @@ namespace TrafficControlTest.Process
 			if (MissionUpdater != null)
 			{
 
+			}
+		}
+		private void SubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
+		{
+			if (ImportantEventRecorder != null)
+			{
+				ImportantEventRecorder.SystemStarted += HandleEvent_ImportantEventRecorderSystemStarted;
+				ImportantEventRecorder.SystemStopped += HandleEvent_ImportantEventRecorderSystemStopped;
+			}
+		}
+		private void UnsubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
+		{
+			if (ImportantEventRecorder != null)
+			{
+				ImportantEventRecorder.SystemStarted -= HandleEvent_ImportantEventRecorderSystemStarted;
+				ImportantEventRecorder.SystemStopped -= HandleEvent_ImportantEventRecorderSystemStopped;
 			}
 		}
 		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
@@ -1156,6 +1192,28 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { MapManagerMapLoaded?.Invoke(OccurTime, MapFileName); });
 			}
 		}
+		protected virtual void RaiseEvent_ImportantEventRecorderSystemStarted(DateTime OccurTime, bool Sync = true)
+		{
+			if (Sync)
+			{
+				ImportantEventRecorderSystemStarted?.Invoke(OccurTime);
+			}
+			else
+			{
+				Task.Run(() => { ImportantEventRecorderSystemStarted?.Invoke(OccurTime); });
+			}
+		}
+		protected virtual void RaiseEvent_ImportantEventRecorderSystemStopped(DateTime OccurTime, bool Sync = true)
+		{
+			if (Sync)
+			{
+				ImportantEventRecorderSystemStopped?.Invoke(OccurTime);
+			}
+			else
+			{
+				Task.Run(() => { ImportantEventRecorderSystemStopped?.Invoke(OccurTime); });
+			}
+		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SystemStarted", string.Empty);
@@ -1203,13 +1261,11 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemAdded", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
-			mEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Add, VehicleInfo);
 			RaiseEvent_VehicleInfoManagerItemAdded(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemRemoved", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
-			mEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Remove, VehicleInfo);
 			RaiseEvent_VehicleInfoManagerItemRemoved(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
@@ -1219,7 +1275,6 @@ namespace TrafficControlTest.Process
 			{
 				HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
 			}
-			mEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Update, VehicleInfo);
 			RaiseEvent_VehicleInfoManagerItemUpdated(OccurTime, Name, StateName, VehicleInfo);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
@@ -1275,19 +1330,16 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
-			mEventRecorder.RecordMissionState(DatabaseDataOperation.Add, MissionState);
 			RaiseEvent_MissionStateManagerItemAdded(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemRemoved", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
-			mEventRecorder.RecordMissionState(DatabaseDataOperation.Remove, MissionState);
 			RaiseEvent_MissionStateManagerItemRemoved(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemUpdated", $"MissionID: {MissionId}, StateName: {StateName}, Info: {MissionState.ToString()}");
-			mEventRecorder.RecordMissionState(DatabaseDataOperation.Update, MissionState);
 			RaiseEvent_MissionStateManagerItemUpdated(OccurTime, MissionId, StateName, MissionState);
 		}
 		private void HandleEvent_HostCommunicatorSystemStarted(DateTime OccurTime)
@@ -1349,6 +1401,16 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "MapManager", "MapLoaded", $"MapName: {MapFileName}");
 			RaiseEvent_MapManagerMapLoaded(OccurTime, MapFileName);
+		}
+		private void HandleEvent_ImportantEventRecorderSystemStarted(DateTime OccurTime)
+		{
+			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "SystemStarted", string.Empty);
+			RaiseEvent_ImportantEventRecorderSystemStarted(OccurTime);
+		}
+		private void HandleEvent_ImportantEventRecorderSystemStopped(DateTime OccurTime)
+		{
+			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "SystemStopped", string.Empty);
+			RaiseEvent_ImportantEventRecorderSystemStopped(OccurTime);
 		}
 		private void HandleDebugMessage(string Message)
 		{
