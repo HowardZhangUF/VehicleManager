@@ -208,8 +208,8 @@ namespace TrafficControlTest.Module.General.Implement
 		private void HistoryVehicleInfoDataAdd(DateTime Timestamp, IVehicleInfo VehicleInfo)
 		{
 			string tmp = string.Empty;
-			tmp += $"INSERT INTO {mTableNameOfVehicleState}{VehicleInfo.mName} VALUES (";
-			tmp += $"'{Timestamp.ToString(Library.Library.TIME_FORMAT)}')";
+			tmp += $"INSERT INTO {mTableNamePrefixOfHistoryVehicleInfo}{VehicleInfo.mName} VALUES (";
+			tmp += $"'{Timestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{VehicleInfo.mName}', ";
 			tmp += $"'{VehicleInfo.mCurrentState}', ";
 			tmp += $"{VehicleInfo.mLocationCoordinate.mX.ToString()}, ";
