@@ -466,7 +466,7 @@ namespace TrafficControlTest.Process
 		}
 		private void SubscribeEvent_Exception()
 		{
-			System.Windows.Forms.Application.ThreadException += (sender, e) => 
+			System.Windows.Forms.Application.ThreadException += (sender, e) =>
 			{
 				System.IO.File.AppendAllText($"Exception{DateTime.Now.ToString("yyyyMMdd")}.txt", $"{DateTime.Now.ToString(TIME_FORMAT)} - {e.Exception.ToString()}\r\n");
 			};
@@ -1183,7 +1183,11 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
+			// 常態事件不做 General Log 記錄(避免資料庫儲存太多的資訊)，也不使用 Console.WriteLine() 顯示(避免資訊過多)
+			if (!(Data is SerialData.AGVStatus) && !(Data is SerialData.AGVPath))
+			{
+				HandleDebugMessage(OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
+			}
 			RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
@@ -1210,7 +1214,11 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{
-			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
+			// 僅有重要的狀態 (CurrentState, CurrentTarget, AlarmMessage, CurrentMissionId, CurrentInterveneCommand, CurrentMapName) 變化時才做 General Log 記錄與使用 Console.WriteLine() 顯示
+			if (StateName.Contains("CurrentState") || StateName.Contains("CurrentTarget") || StateName.Contains("AlarmMessage") || StateName.Contains("CurrentMissionId") || StateName.Contains("CurrentInterveneCommand") || StateName.Contains("CurrentMapName"))
+			{
+				HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
+			}
 			mEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Update, VehicleInfo);
 			RaiseEvent_VehicleInfoManagerItemUpdated(OccurTime, Name, StateName, VehicleInfo);
 		}
