@@ -16,6 +16,7 @@ namespace TrafficControlTest.Module.General.Interface
 		Update
 	}
 
+	/// <summary>提供記錄 General Log 至資料庫的功能</summary>
 	public interface ILogRecorder
 	{
 		bool mIsExecuting { get; }
@@ -23,10 +24,6 @@ namespace TrafficControlTest.Module.General.Interface
 		void Set(DatabaseAdapter DatabaseAdapter);
 		void Start();
 		void Stop();
-		void CreateTableOfHistoryVehicleInfo(string VehicleName);
 		void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message);
-		void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo);
-		void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo);
-		void RecordMissionState(DatabaseDataOperation Action, IMissionState MissionState);
 	}
 }

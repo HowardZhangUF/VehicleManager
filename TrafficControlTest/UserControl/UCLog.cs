@@ -29,16 +29,23 @@ namespace TrafficControlTest.UserControl
 			InitializeComponent();
 			InitializeSearchPageControls();
 		}
-		public void Set(DatabaseAdapter DatabaseAdapter)
+		public void Set(DatabaseAdapter DatabaseAdapterOfLogRecord, DatabaseAdapter DatabaseAdapterOfEventRecord)
 		{
-			if (DatabaseAdapter != null)
+			if (DatabaseAdapterOfLogRecord != null && mUcSearches.Count >= 3)
 			{
-				for (int i = 0; i < mUcSearches.Count; ++i)
-				{
-					mUcSearches[i].Set(DatabaseAdapter);
-					mUcSearches[i].DoDefaultSearch();
-					UpdateGui_ButtonAndUcSearch_ChangeButtonBackColorAndDisplayUcSearch(i.ToString());
-				}
+				mUcSearches[0].Set(DatabaseAdapterOfLogRecord);
+				mUcSearches[1].Set(DatabaseAdapterOfLogRecord);
+				mUcSearches[2].Set(DatabaseAdapterOfLogRecord);
+			}
+			if (DatabaseAdapterOfEventRecord != null && mUcSearches.Count >= 4)
+			{
+				mUcSearches[3].Set(DatabaseAdapterOfEventRecord);
+			}
+
+			for (int i = 0; i < mUcSearches.Count; ++i)
+			{
+				mUcSearches[i].DoDefaultSearch();
+				UpdateGui_ButtonAndUcSearch_ChangeButtonBackColorAndDisplayUcSearch(i.ToString());
 			}
 		}
 
