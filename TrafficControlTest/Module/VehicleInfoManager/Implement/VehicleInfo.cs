@@ -83,13 +83,13 @@ namespace TrafficControlTest.Implement
 		}
 		public void EndUpdate()
 		{
+			mIsUpdating = false;
 			if (mUpdatedItems.Count > 0)
 			{
 				mLastUpdated = DateTime.Now;
 				RaiseEvent_StateUpdated(string.Join(",", mUpdatedItems));
 				mUpdatedItems.Clear();
 			}
-			mIsUpdating = false;
 		}
 		public void UpdateCurrentState(string NewState)
 		{
