@@ -6,6 +6,8 @@ using TrafficControlTest.Implement;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Module.General.Implement;
 using TrafficControlTest.Module.General.Interface;
+using TrafficControlTest.Module.InterveneManager.Implement;
+using TrafficControlTest.Module.InterveneManager.Interface;
 using TrafficControlTest.Module.MissionManager.Implement;
 using TrafficControlTest.Module.MissionManager.Interface;
 
@@ -166,6 +168,10 @@ namespace TrafficControlTest.Library
 		public static IVehicleControlHandler GenerateIVehicleControlHandler(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
 		{
 			return new VehicleControlHandler(VehicleControlManager, VehicleInfoManager, VehicleCommunicator);
+		}
+		public static IVehicleControlUpdater GenerateIVehicleControlUpdater(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
+		{
+			return new VehicleControlUpdater(VehicleControlManager, VehicleInfoManager, VehicleCommunicator);
 		}
 		public static IMission GenerateIMission(MissionType MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
 		{

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.General.Interface;
+using TrafficControlTest.Module.InterveneManager.Interface;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;
@@ -74,6 +75,7 @@ namespace TrafficControlTest.Process
 		private IVehicleControlManager mVehicleControlManager = null;
 		private ICollisionEventHandler mCollisionEventHandler = null;
 		private IVehicleControlHandler mVehicleControlHandler = null;
+		private IVehicleControlUpdater mVehicleControlUpdater = null;
 		private IMissionStateManager mMissionStateManager = null;
 		private IVehicleInfoUpdater mVehicleInfoUpdater = null;
 		private IHostCommunicator mHostCommunicator = null;
@@ -379,6 +381,10 @@ namespace TrafficControlTest.Process
 			mVehicleControlHandler = GenerateIVehicleControlHandler(mVehicleControlManager, mVehicleInfoManager, mVehicleCommunicator);
 			SubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
 
+			UnsubscribeEvent_IVehicleControlUpdater(mVehicleControlUpdater);
+			mVehicleControlUpdater = GenerateIVehicleControlUpdater(mVehicleControlManager, mVehicleInfoManager, mVehicleCommunicator);
+			SubscribeEvent_IVehicleControlUpdater(mVehicleControlUpdater);
+
 			UnsubscribeEvent_IMissionStateManager(mMissionStateManager);
 			mMissionStateManager = GenerateIMissionStateManager();
 			SubscribeEvent_IMissionStateManager(mMissionStateManager);
@@ -453,6 +459,9 @@ namespace TrafficControlTest.Process
 
 			UnsubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
 			mVehicleControlHandler = null;
+
+			UnsubscribeEvent_IVehicleControlUpdater(mVehicleControlUpdater);
+			mVehicleControlUpdater = null;
 
 			UnsubscribeEvent_IMissionStateManager(mMissionStateManager);
 			mMissionStateManager = null;
@@ -621,6 +630,20 @@ namespace TrafficControlTest.Process
 			{
 				VehicleControlHandler.SystemStarted -= HandleEvent_VehicleControlHandlerSystemStarted;
 				VehicleControlHandler.SystemStopped -= HandleEvent_VehicleControlHandlerSystemStopped;
+			}
+		}
+		private void SubscribeEvent_IVehicleControlUpdater(IVehicleControlUpdater VehicleControlUpdater)
+		{
+			if (VehicleControlUpdater != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_IVehicleControlUpdater(IVehicleControlUpdater VehicleControlUpdater)
+		{
+			if (VehicleControlUpdater != null)
+			{
+
 			}
 		}
 		private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
