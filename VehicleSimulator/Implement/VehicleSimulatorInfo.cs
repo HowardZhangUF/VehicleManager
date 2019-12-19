@@ -58,6 +58,7 @@ namespace VehicleSimulator.Implement
 		public void StartMove(IEnumerable<IPoint2D> Path)
 		{
 			mPath = Path;
+			mTarget = mPath.Last().ToString();
 			mTranslationVelocity = MAX_TRANSLATION_VELOCITY;
 			mRotationVelocity = MAX_ROTATION_VELOCITY;
 			if (mInterveneCommand != "PauseMoving") mState = "Running";
@@ -247,6 +248,7 @@ namespace VehicleSimulator.Implement
 					if (mBufferTarget == null && (mPath == null || mPath.Count() == 0))
 					{
 						mState = "Idling";
+						mTarget = string.Empty;
 						RaiseEvent_StateUpdated();
 					}
 					else
