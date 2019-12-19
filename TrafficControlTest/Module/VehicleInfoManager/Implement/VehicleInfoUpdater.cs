@@ -35,7 +35,9 @@ namespace TrafficControlTest.Implement
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
+			UnsubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
+			SubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager)
 		{
@@ -50,6 +52,7 @@ namespace TrafficControlTest.Implement
 			{
 				VehicleCommunicator.RemoteConnectStateChanged += HandleEvent_VehicleCommunicatorRemoteConnectStateChanged;
 				VehicleCommunicator.ReceivedSerializableData += HandleEvent_VehicleCommunicatorReceivedSerializableData;
+				VehicleCommunicator.SentSerializableDataSuccessed += HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
 			}
 		}
 		private void Unsubscribe_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -58,6 +61,7 @@ namespace TrafficControlTest.Implement
 			{
 				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChanged;
 				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
+				VehicleCommunicator.SentSerializableDataSuccessed -= HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
 			}
 		}
 		private void Subscribe_IMissionStateManager(IMissionStateManager MissionStateManager)
@@ -72,6 +76,20 @@ namespace TrafficControlTest.Implement
 			if (MissionStateManager != null)
 			{
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
+		{
+			if (VehicleInfoManager != null)
+			{
+				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
+		{
+			if (VehicleInfoManager != null)
+			{
+				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
@@ -102,6 +120,21 @@ namespace TrafficControlTest.Implement
 				}
 			}
 		}
+		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
+		{
+			if (Data is Serializable)
+			{
+				if (Data is InsertMovingBuffer)
+				{
+					InsertMovingBuffer tmpData = (Data as InsertMovingBuffer);
+					rVehicleInfoManager.GetItemByIpPort(IpPort)?.UpdateCurrentInterveneCommand($"InsertMovingBuffer({tmpData.Require[0]},{tmpData.Require[1]})");
+				}
+				else if (Data is PauseMoving)
+				{
+					rVehicleInfoManager.GetItemByIpPort(IpPort)?.UpdateCurrentInterveneCommand("PauseMoving");
+				}
+			}
+		}
 		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
 		{
 			if (StateName.Contains("ExecuteState"))
@@ -117,6 +150,28 @@ namespace TrafficControlTest.Implement
 					case ExecuteState.ExecuteFailed:
 						rVehicleInfoManager.UpdateItemMissionId(Item.mExecutorId, string.Empty);
 						break;
+				}
+			}
+		}
+		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		{
+			if (!string.IsNullOrEmpty(Item.mCurrentInterveneCommand))
+			{
+				if (StateName.Contains("Path") && Item.mCurrentInterveneCommand.StartsWith("InsertMovingBuffer"))
+				{
+					string movingBuffer = Item.mCurrentInterveneCommand.Replace("InsertMovingBuffer", string.Empty);
+					if (!Item.mPathString.Contains(movingBuffer))
+					{
+						Item.UpdateCurrentInterveneCommand(string.Empty);
+					}
+				}
+
+				if (StateName.Contains("CurrentState") && Item.mCurrentInterveneCommand.StartsWith("PauseMoving"))
+				{
+					if (Item.mCurrentState != "Pause")
+					{
+						Item.UpdateCurrentInterveneCommand(string.Empty);
+					}
 				}
 			}
 		}
