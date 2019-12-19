@@ -14,10 +14,11 @@ namespace TrafficControlTest.Implement
 	{
 		private ICollisionEventManager rCollisionEventManager = null;
 		private IVehicleControlManager rVehicleControlManager = null;
+		private IVehicleInfoManager rVehicleInfoManager = null;
 
-		public CollisionEventHandler(ICollisionEventManager CollisionEventManager, IVehicleControlManager VehicleControlManager)
+		public CollisionEventHandler(ICollisionEventManager CollisionEventManager, IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager)
 		{
-			Set(CollisionEventManager, VehicleControlManager);
+			Set(CollisionEventManager, VehicleControlManager, VehicleInfoManager);
 		}
 		public void Set(ICollisionEventManager CollisionEventManager)
 		{
@@ -31,10 +32,17 @@ namespace TrafficControlTest.Implement
 			rVehicleControlManager = VehicleControlManager;
 			SubscribeEvent_IVehicleControlManager(rVehicleControlManager);
 		}
-		public void Set(ICollisionEventManager CollisionEventManager, IVehicleControlManager VehicleControlManager)
+		public void Set(IVehicleInfoManager VehicleInfoManager)
+		{
+			UnsubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
+			rVehicleInfoManager = VehicleInfoManager;
+			SubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
+		}
+		public void Set(ICollisionEventManager CollisionEventManager, IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager)
 		{
 			Set(CollisionEventManager);
 			Set(VehicleControlManager);
+			Set(VehicleInfoManager);
 		}
 
 		private void SubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
@@ -69,13 +77,27 @@ namespace TrafficControlTest.Implement
 
 			}
 		}
+		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager rVehicleInfoManager)
+		{
+			if (rVehicleInfoManager != null)
+			{
+
+			}
+		}
+		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager rVehicleInfoManager)
+		{
+			if (rVehicleInfoManager != null)
+			{
+
+			}
+		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
 			HandleCollisionPair(CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			// 當 CollisionEvent 消失時，移除跟該 CollisionEvent 有關的 VehicleControl
+			// 當 CollisionEvent 消失時，移除跟該 CollisionEvent 有關的且尚未被送出的 VehicleControl
 			RemoveRelatedVehicleControl(CollisionPair);
 			// 當 CollisionEvent 消失時，讓跟該 CollisionEvent 有關的 Vehicle 恢復成沒有被干預的狀態
 			UninterveneVehicle(CollisionPair);
@@ -92,7 +114,7 @@ namespace TrafficControlTest.Implement
 				IVehicleControl vehicleControl = CalculateSolutionOf(CollisionPair);
 				if (vehicleControl != null)
 				{
-					if (IsSolutionExist(vehicleControl))
+					if (rVehicleInfoManager.GetItem(vehicleControl.mVehicleId).mCurrentInterveneCommand.StartsWith(vehicleControl.mCommand.ToString()) || IsSolutionExist(vehicleControl))
 					{
 
 					}
@@ -112,7 +134,10 @@ namespace TrafficControlTest.Implement
 			if (rVehicleControlManager.IsExistByCauseId(CollisionPair.mName))
 			{
 				string controlName = rVehicleControlManager.GetItemByCauseId(CollisionPair.mName).mName;
-				rVehicleControlManager.Remove(controlName);
+				if (rVehicleControlManager.GetItem(controlName).mSendState == SendState.Unsend)
+				{
+					rVehicleControlManager.Remove(controlName);
+				}
 			}
 		}
 		private void UninterveneVehicle(ICollisionPair CollisionPair)
@@ -122,14 +147,14 @@ namespace TrafficControlTest.Implement
 		}
 		private void UninterveneVehicle(IVehicleInfo VehicleInfo)
 		{
-			if (VehicleInfo != null && string.IsNullOrEmpty(VehicleInfo.mCurrentInterveneCommand))
+			if (VehicleInfo != null && !string.IsNullOrEmpty(VehicleInfo.mCurrentInterveneCommand))
 			{
-				if (VehicleInfo.mCurrentInterveneCommand.StartsWith("Insert"))
+				if (VehicleInfo.mCurrentInterveneCommand.StartsWith("InsertMovingBuffer"))
 				{
 					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.RemoveMovingBuffer, null, string.Empty, string.Empty);
 					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
 				}
-				else if (VehicleInfo.mCurrentInterveneCommand.StartsWith("Pause"))
+				else if (VehicleInfo.mCurrentInterveneCommand.StartsWith("PauseMoving"))
 				{
 					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, string.Empty, string.Empty);
 					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);

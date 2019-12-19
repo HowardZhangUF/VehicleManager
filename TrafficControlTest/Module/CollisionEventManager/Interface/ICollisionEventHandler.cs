@@ -11,6 +11,7 @@ namespace TrafficControlTest.Interface
 	{
 		void Set(ICollisionEventManager CollisionEventManager);
 		void Set(IVehicleControlManager VehicleControlManager);
-		void Set(ICollisionEventManager CollisionEventManager, IVehicleControlManager VehicleControlManager);
+		void Set(IVehicleInfoManager VehicleInfoManager);
+		void Set(ICollisionEventManager CollisionEventManager, IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager);
 	}
 }

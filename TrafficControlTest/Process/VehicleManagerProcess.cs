@@ -374,7 +374,7 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IVehicleControlManager(mVehicleControlManager);
 
 			UnsubscribeEvent_ICollisionEventHandler(mCollisionEventHandler);
-			mCollisionEventHandler = GenerateICollisionEventHandler(mCollisionEventManager, mVehicleControlManager);
+			mCollisionEventHandler = GenerateICollisionEventHandler(mCollisionEventManager, mVehicleControlManager, mVehicleInfoManager);
 			SubscribeEvent_ICollisionEventHandler(mCollisionEventHandler);
 
 			UnsubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
