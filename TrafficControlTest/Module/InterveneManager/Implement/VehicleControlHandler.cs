@@ -191,6 +191,7 @@ namespace TrafficControlTest.Implement
 				string vehicleId = VehicleControl.mVehicleId;
 				string ipPort = rVehicleInfoManager.GetItem(vehicleId).mIpPort;
 				string parameter = VehicleControl.mParameters == null ? null : VehicleControl.mParameters[0];
+				rVehicleControlManager.UpdateSendState(VehicleControl.mName, SendState.Sending);
 				switch (VehicleControl.mCommand)
 				{
 					case Command.InsertMovingBuffer:
@@ -208,7 +209,6 @@ namespace TrafficControlTest.Implement
 					default:
 						break;
 				}
-				rVehicleControlManager.UpdateSendState(VehicleControl.mName, SendState.Sending);
 			}
 		}
 	}

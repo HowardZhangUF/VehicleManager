@@ -1304,17 +1304,17 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_VehicleControlManagerItemAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemAdded", $"Name: {Name}, Info:\n{VehicleControl.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemAdded", $"Name: {Name}, Info:{VehicleControl.ToString()}");
 			RaiseEvent_VehicleControlManagerItemAdded(OccurTime, Name, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlManagerItemRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemRemoved", $"Name: {Name}, Info:\n{VehicleControl.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemRemoved", $"Name: {Name}, Info:{VehicleControl.ToString()}");
 			RaiseEvent_VehicleControlManagerItemRemoved(OccurTime, Name, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info:\n{VehicleControl.ToString()}");
+			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info:{VehicleControl.ToString()}");
 			RaiseEvent_VehicleControlManagerItemUpdated(OccurTime, Name, StateName, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlHandlerSystemStarted(DateTime OccurTime)

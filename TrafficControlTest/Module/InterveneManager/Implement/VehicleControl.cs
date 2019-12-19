@@ -54,6 +54,10 @@ namespace TrafficControlTest.Implement
 			mLastUpdated = DateTime.Now;
 			RaiseEvent_StateUpdated("Parameters");
 		}
+		public override string ToString()
+		{
+			return $"{mName}/{mCommand.ToString()}/{(mParameters != null ? string.Join(",", mParameters) : string.Empty)}/{mVehicleId}/{mCauseId}/{mSendState.ToString()}";
+		}
 
 		protected virtual void RaiseEvent_StateUpdated(string StateName, bool Sync = true)
 		{
