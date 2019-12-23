@@ -18,7 +18,7 @@ namespace VehicleSimulator.Implement
 		public const double MAX_ROTATION_VELOCITY = 30.0f;
 
 		public string mName { get; private set; } = string.Empty;
-		public string mState { get; private set; } = string.Empty; // Running, Pausing, Idling
+		public string mState { get; private set; } = string.Empty; // Running, Pause, Idling
 		public IPoint2D mPosition { get; private set; } = null;
 		public double mToward { get; private set; } = 0.0f;
 		public string mTarget { get; private set; } = string.Empty;
@@ -81,13 +81,13 @@ namespace VehicleSimulator.Implement
 			{
 				mTranslationVelocity = 0.0f;
 				mRotationVelocity = 0.0f;
-				mState = "Pausing";
+				mState = "Pause";
 				RaiseEvent_StateUpdated();
 			}
 		}
 		public void ResumeMove()
 		{
-			if (mState == "Pausing")
+			if (mState == "Pause")
 			{
 				mTranslationVelocity = MAX_TRANSLATION_VELOCITY;
 				mRotationVelocity = MAX_ROTATION_VELOCITY;
