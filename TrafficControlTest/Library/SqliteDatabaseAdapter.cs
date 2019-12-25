@@ -25,7 +25,7 @@ namespace TrafficControlTest.Library
 		public override void SetDatabaseParameters(string DatabaseServerAddressIp, string DatabaseServerAddressPort, string UserAccount, string UserPassword, string InitialDatabase)
 		{
 			base.SetDatabaseParameters(DatabaseServerAddressIp, DatabaseServerAddressPort, UserAccount, UserPassword, InitialDatabase);
-			mConnectionString = $"Data Source={mDatabaseServerAddressIp}";
+			mConnectionString = $"data source={mDatabaseServerAddressIp};journal mode=Truncate";
 			mIsConnected = false;
 		}
 		public override bool Connect()
