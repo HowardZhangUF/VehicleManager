@@ -23,7 +23,7 @@ namespace TrafficControlTest.UserControl
 			}
 			else
 			{
-				result = $"SELECT * FROM GeneralLog WHERE (SubCategory LIKE '%{Keyword}%' OR Message LIKE '%{Keyword}%') ORDER BY Timestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM GeneralLog WHERE (Category LIKE '%{Keyword}%' OR SubCategory LIKE '%{Keyword}%' OR Message LIKE '%{Keyword}%') ORDER BY Timestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}
