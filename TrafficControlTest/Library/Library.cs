@@ -840,9 +840,11 @@ namespace TrafficControlTest.Library
 				List<ICollisionPair> tmpCollisionPairs = new List<ICollisionPair>();
 				for (int i = 0; i < PathOverlapPair.mOverlapRegionsOfPaths.Count(); ++i)
 				{
-					CalculatePassInfo(PathOverlapPair.mVehicle1, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), out ITowardPoint2D EnterPoint1, out ITowardPoint2D ExitPoint1, out double EnterDistance1, out double ExitDistance1, out ITimePeriod PassPeriod1);
-					CalculatePassInfo(PathOverlapPair.mVehicle2, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), out ITowardPoint2D EnterPoint2, out ITowardPoint2D ExitPoint2, out double EnterDistance2, out double ExitDistance2, out ITimePeriod PassPeriod2);
-					if (IsOverlap(PassPeriod1, PassPeriod2))
+					CalculatePassInfo(PathOverlapPair.mVehicle1, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), out ITowardPoint2D EnterPoint1, out ITowardPoint2D ExitPoint1, out double EnterDistance1, out double ExitDistance1, out ITimePeriod PassPeriod1, out ITimePeriod PassPeriodWithMaximumVelocity1);
+					CalculatePassInfo(PathOverlapPair.mVehicle2, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), out ITowardPoint2D EnterPoint2, out ITowardPoint2D ExitPoint2, out double EnterDistance2, out double ExitDistance2, out ITimePeriod PassPeriod2, out ITimePeriod PassPeriodWithMaximumVelocity2);
+					// 1. (使用平均速度)若兩車進入與離開『「路徑線」重疊的區域』的「時間區間」有重疊時，代表兩車將會發生交會事件
+					// 2. (使用最大速度)
+					if (IsOverlap(PassPeriod1, PassPeriod2) || IsOverlap(PassPeriodWithMaximumVelocity1, PassPeriodWithMaximumVelocity2))
 					{
 						tmpCollisionPairs.Add(GenerateICollisionPair(PathOverlapPair.mVehicle1, PathOverlapPair.mVehicle2, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), PassPeriod1.mStart < PassPeriod2.mStart ? PassPeriod1 : PassPeriod2));
 					}
@@ -899,13 +901,14 @@ namespace TrafficControlTest.Library
 			}
 		}
 		/// <summary>計算車子通過指令區域的相關資訊</summary>
-		private static void CalculatePassInfo(IVehicleInfo Vehicle, IRectangle2D Region, out ITowardPoint2D EnterPoint, out ITowardPoint2D ExitPoint, out double EnterDistance, out double ExitDistance, out ITimePeriod PassPeriod)
+		private static void CalculatePassInfo(IVehicleInfo Vehicle, IRectangle2D Region, out ITowardPoint2D EnterPoint, out ITowardPoint2D ExitPoint, out double EnterDistance, out double ExitDistance, out ITimePeriod PassPeriod, out ITimePeriod PassPeriodWithMaximumVelocity)
 		{
 			EnterPoint = null;
 			ExitPoint = null;
 			EnterDistance = 0;
 			ExitDistance = 0;
 			PassPeriod = null;
+			PassPeriodWithMaximumVelocity = null;
 
 			if (Vehicle.mPath.Count() > 0)
 			{
@@ -972,10 +975,12 @@ namespace TrafficControlTest.Library
 				}
 
 				double velocity = !double.IsNaN(Vehicle.mAverageVelocity) ? Vehicle.mAverageVelocity : Vehicle.mVelocity;
-				// 當速度為 0 時，通過時間一律設定為 10 分鐘後通過
+				// 當速度為 0 時，改使用最高速度下去計算
+				velocity = (velocity > -double.Epsilon && velocity < double.Epsilon) ? Vehicle.mVelocityMaximum : velocity;
 				double enterSeconds = (velocity > -double.Epsilon && velocity < double.Epsilon ? 600 : (EnterDistance / velocity));
 				double exitSeconds = (velocity > -double.Epsilon && velocity < double.Epsilon ? 600 : (ExitDistance / velocity));
 				PassPeriod = GenerateITimePeriod(DateTime.Now.AddSeconds(enterSeconds), DateTime.Now.AddSeconds(exitSeconds));
+				PassPeriodWithMaximumVelocity = GenerateITimePeriod(DateTime.Now.AddSeconds(EnterDistance / Vehicle.mVelocityMaximum), DateTime.Now.AddSeconds(ExitDistance / Vehicle.mVelocityMaximum));
 			}
 		}
 		#endregion
