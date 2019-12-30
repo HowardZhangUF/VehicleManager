@@ -117,9 +117,9 @@ namespace TrafficControlTest.Library
 		{
 			return new Implement.PathOverlapPair(Vehicle1, Vehicle2, OverlapRegionsOfPaths);
 		}
-		public static ICollisionPair GenerateICollisionPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period)
+		public static ICollisionPair GenerateICollisionPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)
 		{
-			return new Implement.CollisionPair(Vehicle1, Vehicle2, CollisionRegion, Period);
+			return new Implement.CollisionPair(Vehicle1, Vehicle2, CollisionRegion, Period, PassPeriodOfVehicle1WithCurrentVelocity, PassPeriodOfVehicle2WithCurrentVelocity, PassPeriodOfVehicle1WithMaximumVeloctiy, PassPeriodOfVehicle2WithMaximumVeloctiy);
 		}
 		public static ITimePeriod GenerateITimePeriod(DateTime Start, DateTime End)
 		{
@@ -846,7 +846,7 @@ namespace TrafficControlTest.Library
 					// 2. (使用最大速度)
 					if (IsOverlap(PassPeriod1, PassPeriod2) || IsOverlap(PassPeriodWithMaximumVelocity1, PassPeriodWithMaximumVelocity2))
 					{
-						tmpCollisionPairs.Add(GenerateICollisionPair(PathOverlapPair.mVehicle1, PathOverlapPair.mVehicle2, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), PassPeriod1.mStart < PassPeriod2.mStart ? PassPeriod1 : PassPeriod2));
+						tmpCollisionPairs.Add(GenerateICollisionPair(PathOverlapPair.mVehicle1, PathOverlapPair.mVehicle2, PathOverlapPair.mOverlapRegionsOfPaths.ElementAt(i), PassPeriod1.mStart < PassPeriod2.mStart ? PassPeriod1 : PassPeriod2, PassPeriod1, PassPeriod2, PassPeriodWithMaximumVelocity1, PassPeriodWithMaximumVelocity2));
 					}
 				}
 

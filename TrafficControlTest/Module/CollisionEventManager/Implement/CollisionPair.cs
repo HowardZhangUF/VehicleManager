@@ -15,24 +15,32 @@ namespace TrafficControlTest.Implement
 		public IVehicleInfo mVehicle2 { get; private set; }
 		public IRectangle2D mCollisionRegion { get; private set; }
 		public ITimePeriod mPeriod { get; private set; }
-		public TimeSpan mDuration { get { return DateTime.Now.Subtract(mStartTimestamp); } }
+        public ITimePeriod mPassPeriodOfVehicle1WithCurrentVelocity { get; private set; }
+        public ITimePeriod mPassPeriodOfVehicle2WithCurrentVelocity { get; private set; }
+        public ITimePeriod mPassPeriodOfVehicle1WithMaximumVeloctiy { get; private set; }
+        public ITimePeriod mPassPeriodOfVehicle2WithMaximumVeloctiy { get; private set; }
+        public TimeSpan mDuration { get { return DateTime.Now.Subtract(mStartTimestamp); } }
 		public DateTime mLastUpdated { get; private set; }
 
 		private DateTime mStartTimestamp { get; set; }
 
-		public CollisionPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period)
+		public CollisionPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)
 		{
-			Set(Vehicle1, Vehicle2, CollisionRegion, Period);
+			Set(Vehicle1, Vehicle2, CollisionRegion, Period, PassPeriodOfVehicle1WithCurrentVelocity, PassPeriodOfVehicle2WithCurrentVelocity, PassPeriodOfVehicle1WithMaximumVeloctiy, PassPeriodOfVehicle2WithMaximumVeloctiy);
 		}
 
-		public void Set(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period)
+		public void Set(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)
 		{
 			mName = "CollisionOf" + Vehicle1.mName + "&" + Vehicle2.mName;
 			mVehicle1 = Vehicle1;
 			mVehicle2 = Vehicle2;
 			mCollisionRegion = CollisionRegion;
 			mPeriod = Period;
-			mStartTimestamp = DateTime.Now;
+            mPassPeriodOfVehicle1WithCurrentVelocity = PassPeriodOfVehicle1WithCurrentVelocity;
+            mPassPeriodOfVehicle2WithCurrentVelocity = PassPeriodOfVehicle2WithCurrentVelocity;
+            mPassPeriodOfVehicle1WithMaximumVeloctiy = PassPeriodOfVehicle1WithMaximumVeloctiy;
+            mPassPeriodOfVehicle2WithMaximumVeloctiy = PassPeriodOfVehicle2WithMaximumVeloctiy;
+            mStartTimestamp = DateTime.Now;
 			mLastUpdated = DateTime.Now;
 			RaiseEvent_StateUpdated();
 		}

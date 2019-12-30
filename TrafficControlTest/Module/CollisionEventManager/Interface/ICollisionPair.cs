@@ -18,11 +18,19 @@ namespace TrafficControlTest.Interface
 		/// 此 Period 即為繼續移動的那台車的進入/離開交會區域的時間區間。
 		/// </remarks>
 		ITimePeriod mPeriod { get; }
-		/// <summary>發生持續時間</summary>
-		TimeSpan mDuration { get; }
+        /// <summary>第一台車預估當前速度通過交會區域的時間區間</summary>
+        ITimePeriod mPassPeriodOfVehicle1WithCurrentVelocity { get; }
+        /// <summary>第二台車預估當前速度通過交會區域的時間區間</summary>
+        ITimePeriod mPassPeriodOfVehicle2WithCurrentVelocity { get; }
+        /// <summary>第一台車預估最高速度通過交會區域的時間區間</summary>
+        ITimePeriod mPassPeriodOfVehicle1WithMaximumVeloctiy { get; }
+        /// <summary>第二台車預估最高速度通過交會區域的時間區間</summary>
+        ITimePeriod mPassPeriodOfVehicle2WithMaximumVeloctiy { get; }
+        /// <summary>發生持續時間</summary>
+        TimeSpan mDuration { get; }
 		DateTime mLastUpdated { get; }
 
-		void Set(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period);
+        void Set(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy);
 		void Update(IRectangle2D CollisionRegion, ITimePeriod Period);
 		string ToString();
 	}
