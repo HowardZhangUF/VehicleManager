@@ -142,21 +142,21 @@ namespace TrafficControlTest.Implement
 		}
 		private void UninterveneVehicle(ICollisionPair CollisionPair)
 		{
-			UninterveneVehicle(CollisionPair.mVehicle1);
-			UninterveneVehicle(CollisionPair.mVehicle2);
+			UninterveneVehicle(CollisionPair.mVehicle1, CollisionPair.mName, CollisionPair.ToString());
+			UninterveneVehicle(CollisionPair.mVehicle2, CollisionPair.mName, CollisionPair.ToString());
 		}
-		private void UninterveneVehicle(IVehicleInfo VehicleInfo)
+		private void UninterveneVehicle(IVehicleInfo VehicleInfo, string CauseId, string CauseDetail)
 		{
 			if (VehicleInfo != null && !string.IsNullOrEmpty(VehicleInfo.mCurrentInterveneCommand))
 			{
 				if (VehicleInfo.mCurrentInterveneCommand.StartsWith("InsertMovingBuffer"))
 				{
-					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.RemoveMovingBuffer, null, string.Empty, string.Empty);
+					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.RemoveMovingBuffer, null, CauseId, CauseDetail);
 					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
 				}
 				else if (VehicleInfo.mCurrentInterveneCommand.StartsWith("PauseMoving"))
 				{
-					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, string.Empty, string.Empty);
+					IVehicleControl vehicleControl = GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, CauseId, CauseDetail);
 					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
 				}
 			}

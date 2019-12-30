@@ -27,7 +27,7 @@ namespace TrafficControlTest.Implement
 		}
 		public void Set(string VehicleId, Command Command, string[] Parameters, string CauseId, string CauseDetail)
 		{
-			mName = $"VehicleControl_{CauseId}";
+			mName = $"ControlFor{CauseId}";
 			mVehicleId = VehicleId;
 			mSendState = SendState.Unsend;
 			mCommand = Command;

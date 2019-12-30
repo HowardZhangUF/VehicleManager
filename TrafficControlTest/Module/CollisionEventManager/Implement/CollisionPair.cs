@@ -27,7 +27,7 @@ namespace TrafficControlTest.Implement
 
 		public void Set(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period)
 		{
-			mName = Vehicle1.mName + "&" + Vehicle2.mName;
+			mName = "CollisionOf" + Vehicle1.mName + "&" + Vehicle2.mName;
 			mVehicle1 = Vehicle1;
 			mVehicle2 = Vehicle2;
 			mCollisionRegion = CollisionRegion;
