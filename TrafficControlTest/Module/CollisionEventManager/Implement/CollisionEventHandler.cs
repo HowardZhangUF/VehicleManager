@@ -100,7 +100,7 @@ namespace TrafficControlTest.Implement
 			// 當 CollisionEvent 消失時，移除跟該 CollisionEvent 有關的且尚未被送出的 VehicleControl
 			RemoveRelatedVehicleControl(CollisionPair);
 			// 當 CollisionEvent 消失時，讓跟該 CollisionEvent 有關的 Vehicle 恢復成沒有被干預的狀態
-			UninterveneVehicle(CollisionPair);
+			UninterveneRelatedVehicle(CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
@@ -111,21 +111,21 @@ namespace TrafficControlTest.Implement
 			// sample function, undone.
 			if (CollisionPair != null && IsProcessNecessary(CollisionPair))
 			{
-				IVehicleControl vehicleControl = CalculateSolutionOf(CollisionPair);
+				IVehicleControl vehicleControl = CalculateIVehicleControlOf(CollisionPair);
 				if (vehicleControl != null)
 				{
-					if (rVehicleInfoManager.GetItem(vehicleControl.mVehicleId).mCurrentInterveneCommand.StartsWith(vehicleControl.mCommand.ToString()) || IsSolutionExist(vehicleControl))
+					if (IsVehicleAlreadyExecutedIVehicleControl(vehicleControl.mVehicleId, vehicleControl) || IsIVehicleControlAlreadyExistedInManager(vehicleControl))
 					{
-
+                        // do nothing
 					}
-					else
+					else // 若 IVehicleControl 尚未被 VehicleId 執行且該 IVehicleControl 不存在於 Manager 中
 					{
 						rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
 					}
 				}
 				else
 				{
-
+                    // do nothing
 				}
 			}
 		}
@@ -140,7 +140,7 @@ namespace TrafficControlTest.Implement
 				}
 			}
 		}
-		private void UninterveneVehicle(ICollisionPair CollisionPair)
+		private void UninterveneRelatedVehicle(ICollisionPair CollisionPair)
 		{
 			UninterveneVehicle(CollisionPair.mVehicle1, CollisionPair.mName, CollisionPair.ToString());
 			UninterveneVehicle(CollisionPair.mVehicle2, CollisionPair.mName, CollisionPair.ToString());
@@ -175,7 +175,7 @@ namespace TrafficControlTest.Implement
 			}
 			return result;
 		}
-		private IVehicleControl CalculateSolutionOf(ICollisionPair CollisionPair)
+		private IVehicleControl CalculateIVehicleControlOf(ICollisionPair CollisionPair)
 		{
 			// sample function, undone.
 			// 需考量車子狀態，若車子已經完成過干預指令了，只是平均速度尚未降下來，就不用再重複送干預指令了
@@ -186,7 +186,11 @@ namespace TrafficControlTest.Implement
 			}
 			return result;
 		}
-		private bool IsSolutionExist(IVehicleControl VehicleControl)
+        private bool IsVehicleAlreadyExecutedIVehicleControl(string VehicleId, IVehicleControl VehicleControl)
+        {
+            return rVehicleInfoManager.GetItem(VehicleId).mCurrentInterveneCommand.StartsWith(VehicleControl.mCommand.ToString());
+        }
+		private bool IsIVehicleControlAlreadyExistedInManager(IVehicleControl VehicleControl)
 		{
 			return rVehicleControlManager.IsExist(VehicleControl.mName);
 		}
