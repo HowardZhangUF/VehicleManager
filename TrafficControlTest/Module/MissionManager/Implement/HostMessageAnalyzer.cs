@@ -82,16 +82,9 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					{
 						if (rMissionAnalyzers[i].TryParse(Data, out IMission Mission, out string AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
 						{
-							if (!rMissionStateManager.IsExist(Mission.mMissionId))
-							{
-								missionState = Library.Library.GenerateIMissionState(Mission);
-								missionState.UpdateSourceIpPort(IpPort);
-								replyMsg = $"Event=CommandAccepted MissionID={missionState.GetMissionId()}";
-							}
-							else
-							{
-								replyMsg = $"Event=CommandRejected Reason=MissionIDDuplicated";
-							}
+							missionState = Library.Library.GenerateIMissionState(Mission);
+							missionState.UpdateSourceIpPort(IpPort);
+							replyMsg = $"Event=CommandAccepted MissionID={missionState.GetMissionId()}";
 						}
 						else
 						{
