@@ -116,7 +116,7 @@ namespace TrafficControlTest.Implement
 				{
 					if (IsVehicleAlreadyExecutedIVehicleControl(vehicleControl.mVehicleId, vehicleControl) || IsIVehicleControlAlreadyExistedInManager(vehicleControl))
 					{
-                        // do nothing
+						// do nothing
 					}
 					else // 若 IVehicleControl 尚未被 VehicleId 執行且該 IVehicleControl 不存在於 Manager 中
 					{
@@ -125,7 +125,7 @@ namespace TrafficControlTest.Implement
 				}
 				else
 				{
-                    // do nothing
+					// do nothing
 				}
 			}
 		}
@@ -169,7 +169,6 @@ namespace TrafficControlTest.Implement
 			{
 				if (DateTime.Now.Subtract(CollisionPair.mPeriod.mStart).TotalMilliseconds > -2000.0f)
 				{
-					double aaa = DateTime.Now.Subtract(CollisionPair.mPeriod.mStart).TotalMilliseconds;
 					result = true;
 				}
 			}
@@ -177,19 +176,29 @@ namespace TrafficControlTest.Implement
 		}
 		private IVehicleControl CalculateIVehicleControlOf(ICollisionPair CollisionPair)
 		{
-			// sample function, undone.
-			// 需考量車子狀態，若車子已經完成過干預指令了，只是平均速度尚未降下來，就不用再重複送干預指令了
 			IVehicleControl result = null;
 			if (CollisionPair != null)
 			{
-				result = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString());
+				// 若兩車皆未執行干預
+				if (string.IsNullOrEmpty(CollisionPair.mVehicle1.mCurrentInterveneCommand) && string.IsNullOrEmpty(CollisionPair.mVehicle2.mCurrentInterveneCommand))
+				{
+					// 對較晚通過 Collision Region 的 Vehicle 執行暫停動作
+					if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
+					{
+						result = GenerateIVehicleControl(CollisionPair.mVehicle2.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString());
+					}
+					else
+					{
+						result = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString());
+					}
+				}
 			}
 			return result;
 		}
-        private bool IsVehicleAlreadyExecutedIVehicleControl(string VehicleId, IVehicleControl VehicleControl)
-        {
-            return rVehicleInfoManager.GetItem(VehicleId).mCurrentInterveneCommand.StartsWith(VehicleControl.mCommand.ToString());
-        }
+		private bool IsVehicleAlreadyExecutedIVehicleControl(string VehicleId, IVehicleControl VehicleControl)
+		{
+			return rVehicleInfoManager.GetItem(VehicleId).mCurrentInterveneCommand.StartsWith(VehicleControl.mCommand.ToString());
+		}
 		private bool IsIVehicleControlAlreadyExistedInManager(IVehicleControl VehicleControl)
 		{
 			return rVehicleControlManager.IsExist(VehicleControl.mName);
