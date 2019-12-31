@@ -279,6 +279,7 @@ namespace TrafficControlTest.Module.General.Implement
 				foreach (EventArgs e in events)
 				{
 					HandleServerEvent(e);
+					Thread.Sleep(5);
 				}
 				events.Clear();
 			}
