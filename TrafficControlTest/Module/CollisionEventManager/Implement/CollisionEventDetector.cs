@@ -161,7 +161,7 @@ namespace TrafficControlTest.Implement
 						{
 							if (rCollisionEventManager.IsExist(collisionPair.mName))
 							{
-								rCollisionEventManager.Update(collisionPair.mName, collisionPair.mCollisionRegion, collisionPair.mPeriod);
+								rCollisionEventManager.Update(collisionPair.mName, collisionPair.mCollisionRegion, collisionPair.mPeriod, collisionPair.mPassPeriodOfVehicle1WithCurrentVelocity, collisionPair.mPassPeriodOfVehicle2WithCurrentVelocity, collisionPair.mPassPeriodOfVehicle1WithMaximumVeloctiy, collisionPair.mPassPeriodOfVehicle2WithMaximumVeloctiy);
 							}
 							else
 							{

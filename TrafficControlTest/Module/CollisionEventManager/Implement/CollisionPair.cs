@@ -44,10 +44,14 @@ namespace TrafficControlTest.Implement
 			mLastUpdated = DateTime.Now;
 			RaiseEvent_StateUpdated();
 		}
-		public void Update(IRectangle2D CollisionRegion, ITimePeriod Period)
+		public void Update(IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)
 		{
 			mCollisionRegion = CollisionRegion;
 			mPeriod = Period;
+			mPassPeriodOfVehicle1WithCurrentVelocity = PassPeriodOfVehicle1WithCurrentVelocity;
+			mPassPeriodOfVehicle2WithCurrentVelocity = PassPeriodOfVehicle2WithCurrentVelocity;
+			mPassPeriodOfVehicle1WithMaximumVeloctiy = PassPeriodOfVehicle1WithMaximumVeloctiy;
+			mPassPeriodOfVehicle2WithMaximumVeloctiy = PassPeriodOfVehicle2WithMaximumVeloctiy;
 			mLastUpdated = DateTime.Now;
 			RaiseEvent_StateUpdated();
 		}
@@ -60,6 +64,8 @@ namespace TrafficControlTest.Implement
 			result += $"\nName: {mName}";
 			result += $"\nRegion: {mCollisionRegion.ToString()}";
 			result += $"\nEstimate Time(s): {mPeriod.ToString(Library.Library.TIME_FORMAT)}";
+			result += $"\nPass Time of Vehicle1(s): {mPassPeriodOfVehicle1WithCurrentVelocity.ToString(Library.Library.TIME_FORMAT)}";
+			result += $"\nPass Time of Vehicle2(s): {mPassPeriodOfVehicle2WithCurrentVelocity.ToString(Library.Library.TIME_FORMAT)}";
 			result += $"\nEvent Duration(s): {mDuration.TotalSeconds.ToString("F2")}";
 			result += $"\nLastUpdated: {mLastUpdated.ToString(Library.Library.TIME_FORMAT)}";
 			result += $"\n============================================================";

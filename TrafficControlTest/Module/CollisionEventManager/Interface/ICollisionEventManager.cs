@@ -24,6 +24,6 @@ namespace TrafficControlTest.Interface
 		/// <summary>移除指定 Collision 資訊</summary>
 		void Remove(string Name);
 		/// <summary>更新指定 Collision 的資訊</summary>
-		void Update(string Name, IRectangle2D CollisionRegion, ITimePeriod Period);
+		void Update(string Name, IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy);
 	}
 }

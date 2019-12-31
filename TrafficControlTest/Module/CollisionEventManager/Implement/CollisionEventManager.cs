@@ -67,7 +67,7 @@ namespace TrafficControlTest.Implement
 			}
 			else
 			{
-				Update(Name, Data.mCollisionRegion, Data.mPeriod);
+				Update(Name, Data.mCollisionRegion, Data.mPeriod, Data.mPassPeriodOfVehicle1WithCurrentVelocity, Data.mPassPeriodOfVehicle2WithCurrentVelocity, Data.mPassPeriodOfVehicle1WithMaximumVeloctiy, Data.mPassPeriodOfVehicle2WithMaximumVeloctiy);
 			}
 		}
 		public void Remove(string Name)
@@ -80,11 +80,11 @@ namespace TrafficControlTest.Implement
 				RaiseEvent_CollisionEventRemoved(Name, tmpData);
 			}
 		}
-		public void Update(string Name, IRectangle2D CollisionRegion, ITimePeriod Period)
+		public void Update(string Name, IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)
 		{
 			if (IsExist(Name))
 			{
-				mCollisionPairs[Name].Update(CollisionRegion, Period);
+				mCollisionPairs[Name].Update(CollisionRegion, Period, PassPeriodOfVehicle1WithCurrentVelocity, PassPeriodOfVehicle2WithCurrentVelocity, PassPeriodOfVehicle1WithMaximumVeloctiy, PassPeriodOfVehicle2WithMaximumVeloctiy);
 			}
 		}
 
