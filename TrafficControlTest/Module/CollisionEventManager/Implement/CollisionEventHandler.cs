@@ -167,9 +167,26 @@ namespace TrafficControlTest.Implement
 			bool result = false;
 			if (CollisionPair != null)
 			{
-				if (DateTime.Now.Subtract(CollisionPair.mPeriod.mStart).TotalMilliseconds > -2000.0f)
+				// 若兩車皆未執行干預
+				if (string.IsNullOrEmpty(CollisionPair.mVehicle1.mCurrentInterveneCommand) && string.IsNullOrEmpty(CollisionPair.mVehicle2.mCurrentInterveneCommand))
 				{
-					result = true;
+					// 判斷哪台車會較晚通過 Collision Region
+					if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
+					{
+						// 若較晚通過 Collision Region 的 Vehicle 即將通過 Collision Region
+						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart).TotalMilliseconds > -2000.0f)
+						{
+							result = true;
+						}
+					}
+					else
+					{
+						// 若較晚通過 Collision Region 的 Vehicle 即將通過 Collision Region
+						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart).TotalMilliseconds > -2000.0f)
+						{
+							result = true;
+						}
+					}
 				}
 			}
 			return result;
