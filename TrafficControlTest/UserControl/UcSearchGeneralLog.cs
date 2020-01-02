@@ -19,11 +19,11 @@ namespace TrafficControlTest.UserControl
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword) || Keyword == "Recent")
 			{
-				result = $"SELECT * FROM GeneralLog ORDER BY Timestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT Timestamp, Category, SubCategory, Message FROM GeneralLog ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT * FROM GeneralLog WHERE (Category LIKE '%{Keyword}%' OR SubCategory LIKE '%{Keyword}%' OR Message LIKE '%{Keyword}%') ORDER BY Timestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT Timestamp, Category, SubCategory, Message FROM GeneralLog WHERE (Category LIKE '%{Keyword}%' OR SubCategory LIKE '%{Keyword}%' OR Message LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}

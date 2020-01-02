@@ -39,7 +39,7 @@ namespace TrafficControlTest.Module.General.Implement
 		}
 		public void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message)
 		{
-			rDatabaseAdapter.EnqueueNonQueryCommand($"INSERT INTO {mTableNameOfGeneralLog} VALUES ('{Timestamp}', '{Category}', '{SubCategory}', '{Message}')");
+			rDatabaseAdapter.EnqueueNonQueryCommand($"INSERT INTO {mTableNameOfGeneralLog} (Timestamp, Category, SubCategory, Message) VALUES ('{Timestamp}', '{Category}', '{SubCategory}', '{Message}')");
 		}
 
 		private void InitializeDatabaseTable()
@@ -48,7 +48,7 @@ namespace TrafficControlTest.Module.General.Implement
 		}
 		private void CreateTableOfGeneralLog()
 		{
-			rDatabaseAdapter.ExecuteNonQueryCommand($"CREATE TABLE IF NOT EXISTS {mTableNameOfGeneralLog} (Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, Category TEXT, SubCategory TEXT, Message TEXT);");
+			rDatabaseAdapter.ExecuteNonQueryCommand($"CREATE TABLE IF NOT EXISTS {mTableNameOfGeneralLog} (No INTEGER PRIMARY KEY AUTOINCREMENT, Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, Category TEXT, SubCategory TEXT, Message TEXT);");
 		}
 	}
 }
