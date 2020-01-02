@@ -349,20 +349,18 @@ namespace TrafficControlTest.Implement
 		public override string ToString()
 		{
 			string result = string.Empty;
-			result += $"Name: {mName}, ";
-			result += $"State: {mCurrentState}, ";
-			result += $"LocationCoordinate: {(mLocationCoordinate != null ? mLocationCoordinate.ToString() : string.Empty)}, ";
-			result += $"LocationToward: {mLocationToward.ToString("F2")}, ";
-			result += $"Target: {mCurrentTarget}, ";
-			result += $"Velocity: {mVelocity.ToString("F2")}, ";
-			result += $"LocationScore: {mLocationScore.ToString("F2")}, ";
-			result += $"BatteryValue: {mBatteryValue.ToString("F2")}, ";
-			result += $"AlarmMessage: {mAlarmMessage}, ";
-			result += $"Path: {mPathString}, ";
-			result += $"IpPort: {mIpPort}, ";
-			result += $"MissionId: {mCurrentMissionId}, ";
-			result += $"InterveneCommand: {mCurrentInterveneCommand}, ";
-			result += $"MapName: {mCurrentMapName}";
+			result += $"{mName}/";
+			result += $"{mCurrentState}/";
+			result += $"{(mLocationCoordinate != null ? $"({mLocationCoordinate.mX},{mLocationCoordinate.mY},{mLocationToward.ToString("F2")})" : string.Empty)}/";
+			result += $"{mLocationScore.ToString("F2")}(%)/";
+			result += $"{mCurrentTarget}/";
+			result += $"{mPathString}/";
+			result += $"{mVelocity.ToString("F2")}(mm/s)/";
+			result += $"{mBatteryValue.ToString("F2")}(%)/";
+			result += $"{mCurrentMissionId}/";
+			result += $"{mCurrentInterveneCommand}/";
+			result += $"{mCurrentMapName}/";
+			result += $"{mIpPort}";
 			return result;
 		}
 

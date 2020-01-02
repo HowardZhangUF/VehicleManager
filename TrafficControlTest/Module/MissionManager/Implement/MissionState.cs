@@ -107,6 +107,10 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			result = new string[] { mName, mMission.mMissionId, mMission.mPriority.ToString(), mMission.mMissionType.ToString(), mMission.mVehicleId, mMission.mParametersString, $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
 			return result;
 		}
+		public override string ToString()
+		{
+			return $"{mName}/{mMission.ToString()}/{mExecutorId}/{mSendState.ToString()}/{mExecuteState.ToString()}";
+		}
 
 		protected virtual void RaiseEvent_StateUpdated(string StateName, bool Sync = true)
 		{

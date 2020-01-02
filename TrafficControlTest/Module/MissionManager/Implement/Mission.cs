@@ -15,7 +15,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public int mPriority { get; private set; }
 		public string mVehicleId { get; private set; }
 		public string[] mParameters { get; private set; }
-		public string mParametersString { get { return string.Join(",", mParameters); } }
+		public string mParametersString { get { return mParameters == null ? string.Empty : string.Join(",", mParameters); } }
 
 		public Mission(MissionType MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
 		{
@@ -35,11 +35,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		public override string ToString()
 		{
-			string result = string.Empty;
-			result += mMissionType;
-			if (!string.IsNullOrEmpty(mVehicleId)) result += $"/{mVehicleId}";
-			if (!string.IsNullOrEmpty(mParametersString)) result += $"/{mParametersString}";
-			return result;
+			return $"{mMissionType.ToString()}/{mParametersString}/{mMissionId}/{mPriority.ToString()}/{mVehicleId}";
 		}
 	}
 }

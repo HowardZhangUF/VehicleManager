@@ -58,17 +58,7 @@ namespace TrafficControlTest.Implement
 		public override string ToString()
 		{
 			string result = string.Empty;
-			result += $"============================================================";
-			result += $"\n[ CollisionPair ]";
-			result += $"\nVehicles: {mVehicle1.mName} & {mVehicle2.mName}";
-			result += $"\nName: {mName}";
-			result += $"\nRegion: {mCollisionRegion.ToString()}";
-			result += $"\nEstimate Time(s): {mPeriod.ToString(Library.Library.TIME_FORMAT)}";
-			result += $"\nPass Time of Vehicle1(s): {mPassPeriodOfVehicle1WithCurrentVelocity.ToString(Library.Library.TIME_FORMAT)}";
-			result += $"\nPass Time of Vehicle2(s): {mPassPeriodOfVehicle2WithCurrentVelocity.ToString(Library.Library.TIME_FORMAT)}";
-			result += $"\nEvent Duration(s): {mDuration.TotalSeconds.ToString("F2")}";
-			result += $"\nLastUpdated: {mLastUpdated.ToString(Library.Library.TIME_FORMAT)}";
-			result += $"\n============================================================";
+			result += $"{mName}/{mCollisionRegion.ToString()}/{mPeriod.ToString()}";
 			return result;
 		}
 
