@@ -397,6 +397,10 @@ namespace TrafficControlTest.Process
 			mHostCommunicator = GenerateIHostCommunicator();
 			SubscribeEvent_IHostCommunicator(mHostCommunicator);
 
+			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
+			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mVehicleInfoManager, mMissionStateManager, mHostCommunicator);
+			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
+
 			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 			mHostMessageAnalyzer = GenerateIHostMessageAnalyzer(mHostCommunicator, mMissionStateManager, GetMissionAnalyzers());
 			SubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
@@ -420,10 +424,6 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
 			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager, mMapManager);
 			SubscribeEvent_IMissionUpdater(mMissionUpdater);
-
-			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
-			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mVehicleInfoManager, mMissionStateManager);
-			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 
 			mConfigurator.Load();
 			mVehicleCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("VehicleCommunicator/ListenPort")));

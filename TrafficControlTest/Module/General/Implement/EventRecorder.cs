@@ -18,6 +18,7 @@ namespace TrafficControlTest.Module.General.Implement
 		private string mTableNameOfVehicleState = "CurrentVehicleState";
 		private string mTableNamePrefixOfHistoryVehicleInfo = "HistoryVehicleInfoOf";
 		private string mTableNameOfMissionState = "MissionState";
+		private string mTableNameOfHistoryHostMessage = "HistoryHostMessage";
 
 		public EventRecorder(DatabaseAdapter DatabaseAdapter)
 		{
@@ -107,11 +108,27 @@ namespace TrafficControlTest.Module.General.Implement
 					break;
 			}
 		}
+		public void RecordHistoryHostMessage(DatabaseDataOperation Action, DateTime Timestamp, string Direction, string IpPort, string Message)
+		{
+			switch (Action)
+			{
+				case DatabaseDataOperation.Add:
+					HistoryHostMessageAdd(Timestamp, Direction, IpPort, Message);
+					break;
+				case DatabaseDataOperation.Remove:
+					// do nothing
+					break;
+				case DatabaseDataOperation.Update:
+					// do nothing
+					break;
+			}
+		}
 
 		private void InitializeDatabaseTable()
 		{
 			CreateTableOfCurrentVehicleState();
 			CreateTableOfAllMissionState();
+			CreateTableOfHistoryHostMessage();
 		}
 		private void CreateTableOfCurrentVehicleState()
 		{
@@ -153,6 +170,17 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += "ExecutionStartTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ExecutionStopTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
+			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+		}
+		private void CreateTableOfHistoryHostMessage()
+		{
+			string tmp = string.Empty;
+			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNameOfHistoryHostMessage} (";
+			tmp += "No INTEGER PRIMARY KEY AUTOINCREMENT, ";
+			tmp += "Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+			tmp += "Direction TEXT, ";
+			tmp += "IPPort TEXT, ";
+			tmp += "Message TEXT)";
 			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
 		}
 		private void VehicleInfoDataAdd(IVehicleInfo VehicleInfo)
@@ -261,6 +289,16 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += $"ExecutionStopTimestamp = '{MissionState.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"LastUpdateTimestamp = '{MissionState.mLastUpdate.ToString(Library.Library.TIME_FORMAT)}' ";
 			tmp += $"WHERE ID = '{MissionState.mName}' AND ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}'";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void HistoryHostMessageAdd(DateTime Timestamp, string Direction, string IpPort, string Message)
+		{
+			string tmp = string.Empty;
+			tmp += $"INSERT INTO {mTableNameOfHistoryHostMessage} (Timestamp, Direction, IPPort, Message) VALUES (";
+			tmp += $"'{Timestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"'{Direction}', ";
+			tmp += $"'{IpPort}', ";
+			tmp += $"'{Message}')";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 	}

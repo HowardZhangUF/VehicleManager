@@ -21,5 +21,6 @@ namespace TrafficControlTest.Module.General.Interface
 		void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo);
 		void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo);
 		void RecordMissionState(DatabaseDataOperation Action, IMissionState MissionState);
+		void RecordHistoryHostMessage(DatabaseDataOperation Action, DateTime Timestamp, string Direction, string IpPort, string Message);
 	}
 }

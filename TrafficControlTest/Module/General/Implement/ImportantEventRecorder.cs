@@ -35,13 +35,14 @@ namespace TrafficControlTest.Module.General.Implement
 		private IEventRecorder rEventRecorder = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMissionStateManager rMissionStateManager = null;
+		private IHostCommunicator rHostCommunicator = null;
 		private Thread mThdRecordHistoryVehicleInfo = null;
 		private bool[] mThdRecordHistoryVehicleInfoExitFlag = null;
 		private bool _IsExecuting = false;
 
-		public ImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
+		public ImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
 		{
-			Set(EventRecorder, VehicleInfoManager, MissionStateManager);
+			Set(EventRecorder, VehicleInfoManager, MissionStateManager, HostCommunicator);
 		}
 		public void Set(IEventRecorder EventRecorder)
 		{
@@ -59,11 +60,18 @@ namespace TrafficControlTest.Module.General.Implement
 			rMissionStateManager = MissionStateManager;
 			SubscribeEvent_IMissionStateManager(rMissionStateManager);
 		}
-		public void Set(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
+		public void Set(IHostCommunicator HostCommunicator)
+		{
+			UnsubscribeEvent_IHostCommunicator(rHostCommunicator);
+			rHostCommunicator = HostCommunicator;
+			SubscribeEvent_IHostCommunicator(rHostCommunicator);
+		}
+		public void Set(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
 		{
 			Set(EventRecorder);
 			Set(VehicleInfoManager);
 			Set(MissionStateManager);
+			Set(HostCommunicator);
 		}
 		public void Start()
 		{
@@ -108,6 +116,22 @@ namespace TrafficControlTest.Module.General.Implement
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
 			}
 		}
+		private void SubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
+		{
+			if (HostCommunicator != null)
+			{
+				HostCommunicator.SentString += HandleEvent_HostCommunicatorSentString;
+				HostCommunicator.ReceivedString += HandleEvent_HostCommunicatorReceivedString;
+			}
+		}
+		private void UnsubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
+		{
+			if (HostCommunicator != null)
+			{
+				HostCommunicator.SentString -= HandleEvent_HostCommunicatorSentString;
+				HostCommunicator.ReceivedString -= HandleEvent_HostCommunicatorReceivedString;
+			}
+		}
 		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
 		{
 			if (Sync)
@@ -150,6 +174,14 @@ namespace TrafficControlTest.Module.General.Implement
 		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
 		{
 			rEventRecorder.RecordMissionState(DatabaseDataOperation.Update, Item);
+		}
+		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
+		{
+			rEventRecorder.RecordHistoryHostMessage(DatabaseDataOperation.Add, OccurTime, "Sent", IpPort, Data);
+		}
+		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
+		{
+			rEventRecorder.RecordHistoryHostMessage(DatabaseDataOperation.Add, OccurTime, "Recieved", IpPort, Data);
 		}
 		private void InitializeThread()
 		{

@@ -248,9 +248,9 @@ namespace TrafficControlTest.Library
 		{
 			return new EventRecorder(DatabaseAdapter);
 		}
-		public static IImportantEventRecorder GenerateIImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
+		public static IImportantEventRecorder GenerateIImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
 		{
-			return new ImportantEventRecorder(EventRecorder, VehicleInfoManager, MissionStateManager);
+			return new ImportantEventRecorder(EventRecorder, VehicleInfoManager, MissionStateManager, HostCommunicator);
 		}
 		public static IConfigurator GenerateIConfigurator(string FileName)
 		{
