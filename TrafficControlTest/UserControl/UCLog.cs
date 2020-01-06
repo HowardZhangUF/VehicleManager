@@ -37,9 +37,10 @@ namespace TrafficControlTest.UserControl
 				mUcSearches[1].Set(DatabaseAdapterOfLogRecord);
 				mUcSearches[2].Set(DatabaseAdapterOfLogRecord);
 			}
-			if (DatabaseAdapterOfEventRecord != null && mUcSearches.Count >= 4)
+			if (DatabaseAdapterOfEventRecord != null && mUcSearches.Count >= 5)
 			{
 				mUcSearches[3].Set(DatabaseAdapterOfEventRecord);
+				mUcSearches[4].Set(DatabaseAdapterOfEventRecord);
 			}
 
 			for (int i = 0; i < mUcSearches.Count; ++i)
@@ -63,6 +64,7 @@ namespace TrafficControlTest.UserControl
 			AddSearchPageOfGeneralLog();
 			AddSearchPageOfGeneralLog();
 			AddSearchPageOfMissionState();
+			AddSearchPageOfHostCommunication();
 		}
 		private void AddSearchPageOfGeneralLog()
 		{
@@ -76,6 +78,14 @@ namespace TrafficControlTest.UserControl
 		{
 			mButtons.Add(GenerateButton(GetSerial().ToString()));
 			mUcSearches.Add(GenerateUcSearchMissionState(GetSerial().ToString()));
+			panel1.Controls.Add(mButtons[GetSerial()]);
+			panel2.Controls.Add(mUcSearches[GetSerial()]);
+			UpdateSerial();
+		}
+		private void AddSearchPageOfHostCommunication()
+		{
+			mButtons.Add(GenerateButton(GetSerial().ToString()));
+			mUcSearches.Add(GenerateUcSearchHostCommunication(GetSerial().ToString()));
 			panel1.Controls.Add(mButtons[GetSerial()]);
 			panel2.Controls.Add(mUcSearches[GetSerial()]);
 			UpdateSerial();
@@ -106,6 +116,14 @@ namespace TrafficControlTest.UserControl
 		private UcSearch GenerateUcSearchMissionState(string Serial)
 		{
 			UcSearch result = new UcSearchMissionState();
+			result.Dock = DockStyle.Fill;
+			result.Name = $"{mDefaultNameOfUcSearch}{Serial}";
+			result.SearchSuccessed += HandleEvent_UcSearchSearchSuccessed;
+			return result;
+		}
+		private UcSearch GenerateUcSearchHostCommunication(string Serial)
+		{
+			UcSearch result = new UcSearchHostCommunication();
 			result.Dock = DockStyle.Fill;
 			result.Name = $"{mDefaultNameOfUcSearch}{Serial}";
 			result.SearchSuccessed += HandleEvent_UcSearchSearchSuccessed;
