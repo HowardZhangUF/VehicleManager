@@ -18,7 +18,7 @@ namespace TrafficControlTest.Module.General.Implement
 		private string mTableNameOfVehicleState = "CurrentVehicleState";
 		private string mTableNamePrefixOfHistoryVehicleInfo = "HistoryVehicleInfoOf";
 		private string mTableNameOfMissionState = "MissionState";
-		private string mTableNameOfHistoryHostMessage = "HistoryHostMessage";
+		private string mTableNameOfHistoryHostCommunication = "HistoryHostCommunication";
 
 		public EventRecorder(DatabaseAdapter DatabaseAdapter)
 		{
@@ -108,12 +108,12 @@ namespace TrafficControlTest.Module.General.Implement
 					break;
 			}
 		}
-		public void RecordHistoryHostMessage(DatabaseDataOperation Action, DateTime Timestamp, string Direction, string IpPort, string Message)
+		public void RecordHistoryHostCommunication(DatabaseDataOperation Action, DateTime Timestamp, string Event, string IpPort, string Data)
 		{
 			switch (Action)
 			{
 				case DatabaseDataOperation.Add:
-					HistoryHostMessageAdd(Timestamp, Direction, IpPort, Message);
+					HistoryHostCommunicationAdd(Timestamp, Event, IpPort, Data);
 					break;
 				case DatabaseDataOperation.Remove:
 					// do nothing
@@ -128,7 +128,7 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			CreateTableOfCurrentVehicleState();
 			CreateTableOfAllMissionState();
-			CreateTableOfHistoryHostMessage();
+			CreateTableOfHistoryHostCommunication();
 		}
 		private void CreateTableOfCurrentVehicleState()
 		{
@@ -172,15 +172,15 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
 			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
 		}
-		private void CreateTableOfHistoryHostMessage()
+		private void CreateTableOfHistoryHostCommunication()
 		{
 			string tmp = string.Empty;
-			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNameOfHistoryHostMessage} (";
+			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNameOfHistoryHostCommunication} (";
 			tmp += "No INTEGER PRIMARY KEY AUTOINCREMENT, ";
 			tmp += "Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
-			tmp += "Direction TEXT, ";
+			tmp += "Event TEXT, ";
 			tmp += "IPPort TEXT, ";
-			tmp += "Message TEXT)";
+			tmp += "Data TEXT)";
 			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
 		}
 		private void VehicleInfoDataAdd(IVehicleInfo VehicleInfo)
@@ -291,14 +291,14 @@ namespace TrafficControlTest.Module.General.Implement
 			tmp += $"WHERE ID = '{MissionState.mName}' AND ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}'";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
-		private void HistoryHostMessageAdd(DateTime Timestamp, string Direction, string IpPort, string Message)
+		private void HistoryHostCommunicationAdd(DateTime Timestamp, string Event, string IpPort, string Data)
 		{
 			string tmp = string.Empty;
-			tmp += $"INSERT INTO {mTableNameOfHistoryHostMessage} (Timestamp, Direction, IPPort, Message) VALUES (";
+			tmp += $"INSERT INTO {mTableNameOfHistoryHostCommunication} (Timestamp, Event, IPPort, Data) VALUES (";
 			tmp += $"'{Timestamp.ToString(Library.Library.TIME_FORMAT)}', ";
-			tmp += $"'{Direction}', ";
+			tmp += $"'{Event}', ";
 			tmp += $"'{IpPort}', ";
-			tmp += $"'{Message}')";
+			tmp += $"'{Data}')";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 	}

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Library;
 using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.DatabaseAdapter;
@@ -120,6 +121,8 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			if (HostCommunicator != null)
 			{
+				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
+				HostCommunicator.RemoteConnectStateChanged += HandleEvent_HostCommunicatorRemoteConnectStateChanged;
 				HostCommunicator.SentString += HandleEvent_HostCommunicatorSentString;
 				HostCommunicator.ReceivedString += HandleEvent_HostCommunicatorReceivedString;
 			}
@@ -128,6 +131,8 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			if (HostCommunicator != null)
 			{
+				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
+				HostCommunicator.RemoteConnectStateChanged -= HandleEvent_HostCommunicatorRemoteConnectStateChanged;
 				HostCommunicator.SentString -= HandleEvent_HostCommunicatorSentString;
 				HostCommunicator.ReceivedString -= HandleEvent_HostCommunicatorReceivedString;
 			}
@@ -175,13 +180,21 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			rEventRecorder.RecordMissionState(DatabaseDataOperation.Update, Item);
 		}
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
+		{
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "LocalListenStateChanged", Port.ToString(), $"State: {NewState.ToString()}");
+		}
+		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
+		{
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "RemoteConnectStateChanged", IpPort, $"State: {NewState}");
+		}
 		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
 		{
-			rEventRecorder.RecordHistoryHostMessage(DatabaseDataOperation.Add, OccurTime, "Sent", IpPort, Data);
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "SentData", IpPort, $"Data: {Data}");
 		}
 		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
 		{
-			rEventRecorder.RecordHistoryHostMessage(DatabaseDataOperation.Add, OccurTime, "Recieved", IpPort, Data);
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "RecievedData", IpPort, $"Data: {Data}");
 		}
 		private void InitializeThread()
 		{

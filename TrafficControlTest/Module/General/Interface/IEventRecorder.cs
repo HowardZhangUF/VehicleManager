@@ -9,7 +9,7 @@ using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Module.General.Interface
 {
-	/// <summary>提供記錄 Event (CurrentVehicleInfo, HistoryVehicleInfo, AllMissionState ... etc.) 至資料庫的功能</summary>
+	/// <summary>提供記錄 Event (CurrentVehicleInfo, HistoryVehicleInfo, AllMissionState, HistoryHostCommunication ... etc.) 至資料庫的功能</summary>
 	public interface IEventRecorder
 	{
 		bool mIsExecuting { get; }
@@ -21,6 +21,6 @@ namespace TrafficControlTest.Module.General.Interface
 		void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo);
 		void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo);
 		void RecordMissionState(DatabaseDataOperation Action, IMissionState MissionState);
-		void RecordHistoryHostMessage(DatabaseDataOperation Action, DateTime Timestamp, string Direction, string IpPort, string Message);
+		void RecordHistoryHostCommunication(DatabaseDataOperation Action, DateTime Timestamp, string Event, string IpPort, string Data);
 	}
 }
