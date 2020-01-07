@@ -7,6 +7,10 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
 {
+	/// <summary>
+	/// - Reference: IVehicleControlManager, IVehicleInfoManager, IVehicleCommunicator
+	/// - 當 IVehicleControlManager 裡面有東西時，將其發送給指定的車
+	/// </summary>
 	public interface IVehicleControlHandler
 	{
 		event EventHandlerDateTime SystemStarted;
