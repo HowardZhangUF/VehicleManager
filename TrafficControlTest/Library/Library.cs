@@ -33,6 +33,13 @@ namespace TrafficControlTest.Library
 		Dock
 	}
 
+	public enum SignificantEventCategory
+	{
+		VehicleSystem,
+		MissionSystem,
+		HostSystem
+	}
+
 	public static class Library
 	{
 		public const string TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
@@ -1016,6 +1023,7 @@ namespace TrafficControlTest.Library
 	public static class EventHandlerLibrary
 	{
 		public delegate void EventHandlerDebugMessage(string OccurTime, string Category, string SubCategory, string Message);
+		public delegate void EventHandlerSignificantEvent(string OccurTime, string Category, string Info);
 
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);

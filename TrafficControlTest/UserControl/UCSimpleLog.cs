@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrafficControlTest.Process;
+using TrafficControlTest.Library;
 
 namespace TrafficControlTest.UserControl
 {
@@ -38,18 +39,18 @@ namespace TrafficControlTest.UserControl
 			rVehicleManagerProcess = VehicleManagerProcess;
 			SubscribeEvent_VehicleManagerProcess(rVehicleManagerProcess);
 		}
-		public void AddLog(string Date, string Category, string SubCategory, string Message)
+		public void AddLog(string Date, string Category, string Info)
 		{
 			lock (mLockOfDgvSimpleLog)
 			{
 				if (OrderAscending)
 				{
-					UpdateGui_InsertRow(dgvSimpleLog.RowCount, Date, Category, SubCategory, Message);
+					UpdateGui_InsertRow(dgvSimpleLog.RowCount, Date, Category, Info);
 					UpdateGui_RefreshDgvSimpleLogRowBackColor(dgvSimpleLog.RowCount - 1);
 				}
 				else
 				{
-					UpdateGui_InsertRow(0, Date, Category, SubCategory, Message);
+					UpdateGui_InsertRow(0, Date, Category, Info);
 					UpdateGui_RefreshDgvSimpleLogRowBackColor(0);
 				}
 				UpdateGui_AdjustRowCount(Maximum);
@@ -67,19 +68,19 @@ namespace TrafficControlTest.UserControl
 		{
 			if (VehicleManagerProcess != null)
 			{
-				VehicleManagerProcess.DebugMessage += HandleEvent_VehicleManagerProcessDebugMessage;
+				VehicleManagerProcess.SignificantEvent += HandleEvent_VehicleManagerProcessSignificantEvent;
 			}
 		}
 		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
 		{
 			if (VehicleManagerProcess != null)
 			{
-				VehicleManagerProcess.DebugMessage -= HandleEvent_VehicleManagerProcessDebugMessage;
+				VehicleManagerProcess.SignificantEvent -= HandleEvent_VehicleManagerProcessSignificantEvent;
 			}
 		}
-		private void HandleEvent_VehicleManagerProcessDebugMessage(string OccurTime, string Category, string SubCategory, string Message)
+		private void HandleEvent_VehicleManagerProcessSignificantEvent(string OccurTime, string Category, string Info)
 		{
-			AddLog(OccurTime, Category, SubCategory, Message);
+			AddLog(OccurTime, Category, Info);
 		}
 		private void UpdateGui_InitializeDgvSimpleLog()
 		{
@@ -118,10 +119,8 @@ namespace TrafficControlTest.UserControl
 				dgv.Columns[0].Width = 175;
 				dgv.Columns.Add("Category", "Category");
 				dgv.Columns[1].Width = 200;
-				dgv.Columns.Add("SubCategory", "SubCategory");
-				dgv.Columns[2].Width = 200;
-				dgv.Columns.Add("Message", "Message");
-				dgv.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+				dgv.Columns.Add("Info", "Info");
+				dgv.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
 				foreach (DataGridViewColumn column in dgv.Columns)
 				{

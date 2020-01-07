@@ -15,6 +15,7 @@ namespace TrafficControlTest.Process
 	public class VehicleManagerProcess
 	{
 		public event EventHandlerDebugMessage DebugMessage;
+		public event EventHandlerSignificantEvent SignificantEvent;
 		public event EventHandlerDateTime VehicleCommunicatorSystemStarted;
 		public event EventHandlerDateTime VehicleCommunicatorSystemStopped;
 		public event EventHandlerLocalListenState VehicleCommunicatorLocalListenStateChagned;
@@ -819,6 +820,21 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message); });
 			}
 		}
+		protected virtual void RaiseEvent_SignificantEvent(DateTime OccurTime, SignificantEventCategory Category, string Info, bool Sync = true)
+		{
+			RaiseEvent_SignificantEvent(OccurTime.ToString(TIME_FORMAT), Category.ToString(), Info, Sync);
+		}
+		protected virtual void RaiseEvent_SignificantEvent(string OccurTime, string Category, string Info, bool Sync = true)
+		{
+			if (Sync)
+			{
+				SignificantEvent?.Invoke(OccurTime, Category, Info);
+			}
+			else
+			{
+				Task.Run(() => { SignificantEvent?.Invoke(OccurTime, Category, Info); });
+			}
+		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
 		{
 			if (Sync)
@@ -1284,11 +1300,13 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemAdded", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
+			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Name} ] Connected");
 			RaiseEvent_VehicleInfoManagerItemAdded(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemRemoved", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
+			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Name} ] Disconnected");
 			RaiseEvent_VehicleInfoManagerItemRemoved(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
@@ -1302,17 +1320,17 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemAdded", $"Name: {Name}, Info:\n{CollisionPair.ToString()}");
+			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemAdded", $"Name: {Name}, Info:{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventAdded(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemRemoved", $"Name: {Name}, Info:\n{CollisionPair.ToString()}");
+			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemRemoved", $"Name: {Name}, Info:{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventRemoved(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemUpdated", $"Name: {Name}, Info:\n{CollisionPair.ToString()}");
+			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemUpdated", $"Name: {Name}, Info:{CollisionPair.ToString()}");
 			RaiseEvent_CollisionEventManagerCollisionEventStateUpdated(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime)
@@ -1353,6 +1371,7 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
+			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {MissionState.GetMissionId()} ] Created");
 			RaiseEvent_MissionStateManagerItemAdded(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
@@ -1363,6 +1382,14 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemUpdated", $"MissionID: {MissionId}, StateName: {StateName}, Info: {MissionState.ToString()}");
+			if (StateName.Contains("ExecutionStartTimestamp"))
+			{
+				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {MissionState.GetMissionId()} ] Started by Vehicle [ {MissionState.mExecutorId} ]");
+			}
+			else if (StateName.Contains("ExecutionStopTimestamp"))
+			{
+				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {MissionState.GetMissionId()} ] Completed [ {MissionState.mExecuteState.ToString().Replace("Execute", string.Empty)} ] by Vehicle [ {MissionState.mExecutorId} ]");
+			}
 			RaiseEvent_MissionStateManagerItemUpdated(OccurTime, MissionId, StateName, MissionState);
 		}
 		private void HandleEvent_HostCommunicatorSystemStarted(DateTime OccurTime)
@@ -1383,16 +1410,26 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "RemoteConnectStateChanged", $"IPPort: {IpPort}, State: {NewState}");
+			if (NewState == ConnectState.Connected)
+			{
+				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Host [ {IpPort} ] Connected");
+			}
+			else if (NewState == ConnectState.Disconnected)
+			{
+				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Host [ {IpPort} ] Disconnected");
+			}
 			RaiseEvent_HostCommunicatorRemoteConnectStateChanged(OccurTime, IpPort, NewState);
 		}
 		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "SentString", $"IPPort: {IpPort}, Data: {Data}");
+			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {IpPort} ]  [ {Data} ]");
 			RaiseEvent_HostCommunicatorSentString(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {IpPort}, Data: {Data}");
+			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {IpPort} ]  [ {Data} ]");
 			RaiseEvent_HostCommunicatorReceivedString(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_MissionDispatcherSystemStarted(DateTime OccurTime)
