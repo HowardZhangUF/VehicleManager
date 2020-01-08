@@ -1423,13 +1423,13 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "SentString", $"IPPort: {IpPort}, Data: {Data}");
-			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {IpPort} ]  [ {Data} ]");
+			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {IpPort} ] [ {Data} ]");
 			RaiseEvent_HostCommunicatorSentString(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {IpPort}, Data: {Data}");
-			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {IpPort} ]  [ {Data} ]");
+			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {IpPort} ] [ {Data} ]");
 			RaiseEvent_HostCommunicatorReceivedString(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_MissionDispatcherSystemStarted(DateTime OccurTime)
