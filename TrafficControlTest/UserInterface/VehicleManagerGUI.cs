@@ -37,6 +37,7 @@ namespace TrafficControlTest.UserInterface
 			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapterOfLogRecord(), mCore.GetReferenceOfDatabaseAdapterOfEventRecord());
+			ucLog1.Set(0, 1, 1);
 			ucVehicleOverview1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucVehicleManualControl1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMapManager());
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());

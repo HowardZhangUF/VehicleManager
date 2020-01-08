@@ -48,7 +48,9 @@ namespace TrafficControlTest.UserControl
 		}
 		public void DoDefaultSearch()
 		{
-			SearchAndDisplayResult(string.Empty, int.Parse(cbLimit.Items[0].ToString()));
+			txtSearch.Text = string.Empty;
+			cbLimit.SelectedIndex = 0;
+			SearchAndDisplayResult();
 		}
 		public DataGridView GetDgv()
 		{

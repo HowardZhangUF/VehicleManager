@@ -12,14 +12,33 @@ using TrafficControlTest.Library;
 namespace TrafficControlTest.UserControl
 {
 	/// <summary>
-	/// Search Page 由一個上方 Panel 的 Button 與下方 Panel 的 UcSearch 兩個元件組成。
+	/// SearchControl 由一個上方 Panel 的 Button 與下方 Panel 的 UcSearch 兩個元件組成。
 	/// Button 的 Name 會為 DefaultName + Serial ，UcSearch 的 Name 會為 DefaultName + Serial ，兩者的 Serial 會相等。
-	/// Button 用來標示當前使用的 Search Page 與搜尋關鍵字， UcSearch 用來顯示搜尋結果。
+	/// Button 用來標示當前使用的 SearchControl 與搜尋關鍵字， UcSearch 用來顯示搜尋結果。
 	/// </summary>
 	public partial class UcLog : System.Windows.Forms.UserControl
 	{
-		private List<Button> mButtons = new List<Button>();
-		private List<UcSearch> mUcSearches = new List<UcSearch>();
+		private enum SearchControlType
+		{
+			GeneralLog,
+			MissionState,
+			HostCommunication
+		}
+
+		private DatabaseAdapter rDatabaseAdapterOfLogRecord = null;
+		private DatabaseAdapter rDatabaseAdapterOfEventRecord = null;
+		private Dictionary<SearchControlType, Queue<SearchControl>> mUnusedSearchControlCollection = new Dictionary<SearchControlType, Queue<SearchControl>>()
+		{
+			{ SearchControlType.GeneralLog, new Queue<SearchControl>() },
+			{ SearchControlType.MissionState, new Queue<SearchControl>() },
+			{ SearchControlType.HostCommunication, new Queue<SearchControl>() }
+		};
+		private Dictionary<SearchControlType, Queue<SearchControl>> mUsedSearchControlCollection = new Dictionary<SearchControlType, Queue<SearchControl>>()
+		{
+			{ SearchControlType.GeneralLog, new Queue<SearchControl>() },
+			{ SearchControlType.MissionState, new Queue<SearchControl>() },
+			{ SearchControlType.HostCommunication, new Queue<SearchControl>() }
+		};
 		private string mDefaultNameOfButton = "button";
 		private string mDefaultNameOfUcSearch = "ucSearch";
 		private int mSerial = 0;
@@ -27,68 +46,142 @@ namespace TrafficControlTest.UserControl
 		public UcLog()
 		{
 			InitializeComponent();
-			InitializeSearchPageControls();
 		}
 		public void Set(DatabaseAdapter DatabaseAdapterOfLogRecord, DatabaseAdapter DatabaseAdapterOfEventRecord)
 		{
-			if (DatabaseAdapterOfLogRecord != null && mUcSearches.Count >= 3)
+			rDatabaseAdapterOfLogRecord = DatabaseAdapterOfLogRecord;
+			rDatabaseAdapterOfEventRecord = DatabaseAdapterOfEventRecord;
+
+			if (rDatabaseAdapterOfLogRecord != null)
 			{
-				mUcSearches[0].Set(DatabaseAdapterOfLogRecord);
-				mUcSearches[1].Set(DatabaseAdapterOfLogRecord);
-				mUcSearches[2].Set(DatabaseAdapterOfLogRecord);
-			}
-			if (DatabaseAdapterOfEventRecord != null && mUcSearches.Count >= 5)
-			{
-				mUcSearches[3].Set(DatabaseAdapterOfEventRecord);
-				mUcSearches[4].Set(DatabaseAdapterOfEventRecord);
+				foreach (SearchControl searchControl in mUnusedSearchControlCollection[SearchControlType.GeneralLog])
+				{
+					searchControl.mUcSearch.Set(rDatabaseAdapterOfLogRecord);
+				}
+				foreach (SearchControl searchControl in mUsedSearchControlCollection[SearchControlType.GeneralLog])
+				{
+					searchControl.mUcSearch.Set(rDatabaseAdapterOfLogRecord);
+				}
 			}
 
-			for (int i = 0; i < mUcSearches.Count; ++i)
+			if (rDatabaseAdapterOfEventRecord != null)
 			{
-				mUcSearches[i].DoDefaultSearch();
-				UpdateGui_ButtonAndUcSearch_ChangeButtonBackColorAndDisplayUcSearch(i.ToString());
+				foreach (SearchControl searchControl in mUnusedSearchControlCollection[SearchControlType.MissionState])
+				{
+					searchControl.mUcSearch.Set(rDatabaseAdapterOfEventRecord);
+				}
+				foreach (SearchControl searchControl in mUsedSearchControlCollection[SearchControlType.MissionState])
+				{
+					searchControl.mUcSearch.Set(rDatabaseAdapterOfEventRecord);
+				}
+				foreach (SearchControl searchControl in mUnusedSearchControlCollection[SearchControlType.HostCommunication])
+				{
+					searchControl.mUcSearch.Set(rDatabaseAdapterOfEventRecord);
+				}
+				foreach (SearchControl searchControl in mUsedSearchControlCollection[SearchControlType.HostCommunication])
+				{
+					searchControl.mUcSearch.Set(rDatabaseAdapterOfEventRecord);
+				}
 			}
 		}
-
-		private int GetSerial()
+		public void Set(int SearchControlOfGeneralLogCount, int SearchControlOfMissionStateCount, int SearchControlOfHostCommunicationCount)
 		{
-			return mSerial;
+			// 從介面上移除所有的 SearchControl
+			RemoveAllSearchControlFromInterface();
+
+			// 加入 GeneralLog 的 SearchControl 至介面上
+			for (int i = 0; i < SearchControlOfGeneralLogCount; ++i)
+			{
+				AddSearchControlToUserInterface(SearchControlType.GeneralLog);
+			}
+
+			// 加入 MissionState 的 SearchControl 至介面上
+			for (int i = 0; i < SearchControlOfMissionStateCount; ++i)
+			{
+				AddSearchControlToUserInterface(SearchControlType.MissionState);
+			}
+
+			// 加入 HostCommunication 的 SearchControl 至介面上
+			for (int i = 0; i < SearchControlOfHostCommunicationCount; ++i)
+			{
+				AddSearchControlToUserInterface(SearchControlType.HostCommunication);
+			}
+
+			// 讓所有 SearchControl 做一次預設搜尋
+			MakeAllSearchControlDoDefaultSearch();
+
+			// 點一下最左邊的 Button
+			if (panel1.Controls.Count > 0) HandleEvent_ButtonClick(panel1.Controls[panel1.Controls.Count - 1], null);
+		}
+
+		private string GetSerial()
+		{
+			return mSerial.ToString();
 		}
 		private void UpdateSerial()
 		{
 			mSerial += 1;
 		}
-		private void InitializeSearchPageControls()
+		private void AddSearchControlToCollection(SearchControlType Type)
 		{
-			AddSearchPageOfGeneralLog();
-			AddSearchPageOfGeneralLog();
-			AddSearchPageOfGeneralLog();
-			AddSearchPageOfMissionState();
-			AddSearchPageOfHostCommunication();
+			// 根據 Type 產生新的 SearchControl 並設定好 DatabaseAdapter 然後加入至 Unused Collection 中
+			switch (Type)
+			{
+				case SearchControlType.GeneralLog:
+					SearchControl tmpSearchControl1 = new SearchControl(GenerateButton(GetSerial()), GenerateUcSearchGeneralLog(GetSerial()), GetSerial());
+					UpdateSerial();
+					if (rDatabaseAdapterOfLogRecord != null) tmpSearchControl1.mUcSearch.Set(rDatabaseAdapterOfLogRecord);
+					mUnusedSearchControlCollection[Type].Enqueue(tmpSearchControl1);
+					break;
+				case SearchControlType.MissionState:
+					SearchControl tmpSearchControl2 = new SearchControl(GenerateButton(GetSerial()), GenerateUcSearchMissionState(GetSerial()), GetSerial());
+					UpdateSerial();
+					if (rDatabaseAdapterOfEventRecord != null) tmpSearchControl2.mUcSearch.Set(rDatabaseAdapterOfEventRecord);
+					mUnusedSearchControlCollection[Type].Enqueue(tmpSearchControl2);
+					break;
+				case SearchControlType.HostCommunication:
+					SearchControl tmpSearchControl3 = new SearchControl(GenerateButton(GetSerial()), GenerateUcSearchHostCommunication(GetSerial()), GetSerial());
+					UpdateSerial();
+					if (rDatabaseAdapterOfEventRecord != null) tmpSearchControl3.mUcSearch.Set(rDatabaseAdapterOfEventRecord);
+					mUnusedSearchControlCollection[Type].Enqueue(tmpSearchControl3);
+					break;
+			}
 		}
-		private void AddSearchPageOfGeneralLog()
+		private void AddSearchControlToUserInterface(SearchControlType Type)
 		{
-			mButtons.Add(GenerateButton(GetSerial().ToString()));
-			mUcSearches.Add(GenerateUcSearchGeneralLog(GetSerial().ToString()));
-			panel1.Controls.Add(mButtons[GetSerial()]);
-			panel2.Controls.Add(mUcSearches[GetSerial()]);
-			UpdateSerial();
+			// 從 Unused Collection 中拿出 SearchControl 顯示於介面上並加入 Used Collection
+			if (Type == SearchControlType.GeneralLog || Type == SearchControlType.MissionState || Type == SearchControlType.HostCommunication)
+			{
+				if (mUnusedSearchControlCollection[Type].Count == 0) AddSearchControlToCollection(Type);
+				SearchControl tmpSearchControl = mUnusedSearchControlCollection[Type].Dequeue();
+				panel1.Controls.Add(tmpSearchControl.mButton);
+				panel2.Controls.Add(tmpSearchControl.mUcSearch);
+				mUsedSearchControlCollection[Type].Enqueue(tmpSearchControl);
+			}
 		}
-		private void AddSearchPageOfMissionState()
+		private void RemoveAllSearchControlFromInterface()
 		{
-			mButtons.Add(GenerateButton(GetSerial().ToString()));
-			mUcSearches.Add(GenerateUcSearchMissionState(GetSerial().ToString()));
-			panel1.Controls.Add(mButtons[GetSerial()]);
-			panel2.Controls.Add(mUcSearches[GetSerial()]);
-			UpdateSerial();
+			// 從介面上移除所有的 SearchControl 並將 SearchControl 資料移動至 Unused Collection
+			panel1.Controls.Clear();
+			panel2.Controls.Clear();
+			TransferData(mUsedSearchControlCollection[SearchControlType.GeneralLog], mUnusedSearchControlCollection[SearchControlType.GeneralLog]);
+			TransferData(mUsedSearchControlCollection[SearchControlType.MissionState], mUnusedSearchControlCollection[SearchControlType.MissionState]);
+			TransferData(mUsedSearchControlCollection[SearchControlType.HostCommunication], mUnusedSearchControlCollection[SearchControlType.HostCommunication]);
 		}
-		private void AddSearchPageOfHostCommunication()
+		private void MakeAllSearchControlDoDefaultSearch()
 		{
-			mButtons.Add(GenerateButton(GetSerial().ToString()));
-			mUcSearches.Add(GenerateUcSearchHostCommunication(GetSerial().ToString()));
-			panel1.Controls.Add(mButtons[GetSerial()]);
-			panel2.Controls.Add(mUcSearches[GetSerial()]);
-			UpdateSerial();
+			foreach (SearchControl searchControl in mUsedSearchControlCollection[SearchControlType.GeneralLog])
+			{
+				searchControl.mUcSearch.DoDefaultSearch();
+			}
+			foreach (SearchControl searchControl in mUsedSearchControlCollection[SearchControlType.MissionState])
+			{
+				searchControl.mUcSearch.DoDefaultSearch();
+			}
+			foreach (SearchControl searchControl in mUsedSearchControlCollection[SearchControlType.HostCommunication])
+			{
+				searchControl.mUcSearch.DoDefaultSearch();
+			}
 		}
 		private Button GenerateButton(string Serial)
 		{
@@ -129,7 +222,7 @@ namespace TrafficControlTest.UserControl
 			result.SearchSuccessed += HandleEvent_UcSearchSearchSuccessed;
 			return result;
 		}
-		private void UpdateGui_ButtonAndUcSearch_ChangeButtonBackColorAndDisplayUcSearch(string Serial)
+		private void UpdateGui_SearchControl_ChangeButtonBackColorAndDisplayUcSearch(string Serial)
 		{
 			this.InvokeIfNecessary(() =>
 			{
@@ -148,7 +241,7 @@ namespace TrafficControlTest.UserControl
 				}
 			});
 		}
-		private void UpdateGui_ButtonAndUcSearch_UpdateButtonText(string Serial, string NewText)
+		private void UpdateGui_SearchControl_UpdateButtonText(string Serial, string NewText)
 		{
 			this.InvokeIfNecessary(() =>
 			{
@@ -160,13 +253,34 @@ namespace TrafficControlTest.UserControl
 			if ((sender as Control).Name.StartsWith(mDefaultNameOfButton))
 			{
 				string tmpSerial = (sender as Control).Name.Replace(mDefaultNameOfButton, string.Empty);
-				UpdateGui_ButtonAndUcSearch_ChangeButtonBackColorAndDisplayUcSearch(tmpSerial);
+				UpdateGui_SearchControl_ChangeButtonBackColorAndDisplayUcSearch(tmpSerial);
 			}
 		}
 		private void HandleEvent_UcSearchSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit)
 		{
 			string tmpSerial = (Sender as Control).Name.Replace(mDefaultNameOfUcSearch, string.Empty);
-			UpdateGui_ButtonAndUcSearch_UpdateButtonText(tmpSerial, (Sender as UcSearch).mKeyword+ " - " + Keyword);
+			UpdateGui_SearchControl_UpdateButtonText(tmpSerial, (Sender as UcSearch).mKeyword+ " - " + Keyword);
+		}
+		private static void TransferData<T>(Queue<T> SrcList, Queue<T> DstList)
+		{
+			while (SrcList.Count > 0)
+			{
+				DstList.Enqueue(SrcList.Dequeue());
+			}
 		}
 	}
+
+    public class SearchControl
+    {
+        public Button mButton { get; } = null;
+        public UcSearch mUcSearch { get; } = null;
+		public string mSerial { get; } = string.Empty;
+
+        public SearchControl(Button Button, UcSearch UcSearch, string Serial)
+        {
+            mButton = Button;
+            mUcSearch = UcSearch;
+			mSerial = Serial;
+        }
+    }
 }
