@@ -136,6 +136,21 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_UcMap_MapFocusVehicle(VehicleName);
 		}
+		private void btnLogin_Click(object sender, EventArgs e)
+		{
+			if (VehicleManagerProcessIsLoggedIn())
+			{
+				VehicleManagerProcessLogOut();
+			}
+			else
+			{
+				string password = string.Empty;
+				if (InputBox(string.Empty, "Please Enter Password:", ref password, '*') == DialogResult.OK)
+				{
+					VehicleManagerProcessLogIn(password);
+				}
+			}
+		}
 
 		#region UpdateGui Functions
 		#region General
@@ -149,38 +164,41 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void UpdateGui_UpdateUsableControlAmount(AccountRank Rank)
 		{
-			switch (Rank)
+			this.InvokeIfNecessary(() =>
 			{
-				case AccountRank.Software:
-				case AccountRank.Service:
-					btnDisplayVehicleManualControl.Visible = true;
-					btnDisplayVehicleApi.Visible = true;
-					ucVehicleManualControl1.Visible = true;
-					ucVehicleApi1.Visible = true;
-					ucLog1.Set(3, 1, 1);
-					UpdateGui_InitializeMenuState();
-					break;
-				case AccountRank.Customer:
-					// 隱藏左側選單的 VehicleManualControl 頁面
-					btnDisplayVehicleManualControl.Visible = true;
-					btnDisplayVehicleApi.Visible = false;
-					ucVehicleManualControl1.Visible = true;
-					ucVehicleApi1.Visible = false;
-					// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
-					ucLog1.Set(0, 1, 1);
-					UpdateGui_InitializeMenuState();
-					break;
-				case AccountRank.None:
-					// 隱藏左側選單的 VehicleManualControl, VehicleApi 頁面
-					btnDisplayVehicleManualControl.Visible = false;
-					btnDisplayVehicleApi.Visible = false;
-					ucVehicleManualControl1.Visible = false;
-					ucVehicleApi1.Visible = false;
-					// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
-					ucLog1.Set(0, 1, 1);
-					UpdateGui_InitializeMenuState();
-					break;
-			}
+				switch (Rank)
+				{
+					case AccountRank.Software:
+					case AccountRank.Service:
+						btnDisplayVehicleManualControl.Visible = true;
+						btnDisplayVehicleApi.Visible = true;
+						ucVehicleManualControl1.Visible = true;
+						ucVehicleApi1.Visible = true;
+						ucLog1.Set(3, 1, 1);
+						UpdateGui_InitializeMenuState();
+						break;
+					case AccountRank.Customer:
+						// 隱藏左側選單的 VehicleManualControl 頁面
+						btnDisplayVehicleManualControl.Visible = true;
+						btnDisplayVehicleApi.Visible = false;
+						ucVehicleManualControl1.Visible = true;
+						ucVehicleApi1.Visible = false;
+						// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
+						ucLog1.Set(0, 1, 1);
+						UpdateGui_InitializeMenuState();
+						break;
+					case AccountRank.None:
+						// 隱藏左側選單的 VehicleManualControl, VehicleApi 頁面
+						btnDisplayVehicleManualControl.Visible = false;
+						btnDisplayVehicleApi.Visible = false;
+						ucVehicleManualControl1.Visible = false;
+						ucVehicleApi1.Visible = false;
+						// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
+						ucLog1.Set(0, 1, 1);
+						UpdateGui_InitializeMenuState();
+						break;
+				}
+			});
 		}
 		private void UpdateGui_InitializeMenuState()
 		{
@@ -193,6 +211,48 @@ namespace TrafficControlTest.UserInterface
 
 			// 隱藏下方選單
 			UpdateGui_PnlBtm_DisplayPnlBtm(false);
+		}
+		private static DialogResult InputBox(string caption, string text, ref string value, char passwordChar = '\0')
+		{
+			Form form = new Form();
+			Label lblText = new Label();
+			TextBox txtResult = new TextBox();
+			Button btnOk = new Button();
+			Button btnCancel = new Button();
+
+			form.Text = caption;
+			form.BackColor = Color.FromArgb(31, 31, 31);
+			form.ForeColor = Color.White;
+			lblText.Text = text;
+			lblText.AutoSize = true;
+			txtResult.BackColor = Color.FromArgb(31, 31, 31);
+			txtResult.ForeColor = Color.White;
+			btnOk.Text = "Confirm";
+			btnOk.DialogResult = DialogResult.OK;
+			btnCancel.Text = "Cancel";
+			btnCancel.DialogResult = DialogResult.Cancel;
+			if (passwordChar != '\0') txtResult.PasswordChar = passwordChar;
+
+			form.Controls.AddRange(new Control[] { lblText, txtResult, btnOk, btnCancel });
+			lblText.Location = new System.Drawing.Point(20, 10);
+			txtResult.SetBounds(20, lblText.Location.Y + lblText.Size.Height + 10, 160, 20);
+			btnOk.SetBounds(20, txtResult.Location.Y + txtResult.Size.Height + 10, 75, 30);
+			btnOk.FlatStyle = FlatStyle.Flat;
+			btnCancel.SetBounds(btnOk.Right + 10, btnOk.Location.Y, 75, 30);
+			btnCancel.FlatStyle = FlatStyle.Flat;
+
+			form.ClientSize = new System.Drawing.Size(Math.Max(btnCancel.Right + 20, lblText.Right + 20), btnCancel.Bottom + 10);
+			form.FormBorderStyle = FormBorderStyle.None;
+			form.AutoScaleMode = AutoScaleMode.None;
+			form.StartPosition = FormStartPosition.CenterParent;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = btnOk;
+			form.CancelButton = btnCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+			value = txtResult.Text;
+			return dialogResult;
 		}
 		#endregion
 
@@ -411,10 +471,24 @@ namespace TrafficControlTest.UserInterface
 		{
 			mCore.Stop();
 		}
+		private bool VehicleManagerProcessIsLoggedIn()
+		{
+			return mCore.mIsLoggedIn;
+		}
+		private bool VehicleManagerProcessLogIn(string Password)
+		{
+			return mCore.AccessControlLogIn(Password);
+		}
+		private bool VehicleManagerProcessLogOut()
+		{
+			return mCore.AccessControlLogOut();
+		}
 		private void SubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
 		{
 			if (VehicleManagerProcess != null)
 			{
+				VehicleManagerProcess.AccessControlUserLogIn += HandleEvent_VehicleManagerProcessAccessControlUserLogIn;
+				VehicleManagerProcess.AccessControlUserLogOut += HandleEvent_VehicleManagerProcessAccessControlUserLogOut;
 				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned += HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
 				VehicleManagerProcess.VehicleInfoManagerItemAdded += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
 				VehicleManagerProcess.VehicleInfoManagerItemRemoved += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
@@ -424,10 +498,24 @@ namespace TrafficControlTest.UserInterface
 		{
 			if (VehicleManagerProcess != null)
 			{
+				VehicleManagerProcess.AccessControlUserLogIn -= HandleEvent_VehicleManagerProcessAccessControlUserLogIn;
+				VehicleManagerProcess.AccessControlUserLogOut -= HandleEvent_VehicleManagerProcessAccessControlUserLogOut;
 				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned -= HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
 				VehicleManagerProcess.VehicleInfoManagerItemAdded -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
 				VehicleManagerProcess.VehicleInfoManagerItemRemoved -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
 			}
+		}
+		private void HandleEvent_VehicleManagerProcessAccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
+		{
+			UpdateGui_UpdateUsableControlAmount(Rank);
+			UpdateGui_UpdateControlText(btnLogin, Name);
+			UpdateGui_UpdateControlBackColor(btnLogin, Color.DarkOrange);
+		}
+		private void HandleEvent_VehicleManagerProcessAccessControlUserLogOut(DateTime OccurTime, string Name, AccountRank Rank)
+		{
+			UpdateGui_UpdateUsableControlAmount(AccountRank.None);
+			UpdateGui_UpdateControlText(btnLogin, string.Empty);
+			UpdateGui_UpdateControlBackColor(btnLogin, Color.FromArgb(20, 20, 20));
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{

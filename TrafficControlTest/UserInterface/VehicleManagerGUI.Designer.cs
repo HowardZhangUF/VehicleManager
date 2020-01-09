@@ -58,18 +58,18 @@
 			this.btnDisplayVehicle = new System.Windows.Forms.Button();
 			this.btnDisplayMap = new System.Windows.Forms.Button();
 			this.pnlRightMain = new System.Windows.Forms.Panel();
+			this.pnlLeftMain = new System.Windows.Forms.Panel();
+			this.pnlBtm = new System.Windows.Forms.Panel();
 			this.ucLog1 = new TrafficControlTest.UserControl.UcLog();
 			this.ucSetting1 = new TrafficControlTest.UserControl.UcSetting();
 			this.ucMission1 = new TrafficControlTest.UserControl.UcMission();
 			this.ucVehicle1 = new TrafficControlTest.UserControl.UcVehicle();
 			this.ucMap1 = new TrafficControlTest.UserControl.UcMap();
-			this.pnlLeftMain = new System.Windows.Forms.Panel();
+			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
 			this.ucAbout1 = new TrafficControlTest.UserControl.UcAbout();
 			this.ucVehicleApi1 = new TrafficControlTest.UserControl.UcVehicleApi();
 			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UcVehicleManualControl();
 			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UcVehicleOverview();
-			this.pnlBtm = new System.Windows.Forms.Panel();
-			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlBtmSide.SuspendLayout();
 			this.pnlConnection.SuspendLayout();
@@ -102,6 +102,7 @@
 			this.btnLogin.Dock = System.Windows.Forms.DockStyle.Right;
 			this.btnLogin.FlatAppearance.BorderSize = 0;
 			this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnLogin.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnLogin.Image = ((System.Drawing.Image)(resources.GetObject("btnLogin.Image")));
 			this.btnLogin.Location = new System.Drawing.Point(1150, 0);
 			this.btnLogin.MinimumSize = new System.Drawing.Size(50, 50);
@@ -111,6 +112,7 @@
 			this.btnLogin.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.btnLogin.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnLogin.UseVisualStyleBackColor = false;
+			this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
 			// 
 			// lblFormTitle
 			// 
@@ -454,6 +456,29 @@
 			this.pnlRightMain.Size = new System.Drawing.Size(850, 350);
 			this.pnlRightMain.TabIndex = 8;
 			// 
+			// pnlLeftMain
+			// 
+			this.pnlLeftMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.pnlLeftMain.Controls.Add(this.ucAbout1);
+			this.pnlLeftMain.Controls.Add(this.ucVehicleApi1);
+			this.pnlLeftMain.Controls.Add(this.ucVehicleManualControl1);
+			this.pnlLeftMain.Controls.Add(this.ucVehicleOverview1);
+			this.pnlLeftMain.Dock = System.Windows.Forms.DockStyle.Left;
+			this.pnlLeftMain.Location = new System.Drawing.Point(50, 50);
+			this.pnlLeftMain.Name = "pnlLeftMain";
+			this.pnlLeftMain.Size = new System.Drawing.Size(400, 650);
+			this.pnlLeftMain.TabIndex = 6;
+			// 
+			// pnlBtm
+			// 
+			this.pnlBtm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.pnlBtm.Controls.Add(this.ucSimpleLog1);
+			this.pnlBtm.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlBtm.Location = new System.Drawing.Point(450, 450);
+			this.pnlBtm.Name = "pnlBtm";
+			this.pnlBtm.Size = new System.Drawing.Size(850, 250);
+			this.pnlBtm.TabIndex = 5;
+			// 
 			// ucLog1
 			// 
 			this.ucLog1.AutoScroll = true;
@@ -490,9 +515,9 @@
 			this.ucMission1.TableGridLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(86)))), ((int)(((byte)(86)))));
 			this.ucMission1.TableHeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
 			this.ucMission1.TableHeaderForeColor = System.Drawing.Color.White;
-			this.ucMission1.TableRowUnexecuteBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.ucMission1.TableRowExecutingBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(128)))), ((int)(((byte)(76)))));
 			this.ucMission1.TableRowForeColor = System.Drawing.Color.White;
+			this.ucMission1.TableRowUnexecuteBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			// 
 			// ucVehicle1
 			// 
@@ -516,18 +541,24 @@
 			this.ucMap1.Size = new System.Drawing.Size(850, 350);
 			this.ucMap1.TabIndex = 0;
 			// 
-			// pnlLeftMain
+			// ucSimpleLog1
 			// 
-			this.pnlLeftMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.pnlLeftMain.Controls.Add(this.ucAbout1);
-			this.pnlLeftMain.Controls.Add(this.ucVehicleApi1);
-			this.pnlLeftMain.Controls.Add(this.ucVehicleManualControl1);
-			this.pnlLeftMain.Controls.Add(this.ucVehicleOverview1);
-			this.pnlLeftMain.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlLeftMain.Location = new System.Drawing.Point(50, 50);
-			this.pnlLeftMain.Name = "pnlLeftMain";
-			this.pnlLeftMain.Size = new System.Drawing.Size(400, 650);
-			this.pnlLeftMain.TabIndex = 6;
+			this.ucSimpleLog1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucSimpleLog1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucSimpleLog1.Location = new System.Drawing.Point(0, 0);
+			this.ucSimpleLog1.Maximum = 200;
+			this.ucSimpleLog1.Name = "ucSimpleLog1";
+			this.ucSimpleLog1.OrderAscending = false;
+			this.ucSimpleLog1.Size = new System.Drawing.Size(850, 250);
+			this.ucSimpleLog1.TabIndex = 0;
+			this.ucSimpleLog1.TableBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucSimpleLog1.TableEvenRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucSimpleLog1.TableExceptionRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+			this.ucSimpleLog1.TableGridLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(86)))), ((int)(((byte)(86)))));
+			this.ucSimpleLog1.TableHeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(122)))), ((int)(((byte)(233)))));
+			this.ucSimpleLog1.TableHeaderForeColor = System.Drawing.Color.White;
+			this.ucSimpleLog1.TableOddRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.ucSimpleLog1.TableRowForeColor = System.Drawing.Color.White;
 			// 
 			// ucAbout1
 			// 
@@ -572,35 +603,6 @@
 			this.ucVehicleOverview1.Size = new System.Drawing.Size(400, 650);
 			this.ucVehicleOverview1.TabIndex = 0;
 			this.ucVehicleOverview1.DoubleClickOnVehicleInfo += new TrafficControlTest.UserControl.UcVehicleOverview.EventHandlerString(this.ucVehicleOverview1_DoubleClickOnVehicleInfo);
-			// 
-			// pnlBtm
-			// 
-			this.pnlBtm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.pnlBtm.Controls.Add(this.ucSimpleLog1);
-			this.pnlBtm.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlBtm.Location = new System.Drawing.Point(450, 450);
-			this.pnlBtm.Name = "pnlBtm";
-			this.pnlBtm.Size = new System.Drawing.Size(850, 250);
-			this.pnlBtm.TabIndex = 5;
-			// 
-			// ucSimpleLog1
-			// 
-			this.ucSimpleLog1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.ucSimpleLog1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ucSimpleLog1.Location = new System.Drawing.Point(0, 0);
-			this.ucSimpleLog1.Maximum = 200;
-			this.ucSimpleLog1.Name = "ucSimpleLog1";
-			this.ucSimpleLog1.OrderAscending = false;
-			this.ucSimpleLog1.Size = new System.Drawing.Size(850, 250);
-			this.ucSimpleLog1.TabIndex = 0;
-			this.ucSimpleLog1.TableBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.ucSimpleLog1.TableEvenRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.ucSimpleLog1.TableExceptionRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-			this.ucSimpleLog1.TableGridLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(86)))), ((int)(((byte)(86)))));
-			this.ucSimpleLog1.TableHeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(122)))), ((int)(((byte)(233)))));
-			this.ucSimpleLog1.TableHeaderForeColor = System.Drawing.Color.White;
-			this.ucSimpleLog1.TableOddRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
-			this.ucSimpleLog1.TableRowForeColor = System.Drawing.Color.White;
 			// 
 			// VehicleManagerGUI
 			// 
