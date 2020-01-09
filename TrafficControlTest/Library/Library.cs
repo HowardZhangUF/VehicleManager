@@ -1,7 +1,10 @@
 ﻿using KdTree;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using TrafficControlTest.Implement;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Module.General.Implement;
@@ -40,6 +43,14 @@ namespace TrafficControlTest.Library
 		HostSystem
 	}
 
+	public enum AccountRank
+	{
+		Software,
+		Service,
+		Customer,
+		None
+	}
+
 	public static class Library
 	{
 		public const string TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
@@ -47,6 +58,9 @@ namespace TrafficControlTest.Library
 		public static int DefaultVehicleSafetyFrameRadius = 500;
 		public static int DefaultVehicleBufferFrameRadius = 500;
 		public static int DefaultVehicleAverageVelocityDataCount = 10;
+
+		private static byte[] mKey = Encoding.ASCII.GetBytes("castec27");
+		private static byte[] mIv = Encoding.ASCII.GetBytes("27635744");
 
 		public static T GetDeepClone<T>(T o)
 		{
@@ -93,6 +107,42 @@ namespace TrafficControlTest.Library
 				}
 			}
 			return (ResultDictionary == null || ResultDictionary.Count == 0) ? false : true;
+		}
+		public static string EncryptString(string Src)
+		{
+			string result = string.Empty;
+			using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+			{
+				using (MemoryStream ms = new MemoryStream())
+				{
+					using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(mKey, mIv), CryptoStreamMode.Write))
+					{
+						byte[] srcByte = Encoding.ASCII.GetBytes(Src);
+						cs.Write(srcByte, 0, srcByte.Length);
+						cs.FlushFinalBlock();
+						result = Convert.ToBase64String(ms.ToArray());
+					}
+				}
+			}
+			return result;
+		}
+		public static string DecryptString(string Src)
+		{
+			string result = string.Empty;
+			using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+			{
+				using (MemoryStream ms = new MemoryStream())
+				{
+					using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(mKey, mIv), CryptoStreamMode.Write))
+					{
+						byte[] srcByte = Convert.FromBase64String(Src);
+						cs.Write(srcByte, 0, srcByte.Length);
+						cs.FlushFinalBlock();
+						result = Encoding.ASCII.GetString(ms.ToArray());
+					}
+				}
+			}
+			return result;
 		}
 
 		#region Factory
@@ -262,6 +312,18 @@ namespace TrafficControlTest.Library
 		public static IConfigurator GenerateIConfigurator(string FileName)
 		{
 			return new Configurator(FileName);
+		}
+		public static IAccount GenerateIAccount(string Name, string Password, AccountRank Rank)
+		{
+			return new Account(Name, Password, Rank);
+		}
+		public static IAccountManager GenerateIAccountManager(DatabaseAdapter DatabaseAdapter)
+		{
+			return new AccountManager(DatabaseAdapter);
+		}
+		public static IAccessControl GenerateIAccessControl(IAccountManager AccountManager)
+		{
+			return new AccessControl(AccountManager);
 		}
 		#endregion
 
@@ -1024,6 +1086,7 @@ namespace TrafficControlTest.Library
 	{
 		public delegate void EventHandlerDebugMessage(string OccurTime, string Category, string SubCategory, string Message);
 		public delegate void EventHandlerSignificantEvent(string OccurTime, string Category, string Info);
+		public delegate void EventHandlerLogInOutEvent(DateTime OccurTime, string Name, AccountRank Rank);
 
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);

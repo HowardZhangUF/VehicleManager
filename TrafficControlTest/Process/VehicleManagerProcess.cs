@@ -16,6 +16,8 @@ namespace TrafficControlTest.Process
 	{
 		public event EventHandlerDebugMessage DebugMessage;
 		public event EventHandlerSignificantEvent SignificantEvent;
+		public event EventHandlerLogInOutEvent AccessControlUserLogIn;
+		public event EventHandlerLogInOutEvent AccessControlUserLogOut;
 		public event EventHandlerDateTime VehicleCommunicatorSystemStarted;
 		public event EventHandlerDateTime VehicleCommunicatorSystemStopped;
 		public event EventHandlerLocalListenState VehicleCommunicatorLocalListenStateChagned;
@@ -62,13 +64,17 @@ namespace TrafficControlTest.Process
 				return !mImportantEventRecorder.mIsExecuting && !mVehicleCommunicator.mIsExecuting && !mCollisionEventDetector.mIsExecuting && !mVehicleControlHandler.mIsExecuting && !mHostCommunicator.mIsExecuting && !mMissionDispatcher.mIsExecuting;
 			}
 		}
+		public bool mIsLoggedIn { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser)); } }
 
 		private IConfigurator mConfigurator = null;
 		private DatabaseAdapter mDatabaseAdapterOfLogRecord = null;
 		private DatabaseAdapter mDatabaseAdapterOfEventRecord = null;
+		private DatabaseAdapter mDatabaseAdapterOfData = null;
 		private ILogRecorder mLogRecorder = null;
 		private IEventRecorder mEventRecorder = null;
 		private IImportantEventRecorder mImportantEventRecorder = null;
+		private IAccountManager mAccountManager = null;
+		private IAccessControl mAccessControl = null;
 		private IVehicleCommunicator mVehicleCommunicator = null;
 		private IVehicleInfoManager mVehicleInfoManager = null;
 		private ICollisionEventManager mCollisionEventManager = null;
@@ -105,6 +111,7 @@ namespace TrafficControlTest.Process
 		{
 			LogRecorderStart();
 			EventRecorderStart();
+			mAccountManager.Read();
 			ImportantEventRecorderStart();
 			VehicleCommunicatorStartListen();
 			CollisionEventDetectorStart();
@@ -114,12 +121,14 @@ namespace TrafficControlTest.Process
 		}
 		public void Stop()
 		{
+			if (mIsLoggedIn) AccessControlLogOut();
 			MissionDispatcherStop();
 			HostCommunicatorStopListen();
 			VehicleControlHandlerStop();
 			CollisionEventDetectorStop();
 			VehicleCommunicatorStopListen();
 			ImportantEventRecorderStop();
+			mAccountManager.Save();
 
 			DateTime tmp = DateTime.Now;
 			while (!mIsAllStopped)
@@ -184,6 +193,14 @@ namespace TrafficControlTest.Process
 		public void EventRecorderStop()
 		{
 			mEventRecorder.Stop();
+		}
+		public bool AccessControlLogIn(string Password)
+		{
+			return mAccessControl.LogIn(Password);
+		}
+		public bool AccessControlLogOut()
+		{
+			return mAccessControl.LogOut();
 		}
 		public void VehicleCommunicatorSetConfigOfListenPort(int Port)
 		{
@@ -349,10 +366,16 @@ namespace TrafficControlTest.Process
 			mConfigurator = GenerateIConfigurator("Application.config");
 			mDatabaseAdapterOfLogRecord = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mDatabaseAdapterOfEventRecord = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Event.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
+			mDatabaseAdapterOfData = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Data.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mLogRecorder = GenerateILogRecorder(mDatabaseAdapterOfLogRecord);
 			mEventRecorder = GenerateIEventRecorder(mDatabaseAdapterOfEventRecord);
+			mAccountManager = GenerateIAccountManager(mDatabaseAdapterOfData);
 
 			SubscribeEvent_Exception();
+
+			UnsubscribeEvent_IAccessControl(mAccessControl);
+			mAccessControl = GenerateIAccessControl(mAccountManager);
+			SubscribeEvent_IAccessControl(mAccessControl);
 
 			UnsubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
 			mVehicleCommunicator = GenerateIVehicleCommunicator();
@@ -440,6 +463,9 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfigOfListenPort().ToString());
 			mConfigurator.Save();
 
+			UnsubscribeEvent_IAccessControl(mAccessControl);
+			mAccessControl = null;
+
 			UnsubscribeEvent_IVehicleCommunicator(mVehicleCommunicator);
 			mVehicleCommunicator = null;
 
@@ -488,8 +514,10 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
 
+			mAccountManager = null;
 			mEventRecorder = null;
 			mLogRecorder = null;
+			mDatabaseAdapterOfData = null;
 			mDatabaseAdapterOfEventRecord = null;
 			mDatabaseAdapterOfLogRecord = null;
 			mConfigurator = null;
@@ -504,6 +532,22 @@ namespace TrafficControlTest.Process
 			{
 				System.IO.File.AppendAllText($"Exception{DateTime.Now.ToString("yyyyMMdd")}.txt", $"{DateTime.Now.ToString(TIME_FORMAT)} - {e.ExceptionObject.ToString()}\r\n");
 			};
+		}
+		private void SubscribeEvent_IAccessControl(IAccessControl AccessControl)
+		{
+			if (AccessControl != null)
+			{
+				AccessControl.UserLogIn += HandleEvent_AccessControlUserLogIn;
+				AccessControl.UserLogOut += HandleEvent_AccessControlUserLogOut;
+			}
+		}
+		private void UnsubscribeEvent_IAccessControl(IAccessControl AccessControl)
+		{
+			if (AccessControl != null)
+			{
+				AccessControl.UserLogIn -= HandleEvent_AccessControlUserLogIn;
+				AccessControl.UserLogOut -= HandleEvent_AccessControlUserLogOut;
+			}
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -833,6 +877,28 @@ namespace TrafficControlTest.Process
 			else
 			{
 				Task.Run(() => { SignificantEvent?.Invoke(OccurTime, Category, Info); });
+			}
+		}
+		protected virtual void RaiseEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank, bool Sync = true)
+		{
+			if (Sync)
+			{
+				AccessControlUserLogIn?.Invoke(OccurTime, Name, Rank);
+			}
+			else
+			{
+				Task.Run(() => { AccessControlUserLogIn?.Invoke(OccurTime, Name, Rank); });
+			}
+		}
+		protected virtual void RaiseEvent_AccessControlUserLogOut(DateTime OccurTime, string Name, AccountRank Rank, bool Sync = true)
+		{
+			if (Sync)
+			{
+				AccessControlUserLogOut?.Invoke(OccurTime, Name, Rank);
+			}
+			else
+			{
+				Task.Run(() => { AccessControlUserLogOut?.Invoke(OccurTime, Name, Rank); });
 			}
 		}
 		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
@@ -1252,6 +1318,16 @@ namespace TrafficControlTest.Process
 			{
 				Task.Run(() => { ImportantEventRecorderSystemStopped?.Invoke(OccurTime); });
 			}
+		}
+		private void HandleEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
+		{
+			HandleDebugMessage(OccurTime, "AccessControl", "UserLogIn", $"Name: {Name}, Rank: {Rank.ToString()}");
+			RaiseEvent_AccessControlUserLogIn(OccurTime, Name, Rank);
+		}
+		private void HandleEvent_AccessControlUserLogOut(DateTime OccurTime, string Name, AccountRank Rank)
+		{
+			HandleDebugMessage(OccurTime, "AccessControl", "UserLogOut", $"Name: {Name}, Rank: {Rank.ToString()}");
+			RaiseEvent_AccessControlUserLogOut(OccurTime, Name, Rank);
 		}
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
