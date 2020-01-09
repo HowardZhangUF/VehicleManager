@@ -37,7 +37,6 @@ namespace TrafficControlTest.UserInterface
 			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapterOfLogRecord(), mCore.GetReferenceOfDatabaseAdapterOfEventRecord());
-			ucLog1.Set(0, 1, 1);
 			ucVehicleOverview1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucVehicleManualControl1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMapManager());
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());
@@ -57,10 +56,7 @@ namespace TrafficControlTest.UserInterface
 			{
 				Constructor();
 				VehicleManagerProcessStart();
-				btnDisplayVehicleOverview_Click(null, null);
-				btnDisplayMap_Click(null, null);
-				btnDisplayPnlLeftMain_Click(null, null);
-				btnDisplayPnlBtm_Click(null, null);
+				UpdateGui_UpdateUsableControlAmount(AccountRank.None);
 			}
 			catch (Exception Ex)
 			{
@@ -150,6 +146,53 @@ namespace TrafficControlTest.UserInterface
 		private void UpdateGui_UpdateControlBackColor(Control Control, Color Color)
 		{
 			Control.InvokeIfNecessary(() => { if (Control.BackColor != Color) Control.BackColor = Color; });
+		}
+		private void UpdateGui_UpdateUsableControlAmount(AccountRank Rank)
+		{
+			switch (Rank)
+			{
+				case AccountRank.Software:
+				case AccountRank.Service:
+					btnDisplayVehicleManualControl.Visible = true;
+					btnDisplayVehicleApi.Visible = true;
+					ucVehicleManualControl1.Visible = true;
+					ucVehicleApi1.Visible = true;
+					ucLog1.Set(3, 1, 1);
+					UpdateGui_InitializeMenuState();
+					break;
+				case AccountRank.Customer:
+					// 隱藏左側選單的 VehicleManualControl 頁面
+					btnDisplayVehicleManualControl.Visible = true;
+					btnDisplayVehicleApi.Visible = false;
+					ucVehicleManualControl1.Visible = true;
+					ucVehicleApi1.Visible = false;
+					// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
+					ucLog1.Set(0, 1, 1);
+					UpdateGui_InitializeMenuState();
+					break;
+				case AccountRank.None:
+					// 隱藏左側選單的 VehicleManualControl, VehicleApi 頁面
+					btnDisplayVehicleManualControl.Visible = false;
+					btnDisplayVehicleApi.Visible = false;
+					ucVehicleManualControl1.Visible = false;
+					ucVehicleApi1.Visible = false;
+					// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
+					ucLog1.Set(0, 1, 1);
+					UpdateGui_InitializeMenuState();
+					break;
+			}
+		}
+		private void UpdateGui_InitializeMenuState()
+		{
+			// 左側選單選擇 VehicleOverview 並將選單收起來
+			UpdateGui_PnlLeftMain_DisplayVehicleOverview();
+			UpdateGui_PnlLeftMain_DisplayPnlLeftMain(false);
+
+			// 主選單選擇 Map
+			UpdateGui_PnlRightMain_DisplayMap();
+
+			// 隱藏下方選單
+			UpdateGui_PnlBtm_DisplayPnlBtm(false);
 		}
 		#endregion
 
