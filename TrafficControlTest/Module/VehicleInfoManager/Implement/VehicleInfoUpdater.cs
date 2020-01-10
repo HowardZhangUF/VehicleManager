@@ -202,7 +202,7 @@ namespace TrafficControlTest.Implement
 		private IEnumerable<IPoint2D> ConvertToPoints(List<double> X, List<double> Y)
 		{
 			List<IPoint2D> result = new List<IPoint2D>();
-			for (int i = 0; i < X.Count; ++i)
+			for (int i = 0; i < X.Count && i < Y.Count; ++i)
 			{
 				result.Add(Library.Library.GenerateIPoint2D((int)X[i], (int)Y[i]));
 			}
