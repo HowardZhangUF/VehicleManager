@@ -256,10 +256,10 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_SearchControl_ChangeButtonBackColorAndDisplayUcSearch(tmpSerial);
 			}
 		}
-		private void HandleEvent_UcSearchSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit)
+		private void HandleEvent_UcSearchSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit, DateTime Date)
 		{
 			string tmpSerial = (Sender as Control).Name.Replace(mDefaultNameOfUcSearch, string.Empty);
-			UpdateGui_SearchControl_UpdateButtonText(tmpSerial, (Sender as UcSearch).mKeyword+ " - " + Keyword);
+			UpdateGui_SearchControl_UpdateButtonText(tmpSerial, (Sender as UcSearch).mKeyword + " - " + Keyword + " - " + Date.ToString("yyyy/MM/dd"));
 		}
 		private static void TransferData<T>(Queue<T> SrcList, Queue<T> DstList)
 		{
@@ -270,17 +270,17 @@ namespace TrafficControlTest.UserControl
 		}
 	}
 
-    public class SearchControl
-    {
-        public Button mButton { get; } = null;
-        public UcSearch mUcSearch { get; } = null;
+	public class SearchControl
+	{
+		public Button mButton { get; } = null;
+		public UcSearch mUcSearch { get; } = null;
 		public string mSerial { get; } = string.Empty;
 
-        public SearchControl(Button Button, UcSearch UcSearch, string Serial)
-        {
-            mButton = Button;
-            mUcSearch = UcSearch;
+		public SearchControl(Button Button, UcSearch UcSearch, string Serial)
+		{
+			mButton = Button;
+			mUcSearch = UcSearch;
 			mSerial = Serial;
-        }
-    }
+		}
+	}
 }

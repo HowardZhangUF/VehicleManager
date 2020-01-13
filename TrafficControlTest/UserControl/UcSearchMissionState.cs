@@ -14,16 +14,16 @@ namespace TrafficControlTest.UserControl
 
 		public UcSearchMissionState() : base() { }
 
-		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit)
+		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime Date)
 		{
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword) || Keyword == "Recent")
 			{
-				result = $"SELECT * FROM MissionState ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT * FROM MissionState WHERE (ID LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) WHERE (ID LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}

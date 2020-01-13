@@ -35,6 +35,7 @@
 			this.txtSearch = new System.Windows.Forms.TextBox();
 			this.cbLimit = new System.Windows.Forms.ComboBox();
 			this.dgvSearchResult = new System.Windows.Forms.DataGridView();
+			this.dtpDateFilter = new TrafficControlTest.UserControl.DateTimePickerColorful();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvSearchResult)).BeginInit();
@@ -52,10 +53,12 @@
 			// 
 			// tableLayoutPanel1
 			// 
-			this.tableLayoutPanel1.ColumnCount = 3;
+			this.tableLayoutPanel1.ColumnCount = 4;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 240F));
+			this.tableLayoutPanel1.Controls.Add(this.dtpDateFilter, 3, 0);
 			this.tableLayoutPanel1.Controls.Add(this.btnSearch, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.txtSearch, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.cbLimit, 2, 0);
@@ -64,7 +67,7 @@
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(600, 50);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(840, 50);
 			this.tableLayoutPanel1.TabIndex = 1;
 			// 
 			// btnSearch
@@ -98,12 +101,12 @@
 			this.cbLimit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.cbLimit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbLimit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.cbLimit.Font = new System.Drawing.Font("新細明體", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.cbLimit.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.cbLimit.ForeColor = System.Drawing.Color.White;
 			this.cbLimit.FormattingEnabled = true;
-			this.cbLimit.Location = new System.Drawing.Point(453, 4);
+			this.cbLimit.Location = new System.Drawing.Point(453, 7);
 			this.cbLimit.Name = "cbLimit";
-			this.cbLimit.Size = new System.Drawing.Size(144, 41);
+			this.cbLimit.Size = new System.Drawing.Size(144, 35);
 			this.cbLimit.TabIndex = 7;
 			this.cbLimit.SelectedIndexChanged += new System.EventHandler(this.cbLimit_SelectedIndexChanged);
 			// 
@@ -116,6 +119,19 @@
 			this.dgvSearchResult.RowTemplate.Height = 27;
 			this.dgvSearchResult.Size = new System.Drawing.Size(850, 500);
 			this.dgvSearchResult.TabIndex = 2;
+			// 
+			// dtpDateFilter
+			// 
+			this.dtpDateFilter.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.dtpDateFilter.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.dtpDateFilter.BorderColor = System.Drawing.Color.White;
+			this.dtpDateFilter.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.dtpDateFilter.ForeTextColor = System.Drawing.Color.White;
+			this.dtpDateFilter.Location = new System.Drawing.Point(603, 7);
+			this.dtpDateFilter.Name = "dtpDateFilter";
+			this.dtpDateFilter.Size = new System.Drawing.Size(234, 35);
+			this.dtpDateFilter.TabIndex = 2;
+			this.dtpDateFilter.ValueChanged += new System.EventHandler(this.dtpDateFilter_ValueChanged);
 			// 
 			// UcSearch
 			// 
@@ -142,5 +158,6 @@
 		private System.Windows.Forms.TextBox txtSearch;
 		private System.Windows.Forms.ComboBox cbLimit;
 		private System.Windows.Forms.DataGridView dgvSearchResult;
+		private DateTimePickerColorful dtpDateFilter;
 	}
 }

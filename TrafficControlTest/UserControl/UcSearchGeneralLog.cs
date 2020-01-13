@@ -14,16 +14,16 @@ namespace TrafficControlTest.UserControl
 
 		public UcSearchGeneralLog() : base() { }
 
-		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit)
+		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime Date)
 		{
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword) || Keyword == "Recent")
 			{
-				result = $"SELECT Timestamp, Category, SubCategory, Message FROM GeneralLog ORDER BY No DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT Timestamp, Category, SubCategory, Message FROM (SELECT * FROM GeneralLog WHERE {ConvertDateToSqlCommand("Timestamp", Date)}) ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT Timestamp, Category, SubCategory, Message FROM GeneralLog WHERE (Category LIKE '%{Keyword}%' OR SubCategory LIKE '%{Keyword}%' OR Message LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT Timestamp, Category, SubCategory, Message FROM (SELECT * FROM GeneralLog WHERE {ConvertDateToSqlCommand("Timestamp", Date)}) WHERE (Category LIKE '%{Keyword}%' OR SubCategory LIKE '%{Keyword}%' OR Message LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}

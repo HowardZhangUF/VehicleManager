@@ -13,7 +13,7 @@ namespace TrafficControlTest.UserControl
 {
 	public abstract partial class UcSearch : System.Windows.Forms.UserControl
 	{
-		public delegate void EventHandlerSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit);
+		public delegate void EventHandlerSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit, DateTime Date);
 
 		public event EventHandlerSearchSuccessed SearchSuccessed;
 
@@ -50,6 +50,7 @@ namespace TrafficControlTest.UserControl
 		{
 			txtSearch.Text = string.Empty;
 			cbLimit.SelectedIndex = 0;
+			dtpDateFilter.Value = DateTime.Now;
 			SearchAndDisplayResult();
 		}
 		public DataGridView GetDgv()
@@ -57,41 +58,45 @@ namespace TrafficControlTest.UserControl
 			return dgvSearchResult;
 		}
 
-		protected abstract string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit);
+		protected abstract string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime Date);
 		protected abstract void UpdateGui_DgvSearchResult_Initialize();
-		protected virtual void RaiseEvent_SearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit, bool Sync = true)
+		protected virtual string ConvertDateToSqlCommand(string ColName, DateTime Date)
+		{
+			return $"({ColName} >= '{Date.ToString("yyyy-MM-dd")} 00:00:00.000' AND {ColName} < '{Date.AddDays(1).ToString("yyyy-MM-dd")} 00:00:00.000')";
+		}
+		protected virtual void RaiseEvent_SearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit, DateTime Date, bool Sync = true)
 		{
 			if (Sync)
 			{
-				SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit);
+				SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit, Date);
 			}
 			else
 			{
-				Task.Run(() => { SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit); });
+				Task.Run(() => { SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit, Date); });
 			}
 		}
 
 		private void SearchAndDisplayResult()
 		{
-			SearchAndDisplayResult(txtSearch.Text, int.Parse(cbLimit.SelectedItem.ToString()));
+			SearchAndDisplayResult(txtSearch.Text, int.Parse(cbLimit.SelectedItem.ToString()), dtpDateFilter.Value.Date);
 		}
-		private void SearchAndDisplayResult(string Keyword, int Limit)
+		private void SearchAndDisplayResult(string Keyword, int Limit, DateTime Date)
 		{
 			if (rDatabaseAdapter == null) return;
 
-			string command = ConvertSearchOptionsToSqlCommand(Keyword, Limit);
+			string command = ConvertSearchOptionsToSqlCommand(Keyword, Limit, Date);
 
 			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(command)?.Tables[0];
 			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
 			{
 				UpdateGui_DgvSearchResult_ClearRows();
 				UpdateGui_DgvSearchResult_AddRows(searchResult.Rows);
-				RaiseEvent_SearchSuccessed(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit);
+				RaiseEvent_SearchSuccessed(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit, Date);
 			}
 			else
 			{
 				// 如果做 Default Search 時沒有找到資料，則代表資料庫剛建立所以沒有資料，此時不跳出提醒視窗
-				if (!string.IsNullOrEmpty(Keyword))
+				if (!(string.IsNullOrEmpty(Keyword) && Date.Date == DateTime.Now.Date))
 				{
 					MessageBox.Show("No Matches!", string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
@@ -105,6 +110,9 @@ namespace TrafficControlTest.UserControl
 				cbLimit.Items.Add("300");
 				cbLimit.Items.Add("500");
 				cbLimit.Items.Add("1000");
+				cbLimit.Items.Add("3000");
+				cbLimit.Items.Add("5000");
+				cbLimit.Items.Add("10000");
 				cbLimit.SelectedIndex = 0;
 			});
 		}
@@ -221,6 +229,10 @@ namespace TrafficControlTest.UserControl
 			{
 				SearchAndDisplayResult();
 			}
+		}
+		private void dtpDateFilter_ValueChanged(object sender, EventArgs e)
+		{
+			SearchAndDisplayResult();
 		}
 	}
 }

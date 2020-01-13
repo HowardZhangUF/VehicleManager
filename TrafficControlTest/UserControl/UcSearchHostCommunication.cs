@@ -14,16 +14,16 @@ namespace TrafficControlTest.UserControl
 
 		public UcSearchHostCommunication() : base() { }
 
-		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit)
+		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime Date)
 		{
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword) || Keyword == "Recent")
 			{
-				result = $"SELECT Timestamp, Event, IPPort, Data FROM HistoryHostCommunication ORDER BY No DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT Timestamp, Event, IPPort, Data FROM (SELECT * FROM HistoryHostCommunication WHERE {ConvertDateToSqlCommand("Timestamp", Date)}) ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT Timestamp, Event, IPPort, Data FROM HistoryHostCommunication WHERE (Event LIKE '%{Keyword}%' OR IPPort LIKE '%{Keyword}%' OR Data LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT Timestamp, Event, IPPort, Data FROM (SELECT * FROM HistoryHostCommunication WHERE {ConvertDateToSqlCommand("Timestamp", Date)}) WHERE (Event LIKE '%{Keyword}%' OR IPPort LIKE '%{Keyword}%' OR Data LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}
