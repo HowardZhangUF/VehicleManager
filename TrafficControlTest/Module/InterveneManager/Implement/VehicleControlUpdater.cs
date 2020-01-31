@@ -96,7 +96,7 @@ namespace TrafficControlTest.Module.InterveneManager.Implement
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
 		{
-			if (Data is Serializable)
+			if (Data is Serializable && rVehicleInfoManager.IsExistByIpPort(IpPort))
 			{
 				string vehicleId = rVehicleInfoManager.GetItemByIpPort(IpPort).mName;
 				if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
