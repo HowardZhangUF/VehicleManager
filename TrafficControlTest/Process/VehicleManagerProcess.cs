@@ -14,48 +14,12 @@ namespace TrafficControlTest.Process
 {
 	public class VehicleManagerProcess
 	{
-		public event EventHandlerDebugMessage DebugMessage;
 		public event EventHandlerSignificantEvent SignificantEvent;
 		public event EventHandlerLogInOutEvent AccessControlUserLogIn;
 		public event EventHandlerLogInOutEvent AccessControlUserLogOut;
-		public event EventHandlerDateTime VehicleCommunicatorSystemStarted;
-		public event EventHandlerDateTime VehicleCommunicatorSystemStopped;
 		public event EventHandlerLocalListenState VehicleCommunicatorLocalListenStateChagned;
-		public event EventHandlerRemoteConnectState VehicleCommunicatorRemoteConnectStateChagned;
-		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableData;
-		public event EventHandlerReceivedSerializableData VehicleCommunicatorReceivedSerializableData;
-		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableDataSuccessed;
-		public event EventHandlerSentSerializableData VehicleCommunicatorSentSerializableDataFailed;
 		public event EventHandlerItem<IVehicleInfo> VehicleInfoManagerItemAdded;
 		public event EventHandlerItem<IVehicleInfo> VehicleInfoManagerItemRemoved;
-		public event EventHandlerItemUpdated<IVehicleInfo> VehicleInfoManagerItemUpdated;
-		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventAdded;
-		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventRemoved;
-		public event EventHandlerICollisionPair CollisionEventManagerCollisionEventStateUpdated;
-		public event EventHandlerDateTime CollisionEventDetectorSystemStarted;
-		public event EventHandlerDateTime CollisionEventDetectorSystemStopped;
-		public event EventHandlerItem<IVehicleControl> VehicleControlManagerItemAdded;
-		public event EventHandlerItem<IVehicleControl> VehicleControlManagerItemRemoved;
-		public event EventHandlerItemUpdated<IVehicleControl> VehicleControlManagerItemUpdated;
-		public event EventHandlerDateTime VehicleControlHandlerSystemStarted;
-		public event EventHandlerDateTime VehicleControlHandlerSystemStopped;
-		public event EventHandlerItem<IMissionState> MissionStateManagerItemAdded;
-		public event EventHandlerItem<IMissionState> MissionStateManagerItemRemoved;
-		public event EventHandlerItemUpdated<IMissionState> MissionStateManagerItemUpdated;
-		public event EventHandlerDateTime HostCommunicatorSystemStarted;
-		public event EventHandlerDateTime HostCommunicatorSystemStopped;
-		public event EventHandlerRemoteConnectState HostCommunicatorRemoteConnectStateChanged;
-		public event EventHandlerLocalListenState HostCommunicatorLocalListenStateChanged;
-		public event EventHandlerSentString HostCommunicatorSentString;
-		public event EventHandlerReceivedString HostCommunicatorReceivedString;
-		public event EventHandlerDateTime MissionDispatcherSystemStarted;
-		public event EventHandlerDateTime MissionDispatcherSystemStopped;
-		public event EventHandlerMapFileName MapFileManagerMapFileAdded;
-		public event EventHandlerMapFileName MapFileManagerMapFileRemoved;
-		public event EventHandlerVehicleNamesMapFileName MapFileManagerVehicleCurrentMapSynchronized;
-		public event EventHandlerMapFileName MapManagerMapLoaded;
-		public event EventHandlerDateTime ImportantEventRecorderSystemStarted;
-		public event EventHandlerDateTime ImportantEventRecorderSystemStopped;
 
 		public bool mIsAllStopped
 		{
@@ -853,17 +817,6 @@ namespace TrafficControlTest.Process
 				ImportantEventRecorder.SystemStopped -= HandleEvent_ImportantEventRecorderSystemStopped;
 			}
 		}
-		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
-		{
-			if (Sync)
-			{
-				DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message);
-			}
-			else
-			{
-				Task.Run(() => { DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message); });
-			}
-		}
 		protected virtual void RaiseEvent_SignificantEvent(DateTime OccurTime, SignificantEventCategory Category, string Info, bool Sync = true)
 		{
 			RaiseEvent_SignificantEvent(OccurTime.ToString(TIME_FORMAT), Category.ToString(), Info, Sync);
@@ -901,28 +854,6 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { AccessControlUserLogOut?.Invoke(OccurTime, Name, Rank); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleCommunicatorSystemStarted?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { VehicleCommunicatorSystemStarted?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleCommunicatorSystemStopped(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleCommunicatorSystemStopped?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { VehicleCommunicatorSystemStopped?.Invoke(OccurTime); });
-			}
-		}
 		protected virtual void RaiseEvent_VehicleCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port, bool Sync = true)
 		{
 			if (Sync)
@@ -932,61 +863,6 @@ namespace TrafficControlTest.Process
 			else
 			{
 				Task.Run(() => { VehicleCommunicatorLocalListenStateChagned?.Invoke(OccurTime, NewState, Port); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleCommunicatorRemoteConnectStateChagned(DateTime OccurTime, string IpPort, ConnectState NewState, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleCommunicatorRemoteConnectStateChagned?.Invoke(OccurTime, IpPort, NewState);
-			}
-			else
-			{
-				Task.Run(() => { VehicleCommunicatorRemoteConnectStateChagned?.Invoke(OccurTime, IpPort, NewState); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleCommunicatorSentSerializableData(DateTime OccurTime, string IpPort, object Data, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleCommunicatorSentSerializableData?.Invoke(OccurTime, IpPort, Data);
-			}
-			else
-			{
-				Task.Run(() => { VehicleCommunicatorSentSerializableData?.Invoke(OccurTime, IpPort, Data); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleCommunicatorReceivedSerializableData?.Invoke(OccurTime, IpPort, Data);
-			}
-			else
-			{
-				Task.Run(() => { VehicleCommunicatorReceivedSerializableData?.Invoke(OccurTime, IpPort, Data); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleCommunicatorSentSerializableDataSuccessed?.Invoke(OccurTime, IpPort, Data);
-			}
-			else
-			{
-				Task.Run(() => { VehicleCommunicatorSentSerializableDataSuccessed?.Invoke(OccurTime, IpPort, Data); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleCommunicatorSentSerializableDataFailed?.Invoke(OccurTime, IpPort, Data);
-			}
-			else
-			{
-				Task.Run(() => { VehicleCommunicatorSentSerializableDataFailed?.Invoke(OccurTime, IpPort, Data); });
 			}
 		}
 		protected virtual void RaiseEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
@@ -1011,314 +887,6 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { VehicleInfoManagerItemRemoved?.Invoke(OccurTime, Name, VehicleInfo); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleInfoManagerItemUpdated?.Invoke(OccurTime, Name, StateName, VehicleInfo);
-			}
-			else
-			{
-				Task.Run(() => { VehicleInfoManagerItemUpdated?.Invoke(OccurTime, Name, StateName, VehicleInfo); });
-			}
-		}
-		protected virtual void RaiseEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair, bool Sync = true)
-		{
-			if (Sync)
-			{
-				CollisionEventManagerCollisionEventAdded?.Invoke(OccurTime, Name, CollisionPair);
-			}
-			else
-			{
-				Task.Run(() => { CollisionEventManagerCollisionEventAdded?.Invoke(OccurTime, Name, CollisionPair); });
-			}
-		}
-		protected virtual void RaiseEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair, bool Sync = true)
-		{
-			if (Sync)
-			{
-				CollisionEventManagerCollisionEventRemoved?.Invoke(OccurTime, Name, CollisionPair);
-			}
-			else
-			{
-				Task.Run(() => { CollisionEventManagerCollisionEventRemoved?.Invoke(OccurTime, Name, CollisionPair); });
-			}
-		}
-		protected virtual void RaiseEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair, bool Sync = true)
-		{
-			if (Sync)
-			{
-				CollisionEventManagerCollisionEventStateUpdated?.Invoke(OccurTime, Name, CollisionPair);
-			}
-			else
-			{
-				Task.Run(() => { CollisionEventManagerCollisionEventStateUpdated?.Invoke(OccurTime, Name, CollisionPair); });
-			}
-		}
-		protected virtual void RaiseEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				CollisionEventDetectorSystemStarted?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { CollisionEventDetectorSystemStarted?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_CollisionEventDetectorSystemStopped(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				CollisionEventDetectorSystemStopped?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { CollisionEventDetectorSystemStopped?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleControlManagerItemAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleControlManagerItemAdded?.Invoke(OccurTime, Name, VehicleControl);
-			}
-			else
-			{
-				Task.Run(() => { VehicleControlManagerItemAdded?.Invoke(OccurTime, Name, VehicleControl); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleControlManagerItemRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleControlManagerItemRemoved?.Invoke(OccurTime, Name, VehicleControl);
-			}
-			else
-			{
-				Task.Run(() => { VehicleControlManagerItemRemoved?.Invoke(OccurTime, Name, VehicleControl); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleControlManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleControlManagerItemUpdated?.Invoke(OccurTime, Name, StateName, VehicleControl);
-			}
-			else
-			{
-				Task.Run(() => { VehicleControlManagerItemUpdated?.Invoke(OccurTime, Name, StateName, VehicleControl); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleControlHandlerSystemStarted(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleControlHandlerSystemStarted?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { VehicleControlHandlerSystemStarted?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleControlHandlerSystemStopped(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleControlHandlerSystemStopped?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { VehicleControlHandlerSystemStopped?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MissionStateManagerItemAdded?.Invoke(OccurTime, MissionId, MissionState);
-			}
-			else
-			{
-				Task.Run(() => { MissionStateManagerItemAdded?.Invoke(OccurTime, MissionId, MissionState); });
-			}
-		}
-		protected virtual void RaiseEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MissionStateManagerItemRemoved?.Invoke(OccurTime, MissionId, MissionState);
-			}
-			else
-			{
-				Task.Run(() => { MissionStateManagerItemRemoved?.Invoke(OccurTime, MissionId, MissionState); });
-			}
-		}
-		protected virtual void RaiseEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MissionStateManagerItemUpdated?.Invoke(OccurTime, MissionId, StateName, MissionState);
-			}
-			else
-			{
-				Task.Run(() => { MissionStateManagerItemUpdated?.Invoke(OccurTime, MissionId, StateName, MissionState); });
-			}
-		}
-		protected virtual void RaiseEvent_HostCommunicatorSystemStarted(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				HostCommunicatorSystemStarted?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { HostCommunicatorSystemStarted?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_HostCommunicatorSystemStopped(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				HostCommunicatorSystemStopped?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { HostCommunicatorSystemStopped?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port, bool Sync = true)
-		{
-			if (Sync)
-			{
-				HostCommunicatorLocalListenStateChanged?.Invoke(OccurTime, NewState, Port);
-			}
-			else
-			{
-				Task.Run(() => { HostCommunicatorLocalListenStateChanged?.Invoke(OccurTime, NewState, Port); });
-			}
-		}
-		protected virtual void RaiseEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState, bool Sync = true)
-		{
-			if (Sync)
-			{
-				HostCommunicatorRemoteConnectStateChanged?.Invoke(OccurTime, IpPort, NewState);
-			}
-			else
-			{
-				Task.Run(() => { HostCommunicatorRemoteConnectStateChanged?.Invoke(OccurTime, IpPort, NewState); });
-			}
-		}
-		protected virtual void RaiseEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data, bool Sync = true)
-		{
-			if (Sync)
-			{
-				HostCommunicatorSentString?.Invoke(OccurTime, IpPort, Data);
-			}
-			else
-			{
-				Task.Run(() => { HostCommunicatorSentString?.Invoke(OccurTime, IpPort, Data); });
-			}
-		}
-		protected virtual void RaiseEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data, bool Sync = true)
-		{
-			if (Sync)
-			{
-				HostCommunicatorReceivedString?.Invoke(OccurTime, IpPort, Data);
-			}
-			else
-			{
-				Task.Run(() => { HostCommunicatorReceivedString?.Invoke(OccurTime, IpPort, Data); });
-			}
-		}
-		protected virtual void RaiseEvent_MissionDispatcherSystemStarted(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MissionDispatcherSystemStarted?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { MissionDispatcherSystemStarted?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_MissionDispatcherSystemStopped(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MissionDispatcherSystemStopped?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { MissionDispatcherSystemStopped?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MapFileManagerMapFileAdded?.Invoke(OccurTime, MapFileName);
-			}
-			else
-			{
-				Task.Run(() => { MapFileManagerMapFileAdded?.Invoke(OccurTime, MapFileName); });
-			}
-		}
-		protected virtual void RaiseEvent_MapFileManagerMapFileRemoved(DateTime OccurTime, string MapFileName, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MapFileManagerMapFileRemoved?.Invoke(OccurTime, MapFileName);
-			}
-			else
-			{
-				Task.Run(() => { MapFileManagerMapFileRemoved?.Invoke(OccurTime, MapFileName); });
-			}
-		}
-		protected virtual void RaiseEvent_MapFileManagerVehicleCurrentMapSynchronized(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MapFileManagerVehicleCurrentMapSynchronized?.Invoke(OccurTime, VehicleNames, MapFileName);
-			}
-			else
-			{
-				Task.Run(() => { MapFileManagerVehicleCurrentMapSynchronized?.Invoke(OccurTime, VehicleNames, MapFileName); });
-			}
-		}
-		protected virtual void RaiseEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MapManagerMapLoaded?.Invoke(OccurTime, MapFileName);
-			}
-			else
-			{
-				Task.Run(() => { MapManagerMapLoaded?.Invoke(OccurTime, MapFileName); });
-			}
-		}
-		protected virtual void RaiseEvent_ImportantEventRecorderSystemStarted(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				ImportantEventRecorderSystemStarted?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { ImportantEventRecorderSystemStarted?.Invoke(OccurTime); });
-			}
-		}
-		protected virtual void RaiseEvent_ImportantEventRecorderSystemStopped(DateTime OccurTime, bool Sync = true)
-		{
-			if (Sync)
-			{
-				ImportantEventRecorderSystemStopped?.Invoke(OccurTime);
-			}
-			else
-			{
-				Task.Run(() => { ImportantEventRecorderSystemStopped?.Invoke(OccurTime); });
-			}
-		}
 		private void HandleEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
 		{
 			HandleDebugMessage(OccurTime, "AccessControl", "UserLogIn", $"Name: {Name}, Rank: {Rank.ToString()}");
@@ -1332,12 +900,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SystemStarted", string.Empty);
-			RaiseEvent_VehicleCommunicatorSystemStarted(OccurTime);
 		}
 		private void HandleEvent_VehicleCommunicatorSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SystemStopped", string.Empty);
-			RaiseEvent_VehicleCommunicatorSystemStopped(OccurTime);
 		}
 		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{
@@ -1347,12 +913,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "RemoteConnectStateChanged", $"IPPort: {IpPort}, State: {NewState}");
-			RaiseEvent_VehicleCommunicatorRemoteConnectStateChagned(OccurTime, IpPort, NewState);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
-			RaiseEvent_VehicleCommunicatorSentSerializableData(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
 		{
@@ -1361,17 +925,14 @@ namespace TrafficControlTest.Process
 			{
 				HandleDebugMessage(OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
 			}
-			RaiseEvent_VehicleCommunicatorReceivedSerializableData(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentDataSuccessed", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
-			RaiseEvent_VehicleCommunicatorSentSerializableDataSuccessed(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentDataFailed", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
-			RaiseEvent_VehicleCommunicatorSentSerializableDataFailed(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
@@ -1392,68 +953,55 @@ namespace TrafficControlTest.Process
 			{
 				HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
 			}
-			RaiseEvent_VehicleInfoManagerItemUpdated(OccurTime, Name, StateName, VehicleInfo);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
 			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemAdded", $"Name: {Name}, Info:{CollisionPair.ToString()}");
-			RaiseEvent_CollisionEventManagerCollisionEventAdded(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
 			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemRemoved", $"Name: {Name}, Info:{CollisionPair.ToString()}");
-			RaiseEvent_CollisionEventManagerCollisionEventRemoved(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{
 			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemUpdated", $"Name: {Name}, Info:{CollisionPair.ToString()}");
-			RaiseEvent_CollisionEventManagerCollisionEventStateUpdated(OccurTime, Name, CollisionPair);
 		}
 		private void HandleEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "CollisionEventDetector", "SystemStarted", string.Empty);
-			RaiseEvent_CollisionEventDetectorSystemStarted(OccurTime);
 		}
 		private void HandleEvent_CollisionEventDetectorSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "CollisionEventDetector", "SystemStopped", string.Empty);
-			RaiseEvent_CollisionEventDetectorSystemStopped(OccurTime);
 		}
 		private void HandleEvent_VehicleControlManagerItemAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
 			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemAdded", $"Name: {Name}, Info:{VehicleControl.ToString()}");
-			RaiseEvent_VehicleControlManagerItemAdded(OccurTime, Name, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlManagerItemRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
 			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemRemoved", $"Name: {Name}, Info:{VehicleControl.ToString()}");
-			RaiseEvent_VehicleControlManagerItemRemoved(OccurTime, Name, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl)
 		{
 			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info:{VehicleControl.ToString()}");
-			RaiseEvent_VehicleControlManagerItemUpdated(OccurTime, Name, StateName, VehicleControl);
 		}
 		private void HandleEvent_VehicleControlHandlerSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "VehicleControlHandler", "SystemStarted", string.Empty);
-			RaiseEvent_VehicleControlHandlerSystemStarted(OccurTime);
 		}
 		private void HandleEvent_VehicleControlHandlerSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "VehicleControlHandler", "SystemStopped", string.Empty);
-			RaiseEvent_VehicleControlHandlerSystemStopped(OccurTime);
 		}
 		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
 			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {MissionState.GetMissionId()} ] Created");
-			RaiseEvent_MissionStateManagerItemAdded(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
 			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemRemoved", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
-			RaiseEvent_MissionStateManagerItemRemoved(OccurTime, MissionId, MissionState);
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
 		{
@@ -1466,22 +1014,18 @@ namespace TrafficControlTest.Process
 			{
 				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {MissionState.GetMissionId()} ] Completed [ {MissionState.mExecuteState.ToString().Replace("Execute", string.Empty)} ] by Vehicle [ {MissionState.mExecutorId} ]");
 			}
-			RaiseEvent_MissionStateManagerItemUpdated(OccurTime, MissionId, StateName, MissionState);
 		}
 		private void HandleEvent_HostCommunicatorSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "SystemStarted", string.Empty);
-			RaiseEvent_HostCommunicatorSystemStarted(OccurTime);
 		}
 		private void HandleEvent_HostCommunicatorSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "SystemStopped", string.Empty);
-			RaiseEvent_HostCommunicatorSystemStopped(OccurTime);
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "LocalListenStateChanged", $"State: {NewState.ToString()}, Port: {Port}");
-			RaiseEvent_HostCommunicatorLocalListenStateChanged(OccurTime, NewState, Port);
 		}
 		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
@@ -1494,59 +1038,48 @@ namespace TrafficControlTest.Process
 			{
 				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Host [ {IpPort} ] Disconnected");
 			}
-			RaiseEvent_HostCommunicatorRemoteConnectStateChanged(OccurTime, IpPort, NewState);
 		}
 		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "SentString", $"IPPort: {IpPort}, Data: {Data}");
 			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {IpPort} ] [ {Data} ]");
-			RaiseEvent_HostCommunicatorSentString(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {IpPort}, Data: {Data}");
 			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {IpPort} ] [ {Data} ]");
-			RaiseEvent_HostCommunicatorReceivedString(OccurTime, IpPort, Data);
 		}
 		private void HandleEvent_MissionDispatcherSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "MissionDispatcher", "SystemStarted", string.Empty);
-			RaiseEvent_MissionDispatcherSystemStarted(OccurTime);
 		}
 		private void HandleEvent_MissionDispatcherSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "MissionDispatcher", "SystemStopped", string.Empty);
-			RaiseEvent_MissionDispatcherSystemStopped(OccurTime);
 		}
 		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{
 			HandleDebugMessage(OccurTime, "MapFileManager", "ItemAdded", $"MapFileName: {MapFileName}");
-			RaiseEvent_MapFileManagerMapFileAdded(OccurTime, MapFileName);
 		}
 		private void HandleEvent_MapFileManagerMapFileRemoved(DateTime OccurTime, string MapFileName)
 		{
 			HandleDebugMessage(OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {MapFileName}");
-			RaiseEvent_MapFileManagerMapFileRemoved(OccurTime, MapFileName);
 		}
 		private void HandleEvent_MapFileManagerVehicleCurrentMapSynchronized(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName)
 		{
 			HandleDebugMessage(OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
-			RaiseEvent_MapFileManagerVehicleCurrentMapSynchronized(OccurTime, VehicleNames, MapFileName);
 		}
 		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
 		{
 			HandleDebugMessage(OccurTime, "MapManager", "MapLoaded", $"MapName: {MapFileName}");
-			RaiseEvent_MapManagerMapLoaded(OccurTime, MapFileName);
 		}
 		private void HandleEvent_ImportantEventRecorderSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "SystemStarted", string.Empty);
-			RaiseEvent_ImportantEventRecorderSystemStarted(OccurTime);
 		}
 		private void HandleEvent_ImportantEventRecorderSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "SystemStopped", string.Empty);
-			RaiseEvent_ImportantEventRecorderSystemStopped(OccurTime);
 		}
 		private void HandleDebugMessage(string Message)
 		{
@@ -1568,7 +1101,6 @@ namespace TrafficControlTest.Process
 		{
 			Console.WriteLine($"{OccurTime} [{Category}] [{SubCategory}] - {Message}");
 			mLogRecorder.RecordGeneralLog(OccurTime, Category, SubCategory, Message);
-			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
 		}
 	}
 }
