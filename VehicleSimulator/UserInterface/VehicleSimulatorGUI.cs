@@ -334,6 +334,10 @@ namespace VehicleSimulator.UserInterface
 				mCore.CommunicatorClientStartConnect(Ip, Port);
 			}
 		}
+		private void menuHostDisconnect_Click(object sender, EventArgs e)
+		{
+			mCore.CommunicatorClientStopConnect();
+		}
 		private void menuShowVehicleStateDetail_Click(object sender, EventArgs e)
 		{
 			UpdateGui_DisplayVehicleStateDetail(!showVehicleStateDetail);

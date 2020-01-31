@@ -40,6 +40,7 @@
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.menuHostConnection = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuHostConnect = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuHostDisconnect = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuHostIpPort = new System.Windows.Forms.ToolStripTextBox();
 			this.menuShowVehicleStateDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -139,7 +140,7 @@
             this.menuShowVehicleStateDetail});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(629, 27);
+			this.menuStrip1.Size = new System.Drawing.Size(629, 28);
 			this.menuStrip1.TabIndex = 3;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -148,17 +149,25 @@
 			this.menuHostConnection.BackColor = System.Drawing.Color.LightPink;
 			this.menuHostConnection.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuHostConnect,
+            this.menuHostDisconnect,
             this.menuHostIpPort});
 			this.menuHostConnection.Name = "menuHostConnection";
-			this.menuHostConnection.Size = new System.Drawing.Size(136, 23);
+			this.menuHostConnection.Size = new System.Drawing.Size(136, 24);
 			this.menuHostConnection.Text = "Host Connection";
 			// 
 			// menuHostConnect
 			// 
 			this.menuHostConnect.Name = "menuHostConnect";
-			this.menuHostConnect.Size = new System.Drawing.Size(166, 26);
+			this.menuHostConnect.Size = new System.Drawing.Size(216, 26);
 			this.menuHostConnect.Text = "Connect";
 			this.menuHostConnect.Click += new System.EventHandler(this.menuHostConnect_Click);
+			// 
+			// menuHostDisconnect
+			// 
+			this.menuHostDisconnect.Name = "menuHostDisconnect";
+			this.menuHostDisconnect.Size = new System.Drawing.Size(216, 26);
+			this.menuHostDisconnect.Text = "Disconnect";
+			this.menuHostDisconnect.Click += new System.EventHandler(this.menuHostDisconnect_Click);
 			// 
 			// menuHostIpPort
 			// 
@@ -170,7 +179,7 @@
 			// 
 			this.menuShowVehicleStateDetail.BackColor = System.Drawing.Color.LightPink;
 			this.menuShowVehicleStateDetail.Name = "menuShowVehicleStateDetail";
-			this.menuShowVehicleStateDetail.Size = new System.Drawing.Size(104, 23);
+			this.menuShowVehicleStateDetail.Size = new System.Drawing.Size(104, 24);
 			this.menuShowVehicleStateDetail.Text = "Show Detail";
 			this.menuShowVehicleStateDetail.Click += new System.EventHandler(this.menuShowVehicleStateDetail_Click);
 			// 
@@ -381,6 +390,7 @@
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem menuHostConnection;
 		private System.Windows.Forms.ToolStripTextBox menuHostIpPort;
+		private System.Windows.Forms.ToolStripMenuItem menuHostDisconnect;
 		private System.Windows.Forms.ToolStripMenuItem menuHostConnect;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.TextBox txtVehicleSimulatorPath;
