@@ -40,7 +40,7 @@ namespace TrafficControlTest.Process
 		private IConfigurator mConfigurator = null;
 		private DatabaseAdapter mDatabaseAdapterOfLogRecord = null;
 		private DatabaseAdapter mDatabaseAdapterOfEventRecord = null;
-		private DatabaseAdapter mDatabaseAdapterOfData = null;
+		private DatabaseAdapter mDatabaseAdapterOfSystemData = null;
 		private ILogRecorder mLogRecorder = null;
 		private IEventRecorder mEventRecorder = null;
 		private IImportantEventRecorder mImportantEventRecorder = null;
@@ -167,10 +167,10 @@ namespace TrafficControlTest.Process
 			mConfigurator = GenerateIConfigurator("Application.config");
 			mDatabaseAdapterOfLogRecord = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mDatabaseAdapterOfEventRecord = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Event.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
-			mDatabaseAdapterOfData = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Data.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
+			mDatabaseAdapterOfSystemData = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\SystemData.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mLogRecorder = GenerateILogRecorder(mDatabaseAdapterOfLogRecord);
 			mEventRecorder = GenerateIEventRecorder(mDatabaseAdapterOfEventRecord);
-			mAccountManager = GenerateIAccountManager(mDatabaseAdapterOfData);
+			mAccountManager = GenerateIAccountManager(mDatabaseAdapterOfSystemData);
 
 			SubscribeEvent_Exception();
 
@@ -318,7 +318,7 @@ namespace TrafficControlTest.Process
 			mAccountManager = null;
 			mEventRecorder = null;
 			mLogRecorder = null;
-			mDatabaseAdapterOfData = null;
+			mDatabaseAdapterOfSystemData = null;
 			mDatabaseAdapterOfEventRecord = null;
 			mDatabaseAdapterOfLogRecord = null;
 			mConfigurator = null;
