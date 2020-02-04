@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using TrafficControlTest.Process;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.UserControl;
 
 namespace TrafficControlTest.UserInterface
 {
@@ -144,11 +145,11 @@ namespace TrafficControlTest.UserInterface
 			}
 			else
 			{
-				if (InputBox("Please Enter Password:", out string password, '*') == DialogResult.OK)
+				if (CustomMessageBox.InputBox("Please Enter Password:", out string password, '*') == DialogResult.OK)
 				{
 					if (!VehicleManagerProcessLogIn(password))
 					{
-						OutputBox("Wrong Password!");
+						CustomMessageBox.OutputBox("Wrong Password!");
 					}
 				}
 			}
@@ -213,112 +214,6 @@ namespace TrafficControlTest.UserInterface
 
 			// 隱藏下方選單
 			UpdateGui_PnlBtm_DisplayPnlBtm(false);
-		}
-		private static DialogResult InputBox(string text, out string value, char passwordChar = '\0')
-		{
-			value = string.Empty;
-
-			int xBorder = 30; // 與邊界的距離
-			int yBorder = 30; // 與邊界的距離
-			int margin = 15; // 每個控制項之間的距離
-
-			Form form = new Form();
-			Label lblText = new Label();
-			TextBox txtResult = new TextBox();
-			Button btnOk = new Button();
-			Button btnCancel = new Button();
-			Panel topBorder = new Panel() { BackColor = Color.Red, Height = 1, Dock = DockStyle.Top };
-			Panel btmBorder = new Panel() { BackColor = Color.Red, Height = 1, Dock = DockStyle.Bottom };
-			Panel lftBorder = new Panel() { BackColor = Color.Red, Width = 1, Dock = DockStyle.Left };
-			Panel rhtBorder = new Panel() { BackColor = Color.Red, Width = 1, Dock = DockStyle.Right };
-
-			form.BackColor = Color.FromArgb(5, 25, 30);
-			form.ForeColor = Color.White;
-
-			lblText.Text = text;
-			lblText.AutoSize = true;
-			lblText.Font = new Font(lblText.Font.FontFamily, 12, FontStyle.Regular);
-			lblText.Size = TextRenderer.MeasureText(lblText.Text, lblText.Font);
-			lblText.Location = new Point(xBorder, yBorder);
-
-			txtResult.BackColor = form.BackColor;
-			txtResult.ForeColor = form.ForeColor;
-			txtResult.Font = new Font(txtResult.Font.FontFamily, 12, FontStyle.Regular);
-			txtResult.Width = Math.Max(lblText.Width, 215);
-			txtResult.Location = new Point(xBorder, lblText.Bottom + margin);
-			if (passwordChar != '\0') txtResult.PasswordChar = passwordChar;
-
-			btnOk.Text = "Confirm";
-			btnOk.DialogResult = DialogResult.OK;
-			btnOk.FlatStyle = FlatStyle.Flat;
-			btnOk.Font = new Font(btnOk.Font.FontFamily, 12, FontStyle.Regular);
-			btnOk.Size = new Size(100, 30);
-			btnOk.Location = new Point(xBorder + (txtResult.Width - 215), txtResult.Bottom + margin);
-
-			btnCancel.Text = "Cancel";
-			btnCancel.DialogResult = DialogResult.Cancel;
-			btnCancel.FlatStyle = FlatStyle.Flat;
-			btnCancel.Font = new Font(btnCancel.Font.FontFamily, 12, FontStyle.Regular);
-			btnCancel.Size = btnOk.Size;
-			btnCancel.Location = new Point(btnOk.Right + margin, btnOk.Location.Y);
-
-			form.Controls.AddRange(new Control[] { topBorder, btmBorder, lftBorder, rhtBorder });
-			form.Controls.AddRange(new Control[] { lblText, txtResult, btnOk, btnCancel });
-			form.ClientSize = new Size(Math.Max(btnCancel.Right + xBorder, lblText.Right + xBorder), btnCancel.Bottom + yBorder);
-			form.FormBorderStyle = FormBorderStyle.None;
-			form.AutoScaleMode = AutoScaleMode.None;
-			form.StartPosition = FormStartPosition.CenterParent;
-			form.MinimizeBox = false;
-			form.MaximizeBox = false;
-			form.AcceptButton = btnOk;
-			form.CancelButton = btnCancel;
-
-			DialogResult dialogResult = form.ShowDialog();
-			value = txtResult.Text;
-			return dialogResult;
-		}
-		private static DialogResult OutputBox(string text)
-		{
-			int xBorder = 30; // 與邊界的距離
-			int yBorder = 30; // 與邊界的距離
-			int margin = 15; // 每個控制項之間的距離
-
-			Form form = new Form();
-			Label lblText = new Label();
-			Button btnOk = new Button();
-			Panel topBorder = new Panel() { BackColor = Color.Red, Height = 1, Dock = DockStyle.Top };
-			Panel btmBorder = new Panel() { BackColor = Color.Red, Height = 1, Dock = DockStyle.Bottom };
-			Panel lftBorder = new Panel() { BackColor = Color.Red, Width = 1, Dock = DockStyle.Left };
-			Panel rhtBorder = new Panel() { BackColor = Color.Red, Width = 1, Dock = DockStyle.Right };
-
-			form.BackColor = Color.FromArgb(5, 25, 30);
-			form.ForeColor = Color.White;
-
-			lblText.Text = text;
-			lblText.AutoSize = true;
-			lblText.Font = new Font(lblText.Font.FontFamily, 12, FontStyle.Regular);
-			lblText.Size = TextRenderer.MeasureText(lblText.Text, lblText.Font);
-			lblText.Location = new Point(xBorder, yBorder);
-
-			btnOk.Text = "OK";
-			btnOk.DialogResult = DialogResult.OK;
-			btnOk.FlatStyle = FlatStyle.Flat;
-			btnOk.Font = new Font(btnOk.Font.FontFamily, 12, FontStyle.Regular);
-			btnOk.Size = new Size(100, 30);
-			btnOk.Location = lblText.Width > btnOk.Width ? new Point(xBorder + (lblText.Width - btnOk.Width) / 2, lblText.Bottom + margin) : new Point(xBorder, lblText.Bottom + margin);
-
-			form.Controls.AddRange(new Control[] { topBorder, btmBorder, lftBorder, rhtBorder });
-			form.Controls.AddRange(new Control[] { lblText, btnOk });
-			form.ClientSize = new Size(Math.Max(lblText.Right + xBorder, btnOk.Right + xBorder), btnOk.Bottom + yBorder);
-			form.FormBorderStyle = FormBorderStyle.None;
-			form.AutoScaleMode = AutoScaleMode.None;
-			form.StartPosition = FormStartPosition.CenterParent;
-			form.MinimizeBox = false;
-			form.MaximizeBox = false;
-			form.AcceptButton = btnOk;
-
-			DialogResult dialogResult = form.ShowDialog();
-			return dialogResult;
 		}
 		#endregion
 
