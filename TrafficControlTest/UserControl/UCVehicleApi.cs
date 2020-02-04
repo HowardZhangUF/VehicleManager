@@ -36,10 +36,31 @@ namespace TrafficControlTest.UserControl
 		{
 			InitializeComponent();
 
+			foreach (Control ctrl in tableLayoutPanel1.Controls)
+			{
+				if (ctrl is Button && ctrl.Name.StartsWith("btnVehicle"))
+				{
+					(ctrl as Button).Click += btn_Click;
+				}
+			}
+
 			txtCoordinate1.SetHintText("X,Y or X,Y,Head");
 			txtCoordinate2.SetHintText("X,Y");
 			txtCoordinate1.KeyPress += ((sender, e) => { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ',') && (e.KeyChar != '-')) e.Handled = true; });
 			txtCoordinate2.KeyPress += ((sender, e) => { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ',') && (e.KeyChar != '-')) e.Handled = true; });
+
+			btnVehicleGoto.Click += btnVehicleGoto_Click;
+			btnVehicleGotoPoint.Click += btnVehicleGotoPoint_Click;
+			btnVehicleDock.Click += btnVehicleDock_Click;
+			btnVehicleStop.Click += btnVehicleStop_Click;
+			btnVehicleInsertMovingBuffer.Click += btnVehicleInsertMovingBuffer_Click;
+			btnVehicleRemoveMovingBuffer.Click += btnVehicleRemoveMovingBuffer_Click;
+			btnVehiclePause.Click += btnVehiclePause_Click;
+			btnVehicleResume.Click += btnVehicleResume_Click;
+			btnVehicleRequestMapList.Click += btnVehicleRequestMapList_Click;
+			btnVehicleGetMap.Click += btnVehicleGetMap_Click;
+			btnVehicleUploadMap.Click += btnVehicleUploadMap_Click;
+			btnVehicleChangeMap.Click += btnVehicleChangeMap_Click;
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
@@ -238,6 +259,13 @@ namespace TrafficControlTest.UserControl
 		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
 		{
 			UpdateGoalNameList(rMapManager.GetGoalNameList());
+		}
+		private void btn_Click(object sender, EventArgs e)
+		{
+			if (cbVehicleNameList.SelectedItem == null)
+			{
+				CustomMessageBox.OutputBox("You Have to Choose \"Vehicle\" First!");
+			}
 		}
 		private void btnVehicleGoto_Click(object sender, EventArgs e)
 		{

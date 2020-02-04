@@ -49,11 +49,11 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.cbRemoteMapNameList1 = new System.Windows.Forms.ComboBox();
 			this.cbRemoteMapNameList2 = new System.Windows.Forms.ComboBox();
+			this.txtCoordinate1 = new TrafficControlTest.UserControl.TextBoxWithHint();
+			this.txtCoordinate2 = new TrafficControlTest.UserControl.TextBoxWithHint();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.cbVehicleNameList = new System.Windows.Forms.ComboBox();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.txtCoordinate1 = new TrafficControlTest.UserControl.TextBoxWithHint();
-			this.txtCoordinate2 = new TrafficControlTest.UserControl.TextBoxWithHint();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.panel1.SuspendLayout();
@@ -154,7 +154,6 @@
 			this.btnVehicleGoto.TabIndex = 0;
 			this.btnVehicleGoto.Text = "Goto";
 			this.btnVehicleGoto.UseVisualStyleBackColor = true;
-			this.btnVehicleGoto.Click += new System.EventHandler(this.btnVehicleGoto_Click);
 			// 
 			// btnVehicleStop
 			// 
@@ -170,7 +169,6 @@
 			this.btnVehicleStop.TabIndex = 3;
 			this.btnVehicleStop.Text = "Stop";
 			this.btnVehicleStop.UseVisualStyleBackColor = true;
-			this.btnVehicleStop.Click += new System.EventHandler(this.btnVehicleStop_Click);
 			// 
 			// btnVehicleGotoPoint
 			// 
@@ -185,7 +183,6 @@
 			this.btnVehicleGotoPoint.TabIndex = 1;
 			this.btnVehicleGotoPoint.Text = "GotoPoint";
 			this.btnVehicleGotoPoint.UseVisualStyleBackColor = true;
-			this.btnVehicleGotoPoint.Click += new System.EventHandler(this.btnVehicleGotoPoint_Click);
 			// 
 			// btnVehicleDock
 			// 
@@ -201,7 +198,6 @@
 			this.btnVehicleDock.TabIndex = 2;
 			this.btnVehicleDock.Text = "Dock";
 			this.btnVehicleDock.UseVisualStyleBackColor = true;
-			this.btnVehicleDock.Click += new System.EventHandler(this.btnVehicleDock_Click);
 			// 
 			// cbGoalNameList
 			// 
@@ -232,7 +228,6 @@
 			this.btnVehicleInsertMovingBuffer.TabIndex = 6;
 			this.btnVehicleInsertMovingBuffer.Text = "InsertMovingBuffer";
 			this.btnVehicleInsertMovingBuffer.UseVisualStyleBackColor = true;
-			this.btnVehicleInsertMovingBuffer.Click += new System.EventHandler(this.btnVehicleInsertMovingBuffer_Click);
 			// 
 			// btnVehicleRemoveMovingBuffer
 			// 
@@ -248,7 +243,6 @@
 			this.btnVehicleRemoveMovingBuffer.TabIndex = 7;
 			this.btnVehicleRemoveMovingBuffer.Text = "RemoveMovingBuffer";
 			this.btnVehicleRemoveMovingBuffer.UseVisualStyleBackColor = true;
-			this.btnVehicleRemoveMovingBuffer.Click += new System.EventHandler(this.btnVehicleRemoveMovingBuffer_Click);
 			// 
 			// btnVehiclePause
 			// 
@@ -264,7 +258,6 @@
 			this.btnVehiclePause.TabIndex = 8;
 			this.btnVehiclePause.Text = "Pause";
 			this.btnVehiclePause.UseVisualStyleBackColor = true;
-			this.btnVehiclePause.Click += new System.EventHandler(this.btnVehiclePause_Click);
 			// 
 			// btnVehicleResume
 			// 
@@ -280,7 +273,6 @@
 			this.btnVehicleResume.TabIndex = 9;
 			this.btnVehicleResume.Text = "Resume";
 			this.btnVehicleResume.UseVisualStyleBackColor = true;
-			this.btnVehicleResume.Click += new System.EventHandler(this.btnVehicleResume_Click);
 			// 
 			// btnVehicleRequestMapList
 			// 
@@ -296,7 +288,6 @@
 			this.btnVehicleRequestMapList.TabIndex = 11;
 			this.btnVehicleRequestMapList.Text = "RequestMapList";
 			this.btnVehicleRequestMapList.UseVisualStyleBackColor = true;
-			this.btnVehicleRequestMapList.Click += new System.EventHandler(this.btnVehicleRequestMapList_Click);
 			// 
 			// btnVehicleGetMap
 			// 
@@ -311,7 +302,6 @@
 			this.btnVehicleGetMap.TabIndex = 12;
 			this.btnVehicleGetMap.Text = "GetMap";
 			this.btnVehicleGetMap.UseVisualStyleBackColor = true;
-			this.btnVehicleGetMap.Click += new System.EventHandler(this.btnVehicleGetMap_Click);
 			// 
 			// btnVehicleChangeMap
 			// 
@@ -326,7 +316,6 @@
 			this.btnVehicleChangeMap.TabIndex = 13;
 			this.btnVehicleChangeMap.Text = "ChangeMap";
 			this.btnVehicleChangeMap.UseVisualStyleBackColor = true;
-			this.btnVehicleChangeMap.Click += new System.EventHandler(this.btnVehicleChangeMap_Click);
 			// 
 			// btnVehicleUploadMap
 			// 
@@ -341,7 +330,6 @@
 			this.btnVehicleUploadMap.TabIndex = 14;
 			this.btnVehicleUploadMap.Text = "UploadMap";
 			this.btnVehicleUploadMap.UseVisualStyleBackColor = true;
-			this.btnVehicleUploadMap.Click += new System.EventHandler(this.btnVehicleUploadMap_Click);
 			// 
 			// label2
 			// 
@@ -412,6 +400,29 @@
 			this.cbRemoteMapNameList2.Size = new System.Drawing.Size(223, 41);
 			this.cbRemoteMapNameList2.TabIndex = 21;
 			// 
+			// txtCoordinate1
+			// 
+			this.txtCoordinate1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtCoordinate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.tableLayoutPanel1.SetColumnSpan(this.txtCoordinate1, 2);
+			this.txtCoordinate1.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.txtCoordinate1.ForeColor = System.Drawing.Color.White;
+			this.txtCoordinate1.Location = new System.Drawing.Point(133, 78);
+			this.txtCoordinate1.Name = "txtCoordinate1";
+			this.txtCoordinate1.Size = new System.Drawing.Size(223, 40);
+			this.txtCoordinate1.TabIndex = 23;
+			// 
+			// txtCoordinate2
+			// 
+			this.txtCoordinate2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtCoordinate2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.txtCoordinate2.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.txtCoordinate2.ForeColor = System.Drawing.Color.White;
+			this.txtCoordinate2.Location = new System.Drawing.Point(193, 233);
+			this.txtCoordinate2.Name = "txtCoordinate2";
+			this.txtCoordinate2.Size = new System.Drawing.Size(163, 40);
+			this.txtCoordinate2.TabIndex = 24;
+			// 
 			// tableLayoutPanel2
 			// 
 			this.tableLayoutPanel2.ColumnCount = 3;
@@ -451,29 +462,6 @@
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(400, 550);
 			this.panel1.TabIndex = 8;
-			// 
-			// txtCoordinate1
-			// 
-			this.txtCoordinate1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCoordinate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.tableLayoutPanel1.SetColumnSpan(this.txtCoordinate1, 2);
-			this.txtCoordinate1.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.txtCoordinate1.ForeColor = System.Drawing.Color.White;
-			this.txtCoordinate1.Location = new System.Drawing.Point(133, 78);
-			this.txtCoordinate1.Name = "txtCoordinate1";
-			this.txtCoordinate1.Size = new System.Drawing.Size(223, 40);
-			this.txtCoordinate1.TabIndex = 23;
-			// 
-			// txtCoordinate2
-			// 
-			this.txtCoordinate2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCoordinate2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.txtCoordinate2.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.txtCoordinate2.ForeColor = System.Drawing.Color.White;
-			this.txtCoordinate2.Location = new System.Drawing.Point(193, 233);
-			this.txtCoordinate2.Name = "txtCoordinate2";
-			this.txtCoordinate2.Size = new System.Drawing.Size(163, 40);
-			this.txtCoordinate2.TabIndex = 24;
 			// 
 			// UcVehicleApi
 			// 
