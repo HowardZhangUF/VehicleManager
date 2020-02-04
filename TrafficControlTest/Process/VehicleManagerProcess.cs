@@ -80,25 +80,25 @@ namespace TrafficControlTest.Process
 		/// </remarks>
 		public void Start()
 		{
-			LogRecorderStart();
-			EventRecorderStart();
+			mLogRecorder.Start();
+			mEventRecorder.Start();
 			mAccountManager.Read();
-			ImportantEventRecorderStart();
-			VehicleCommunicatorStartListen();
-			CollisionEventDetectorStart();
-			VehicleControlHandlerStart();
-			HostCommunicatorStartListen();
-			MissionDispatcherStart();
+			mImportantEventRecorder.Start();
+			mVehicleCommunicator.StartListen();
+			mCollisionEventDetector.Start();
+			mVehicleControlHandler.Start();
+			mHostCommunicator.StartListen();
+			mMissionDispatcher.Start();
 		}
 		public void Stop()
 		{
-			if (mIsAnyUserLoggedIn) AccessControlLogOut();
-			MissionDispatcherStop();
-			HostCommunicatorStopListen();
-			VehicleControlHandlerStop();
-			CollisionEventDetectorStop();
-			VehicleCommunicatorStopListen();
-			ImportantEventRecorderStop();
+			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
+			mMissionDispatcher.Stop();
+			mHostCommunicator.StopListen();
+			mVehicleControlHandler.Stop();
+			mCollisionEventDetector.Stop();
+			mVehicleCommunicator.StopListen();
+			mImportantEventRecorder.Stop();
 			mAccountManager.Save();
 
 			DateTime tmp = DateTime.Now;
@@ -108,8 +108,8 @@ namespace TrafficControlTest.Process
 				System.Threading.Thread.Sleep(100);
 			}
 
-			EventRecorderStop();
-			LogRecorderStop();
+			mEventRecorder.Stop();
+			mLogRecorder.Stop();
 			tmp = DateTime.Now;
 			while (mEventRecorder.mIsExecuting || mLogRecorder.mIsExecuting)
 			{
@@ -149,22 +149,6 @@ namespace TrafficControlTest.Process
 		{
 			return mDatabaseAdapterOfEventRecord;
 		}
-		public void LogRecorderStart()
-		{
-			mLogRecorder.Start();
-		}
-		public void LogRecorderStop()
-		{
-			mLogRecorder.Stop();
-		}
-		public void EventRecorderStart()
-		{
-			mEventRecorder.Start();
-		}
-		public void EventRecorderStop()
-		{
-			mEventRecorder.Stop();
-		}
 		public bool AccessControlLogIn(string Password)
 		{
 			return mAccessControl.LogIn(Password);
@@ -172,38 +156,6 @@ namespace TrafficControlTest.Process
 		public bool AccessControlLogOut()
 		{
 			return mAccessControl.LogOut();
-		}
-		public void VehicleCommunicatorSetConfigOfListenPort(int Port)
-		{
-			mVehicleCommunicator.SetConfigOfListenPort(Port);
-		}
-		public int VehicleCommunicatorGetConfigOfListenPort()
-		{
-			return mVehicleCommunicator.GetConfigOfListenPort();
-		}
-		public void VehicleCommunicatorStartListen()
-		{
-			mVehicleCommunicator.StartListen();
-		}
-		public void VehicleCommunicatorStopListen()
-		{
-			mVehicleCommunicator.StopListen();
-		}
-		public void CollisionEventDetectorStart()
-		{
-			mCollisionEventDetector.Start();
-		}
-		public void CollisionEventDetectorStop()
-		{
-			mCollisionEventDetector.Stop();
-		}
-		public void VehicleControlHandlerStart()
-		{
-			mVehicleControlHandler.Start();
-		}
-		public void VehicleControlHandlerStop()
-		{
-			mVehicleControlHandler.Stop();
 		}
 		public void SendCommand(string VehicleName, string Command, params string[] Paras)
 		{
@@ -275,61 +227,13 @@ namespace TrafficControlTest.Process
 		{
 			return mVehicleInfoManager.GetItem(VehicleName);
 		}
-		public void HostCommunicatorSetConfigOfListenPort(int Port)
-		{
-			mHostCommunicator.SetConfigOfListenPort(Port);
-		}
-		public int HostCommunicatorGetConfigOfListenPort()
-		{
-			return mHostCommunicator.GetConfigOfListenPort();
-		}
-		public void HostCommunicatorStartListen()
-		{
-			mHostCommunicator.StartListen();
-		}
-		public void HostCommunicatorStopListen()
-		{
-			mHostCommunicator.StopListen();
-		}
-		public void MissionDispatcherStart()
-		{
-			mMissionDispatcher.Start();
-		}
-		public void MissionDispatcherStop()
-		{
-			mMissionDispatcher.Stop();
-		}
-		public void MapFileManagerSetConfigOfMapFileDirectory(string MapFileDirectory)
-		{
-			mMapFileManager.SetConfigOfMapFileDirectory(MapFileDirectory);
-		}
-		public string MapFileManagerGetConfigOfMapFileDirectory()
-		{
-			return mMapFileManager.GetConfigOfMapFileDirectory();
-		}
 		public string[] MapFileManagerGetLocalMapNameList()
 		{
 			return mMapFileManager.GetLocalMapNameList();
 		}
-		public void MapManagerSetConfigOfAutoLoadMap(bool Enable)
-		{
-			mMapManager.SetConfigOfAutoLoadMap(Enable);
-		}
-		public bool MapManagerGetConfigOfAutoLoadMap()
-		{
-			return mMapManager.GetConfigOfAutoLoadMap();
-		}
 		public string[] MapManagerGetGoalNameList()
 		{
 			return mMapManager.GetGoalNameList();
-		}
-		public void ImportantEventRecorderStart()
-		{
-			mImportantEventRecorder.Start();
-		}
-		public void ImportantEventRecorderStop()
-		{
-			mImportantEventRecorder.Stop();
 		}
 
 		private void Constructor()
@@ -622,14 +526,14 @@ namespace TrafficControlTest.Process
 		{
 			if (CollisionEventHandler != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void UnsubscribeEvent_ICollisionEventHandler(ICollisionEventHandler CollisionEventHandler)
 		{
 			if (CollisionEventHandler != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void SubscribeEvent_IVehicleControlHandler(IVehicleControlHandler VehicleControlHandler)
@@ -652,14 +556,14 @@ namespace TrafficControlTest.Process
 		{
 			if (VehicleControlUpdater != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void UnsubscribeEvent_IVehicleControlUpdater(IVehicleControlUpdater VehicleControlUpdater)
 		{
 			if (VehicleControlUpdater != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
@@ -684,14 +588,14 @@ namespace TrafficControlTest.Process
 		{
 			if (VehicleInfoUpdater != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void UnsubscribeEvent_IVehicleInfoUpdater(IVehicleInfoUpdater VehicleInfoUpdater)
 		{
 			if (VehicleInfoUpdater != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void SubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
@@ -722,14 +626,14 @@ namespace TrafficControlTest.Process
 		{
 			if (HostMessageAnalyzer != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void UnsubscribeEvent_IHostMessageAnalyzer(IHostMessageAnalyzer HostMessageAnalyzer)
 		{
 			if (HostMessageAnalyzer != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
@@ -784,28 +688,28 @@ namespace TrafficControlTest.Process
 		{
 			if (MissionStateReporter != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void UnsubscribeEvent_IMissionStateReporter(IMissionStateReporter MissionStateReporter)
 		{
 			if (MissionStateReporter != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void SubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
 		{
 			if (MissionUpdater != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void UnsubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
 		{
 			if (MissionUpdater != null)
 			{
-
+				// do nothing
 			}
 		}
 		private void SubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
