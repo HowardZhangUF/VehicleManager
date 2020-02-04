@@ -473,7 +473,7 @@ namespace TrafficControlTest.UserInterface
 		}
 		private bool VehicleManagerProcessIsLoggedIn()
 		{
-			return mCore.mIsLoggedIn;
+			return mCore.mIsAnyUserLoggedIn;
 		}
 		private bool VehicleManagerProcessLogIn(string Password)
 		{

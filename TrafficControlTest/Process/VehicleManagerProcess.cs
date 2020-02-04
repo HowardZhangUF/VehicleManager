@@ -21,14 +21,21 @@ namespace TrafficControlTest.Process
 		public event EventHandlerItem<IVehicleInfo> VehicleInfoManagerItemAdded;
 		public event EventHandlerItem<IVehicleInfo> VehicleInfoManagerItemRemoved;
 
-		public bool mIsAllStopped
+		public bool mIsAnyUserLoggedIn { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser)); } }
+		public string mCurrentLoggedInUserName { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser) ? mAccessControl.mCurrentUser : string.Empty); } }
+
+		private bool mIsAllSystemStopped
 		{
 			get
 			{
-				return !mImportantEventRecorder.mIsExecuting && !mVehicleCommunicator.mIsExecuting && !mCollisionEventDetector.mIsExecuting && !mVehicleControlHandler.mIsExecuting && !mHostCommunicator.mIsExecuting && !mMissionDispatcher.mIsExecuting;
+				return !mImportantEventRecorder.mIsExecuting
+					&& !mVehicleCommunicator.mIsExecuting
+					&& !mCollisionEventDetector.mIsExecuting
+					&& !mVehicleControlHandler.mIsExecuting
+					&& !mHostCommunicator.mIsExecuting
+					&& !mMissionDispatcher.mIsExecuting;
 			}
 		}
-		public bool mIsLoggedIn { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser)); } }
 
 		private IConfigurator mConfigurator = null;
 		private DatabaseAdapter mDatabaseAdapterOfLogRecord = null;
@@ -85,7 +92,7 @@ namespace TrafficControlTest.Process
 		}
 		public void Stop()
 		{
-			if (mIsLoggedIn) AccessControlLogOut();
+			if (mIsAnyUserLoggedIn) AccessControlLogOut();
 			MissionDispatcherStop();
 			HostCommunicatorStopListen();
 			VehicleControlHandlerStop();
@@ -95,7 +102,7 @@ namespace TrafficControlTest.Process
 			mAccountManager.Save();
 
 			DateTime tmp = DateTime.Now;
-			while (!mIsAllStopped)
+			while (!mIsAllSystemStopped)
 			{
 				if (DateTime.Now.Subtract(tmp).TotalSeconds > 5) break;
 				System.Threading.Thread.Sleep(100);
