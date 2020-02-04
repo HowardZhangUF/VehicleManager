@@ -383,12 +383,14 @@ namespace TrafficControlTest.Implement
 				result = new List<IPoint2D>();
 				List<IPoint2D> tmpPath = Path.ToList();
 				tmpPath.Insert(0, CurrentPosition);
+				tmpPath.Reverse(); // 計算路徑詳細點時，先將路徑點順序反轉，從終點開始往回算
 				result.Add(tmpPath[0]);
 				for (int i = 1; i < tmpPath.Count; ++i)
 				{
 					result.AddRange(Library.Library.ConvertLineToPoints(tmpPath[i - 1], tmpPath[i], Interval));
 					result.Add(tmpPath[i]);
 				}
+				result.Reverse(); // 計算路徑詳細點完成時，再將其順序反轉，以符合起點是車子當前位置以及終點是路徑點末點的順序
 			}
 			return result;
 		}
