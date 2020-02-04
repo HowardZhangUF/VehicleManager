@@ -157,83 +157,9 @@ namespace TrafficControlTest.Process
 		{
 			return mAccessControl.LogOut();
 		}
-		public void SendCommand(string VehicleName, string Command, params string[] Paras)
-		{
-			if (mVehicleInfoManager.IsExist(VehicleName))
-			{
-				string vehicleIpPort = mVehicleInfoManager.GetItem(VehicleName).mIpPort;
-				if (Command == "Goto" && Paras != null && Paras.Length == 1)
-				{
-					mVehicleCommunicator.SendSerializableData_Goto(vehicleIpPort, Paras[0]);
-				}
-				else if (Command == "GotoPoint" && Paras != null)
-				{
-					if (Paras.Length == 2)
-					{
-						mVehicleCommunicator.SendSerializableData_GotoPoint(vehicleIpPort, int.Parse(Paras[0]), int.Parse(Paras[1]));
-					}
-					else if (Paras.Length == 3)
-					{
-						mVehicleCommunicator.SendSerializableData_GotoTowardPoint(vehicleIpPort, int.Parse(Paras[0]), int.Parse(Paras[1]), int.Parse(Paras[2]));
-					}
-				}
-				else if (Command == "Stop")
-				{
-					mVehicleCommunicator.SendSerializableData_Stop(vehicleIpPort);
-				}
-				else if (Command == "InsertMovingBuffer" && Paras != null && Paras.Length == 2)
-				{
-					mVehicleCommunicator.SendSerializableData_InsertMovingBuffer(vehicleIpPort, int.Parse(Paras[0]), int.Parse(Paras[1]));
-				}
-				else if (Command == "RemoveMovingBuffer")
-				{
-					mVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(vehicleIpPort);
-				}
-				else if (Command == "PauseMoving")
-				{
-					mVehicleCommunicator.SendSerializableData_PauseMoving(vehicleIpPort);
-				}
-				else if (Command == "ResumeMoving")
-				{
-					mVehicleCommunicator.SendSerializableData_ResumeMoving(vehicleIpPort);
-				}
-				else if (Command == "RequestMapList")
-				{
-					mVehicleCommunicator.SendSerializableData_RequestMapList(vehicleIpPort);
-				}
-				else if (Command == "GetMap" && Paras != null && Paras.Length == 1)
-				{
-					mVehicleCommunicator.SendSerializableData_GetMap(vehicleIpPort, Paras[0]);
-				}
-				else if (Command == "UploadMapToAGV" && Paras != null && Paras.Length == 1)
-				{
-					mVehicleCommunicator.SendSerializableData_UploadMapToAGV(vehicleIpPort, mMapFileManager.GetMapFileFullPath(Paras[0]));
-				}
-				else if (Command == "ChangeMap" && Paras != null && Paras.Length == 1)
-				{
-					mVehicleCommunicator.SendSerializableData_ChangeMap(vehicleIpPort, Paras[0]);
-				}
-			}
-		}
-		public int GetVehicleCount()
+		public int GetCountOfOnlineVehicle()
 		{
 			return mVehicleInfoManager.mCount;
-		}
-		public List<string> GetVehicleNameList()
-		{
-			return mVehicleInfoManager.GetItemNames().ToList();
-		}
-		public IVehicleInfo GetVehicleInfo(string VehicleName)
-		{
-			return mVehicleInfoManager.GetItem(VehicleName);
-		}
-		public string[] MapFileManagerGetLocalMapNameList()
-		{
-			return mMapFileManager.GetLocalMapNameList();
-		}
-		public string[] MapManagerGetGoalNameList()
-		{
-			return mMapManager.GetGoalNameList();
 		}
 
 		private void Constructor()

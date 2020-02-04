@@ -532,33 +532,12 @@ namespace TrafficControlTest.UserInterface
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
-			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleNameList().Count.ToString());
+			UpdateGui_UpdateControlText(lblConnection, mCore.GetCountOfOnlineVehicle().ToString());
 		}
 		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
-			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetVehicleCount() > 0 ? Color.DarkGreen : Color.DarkOrange);
-			UpdateGui_UpdateControlText(lblConnection, mCore.GetVehicleCount().ToString());
-		}
-
-		private string[] GetVehicleNameList()
-		{
-			return mCore.GetVehicleNameList()?.ToArray();
-		}
-		private IVehicleInfo GetVehicleInfo(string VehicleName)
-		{
-			return mCore.GetVehicleInfo(VehicleName);
-		}
-		private string[] GetLocalMapNameList()
-		{
-			return mCore.MapFileManagerGetLocalMapNameList();
-		}
-		private string[] GetMapGoalNameList()
-		{
-			return mCore.MapManagerGetGoalNameList();
-		}
-		private void SendCommandToVehicle(string VehicleName, string Command, params string[] Paras)
-		{
-			mCore.SendCommand(VehicleName, Command, Paras);
+			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetCountOfOnlineVehicle() > 0 ? Color.DarkGreen : Color.DarkOrange);
+			UpdateGui_UpdateControlText(lblConnection, mCore.GetCountOfOnlineVehicle().ToString());
 		}
 		#endregion
 	}
