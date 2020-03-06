@@ -154,7 +154,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 								break;
 						}
 						break;
-					case "Charged":
+					case "Charge":
 						if (missionState.mMission.mMissionType == MissionType.Dock)
 						{
 							missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
@@ -212,7 +212,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		private bool IsVehicleDocked(IVehicleInfo VehicleInfo)
 		{
-			return VehicleInfo.mCurrentState == "Charged";
+			return VehicleInfo.mCurrentState == "Charge";
 		}
 		/// <summary>透過 Serializable 物件的發送來源及其本身判斷是哪個任務的相關訊息並輸出任務識別碼</summary>
 		private string GetMissionId(string IpPort, object Data)
