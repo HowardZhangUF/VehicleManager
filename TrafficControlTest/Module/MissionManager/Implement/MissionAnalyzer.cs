@@ -141,7 +141,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			else
 			{
 				result = MissionAnalyzeResult.Failed;
-				AnalyzeFailedDetail = $"CanNotFindTheMissionType";
+				AnalyzeFailedDetail = $"UnknownMissionType";
 			}
 			return result;
 		}
