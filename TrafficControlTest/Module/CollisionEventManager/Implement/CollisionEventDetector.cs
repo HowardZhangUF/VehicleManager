@@ -4,35 +4,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Module.General.Implement;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;
 
 namespace TrafficControlTest.Implement
 {
-	public class CollisionEventDetector : ICollisionEventDetector
+	public class CollisionEventDetector : SystemWithLoopTask, ICollisionEventDetector
 	{
-		public event EventHandlerDateTime SystemStarted;
-		public event EventHandlerDateTime SystemStopped;
-
-		public bool mIsExecuting
-		{
-			get
-			{
-				return _IsExecuting;
-			}
-			private set
-			{
-				_IsExecuting = value;
-				if (_IsExecuting) RaiseEvent_SystemStarted();
-				else RaiseEvent_SystemStopped();
-			}
-		}
-
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private ICollisionEventManager rCollisionEventManager = null;
-		private Thread mThdDetectCollisionEvent = null;
-		private bool[] mThdDetectCollisionEventExitFlag = null;
-		private bool _IsExecuting = false;
 
 		public CollisionEventDetector(IVehicleInfoManager VehicleInfoManager, ICollisionEventManager CollisionEventManager)
 		{
@@ -55,13 +36,9 @@ namespace TrafficControlTest.Implement
 			Set(VehicleInfoManager);
 			Set(CollisionEventManager);
 		}
-		public void Start()
+		public override void Task()
 		{
-			InitializeThread();
-		}
-		public void Stop()
-		{
-			DestroyThread();
+			Subtask_DetectCollisionEvent();
 		}
 
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -90,63 +67,6 @@ namespace TrafficControlTest.Implement
 			if (CollisionEventManager != null)
 			{
 
-			}
-		}
-		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStarted?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStarted?.Invoke(DateTime.Now); });
-			}
-		}
-		protected virtual void RaiseEvent_SystemStopped(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStopped?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
-			}
-		}
-		private void InitializeThread()
-		{
-			mThdDetectCollisionEventExitFlag = new bool[] { false };
-			mThdDetectCollisionEvent = new Thread(() => Task_DetectCollisionEvent(mThdDetectCollisionEventExitFlag));
-			mThdDetectCollisionEvent.IsBackground = true;
-			mThdDetectCollisionEvent.Start();
-		}
-		private void DestroyThread()
-		{
-			if (mThdDetectCollisionEvent != null)
-			{
-				if (mThdDetectCollisionEvent.IsAlive)
-				{
-					mThdDetectCollisionEventExitFlag[0] = true;
-				}
-				mThdDetectCollisionEvent = null;
-			}
-		}
-		private void Task_DetectCollisionEvent(bool[] ExitFlag)
-		{
-			try
-			{
-				mIsExecuting = true;
-				while (!ExitFlag[0])
-				{
-					Subtask_DetectCollisionEvent();
-					Thread.Sleep(750);
-				}
-			}
-			finally
-			{
-				Subtask_DetectCollisionEvent();
-				mIsExecuting = false;
 			}
 		}
 		private void Subtask_DetectCollisionEvent()

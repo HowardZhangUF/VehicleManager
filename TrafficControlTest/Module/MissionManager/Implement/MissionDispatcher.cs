@@ -7,36 +7,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General.Implement;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.MissionManager.Implement
 {
-	public class MissionDispatcher : IMissionDispatcher
+	public class MissionDispatcher : SystemWithLoopTask, IMissionDispatcher
 	{
-		public event EventHandlerDateTime SystemStarted;
-		public event EventHandlerDateTime SystemStopped;
-
-		public bool mIsExecuting
-		{
-			get
-			{
-				return _IsExecuting;
-			}
-			private set
-			{
-				_IsExecuting = value;
-				if (_IsExecuting) RaiseEvent_SystemStarted();
-				else RaiseEvent_SystemStopped();
-			}
-		}
-
 		private IMissionStateManager rMissionStateManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
-		private Thread mThdDispatchMission = null;
-		private bool[] mThdDispatchMissionExitFlag = null;
-		private bool _IsExecuting = false;
 
 		public MissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
 		{
@@ -60,71 +41,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			Set(VehicleInfoManager);
 			Set(VehicleCommunicator);
 		}
-		public void Start()
+		public override void Task()
 		{
-			InitializeThread();
-		}
-		public void Stop()
-		{
-			DestroyThread();
+			Subtask_DispatchMission();
 		}
 
-		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStarted?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStarted?.Invoke(DateTime.Now); });
-			}
-		}
-		protected virtual void RaiseEvent_SystemStopped(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStopped?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
-			}
-		}
-		private void InitializeThread()
-		{
-			mThdDispatchMissionExitFlag = new bool[] { false };
-			mThdDispatchMission = new Thread(() => Task_DispatchMission(mThdDispatchMissionExitFlag));
-			mThdDispatchMission.IsBackground = true;
-			mThdDispatchMission.Start();
-		}
-		private void DestroyThread()
-		{
-			if (mThdDispatchMission != null)
-			{
-				if (mThdDispatchMission.IsAlive)
-				{
-					mThdDispatchMissionExitFlag[0] = true;
-				}
-				mThdDispatchMission = null;
-			}
-		}
-		private void Task_DispatchMission(bool[] ExitFlag)
-		{
-			try
-			{
-				mIsExecuting = true;
-				while (!ExitFlag[0])
-				{
-					Subtask_DispatchMission();
-					Thread.Sleep(1000);
-				}
-			}
-			finally
-			{
-				mIsExecuting = false;
-			}
-		}
 		private void Subtask_DispatchMission()
 		{
 			List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager);

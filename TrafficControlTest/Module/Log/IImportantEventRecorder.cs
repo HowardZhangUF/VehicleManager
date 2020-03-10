@@ -16,21 +16,12 @@ namespace TrafficControlTest.Module.General.Interface
 	/// - 每當 IHostCommunicator 發生 SentString, ReceivedString 事件時，使用 IEventRecorder 將資料記錄至資料庫 (供快速查詢與 Host 的通訊歷史)
 	/// - 定時從 IVehicleInfoManager 拿取所有車的狀態資訊並使用 IEventRecorder 記錄至資料庫(儲存歷史車子狀態，以供未來重現、查詢問題時使用)
 	/// </summary>
-	public interface IImportantEventRecorder
+	public interface IImportantEventRecorder : ISystemWithLoopTask
 	{
-		event EventHandlerDateTime SystemStarted;
-		event EventHandlerDateTime SystemStopped;
-
-		bool mIsExecuting { get; }
-		int mPeriodOfTask { get; set; }
-		int mPeriodOfRecordingHistoryVehicleInfo { get; set; }
-
 		void Set(IEventRecorder EventRecorder);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IMissionStateManager MissionStateManager);
 		void Set(IHostCommunicator HostCommunicator);
 		void Set(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator);
-		void Start();
-		void Stop();
 	}
 }

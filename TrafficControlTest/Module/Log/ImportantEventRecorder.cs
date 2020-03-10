@@ -12,34 +12,12 @@ using static TrafficControlTest.Library.DatabaseAdapter;
 
 namespace TrafficControlTest.Module.General.Implement
 {
-	public class ImportantEventRecorder : IImportantEventRecorder
+	public class ImportantEventRecorder : SystemWithLoopTask, IImportantEventRecorder
 	{
-		public event EventHandlerDateTime SystemStarted;
-		public event EventHandlerDateTime SystemStopped;
-
-		public bool mIsExecuting
-		{
-			get
-			{
-				return _IsExecuting;
-			}
-			private set
-			{
-				_IsExecuting = value;
-				if (_IsExecuting) RaiseEvent_SystemStarted();
-				else RaiseEvent_SystemStopped();
-			}
-		}
-		public int mPeriodOfTask { get; set; } = 250;
-		public int mPeriodOfRecordingHistoryVehicleInfo { get; set; } = 3000;
-
 		private IEventRecorder rEventRecorder = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMissionStateManager rMissionStateManager = null;
 		private IHostCommunicator rHostCommunicator = null;
-		private Thread mThdRecordHistoryVehicleInfo = null;
-		private bool[] mThdRecordHistoryVehicleInfoExitFlag = null;
-		private bool _IsExecuting = false;
 
 		public ImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
 		{
@@ -74,13 +52,9 @@ namespace TrafficControlTest.Module.General.Implement
 			Set(MissionStateManager);
 			Set(HostCommunicator);
 		}
-		public void Start()
+		public override void Task()
 		{
-			InitializeThread();
-		}
-		public void Stop()
-		{
-			DestroyThread();
+			Subtask_RecordVehicleInfo();
 		}
 
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -137,28 +111,6 @@ namespace TrafficControlTest.Module.General.Implement
 				HostCommunicator.ReceivedString -= HandleEvent_HostCommunicatorReceivedString;
 			}
 		}
-		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStarted?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStarted?.Invoke(DateTime.Now); });
-			}
-		}
-		protected virtual void RaiseEvent_SystemStopped(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStopped?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
-			}
-		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
 		{
 			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Add, Item);
@@ -196,47 +148,7 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "RecievedData", IpPort, $"Data: {Data}");
 		}
-		private void InitializeThread()
-		{
-			mThdRecordHistoryVehicleInfoExitFlag = new bool[] { false };
-			mThdRecordHistoryVehicleInfo = new Thread(() => Task_RecordHistoryVehicleInfo(mThdRecordHistoryVehicleInfoExitFlag));
-			mThdRecordHistoryVehicleInfo.IsBackground = true;
-			mThdRecordHistoryVehicleInfo.Start();
-		}
-		private void DestroyThread()
-		{
-			if (mThdRecordHistoryVehicleInfo != null)
-			{
-				if (mThdRecordHistoryVehicleInfo.IsAlive)
-				{
-					mThdRecordHistoryVehicleInfoExitFlag[0] = true;
-				}
-				mThdRecordHistoryVehicleInfo = null;
-			}
-		}
-		private void Task_RecordHistoryVehicleInfo(bool[] ExitFlag)
-		{
-			try
-			{
-				mIsExecuting = true;
-				Subtask_RecordHistoryVehicleInfo();
-				DateTime lastRecordTimestamp = DateTime.Now;
-				while (!ExitFlag[0])
-				{
-					if (DateTime.Now.Subtract(lastRecordTimestamp).TotalMilliseconds > mPeriodOfRecordingHistoryVehicleInfo)
-					{
-						Subtask_RecordHistoryVehicleInfo();
-						lastRecordTimestamp = DateTime.Now;
-					}
-					Thread.Sleep(mPeriodOfTask);
-				}
-			}
-			finally
-			{
-				mIsExecuting = false;
-			}
-		}
-		private void Subtask_RecordHistoryVehicleInfo()
+		private void Subtask_RecordVehicleInfo()
 		{
 			List<IVehicleInfo> tmpDatas = rVehicleInfoManager.GetItems().ToList();
 			DateTime tmpTimestamp = DateTime.Now;

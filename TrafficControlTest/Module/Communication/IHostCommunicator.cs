@@ -13,16 +13,13 @@ namespace TrafficControlTest.Module.General.Interface
 	/// - 提供傳送資料給客戶端系統的方法
 	/// - 當建立/中斷連線、送出/收到資料時會拋出事件
 	/// </summary>
-	public interface IHostCommunicator
+	public interface IHostCommunicator : ISystemWithLoopTask
 	{
-		event EventHandlerDateTime SystemStarted;
-		event EventHandlerDateTime SystemStopped;
 		event EventHandlerRemoteConnectState RemoteConnectStateChanged;
 		event EventHandlerLocalListenState LocalListenStateChanged;
 		event EventHandlerSentString SentString;
 		event EventHandlerReceivedString ReceivedString;
 
-		bool mIsExecuting { get; }
 		ListenState mListenState { get; }
 		int mClientCout { get; }
 

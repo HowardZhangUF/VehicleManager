@@ -11,28 +11,13 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Implement
 {
-	public class HostCommunicator : IHostCommunicator
+	public class HostCommunicator : SystemWithLoopTask, IHostCommunicator
 	{
-		public event EventHandlerDateTime SystemStarted;
-		public event EventHandlerDateTime SystemStopped;
 		public event EventHandlerLocalListenState LocalListenStateChanged;
 		public event EventHandlerRemoteConnectState RemoteConnectStateChanged;
 		public event EventHandlerSentString SentString;
 		public event EventHandlerReceivedString ReceivedString;
 
-		public bool mIsExecuting
-		{
-			get
-			{
-				return _IsExecuting;
-			}
-			private set
-			{
-				_IsExecuting = value;
-				if (_IsExecuting) RaiseEvent_SystemStarted();
-				else RaiseEvent_SystemStopped();
-			}
-		}
 		public ListenState mListenState { get { return mServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
 		public int mClientCout { get { return (mServer == null || mServer.ListenStatus == EListenStatus.Idle) ? 0 : mServer.ClientCount; } }
 
@@ -40,9 +25,6 @@ namespace TrafficControlTest.Module.General.Implement
 		private int mListenPort = 9000;
 		private readonly Queue<EventArgs> mServerEvents = new Queue<EventArgs>();
 		private readonly object mLockOfServerEvents = new object();
-		private Thread mThdHandleServerEvents = null;
-		private bool[] mThdHandleServerEventsExitFlag = null;
-		private bool _IsExecuting = false;
 
 		public HostCommunicator()
 		{
@@ -60,7 +42,7 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			if (mServer.ListenStatus == EListenStatus.Idle)
 			{
-				InitializeThread();
+				Start();
 				mServer.StartListening(mListenPort);
 			}
 		}
@@ -69,7 +51,7 @@ namespace TrafficControlTest.Module.General.Implement
 			if (mServer.ListenStatus == EListenStatus.Listening)
 			{
 				mServer.StopListen();
-				DestroyThread();
+				Stop();
 			}
 		}
 		public void SendString(string Data)
@@ -86,6 +68,10 @@ namespace TrafficControlTest.Module.General.Implement
 				mServer.Send(IpPort, Data);
 				RaiseEvent_SentString(IpPort, Data);
 			}
+		}
+		public override void Task()
+		{
+			Subtask_HandleServerEvents();
 		}
 
 		~HostCommunicator()
@@ -126,46 +112,6 @@ namespace TrafficControlTest.Module.General.Implement
 				Server.ReceivedDataEvent -= HandleEvent_ServerEvent;
 			}
 		}
-		private void InitializeThread()
-		{
-			mThdHandleServerEventsExitFlag = new bool[] { false };
-			mThdHandleServerEvents = new Thread(() => Task_HandleServerEvents(mThdHandleServerEventsExitFlag));
-			mThdHandleServerEvents.IsBackground = true;
-			mThdHandleServerEvents.Start();
-		}
-		private void DestroyThread()
-		{
-			if (mThdHandleServerEvents != null)
-			{
-				if (mThdHandleServerEvents.IsAlive)
-				{
-					mThdHandleServerEventsExitFlag[0] = true;
-				}
-				mThdHandleServerEvents = null;
-			}
-		}
-		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStarted?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStarted?.Invoke(DateTime.Now); });
-			}
-		}
-		protected virtual void RaiseEvent_SystemStopped(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStopped?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
-			}
-		}
 		protected virtual void RaiseEvent_LocalListenStateChanged(ListenState NewState, int Port, bool Sync = true)
 		{
 			if (Sync)
@@ -174,7 +120,7 @@ namespace TrafficControlTest.Module.General.Implement
 			}
 			else
 			{
-				Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port); });
+				System.Threading.Tasks.Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port); });
 			}
 		}
 		protected virtual void RaiseEvent_RemoteConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
@@ -185,7 +131,7 @@ namespace TrafficControlTest.Module.General.Implement
 			}
 			else
 			{
-				Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
+				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
 			}
 		}
 		protected virtual void RaiseEvent_SentString(string IpPort, string Data, bool Sync = true)
@@ -196,7 +142,7 @@ namespace TrafficControlTest.Module.General.Implement
 			}
 			else
 			{
-				Task.Run(() => { SentString?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { SentString?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
 		protected virtual void RaiseEvent_ReceivedString(string IpPort, string Data, bool Sync = true)
@@ -207,7 +153,7 @@ namespace TrafficControlTest.Module.General.Implement
 			}
 			else
 			{
-				Task.Run(() => { ReceivedString?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { ReceivedString?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
 		private void HandleEvent_ServerEvent(object Sender, EventArgs E)
@@ -243,23 +189,6 @@ namespace TrafficControlTest.Module.General.Implement
 		private void HandleServerEvent(ReceivedDataEventArgs E)
 		{
 			RaiseEvent_ReceivedString(E.RemoteInfo.ToString(), Encoding.Default.GetString(E.Data));
-		}
-		private void Task_HandleServerEvents(bool[] ExitFlag)
-		{
-			try
-			{
-				mIsExecuting = true;
-				while (!ExitFlag[0])
-				{
-					Subtask_HandleServerEvents();
-					Thread.Sleep(100);
-				}
-			}
-			finally
-			{
-				Subtask_HandleServerEvents();
-				mIsExecuting = false;
-			}
 		}
 		private void Subtask_HandleServerEvents()
 		{

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
@@ -9,18 +10,15 @@ namespace TrafficControlTest.Interface
 	/// - 提供傳送資料給車子的方法
 	/// - 當建立/中斷連線、送出/收到資料時會拋出事件
 	/// </summary>
-	public interface IVehicleCommunicator
+	public interface IVehicleCommunicator : ISystemWithLoopTask
 	{
-		event EventHandlerDateTime SystemStarted;
-		event EventHandlerDateTime SystemStopped;
 		event EventHandlerRemoteConnectState RemoteConnectStateChanged;
 		event EventHandlerLocalListenState LocalListenStateChanged;
 		event EventHandlerSentSerializableData SentSerializableData;
 		event EventHandlerReceivedSerializableData ReceivedSerializableData;
 		event EventHandlerSentSerializableData SentSerializableDataSuccessed;
 		event EventHandlerSentSerializableData SentSerializableDataFailed;
-
-		bool mIsExecuting { get; }
+		
 		/// <summary>監聽狀態</summary>
 		ListenState mListenState { get; }
 		/// <summary>連線中的 Client 數量</summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Module.General.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.MissionManager.Interface
@@ -12,18 +13,11 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 	/// - Reference: IMissionStateManager, IVehicleInfoManager, IVehicleCommunicator
 	/// - 定時檢查 IMissionStateManager 裡面有任務尚未派出的話，透過 IVehicleInfoManager 尋找合適的車子並使用 IVehicleCommunicator 將任務派給車子
 	/// </summary>
-	public interface IMissionDispatcher
+	public interface IMissionDispatcher : ISystemWithLoopTask
 	{
-		event EventHandlerDateTime SystemStarted;
-		event EventHandlerDateTime SystemStopped;
-
-		bool mIsExecuting { get; }
-
 		void Set(IMissionStateManager MissionStateManager);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator);
-		void Start();
-		void Stop();
 	}
 }

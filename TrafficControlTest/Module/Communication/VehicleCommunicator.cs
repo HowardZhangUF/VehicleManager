@@ -8,34 +8,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General.Implement;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Implement
 {
-	class VehicleCommunicator : IVehicleCommunicator
+	class VehicleCommunicator : SystemWithLoopTask, IVehicleCommunicator
 	{
-		public event EventHandlerDateTime SystemStarted;
-		public event EventHandlerDateTime SystemStopped;
 		public event EventHandlerRemoteConnectState RemoteConnectStateChanged;
 		public event EventHandlerLocalListenState LocalListenStateChanged;
 		public event EventHandlerSentSerializableData SentSerializableData;
 		public event EventHandlerReceivedSerializableData ReceivedSerializableData;
 		public event EventHandlerSentSerializableData SentSerializableDataSuccessed;
 		public event EventHandlerSentSerializableData SentSerializableDataFailed;
-
-		public bool mIsExecuting
-		{
-			get
-			{
-				return _IsExecuting;
-			}
-			private set
-			{
-				_IsExecuting = value;
-				if (_IsExecuting) RaiseEvent_SystemStarted();
-				else RaiseEvent_SystemStopped();
-			}
-		}
+		
 		public ListenState mListenState { get { return mSocketServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
 		public int mClientCount { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? 0 : mSocketServer.ClientCount; } }
 		public List<string> mClientAddressInfo { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? null : mSocketServer.ClientDictionary.Keys.ToList(); } }
@@ -44,9 +30,6 @@ namespace TrafficControlTest.Implement
 		private int mListenPort { get; set; }
 		private readonly Queue<EventArgs> mSerialServerEvents = new Queue<EventArgs>();
 		private readonly object mLockOfSerialServerEvents = new object();
-		private Thread mThdHandleSerialServerEvents = null;
-		private bool[] mThdHandleSerialServerEventsExitFlag = null;
-		private bool _IsExecuting = false;
 
 		public VehicleCommunicator()
 		{
@@ -64,7 +47,7 @@ namespace TrafficControlTest.Implement
 		{
 			if (mSocketServer.ListenStatus == EListenStatus.Idle)
 			{
-				InitializeThread();
+				Start();
 				mSocketServer.StartListening(mListenPort);
 			}
 		}
@@ -73,7 +56,7 @@ namespace TrafficControlTest.Implement
 			if (mSocketServer.ListenStatus == EListenStatus.Listening)
 			{
 				mSocketServer.StopListen();
-				DestroyThread();
+				Stop();
 			}
 		}
 		public void SendSerializableData(string IpPort, object Data)
@@ -139,6 +122,10 @@ namespace TrafficControlTest.Implement
 		{
 			SendSerializableData(IpPort, new ChangeMap(MapName));
 		}
+		public override void Task()
+		{
+			Subtask_HandleSerialServerEvents();
+		}
 
 		~VehicleCommunicator()
 		{
@@ -182,46 +169,6 @@ namespace TrafficControlTest.Implement
 				SerialServer.SentSerializableDataFailed -= HandleEvent_SerialServerEvent;
 			}
 		}
-		private void InitializeThread()
-		{
-			mThdHandleSerialServerEventsExitFlag = new bool[] { false };
-			mThdHandleSerialServerEvents = new Thread(() => Task_HandleSerialServerEvents(mThdHandleSerialServerEventsExitFlag));
-			mThdHandleSerialServerEvents.IsBackground = true;
-			mThdHandleSerialServerEvents.Start();
-		}
-		private void DestroyThread()
-		{
-			if (mThdHandleSerialServerEvents != null)
-			{
-				if (mThdHandleSerialServerEvents.IsAlive)
-				{
-					mThdHandleSerialServerEventsExitFlag[0] = true;
-				}
-				mThdHandleSerialServerEvents = null;
-			}
-		}
-		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStarted?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStarted?.Invoke(DateTime.Now); });
-			}
-		}
-		protected virtual void RaiseEvent_SystemStopped(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStopped?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
-			}
-		}
 		protected virtual void RaiseEvent_RemoteConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
 		{
 			if (Sync)
@@ -230,7 +177,7 @@ namespace TrafficControlTest.Implement
 			}
 			else
 			{
-				Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
+				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
 			}
 		}
 		protected virtual void RaiseEvent_LocalListenStateChanged(ListenState NewState, int Port, bool Sync = true)
@@ -241,7 +188,7 @@ namespace TrafficControlTest.Implement
 			}
 			else
 			{
-				Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port); });
+				System.Threading.Tasks.Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableData(string IpPort, object Data, bool Sync = true)
@@ -252,7 +199,7 @@ namespace TrafficControlTest.Implement
 			}
 			else
 			{
-				Task.Run(() => { SentSerializableData?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { SentSerializableData?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
 		protected virtual void RaiseEvent_ReceivedSerializableData(string IpPort, object Data, bool Sync = true)
@@ -263,7 +210,7 @@ namespace TrafficControlTest.Implement
 			}
 			else
 			{
-				Task.Run(() => { ReceivedSerializableData?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { ReceivedSerializableData?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableDataSuccessed(string IpPort, object Data, bool Sync = true)
@@ -274,7 +221,7 @@ namespace TrafficControlTest.Implement
 			}
 			else
 			{
-				Task.Run(() => { SentSerializableDataSuccessed?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { SentSerializableDataSuccessed?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableDataFailed(string IpPort, object Data, bool Sync = true)
@@ -285,7 +232,7 @@ namespace TrafficControlTest.Implement
 			}
 			else
 			{
-				Task.Run(() => { SentSerializableDataFailed?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { SentSerializableDataFailed?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
 		private void HandleEvent_SerialServerEvent(object Sender, EventArgs E)
@@ -341,23 +288,6 @@ namespace TrafficControlTest.Implement
 		private void HandleSerialServerEvent(SentSerializableDataFailedEventArgs E)
 		{
 			RaiseEvent_SentSerializableDataFailed(E.RemoteInfo.ToString(), E.Data);
-		}
-		private void Task_HandleSerialServerEvents(bool[] ExitFlag)
-		{
-			try
-			{
-				mIsExecuting = true;
-				while (!ExitFlag[0])
-				{
-					Subtask_HandleSerialServerEvents();
-					Thread.Sleep(100);
-				}
-			}
-			finally
-			{
-				Subtask_HandleSerialServerEvents();
-				mIsExecuting = false;
-			}
 		}
 		private void Subtask_HandleSerialServerEvents()
 		{

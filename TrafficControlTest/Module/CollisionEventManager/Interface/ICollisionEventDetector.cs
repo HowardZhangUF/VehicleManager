@@ -1,4 +1,5 @@
-﻿using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using TrafficControlTest.Module.General.Interface;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Interface
 {
@@ -7,17 +8,10 @@ namespace TrafficControlTest.Interface
 	/// - 定期從 IVehicleInfoManager 拿車子資訊 (IVehicleInfo) 來計算是否有車子將會發生 ICollisionEvent
 	/// - 根據計算結果來使用 ICollisionEventManager 的 Add(), Update() 方法
 	/// </summary>
-	public interface ICollisionEventDetector
+	public interface ICollisionEventDetector : ISystemWithLoopTask
 	{
-		event EventHandlerDateTime SystemStarted;
-		event EventHandlerDateTime SystemStopped;
-
-		bool mIsExecuting { get; }
-
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(ICollisionEventManager CollisionEventManager);
 		void Set(IVehicleInfoManager VehicleInfoManager, ICollisionEventManager CollisionEventManager);
-		void Start();
-		void Stop();
 	}
 }

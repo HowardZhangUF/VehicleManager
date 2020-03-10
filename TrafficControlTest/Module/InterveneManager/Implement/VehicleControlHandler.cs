@@ -6,35 +6,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General.Implement;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Implement
 {
-	public class VehicleControlHandler : IVehicleControlHandler
+	public class VehicleControlHandler : SystemWithLoopTask, IVehicleControlHandler
 	{
-		public event EventHandlerDateTime SystemStarted;
-		public event EventHandlerDateTime SystemStopped;
-
-		public bool mIsExecuting
-		{
-			get
-			{
-				return _IsExecuting;
-			}
-			private set
-			{
-				_IsExecuting = value;
-				if (_IsExecuting) RaiseEvent_SystemStarted();
-				else RaiseEvent_SystemStopped();
-			}
-		}
-
 		private IVehicleControlManager rVehicleControlManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
-		private Thread mThdHandleVehicleControl = null;
-		private bool[] mThdHandleVehicleControlExitFlag = null;
-		private bool _IsExecuting = false;
 
 		public VehicleControlHandler(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
 		{
@@ -64,13 +45,9 @@ namespace TrafficControlTest.Implement
 			Set(VehicleInfoManager);
 			Set(VehicleCommunicator);
 		}
-		public void Start()
+		public override void Task()
 		{
-			InitializeThread();
-		}
-		public void Stop()
-		{
-			DestroyThread();
+			Subtask_HandleVehicleControls();
 		}
 
 		private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
@@ -115,64 +92,9 @@ namespace TrafficControlTest.Implement
 
 			}
 		}
-		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
+		private void Subtask_HandleVehicleControls()
 		{
-			if (Sync)
-			{
-				SystemStarted?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStarted?.Invoke(DateTime.Now); });
-			}
-		}
-		protected virtual void RaiseEvent_SystemStopped(bool Sync = true)
-		{
-			if (Sync)
-			{
-				SystemStopped?.Invoke(DateTime.Now);
-			}
-			else
-			{
-				Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
-			}
-		}
-		private void InitializeThread()
-		{
-			mThdHandleVehicleControlExitFlag = new bool[] { false };
-			mThdHandleVehicleControl = new Thread(() => Task_HandleVehicleControl(mThdHandleVehicleControlExitFlag));
-			mThdHandleVehicleControl.IsBackground = true;
-			mThdHandleVehicleControl.Start();
-		}
-		private void DestroyThread()
-		{
-			if (mThdHandleVehicleControl != null)
-			{
-				if (mThdHandleVehicleControl.IsAlive)
-				{
-					mThdHandleVehicleControlExitFlag[0] = true;
-				}
-				mThdHandleVehicleControl = null;
-			}
-		}
-		private void Task_HandleVehicleControl(bool[] ExitFlag)
-		{
-			try
-			{
-				mIsExecuting = true;
-				IEnumerable<IVehicleControl> vehicleControls = null;
-				while (!ExitFlag[0])
-				{
-					vehicleControls = rVehicleControlManager.GetItems();
-					HandleVehicleControls(vehicleControls);
-					vehicleControls = null;
-					Thread.Sleep(300);
-				}
-			}
-			finally
-			{
-				mIsExecuting = false;
-			}
+			HandleVehicleControls(rVehicleControlManager.GetItems());
 		}
 		private void HandleVehicleControls(IEnumerable<IVehicleControl> VehicleControls)
 		{
