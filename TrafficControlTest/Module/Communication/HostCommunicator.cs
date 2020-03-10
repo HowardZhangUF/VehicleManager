@@ -23,8 +23,8 @@ namespace TrafficControlTest.Module.General.Implement
 
 		private Server mServer = null;
 		private int mListenPort = 9000;
-		private readonly Queue<EventArgs> mServerEvents = new Queue<EventArgs>();
-		private readonly object mLockOfServerEvents = new object();
+		private readonly Queue<ReceivedDataEventArgs> mServerReceivedDataEvents = new Queue<ReceivedDataEventArgs>();
+		private readonly object mLockOfServerReceivedDataEvents = new object();
 
 		public HostCommunicator()
 		{
@@ -71,7 +71,7 @@ namespace TrafficControlTest.Module.General.Implement
 		}
 		public override void Task()
 		{
-			Subtask_HandleServerEvents();
+			Subtask_HandleServerReceivedDataEvents();
 		}
 
 		~HostCommunicator()
@@ -98,18 +98,18 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			if (Server != null)
 			{
-				Server.ListenStatusChangedEvent += HandleEvent_ServerEvent;
-				Server.ConnectStatusChangedEvent += HandleEvent_ServerEvent;
-				Server.ReceivedDataEvent += HandleEvent_ServerEvent;
+				Server.ListenStatusChangedEvent += HandleEvent_ServerListenStatusChangedEvent;
+				Server.ConnectStatusChangedEvent += HandleEvent_ServerConnectStatusChangedEvent;
+				Server.ReceivedDataEvent += HandleEvent_ServerReceivedDataEvent;
 			}
 		}
 		private void UnsubscribeEvent_Server(Server Server)
 		{
 			if (Server != null)
 			{
-				Server.ListenStatusChangedEvent -= HandleEvent_ServerEvent;
-				Server.ConnectStatusChangedEvent -= HandleEvent_ServerEvent;
-				Server.ReceivedDataEvent -= HandleEvent_ServerEvent;
+				Server.ListenStatusChangedEvent -= HandleEvent_ServerListenStatusChangedEvent;
+				Server.ConnectStatusChangedEvent -= HandleEvent_ServerConnectStatusChangedEvent;
+				Server.ReceivedDataEvent -= HandleEvent_ServerReceivedDataEvent;
 			}
 		}
 		protected virtual void RaiseEvent_LocalListenStateChanged(ListenState NewState, int Port, bool Sync = true)
@@ -156,61 +156,40 @@ namespace TrafficControlTest.Module.General.Implement
 				System.Threading.Tasks.Task.Run(() => { ReceivedString?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
-		private void HandleEvent_ServerEvent(object Sender, EventArgs E)
+		private void HandleEvent_ServerListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)
 		{
-			lock (mLockOfServerEvents)
+			RaiseEvent_LocalListenStateChanged(e.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed, mListenPort);
+		}
+		private void HandleEvent_ServerConnectStatusChangedEvent(object sender, ConnectStatusChangedEventArgs e)
+		{
+			RaiseEvent_RemoteConnectStateChanged(e.RemoteInfo.ToString(), e.ConnectStatus == EConnectStatus.Connect ? ConnectState.Connected : ConnectState.Disconnected);
+		}
+		private void HandleEvent_ServerReceivedDataEvent(object sender, ReceivedDataEventArgs e)
+		{
+			lock (mLockOfServerReceivedDataEvents)
 			{
-				mServerEvents.Enqueue(E);
+				mServerReceivedDataEvents.Enqueue(e);
 			}
 		}
-		private void HandleServerEvent(EventArgs E)
+		private void Subtask_HandleServerReceivedDataEvents()
 		{
-			if (E is ListenStatusChangedEventArgs)
+			List<ReceivedDataEventArgs> events = null;
+			lock (mLockOfServerReceivedDataEvents)
 			{
-				HandleServerEvent(E as ListenStatusChangedEventArgs);
-			}
-			else if (E is ConnectStatusChangedEventArgs)
-			{
-				HandleServerEvent(E as ConnectStatusChangedEventArgs);
-			}
-			else if (E is ReceivedDataEventArgs)
-			{
-				HandleServerEvent(E as ReceivedDataEventArgs);
-			}
-		}
-		private void HandleServerEvent(ListenStatusChangedEventArgs E)
-		{
-			RaiseEvent_LocalListenStateChanged(E.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed, mListenPort);
-		}
-		private void HandleServerEvent(ConnectStatusChangedEventArgs E)
-		{
-			RaiseEvent_RemoteConnectStateChanged(E.RemoteInfo.ToString(), E.ConnectStatus == EConnectStatus.Connect ? ConnectState.Connected : ConnectState.Disconnected);
-		}
-		private void HandleServerEvent(ReceivedDataEventArgs E)
-		{
-			RaiseEvent_ReceivedString(E.RemoteInfo.ToString(), Encoding.Default.GetString(E.Data));
-		}
-		private void Subtask_HandleServerEvents()
-		{
-			List<EventArgs> events = null;
-
-			lock (mLockOfServerEvents)
-			{
-				if (mServerEvents.Count > 0)
+				if (mServerReceivedDataEvents.Count > 0)
 				{
-					events = mServerEvents.ToList();
-					mServerEvents.Clear();
+					events = mServerReceivedDataEvents.ToList();
+					mServerReceivedDataEvents.Clear();
 				}
 			}
 
 			if (events != null && events.Count > 0)
 			{
-				foreach (EventArgs e in events)
+				for (int i = 0; i < events.Count; ++i)
 				{
-					HandleServerEvent(e);
+					RaiseEvent_ReceivedString(events[i].RemoteInfo.ToString(), Encoding.Default.GetString(events[i].Data));
 					Thread.Sleep(5);
 				}
-				events.Clear();
 			}
 		}
 	}

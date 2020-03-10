@@ -15,8 +15,8 @@ namespace TrafficControlTest.Implement
 {
 	class VehicleCommunicator : SystemWithLoopTask, IVehicleCommunicator
 	{
-		public event EventHandlerRemoteConnectState RemoteConnectStateChanged;
 		public event EventHandlerLocalListenState LocalListenStateChanged;
+		public event EventHandlerRemoteConnectState RemoteConnectStateChanged;
 		public event EventHandlerSentSerializableData SentSerializableData;
 		public event EventHandlerReceivedSerializableData ReceivedSerializableData;
 		public event EventHandlerSentSerializableData SentSerializableDataSuccessed;
@@ -28,8 +28,8 @@ namespace TrafficControlTest.Implement
 
 		private SerialServer mSocketServer = null;
 		private int mListenPort { get; set; }
-		private readonly Queue<EventArgs> mSerialServerEvents = new Queue<EventArgs>();
-		private readonly object mLockOfSerialServerEvents = new object();
+		private readonly Queue<EventArgs> mSerialServerCommunicationSerialDataEvents = new Queue<EventArgs>();
+		private readonly object mLockOfSerialServerCommunicationSerialDataEvents = new object();
 
 		public VehicleCommunicator()
 		{
@@ -151,33 +151,22 @@ namespace TrafficControlTest.Implement
 		{
 			if (SerialServer != null)
 			{
-				SerialServer.ConnectStatusChangedEvent += HandleEvent_SerialServerEvent;
-				SerialServer.ListenStatusChangedEvent += HandleEvent_SerialServerEvent;
-				SerialServer.ReceivedSerialDataEvent += HandleEvent_SerialServerEvent;
-				SerialServer.SentSerializableDataSuccessed += HandleEvent_SerialServerEvent;
-				SerialServer.SentSerializableDataFailed += HandleEvent_SerialServerEvent;
+				SerialServer.ListenStatusChangedEvent += HandleEvent_SerialServerListenStatusChangedEvent;
+				SerialServer.ConnectStatusChangedEvent += HandleEvent_SerialServerConnectStatusChangedEvent;
+				SerialServer.ReceivedSerialDataEvent += HandleEvent_SerialServerReceivedSerialDataEvent;
+				SerialServer.SentSerializableDataSuccessed += HandleEvent_SerialServerSentSerializableDataSuccessed;
+				SerialServer.SentSerializableDataFailed += HandleEvent_SerialServerSentSerializableDataFailed;
 			}
 		}
 		private void UnsubscribeEvent_SerialServer(SerialServer SerialServer)
 		{
 			if (SerialServer != null)
 			{
-				SerialServer.ConnectStatusChangedEvent -= HandleEvent_SerialServerEvent;
-				SerialServer.ListenStatusChangedEvent -= HandleEvent_SerialServerEvent;
-				SerialServer.ReceivedSerialDataEvent -= HandleEvent_SerialServerEvent;
-				SerialServer.SentSerializableDataSuccessed -= HandleEvent_SerialServerEvent;
-				SerialServer.SentSerializableDataFailed -= HandleEvent_SerialServerEvent;
-			}
-		}
-		protected virtual void RaiseEvent_RemoteConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
-		{
-			if (Sync)
-			{
-				RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState);
-			}
-			else
-			{
-				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
+				SerialServer.ListenStatusChangedEvent -= HandleEvent_SerialServerListenStatusChangedEvent;
+				SerialServer.ConnectStatusChangedEvent -= HandleEvent_SerialServerConnectStatusChangedEvent;
+				SerialServer.ReceivedSerialDataEvent -= HandleEvent_SerialServerReceivedSerialDataEvent;
+				SerialServer.SentSerializableDataSuccessed -= HandleEvent_SerialServerSentSerializableDataSuccessed;
+				SerialServer.SentSerializableDataFailed -= HandleEvent_SerialServerSentSerializableDataFailed;
 			}
 		}
 		protected virtual void RaiseEvent_LocalListenStateChanged(ListenState NewState, int Port, bool Sync = true)
@@ -189,6 +178,17 @@ namespace TrafficControlTest.Implement
 			else
 			{
 				System.Threading.Tasks.Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port); });
+			}
+		}
+		protected virtual void RaiseEvent_RemoteConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
+		{
+			if (Sync)
+			{
+				RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState);
+			}
+			else
+			{
+				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableData(string IpPort, object Data, bool Sync = true)
@@ -235,80 +235,65 @@ namespace TrafficControlTest.Implement
 				System.Threading.Tasks.Task.Run(() => { SentSerializableDataFailed?.Invoke(DateTime.Now, IpPort, Data); });
 			}
 		}
-		private void HandleEvent_SerialServerEvent(object Sender, EventArgs E)
+		private void HandleEvent_SerialServerListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)
 		{
-			lock(mLockOfSerialServerEvents)
+			RaiseEvent_LocalListenStateChanged(e.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed, mListenPort);
+		}
+		private void HandleEvent_SerialServerConnectStatusChangedEvent(object sender, ConnectStatusChangedEventArgs e)
+		{
+			RaiseEvent_RemoteConnectStateChanged(e.RemoteInfo.ToString(), e.ConnectStatus == EConnectStatus.Connect ? ConnectState.Connected : ConnectState.Disconnected);
+		}
+		private void HandleEvent_SerialServerReceivedSerialDataEvent(object sender, ReceivedSerialDataEventArgs e)
+		{
+			lock(mLockOfSerialServerCommunicationSerialDataEvents)
 			{
-				mSerialServerEvents.Enqueue(E);
+				mSerialServerCommunicationSerialDataEvents.Enqueue(e);
 			}
 		}
-		private void HandleSerialServerEvent(EventArgs E)
+		private void HandleEvent_SerialServerSentSerializableDataSuccessed(object sender, SentSerializableDataSuccessedEventArgs e)
 		{
-			if (E is ConnectStatusChangedEventArgs)
+			lock (mLockOfSerialServerCommunicationSerialDataEvents)
 			{
-				HandleSerialServerEvent(E as ConnectStatusChangedEventArgs);
-			}
-			else if (E is ListenStatusChangedEventArgs)
-			{
-				HandleSerialServerEvent(E as ListenStatusChangedEventArgs);
-			}
-			else if (E is ReceivedSerialDataEventArgs)
-			{
-				HandleSerialServerEvent(E as ReceivedSerialDataEventArgs);
-			}
-			else if (E is SentSerializableDataSuccessedEventArgs)
-			{
-				HandleSerialServerEvent(E as SentSerializableDataSuccessedEventArgs);
-			}
-			else if (E is SentSerializableDataFailedEventArgs)
-			{
-				HandleSerialServerEvent(E as SentSerializableDataFailedEventArgs);
-			}
-			else
-			{
-				Console.WriteLine("Received Unknown Serial Data.");
+				mSerialServerCommunicationSerialDataEvents.Enqueue(e);
 			}
 		}
-		private void HandleSerialServerEvent(ConnectStatusChangedEventArgs E)
+		private void HandleEvent_SerialServerSentSerializableDataFailed(object sender, SentSerializableDataFailedEventArgs e)
 		{
-			RaiseEvent_RemoteConnectStateChanged(E.RemoteInfo.ToString(), E.ConnectStatus == EConnectStatus.Connect ? ConnectState.Connected : ConnectState.Disconnected);
-		}
-		private void HandleSerialServerEvent(ListenStatusChangedEventArgs E)
-		{
-			RaiseEvent_LocalListenStateChanged(E.ListenStatus == EListenStatus.Listening ? ListenState.Listening : ListenState.Closed, mListenPort);
-		}
-		private void HandleSerialServerEvent(ReceivedSerialDataEventArgs E)
-		{
-			RaiseEvent_ReceivedSerializableData(E.RemoteInfo.ToString(), E.Data);
-		}
-		private void HandleSerialServerEvent(SentSerializableDataSuccessedEventArgs E)
-		{
-			RaiseEvent_SentSerializableDataSuccessed(E.RemoteInfo.ToString(), E.Data);
-		}
-		private void HandleSerialServerEvent(SentSerializableDataFailedEventArgs E)
-		{
-			RaiseEvent_SentSerializableDataFailed(E.RemoteInfo.ToString(), E.Data);
+			lock (mLockOfSerialServerCommunicationSerialDataEvents)
+			{
+				mSerialServerCommunicationSerialDataEvents.Enqueue(e);
+			}
 		}
 		private void Subtask_HandleSerialServerEvents()
 		{
 			List<EventArgs> events = null;
-
-			lock (mLockOfSerialServerEvents)
+			lock (mLockOfSerialServerCommunicationSerialDataEvents)
 			{
-				if (mSerialServerEvents.Count > 0)
+				if (mSerialServerCommunicationSerialDataEvents.Count > 0)
 				{
-					events = mSerialServerEvents.ToList();
-					mSerialServerEvents.Clear();
+					events = mSerialServerCommunicationSerialDataEvents.ToList();
+					mSerialServerCommunicationSerialDataEvents.Clear();
 				}
 			}
 
 			if (events != null && events.Count > 0)
 			{
-				foreach (EventArgs e in events)
+				for (int i = 0; i < events.Count; ++i)
 				{
-					HandleSerialServerEvent(e);
+					if (events[i] is ReceivedSerialDataEventArgs)
+					{
+						RaiseEvent_ReceivedSerializableData((events[i] as ReceivedSerialDataEventArgs).RemoteInfo.ToString(), (events[i] as ReceivedSerialDataEventArgs).Data);
+					}
+					else if (events[i] is SentSerializableDataSuccessedEventArgs)
+					{
+						RaiseEvent_SentSerializableDataSuccessed((events[i] as SentSerializableDataSuccessedEventArgs).RemoteInfo.ToString(), (events[i] as SentSerializableDataSuccessedEventArgs).Data);
+					}
+					else if (events[i] is SentSerializableDataFailedEventArgs)
+					{
+						RaiseEvent_SentSerializableDataFailed((events[i] as SentSerializableDataFailedEventArgs).RemoteInfo.ToString(), (events[i] as SentSerializableDataFailedEventArgs).Data);
+					}
 				}
-				events.Clear();
+				Thread.Sleep(5);
 			}
 		}
 	}
