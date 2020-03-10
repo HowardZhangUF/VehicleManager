@@ -72,8 +72,8 @@ namespace TrafficControlTest.Implement
 		{
 			if (mSocketServer.ListenStatus == EListenStatus.Listening)
 			{
-				DestroyThread();
 				mSocketServer.StopListen();
+				DestroyThread();
 			}
 		}
 		public void SendSerializableData(string IpPort, object Data)

@@ -68,8 +68,8 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			if (mServer.ListenStatus == EListenStatus.Listening)
 			{
-				DestroyThread();
 				mServer.StopListen();
+				DestroyThread();
 			}
 		}
 		public void SendString(string Data)
