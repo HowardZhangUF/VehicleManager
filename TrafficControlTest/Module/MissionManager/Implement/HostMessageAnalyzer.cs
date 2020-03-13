@@ -84,16 +84,16 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 						{
 							missionState = Library.Library.GenerateIMissionState(Mission);
 							missionState.UpdateSourceIpPort(IpPort);
-							replyMsg = $"Event=CommandAccepted MissionID={missionState.GetMissionId()}";
+							replyMsg = $"Reply=CommandAccepted MissionID={missionState.GetMissionId()}";
 						}
 						else
 						{
-							replyMsg = $"Event=CommandRejected Reason={AnalyzedFailedDetail}";
+							replyMsg = $"Reply=CommandRejected Reason={AnalyzedFailedDetail}";
 						}
 						break;
 					}
 				}
-				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Event=CommandRejected Reason=UnknownCommand";
+				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Reply=CommandRejected Reason=UnknownCommand";
 				string serial = GetSerial(Data);
 				if (!string.IsNullOrEmpty(serial)) replyMsg = $"Serial={serial} {replyMsg}";
 				rHostCommunicator.SendString(IpPort, replyMsg);
