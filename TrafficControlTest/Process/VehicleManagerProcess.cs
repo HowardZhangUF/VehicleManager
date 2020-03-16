@@ -250,19 +250,11 @@ namespace TrafficControlTest.Process
 			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager, mMapManager);
 			SubscribeEvent_IMissionUpdater(mMissionUpdater);
 
-			mConfigurator.Load();
-			mVehicleCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("VehicleCommunicator/ListenPort")));
-			mHostCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("HostCommunicator/ListenPort")));
-			mMapFileManager.SetConfigOfMapFileDirectory(mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
-			mMapManager.SetConfigOfAutoLoadMap(bool.Parse(mConfigurator.GetValue("MapManager/AutoLoadMap")));
+			LoadConfigFileAndUpdateSystemConfig();
 		}
 		private void Destructor()
 		{
-			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfigOfAutoLoadMap().ToString());
-			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfigOfMapFileDirectory());
-			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfigOfListenPort().ToString());
-			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfigOfListenPort().ToString());
-			mConfigurator.Save();
+			LoadSystemConfigAndUpdateConfigFile();
 
 			UnsubscribeEvent_IAccessControl(mAccessControl);
 			mAccessControl = null;
@@ -322,6 +314,22 @@ namespace TrafficControlTest.Process
 			mDatabaseAdapterOfEventRecord = null;
 			mDatabaseAdapterOfLogRecord = null;
 			mConfigurator = null;
+		}
+		private void LoadConfigFileAndUpdateSystemConfig()
+		{
+			mConfigurator.Load();
+			mVehicleCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("VehicleCommunicator/ListenPort")));
+			mHostCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("HostCommunicator/ListenPort")));
+			mMapFileManager.SetConfigOfMapFileDirectory(mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
+			mMapManager.SetConfigOfAutoLoadMap(bool.Parse(mConfigurator.GetValue("MapManager/AutoLoadMap")));
+		}
+		private void LoadSystemConfigAndUpdateConfigFile()
+		{
+			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfigOfAutoLoadMap().ToString());
+			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfigOfMapFileDirectory());
+			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfigOfListenPort().ToString());
+			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfigOfListenPort().ToString());
+			mConfigurator.Save();
 		}
 		private void SubscribeEvent_Exception()
 		{
