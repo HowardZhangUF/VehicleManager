@@ -72,33 +72,70 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		}
 		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
 		{
+			string serialInfo = GetSerial(Data);
+			string replyMsg = string.IsNullOrEmpty(serialInfo) ? string.Empty : $"Serial={serialInfo} ";
+
+			if (IsCommandTypeMission(Data))
+			{
+				IMissionState missionState = ConvertToIMissionState(IpPort, Data, out string failedDetail);
+				if (missionState != null)
+				{
+					replyMsg += $"Reply=CommandAccepted MissionID={missionState.GetMissionId()}";
+					rHostCommunicator.SendString(IpPort, replyMsg);
+					rMissionStateManager.Add(missionState.mName, missionState);
+				}
+				else
+				{
+					replyMsg += $"Reply=CommandRejected Reason={failedDetail}";
+					rHostCommunicator.SendString(IpPort, replyMsg);
+				}
+			}
+			else if (IsCommandTypeQuery(Data))
+			{
+				
+			}
+			else
+			{
+				replyMsg += $"Reply=CommandRejected Reason=UnknownCommand";
+				rHostCommunicator.SendString(IpPort, replyMsg);
+			}
+		}
+		private IMissionState ConvertToIMissionState(string IpPort, string Data, out string AnalyzedFailedDetail)
+		{
+			IMissionState result = null;
+			AnalyzedFailedDetail = string.Empty;
+
 			if (rMissionAnalyzers != null && rMissionAnalyzers.Count() > 0)
 			{
-				string replyMsg = string.Empty;
-				IMissionState missionState = null;
 				for (int i = 0; i < rMissionAnalyzers.Length; ++i)
 				{
 					if (Data.Contains($"{rMissionAnalyzers[i].mKeyItem}={rMissionAnalyzers[i].mKeyword}"))
 					{
-						if (rMissionAnalyzers[i].TryParse(Data, out IMission Mission, out string AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
+						if (rMissionAnalyzers[i].TryParse(Data, out IMission Mission, out AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
 						{
-							missionState = Library.Library.GenerateIMissionState(Mission);
-							missionState.UpdateSourceIpPort(IpPort);
-							replyMsg = $"Reply=CommandAccepted MissionID={missionState.GetMissionId()}";
-						}
-						else
-						{
-							replyMsg = $"Reply=CommandRejected Reason={AnalyzedFailedDetail}";
+							result = Library.Library.GenerateIMissionState(Mission);
+							result.UpdateSourceIpPort(IpPort);
 						}
 						break;
 					}
 				}
-				if (string.IsNullOrEmpty(replyMsg)) replyMsg = "Reply=CommandRejected Reason=UnknownCommand";
-				string serial = GetSerial(Data);
-				if (!string.IsNullOrEmpty(serial)) replyMsg = $"Serial={serial} {replyMsg}";
-				rHostCommunicator.SendString(IpPort, replyMsg);
-				if (missionState != null) rMissionStateManager.Add(missionState.mName, missionState);
+				if (string.IsNullOrEmpty(AnalyzedFailedDetail)) AnalyzedFailedDetail = "UnknownCommand";
 			}
+			else
+			{
+				AnalyzedFailedDetail = "AnalyzerNotFound";
+			}
+
+			return result;
+		}
+
+		private static bool IsCommandTypeMission(string Data)
+		{
+			return Data.Contains("Mission=");
+		}
+		private static bool IsCommandTypeQuery(string Data)
+		{
+			return Data.Contains("Command=");
 		}
 		private static string GetSerial(string Data)
 		{
