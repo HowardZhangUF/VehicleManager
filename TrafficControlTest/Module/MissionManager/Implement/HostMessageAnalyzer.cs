@@ -77,7 +77,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 
 			if (IsCommandTypeMission(Data))
 			{
-				IMissionState missionState = ConvertToIMissionState(IpPort, Data, out string failedDetail);
+				IMissionState missionState = ConvertToIMissionState(IpPort, Data, out string analyzeFailedDetail);
 				if (missionState != null)
 				{
 					replyMsg += $"Reply=CommandAccepted MissionID={missionState.GetMissionId()}";
@@ -86,11 +86,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				}
 				else
 				{
-					replyMsg += $"Reply=CommandRejected Reason={failedDetail}";
+					replyMsg += $"Reply=CommandRejected Reason={analyzeFailedDetail}";
 					rHostCommunicator.SendString(IpPort, replyMsg);
 				}
 			}
-			else if (IsCommandTypeQuery(Data))
+			else if (IsCommandTypeQueryCommand(Data))
 			{
 				
 			}
@@ -100,10 +100,10 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				rHostCommunicator.SendString(IpPort, replyMsg);
 			}
 		}
-		private IMissionState ConvertToIMissionState(string IpPort, string Data, out string AnalyzedFailedDetail)
+		private IMissionState ConvertToIMissionState(string IpPort, string Data, out string AnalyzeFailedDetail)
 		{
 			IMissionState result = null;
-			AnalyzedFailedDetail = string.Empty;
+			AnalyzeFailedDetail = string.Empty;
 
 			if (rMissionAnalyzers != null && rMissionAnalyzers.Count() > 0)
 			{
@@ -111,7 +111,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				{
 					if (Data.Contains($"{rMissionAnalyzers[i].mKeyItem}={rMissionAnalyzers[i].mKeyword}"))
 					{
-						if (rMissionAnalyzers[i].TryParse(Data, out IMission Mission, out AnalyzedFailedDetail) == MissionAnalyzeResult.Successed)
+						if (rMissionAnalyzers[i].TryParse(Data, out IMission Mission, out AnalyzeFailedDetail) == MissionAnalyzeResult.Successed)
 						{
 							result = Library.Library.GenerateIMissionState(Mission);
 							result.UpdateSourceIpPort(IpPort);
@@ -119,11 +119,11 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 						break;
 					}
 				}
-				if (string.IsNullOrEmpty(AnalyzedFailedDetail)) AnalyzedFailedDetail = "UnknownCommand";
+				if (string.IsNullOrEmpty(AnalyzeFailedDetail)) AnalyzeFailedDetail = "UnknownCommand";
 			}
 			else
 			{
-				AnalyzedFailedDetail = "AnalyzerNotFound";
+				AnalyzeFailedDetail = "AnalyzerNotFound";
 			}
 
 			return result;
@@ -133,9 +133,9 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			return Data.Contains("Mission=");
 		}
-		private static bool IsCommandTypeQuery(string Data)
+		private static bool IsCommandTypeQueryCommand(string Data)
 		{
-			return Data.Contains("Command=");
+			return Data.Contains("Command=Query");
 		}
 		private static string GetSerial(string Data)
 		{
