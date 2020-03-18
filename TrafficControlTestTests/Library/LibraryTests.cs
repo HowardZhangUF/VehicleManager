@@ -237,7 +237,7 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission6 != null) Assert.Fail();
-			if (detail6 != "LackOf\"Target\"Parameters") Assert.Fail();
+			if (detail6 != "LackOf\"Target\"Parameter") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission7 != null) Assert.Fail();
@@ -319,15 +319,15 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp7, out IMission mission7, out string detail7) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission7 != null) Assert.Fail();
-			if (detail7 != "LackOf\"X\"Parameters") Assert.Fail();
+			if (detail7 != "LackOf\"X\"Parameter") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp8, out IMission mission8, out string detail8) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission8 != null) Assert.Fail();
-			if (detail8 != "LackOf\"Y\"Parameters") Assert.Fail();
+			if (detail8 != "LackOf\"Y\"Parameter") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp9, out IMission mission9, out string detail9) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission9 != null) Assert.Fail();
-			if (detail9 != "LackOf\"X,Y\"Parameters") Assert.Fail();
+			if (detail9 != "LackOf\"X,Y\"Parameter") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp10, out IMission mission10, out string detail10) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission10 != null) Assert.Fail();
@@ -385,7 +385,7 @@ namespace TrafficControlTest.Library.Tests
 
 			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission5 != null) Assert.Fail();
-			if (detail5 != "LackOf\"VehicleID\"Parameters") Assert.Fail();
+			if (detail5 != "LackOf\"VehicleID\"Parameter") Assert.Fail();
 
 			if (missionAnalyzer.TryParse(tmp6, out IMission mission6, out string detail6) != MissionAnalyzeResult.Failed) Assert.Fail();
 			if (mission6 != null) Assert.Fail();

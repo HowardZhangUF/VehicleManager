@@ -129,7 +129,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					else
 					{
 						result = MissionAnalyzeResult.Failed;
-						AnalyzeFailedDetail = $"LackOf\"{string.Join(",", lackedNecessaryItem)}\"Parameters";
+						AnalyzeFailedDetail = $"LackOf\"{string.Join(",", lackedNecessaryItem)}\"Parameter";
 					}
 				}
 				else
