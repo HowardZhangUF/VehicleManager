@@ -105,16 +105,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				}
 				else if (Data.Contains("Command=QueryVehicleInfo"))
 				{
-					if (Data.Contains("VehicleID="))
-					{
-						int startIndex = Data.IndexOf("VehicleID=") + "VehicleID=".Length;
-						string vehicleId = Data.Substring(startIndex);
-						replyMsg += "Reply=QueryVehicleInfo" + GetVehicleInfoString(vehicleId);
-					}
-					else
-					{
-						replyMsg += $"Reply=QueryVehicleInfo VehicleCount={rVehicleInfoManager.mCount}" + GetVehicleInfoString();
-					}
+					replyMsg += $"Reply=QueryVehicleInfo VehicleCount={rVehicleInfoManager.mCount}" + GetVehicleInfoString();
 				}
 				else if (Data.Contains("Command=QueryMissionList"))
 				{
@@ -122,16 +113,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				}
 				else if (Data.Contains("Command=QueryMissionInfo"))
 				{
-					if (Data.Contains("MissionID="))
-					{
-						int startIndex = Data.IndexOf("MissionID=") + "MissionID=".Length;
-						string missionId = Data.Substring(startIndex);
-						replyMsg += "Reply=QueryMissionInfo" + GetMissionInfoString(missionId);
-					}
-					else
-					{
-						replyMsg += $"Reply=QueryMissionInfo MissionCount={rMissionStateManager.mCount}" + GetMissionInfoString();
-					}
+					replyMsg += $"Reply=QueryMissionInfo MissionCount={rMissionStateManager.mCount}" + GetMissionInfoString();
 				}
 				else
 				{
