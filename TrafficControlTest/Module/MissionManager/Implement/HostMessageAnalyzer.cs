@@ -174,7 +174,12 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			IVehicleInfo vehicleInfo = rVehicleInfoManager.GetItem(VehicleId);
 			if (vehicleInfo != null)
 			{
-				result += $" VehicleID{AppendIndex}={vehicleInfo.mName} State{AppendIndex}={vehicleInfo.mCurrentState} X{AppendIndex}={vehicleInfo.mLocationCoordinate.mX} Y{AppendIndex}={vehicleInfo.mLocationCoordinate.mY} Head{AppendIndex}={(int)vehicleInfo.mLocationToward} Battery{AppendIndex}={(int)vehicleInfo.mBatteryValue}";
+				result += $" VehicleID{AppendIndex}={vehicleInfo.mName}";
+				result += $" State{AppendIndex}={vehicleInfo.mCurrentState}";
+				result += $" X{AppendIndex}={vehicleInfo.mLocationCoordinate.mX}";
+				result += $" Y{AppendIndex}={vehicleInfo.mLocationCoordinate.mY}";
+				result += $" Head{AppendIndex}={(int)vehicleInfo.mLocationToward}";
+				result += $" Battery{AppendIndex}={(int)vehicleInfo.mBatteryValue}";
 			}
 			return result;
 		}
@@ -210,7 +215,8 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			IMissionState missionState = rMissionStateManager.GetItem(MissionId);
 			if (missionState != null)
 			{
-				result += $" MissionID{AppendIndex}={missionState.GetMissionId()} Mission{AppendIndex}={missionState.mMission.mMissionType.ToString()}";
+				result += $" MissionID{AppendIndex}={missionState.GetMissionId()}";
+				result += $" Mission{AppendIndex}={missionState.mMission.mMissionType.ToString()}";
 				result += $" Parameter{AppendIndex}={missionState.mMission.mParametersString}";
 				result += $" ExecuteState{AppendIndex}={missionState.mExecuteState.ToString()}";
 			}
