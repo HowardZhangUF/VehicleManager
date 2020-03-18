@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Interface;
 using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.MissionManager.Interface;
 
@@ -14,18 +15,23 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 	public class HostMessageAnalyzer : IHostMessageAnalyzer
 	{
 		private IHostCommunicator rHostCommunicator = null;
+		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMissionStateManager rMissionStateManager = null;
 		private IMissionAnalyzer[] rMissionAnalyzers = null;
 
-		public HostMessageAnalyzer(IHostCommunicator HostCommunicator, IMissionStateManager MissionStateManager, IMissionAnalyzer[] MissionAnalyzers)
+		public HostMessageAnalyzer(IHostCommunicator HostCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMissionAnalyzer[] MissionAnalyzers)
 		{
-			Set(HostCommunicator, MissionStateManager, MissionAnalyzers);
+			Set(HostCommunicator, VehicleInfoManager, MissionStateManager, MissionAnalyzers);
 		}
 		public void Set(IHostCommunicator HostCommunicator)
 		{
 			UnsubscribeEvent_IHostCommunicator(rHostCommunicator);
 			rHostCommunicator = HostCommunicator;
 			SubscribeEvent_IHostCommunicator(rHostCommunicator);
+		}
+		public void Set(IVehicleInfoManager VehicleInfoManager)
+		{
+			rVehicleInfoManager = VehicleInfoManager;
 		}
 		public void Set(IMissionStateManager MissionStateManager)
 		{
@@ -35,9 +41,10 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			rMissionAnalyzers = MissionAnalyzers;
 		}
-		public void Set(IHostCommunicator HostCommunicator, IMissionStateManager MissionStateManager, IMissionAnalyzer[] MissionAnalyzers)
+		public void Set(IHostCommunicator HostCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMissionAnalyzer[] MissionAnalyzers)
 		{
 			Set(HostCommunicator);
+			Set(VehicleInfoManager);
 			Set(MissionStateManager);
 			Set(MissionAnalyzers);
 		}
@@ -92,7 +99,45 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			}
 			else if (IsCommandTypeQueryCommand(Data))
 			{
-				
+				if (Data.Contains("Command=QueryVehicleList"))
+				{
+					replyMsg += "Reply=QueryVehicleList" + GetVehicleListString();
+				}
+				else if (Data.Contains("Command=QueryVehicleInfo"))
+				{
+					if (Data.Contains("VehicleID="))
+					{
+						int startIndex = Data.IndexOf("VehicleID=") + "VehicleID=".Length;
+						string vehicleId = Data.Substring(startIndex);
+						replyMsg += "Reply=QueryVehicleInfo" + GetVehicleInfoString(vehicleId);
+					}
+					else
+					{
+						replyMsg += "Reply=QueryVehicleInfo" + GetVehicleInfoString();
+					}
+				}
+				else if (Data.Contains("Command=QueryMissionList"))
+				{
+					replyMsg += "Reply=QueryMissionList" + GetMissionListString();
+				}
+				else if (Data.Contains("Command=QueryMissionInfo"))
+				{
+					if (Data.Contains("MissionID="))
+					{
+						int startIndex = Data.IndexOf("MissionID=") + "MissionID=".Length;
+						string missionId = Data.Substring(startIndex);
+						replyMsg += "Reply=QueryMissionInfo" + GetMissionInfoString(missionId);
+					}
+					else
+					{
+						replyMsg += "Reply=QueryMissionInfo" + GetMissionInfoString();
+					}
+				}
+				else
+				{
+					replyMsg += $"Reply=CommandRejected Reason=UnknownCommand";
+				}
+				rHostCommunicator.SendString(IpPort, replyMsg);
 			}
 			else
 			{
@@ -128,15 +173,84 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 
 			return result;
 		}
+		private string GetVehicleListString()
+		{
+			string result = string.Empty;
+			List<string> vehicleIds = rVehicleInfoManager.GetListOfVehicleId();
+			if (vehicleIds != null && vehicleIds.Count > 0)
+			{
+				for (int i = 0; i < vehicleIds.Count; ++i)
+				{
+					result += $" VehicleID{(i + 1).ToString()}={vehicleIds[i]}";
+				}
+			}
+			return result;
+		}
+		private string GetVehicleInfoString(string VehicleId, string AppendIndex = "")
+		{
+			string result = string.Empty;
+			IVehicleInfo vehicleInfo = rVehicleInfoManager.GetItem(VehicleId);
+			if (vehicleInfo != null)
+			{
+				result += $" VehicleID{AppendIndex}={vehicleInfo.mName} State{AppendIndex}={vehicleInfo.mCurrentState} X{AppendIndex}={vehicleInfo.mLocationCoordinate.mX} Y{AppendIndex}={vehicleInfo.mLocationCoordinate.mY} Head{AppendIndex}={(int)vehicleInfo.mLocationToward} Battery{AppendIndex}={(int)vehicleInfo.mBatteryValue}";
+			}
+			return result;
+		}
+		private string GetVehicleInfoString()
+		{
+			string result = string.Empty;
+			List<string> vehicleIds = rVehicleInfoManager.GetListOfVehicleId();
+			if (vehicleIds != null && vehicleIds.Count > 0)
+			{
+				for (int i = 0; i < vehicleIds.Count; ++i)
+				{
+					result += GetVehicleInfoString(vehicleIds[i], (i + 1).ToString());
+				}
+			}
+			return result;
+		}
+		private string GetMissionListString()
+		{
+			string result = string.Empty;
+			List<string> missionIds = rMissionStateManager.GetListOfMissionId();
+			if (missionIds != null && missionIds.Count > 0)
+			{
+				for (int i = 0; i < missionIds.Count; ++i)
+				{
+					result += $" MissionID{(i + 1).ToString()}={missionIds[i]}";
+				}
+			}
+			return result;
+		}
+		private string GetMissionInfoString(string MissionId, string AppendIndex = "")
+		{
+			string result = string.Empty;
+			IMissionState missionState = rMissionStateManager.GetItem(MissionId);
+			if (missionState != null)
+			{
+				result += $" MissionID{AppendIndex}={missionState.GetMissionId()} Mission{AppendIndex}={missionState.mMission.mMissionType.ToString()}";
+				if (missionState.mMission.mMissionType == Library.MissionType.Goto || missionState.mMission.mMissionType == Library.MissionType.GotoPoint)
+				{
+					result += $" Parameter{AppendIndex}={missionState.mMission.mParametersString}";
+				}
+				result += $" ExecuteState{AppendIndex}={missionState.mExecuteState.ToString()}";
+			}
+			return result;
+		}
+		private string GetMissionInfoString()
+		{
+			string result = string.Empty;
+			List<string> missionIds = rMissionStateManager.GetListOfMissionId();
+			if (missionIds != null && missionIds.Count > 0)
+			{
+				for (int i = 0; i < missionIds.Count; ++i)
+				{
+					result += GetMissionInfoString(missionIds[i], (i + 1).ToString());
+				}
+			}
+			return result;
+		}
 
-		private static bool IsCommandTypeMission(string Data)
-		{
-			return Data.Contains("Mission=");
-		}
-		private static bool IsCommandTypeQueryCommand(string Data)
-		{
-			return Data.Contains("Command=Query");
-		}
 		private static string GetSerial(string Data)
 		{
 			string result = null;
@@ -154,6 +268,14 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				}
 			}
 			return result;
+		}
+		private static bool IsCommandTypeMission(string Data)
+		{
+			return Data.Contains("Mission=");
+		}
+		private static bool IsCommandTypeQueryCommand(string Data)
+		{
+			return Data.Contains("Command=Query");
 		}
 	}
 }

@@ -14,6 +14,10 @@ namespace TrafficControlTest.Implement
 	{
 		public IVehicleInfo this[string Name] { get { return GetItem(Name); } }
 
+		public List<string> GetListOfVehicleId()
+		{
+			return mItems.Values.Select(o => o.mName).ToList();
+		}
 		public VehicleInfoManager()
 		{
 		}

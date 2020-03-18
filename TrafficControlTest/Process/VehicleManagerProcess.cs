@@ -227,7 +227,7 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 
 			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
-			mHostMessageAnalyzer = GenerateIHostMessageAnalyzer(mHostCommunicator, mMissionStateManager, GetMissionAnalyzers());
+			mHostMessageAnalyzer = GenerateIHostMessageAnalyzer(mHostCommunicator, mVehicleInfoManager, mMissionStateManager, GetMissionAnalyzers());
 			SubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 
 			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);

@@ -17,6 +17,21 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public MissionStateManager()
 		{
 		}
+		public override IMissionState GetItem(string Name)
+		{
+			if (mItems.Values.Any(o => o.GetMissionId() == Name))
+			{
+				return mItems.Values.First(o => o.GetMissionId() == Name);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		public List<string> GetListOfMissionId()
+		{
+			return mItems.Values.Select(o => o.GetMissionId()).ToList();
+		}
 		public void UpdateExecutorId(string MissionId, string ExecutorId)
 		{
 			lock (mLock)

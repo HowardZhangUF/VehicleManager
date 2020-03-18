@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Interface;
 using TrafficControlTest.Module.General.Interface;
 
 namespace TrafficControlTest.Module.MissionManager.Interface
@@ -15,8 +16,9 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 	public interface IHostMessageAnalyzer
 	{
 		void Set(IHostCommunicator HostCommunicator);
+		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IMissionStateManager MissionStateManager);
 		void Set(IMissionAnalyzer[] MissionAnalyzers);
-		void Set(IHostCommunicator HostCommunicator, IMissionStateManager MissionStateManager, IMissionAnalyzer[] MissionAnalyzers);
+		void Set(IHostCommunicator HostCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMissionAnalyzer[] MissionAnalyzers);
 	}
 }
