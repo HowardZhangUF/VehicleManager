@@ -101,7 +101,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			{
 				if (Data.Contains("Command=QueryVehicleList"))
 				{
-					replyMsg += "Reply=QueryVehicleList" + GetVehicleListString();
+					replyMsg += $"Reply=QueryVehicleList VehicleCount={rVehicleInfoManager.mCount}" + GetVehicleListString();
 				}
 				else if (Data.Contains("Command=QueryVehicleInfo"))
 				{
@@ -113,12 +113,12 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					}
 					else
 					{
-						replyMsg += "Reply=QueryVehicleInfo" + GetVehicleInfoString();
+						replyMsg += $"Reply=QueryVehicleInfo VehicleCount={rVehicleInfoManager.mCount}" + GetVehicleInfoString();
 					}
 				}
 				else if (Data.Contains("Command=QueryMissionList"))
 				{
-					replyMsg += "Reply=QueryMissionList" + GetMissionListString();
+					replyMsg += $"Reply=QueryMissionList MissionCount={rMissionStateManager.mCount}" + GetMissionListString();
 				}
 				else if (Data.Contains("Command=QueryMissionInfo"))
 				{
@@ -130,7 +130,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					}
 					else
 					{
-						replyMsg += "Reply=QueryMissionInfo" + GetMissionInfoString();
+						replyMsg += $"Reply=QueryMissionInfo MissionCount={rMissionStateManager.mCount}" + GetMissionInfoString();
 					}
 				}
 				else
@@ -229,10 +229,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (missionState != null)
 			{
 				result += $" MissionID{AppendIndex}={missionState.GetMissionId()} Mission{AppendIndex}={missionState.mMission.mMissionType.ToString()}";
-				if (missionState.mMission.mMissionType == Library.MissionType.Goto || missionState.mMission.mMissionType == Library.MissionType.GotoPoint)
-				{
-					result += $" Parameter{AppendIndex}={missionState.mMission.mParametersString}";
-				}
+				result += $" Parameter{AppendIndex}={missionState.mMission.mParametersString}";
 				result += $" ExecuteState{AppendIndex}={missionState.mExecuteState.ToString()}";
 			}
 			return result;
