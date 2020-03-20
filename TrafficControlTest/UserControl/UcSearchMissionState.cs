@@ -17,13 +17,26 @@ namespace TrafficControlTest.UserControl
 		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime Date)
 		{
 			string result = string.Empty;
-			if (string.IsNullOrEmpty(Keyword) || Keyword == "Recent")
+			if (string.IsNullOrEmpty(Keyword))
 			{
 				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
 				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) WHERE (ID LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+			}
+			return result;
+		}
+		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime DateStart, DateTime DateEnd)
+		{
+			string result = string.Empty;
+			if (string.IsNullOrEmpty(Keyword))
+			{
+				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+			}
+			else
+			{
+				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) WHERE (ID LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}

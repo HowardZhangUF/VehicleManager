@@ -181,6 +181,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrashCan\TrafficControlTestProcess.cs" />
     <Compile Include="TrashCan\TrafficController.cs" />
+    <Compile Include="UserControl\ButtonWithToolTip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UserControl\CustomMessageBox.cs" />
     <Compile Include="UserControl\DateTimePickerColorful.cs">
       <SubType>Component</SubType>

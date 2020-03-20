@@ -17,13 +17,26 @@ namespace TrafficControlTest.UserControl
 		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime Date)
 		{
 			string result = string.Empty;
-			if (string.IsNullOrEmpty(Keyword) || Keyword == "Recent")
+			if (string.IsNullOrEmpty(Keyword))
 			{
 				result = $"SELECT Timestamp, Event, IPPort, Data FROM (SELECT * FROM HistoryHostCommunication WHERE {ConvertDateToSqlCommand("Timestamp", Date)}) ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
 				result = $"SELECT Timestamp, Event, IPPort, Data FROM (SELECT * FROM HistoryHostCommunication WHERE {ConvertDateToSqlCommand("Timestamp", Date)}) WHERE (Event LIKE '%{Keyword}%' OR IPPort LIKE '%{Keyword}%' OR Data LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
+			}
+			return result;
+		}
+		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime DateStart, DateTime DateEnd)
+		{
+			string result = string.Empty;
+			if (string.IsNullOrEmpty(Keyword))
+			{
+				result = $"SELECT Timestamp, Event, IPPort, Data FROM (SELECT * FROM HistoryHostCommunication WHERE {ConvertTimePeriodToSqlCommand("Timestamp", DateStart, DateEnd)}) ORDER BY No DESC LIMIT {Limit.ToString()}";
+			}
+			else
+			{
+				result = $"SELECT Timestamp, Event, IPPort, Data FROM (SELECT * FROM HistoryHostCommunication WHERE {ConvertTimePeriodToSqlCommand("Timestamp", DateStart, DateEnd)}) WHERE (Event LIKE '%{Keyword}%' OR IPPort LIKE '%{Keyword}%' OR Data LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}

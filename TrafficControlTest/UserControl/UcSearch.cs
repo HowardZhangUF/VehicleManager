@@ -13,7 +13,7 @@ namespace TrafficControlTest.UserControl
 {
 	public abstract partial class UcSearch : System.Windows.Forms.UserControl
 	{
-		public delegate void EventHandlerSearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit, DateTime Date);
+		public delegate void EventHandlerSearchSuccessed(object Sender, DateTime OccurTime, string SearchCondition);
 
 		public event EventHandlerSearchSuccessed SearchSuccessed;
 
@@ -32,7 +32,10 @@ namespace TrafficControlTest.UserControl
 		public UcSearch()
 		{
 			InitializeComponent();
+			UpdateGui_CbSearchCondition_Initialize();
 			UpdateGui_CbLimit_Initialize();
+			UpdateGui_CbHourFilterStart_Initialize();
+			UpdateGui_CbHourFilterEnd_Initialize();
 			UpdateGui_DgvSearchResult_Initialize();
 		}
 		public void Set(DatabaseAdapter DatabaseAdapter)
@@ -46,74 +49,121 @@ namespace TrafficControlTest.UserControl
 				txtSearch.Focus();
 			});
 		}
-		public void DoDefaultSearch()
-		{
-			txtSearch.Text = string.Empty;
-			cbLimit.SelectedIndex = 0;
-			dtpDateFilter.Value = DateTime.Now;
-			SearchAndDisplayResult();
-		}
 		public DataGridView GetDgv()
 		{
 			return dgvSearchResult;
 		}
 
 		protected abstract string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime Date);
+		protected abstract string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime DateStart, DateTime DateEnd);
 		protected abstract void UpdateGui_DgvSearchResult_Initialize();
 		protected virtual string ConvertDateToSqlCommand(string ColName, DateTime Date)
 		{
 			return $"({ColName} >= '{Date.ToString("yyyy-MM-dd")} 00:00:00.000' AND {ColName} < '{Date.AddDays(1).ToString("yyyy-MM-dd")} 00:00:00.000')";
 		}
-		protected virtual void RaiseEvent_SearchSuccessed(object Sender, DateTime OccurTime, string Keyword, int Limit, DateTime Date, bool Sync = true)
+		protected virtual string ConvertTimePeriodToSqlCommand(string ColName, DateTime DateStart, DateTime DateEnd)
+		{
+			return $"({ColName} >= '{DateStart.ToString("yyyy-MM-dd HH:mm:ss.fff")}' AND {ColName} < '{DateEnd.ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
+		}
+		protected virtual void RaiseEvent_SearchSuccessed(object Sender, DateTime OccurTime, string SearchCondition, bool Sync = true)
 		{
 			if (Sync)
 			{
-				SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit, Date);
+				SearchSuccessed?.Invoke(this, DateTime.Now, SearchCondition);
 			}
 			else
 			{
-				Task.Run(() => { SearchSuccessed?.Invoke(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit, Date); });
+				Task.Run(() => { SearchSuccessed?.Invoke(this, DateTime.Now, SearchCondition); });
 			}
 		}
 
 		private void SearchAndDisplayResult()
 		{
-			SearchAndDisplayResult(txtSearch.Text, int.Parse(cbLimit.SelectedItem.ToString()), dtpDateFilter.Value.Date);
+			switch (cbSearchCondition.SelectedItem.ToString())
+			{
+				case "Date":
+					string searchCondition1 = string.Empty;
+					searchCondition1 += $"Keyword: {txtSearch.Text}\n";
+					searchCondition1 += $"Limit: {cbLimit.SelectedItem.ToString()}\n";
+					searchCondition1 += $"Date: {dtpDateFilterStart.Value.Date.ToString("yyyy-MM-dd")}";
+					SearchAndDisplayResult(ConvertSearchOptionsToSqlCommand(txtSearch.Text, int.Parse(cbLimit.SelectedItem.ToString()), dtpDateFilterStart.Value.Date), searchCondition1);
+					break;
+				case "TimePeriod":
+					int hourStart = int.Parse(cbHourFilterStart.SelectedItem.ToString().Substring(0, 2));
+					int hourEnd = int.Parse(cbHourFilterEnd.SelectedItem.ToString().Substring(0, 2));
+					DateTime DateStart = dtpDateFilterStart.Value.Date.AddHours(hourStart);
+					DateTime DateEnd = dtpDateFilterEnd.Value.Date.AddHours(hourEnd);
+					string searchCondition2 = string.Empty;
+					searchCondition2 += $"Keyword: {txtSearch.Text}\n";
+					searchCondition2 += $"Limit: {cbLimit.SelectedItem.ToString()}\n";
+					searchCondition2 += $"StartDate: {DateStart.ToString("yyyy-MM-dd HH:mm")}\n";
+					searchCondition2 += $"EndDate: {DateEnd.ToString("yyyy-MM-dd HH:mm")}";
+					SearchAndDisplayResult(ConvertSearchOptionsToSqlCommand(txtSearch.Text, int.Parse(cbLimit.SelectedItem.ToString()), DateStart, DateEnd), searchCondition2);
+					break;
+				default:
+					break;
+			}
 		}
-		private void SearchAndDisplayResult(string Keyword, int Limit, DateTime Date)
+		private void SearchAndDisplayResult(string Command, string SearchCondition)
 		{
 			if (rDatabaseAdapter == null) return;
 
-			string command = ConvertSearchOptionsToSqlCommand(Keyword, Limit, Date);
-
-			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(command)?.Tables[0];
+			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(Command)?.Tables[0];
 			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
 			{
 				UpdateGui_DgvSearchResult_ClearRows();
 				UpdateGui_DgvSearchResult_AddRows(searchResult.Rows);
-				RaiseEvent_SearchSuccessed(this, DateTime.Now, string.IsNullOrEmpty(Keyword) ? "Recent" : Keyword, Limit, Date);
+				RaiseEvent_SearchSuccessed(this, DateTime.Now, SearchCondition);
 			}
 			else
 			{
-				// 如果做 Default Search 時沒有找到資料，則代表資料庫剛建立所以沒有資料，此時不跳出提醒視窗
-				if (!(string.IsNullOrEmpty(Keyword) && Date.Date == DateTime.Now.Date))
-				{
-					MessageBox.Show("No Matches!", string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information);
-				}
+				MessageBox.Show("No Matches!", string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
+		}
+		private void UpdateGui_CbSearchCondition_Initialize()
+		{
+			this.InvokeIfNecessary(() =>
+			{
+				cbSearchCondition.Items.Clear();
+				cbSearchCondition.Items.Add("Date");
+				cbSearchCondition.Items.Add("TimePeriod");
+				cbSearchCondition.SelectedIndex = 0;
+			});
 		}
 		private void UpdateGui_CbLimit_Initialize()
 		{
 			this.InvokeIfNecessary(() =>
 			{
+				cbLimit.Items.Clear();
 				cbLimit.Items.Add("100");
 				cbLimit.Items.Add("300");
 				cbLimit.Items.Add("500");
 				cbLimit.Items.Add("1000");
-				cbLimit.Items.Add("3000");
-				cbLimit.Items.Add("5000");
-				cbLimit.Items.Add("10000");
 				cbLimit.SelectedIndex = 0;
+			});
+		}
+		private void UpdateGui_CbHourFilterStart_Initialize()
+		{
+			this.InvokeIfNecessary(() =>
+			{
+				cbHourFilterStart.Items.Clear();
+				for (int i = 0; i < 24; ++i)
+				{
+					cbHourFilterStart.Items.Add($"{i.ToString().PadLeft(2, '0')}:00");
+				}
+				cbHourFilterStart.SelectedIndex = 0;
+			});
+		}
+		private void UpdateGui_CbHourFilterEnd_Initialize()
+		{
+			this.InvokeIfNecessary(() =>
+			{
+				cbHourFilterEnd.Items.Clear();
+				for (int i = 0; i < 24; ++i)
+				{
+					cbHourFilterEnd.Items.Add($"{i.ToString().PadLeft(2, '0')}:00");
+				}
+				cbHourFilterEnd.SelectedIndex = 0;
 			});
 		}
 		private void UpdateGui_DgvSearchResult_AddRow(params string[] RowData)
@@ -223,16 +273,25 @@ namespace TrafficControlTest.UserControl
 		{
 			SearchAndDisplayResult();
 		}
-		private void cbLimit_SelectedIndexChanged(object sender, EventArgs e)
+		private void cbSearchCondition_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (cbLimit.SelectedItem != null)
+			switch (cbSearchCondition.SelectedItem.ToString())
 			{
-				SearchAndDisplayResult();
+				case "Date":
+					cbHourFilterStart.Visible = false;
+					label1.Visible = false;
+					dtpDateFilterEnd.Visible = false;
+					cbHourFilterEnd.Visible = false;
+					break;
+				case "TimePeriod":
+					cbHourFilterStart.Visible = true;
+					label1.Visible = true;
+					dtpDateFilterEnd.Visible = true;
+					cbHourFilterEnd.Visible = true;
+					break;
+				default:
+					break;
 			}
-		}
-		private void dtpDateFilter_ValueChanged(object sender, EventArgs e)
-		{
-			SearchAndDisplayResult();
 		}
 	}
 }

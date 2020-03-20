@@ -35,10 +35,19 @@
 			this.txtSearch = new System.Windows.Forms.TextBox();
 			this.cbLimit = new System.Windows.Forms.ComboBox();
 			this.dgvSearchResult = new System.Windows.Forms.DataGridView();
-			this.dtpDateFilter = new TrafficControlTest.UserControl.DateTimePickerColorful();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.cbHourFilterStart = new System.Windows.Forms.ComboBox();
+			this.cbSearchCondition = new System.Windows.Forms.ComboBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.cbHourFilterEnd = new System.Windows.Forms.ComboBox();
+			this.dtpDateFilterEnd = new TrafficControlTest.UserControl.DateTimePickerColorful();
+			this.dtpDateFilterStart = new TrafficControlTest.UserControl.DateTimePickerColorful();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvSearchResult)).BeginInit();
+			this.panel2.SuspendLayout();
+			this.tableLayoutPanel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -53,12 +62,11 @@
 			// 
 			// tableLayoutPanel1
 			// 
-			this.tableLayoutPanel1.ColumnCount = 4;
+			this.tableLayoutPanel1.ColumnCount = 3;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 240F));
-			this.tableLayoutPanel1.Controls.Add(this.dtpDateFilter, 3, 0);
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.Controls.Add(this.btnSearch, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.txtSearch, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.cbLimit, 2, 0);
@@ -67,7 +75,7 @@
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(840, 50);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(600, 50);
 			this.tableLayoutPanel1.TabIndex = 1;
 			// 
 			// btnSearch
@@ -108,30 +116,127 @@
 			this.cbLimit.Name = "cbLimit";
 			this.cbLimit.Size = new System.Drawing.Size(144, 35);
 			this.cbLimit.TabIndex = 7;
-			this.cbLimit.SelectedIndexChanged += new System.EventHandler(this.cbLimit_SelectedIndexChanged);
 			// 
 			// dgvSearchResult
 			// 
 			this.dgvSearchResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dgvSearchResult.Location = new System.Drawing.Point(0, 50);
+			this.dgvSearchResult.Location = new System.Drawing.Point(0, 100);
 			this.dgvSearchResult.Name = "dgvSearchResult";
 			this.dgvSearchResult.RowTemplate.Height = 27;
-			this.dgvSearchResult.Size = new System.Drawing.Size(850, 500);
+			this.dgvSearchResult.Size = new System.Drawing.Size(850, 450);
 			this.dgvSearchResult.TabIndex = 2;
 			// 
-			// dtpDateFilter
+			// panel2
 			// 
-			this.dtpDateFilter.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.dtpDateFilter.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.dtpDateFilter.BorderColor = System.Drawing.Color.White;
-			this.dtpDateFilter.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.dtpDateFilter.ForeTextColor = System.Drawing.Color.White;
-			this.dtpDateFilter.Location = new System.Drawing.Point(603, 7);
-			this.dtpDateFilter.Name = "dtpDateFilter";
-			this.dtpDateFilter.Size = new System.Drawing.Size(234, 35);
-			this.dtpDateFilter.TabIndex = 2;
-			this.dtpDateFilter.ValueChanged += new System.EventHandler(this.dtpDateFilter_ValueChanged);
+			this.panel2.Controls.Add(this.tableLayoutPanel2);
+			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panel2.Location = new System.Drawing.Point(0, 50);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(850, 50);
+			this.panel2.TabIndex = 3;
+			// 
+			// tableLayoutPanel2
+			// 
+			this.tableLayoutPanel2.ColumnCount = 6;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 205F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 205F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+			this.tableLayoutPanel2.Controls.Add(this.cbHourFilterStart, 2, 0);
+			this.tableLayoutPanel2.Controls.Add(this.dtpDateFilterEnd, 4, 0);
+			this.tableLayoutPanel2.Controls.Add(this.cbSearchCondition, 0, 0);
+			this.tableLayoutPanel2.Controls.Add(this.label1, 3, 0);
+			this.tableLayoutPanel2.Controls.Add(this.cbHourFilterEnd, 5, 0);
+			this.tableLayoutPanel2.Controls.Add(this.dtpDateFilterStart, 1, 0);
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+			this.tableLayoutPanel2.RowCount = 1;
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(850, 50);
+			this.tableLayoutPanel2.TabIndex = 0;
+			// 
+			// cbHourFilterStart
+			// 
+			this.cbHourFilterStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbHourFilterStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.cbHourFilterStart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbHourFilterStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.cbHourFilterStart.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.cbHourFilterStart.ForeColor = System.Drawing.Color.White;
+			this.cbHourFilterStart.FormattingEnabled = true;
+			this.cbHourFilterStart.Location = new System.Drawing.Point(388, 7);
+			this.cbHourFilterStart.Name = "cbHourFilterStart";
+			this.cbHourFilterStart.Size = new System.Drawing.Size(99, 35);
+			this.cbHourFilterStart.TabIndex = 13;
+			// 
+			// cbSearchCondition
+			// 
+			this.cbSearchCondition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbSearchCondition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.cbSearchCondition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbSearchCondition.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.cbSearchCondition.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.cbSearchCondition.ForeColor = System.Drawing.Color.White;
+			this.cbSearchCondition.FormattingEnabled = true;
+			this.cbSearchCondition.Location = new System.Drawing.Point(3, 7);
+			this.cbSearchCondition.Name = "cbSearchCondition";
+			this.cbSearchCondition.Size = new System.Drawing.Size(174, 35);
+			this.cbSearchCondition.TabIndex = 8;
+			this.cbSearchCondition.SelectedIndexChanged += new System.EventHandler(this.cbSearchCondition_SelectedIndexChanged);
+			// 
+			// label1
+			// 
+			this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label1.ForeColor = System.Drawing.Color.White;
+			this.label1.Location = new System.Drawing.Point(497, 13);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(35, 24);
+			this.label1.TabIndex = 11;
+			this.label1.Text = "To";
+			// 
+			// cbHourFilterEnd
+			// 
+			this.cbHourFilterEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbHourFilterEnd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.cbHourFilterEnd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbHourFilterEnd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.cbHourFilterEnd.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.cbHourFilterEnd.ForeColor = System.Drawing.Color.White;
+			this.cbHourFilterEnd.FormattingEnabled = true;
+			this.cbHourFilterEnd.Location = new System.Drawing.Point(748, 7);
+			this.cbHourFilterEnd.Name = "cbHourFilterEnd";
+			this.cbHourFilterEnd.Size = new System.Drawing.Size(99, 35);
+			this.cbHourFilterEnd.TabIndex = 10;
+			// 
+			// dtpDateFilterEnd
+			// 
+			this.dtpDateFilterEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.dtpDateFilterEnd.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.dtpDateFilterEnd.BorderColor = System.Drawing.Color.White;
+			this.dtpDateFilterEnd.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.dtpDateFilterEnd.ForeTextColor = System.Drawing.Color.White;
+			this.dtpDateFilterEnd.Location = new System.Drawing.Point(543, 7);
+			this.dtpDateFilterEnd.Name = "dtpDateFilterEnd";
+			this.dtpDateFilterEnd.Size = new System.Drawing.Size(199, 35);
+			this.dtpDateFilterEnd.TabIndex = 12;
+			// 
+			// dtpDateFilterStart
+			// 
+			this.dtpDateFilterStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.dtpDateFilterStart.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.dtpDateFilterStart.BorderColor = System.Drawing.Color.White;
+			this.dtpDateFilterStart.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.dtpDateFilterStart.ForeTextColor = System.Drawing.Color.White;
+			this.dtpDateFilterStart.Location = new System.Drawing.Point(183, 7);
+			this.dtpDateFilterStart.Name = "dtpDateFilterStart";
+			this.dtpDateFilterStart.Size = new System.Drawing.Size(199, 35);
+			this.dtpDateFilterStart.TabIndex = 9;
 			// 
 			// UcSearch
 			// 
@@ -139,6 +244,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 			this.Controls.Add(this.dgvSearchResult);
+			this.Controls.Add(this.panel2);
 			this.Controls.Add(this.panel1);
 			this.Name = "UcSearch";
 			this.Size = new System.Drawing.Size(850, 550);
@@ -146,6 +252,9 @@
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvSearchResult)).EndInit();
+			this.panel2.ResumeLayout(false);
+			this.tableLayoutPanel2.ResumeLayout(false);
+			this.tableLayoutPanel2.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -158,6 +267,13 @@
 		private System.Windows.Forms.TextBox txtSearch;
 		private System.Windows.Forms.ComboBox cbLimit;
 		private System.Windows.Forms.DataGridView dgvSearchResult;
-		private DateTimePickerColorful dtpDateFilter;
+		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+		private System.Windows.Forms.ComboBox cbHourFilterStart;
+		private DateTimePickerColorful dtpDateFilterEnd;
+		private System.Windows.Forms.ComboBox cbSearchCondition;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.ComboBox cbHourFilterEnd;
+		private DateTimePickerColorful dtpDateFilterStart;
 	}
 }

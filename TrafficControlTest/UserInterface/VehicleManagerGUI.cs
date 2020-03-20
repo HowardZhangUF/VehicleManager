@@ -177,7 +177,7 @@ namespace TrafficControlTest.UserInterface
 						btnDisplayVehicleApi.Visible = true;
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = true;
-						ucLog1.Set(3, 1, 1);
+						ucLog1.Set(true, true, true);
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.Customer:
@@ -187,7 +187,7 @@ namespace TrafficControlTest.UserInterface
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = false;
 						// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
-						ucLog1.Set(0, 1, 1);
+						ucLog1.Set(false, true, true);
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.None:
@@ -197,7 +197,7 @@ namespace TrafficControlTest.UserInterface
 						ucVehicleManualControl1.Visible = false;
 						ucVehicleApi1.Visible = false;
 						// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
-						ucLog1.Set(0, 1, 1);
+						ucLog1.Set(false, true, true);
 						UpdateGui_InitializeMenuState();
 						break;
 				}

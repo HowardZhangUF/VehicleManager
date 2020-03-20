@@ -17,13 +17,26 @@ namespace TrafficControlTest.UserControl
 		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime Date)
 		{
 			string result = string.Empty;
-			if (string.IsNullOrEmpty(Keyword) || Keyword == "Recent")
+			if (string.IsNullOrEmpty(Keyword))
 			{
 				result = $"SELECT Timestamp, Category, SubCategory, Message FROM (SELECT * FROM GeneralLog WHERE {ConvertDateToSqlCommand("Timestamp", Date)}) ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
 				result = $"SELECT Timestamp, Category, SubCategory, Message FROM (SELECT * FROM GeneralLog WHERE {ConvertDateToSqlCommand("Timestamp", Date)}) WHERE (Category LIKE '%{Keyword}%' OR SubCategory LIKE '%{Keyword}%' OR Message LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
+			}
+			return result;
+		}
+		protected override string ConvertSearchOptionsToSqlCommand(string Keyword, int Limit, DateTime DateStart, DateTime DateEnd)
+		{
+			string result = string.Empty;
+			if (string.IsNullOrEmpty(Keyword))
+			{
+				result = $"SELECT Timestamp, Category, SubCategory, Message FROM (SELECT * FROM GeneralLog WHERE {ConvertTimePeriodToSqlCommand("Timestamp", DateStart, DateEnd)}) ORDER BY No DESC LIMIT {Limit.ToString()}";
+			}
+			else
+			{
+				result = $"SELECT Timestamp, Category, SubCategory, Message FROM (SELECT * FROM GeneralLog WHERE {ConvertTimePeriodToSqlCommand("Timestamp", DateStart, DateEnd)}) WHERE (Category LIKE '%{Keyword}%' OR SubCategory LIKE '%{Keyword}%' OR Message LIKE '%{Keyword}%') ORDER BY No DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}
