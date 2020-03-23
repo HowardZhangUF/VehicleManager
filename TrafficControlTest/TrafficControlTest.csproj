@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icons8_traffic_jam_4.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
@@ -395,6 +398,9 @@
     <Folder Include="Module\RoadOccupiedEventManager\Interface\" />
     <Folder Include="Module\SingleVehicleEventManager\Implement\" />
     <Folder Include="Module\SingleVehicleEventManager\Interface\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icons8_traffic_jam_4.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
