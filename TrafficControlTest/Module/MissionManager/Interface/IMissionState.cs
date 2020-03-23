@@ -29,7 +29,8 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 	/// </summary>
 	/// <remarks>
 	/// mName 為根據時間產生的流水號，其為唯一，
-	/// mMission.mMissionId 為客戶指令給的 MissionID 。
+	/// mMission.mMissionId 為客戶指令給的 MissionID ，
+	/// 若客戶無提供 MissionID 時，在回報任務狀態時的 MissionID 會填入 mName 的資訊。
 	/// </remarks>
 	public interface IMissionState : IItem
 	{

@@ -24,7 +24,7 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			return mItems.Keys.Contains(Name);
 		}
-		public virtual T GetItem(string Name)
+		public T GetItem(string Name)
 		{
 			return mItems.Keys.Contains(Name) ? mItems[Name] : default(T);
 		}

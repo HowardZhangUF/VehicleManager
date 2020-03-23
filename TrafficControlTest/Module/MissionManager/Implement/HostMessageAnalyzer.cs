@@ -199,7 +199,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		private string GetMissionListString()
 		{
 			string result = string.Empty;
-			List<string> missionIds = rMissionStateManager.GetListOfMissionId();
+			List<string> missionIds = rMissionStateManager.GetItems().Select(o => o.GetMissionId()).ToList();
 			if (missionIds != null && missionIds.Count > 0)
 			{
 				for (int i = 0; i < missionIds.Count; ++i)
@@ -209,10 +209,10 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			}
 			return result;
 		}
-		private string GetMissionInfoString(string MissionId, string AppendIndex = "")
+		private string GetMissionInfoString(string MissionStateName, string AppendIndex = "")
 		{
 			string result = string.Empty;
-			IMissionState missionState = rMissionStateManager.GetItem(MissionId);
+			IMissionState missionState = rMissionStateManager.GetItem(MissionStateName);
 			if (missionState != null)
 			{
 				result += $" MissionID{AppendIndex}={missionState.GetMissionId()}";
@@ -225,12 +225,12 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		private string GetMissionInfoString()
 		{
 			string result = string.Empty;
-			List<string> missionIds = rMissionStateManager.GetListOfMissionId();
-			if (missionIds != null && missionIds.Count > 0)
+			List<string> missionStateNames = rMissionStateManager.GetItemNames().ToList();
+			if (missionStateNames != null && missionStateNames.Count > 0)
 			{
-				for (int i = 0; i < missionIds.Count; ++i)
+				for (int i = 0; i < missionStateNames.Count; ++i)
 				{
-					result += GetMissionInfoString(missionIds[i], (i + 1).ToString());
+					result += GetMissionInfoString(missionStateNames[i], (i + 1).ToString());
 				}
 			}
 			return result;
