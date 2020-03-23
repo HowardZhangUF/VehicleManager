@@ -15,6 +15,8 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 	/// </summary>
 	public interface IMissionDispatcher : ISystemWithLoopTask
 	{
+		event EventHandlerMissionDispatched MissionDispatched;
+
 		void Set(IMissionStateManager MissionStateManager);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IVehicleCommunicator VehicleCommunicator);

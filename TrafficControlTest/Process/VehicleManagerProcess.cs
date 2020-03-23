@@ -576,6 +576,7 @@ namespace TrafficControlTest.Process
 			{
 				MissionDispatcher.SystemStarted += HandleEvent_MissionDispatcherSystemStarted;
 				MissionDispatcher.SystemStopped += HandleEvent_MissionDispatcherSystemStopped;
+				MissionDispatcher.MissionDispatched += HandleEvent_MissionDispatcherMissionDispatched;
 			}
 		}
 		private void UnsubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
@@ -584,6 +585,7 @@ namespace TrafficControlTest.Process
 			{
 				MissionDispatcher.SystemStarted -= HandleEvent_MissionDispatcherSystemStarted;
 				MissionDispatcher.SystemStopped -= HandleEvent_MissionDispatcherSystemStopped;
+				MissionDispatcher.MissionDispatched -= HandleEvent_MissionDispatcherMissionDispatched;
 			}
 		}
 		private void SubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
@@ -901,6 +903,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MissionDispatcherSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "MissionDispatcher", "SystemStopped", string.Empty);
+		}
+		private void HandleEvent_MissionDispatcherMissionDispatched(DateTime OccurTime, IMissionState MissionState, IVehicleInfo VehicleInfo)
+		{
+			HandleDebugMessage(OccurTime, "MissionDispatcher", "MissionDispatched", $"MissionName: {MissionState.mName} Dispatched To VehicleName: {VehicleInfo.mName}");
 		}
 		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{

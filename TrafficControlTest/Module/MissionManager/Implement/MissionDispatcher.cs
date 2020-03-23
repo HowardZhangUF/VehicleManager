@@ -15,6 +15,8 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 {
 	public class MissionDispatcher : SystemWithLoopTask, IMissionDispatcher
 	{
+		public event EventHandlerMissionDispatched MissionDispatched;
+
 		private IMissionStateManager rMissionStateManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
@@ -46,6 +48,17 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			Subtask_DispatchMission();
 		}
 
+		protected virtual void RaiseEvent_MissionDispatched(IMissionState MissionState, IVehicleInfo VehicleInfo, bool Sync = true)
+		{
+			if (Sync)
+			{
+				MissionDispatched?.Invoke(DateTime.Now, MissionState, VehicleInfo);
+			}
+			else
+			{
+				System.Threading.Tasks.Task.Run(() => { MissionDispatched?.Invoke(DateTime.Now, MissionState, VehicleInfo); });
+			}
+		}
 		private void Subtask_DispatchMission()
 		{
 			List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager);
@@ -58,6 +71,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 					mission.UpdateSendState(Interface.SendState.Sending);
 					mission.UpdateExecutorId(vehicleId);
 					SendMission(vehicleId, mission.mMission);
+					RaiseEvent_MissionDispatched(mission, rVehicleInfoManager.GetItem(vehicleId));
 				}
 			}
 		}
