@@ -87,10 +87,17 @@ namespace TrafficControlTest.Module.General.Implement
 		protected virtual void GenerateDefaultConfiguration()
 		{
 			mConfigs.Clear();
+			mConfigs.Add("ImportantEventRecorder/TimePeriod", "3000");
 			mConfigs.Add("VehicleCommunicator/ListenPort", "8000");
+			mConfigs.Add("VehicleCommunicator/TimePeriod", "100");
+			mConfigs.Add("CollisionEventDetector/TimePeriod", "750");
+			mConfigs.Add("VehicleControlHandler/TimePeriod", "300");
 			mConfigs.Add("HostCommunicator/ListenPort", "9000");
+			mConfigs.Add("HostCommunicator/TimePeriod", "100");
+			mConfigs.Add("MissionDispatcher/TimePeriod", "1000");
 			mConfigs.Add("MapFileManager/MapFileDirectory", ".\\Map\\");
 			mConfigs.Add("MapManager/AutoLoadMap", "true");
+
 		}
 	}
 }

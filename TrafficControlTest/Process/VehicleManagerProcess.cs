@@ -318,8 +318,14 @@ namespace TrafficControlTest.Process
 		private void LoadConfigFileAndUpdateSystemConfig()
 		{
 			mConfigurator.Load();
+			mImportantEventRecorder.mTimePeriod = int.Parse(mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
 			mVehicleCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("VehicleCommunicator/ListenPort")));
+			mVehicleCommunicator.mTimePeriod = int.Parse(mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
+			mCollisionEventDetector.mTimePeriod = int.Parse(mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
+			mVehicleControlHandler.mTimePeriod = int.Parse(mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
 			mHostCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("HostCommunicator/ListenPort")));
+			mHostCommunicator.mTimePeriod = int.Parse(mConfigurator.GetValue("HostCommunicator/TimePeriod"));
+			mMissionDispatcher.mTimePeriod = int.Parse(mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
 			mMapFileManager.SetConfigOfMapFileDirectory(mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
 			mMapManager.SetConfigOfAutoLoadMap(bool.Parse(mConfigurator.GetValue("MapManager/AutoLoadMap")));
 		}
@@ -327,8 +333,14 @@ namespace TrafficControlTest.Process
 		{
 			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfigOfAutoLoadMap().ToString());
 			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfigOfMapFileDirectory());
+			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.mTimePeriod.ToString());
+			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.mTimePeriod.ToString());
 			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfigOfListenPort().ToString());
+			mConfigurator.SetValue("VehicleControlHandler/TimePeriod", mVehicleControlHandler.mTimePeriod.ToString());
+			mConfigurator.SetValue("CollisionEventDetector/TimePeriod", mCollisionEventDetector.mTimePeriod.ToString());
+			mConfigurator.SetValue("VehicleCommunicator/TimePeriod", mVehicleCommunicator.mTimePeriod.ToString());
 			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfigOfListenPort().ToString());
+			mConfigurator.SetValue("ImportantEventRecorder/TimePeriod", mImportantEventRecorder.mTimePeriod.ToString());
 			mConfigurator.Save();
 		}
 		private void SubscribeEvent_Exception()
