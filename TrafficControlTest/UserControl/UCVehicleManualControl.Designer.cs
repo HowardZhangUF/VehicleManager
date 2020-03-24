@@ -154,7 +154,7 @@
 			this.btnStop.UseVisualStyleBackColor = true;
 			this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
 			// 
-			// UCVehicleManualControl
+			// UcVehicleManualControl
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.AutoScroll = true;
@@ -163,7 +163,7 @@
 			this.Controls.Add(this.tableLayoutPanel2);
 			this.Controls.Add(this.label3);
 			this.ForeColor = System.Drawing.Color.White;
-			this.Name = "UCVehicleManualControl";
+			this.Name = "UcVehicleManualControl";
 			this.Size = new System.Drawing.Size(400, 650);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
