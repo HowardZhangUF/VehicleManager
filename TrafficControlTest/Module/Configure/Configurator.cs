@@ -97,7 +97,7 @@ namespace TrafficControlTest.Module.General.Implement
 			mConfigs.Add("MissionDispatcher/TimePeriod", "1000");
 			mConfigs.Add("MapFileManager/MapFileDirectory", ".\\Map\\");
 			mConfigs.Add("MapManager/AutoLoadMap", "true");
-
+			mConfigs.Add("CycleMissionGenerator/TimePeriod", "1500");
 		}
 	}
 }

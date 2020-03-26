@@ -41,6 +41,7 @@ namespace TrafficControlTest.UserInterface
 			ucVehicleOverview1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucVehicleManualControl1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMapManager());
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());
+			ucCycleMission1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfCycleMissionGenerator());
 			ucSimpleLog1.Set(mCore);
 		}
 		private void Destructor()
@@ -104,6 +105,10 @@ namespace TrafficControlTest.UserInterface
 		private void btnDisplayVehicleApi_Click(object sender, EventArgs e)
 		{
 			UpdateGui_PnlLeftMain_DisplayVehicleApi();
+		}
+		private void btnDisplayCycleMission_Click(object sender, EventArgs e)
+		{
+			UpdateGui_PnlLeftMain_DisplayCycleMission();
 		}
 		private void btnDisplayAbout_Click(object sender, EventArgs e)
 		{
@@ -175,27 +180,33 @@ namespace TrafficControlTest.UserInterface
 					case AccountRank.Service:
 						btnDisplayVehicleManualControl.Visible = true;
 						btnDisplayVehicleApi.Visible = true;
+						btnDisplayCycleMission.Visible = true;
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = true;
+						ucCycleMission1.Visible = true;
 						ucLog1.Set(true, true, true);
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.Customer:
-						// 隱藏左側選單的 VehicleManualControl 頁面
+						// 隱藏左側選單的 VehicleApi, CycleMission 頁面
 						btnDisplayVehicleManualControl.Visible = true;
 						btnDisplayVehicleApi.Visible = false;
+						btnDisplayCycleMission.Visible = false;
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = false;
+						ucCycleMission1.Visible = false;
 						// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
 						ucLog1.Set(false, true, true);
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.None:
-						// 隱藏左側選單的 VehicleManualControl, VehicleApi 頁面
+						// 隱藏左側選單的 VehicleManualControl, VehicleApi, CycleMission 頁面
 						btnDisplayVehicleManualControl.Visible = false;
 						btnDisplayVehicleApi.Visible = false;
+						btnDisplayCycleMission.Visible = false;
 						ucVehicleManualControl1.Visible = false;
 						ucVehicleApi1.Visible = false;
+						ucCycleMission1.Visible = false;
 						// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
 						ucLog1.Set(false, true, true);
 						UpdateGui_InitializeMenuState();
@@ -359,6 +370,26 @@ namespace TrafficControlTest.UserInterface
 				ucVehicleApi1.InvokeIfNecessary(() =>
 				{
 					ucVehicleApi1.BringToFront();
+				});
+			}
+			else
+			{
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(false);
+			}
+		}
+		private void UpdateGui_PnlLeftMain_DisplayCycleMission()
+		{
+			if (!pnlLeftMainDisplay || (pnlLeftMainDisplay && pnlLeftSideMarker.Top != btnDisplayCycleMission.Top))
+			{
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(true);
+				pnlLeftSideMarker.InvokeIfNecessary(() =>
+				{
+					pnlLeftSideMarker.Height = btnDisplayCycleMission.Height;
+					pnlLeftSideMarker.Top = btnDisplayCycleMission.Top;
+				});
+				ucCycleMission1.InvokeIfNecessary(() =>
+				{
+					ucCycleMission1.BringToFront();
 				});
 			}
 			else

@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using TrafficControlTest.Implement;
 using TrafficControlTest.Interface;
+using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.General.Implement;
 using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.InterveneManager.Implement;
@@ -324,6 +325,10 @@ namespace TrafficControlTest.Library
 		public static IAccessControl GenerateIAccessControl(IAccountManager AccountManager)
 		{
 			return new AccessControl(AccountManager);
+		}
+		public static ICycleMissionGenerator GenerateICycleMissionGenerator(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
+		{
+			return new CycleMissionGenerator(VehicleInfoManager, MissionStateManager);
 		}
 		#endregion
 
@@ -1107,5 +1112,9 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerVehicleNamesMapFileName(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName);
 
 		public delegate void EventHandlerMissionDispatched(DateTime OccurTime, IMissionState MissionState, IVehicleInfo VehicleInfo);
+
+		public delegate void EventHandlerCycleMissionAssigned(DateTime OccurTime, string VehicleId);
+		public delegate void EventHandlerCycleMissionRemoved(DateTime OccurTime, string VehicleId);
+		public delegate void EventHandlerCycleMissionIndexUpdated(DateTime OccurTime, string VehicleId, int Index);
 	}
 }

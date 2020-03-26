@@ -70,6 +70,8 @@
 			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UcVehicleOverview();
 			this.pnlBtm = new System.Windows.Forms.Panel();
 			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
+			this.btnDisplayCycleMission = new System.Windows.Forms.Button();
+			this.ucCycleMission1 = new TrafficControlTest.UserControl.UcCycleMission();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlBtmSide.SuspendLayout();
 			this.pnlConnection.SuspendLayout();
@@ -262,6 +264,7 @@
 			// 
 			this.pnlLeftSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.pnlLeftSide.Controls.Add(this.pnlLeftSideMarker);
+			this.pnlLeftSide.Controls.Add(this.btnDisplayCycleMission);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayVehicleApi);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayAbout);
 			this.pnlLeftSide.Controls.Add(this.btnDisplayVehicleManualControl);
@@ -522,6 +525,7 @@
 			// 
 			this.pnlLeftMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.pnlLeftMain.Controls.Add(this.ucAbout1);
+			this.pnlLeftMain.Controls.Add(this.ucCycleMission1);
 			this.pnlLeftMain.Controls.Add(this.ucVehicleApi1);
 			this.pnlLeftMain.Controls.Add(this.ucVehicleManualControl1);
 			this.pnlLeftMain.Controls.Add(this.ucVehicleOverview1);
@@ -604,6 +608,29 @@
 			this.ucSimpleLog1.TableOddRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.ucSimpleLog1.TableRowForeColor = System.Drawing.Color.White;
 			// 
+			// btnDisplayCycleMission
+			// 
+			this.btnDisplayCycleMission.Dock = System.Windows.Forms.DockStyle.Top;
+			this.btnDisplayCycleMission.FlatAppearance.BorderSize = 0;
+			this.btnDisplayCycleMission.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDisplayCycleMission.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayCycleMission.Image")));
+			this.btnDisplayCycleMission.Location = new System.Drawing.Point(0, 200);
+			this.btnDisplayCycleMission.Name = "btnDisplayCycleMission";
+			this.btnDisplayCycleMission.Size = new System.Drawing.Size(50, 50);
+			this.btnDisplayCycleMission.TabIndex = 9;
+			this.btnDisplayCycleMission.UseVisualStyleBackColor = true;
+			this.btnDisplayCycleMission.Click += new System.EventHandler(this.btnDisplayCycleMission_Click);
+			// 
+			// ucCycleMission1
+			// 
+			this.ucCycleMission1.AutoScroll = true;
+			this.ucCycleMission1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucCycleMission1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucCycleMission1.Location = new System.Drawing.Point(0, 0);
+			this.ucCycleMission1.Name = "ucCycleMission1";
+			this.ucCycleMission1.Size = new System.Drawing.Size(400, 650);
+			this.ucCycleMission1.TabIndex = 4;
+			// 
 			// VehicleManagerGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -681,5 +708,7 @@
 		private System.Windows.Forms.Button btnLogin;
 		private System.Windows.Forms.Button btnDisplayVehicleApi;
 		private UserControl.UcVehicleApi ucVehicleApi1;
+		private System.Windows.Forms.Button btnDisplayCycleMission;
+		private UserControl.UcCycleMission ucCycleMission1;
 	}
 }

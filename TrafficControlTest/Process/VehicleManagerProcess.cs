@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.InterveneManager.Interface;
 using TrafficControlTest.Module.MissionManager.Interface;
@@ -33,7 +34,8 @@ namespace TrafficControlTest.Process
 					&& !mCollisionEventDetector.mIsExecuting
 					&& !mVehicleControlHandler.mIsExecuting
 					&& !mHostCommunicator.mIsExecuting
-					&& !mMissionDispatcher.mIsExecuting;
+					&& !mMissionDispatcher.mIsExecuting
+					&& !mCycleMissionGenerator.mIsExecuting;
 			}
 		}
 
@@ -63,6 +65,7 @@ namespace TrafficControlTest.Process
 		private IMapManager mMapManager = null;
 		private IMissionStateReporter mMissionStateReporter = null;
 		private IMissionUpdater mMissionUpdater = null;
+		private ICycleMissionGenerator mCycleMissionGenerator = null;
 
 		public VehicleManagerProcess()
 		{
@@ -89,10 +92,12 @@ namespace TrafficControlTest.Process
 			mVehicleControlHandler.Start();
 			mHostCommunicator.StartListen();
 			mMissionDispatcher.Start();
+			mCycleMissionGenerator.Start();
 		}
 		public void Stop()
 		{
 			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
+			mCycleMissionGenerator.Stop();
 			mMissionDispatcher.Stop();
 			mHostCommunicator.StopListen();
 			mVehicleControlHandler.Stop();
@@ -140,6 +145,10 @@ namespace TrafficControlTest.Process
 		public IMapManager GetReferenceOfIMapManager()
 		{
 			return mMapManager;
+		}
+		public ICycleMissionGenerator GetReferenceOfCycleMissionGenerator()
+		{
+			return mCycleMissionGenerator;
 		}
 		public DatabaseAdapter GetReferenceOfDatabaseAdapterOfLogRecord()
 		{
@@ -250,6 +259,10 @@ namespace TrafficControlTest.Process
 			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager, mMapManager);
 			SubscribeEvent_IMissionUpdater(mMissionUpdater);
 
+			UnsubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
+			mCycleMissionGenerator = GenerateICycleMissionGenerator(mVehicleInfoManager, mMissionStateManager);
+			SubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
+
 			LoadConfigFileAndUpdateSystemConfig();
 		}
 		private void Destructor()
@@ -304,6 +317,9 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
 			mMissionUpdater = null;
 
+			UnsubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
+			mCycleMissionGenerator = null;
+
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
 
@@ -328,9 +344,11 @@ namespace TrafficControlTest.Process
 			mMissionDispatcher.mTimePeriod = int.Parse(mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
 			mMapFileManager.SetConfigOfMapFileDirectory(mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
 			mMapManager.SetConfigOfAutoLoadMap(bool.Parse(mConfigurator.GetValue("MapManager/AutoLoadMap")));
+			mCycleMissionGenerator.mTimePeriod = int.Parse(mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
 		}
 		private void LoadSystemConfigAndUpdateConfigFile()
 		{
+			mConfigurator.SetValue("CycleMissionGenerator/TimePeriod", mCycleMissionGenerator.mTimePeriod.ToString());
 			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfigOfAutoLoadMap().ToString());
 			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfigOfMapFileDirectory());
 			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.mTimePeriod.ToString());
@@ -660,6 +678,28 @@ namespace TrafficControlTest.Process
 				// do nothing
 			}
 		}
+		private void SubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
+		{
+			if (CycleMissionGenerator != null)
+			{
+				CycleMissionGenerator.SystemStarted += HandleEvent_CycleMissionGeneratorSystemStarted;
+				CycleMissionGenerator.SystemStopped += HandleEvent_CycleMissionGeneratorSystemStopped;
+				CycleMissionGenerator.CycleMissionAssigned += HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
+				CycleMissionGenerator.CycleMissionRemoved += HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
+				CycleMissionGenerator.CycleMissionIndexUpdated += HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
+			}
+		}
+		private void UnsubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
+		{
+			if (CycleMissionGenerator != null)
+			{
+				CycleMissionGenerator.SystemStarted -= HandleEvent_CycleMissionGeneratorSystemStarted;
+				CycleMissionGenerator.SystemStopped -= HandleEvent_CycleMissionGeneratorSystemStopped;
+				CycleMissionGenerator.CycleMissionAssigned -= HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
+				CycleMissionGenerator.CycleMissionRemoved -= HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
+				CycleMissionGenerator.CycleMissionIndexUpdated -= HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
+			}
+		}
 		private void SubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
 		{
 			if (ImportantEventRecorder != null)
@@ -935,6 +975,26 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
 		{
 			HandleDebugMessage(OccurTime, "MapManager", "MapLoaded", $"MapName: {MapFileName}");
+		}
+		private void HandleEvent_CycleMissionGeneratorSystemStarted(DateTime OccurTime)
+		{
+			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "SystemStarted", string.Empty);
+		}
+		private void HandleEvent_CycleMissionGeneratorSystemStopped(DateTime OccurTime)
+		{
+			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "SystemStopped", string.Empty);
+		}
+		private void HandleEvent_CycleMissionGeneratorCycleMissionAssigned(DateTime OccurTime, string VehicleId)
+		{
+			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionAssigned", $"VehicleID: {VehicleId}");
+		}
+		private void HandleEvent_CycleMissionGeneratorCycleMissionRemoved(DateTime OccurTime, string VehicleId)
+		{
+			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionRemoved", $"VehicleID: {VehicleId}");
+		}
+		private void HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated(DateTime OccurTime, string VehicleId, int Index)
+		{
+			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionIndexUpdated", $"VehicleID: {VehicleId}, Index: {Index.ToString()}");
 		}
 		private void HandleEvent_ImportantEventRecorderSystemStarted(DateTime OccurTime)
 		{
