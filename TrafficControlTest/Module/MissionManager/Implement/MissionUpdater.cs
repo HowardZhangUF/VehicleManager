@@ -60,6 +60,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			if (VehicleInfoManager != null)
 			{
+				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
@@ -67,6 +68,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		{
 			if (VehicleInfoManager != null)
 			{
+				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
@@ -98,6 +100,17 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (MissionStateManager != null)
 			{
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		{
+			if (!string.IsNullOrEmpty(Item.mCurrentMissionId))
+			{
+				IMissionState missionState = rMissionStateManager[Item.mCurrentMissionId];
+				if (missionState != null)
+				{
+					missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
+				}
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
