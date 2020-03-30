@@ -100,11 +100,14 @@ namespace TrafficControlTest.UserControl
 								switch (tmpObj.mState)
 								{
 									case "Idle":
-										tmpObj.mBorderColor = Color.Lime;
+										tmpObj.mBorderColor = Color.Green;
 										break;
 									case "Running":
 									case "Pause":
 										tmpObj.mBorderColor = Color.Yellow;
+										break;
+									case "Charge":
+										tmpObj.mBorderColor = Color.LawnGreen;
 										break;
 									default:
 										tmpObj.mBorderColor = Color.Red;

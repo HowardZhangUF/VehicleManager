@@ -36,6 +36,9 @@
 			this.pnlLeft = new System.Windows.Forms.Panel();
 			this.pnlRight = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.lblLocationScore = new System.Windows.Forms.Label();
 			this.pnlSecondTop = new System.Windows.Forms.Panel();
 			this.pnlSecondBottom = new System.Windows.Forms.Panel();
 			this.pnlSecondRight = new System.Windows.Forms.Panel();
@@ -46,11 +49,8 @@
 			this.pnlThirdRight = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.lblState = new System.Windows.Forms.Label();
 			this.lblTarget = new System.Windows.Forms.Label();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.panel3 = new System.Windows.Forms.Panel();
-			this.lblLocationScore = new System.Windows.Forms.Label();
+			this.lblState = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.panel1.SuspendLayout();
@@ -63,7 +63,7 @@
 			this.lblId.Location = new System.Drawing.Point(3, 0);
 			this.lblId.Name = "lblId";
 			this.tableLayoutPanel1.SetRowSpan(this.lblId, 2);
-			this.lblId.Size = new System.Drawing.Size(289, 50);
+			this.lblId.Size = new System.Drawing.Size(279, 50);
 			this.lblId.TabIndex = 0;
 			this.lblId.Text = "ID";
 			this.lblId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -75,7 +75,7 @@
 			this.lblBattery.AutoSize = true;
 			this.lblBattery.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblBattery.ForeColor = System.Drawing.Color.White;
-			this.lblBattery.Location = new System.Drawing.Point(323, 5);
+			this.lblBattery.Location = new System.Drawing.Point(313, 5);
 			this.lblBattery.Name = "lblBattery";
 			this.lblBattery.Size = new System.Drawing.Size(49, 15);
 			this.lblBattery.TabIndex = 1;
@@ -120,7 +120,7 @@
 			this.tableLayoutPanel1.ColumnCount = 3;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
 			this.tableLayoutPanel1.Controls.Add(this.lblId, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.lblBattery, 2, 0);
 			this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
@@ -135,6 +135,40 @@
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(380, 50);
 			this.tableLayoutPanel1.TabIndex = 5;
 			this.tableLayoutPanel1.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// panel2
+			// 
+			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
+			this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel2.Location = new System.Drawing.Point(288, 3);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(19, 19);
+			this.panel2.TabIndex = 2;
+			this.panel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// panel3
+			// 
+			this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
+			this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel3.Location = new System.Drawing.Point(288, 28);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(19, 19);
+			this.panel3.TabIndex = 3;
+			this.panel3.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// lblLocationScore
+			// 
+			this.lblLocationScore.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.lblLocationScore.AutoSize = true;
+			this.lblLocationScore.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblLocationScore.Location = new System.Drawing.Point(313, 30);
+			this.lblLocationScore.Name = "lblLocationScore";
+			this.lblLocationScore.Size = new System.Drawing.Size(49, 15);
+			this.lblLocationScore.TabIndex = 4;
+			this.lblLocationScore.Text = "100 %";
+			this.lblLocationScore.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// pnlSecondTop
 			// 
@@ -226,19 +260,6 @@
 			this.panel1.TabIndex = 0;
 			this.panel1.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
-			// lblState
-			// 
-			this.lblState.AutoSize = true;
-			this.lblState.Dock = System.Windows.Forms.DockStyle.Left;
-			this.lblState.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblState.ForeColor = System.Drawing.Color.LightGray;
-			this.lblState.Location = new System.Drawing.Point(0, 0);
-			this.lblState.Name = "lblState";
-			this.lblState.Size = new System.Drawing.Size(55, 24);
-			this.lblState.TabIndex = 0;
-			this.lblState.Text = "State";
-			this.lblState.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
 			// lblTarget
 			// 
 			this.lblTarget.AutoSize = true;
@@ -252,39 +273,18 @@
 			this.lblTarget.Text = "Target";
 			this.lblTarget.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
-			// panel2
+			// lblState
 			// 
-			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
-			this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel2.Location = new System.Drawing.Point(298, 3);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(19, 19);
-			this.panel2.TabIndex = 2;
-			this.panel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
-			// panel3
-			// 
-			this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
-			this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel3.Location = new System.Drawing.Point(298, 28);
-			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(19, 19);
-			this.panel3.TabIndex = 3;
-			this.panel3.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
-			// lblLocationScore
-			// 
-			this.lblLocationScore.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.lblLocationScore.AutoSize = true;
-			this.lblLocationScore.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblLocationScore.Location = new System.Drawing.Point(323, 30);
-			this.lblLocationScore.Name = "lblLocationScore";
-			this.lblLocationScore.Size = new System.Drawing.Size(49, 15);
-			this.lblLocationScore.TabIndex = 4;
-			this.lblLocationScore.Text = "100 %";
-			this.lblLocationScore.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			this.lblState.AutoSize = true;
+			this.lblState.Dock = System.Windows.Forms.DockStyle.Left;
+			this.lblState.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblState.ForeColor = System.Drawing.Color.LightGray;
+			this.lblState.Location = new System.Drawing.Point(0, 0);
+			this.lblState.Name = "lblState";
+			this.lblState.Size = new System.Drawing.Size(55, 24);
+			this.lblState.TabIndex = 0;
+			this.lblState.Text = "State";
+			this.lblState.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// UcVehicleInfo
 			// 
