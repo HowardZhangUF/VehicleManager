@@ -502,21 +502,21 @@ namespace TrafficControlTest.Library
 				double m = (double)(Start.mY - End.mY) / (Start.mX - End.mX);
 				double c = Start.mY - m * Start.mX;
 				double radian = Math.Atan((Start.mY - End.mY) / (Start.mX - End.mX));
-				int distance = Math.Abs((int)(Interval * Math.Cos(radian)));
+				double distance = Math.Abs((Interval * Math.Cos(radian)));
 				if (Start.mX < End.mX)
 				{
-					for (int i = Start.mX + distance; i < End.mX; i += distance)
+					for (double i = Start.mX + distance; i < End.mX; i += distance)
 					{
 						double y = Math.Round(m * i + c, 0, MidpointRounding.AwayFromZero);
-						result.Add(GenerateIPoint2D(i, (int)y));
+						result.Add(GenerateIPoint2D((int)i, (int)y));
 					}
 				}
 				else
 				{
-					for (int i = Start.mX - distance; i > End.mX; i -= distance)
+					for (double i = Start.mX - distance; i > End.mX; i -= distance)
 					{
 						double y = Math.Round(m * i + c, 0, MidpointRounding.AwayFromZero);
-						result.Add(GenerateIPoint2D(i, (int)y));
+						result.Add(GenerateIPoint2D((int)i, (int)y));
 					}
 				}
 			}
