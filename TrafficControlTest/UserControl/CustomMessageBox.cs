@@ -110,6 +110,49 @@ namespace TrafficControlTest.UserControl
 			DialogResult dialogResult = form.ShowDialog();
 			return dialogResult;
 		}
+		public static DialogResult ConfirmBox(string text)
+		{
+			Form form = new Form();
+			Label lblText = new Label();
+			Button btnOk = new Button();
+			Button btnCancel = new Button();
+
+			form.BackColor = DEFAULT_FORM_BACKCOLOR;
+			form.ForeColor = DEFAULT_FORM_FORECOLOR;
+
+			lblText.Text = text;
+			lblText.AutoSize = true;
+			lblText.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			lblText.Size = TextRenderer.MeasureText(lblText.Text, lblText.Font);
+			lblText.Location = new Point(DEFAULT_XBORDER, DEFAULT_YBORDER);
+
+			btnOk.Text = "Confirm";
+			btnOk.DialogResult = DialogResult.OK;
+			btnOk.FlatStyle = FlatStyle.Flat;
+			btnOk.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			btnOk.Size = new Size(100, 30);
+			btnOk.Location = new Point(DEFAULT_XBORDER + (lblText.Width - (DEFAULT_BUTTON_SIZE.Width * 2 + DEFAULT_MARGIN)), lblText.Bottom + DEFAULT_MARGIN);
+
+			btnCancel.Text = "Cancel";
+			btnCancel.DialogResult = DialogResult.Cancel;
+			btnCancel.FlatStyle = FlatStyle.Flat;
+			btnCancel.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			btnCancel.Size = btnOk.Size;
+			btnCancel.Location = new Point(btnOk.Right + DEFAULT_MARGIN, btnOk.Location.Y);
+
+			form.Controls.AddRange(GenerateBorderControls());
+			form.Controls.AddRange(new Control[] { lblText, btnOk, btnCancel });
+			form.ClientSize = new Size(Math.Max(lblText.Right + DEFAULT_XBORDER, btnOk.Right + DEFAULT_XBORDER), btnOk.Bottom + DEFAULT_YBORDER);
+			form.FormBorderStyle = FormBorderStyle.None;
+			form.AutoScaleMode = AutoScaleMode.None;
+			form.StartPosition = FormStartPosition.CenterParent;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = btnOk;
+
+			DialogResult dialogResult = form.ShowDialog();
+			return dialogResult;
+		}
 
 		private static Control[] GenerateBorderControls()
 		{
