@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcSearch));
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -41,6 +42,8 @@
 			this.cbSearchCondition = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.cbHourFilterEnd = new System.Windows.Forms.ComboBox();
+			this.cmenuDgvSearchResult = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.cmenuItemCopyCellValue = new System.Windows.Forms.ToolStripMenuItem();
 			this.dtpDateFilterEnd = new TrafficControlTest.UserControl.DateTimePickerColorful();
 			this.dtpDateFilterStart = new TrafficControlTest.UserControl.DateTimePickerColorful();
 			this.panel1.SuspendLayout();
@@ -48,6 +51,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgvSearchResult)).BeginInit();
 			this.panel2.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
+			this.cmenuDgvSearchResult.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -120,12 +124,14 @@
 			// dgvSearchResult
 			// 
 			this.dgvSearchResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvSearchResult.ContextMenuStrip = this.cmenuDgvSearchResult;
 			this.dgvSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dgvSearchResult.Location = new System.Drawing.Point(0, 100);
 			this.dgvSearchResult.Name = "dgvSearchResult";
 			this.dgvSearchResult.RowTemplate.Height = 27;
 			this.dgvSearchResult.Size = new System.Drawing.Size(850, 450);
 			this.dgvSearchResult.TabIndex = 2;
+			this.dgvSearchResult.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvSearchResult_MouseDown);
 			// 
 			// panel2
 			// 
@@ -214,6 +220,23 @@
 			this.cbHourFilterEnd.Size = new System.Drawing.Size(99, 35);
 			this.cbHourFilterEnd.TabIndex = 10;
 			// 
+			// cmenuDgvSearchResult
+			// 
+			this.cmenuDgvSearchResult.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.cmenuDgvSearchResult.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmenuItemCopyCellValue});
+			this.cmenuDgvSearchResult.Name = "cmenuDgvSearchResult";
+			this.cmenuDgvSearchResult.Size = new System.Drawing.Size(211, 56);
+			// 
+			// cmenuItemCopyCellValue
+			// 
+			this.cmenuItemCopyCellValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.cmenuItemCopyCellValue.ForeColor = System.Drawing.Color.White;
+			this.cmenuItemCopyCellValue.Name = "cmenuItemCopyCellValue";
+			this.cmenuItemCopyCellValue.Size = new System.Drawing.Size(210, 24);
+			this.cmenuItemCopyCellValue.Text = "Copy Text";
+			this.cmenuItemCopyCellValue.Click += new System.EventHandler(this.cmenuItemCopyCellValue_Click);
+			// 
 			// dtpDateFilterEnd
 			// 
 			this.dtpDateFilterEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -255,6 +278,7 @@
 			this.panel2.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
+			this.cmenuDgvSearchResult.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -275,5 +299,7 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ComboBox cbHourFilterEnd;
 		private DateTimePickerColorful dtpDateFilterStart;
+		private System.Windows.Forms.ContextMenuStrip cmenuDgvSearchResult;
+		private System.Windows.Forms.ToolStripMenuItem cmenuItemCopyCellValue;
 	}
 }

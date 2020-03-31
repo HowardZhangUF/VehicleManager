@@ -28,6 +28,8 @@ namespace TrafficControlTest.UserControl
 		public abstract string mKeyword { get; }
 
 		private DatabaseAdapter rDatabaseAdapter = null;
+		private int mDgvSearchResultRightClickRowIndex { get; set; } = -1;
+		private int mDgvSearchResultRightClickColIndex { get; set; } = -1;
 
 		public UcSearch()
 		{
@@ -291,6 +293,22 @@ namespace TrafficControlTest.UserControl
 					break;
 				default:
 					break;
+			}
+		}
+		private void dgvSearchResult_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				var hit = dgvSearchResult.HitTest(e.X, e.Y);
+				mDgvSearchResultRightClickRowIndex = hit.RowIndex;
+				mDgvSearchResultRightClickColIndex = hit.ColumnIndex;
+			}
+		}
+		private void cmenuItemCopyCellValue_Click(object sender, EventArgs e)
+		{
+			if (mDgvSearchResultRightClickRowIndex >= 0 && mDgvSearchResultRightClickRowIndex < dgvSearchResult.RowCount && mDgvSearchResultRightClickColIndex >= 0 && mDgvSearchResultRightClickColIndex < dgvSearchResult.ColumnCount)
+			{
+				Clipboard.SetText(dgvSearchResult.Rows[mDgvSearchResultRightClickRowIndex].Cells[mDgvSearchResultRightClickColIndex].Value.ToString());
 			}
 		}
 	}
