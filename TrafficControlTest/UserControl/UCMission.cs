@@ -28,11 +28,15 @@ namespace TrafficControlTest.UserControl
 			{ "ID", 0 },
 			{ "HostMissionID", 1 },
 			{ "Priority", 2 },
+			{ "Type", 3 },
+			{ "Parameter", 5 },
 			{ "SendState", 6 },
 			{ "ExecuteState", 6 },
 			{ "ExecutorId", 7 },
 			{ "SourceIpPort", 8 }
 		};
+		private int mDgvMissionRightClickRowIndex { get; set; } = -1;
+		private int mDgvMissionRightClickColIndex { get; set; } = -1;
 
 		public UcMission()
 		{
@@ -366,6 +370,29 @@ namespace TrafficControlTest.UserControl
 				result.Add(Cells[i].ToString());
 			}
 			return result.ToArray();
+		}
+		private void dgvMission_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				var hit = dgvMission.HitTest(e.X, e.Y);
+				mDgvMissionRightClickRowIndex = hit.RowIndex;
+				mDgvMissionRightClickColIndex = hit.ColumnIndex;
+			}
+		}
+		private void cmenuItemRemoveMission_Click(object sender, EventArgs e)
+		{
+			if (mDgvMissionRightClickRowIndex >= 0 && mDgvMissionRightClickRowIndex < dgvMission.RowCount)
+			{
+				string tmpId = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells[mColumnHeaderDictionary["ID"]].Value.ToString();
+				string tmpType = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells[mColumnHeaderDictionary["Type"]].Value.ToString();
+				string tmpParameter = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells[mColumnHeaderDictionary["Parameter"]].Value.ToString();
+				string tmpMessage = $"Sure to Remove Mission:\n{tmpId} / {tmpType}{(string.IsNullOrEmpty(tmpParameter) ? string.Empty : " / " + tmpParameter)}";
+				if (CustomMessageBox.ConfirmBox(tmpMessage) == DialogResult.OK)
+				{
+					rMissionStateManager.UpdateExecuteState(tmpId, ExecuteState.ExecuteFailed);
+				}
+			}
 		}
 	}
 }
