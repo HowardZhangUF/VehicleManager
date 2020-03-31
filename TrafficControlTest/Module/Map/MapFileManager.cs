@@ -120,6 +120,7 @@ namespace TrafficControlTest.Module.General.Implement
 			if (VehicleInfoManager != null)
 			{
 				VehicleInfoManager.ItemAdded += HandleEvent_VehicleInfoManagerItemAdded;
+				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
@@ -128,6 +129,7 @@ namespace TrafficControlTest.Module.General.Implement
 			if (VehicleInfoManager != null)
 			{
 				VehicleInfoManager.ItemAdded -= HandleEvent_VehicleInfoManagerItemAdded;
+				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
@@ -187,6 +189,16 @@ namespace TrafficControlTest.Module.General.Implement
 		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
 		{
 			rVehicleCommunicator.SendSerializableData_RequestMapList(Item.mIpPort);
+		}
+		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		{
+			if (!string.IsNullOrEmpty(Item.mCurrentMapName) && mMapsOfGetting.Count > 0)
+			{
+				if (mMapsOfGetting.Contains(Item.mCurrentMapName))
+				{
+					mMapsOfGetting.Remove(Item.mCurrentMapName);
+				}
+			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
 		{

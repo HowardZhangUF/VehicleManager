@@ -56,8 +56,8 @@ namespace TrafficControlTest.Library
 	{
 		public const string TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
 		public static double DefaultVehicleVelocityMaximum = 700.0f;
-		public static int DefaultVehicleSafetyFrameRadius = 500;
-		public static int DefaultVehicleBufferFrameRadius = 500;
+		public static int DefaultVehicleSafetyFrameRadius = 700;
+		public static int DefaultVehicleBufferFrameRadius = 100;
 		public static int DefaultVehicleAverageVelocityDataCount = 10;
 
 		private static byte[] mKey = Encoding.ASCII.GetBytes("castec27");
