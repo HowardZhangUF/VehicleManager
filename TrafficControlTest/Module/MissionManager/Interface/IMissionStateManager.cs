@@ -17,6 +17,7 @@ namespace TrafficControlTest.Module.MissionManager.Interface
 	{
 		IMissionState this[string MissionId] { get; }
 
+		bool IsExistByHostMissionId(string HostMissionId);
 		void UpdateExecutorId(string MissionId, string ExecutorId);
 		void UpdateSendState(string MissionId, SendState SendState);
 		void UpdateExecuteState(string MissionId, ExecuteState ExecuteState);

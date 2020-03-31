@@ -17,6 +17,10 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 		public MissionStateManager()
 		{
 		}
+		public bool IsExistByHostMissionId(string HostMissionId)
+		{
+			return mItems.Values.Any(o => o.mMission.mMissionId == HostMissionId);
+		}
 		public void UpdateExecutorId(string MissionId, string ExecutorId)
 		{
 			lock (mLock)

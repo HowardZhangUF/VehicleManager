@@ -107,7 +107,7 @@ namespace TrafficControlTest.Module.CycleMission
 		{
 			for (int i = 0; i < mCollectionOfVehicleId.Count; ++i)
 			{
-				if (rVehicleInfoManager.GetItem(mCollectionOfVehicleId[i]).mCurrentState == "Idle" && rVehicleInfoManager.GetItem(mCollectionOfVehicleId[i]).mCurrentStateDuration.TotalSeconds > 1)
+				if (rVehicleInfoManager.GetItem(mCollectionOfVehicleId[i]).mCurrentState == "Idle" && rVehicleInfoManager.GetItem(mCollectionOfVehicleId[i]).mCurrentStateDuration.TotalSeconds > 1 && !rMissionStateManager.IsExistByHostMissionId(GenerateHostMissionId(mCollectionOfVehicleId[i])))
 				{
 					mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] = mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] == mCollectionOfMissionList[mCollectionOfVehicleId[i]].Length - 1 ? 0 : mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] + 1;
 					IMissionState missionState = GenerateIMissionState(mCollectionOfVehicleId[i], mCollectionOfMissionList[mCollectionOfVehicleId[i]][mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]]]);
@@ -135,16 +135,20 @@ namespace TrafficControlTest.Module.CycleMission
 			switch (tmpStr.Length)
 			{
 				case 1:
-					result = Library.Library.GenerateIMission(Library.MissionType.Goto, $"CycleFor{VehicleId}", 50, VehicleId, tmpStr);
+					result = Library.Library.GenerateIMission(Library.MissionType.Goto, GenerateHostMissionId(VehicleId), 50, VehicleId, tmpStr);
 					break;
 				case 2:
 				case 3:
-					result = Library.Library.GenerateIMission(Library.MissionType.GotoPoint, $"CycleFor{VehicleId}", 50, VehicleId, tmpStr);
+					result = Library.Library.GenerateIMission(Library.MissionType.GotoPoint, GenerateHostMissionId(VehicleId), 50, VehicleId, tmpStr);
 					break;
 				default:
 					break;
 			}
 			return result;
+		}
+		private string GenerateHostMissionId(string VehicleId)
+		{
+			return $"CycleFor{VehicleId}";
 		}
 	}
 }
