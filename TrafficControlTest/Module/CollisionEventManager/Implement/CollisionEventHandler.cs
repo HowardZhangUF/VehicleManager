@@ -163,17 +163,16 @@ namespace TrafficControlTest.Implement
 		}
 		private bool IsProcessNecessary(ICollisionPair CollisionPair)
 		{
-			// sample function, undone.
 			bool result = false;
 			if (CollisionPair != null)
 			{
 				// 若兩車皆未執行干預
 				if (string.IsNullOrEmpty(CollisionPair.mVehicle1.mCurrentInterveneCommand) && string.IsNullOrEmpty(CollisionPair.mVehicle2.mCurrentInterveneCommand))
 				{
-					// 判斷哪台車會較晚通過 Collision Region
+					// 判斷哪台車會較晚進入 Collision Region
 					if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
 					{
-						// 若較晚通過 Collision Region 的 Vehicle 即將通過 Collision Region
+						// 若較晚進入 Collision Region 的 Vehicle 即將進入 Collision Region
 						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart).TotalMilliseconds > -2000.0f)
 						{
 							result = true;
@@ -181,7 +180,7 @@ namespace TrafficControlTest.Implement
 					}
 					else
 					{
-						// 若較晚通過 Collision Region 的 Vehicle 即將通過 Collision Region
+						// 若較晚進入 Collision Region 的 Vehicle 即將進入 Collision Region
 						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart).TotalMilliseconds > -2000.0f)
 						{
 							result = true;
@@ -199,7 +198,7 @@ namespace TrafficControlTest.Implement
 				// 若兩車皆未執行干預
 				if (string.IsNullOrEmpty(CollisionPair.mVehicle1.mCurrentInterveneCommand) && string.IsNullOrEmpty(CollisionPair.mVehicle2.mCurrentInterveneCommand))
 				{
-					// 對較晚通過 Collision Region 的 Vehicle 執行暫停動作
+					// 對較晚進入 Collision Region 的 Vehicle 執行暫停動作
 					if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
 					{
 						result = GenerateIVehicleControl(CollisionPair.mVehicle2.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString());

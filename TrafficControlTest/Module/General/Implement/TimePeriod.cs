@@ -18,6 +18,10 @@ namespace TrafficControlTest.Implement
 			mStart = Start;
 			mEnd = End;
 		}
+		public override string ToString()
+		{
+			return ToString(Library.Library.TIME_FORMAT);
+		}
 		public string ToString(string TimeFormat)
 		{
 			return $"{mStart.ToString(TimeFormat)} ({mStart.Subtract(DateTime.Now).TotalSeconds.ToString("F2")} sec) ~ {mEnd.ToString(TimeFormat)} ({mEnd.Subtract(DateTime.Now).TotalSeconds.ToString("F2")} sec)";

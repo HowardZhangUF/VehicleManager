@@ -10,6 +10,7 @@ namespace TrafficControlTest.Interface
 		TimeSpan mDuration { get; }
 
 		void Set(DateTime Start, DateTime End);
+		string ToString();
 		string ToString(string TimeFormat);
 	}
 }
