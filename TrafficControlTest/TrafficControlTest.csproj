@@ -253,6 +253,12 @@
     <Compile Include="UserControl\UcSimpleLog.Designer.cs">
       <DependentUpon>UcSimpleLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UcSystemOverview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcSystemOverview.Designer.cs">
+      <DependentUpon>UcSystemOverview.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UcVehicle.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -264,6 +270,12 @@
     </Compile>
     <Compile Include="UserControl\UcVehicleApi.Designer.cs">
       <DependentUpon>UcVehicleApi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UcVehicleIconView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcVehicleIconView.Designer.cs">
+      <DependentUpon>UcVehicleIconView.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\UcVehicleManualControl.cs">
       <SubType>UserControl</SubType>
@@ -333,11 +345,17 @@
     <EmbeddedResource Include="UserControl\UcSimpleLog.resx">
       <DependentUpon>UcSimpleLog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcSystemOverview.resx">
+      <DependentUpon>UcSystemOverview.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcVehicle.resx">
       <DependentUpon>UcVehicle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcVehicleApi.resx">
       <DependentUpon>UcVehicleApi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcVehicleIconView.resx">
+      <DependentUpon>UcVehicleIconView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcVehicleManualControl.resx">
       <DependentUpon>UcVehicleManualControl.cs</DependentUpon>

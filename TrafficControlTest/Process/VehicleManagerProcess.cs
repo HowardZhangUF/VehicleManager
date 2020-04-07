@@ -18,9 +18,6 @@ namespace TrafficControlTest.Process
 		public event EventHandlerSignificantEvent SignificantEvent;
 		public event EventHandlerLogInOutEvent AccessControlUserLogIn;
 		public event EventHandlerLogInOutEvent AccessControlUserLogOut;
-		public event EventHandlerLocalListenState VehicleCommunicatorLocalListenStateChagned;
-		public event EventHandlerItem<IVehicleInfo> VehicleInfoManagerItemAdded;
-		public event EventHandlerItem<IVehicleInfo> VehicleInfoManagerItemRemoved;
 
 		public bool mIsAnyUserLoggedIn { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser)); } }
 		public string mCurrentLoggedInUserName { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser) ? mAccessControl.mCurrentUser : string.Empty); } }
@@ -753,39 +750,6 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { AccessControlUserLogOut?.Invoke(OccurTime, Name, Rank); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleCommunicatorLocalListenStateChagned?.Invoke(OccurTime, NewState, Port);
-			}
-			else
-			{
-				Task.Run(() => { VehicleCommunicatorLocalListenStateChagned?.Invoke(OccurTime, NewState, Port); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleInfoManagerItemAdded?.Invoke(OccurTime, Name, VehicleInfo);
-			}
-			else
-			{
-				Task.Run(() => { VehicleInfoManagerItemAdded?.Invoke(OccurTime, Name, VehicleInfo); });
-			}
-		}
-		protected virtual void RaiseEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo, bool Sync = true)
-		{
-			if (Sync)
-			{
-				VehicleInfoManagerItemRemoved?.Invoke(OccurTime, Name, VehicleInfo);
-			}
-			else
-			{
-				Task.Run(() => { VehicleInfoManagerItemRemoved?.Invoke(OccurTime, Name, VehicleInfo); });
-			}
-		}
 		private void HandleEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
 		{
 			HandleDebugMessage(OccurTime, "AccessControl", "UserLogIn", $"Name: {Name}, Rank: {Rank.ToString()}");
@@ -807,7 +771,6 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "LocalListenStateChanged", $"State: {NewState.ToString()}, Port: {Port}");
-			RaiseEvent_VehicleCommunicatorLocalListenStateChanged(OccurTime, NewState, Port);
 		}
 		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
@@ -837,13 +800,11 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemAdded", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
 			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Name} ] Connected");
-			RaiseEvent_VehicleInfoManagerItemAdded(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemRemoved", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
 			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Name} ] Disconnected");
-			RaiseEvent_VehicleInfoManagerItemRemoved(OccurTime, Name, VehicleInfo);
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
 		{

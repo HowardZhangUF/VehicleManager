@@ -36,16 +36,10 @@
 			this.btnFormMinimize = new System.Windows.Forms.Button();
 			this.btnFormClose = new System.Windows.Forms.Button();
 			this.btnDisplayAbout = new System.Windows.Forms.Button();
-			this.pnlBtmSide = new System.Windows.Forms.Panel();
-			this.pnlConnection = new System.Windows.Forms.Panel();
-			this.lblConnection = new System.Windows.Forms.Label();
-			this.pnlConnectionRight = new System.Windows.Forms.Panel();
-			this.pnlConnectionLeft = new System.Windows.Forms.Panel();
-			this.pnlConnectionBottom = new System.Windows.Forms.Panel();
-			this.pnlConnectionTop = new System.Windows.Forms.Panel();
 			this.btnDisplayPnlBtm = new System.Windows.Forms.Button();
 			this.pnlLeftSide = new System.Windows.Forms.Panel();
 			this.pnlLeftSideMarker = new System.Windows.Forms.Panel();
+			this.btnDisplayCycleMission = new System.Windows.Forms.Button();
 			this.btnDisplayVehicleApi = new System.Windows.Forms.Button();
 			this.btnDisplayVehicleManualControl = new System.Windows.Forms.Button();
 			this.btnDisplayVehicleOverview = new System.Windows.Forms.Button();
@@ -65,21 +59,21 @@
 			this.ucMap1 = new TrafficControlTest.UserControl.UcMap();
 			this.pnlLeftMain = new System.Windows.Forms.Panel();
 			this.ucAbout1 = new TrafficControlTest.UserControl.UcAbout();
+			this.ucCycleMission1 = new TrafficControlTest.UserControl.UcCycleMission();
 			this.ucVehicleApi1 = new TrafficControlTest.UserControl.UcVehicleApi();
 			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UcVehicleManualControl();
 			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UcVehicleOverview();
 			this.pnlBtm = new System.Windows.Forms.Panel();
 			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
-			this.btnDisplayCycleMission = new System.Windows.Forms.Button();
-			this.ucCycleMission1 = new TrafficControlTest.UserControl.UcCycleMission();
+			this.pnlBtmSide = new System.Windows.Forms.Panel();
+			this.ucSystemOverview1 = new TrafficControlTest.UserControl.UcSystemOverview();
 			this.pnlTopSide.SuspendLayout();
-			this.pnlBtmSide.SuspendLayout();
-			this.pnlConnection.SuspendLayout();
 			this.pnlLeftSide.SuspendLayout();
 			this.pnlTop.SuspendLayout();
 			this.pnlRightMain.SuspendLayout();
 			this.pnlLeftMain.SuspendLayout();
 			this.pnlBtm.SuspendLayout();
+			this.pnlBtmSide.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pnlTopSide
@@ -180,73 +174,6 @@
 			this.btnDisplayAbout.UseVisualStyleBackColor = true;
 			this.btnDisplayAbout.Click += new System.EventHandler(this.btnDisplayAbout_Click);
 			// 
-			// pnlBtmSide
-			// 
-			this.pnlBtmSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-			this.pnlBtmSide.Controls.Add(this.pnlConnection);
-			this.pnlBtmSide.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlBtmSide.Location = new System.Drawing.Point(0, 700);
-			this.pnlBtmSide.Name = "pnlBtmSide";
-			this.pnlBtmSide.Size = new System.Drawing.Size(1300, 50);
-			this.pnlBtmSide.TabIndex = 4;
-			// 
-			// pnlConnection
-			// 
-			this.pnlConnection.Controls.Add(this.lblConnection);
-			this.pnlConnection.Controls.Add(this.pnlConnectionRight);
-			this.pnlConnection.Controls.Add(this.pnlConnectionLeft);
-			this.pnlConnection.Controls.Add(this.pnlConnectionBottom);
-			this.pnlConnection.Controls.Add(this.pnlConnectionTop);
-			this.pnlConnection.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlConnection.Location = new System.Drawing.Point(1250, 0);
-			this.pnlConnection.Name = "pnlConnection";
-			this.pnlConnection.Size = new System.Drawing.Size(50, 50);
-			this.pnlConnection.TabIndex = 0;
-			// 
-			// lblConnection
-			// 
-			this.lblConnection.BackColor = System.Drawing.Color.DarkRed;
-			this.lblConnection.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lblConnection.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblConnection.Location = new System.Drawing.Point(5, 5);
-			this.lblConnection.Name = "lblConnection";
-			this.lblConnection.Size = new System.Drawing.Size(40, 40);
-			this.lblConnection.TabIndex = 2;
-			this.lblConnection.Text = "0";
-			this.lblConnection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// pnlConnectionRight
-			// 
-			this.pnlConnectionRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlConnectionRight.Location = new System.Drawing.Point(45, 5);
-			this.pnlConnectionRight.Name = "pnlConnectionRight";
-			this.pnlConnectionRight.Size = new System.Drawing.Size(5, 40);
-			this.pnlConnectionRight.TabIndex = 1;
-			// 
-			// pnlConnectionLeft
-			// 
-			this.pnlConnectionLeft.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlConnectionLeft.Location = new System.Drawing.Point(0, 5);
-			this.pnlConnectionLeft.Name = "pnlConnectionLeft";
-			this.pnlConnectionLeft.Size = new System.Drawing.Size(5, 40);
-			this.pnlConnectionLeft.TabIndex = 1;
-			// 
-			// pnlConnectionBottom
-			// 
-			this.pnlConnectionBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlConnectionBottom.Location = new System.Drawing.Point(0, 45);
-			this.pnlConnectionBottom.Name = "pnlConnectionBottom";
-			this.pnlConnectionBottom.Size = new System.Drawing.Size(50, 5);
-			this.pnlConnectionBottom.TabIndex = 1;
-			// 
-			// pnlConnectionTop
-			// 
-			this.pnlConnectionTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlConnectionTop.Location = new System.Drawing.Point(0, 0);
-			this.pnlConnectionTop.Name = "pnlConnectionTop";
-			this.pnlConnectionTop.Size = new System.Drawing.Size(50, 5);
-			this.pnlConnectionTop.TabIndex = 1;
-			// 
 			// btnDisplayPnlBtm
 			// 
 			this.btnDisplayPnlBtm.Dock = System.Windows.Forms.DockStyle.Right;
@@ -283,6 +210,19 @@
 			this.pnlLeftSideMarker.Name = "pnlLeftSideMarker";
 			this.pnlLeftSideMarker.Size = new System.Drawing.Size(4, 650);
 			this.pnlLeftSideMarker.TabIndex = 4;
+			// 
+			// btnDisplayCycleMission
+			// 
+			this.btnDisplayCycleMission.Dock = System.Windows.Forms.DockStyle.Top;
+			this.btnDisplayCycleMission.FlatAppearance.BorderSize = 0;
+			this.btnDisplayCycleMission.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDisplayCycleMission.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayCycleMission.Image")));
+			this.btnDisplayCycleMission.Location = new System.Drawing.Point(0, 200);
+			this.btnDisplayCycleMission.Name = "btnDisplayCycleMission";
+			this.btnDisplayCycleMission.Size = new System.Drawing.Size(50, 50);
+			this.btnDisplayCycleMission.TabIndex = 9;
+			this.btnDisplayCycleMission.UseVisualStyleBackColor = true;
+			this.btnDisplayCycleMission.Click += new System.EventHandler(this.btnDisplayCycleMission_Click);
 			// 
 			// btnDisplayVehicleApi
 			// 
@@ -546,6 +486,23 @@
 			this.ucAbout1.Size = new System.Drawing.Size(400, 650);
 			this.ucAbout1.TabIndex = 2;
 			// 
+			// ucCycleMission1
+			// 
+			this.ucCycleMission1.AutoScroll = true;
+			this.ucCycleMission1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucCycleMission1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucCycleMission1.Location = new System.Drawing.Point(0, 0);
+			this.ucCycleMission1.Name = "ucCycleMission1";
+			this.ucCycleMission1.Size = new System.Drawing.Size(400, 650);
+			this.ucCycleMission1.TabIndex = 4;
+			this.ucCycleMission1.TableBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucCycleMission1.TableGridLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(86)))), ((int)(((byte)(86)))));
+			this.ucCycleMission1.TableHeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+			this.ucCycleMission1.TableHeaderForeColor = System.Drawing.Color.White;
+			this.ucCycleMission1.TableRowExecutingBackColor = System.Drawing.Color.DarkOrange;
+			this.ucCycleMission1.TableRowForeColor = System.Drawing.Color.White;
+			this.ucCycleMission1.TableRowUnexecuteBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			// 
 			// ucVehicleApi1
 			// 
 			this.ucVehicleApi1.AutoScroll = true;
@@ -608,28 +565,25 @@
 			this.ucSimpleLog1.TableOddRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.ucSimpleLog1.TableRowForeColor = System.Drawing.Color.White;
 			// 
-			// btnDisplayCycleMission
+			// pnlBtmSide
 			// 
-			this.btnDisplayCycleMission.Dock = System.Windows.Forms.DockStyle.Top;
-			this.btnDisplayCycleMission.FlatAppearance.BorderSize = 0;
-			this.btnDisplayCycleMission.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnDisplayCycleMission.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayCycleMission.Image")));
-			this.btnDisplayCycleMission.Location = new System.Drawing.Point(0, 200);
-			this.btnDisplayCycleMission.Name = "btnDisplayCycleMission";
-			this.btnDisplayCycleMission.Size = new System.Drawing.Size(50, 50);
-			this.btnDisplayCycleMission.TabIndex = 9;
-			this.btnDisplayCycleMission.UseVisualStyleBackColor = true;
-			this.btnDisplayCycleMission.Click += new System.EventHandler(this.btnDisplayCycleMission_Click);
+			this.pnlBtmSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+			this.pnlBtmSide.Controls.Add(this.ucSystemOverview1);
+			this.pnlBtmSide.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlBtmSide.Location = new System.Drawing.Point(0, 700);
+			this.pnlBtmSide.Name = "pnlBtmSide";
+			this.pnlBtmSide.Size = new System.Drawing.Size(1300, 50);
+			this.pnlBtmSide.TabIndex = 4;
 			// 
-			// ucCycleMission1
+			// ucSystemOverview1
 			// 
-			this.ucCycleMission1.AutoScroll = true;
-			this.ucCycleMission1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.ucCycleMission1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ucCycleMission1.Location = new System.Drawing.Point(0, 0);
-			this.ucCycleMission1.Name = "ucCycleMission1";
-			this.ucCycleMission1.Size = new System.Drawing.Size(400, 650);
-			this.ucCycleMission1.TabIndex = 4;
+			this.ucSystemOverview1.AutoScroll = true;
+			this.ucSystemOverview1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+			this.ucSystemOverview1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucSystemOverview1.Location = new System.Drawing.Point(0, 0);
+			this.ucSystemOverview1.Name = "ucSystemOverview1";
+			this.ucSystemOverview1.Size = new System.Drawing.Size(1300, 50);
+			this.ucSystemOverview1.TabIndex = 0;
 			// 
 			// VehicleManagerGUI
 			// 
@@ -655,20 +609,18 @@
 			this.Load += new System.EventHandler(this.VehicleManagerGUI_Load);
 			this.pnlTopSide.ResumeLayout(false);
 			this.pnlTopSide.PerformLayout();
-			this.pnlBtmSide.ResumeLayout(false);
-			this.pnlConnection.ResumeLayout(false);
 			this.pnlLeftSide.ResumeLayout(false);
 			this.pnlTop.ResumeLayout(false);
 			this.pnlRightMain.ResumeLayout(false);
 			this.pnlLeftMain.ResumeLayout(false);
 			this.pnlBtm.ResumeLayout(false);
+			this.pnlBtmSide.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 		private System.Windows.Forms.Panel pnlTopSide;
-		private System.Windows.Forms.Panel pnlBtmSide;
 		private System.Windows.Forms.Panel pnlLeftSide;
 		private System.Windows.Forms.Panel pnlTop;
 		private System.Windows.Forms.Panel pnlRightMain;
@@ -687,12 +639,6 @@
 		private System.Windows.Forms.Button btnDisplayVehicle;
 		private System.Windows.Forms.Button btnDisplayVehicleManualControl;
 		private System.Windows.Forms.Button btnDisplayVehicleOverview;
-		private System.Windows.Forms.Panel pnlConnection;
-		private System.Windows.Forms.Panel pnlConnectionRight;
-		private System.Windows.Forms.Panel pnlConnectionTop;
-		private System.Windows.Forms.Panel pnlConnectionLeft;
-		private System.Windows.Forms.Panel pnlConnectionBottom;
-		private System.Windows.Forms.Label lblConnection;
 		private System.Windows.Forms.Panel pnlLeftMain;
 		private UserControl.UcVehicleOverview ucVehicleOverview1;
 		private UserControl.UcVehicleManualControl ucVehicleManualControl1;
@@ -710,5 +656,7 @@
 		private UserControl.UcVehicleApi ucVehicleApi1;
 		private System.Windows.Forms.Button btnDisplayCycleMission;
 		private UserControl.UcCycleMission ucCycleMission1;
+		private System.Windows.Forms.Panel pnlBtmSide;
+		private UserControl.UcSystemOverview ucSystemOverview1;
 	}
 }

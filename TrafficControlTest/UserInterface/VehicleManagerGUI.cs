@@ -43,6 +43,7 @@ namespace TrafficControlTest.UserInterface
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());
 			ucCycleMission1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfCycleMissionGenerator());
 			ucSimpleLog1.Set(mCore);
+			ucSystemOverview1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager());
 		}
 		private void Destructor()
 		{
@@ -481,9 +482,6 @@ namespace TrafficControlTest.UserInterface
 			{
 				VehicleManagerProcess.AccessControlUserLogIn += HandleEvent_VehicleManagerProcessAccessControlUserLogIn;
 				VehicleManagerProcess.AccessControlUserLogOut += HandleEvent_VehicleManagerProcessAccessControlUserLogOut;
-				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned += HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
-				VehicleManagerProcess.VehicleInfoManagerItemAdded += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
-				VehicleManagerProcess.VehicleInfoManagerItemRemoved += HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
 			}
 		}
 		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
@@ -492,9 +490,6 @@ namespace TrafficControlTest.UserInterface
 			{
 				VehicleManagerProcess.AccessControlUserLogIn -= HandleEvent_VehicleManagerProcessAccessControlUserLogIn;
 				VehicleManagerProcess.AccessControlUserLogOut -= HandleEvent_VehicleManagerProcessAccessControlUserLogOut;
-				VehicleManagerProcess.VehicleCommunicatorLocalListenStateChagned -= HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned;
-				VehicleManagerProcess.VehicleInfoManagerItemAdded -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded;
-				VehicleManagerProcess.VehicleInfoManagerItemRemoved -= HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved;
 			}
 		}
 		private void HandleEvent_VehicleManagerProcessAccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
@@ -508,28 +503,6 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_UpdateUsableControlAmount(AccountRank.None);
 			UpdateGui_UpdateControlText(btnLogin, string.Empty);
 			UpdateGui_UpdateControlBackColor(btnLogin, Color.FromArgb(20, 20, 20));
-		}
-		private void HandleEvent_VehicleManagerProcessVehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
-		{
-			if (NewState == ListenState.Listening)
-			{
-				UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkOrange);
-			}
-			else
-			{
-				UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkRed);
-				UpdateGui_UpdateControlText(lblConnection, "0");
-			}
-		}
-		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
-		{
-			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
-			UpdateGui_UpdateControlText(lblConnection, mCore.GetCountOfOnlineVehicle().ToString());
-		}
-		private void HandleEvent_VehicleManagerProcessVehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
-		{
-			UpdateGui_UpdateControlBackColor(lblConnection, mCore.GetCountOfOnlineVehicle() > 0 ? Color.DarkGreen : Color.DarkOrange);
-			UpdateGui_UpdateControlText(lblConnection, mCore.GetCountOfOnlineVehicle().ToString());
 		}
 		#endregion
 	}
