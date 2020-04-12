@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TrafficControlTest.Module.Dashboard
+{
+	public class DailyVehicleMissionCount
+	{
+		public string mVehicleId { get; private set; } = string.Empty;
+		public DateTime mDate { get; private set; } = default(DateTime);
+		public int mSuccessedMissionCount { get; private set; } = default(int);
+		public int mFailedMissionCount { get; private set; } = default(int);
+		public int mTotalMissionCount { get { return mSuccessedMissionCount + mFailedMissionCount; } }
+
+		public DailyVehicleMissionCount(string VehicleId, DateTime Date, int SuccessedMissionCount, int FailedMissionCount)
+		{
+			mVehicleId = VehicleId;
+			mDate = Date.Date;
+			mSuccessedMissionCount = SuccessedMissionCount;
+			mFailedMissionCount = FailedMissionCount;
+		}
+	}
+}

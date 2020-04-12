@@ -135,6 +135,10 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_PnlRightMain_DisplayLog();
 		}
+		private void btnDisplayDashboard_Click(object sender, EventArgs e)
+		{
+			UpdateGui_PnlRightMain_DisplayDashboard();
+		}
 		private void btnDisplayPnlBtm_Click(object sender, EventArgs e)
 		{
 			UpdateGui_PnlBtm_DisplayPnlBtm(!pnlBtmDisplay);
@@ -182,34 +186,29 @@ namespace TrafficControlTest.UserInterface
 						btnDisplayVehicleManualControl.Visible = true;
 						btnDisplayVehicleApi.Visible = true;
 						btnDisplayCycleMission.Visible = true;
+						btnDisplayDashboard.Visible = true;
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = true;
 						ucCycleMission1.Visible = true;
 						ucLog1.Set(true, true, true);
+						ucDashboard1.Visible = true;
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.Customer:
-						// 隱藏左側選單的 VehicleApi, CycleMission 頁面
 						btnDisplayVehicleManualControl.Visible = true;
-						btnDisplayVehicleApi.Visible = false;
-						btnDisplayCycleMission.Visible = false;
 						ucVehicleManualControl1.Visible = true;
-						ucVehicleApi1.Visible = false;
-						ucCycleMission1.Visible = false;
-						// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
-						ucLog1.Set(false, true, true);
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.None:
-						// 隱藏左側選單的 VehicleManualControl, VehicleApi, CycleMission 頁面
 						btnDisplayVehicleManualControl.Visible = false;
 						btnDisplayVehicleApi.Visible = false;
 						btnDisplayCycleMission.Visible = false;
+						btnDisplayDashboard.Visible = false;
 						ucVehicleManualControl1.Visible = false;
 						ucVehicleApi1.Visible = false;
 						ucCycleMission1.Visible = false;
-						// 主選單的 Log 頁面僅顯示 MissionState, HostCommunication 頁面
 						ucLog1.Set(false, true, true);
+						ucDashboard1.Visible = false;
 						UpdateGui_InitializeMenuState();
 						break;
 				}
@@ -237,6 +236,7 @@ namespace TrafficControlTest.UserInterface
 			if (btnDisplayMission.BackColor != pnlTop.BackColor) btnDisplayMission.BackColor = pnlTop.BackColor;
 			if (btnDisplaySetting.BackColor != pnlTop.BackColor) btnDisplaySetting.BackColor = pnlTop.BackColor;
 			if (btnDisplayLog.BackColor != pnlTop.BackColor) btnDisplayLog.BackColor = pnlTop.BackColor;
+			if (btnDisplayDashboard.BackColor != pnlTop.BackColor) btnDisplayDashboard.BackColor = pnlTop.BackColor;
 		}
 		private void UpdateGui_PnlTop_HighlightPnlTopMenuButton(Button button)
 		{
@@ -280,6 +280,13 @@ namespace TrafficControlTest.UserInterface
 			pnlTopMarker.Left = btnDisplayLog.Left;
 			ucLog1.BringToFront();
 			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayLog);
+		}
+		private void UpdateGui_PnlRightMain_DisplayDashboard()
+		{
+			pnlTopMarker.Width = btnDisplayDashboard.Width;
+			pnlTopMarker.Left = btnDisplayDashboard.Left;
+			ucDashboard1.BringToFront();
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayDashboard);
 		}
 		#region Map
 		private void UpdateGui_UcMap_MapFocusVehicle(string VehicleName)

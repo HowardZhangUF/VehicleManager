@@ -62,6 +62,7 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.112.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.112.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,6 +76,13 @@
   <ItemGroup>
     <Compile Include="Module\CycleMission\CycleMissionGenerator.cs" />
     <Compile Include="Module\CycleMission\ICycleMissionGenerator.cs" />
+    <Compile Include="Module\Dashboard\DailyMissionAverageCost.cs" />
+    <Compile Include="Module\Dashboard\DailyMissionCount.cs" />
+    <Compile Include="Module\Dashboard\DailyVehicleBatteryState.cs" />
+    <Compile Include="Module\Dashboard\DailyVehicleMissionCount.cs" />
+    <Compile Include="Module\Dashboard\DailyVehicleState.cs" />
+    <Compile Include="Module\Dashboard\MultiDayVehicleMissionCount.cs" />
+    <Compile Include="Module\Dashboard\VehicleBatteryState.cs" />
     <Compile Include="Module\Database\DatabaseAdapter.cs" />
     <Compile Include="Module\Database\MsSqlDatabaseAdapter.cs" />
     <Compile Include="Module\Database\SqliteDatabaseAdapter.cs" />
@@ -208,6 +216,24 @@
     <Compile Include="UserControl\UcCycleMission.Designer.cs">
       <DependentUpon>UcCycleMission.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UcDailyMissionAverageCost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcDailyMissionAverageCost.Designer.cs">
+      <DependentUpon>UcDailyMissionAverageCost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UcDailyMissionCount.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcDailyMissionCount.Designer.cs">
+      <DependentUpon>UcDailyMissionCount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UcDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcDashboard.Designer.cs">
+      <DependentUpon>UcDashboard.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UcLog.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -326,6 +352,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcCycleMission.resx">
       <DependentUpon>UcCycleMission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcDailyMissionAverageCost.resx">
+      <DependentUpon>UcDailyMissionAverageCost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcDailyMissionCount.resx">
+      <DependentUpon>UcDailyMissionCount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcDashboard.resx">
+      <DependentUpon>UcDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcLog.resx">
       <DependentUpon>UcLog.cs</DependentUpon>
