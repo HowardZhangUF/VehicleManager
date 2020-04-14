@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Module\Configure\Configuration.cs" />
     <Compile Include="Module\CycleMission\CycleMissionGenerator.cs" />
     <Compile Include="Module\CycleMission\ICycleMissionGenerator.cs" />
     <Compile Include="Module\Dashboard\DailyMissionAverageCost.cs" />
@@ -91,7 +92,9 @@
     <Compile Include="Module\Account\Account.cs" />
     <Compile Include="Module\Account\AccountManager.cs" />
     <Compile Include="Module\Configure\Configurator.cs" />
+    <Compile Include="Module\General\Implement\SystemWithConfig.cs" />
     <Compile Include="Module\General\Implement\SystemWithLoopTask.cs" />
+    <Compile Include="Module\General\Interface\ISystemWithConfig.cs" />
     <Compile Include="Module\General\Interface\ISystemWithLoopTask.cs" />
     <Compile Include="Module\Log\EventRecorder.cs" />
     <Compile Include="Module\Communication\HostCommunicator.cs" />

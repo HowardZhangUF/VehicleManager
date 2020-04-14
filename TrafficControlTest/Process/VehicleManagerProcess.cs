@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.Configure;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.InterveneManager.Interface;
@@ -80,6 +81,8 @@ namespace TrafficControlTest.Process
 		/// </remarks>
 		public void Start()
 		{
+			LoadConfigFileAndUpdateSystemConfig();
+
 			mLogRecorder.Start();
 			mEventRecorder.Start();
 			mAccountManager.Read();
@@ -118,6 +121,12 @@ namespace TrafficControlTest.Process
 				if (DateTime.Now.Subtract(tmp).TotalSeconds > 5) break;
 				System.Threading.Thread.Sleep(100);
 			}
+
+			LoadSystemConfigAndUpdateConfigFile();
+		}
+		public IConfigurator GetReferenceOfIConfigurator()
+		{
+			return mConfigurator;
 		}
 		public IVehicleCommunicator GetReferenceOfIVehicleCommunicator()
 		{
@@ -170,7 +179,6 @@ namespace TrafficControlTest.Process
 
 		private void Constructor()
 		{
-			mConfigurator = GenerateIConfigurator("Application.config");
 			mDatabaseAdapterOfLogRecord = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mDatabaseAdapterOfEventRecord = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Event.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mDatabaseAdapterOfSystemData = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\SystemData.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
@@ -179,6 +187,10 @@ namespace TrafficControlTest.Process
 			mAccountManager = GenerateIAccountManager(mDatabaseAdapterOfSystemData);
 
 			SubscribeEvent_Exception();
+
+			UnsubscribeEvent_IConfigurator(mConfigurator);
+			mConfigurator = GenerateIConfigurator("Application.config");
+			SubscribeEvent_IConfigurator(mConfigurator);
 
 			UnsubscribeEvent_IAccessControl(mAccessControl);
 			mAccessControl = GenerateIAccessControl(mAccountManager);
@@ -259,13 +271,9 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
 			mCycleMissionGenerator = GenerateICycleMissionGenerator(mVehicleInfoManager, mMissionStateManager);
 			SubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
-
-			LoadConfigFileAndUpdateSystemConfig();
 		}
 		private void Destructor()
 		{
-			LoadSystemConfigAndUpdateConfigFile();
-
 			UnsubscribeEvent_IAccessControl(mAccessControl);
 			mAccessControl = null;
 
@@ -320,42 +328,44 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
 
+			UnsubscribeEvent_IConfigurator(mConfigurator);
+			mConfigurator = null;
+
 			mAccountManager = null;
 			mEventRecorder = null;
 			mLogRecorder = null;
 			mDatabaseAdapterOfSystemData = null;
 			mDatabaseAdapterOfEventRecord = null;
 			mDatabaseAdapterOfLogRecord = null;
-			mConfigurator = null;
 		}
 		private void LoadConfigFileAndUpdateSystemConfig()
 		{
 			mConfigurator.Load();
-			mImportantEventRecorder.mTimePeriod = int.Parse(mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
-			mVehicleCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("VehicleCommunicator/ListenPort")));
-			mVehicleCommunicator.mTimePeriod = int.Parse(mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
-			mCollisionEventDetector.mTimePeriod = int.Parse(mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
-			mVehicleControlHandler.mTimePeriod = int.Parse(mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
-			mHostCommunicator.SetConfigOfListenPort(int.Parse(mConfigurator.GetValue("HostCommunicator/ListenPort")));
-			mHostCommunicator.mTimePeriod = int.Parse(mConfigurator.GetValue("HostCommunicator/TimePeriod"));
-			mMissionDispatcher.mTimePeriod = int.Parse(mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
-			mMapFileManager.SetConfigOfMapFileDirectory(mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
-			mMapManager.SetConfigOfAutoLoadMap(bool.Parse(mConfigurator.GetValue("MapManager/AutoLoadMap")));
-			mCycleMissionGenerator.mTimePeriod = int.Parse(mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
+			mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
+			mVehicleCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("VehicleCommunicator/ListenPort"));
+			mVehicleCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
+			mCollisionEventDetector.SetConfig("TimePeriod", mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
+			mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
+			mHostCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("HostCommunicator/ListenPort"));
+			mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
+			mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
+			mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
+			mMapManager.SetConfig("AutoLoadMap", mConfigurator.GetValue("MapManager/AutoLoadMap"));
+			mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
 		}
 		private void LoadSystemConfigAndUpdateConfigFile()
 		{
-			mConfigurator.SetValue("CycleMissionGenerator/TimePeriod", mCycleMissionGenerator.mTimePeriod.ToString());
-			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfigOfAutoLoadMap().ToString());
-			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfigOfMapFileDirectory());
-			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.mTimePeriod.ToString());
-			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.mTimePeriod.ToString());
-			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfigOfListenPort().ToString());
-			mConfigurator.SetValue("VehicleControlHandler/TimePeriod", mVehicleControlHandler.mTimePeriod.ToString());
-			mConfigurator.SetValue("CollisionEventDetector/TimePeriod", mCollisionEventDetector.mTimePeriod.ToString());
-			mConfigurator.SetValue("VehicleCommunicator/TimePeriod", mVehicleCommunicator.mTimePeriod.ToString());
-			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfigOfListenPort().ToString());
-			mConfigurator.SetValue("ImportantEventRecorder/TimePeriod", mImportantEventRecorder.mTimePeriod.ToString());
+			mConfigurator.SetValue("CycleMissionGenerator/TimePeriod", mCycleMissionGenerator.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfig("AutoLoadMap"));
+			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfig("MapFileDirectory"));
+			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfig("ListenPort"));
+			mConfigurator.SetValue("VehicleControlHandler/TimePeriod", mVehicleControlHandler.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("CollisionEventDetector/TimePeriod", mCollisionEventDetector.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("VehicleCommunicator/TimePeriod", mVehicleCommunicator.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfig("ListenPort"));
+			mConfigurator.SetValue("ImportantEventRecorder/TimePeriod", mImportantEventRecorder.GetConfig("TimePeriod"));
 			mConfigurator.Save();
 		}
 		private void SubscribeEvent_Exception()
@@ -368,6 +378,24 @@ namespace TrafficControlTest.Process
 			{
 				System.IO.File.AppendAllText($"Exception{DateTime.Now.ToString("yyyyMMdd")}.txt", $"{DateTime.Now.ToString(TIME_FORMAT)} - {e.ExceptionObject.ToString()}\r\n");
 			};
+		}
+		private void SubscribeEvent_IConfigurator(IConfigurator Configurator)
+		{
+			if (Configurator != null)
+			{
+				Configurator.ConfigLoaded += HandleEvent_ConfiguratorConfigLoaded;
+				Configurator.ConfigSaved += HandleEvent_ConfiguratorConfigSaved;
+				Configurator.ConfigUpdated += HandleEvent_ConfiguratorConfigUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IConfigurator(IConfigurator Configurator)
+		{
+			if (Configurator != null)
+			{
+				Configurator.ConfigLoaded -= HandleEvent_ConfiguratorConfigLoaded;
+				Configurator.ConfigSaved -= HandleEvent_ConfiguratorConfigSaved;
+				Configurator.ConfigUpdated -= HandleEvent_ConfiguratorConfigUpdated;
+			}
 		}
 		private void SubscribeEvent_IAccessControl(IAccessControl AccessControl)
 		{
@@ -391,6 +419,7 @@ namespace TrafficControlTest.Process
 			{
 				VehicleCommunicator.SystemStarted += HandleEvent_VehicleCommunicatorSystemStarted;
 				VehicleCommunicator.SystemStopped += HandleEvent_VehicleCommunicatorSystemStopped;
+				VehicleCommunicator.ConfigUpdated += HandleEvent_VehicleCommunicatorConfigUpdated;
 				VehicleCommunicator.LocalListenStateChanged += HandleEvent_VehicleCommunicatorLocalListenStateChagned;
 				VehicleCommunicator.RemoteConnectStateChanged += HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
 				VehicleCommunicator.SentSerializableData += HandleEvent_VehicleCommunicatorSentSerializableData;
@@ -405,6 +434,7 @@ namespace TrafficControlTest.Process
 			{
 				VehicleCommunicator.SystemStarted -= HandleEvent_VehicleCommunicatorSystemStarted;
 				VehicleCommunicator.SystemStopped -= HandleEvent_VehicleCommunicatorSystemStopped;
+				VehicleCommunicator.ConfigUpdated -= HandleEvent_VehicleCommunicatorConfigUpdated;
 				VehicleCommunicator.LocalListenStateChanged -= HandleEvent_VehicleCommunicatorLocalListenStateChagned;
 				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
 				VehicleCommunicator.SentSerializableData -= HandleEvent_VehicleCommunicatorSentSerializableData;
@@ -455,6 +485,7 @@ namespace TrafficControlTest.Process
 			{
 				CollisionEventDetector.SystemStarted += HandleEvent_CollisionEventDetectorSystemStarted;
 				CollisionEventDetector.SystemStopped += HandleEvent_CollisionEventDetectorSystemStopped;
+				CollisionEventDetector.ConfigUpdated += HandleEvent_CollisionEventDetectorConfigUpdated;
 			}
 		}
 		private void UnsubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
@@ -463,6 +494,7 @@ namespace TrafficControlTest.Process
 			{
 				CollisionEventDetector.SystemStarted -= HandleEvent_CollisionEventDetectorSystemStarted;
 				CollisionEventDetector.SystemStopped -= HandleEvent_CollisionEventDetectorSystemStopped;
+				CollisionEventDetector.ConfigUpdated -= HandleEvent_CollisionEventDetectorConfigUpdated;
 			}
 		}
 		private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
@@ -503,6 +535,7 @@ namespace TrafficControlTest.Process
 			{
 				VehicleControlHandler.SystemStarted += HandleEvent_VehicleControlHandlerSystemStarted;
 				VehicleControlHandler.SystemStopped += HandleEvent_VehicleControlHandlerSystemStopped;
+				VehicleControlHandler.ConfigUpdated += HandleEvent_VehicleControlHandlerConfigUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleControlHandler(IVehicleControlHandler VehicleControlHandler)
@@ -511,6 +544,7 @@ namespace TrafficControlTest.Process
 			{
 				VehicleControlHandler.SystemStarted -= HandleEvent_VehicleControlHandlerSystemStarted;
 				VehicleControlHandler.SystemStopped -= HandleEvent_VehicleControlHandlerSystemStopped;
+				VehicleControlHandler.ConfigUpdated -= HandleEvent_VehicleControlHandlerConfigUpdated;
 			}
 		}
 		private void SubscribeEvent_IVehicleControlUpdater(IVehicleControlUpdater VehicleControlUpdater)
@@ -565,6 +599,7 @@ namespace TrafficControlTest.Process
 			{
 				HostCommunicator.SystemStarted += HandleEvent_HostCommunicatorSystemStarted;
 				HostCommunicator.SystemStopped += HandleEvent_HostCommunicatorSystemStopped;
+				HostCommunicator.ConfigUpdated += HandleEvent_HostCommunicatorConfigUpdated;
 				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged += HandleEvent_HostCommunicatorRemoteConnectStateChanged;
 				HostCommunicator.SentString += HandleEvent_HostCommunicatorSentString;
@@ -577,6 +612,7 @@ namespace TrafficControlTest.Process
 			{
 				HostCommunicator.SystemStarted -= HandleEvent_HostCommunicatorSystemStarted;
 				HostCommunicator.SystemStopped -= HandleEvent_HostCommunicatorSystemStopped;
+				HostCommunicator.ConfigUpdated -= HandleEvent_HostCommunicatorConfigUpdated;
 				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged -= HandleEvent_HostCommunicatorRemoteConnectStateChanged;
 				HostCommunicator.SentString -= HandleEvent_HostCommunicatorSentString;
@@ -603,6 +639,7 @@ namespace TrafficControlTest.Process
 			{
 				MissionDispatcher.SystemStarted += HandleEvent_MissionDispatcherSystemStarted;
 				MissionDispatcher.SystemStopped += HandleEvent_MissionDispatcherSystemStopped;
+				MissionDispatcher.ConfigUpdated += HandleEvent_MissionDispatcherConfigUpdated;
 				MissionDispatcher.MissionDispatched += HandleEvent_MissionDispatcherMissionDispatched;
 			}
 		}
@@ -612,6 +649,7 @@ namespace TrafficControlTest.Process
 			{
 				MissionDispatcher.SystemStarted -= HandleEvent_MissionDispatcherSystemStarted;
 				MissionDispatcher.SystemStopped -= HandleEvent_MissionDispatcherSystemStopped;
+				MissionDispatcher.ConfigUpdated -= HandleEvent_MissionDispatcherConfigUpdated;
 				MissionDispatcher.MissionDispatched -= HandleEvent_MissionDispatcherMissionDispatched;
 			}
 		}
@@ -619,6 +657,7 @@ namespace TrafficControlTest.Process
 		{
 			if (MapFileManager != null)
 			{
+				MapFileManager.ConfigUpdated += HandleEvent_MapFileManagerConfigUpdated;
 				MapFileManager.MapFileAdded += HandleEvent_MapFileManagerMapFileAdded;
 				MapFileManager.MapFileRemoved += HandleEvent_MapFileManagerMapFileRemoved;
 				MapFileManager.VehicleCurrentMapSynchronized += HandleEvent_MapFileManagerVehicleCurrentMapSynchronized;
@@ -628,6 +667,7 @@ namespace TrafficControlTest.Process
 		{
 			if (MapFileManager != null)
 			{
+				MapFileManager.ConfigUpdated -= HandleEvent_MapFileManagerConfigUpdated;
 				MapFileManager.MapFileAdded -= HandleEvent_MapFileManagerMapFileAdded;
 				MapFileManager.MapFileRemoved -= HandleEvent_MapFileManagerMapFileRemoved;
 				MapFileManager.VehicleCurrentMapSynchronized -= HandleEvent_MapFileManagerVehicleCurrentMapSynchronized;
@@ -637,6 +677,7 @@ namespace TrafficControlTest.Process
 		{
 			if (MapManager != null)
 			{
+				MapManager.ConfigUpdated += HandleEvent_MapManagerConfigUpdated;
 				MapManager.MapLoaded += HandleEvent_MapManagerMapLoaded;
 			}
 		}
@@ -644,6 +685,7 @@ namespace TrafficControlTest.Process
 		{
 			if (MapManager != null)
 			{
+				MapManager.ConfigUpdated -= HandleEvent_MapManagerConfigUpdated;
 				MapManager.MapLoaded -= HandleEvent_MapManagerMapLoaded;
 			}
 		}
@@ -681,6 +723,7 @@ namespace TrafficControlTest.Process
 			{
 				CycleMissionGenerator.SystemStarted += HandleEvent_CycleMissionGeneratorSystemStarted;
 				CycleMissionGenerator.SystemStopped += HandleEvent_CycleMissionGeneratorSystemStopped;
+				CycleMissionGenerator.ConfigUpdated += HandleEvent_CycleMissionGeneratorConfigUpdated;
 				CycleMissionGenerator.CycleMissionAssigned += HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
 				CycleMissionGenerator.CycleMissionRemoved += HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
 				CycleMissionGenerator.CycleMissionIndexUpdated += HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
@@ -692,6 +735,7 @@ namespace TrafficControlTest.Process
 			{
 				CycleMissionGenerator.SystemStarted -= HandleEvent_CycleMissionGeneratorSystemStarted;
 				CycleMissionGenerator.SystemStopped -= HandleEvent_CycleMissionGeneratorSystemStopped;
+				CycleMissionGenerator.ConfigUpdated -= HandleEvent_CycleMissionGeneratorConfigUpdated;
 				CycleMissionGenerator.CycleMissionAssigned -= HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
 				CycleMissionGenerator.CycleMissionRemoved -= HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
 				CycleMissionGenerator.CycleMissionIndexUpdated -= HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
@@ -703,6 +747,7 @@ namespace TrafficControlTest.Process
 			{
 				ImportantEventRecorder.SystemStarted += HandleEvent_ImportantEventRecorderSystemStarted;
 				ImportantEventRecorder.SystemStopped += HandleEvent_ImportantEventRecorderSystemStopped;
+				ImportantEventRecorder.ConfigUpdated += HandleEvent_ImportantEventRecorderConfigUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
@@ -711,6 +756,7 @@ namespace TrafficControlTest.Process
 			{
 				ImportantEventRecorder.SystemStarted -= HandleEvent_ImportantEventRecorderSystemStarted;
 				ImportantEventRecorder.SystemStopped -= HandleEvent_ImportantEventRecorderSystemStopped;
+				ImportantEventRecorder.ConfigUpdated -= HandleEvent_ImportantEventRecorderConfigUpdated;
 			}
 		}
 		protected virtual void RaiseEvent_SignificantEvent(DateTime OccurTime, SignificantEventCategory Category, string Info, bool Sync = true)
@@ -750,6 +796,54 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { AccessControlUserLogOut?.Invoke(OccurTime, Name, Rank); });
 			}
 		}
+		private void HandleEvent_ConfiguratorConfigLoaded(DateTime OccurTime)
+		{
+			HandleDebugMessage(OccurTime, "Configurator", "ConfigLoaded", string.Empty);
+		}
+		private void HandleEvent_ConfiguratorConfigSaved(DateTime OccurTime)
+		{
+			HandleDebugMessage(OccurTime, "Configurator", "ConfigSaved", string.Empty);
+		}
+		private void HandleEvent_ConfiguratorConfigUpdated(DateTime OccurTime, string Name, Configuration Item)
+		{
+			HandleDebugMessage(OccurTime, "Configurator", "ConfigUpdated", $"Name: {Name}, NewValue: {Item.mValue}");
+			switch (Name)
+			{
+				case "ImportantEventRecorder/TimePeriod":
+					mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
+					break;
+				case "VehicleCommunicator/ListenPort":
+					mVehicleCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("VehicleCommunicator/ListenPort"));
+					break;
+				case "VehicleCommunicator/TimePeriod":
+					mVehicleCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
+					break;
+				case "CollisionEventDetector/TimePeriod":
+					mCollisionEventDetector.SetConfig("TimePeriod", mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
+					break;
+				case "VehicleControlHandler/TimePeriod":
+					mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
+					break;
+				case "HostCommunicator/ListenPort":
+					mHostCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("HostCommunicator/ListenPort"));
+					break;
+				case "HostCommunicator/TimePeriod":
+					mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
+					break;
+				case "MissionDispatcher/TimePeriod":
+					mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
+					break;
+				case "MapFileManager/MapFileDirectory":
+					mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
+					break;
+				case "MapManager/AutoLoadMap":
+					mMapManager.SetConfig("AutoLoadMap", mConfigurator.GetValue("MapManager/AutoLoadMap"));
+					break;
+				case "CycleMissionGenerator/TimePeriod":
+					mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
+					break;
+			}
+		}
 		private void HandleEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
 		{
 			HandleDebugMessage(OccurTime, "AccessControl", "UserLogIn", $"Name: {Name}, Rank: {Rank.ToString()}");
@@ -767,6 +861,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleCommunicatorSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SystemStopped", string.Empty);
+		}
+		private void HandleEvent_VehicleCommunicatorConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "VehicleCommunicator", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
 		}
 		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{
@@ -834,6 +932,10 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "CollisionEventDetector", "SystemStopped", string.Empty);
 		}
+		private void HandleEvent_CollisionEventDetectorConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "CollisionEventDetector", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+		}
 		private void HandleEvent_VehicleControlManagerItemAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
 		{
 			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemAdded", $"Name: {Name}, Info:{VehicleControl.ToString()}");
@@ -853,6 +955,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleControlHandlerSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "VehicleControlHandler", "SystemStopped", string.Empty);
+		}
+		private void HandleEvent_VehicleControlHandlerConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "VehicleControlHandler", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
 		}
 		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
 		{
@@ -882,6 +988,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_HostCommunicatorSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "SystemStopped", string.Empty);
+		}
+		private void HandleEvent_HostCommunicatorConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "HostCommunicator", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
 		{
@@ -917,9 +1027,17 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "MissionDispatcher", "SystemStopped", string.Empty);
 		}
+		private void HandleEvent_MissionDispatcherConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "MissionDispatcher", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+		}
 		private void HandleEvent_MissionDispatcherMissionDispatched(DateTime OccurTime, IMissionState MissionState, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "MissionDispatcher", "MissionDispatched", $"MissionName: {MissionState.mName} Dispatched To VehicleName: {VehicleInfo.mName}");
+		}
+		private void HandleEvent_MapFileManagerConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "MapFileManager", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
 		}
 		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{
@@ -932,6 +1050,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MapFileManagerVehicleCurrentMapSynchronized(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName)
 		{
 			HandleDebugMessage(OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
+		}
+		private void HandleEvent_MapManagerConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
 		}
 		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
 		{
@@ -957,6 +1079,10 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionIndexUpdated", $"VehicleID: {VehicleId}, Index: {Index.ToString()}");
 		}
+		private void HandleEvent_CycleMissionGeneratorConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+		}
 		private void HandleEvent_ImportantEventRecorderSystemStarted(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "SystemStarted", string.Empty);
@@ -964,6 +1090,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_ImportantEventRecorderSystemStopped(DateTime OccurTime)
 		{
 			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "SystemStopped", string.Empty);
+		}
+		private void HandleEvent_ImportantEventRecorderConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		{
+			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
 		}
 		private void HandleDebugMessage(string Message)
 		{

@@ -17,6 +17,13 @@ using TrafficControlTest.Module.MissionManager.Interface;
 
 namespace TrafficControlTest.Library
 {
+	public enum Language
+	{
+		Enus,
+		Zhtw,
+		Zhcn
+	}
+
 	public enum ConnectState
 	{
 		Closed,
@@ -1092,6 +1099,8 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerDebugMessage(string OccurTime, string Category, string SubCategory, string Message);
 		public delegate void EventHandlerSignificantEvent(string OccurTime, string Category, string Info);
 		public delegate void EventHandlerLogInOutEvent(DateTime OccurTime, string Name, AccountRank Rank);
+
+		public delegate void EventHandlerConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue);
 
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);

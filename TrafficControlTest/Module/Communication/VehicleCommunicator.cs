@@ -35,14 +35,6 @@ namespace TrafficControlTest.Implement
 		{
 			Constructor();
 		}
-		public void SetConfigOfListenPort(int Port)
-		{
-				mListenPort = Port;
-		}
-		public int GetConfigOfListenPort()
-		{
-			return mListenPort;
-		}
 		public void StartListen()
 		{
 			if (mSocketServer.ListenStatus == EListenStatus.Idle)
@@ -121,6 +113,34 @@ namespace TrafficControlTest.Implement
 		public void SendSerializableData_ChangeMap(string IpPort, string MapName)
 		{
 			SendSerializableData(IpPort, new ChangeMap(MapName));
+		}
+		public override string GetConfig(string ConfigName)
+		{
+			switch (ConfigName)
+			{
+				case "TimePeriod":
+					return mTimePeriod.ToString();
+				case "ListenPort":
+					return mListenPort.ToString();
+				default:
+					return null;
+			}
+		}
+		public override void SetConfig(string ConfigName, string NewValue)
+		{
+			switch (ConfigName)
+			{
+				case "TimePeriod":
+					mTimePeriod = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ListenPort":
+					mListenPort = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				default:
+					break;
+			}
 		}
 		public override void Task()
 		{

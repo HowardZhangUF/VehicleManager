@@ -26,10 +26,6 @@ namespace TrafficControlTest.Interface
 		/// <summary>連線中的 Client 地址資訊 (IP:Port)</summary>
 		List<string> mClientAddressInfo { get; }
 
-		/// <summary>設定監聽 Port 的值</summary>
-		void SetConfigOfListenPort(int Port);
-		/// <summary>取得監聽 Port 的值</summary>
-		int GetConfigOfListenPort();
 		/// <summary>開始監聽</summary>
 		void StartListen();
 		/// <summary>停止監聽</summary>

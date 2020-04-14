@@ -7,8 +7,8 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Interface
 {
-    public interface ISystemWithLoopTask
-    {
+    public interface ISystemWithLoopTask : ISystemWithConfig
+	{
         event EventHandlerDateTime SystemStarted;
         event EventHandlerDateTime SystemStopped;
 

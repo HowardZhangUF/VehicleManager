@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Library;
+using TrafficControlTest.Module.Configure;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Interface
 {
 	public interface IConfigurator
 	{
+		event EventHandlerDateTime ConfigLoaded;
+		event EventHandlerDateTime ConfigSaved;
+		event EventHandlerItem<Configuration> ConfigUpdated;
+
+		/// <summary>語系</summary>
+		Language mLanguage { get; }
 		/// <summary>儲存 Configuration 檔案的名稱，例： .\\Application.config</summary>
 		string mFileName { get; }
 
@@ -20,6 +29,8 @@ namespace TrafficControlTest.Module.General.Interface
 		/// <summary>取得指定的 Configuration 值</summary>
 		string GetValue(string Keyword);
 		/// <summary>設定指定的 Configuration 值</summary>
-		void SetValue(string Keyword, string Value);
+		bool SetValue(string Keyword, string Value);
+		/// <summary>取得所有的 Configuration</summary>
+		List<string[]> GetConfigDataGridViewRowDataCollection();
 	}
 }

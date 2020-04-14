@@ -9,7 +9,7 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Implement
 {
-    public abstract class SystemWithLoopTask : ISystemWithLoopTask
+    public abstract class SystemWithLoopTask : SystemWithConfig, ISystemWithLoopTask
     {
         public event EventHandlerDateTime SystemStarted;
         public event EventHandlerDateTime SystemStopped;
@@ -42,8 +42,30 @@ namespace TrafficControlTest.Module.General.Implement
             DestroyThread();
         }
         public abstract void Task();
+		public override string GetConfig(string ConfigName)
+		{
+			switch (ConfigName)
+			{
+				case "TimePeriod":
+					return mTimePeriod.ToString();
+				default:
+					return null;
+			}
+		}
+		public override void SetConfig(string ConfigName, string NewValue)
+		{
+			switch (ConfigName)
+			{
+				case "TimePeriod":
+					mTimePeriod = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				default:
+					break;
+			}
+		}
 
-        protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
+		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
         {
             if (Sync)
             {

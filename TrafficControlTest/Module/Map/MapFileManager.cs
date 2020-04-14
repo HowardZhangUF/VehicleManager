@@ -13,7 +13,7 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Implement
 {
-	public class MapFileManager : IMapFileManager
+	public class MapFileManager : SystemWithConfig, IMapFileManager
 	{
 		public event EventHandlerMapFileName MapFileAdded;
 		public event EventHandlerMapFileName MapFileRemoved;
@@ -46,14 +46,6 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			Set(VehicleCommunicator);
 			Set(VehicleInfoManager);
-		}
-		public void SetConfigOfMapFileDirectory(string MapFileDirectory)
-		{
-			mMapFileDirectory = MapFileDirectory;
-		}
-		public string GetConfigOfMapFileDirectory()
-		{
-			return mMapFileDirectory;
 		}
 		public string[] GetLocalMapNameList()
 		{
@@ -99,6 +91,28 @@ namespace TrafficControlTest.Module.General.Implement
 				rVehicleCommunicator.SendSerializableData_ChangeMap(rVehicleInfoManager.GetItem(vehicleName).mIpPort, MapFileName);
 			}
 			RaiseEvent_VehicleCurrentMapSynchronized(vehicleNames, MapFileName);
+		}
+		public override string GetConfig(string ConfigName)
+		{
+			switch (ConfigName)
+			{
+				case "MapFileDirectory":
+					return mMapFileDirectory;
+				default:
+					return null;
+			}
+		}
+		public override void SetConfig(string ConfigName, string NewValue)
+		{
+			switch (ConfigName)
+			{
+				case "MapFileDirectory":
+					mMapFileDirectory = NewValue;
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				default:
+					break;
+			}
 		}
 
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)

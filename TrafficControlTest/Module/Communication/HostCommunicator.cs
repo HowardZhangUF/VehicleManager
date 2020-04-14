@@ -30,14 +30,6 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			Constructor();
 		}
-		public void SetConfigOfListenPort(int Port)
-		{
-				mListenPort = Port;
-		}
-		public int GetConfigOfListenPort()
-		{
-			return mListenPort;
-		}
 		public void StartListen()
 		{
 			if (mServer.ListenStatus == EListenStatus.Idle)
@@ -67,6 +59,34 @@ namespace TrafficControlTest.Module.General.Implement
 			{
 				mServer.Send(IpPort, Data);
 				RaiseEvent_SentString(IpPort, Data);
+			}
+		}
+		public override string GetConfig(string ConfigName)
+		{
+			switch (ConfigName)
+			{
+				case "TimePeriod":
+					return mTimePeriod.ToString();
+				case "ListenPort":
+					return mListenPort.ToString();
+				default:
+					return null;
+			}
+		}
+		public override void SetConfig(string ConfigName, string NewValue)
+		{
+			switch (ConfigName)
+			{
+				case "TimePeriod":
+					mTimePeriod = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ListenPort":
+					mListenPort = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				default:
+					break;
 			}
 		}
 		public override void Task()

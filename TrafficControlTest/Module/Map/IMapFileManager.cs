@@ -22,7 +22,7 @@ namespace TrafficControlTest.Module.General.Interface
 	/// - 車子連線時，會發送詢問當前地圖資訊的要求
 	/// - 當車子當前使用地圖資訊改變時，會向車子要求當前地圖檔
 	/// </summary>
-	public interface IMapFileManager
+	public interface IMapFileManager : ISystemWithConfig
 	{
 		event EventHandlerMapFileName MapFileAdded;
 		event EventHandlerMapFileName MapFileRemoved;
@@ -34,8 +34,6 @@ namespace TrafficControlTest.Module.General.Interface
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager);
-		void SetConfigOfMapFileDirectory(string MapFileDirectory);
-		string GetConfigOfMapFileDirectory();
 		string[] GetLocalMapNameList();
 		string GetMapFileFullPath(string MapFileName);
 		void AddMapFile(string MapFileName, byte[] MapData);

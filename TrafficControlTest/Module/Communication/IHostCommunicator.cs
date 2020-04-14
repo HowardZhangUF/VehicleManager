@@ -23,8 +23,6 @@ namespace TrafficControlTest.Module.General.Interface
 		ListenState mListenState { get; }
 		int mClientCout { get; }
 
-		void SetConfigOfListenPort(int Port);
-		int GetConfigOfListenPort();
 		void StartListen();
 		void StopListen();
 		void SendString(string Data);

@@ -12,7 +12,7 @@ using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General.Implement
 {
-	public class MapManager : IMapManager
+	public class MapManager : SystemWithConfig, IMapManager
 	{
 		public event EventHandlerMapFileName MapLoaded;
 
@@ -41,14 +41,6 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			Set(VehicleInfoManager);
 			Set(MapFileManager);
-		}
-		public void SetConfigOfAutoLoadMap(bool Enable)
-		{
-			mAutoLoadMap = Enable;
-		}
-		public bool GetConfigOfAutoLoadMap()
-		{
-			return mAutoLoadMap;
 		}
 		public void LoadMap(string MapFileName)
 		{
@@ -81,6 +73,28 @@ namespace TrafficControlTest.Module.General.Implement
 			else
 			{
 				return new int[] { 0, 0, 0 };
+			}
+		}
+		public override string GetConfig(string ConfigName)
+		{
+			switch (ConfigName)
+			{
+				case "AutoLoadMap":
+					return mAutoLoadMap.ToString();
+				default:
+					return null;
+			}
+		}
+		public override void SetConfig(string ConfigName, string NewValue)
+		{
+			switch (ConfigName)
+			{
+				case "AutoLoadMap":
+					mAutoLoadMap = bool.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				default:
+					break;
 			}
 		}
 

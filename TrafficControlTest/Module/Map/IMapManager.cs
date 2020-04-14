@@ -18,15 +18,13 @@ namespace TrafficControlTest.Module.General.Interface
 	/// - 當 VehicleInfo 的 CurrentMapName 改變且與當前地圖不一樣時，自動載入新地圖
 	/// - (?)當收到 「Vehicle 當前地圖已更換」的訊息時，自動載入新地圖，並將新地圖同步至所有車
 	/// </summary>
-	public interface IMapManager
+	public interface IMapManager : ISystemWithConfig
 	{
 		event EventHandlerMapFileName MapLoaded;
 
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IMapFileManager MapFileManager);
 		void Set(IVehicleInfoManager VehicleInfoManager, IMapFileManager MapFileManager);
-		void SetConfigOfAutoLoadMap(bool Enable);
-		bool GetConfigOfAutoLoadMap();
 		void LoadMap(string MapFileName);
 		string GetCurrentMapName();
 		string[] GetGoalNameList();
