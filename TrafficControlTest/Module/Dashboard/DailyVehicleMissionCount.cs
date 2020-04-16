@@ -18,7 +18,15 @@ namespace TrafficControlTest.Module.Dashboard
 		{
 			mVehicleId = VehicleId;
 			mDate = Date.Date;
+			SetSuccessedMissionCount(SuccessedMissionCount);
+			SetFailedMissionCount(FailedMissionCount);
+		}
+		public void SetSuccessedMissionCount(int SuccessedMissionCount)
+		{
 			mSuccessedMissionCount = SuccessedMissionCount;
+		}
+		public void SetFailedMissionCount(int FailedMissionCount)
+		{
 			mFailedMissionCount = FailedMissionCount;
 		}
 	}

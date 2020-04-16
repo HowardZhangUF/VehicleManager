@@ -15,7 +15,15 @@ namespace TrafficControlTest.Module.Dashboard
 		public DailyMissionAverageCost(DateTime Date, int SuccessedMissionCount, double AverageCostInSec)
 		{
 			mDate = Date.Date;
+			SetSuccessedMissionCount(SuccessedMissionCount);
+			SetAverageCostInSec(AverageCostInSec);
+		}
+		public void SetSuccessedMissionCount(int SuccessedMissionCount)
+		{
 			mSuccessedMissionCount = SuccessedMissionCount;
+		}
+		public void SetAverageCostInSec(double AverageCostInSec)
+		{
 			mAverageCostInSec = AverageCostInSec;
 		}
 	}

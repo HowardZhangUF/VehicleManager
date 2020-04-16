@@ -16,7 +16,15 @@ namespace TrafficControlTest.Module.Dashboard
 		public DailyMissionCount(DateTime Date, int SuccessedCount, int FailedCount)
 		{
 			mDate = Date.Date;
+			SetSuccessedCount(SuccessedCount);
+			SetFailedCount(FailedCount);
+		}
+		public void SetSuccessedCount(int SuccessedCount)
+		{
 			mSuccessedCount = SuccessedCount;
+		}
+		public void SetFailedCount(int FailedCount)
+		{
 			mFailedCount = FailedCount;
 		}
 	}

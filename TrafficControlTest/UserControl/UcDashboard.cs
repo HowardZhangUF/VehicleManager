@@ -9,140 +9,230 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using TrafficControlTest.Module.Dashboard;
+using TrafficControlTest.Library;
 
 namespace TrafficControlTest.UserControl
 {
 	public partial class UcDashboard : System.Windows.Forms.UserControl
 	{
+		public DateTime mLastUpdateTimestamp { get; private set; } = default(DateTime);
+
+		private DatabaseAdapter rDatabaseAdapter = null;
+
 		public UcDashboard()
 		{
 			InitializeComponent();
+		}
+		public void Set(DatabaseAdapter DatabaseAdapter)
+		{
+			rDatabaseAdapter = DatabaseAdapter;
+			UpdateDashboard();
+		}
 
-			TestForDailyMissionCount();
-			TestForDailyMissionAverageCost();
-			//TestForDailyVehicleState();
-			TestOfChartOfDailyBatteryState();
-			TestOfChartOfWeeklyMissionAmount();
-			TestOfChartOfWeeklyVehicleUsage();
+		private void UpdateDashboard()
+		{
+			if (rDatabaseAdapter == null) return;
+
+			mLastUpdateTimestamp = DateTime.Now;
+			UpdateDashboardViaDatabase_DailyMissionCount();
+			UpdateDashboardViaDatabase_DailyMissionAverageCost();
+			UpdateDashboardViaDatabase_DailyVehicleBatteryState();
+			UpdateDashboardViaDatabase_WeeklyMissionCount();
+			UpdateDashboardViaDatabase_WeeklyVehicleUsage();
+		}
+		private void cmenuItemUpdateDashboard_Click(object sender, EventArgs e)
+		{
+			UpdateDashboard();
 		}
 
 		#region DailyMissionCount
-		public void TestForDailyMissionCount()
+		private void UpdateDashboardViaSampleData_DailyMissionCount()
 		{
 			DailyMissionCount tmp = new DailyMissionCount(DateTime.Now.AddDays(-1), 50, 14);
-			ucDailyMissionCount1.Set(tmp.mDate, tmp.mSuccessedCount, tmp.mFailedCount);
+			UpdateDashboard_DailyMissionCount(tmp);
+		}
+		private void UpdateDashboardViaDatabase_DailyMissionCount()
+		{
+			// Command:
+			//		SELECT ExecuteState, Count(*) FROM MissionState WHERE (ExecuteState == 'ExecuteSuccessed' OR ExecuteState == 'ExecuteFailed') AND (ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days')) GROUP BY ExecuteState
+			// Result:
+			//		ExecuteSuccessed 30342
+			// Commnet:
+			//		ExecuteFailed Count is 0
+			DailyMissionCount dataFromDatabase = new DailyMissionCount(DateTime.Now.AddDays(-1), 0, 0);
+			string sqlCmd = "SELECT ExecuteState, Count(*) FROM MissionState WHERE(ExecuteState == 'ExecuteSuccessed' OR ExecuteState == 'ExecuteFailed') AND(ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days')) GROUP BY ExecuteState";
+			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
+			{
+				for (int i = 0; i < searchResult.Rows.Count; ++i)
+				{
+					if (searchResult.Rows[i].ItemArray[0].ToString() == Module.MissionManager.Interface.ExecuteState.ExecuteSuccessed.ToString())
+					{
+						dataFromDatabase.SetSuccessedCount(int.Parse(searchResult.Rows[i].ItemArray[1].ToString()));
+						continue;
+					}
+					if (searchResult.Rows[i].ItemArray[0].ToString() == Module.MissionManager.Interface.ExecuteState.ExecuteFailed.ToString())
+					{
+						dataFromDatabase.SetFailedCount(int.Parse(searchResult.Rows[i].ItemArray[1].ToString()));
+						continue;
+					}
+				}
+			}
+			UpdateDashboard_DailyMissionCount(dataFromDatabase);
+		}
+		private void UpdateDashboard_DailyMissionCount(DailyMissionCount DailyMissionCount)
+		{
+			ucDailyMissionCount1.InvokeIfNecessary(() =>
+			{
+				ucDailyMissionCount1.Set(DailyMissionCount.mDate, DailyMissionCount.mSuccessedCount, DailyMissionCount.mFailedCount);
+			});
 		}
 		#endregion
 
 		#region DailyMissionAverageCost
-		public void TestForDailyMissionAverageCost()
+		private void UpdateDashboardViaSampleData_DailyMissionAverageCost()
 		{
 			DailyMissionAverageCost tmp = new DailyMissionAverageCost(DateTime.Now.AddDays(-1), 50, 209.3f);
-			ucDailyMissionAverageCost1.Set(tmp.mDate, tmp.mSuccessedMissionCount, tmp.mAverageCostInSec);
+			UpdateDashboard_DailyMissionAverageCost(tmp);
 		}
-		#endregion
-
-		#region DailyVehicleState
-		public void TestForDailyVehicleState()
+		private void UpdateDashboardViaDatabase_DailyMissionAverageCost()
 		{
-			DailyVehicleState tmp = new DailyVehicleState("Vehicle001", DateTime.Now.Date, 10, 8.2f, 3.17f, 6.253f, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1);
-			//InitializeChartForDailyVehicleState(chart1, tmp.mDate, tmp.mVehicleId);
-			//AddDataToChartForDailyVehicleState(chart1, tmp);
-		}
-
-		private static void InitializeChartForDailyVehicleState(Chart Chart, DateTime Date, string VehicleId)
-		{
-			Chart.Series.Clear();
-			Chart.ChartAreas.Clear();
-			Chart.Legends.Clear();
-			Chart.Titles.Clear();
-			Chart.BackColor = Color.FromArgb(31, 31, 31);
-
-			Chart.Titles.Add(GenerateMainTitleForDailyVehicleState());
-			Chart.Titles.Add(GenerateSubTitleForDailyVehicleState(Date, VehicleId));
-			Chart.Legends.Add(GenerateLegendForDailyVehicleState());
-			Chart.ChartAreas.Add(GenerateChartAreaForDailyVehicleState());
-		}
-		private static void AddDataToChartForDailyVehicleState(Chart Chart, DailyVehicleState DailyVehicleState)
-		{
-			Chart.Series.Add(GenerateSeriesForDailyVehicleState(DailyVehicleState.GetStateCollection(), DailyVehicleState.GetStateDurationCollection()));
-		}
-		private static Title GenerateMainTitleForDailyVehicleState()
-		{
-			return new Title("Vehicle State of Last Day", Docking.Top, new Font("新細明體", 16, FontStyle.Bold), Color.White);
-		}
-		private static Title GenerateSubTitleForDailyVehicleState(DateTime Date, string VehicleId)
-		{
-			return new Title($"{VehicleId} - {Date.ToString("yyyy / MM / dd")}", Docking.Top, new Font("新細明體", 10), Color.White);
-		}
-		private static Legend GenerateLegendForDailyVehicleState()
-		{
-			return new Legend() { BackColor = Color.Transparent, ForeColor = Color.White, Font = new Font("新細明體", 10) };
-		}
-		private static ChartArea GenerateChartAreaForDailyVehicleState()
-		{
-			ChartArea result = new ChartArea();
-			result.BackColor = Color.Transparent;
-			result.Area3DStyle.Enable3D = true;
-			result.Area3DStyle.Rotation = 45;
-			result.Area3DStyle.Inclination = 30;
-			return result;
-		}
-		private static Series GenerateSeriesForDailyVehicleState(string[] StateNames, double[] StateValues)
-		{
-			Series result = new Series();
-			result.ChartType = SeriesChartType.Pie;
-			result.LegendText = "#VALX";
-			result.Label = "#PERCENT{P1} (#VALY hr)";
-			result.Font = new Font("新細明體", 10);
-			result.IsValueShownAsLabel = false;
-			result.LabelForeColor = Color.White;
-			result["PieLabelStyle"] = "Outside";
-			result.ToolTip = "#VALX";
-			result.Points.DataBindXY(StateNames, StateValues);
-			result.Points[0].Color = Color.Gray;
-			result.Points[1].Color = Color.Green;
-			result.Points[2].Color = Color.LawnGreen;
-			result.Points[3].Color = Color.Yellow;
-			result.Points[4].Color = Color.Red;
-			for (int i = 0; i < result.Points.Count; ++i)
+			// Command:
+			//		SELECT COUNT(*), CAST(SUM(JULIANDAY(ExecutionStopTimestamp) - JULIANDAY(ExecutionStartTimestamp)) / COUNT(*) * 24 * 60 * 60 * 1000 AS INTEGER) AS ExeAvgCostInMs FROM MissionState WHERE ExecuteState == 'ExecuteSuccessed' AND (ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days'))
+			// Result:
+			//		1 27815
+			// Result:
+			//		0
+			// Commnet:
+			//		Average is Empty when COUNT(*) Equals to 0
+			DailyMissionAverageCost dataFromDatabase = new DailyMissionAverageCost(DateTime.Now.AddDays(-1), 0, 0.0f);
+			string sqlCmd = "SELECT COUNT(*), CAST(SUM(JULIANDAY(ExecutionStopTimestamp) - JULIANDAY(ExecutionStartTimestamp)) / COUNT(*) * 24 * 60 * 60 * 1000 AS INTEGER) AS ExeAvgCostInMs FROM MissionState WHERE ExecuteState == 'ExecuteSuccessed' AND (ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days'))";
+			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count == 1)
 			{
-				result.Points[i]["Exploded"] = "true";
+				dataFromDatabase.SetSuccessedMissionCount(int.Parse(searchResult.Rows[0].ItemArray[0].ToString()));
+				var tmp = searchResult.Rows[0].ItemArray[1].ToString();
+				dataFromDatabase.SetAverageCostInSec(double.Parse(!string.IsNullOrEmpty(searchResult.Rows[0].ItemArray[1].ToString()) ? searchResult.Rows[0].ItemArray[1].ToString() : "0") / 1000);
 			}
-			return result;
+			UpdateDashboard_DailyMissionAverageCost(dataFromDatabase);
+		}
+		private void UpdateDashboard_DailyMissionAverageCost(DailyMissionAverageCost DailyMissionAverageCost)
+		{
+			ucDailyMissionAverageCost1.InvokeIfNecessary(() =>
+			{
+				ucDailyMissionAverageCost1.Set(DailyMissionAverageCost.mDate, DailyMissionAverageCost.mSuccessedMissionCount, DailyMissionAverageCost.mAverageCostInSec);
+			});
 		}
 		#endregion
+
+		//#region DailyVehicleState
+		//private void UpdateDashboardViaSampleData_DailyVehicleState()
+		//{
+		//	DailyVehicleState tmp = new DailyVehicleState("Vehicle001", DateTime.Now.Date, 10, 8.2f, 3.17f, 6.253f, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1);
+		//	UpdateDashboard_DailyVehicleState(tmp);
+		//}
+		//private void UpdateDashboard_DailyVehicleState(DailyVehicleState DailyVehicleState)
+		//{
+		//	chart2.InvokeIfNecessary(() =>
+		//	{
+		//		InitializeChartForDailyVehicleState(chart2, DailyVehicleState.mDate, DailyVehicleState.mVehicleId);
+		//		AddDataToChartForDailyVehicleState(chart2, DailyVehicleState);
+		//	});
+		//}
+
+		//private static void InitializeChartForDailyVehicleState(Chart Chart, DateTime Date, string VehicleId)
+		//{
+		//	Chart.Series.Clear();
+		//	Chart.ChartAreas.Clear();
+		//	Chart.Legends.Clear();
+		//	Chart.Titles.Clear();
+		//	Chart.BackColor = Color.FromArgb(31, 31, 31);
+
+		//	Chart.Titles.Add(GenerateMainTitleForDailyVehicleState());
+		//	Chart.Titles.Add(GenerateSubTitleForDailyVehicleState(Date, VehicleId));
+		//	Chart.Legends.Add(GenerateLegendForDailyVehicleState());
+		//	Chart.ChartAreas.Add(GenerateChartAreaForDailyVehicleState());
+		//}
+		//private static void AddDataToChartForDailyVehicleState(Chart Chart, DailyVehicleState DailyVehicleState)
+		//{
+		//	Chart.Series.Add(GenerateSeriesForDailyVehicleState(DailyVehicleState.GetStateCollection(), DailyVehicleState.GetStateDurationCollection()));
+		//}
+		//private static Title GenerateMainTitleForDailyVehicleState()
+		//{
+		//	return new Title("Vehicle State of Last Day", Docking.Top, new Font("新細明體", 16, FontStyle.Bold), Color.White);
+		//}
+		//private static Title GenerateSubTitleForDailyVehicleState(DateTime Date, string VehicleId)
+		//{
+		//	return new Title($"{VehicleId} - {Date.ToString("yyyy / MM / dd")}", Docking.Top, new Font("新細明體", 10), Color.White);
+		//}
+		//private static Legend GenerateLegendForDailyVehicleState()
+		//{
+		//	return new Legend() { BackColor = Color.Transparent, ForeColor = Color.White, Font = new Font("新細明體", 10) };
+		//}
+		//private static ChartArea GenerateChartAreaForDailyVehicleState()
+		//{
+		//	ChartArea result = new ChartArea();
+		//	result.BackColor = Color.Transparent;
+		//	result.Area3DStyle.Enable3D = true;
+		//	result.Area3DStyle.Rotation = 45;
+		//	result.Area3DStyle.Inclination = 30;
+		//	return result;
+		//}
+		//private static Series GenerateSeriesForDailyVehicleState(string[] StateNames, double[] StateValues)
+		//{
+		//	Series result = new Series();
+		//	result.ChartType = SeriesChartType.Pie;
+		//	result.LegendText = "#VALX";
+		//	result.Label = "#PERCENT{P1} (#VALY hr)";
+		//	result.Font = new Font("新細明體", 10);
+		//	result.IsValueShownAsLabel = false;
+		//	result.LabelForeColor = Color.White;
+		//	result["PieLabelStyle"] = "Outside";
+		//	result.ToolTip = "#VALX";
+		//	result.Points.DataBindXY(StateNames, StateValues);
+		//	result.Points[0].Color = Color.Gray;
+		//	result.Points[1].Color = Color.Green;
+		//	result.Points[2].Color = Color.LawnGreen;
+		//	result.Points[3].Color = Color.Yellow;
+		//	result.Points[4].Color = Color.Red;
+		//	for (int i = 0; i < result.Points.Count; ++i)
+		//	{
+		//		result.Points[i]["Exploded"] = "true";
+		//	}
+		//	return result;
+		//}
+		//#endregion
 
 		#region DailyVehicleBatteryState
-		public void TestOfChartOfDailyBatteryState()
+		private void UpdateDashboardViaSampleData_DailyVehicleBatteryState()
 		{
 			List<DateTime> tmp1 = new List<DateTime>()
 			{
-				DateTime.Now.Date.AddHours(0.1),
-				DateTime.Now.Date.AddHours(1.0),
-				DateTime.Now.Date.AddHours(2.0),
-				DateTime.Now.Date.AddHours(3.0),
-				DateTime.Now.Date.AddHours(4.0),
-				DateTime.Now.Date.AddHours(5.0),
-				DateTime.Now.Date.AddHours(6.0),
-				DateTime.Now.Date.AddHours(7.0),
-				DateTime.Now.Date.AddHours(8.0),
-				DateTime.Now.Date.AddHours(9.0),
-				DateTime.Now.Date.AddHours(10.0),
-				DateTime.Now.Date.AddHours(11.0),
-				DateTime.Now.Date.AddHours(12.0),
-				DateTime.Now.Date.AddHours(13.0),
-				DateTime.Now.Date.AddHours(14.0),
-				DateTime.Now.Date.AddHours(15.0),
-				DateTime.Now.Date.AddHours(16.0),
-				DateTime.Now.Date.AddHours(17.0),
-				DateTime.Now.Date.AddHours(18.0),
-				DateTime.Now.Date.AddHours(19.0),
-				DateTime.Now.Date.AddHours(20.0),
-				DateTime.Now.Date.AddHours(21.0),
-				DateTime.Now.Date.AddHours(22.0),
-				DateTime.Now.Date.AddHours(23.0),
-				DateTime.Now.Date.AddHours(23.9)
+				DateTime.Now.Date.AddDays(-1).AddHours(0.1),
+				DateTime.Now.Date.AddDays(-1).AddHours(1.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(2.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(3.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(4.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(5.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(6.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(7.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(8.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(9.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(10.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(11.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(12.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(13.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(14.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(15.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(16.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(17.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(18.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(19.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(20.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(21.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(22.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(23.0),
+				DateTime.Now.Date.AddDays(-1).AddHours(23.9)
 			};
 			List<double> tmp2 = new List<double>()
 			{
@@ -200,15 +290,112 @@ namespace TrafficControlTest.UserControl
 				90.1f,
 				100.0f
 			};
-			DailyVehicleBatteryState tmp4 = new DailyVehicleBatteryState("Vehicle001", DateTime.Now, tmp1, tmp2);
-			DailyVehicleBatteryState tmp5 = new DailyVehicleBatteryState("Vehicle002", DateTime.Now, tmp1, tmp3);
+			DailyVehicleBatteryState tmp4 = new DailyVehicleBatteryState("Vehicle001", DateTime.Now.AddDays(-1), tmp1, tmp2);
+			DailyVehicleBatteryState tmp5 = new DailyVehicleBatteryState("Vehicle002", DateTime.Now.AddDays(-1), tmp1, tmp3);
+			UpdateDashboard_DailyVehicleBatteryState(new DailyVehicleBatteryState[] { tmp4, tmp5 });
+		}
+		private void UpdateDashboardViaDatabase_DailyVehicleBatteryState()
+		{
+			// Command:
+			//		SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'HistoryVehicleInfoOf%' ORDER BY UPPER(name)
+			// Result:
+			//		HistoryVehicleInfoOfiTSDash100
+			//		HistoryVehicleInfoOfNewiTSDash300
+			//		HistoryVehicleInfoOfVehicle031
+			//		HistoryVehicleInfoOfVehicle767
+			// Command:
+			//		SELECT RecordTimestamp, BatteryValue FROM HistoryVehicleInfoOfiTSDash100 WHERE RecordTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days')
+			// Result:
+			//		2020-04-14 10:20:45.356 89.14
+			//		2020-04-14 10:20:48.356 90.04
+			//		2020-04-14 10:20:51.356 92.78
+			//		2020-04-14 10:20:54.357 89.25
+			//		2020-04-14 10:20:57.357 92.72
+			//		2020-04-14 10:21:00.358 95.11
+			//		2020-04-14 10:21:03.358 99.19
+			//		2020-04-14 10:21:06.358 98.85
+			//		2020-04-14 10:21:09.359 96.18
+			//		2020-04-14 10:21:12.359 96.6
+			//		2020-04-14 10:21:15.359 94.49
+			//		2020-04-14 10:21:18.360 90.23
+			//		2020-04-14 10:21:21.360 96.83
+			//		2020-04-14 10:21:24.360 98.04
+			Dictionary<string, DailyVehicleBatteryState> dataFromDatabase = new Dictionary<string, DailyVehicleBatteryState>();
+			string sqlCmd = "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'HistoryVehicleInfoOf%' ORDER BY UPPER(name)";
+			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
+			{
+				List<string> vehicleIds = new List<string>();
+				for (int i = 0; i < searchResult.Rows.Count; ++i)
+				{
+					string tableName = searchResult.Rows[i].ItemArray[0].ToString();
+					string vehicleId = tableName.Replace("HistoryVehicleInfoOf", string.Empty).Replace("Dash", "-");
+					string sqlCmdTmp = $"SELECT RecordTimestamp, BatteryValue FROM {tableName} WHERE RecordTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days')";
+					DataTable searchResultTmp = rDatabaseAdapter.ExecuteQueryCommand(sqlCmdTmp)?.Tables[0];
+					if (searchResultTmp != null && searchResultTmp.Rows != null && searchResultTmp.Rows.Count > 0)
+					{
+						// 有搜尋到數據才建立容器
+						dataFromDatabase.Add(vehicleId, new DailyVehicleBatteryState(vehicleId, DateTime.Now.AddDays(-1)));
+						for (int j = 0; j < searchResultTmp.Rows.Count; ++j)
+						{
+							var timestamp = searchResultTmp.Rows[j].ItemArray[0];
+							var batteryValue = searchResultTmp.Rows[j].ItemArray[1];
+							dataFromDatabase[vehicleId].AddBatteryState((DateTime)timestamp, (double)batteryValue);
+						}
+					}
 
-			InitializeChartForDisplayingDailyBatteryState(chart2, tmp4.mDate, tmp4.mVehicleId);
-			AddDataToChartForDisplayingDailyBatteryState(chart2, tmp4);
-			AddDataToChartForDisplayingDailyBatteryState(chart2, tmp5);
+					// 優化電量資料，如果時間紀錄有斷層(車子斷線)，則於斷層處補上電量為 0 的資料
+					for (int j = 0; j <= dataFromDatabase[vehicleId].mCollection.Count; ++j)
+					{
+						// 對第一筆資料做處理
+						if (j == 0)
+						{
+							// 如果第一筆資料與當天 00:00:00.000 差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
+							if (dataFromDatabase[vehicleId].mCollection.First().mTimestamp.Subtract(dataFromDatabase[vehicleId].mDate).TotalMilliseconds > 3.0f)
+							{
+								VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mDate, 0.0f);
+								VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection.First().mTimestamp.AddMinutes(-1), 0.0f);
+								dataFromDatabase[vehicleId].mCollection.Insert(0, tmp2);
+								dataFromDatabase[vehicleId].mCollection.Insert(0, tmp1);
+								j += 2;
+							}
+						}
+						else if (j == dataFromDatabase[vehicleId].mCollection.Count)
+						{
+							// 如果最後一筆資料與當天 23:59:59.999 差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
+							if (dataFromDatabase[vehicleId].mDate.AddDays(1).AddMilliseconds(-1).Subtract(dataFromDatabase[vehicleId].mCollection.Last().mTimestamp).TotalMinutes > 3.0f)
+							{
+								VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection.Last().mTimestamp.AddMinutes(1), 0.0f);
+								VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mDate.AddDays(1).AddMilliseconds(-1), 0.0f);
+								dataFromDatabase[vehicleId].mCollection.Add(tmp1);
+								dataFromDatabase[vehicleId].mCollection.Add(tmp2);
+								j += 2;
+							}
+						}
+						else
+						{
+							// 如果與上一筆資料差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
+							if (dataFromDatabase[vehicleId].mCollection[j].mTimestamp.Subtract(dataFromDatabase[vehicleId].mCollection[j - 1].mTimestamp).TotalMinutes > 3.0f)
+							{
+								VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection[j-1].mTimestamp.AddMinutes(1), 0.0f);
+								VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection[j].mTimestamp.AddMinutes(-1), 0.0f);
+								dataFromDatabase[vehicleId].mCollection.Insert(j, tmp2);
+								dataFromDatabase[vehicleId].mCollection.Insert(j, tmp1);
+								j += 2;
+							}
+						}
+					}
+				}
+			}
+			UpdateDashboard_DailyVehicleBatteryState(dataFromDatabase.Values.ToArray());
+		}
+		private void UpdateDashboard_DailyVehicleBatteryState(DailyVehicleBatteryState[] DailyVehicleBatteryStateCollection)
+		{
+			InitializeChartForDisplayingDailyBatteryState(chart2, DateTime.Now.AddDays(-1));
+			AddDataToChartForDisplayingDailyBatteryState(chart2, DailyVehicleBatteryStateCollection);
 		}
 
-		private static void InitializeChartForDisplayingDailyBatteryState(Chart Chart, DateTime Date, string VehicleName, bool IsDisplayLegend = true)
+		private static void InitializeChartForDisplayingDailyBatteryState(Chart Chart, DateTime Date, bool IsDisplayLegend = true)
 		{
 			Chart.Series.Clear();
 			Chart.ChartAreas.Clear();
@@ -220,6 +407,15 @@ namespace TrafficControlTest.UserControl
 			Chart.Titles.Add(GenerateSubTitleForDailyVehicleBatteryState(Date));
 			if (IsDisplayLegend) Chart.Legends.Add(GenerateLegendForDailyVehicleBatteryState());
 			Chart.ChartAreas.Add(GenerateChartAreaForDailyVehicleBatteryState());
+		}
+		private static void AddDataToChartForDisplayingDailyBatteryState(Chart Chart, params DailyVehicleBatteryState[] DailyVehicleBatteryStateCollection)
+		{
+			if (DailyVehicleBatteryStateCollection == null || DailyVehicleBatteryStateCollection.Length == 0) return;
+
+			for (int i = 0; i < DailyVehicleBatteryStateCollection.Length; ++i)
+			{
+				AddDataToChartForDisplayingDailyBatteryState(Chart, DailyVehicleBatteryStateCollection[i]);
+			}
 		}
 		private static void AddDataToChartForDisplayingDailyBatteryState(Chart Chart, DailyVehicleBatteryState DailyVehicleBatteryState)
 		{
@@ -293,7 +489,7 @@ namespace TrafficControlTest.UserControl
 		#endregion
 
 		#region WeeklyMissionCout
-		public void TestOfChartOfWeeklyMissionAmount()
+		private void UpdateDashboardViaSampleData_WeeklyMissionCount()
 		{
 			DailyVehicleMissionCount tmp01 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-7), 30, 2);
 			DailyVehicleMissionCount tmp02 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-6), 40, 3);
@@ -313,8 +509,77 @@ namespace TrafficControlTest.UserControl
 			DailyVehicleMissionCount tmp17 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-1), 80, 1);
 			MultiDayVehicleMissionCount tmp18 = new MultiDayVehicleMissionCount("Vehicle002", tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17);
 
-			InitializeChartForWeeklyMissionCout(chart3, tmp08.mStartDate, tmp08.mEndDate);
-			AddDataToChartForWeeklyMissionCout(chart3, tmp08, tmp18);
+			UpdateDashboard_WeeklyMissionCount(tmp08, tmp18);
+		}
+		private void UpdateDashboardViaDatabase_WeeklyMissionCount()
+		{
+			// Command:
+			//		SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)
+			// Result:
+			//		iTS-100    2020-04-14 ExecuteSuccessed 1
+			//		Vehicle031 2020-04-08 ExecuteFailed    4
+			//		Vehicle031 2020-04-08 ExectueSuccessed 2460
+			//		Vehicle031 2020-04-09 ExecuteFailed    13
+			//		Vehicle031 2020-04-09 ExecuteSuccessed 2463
+			//		Vehicle031 2020-04-10 ExecuteFailed    25
+			//		Vehicle031 2020-04-10 ExecuteSuccessed 2445
+			//		Vehicle031 2020-04-11 ExecuteFailed    10
+			//		Vehicle031 2020-04-11 ExecuteSuccessed 2438
+			//		Vehicle031 2020-04-12 ExecuteFailed    41
+			//		Vehicle031 2020-04-12 ExecuteSuccessed 2409
+			//		Vehicle031 2020-04-13 ExecuteFailed    9
+			//		Vehicle031 2020-04-13 ExecuteSuccessed 1608
+			//		Vehicle767 2020-04-08 ExecuteFailed    5
+			//		Vehicle767 2020-04-08 ExecuteSuccessed 2459
+			//		Vehicle767 2020-04-09 ExecuteFailed    13
+			//		Vehicle767 2020-04-09 ExecuteSuccessed 2462
+			//		Vehicle767 2020-04-09 Executing        1
+			//		Vehicle767 2020-04-10 ExecuteFailed    24
+			//		Vehicle767 2020-04-10 ExecuteSuccessed 2446
+			//		Vehicle767 2020-04-11 ExecuteFailed    10
+			//		Vehicle767 2020-04-11 ExecuteSuccessed 2438
+			//		Vehicle767 2020-04-12 ExecuteFailed    40
+			//		Vehicle767 2020-04-12 ExecuteSuccessed 2410
+			//		Vehicle767 2020-04-13 ExecuteFailed    10
+			//		Vehicle767 2020-04-13 ExecuteSuccessed 1607
+			Dictionary<string, MultiDayVehicleMissionCount> dataFromDatabase = new Dictionary<string, MultiDayVehicleMissionCount>();
+			string sqlCmd = "SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
+			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
+			{
+				for (int i = 0; i < searchResult.Rows.Count; ++i)
+				{
+					string vehicleId = searchResult.Rows[i].ItemArray[0].ToString();
+					string date = searchResult.Rows[i].ItemArray[1].ToString();
+					string type = searchResult.Rows[i].ItemArray[2].ToString();
+					int count = int.Parse(searchResult.Rows[i].ItemArray[3].ToString());
+					// 如果還未建立該 Vehicle 的容器，則建立之
+					if (!dataFromDatabase.ContainsKey(vehicleId))
+					{
+						dataFromDatabase.Add(vehicleId, new MultiDayVehicleMissionCount(vehicleId, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1)));
+					}
+
+					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteSuccessed.ToString())
+					{
+						dataFromDatabase[vehicleId].mCollection.First(o => o.mDate.ToString("yyyy-MM-dd") == date).SetSuccessedMissionCount(count);
+						continue;
+					}
+					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteFailed.ToString())
+					{
+						dataFromDatabase[vehicleId].mCollection.First(o => o.mDate.ToString("yyyy-MM-dd") == date).SetFailedMissionCount(count);
+						continue;
+					}
+				}
+			}
+			UpdateDashboard_WeeklyMissionCount(dataFromDatabase.Values.ToArray());
+		}
+		private void UpdateDashboard_WeeklyMissionCount(params MultiDayVehicleMissionCount[] MultiDayVehicleMissionCountCollection)
+		{
+			chart3.InvokeIfNecessary(() =>
+			{
+				InitializeChartForWeeklyMissionCout(chart3, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1));
+				AddDataToChartForWeeklyMissionCout(chart3, MultiDayVehicleMissionCountCollection);
+			});
 		}
 
 		private static void InitializeChartForWeeklyMissionCout(Chart Chart, DateTime StartDate, DateTime EndDate)
@@ -332,6 +597,8 @@ namespace TrafficControlTest.UserControl
 		}
 		private static void AddDataToChartForWeeklyMissionCout(Chart Chart, params MultiDayVehicleMissionCount[] MultiDayVehicleMissionCountCollection)
 		{
+			if (MultiDayVehicleMissionCountCollection == null || MultiDayVehicleMissionCountCollection.Length == 0) return;
+
 			List<int> successedMissionCount = new List<int>();
 			List<int> failedMissionCount = new List<int>();
 
@@ -416,7 +683,7 @@ namespace TrafficControlTest.UserControl
 		#endregion
 
 		#region WeeklyVehicleUsage
-		public void TestOfChartOfWeeklyVehicleUsage()
+		private void UpdateDashboardViaSampleData_WeeklyVehicleUsage()
 		{
 			DailyVehicleMissionCount tmp01 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-7), 30, 2);
 			DailyVehicleMissionCount tmp02 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-6), 40, 3);
@@ -436,8 +703,78 @@ namespace TrafficControlTest.UserControl
 			DailyVehicleMissionCount tmp17 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-1), 80, 1);
 			MultiDayVehicleMissionCount tmp18 = new MultiDayVehicleMissionCount("Vehicle002", tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17);
 
-			InitializeChartForWeeklyVehicleUsage(chart4, tmp08.mStartDate, tmp08.mEndDate);
+			InitializeChartForWeeklyVehicleUsage(chart4, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1));
 			AddDataToChartForWeeklyVehicleUsage(chart4, tmp08, tmp18);
+		}
+		private void UpdateDashboardViaDatabase_WeeklyVehicleUsage()
+		{
+			// Command:
+			//		SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)
+			// Result:
+			//		iTS-100    2020-04-14 ExecuteSuccessed 1
+			//		Vehicle031 2020-04-08 ExecuteFailed    4
+			//		Vehicle031 2020-04-08 ExectueSuccessed 2460
+			//		Vehicle031 2020-04-09 ExecuteFailed    13
+			//		Vehicle031 2020-04-09 ExecuteSuccessed 2463
+			//		Vehicle031 2020-04-10 ExecuteFailed    25
+			//		Vehicle031 2020-04-10 ExecuteSuccessed 2445
+			//		Vehicle031 2020-04-11 ExecuteFailed    10
+			//		Vehicle031 2020-04-11 ExecuteSuccessed 2438
+			//		Vehicle031 2020-04-12 ExecuteFailed    41
+			//		Vehicle031 2020-04-12 ExecuteSuccessed 2409
+			//		Vehicle031 2020-04-13 ExecuteFailed    9
+			//		Vehicle031 2020-04-13 ExecuteSuccessed 1608
+			//		Vehicle767 2020-04-08 ExecuteFailed    5
+			//		Vehicle767 2020-04-08 ExecuteSuccessed 2459
+			//		Vehicle767 2020-04-09 ExecuteFailed    13
+			//		Vehicle767 2020-04-09 ExecuteSuccessed 2462
+			//		Vehicle767 2020-04-09 Executing        1
+			//		Vehicle767 2020-04-10 ExecuteFailed    24
+			//		Vehicle767 2020-04-10 ExecuteSuccessed 2446
+			//		Vehicle767 2020-04-11 ExecuteFailed    10
+			//		Vehicle767 2020-04-11 ExecuteSuccessed 2438
+			//		Vehicle767 2020-04-12 ExecuteFailed    40
+			//		Vehicle767 2020-04-12 ExecuteSuccessed 2410
+			//		Vehicle767 2020-04-13 ExecuteFailed    10
+			//		Vehicle767 2020-04-13 ExecuteSuccessed 1607
+			Dictionary<string, MultiDayVehicleMissionCount> dataFromDatabase = new Dictionary<string, MultiDayVehicleMissionCount>();
+			string sqlCmd = "SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
+			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
+			{
+				for (int i = 0; i < searchResult.Rows.Count; ++i)
+				{
+					string vehicleId = searchResult.Rows[i].ItemArray[0].ToString();
+					string date = searchResult.Rows[i].ItemArray[1].ToString();
+					string type = searchResult.Rows[i].ItemArray[2].ToString();
+					int count = int.Parse(searchResult.Rows[i].ItemArray[3].ToString());
+					// 如果還未建立該 Vehicle 的容器，則建立之
+					if (!dataFromDatabase.ContainsKey(vehicleId))
+					{
+						dataFromDatabase.Add(vehicleId, new MultiDayVehicleMissionCount(vehicleId, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1)));
+					}
+
+					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteSuccessed.ToString())
+					{
+						dataFromDatabase[vehicleId].mCollection.First(o => o.mDate.ToString("yyyy-MM-dd") == date).SetSuccessedMissionCount(count);
+						continue;
+					}
+					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteFailed.ToString())
+					{
+						dataFromDatabase[vehicleId].mCollection.First(o => o.mDate.ToString("yyyy-MM-dd") == date).SetFailedMissionCount(count);
+						continue;
+					}
+				}
+			}
+			UpdateDashboard_WeeklyVehicleUsage(dataFromDatabase.Values.ToArray());
+		}
+		private void UpdateDashboard_WeeklyVehicleUsage(params MultiDayVehicleMissionCount[] MultiDayVehicleMissionCountCollection)
+		{
+			chart4.InvokeIfNecessary(() =>
+			{
+				InitializeChartForWeeklyVehicleUsage(chart4, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1));
+				AddDataToChartForWeeklyVehicleUsage(chart4, MultiDayVehicleMissionCountCollection);
+			});
 		}
 
 		private static void InitializeChartForWeeklyVehicleUsage(Chart Chart, DateTime StartDate, DateTime EndDate)
@@ -455,6 +792,8 @@ namespace TrafficControlTest.UserControl
 		}
 		private static void AddDataToChartForWeeklyVehicleUsage(Chart Chart, params MultiDayVehicleMissionCount[] MultiDayVehicleMissionCountCollection)
 		{
+			if (MultiDayVehicleMissionCountCollection == null || MultiDayVehicleMissionCountCollection.Length == 0) return;
+
 			for (int i = 0; i < MultiDayVehicleMissionCountCollection.Length; ++i)
 			{
 				Chart.Series.Add(GenerateSeriesForWeeklyVehicleUsage(MultiDayVehicleMissionCountCollection[i].mVehicleId, MultiDayVehicleMissionCountCollection[i].mCollection.Select(o => o.mTotalMissionCount).ToList()));

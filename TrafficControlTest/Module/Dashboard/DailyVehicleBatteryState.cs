@@ -12,6 +12,11 @@ namespace TrafficControlTest.Module.Dashboard
 		public DateTime mDate { get; private set; } = default(DateTime);
 		public List<VehicleBatteryState> mCollection { get; } = new List<VehicleBatteryState>();
 
+		public DailyVehicleBatteryState(string VehicleId, DateTime Date)
+		{
+			mVehicleId = VehicleId;
+			mDate = Date.Date;
+		}
 		public DailyVehicleBatteryState(string VehicleId, DateTime Date, List<DateTime> Timestamps, List<double> BatteryValues)
 		{
 			mVehicleId = VehicleId;
@@ -21,6 +26,10 @@ namespace TrafficControlTest.Module.Dashboard
 				mCollection.Add(new VehicleBatteryState(Timestamps[i], BatteryValues[i]));
 			}
 			mCollection = mCollection.OrderBy(o => o.mTimestamp).ToList();
+		}
+		public void AddBatteryState(DateTime Timestamp, double BatteryValue)
+		{
+			mCollection.Add(new VehicleBatteryState(Timestamp, BatteryValue));
 		}
 	}
 }

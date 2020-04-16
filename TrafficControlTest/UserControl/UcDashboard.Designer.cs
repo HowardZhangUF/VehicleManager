@@ -28,25 +28,29 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-			System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-			System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-			System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.chart4 = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.ucDailyMissionCount1 = new TrafficControlTest.UserControl.UcDailyMissionCount();
 			this.ucDailyMissionAverageCost1 = new TrafficControlTest.UserControl.UcDailyMissionAverageCost();
+			this.cmenuDashboard = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.cmenuItemUpdateDashboard = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart3)).BeginInit();
+			this.cmenuDashboard.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -61,6 +65,7 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+			this.tableLayoutPanel1.ContextMenuStrip = this.cmenuDashboard;
 			this.tableLayoutPanel1.Controls.Add(this.chart2, 5, 1);
 			this.tableLayoutPanel1.Controls.Add(this.chart4, 5, 3);
 			this.tableLayoutPanel1.Controls.Add(this.chart3, 1, 3);
@@ -82,54 +87,54 @@
 			// 
 			// chart2
 			// 
-			chartArea7.Name = "ChartArea1";
-			this.chart2.ChartAreas.Add(chartArea7);
+			chartArea4.Name = "ChartArea1";
+			this.chart2.ChartAreas.Add(chartArea4);
 			this.tableLayoutPanel1.SetColumnSpan(this.chart2, 3);
 			this.chart2.Dock = System.Windows.Forms.DockStyle.Fill;
-			legend7.Name = "Legend1";
-			this.chart2.Legends.Add(legend7);
+			legend4.Name = "Legend1";
+			this.chart2.Legends.Add(legend4);
 			this.chart2.Location = new System.Drawing.Point(433, 13);
 			this.chart2.Name = "chart2";
-			series7.ChartArea = "ChartArea1";
-			series7.Legend = "Legend1";
-			series7.Name = "Series1";
-			this.chart2.Series.Add(series7);
+			series4.ChartArea = "ChartArea1";
+			series4.Legend = "Legend1";
+			series4.Name = "Series1";
+			this.chart2.Series.Add(series4);
 			this.chart2.Size = new System.Drawing.Size(404, 279);
 			this.chart2.TabIndex = 0;
 			this.chart2.Text = "chart2";
 			// 
 			// chart4
 			// 
-			chartArea8.Name = "ChartArea1";
-			this.chart4.ChartAreas.Add(chartArea8);
+			chartArea5.Name = "ChartArea1";
+			this.chart4.ChartAreas.Add(chartArea5);
 			this.tableLayoutPanel1.SetColumnSpan(this.chart4, 3);
 			this.chart4.Dock = System.Windows.Forms.DockStyle.Fill;
-			legend8.Name = "Legend1";
-			this.chart4.Legends.Add(legend8);
+			legend5.Name = "Legend1";
+			this.chart4.Legends.Add(legend5);
 			this.chart4.Location = new System.Drawing.Point(433, 308);
 			this.chart4.Name = "chart4";
-			series8.ChartArea = "ChartArea1";
-			series8.Legend = "Legend1";
-			series8.Name = "Series1";
-			this.chart4.Series.Add(series8);
+			series5.ChartArea = "ChartArea1";
+			series5.Legend = "Legend1";
+			series5.Name = "Series1";
+			this.chart4.Series.Add(series5);
 			this.chart4.Size = new System.Drawing.Size(404, 279);
 			this.chart4.TabIndex = 1;
 			this.chart4.Text = "chart4";
 			// 
 			// chart3
 			// 
-			chartArea9.Name = "ChartArea1";
-			this.chart3.ChartAreas.Add(chartArea9);
+			chartArea6.Name = "ChartArea1";
+			this.chart3.ChartAreas.Add(chartArea6);
 			this.tableLayoutPanel1.SetColumnSpan(this.chart3, 3);
 			this.chart3.Dock = System.Windows.Forms.DockStyle.Fill;
-			legend9.Name = "Legend1";
-			this.chart3.Legends.Add(legend9);
+			legend6.Name = "Legend1";
+			this.chart3.Legends.Add(legend6);
 			this.chart3.Location = new System.Drawing.Point(13, 308);
 			this.chart3.Name = "chart3";
-			series9.ChartArea = "ChartArea1";
-			series9.Legend = "Legend1";
-			series9.Name = "Series1";
-			this.chart3.Series.Add(series9);
+			series6.ChartArea = "ChartArea1";
+			series6.Legend = "Legend1";
+			series6.Name = "Series1";
+			this.chart3.Series.Add(series6);
 			this.chart3.Size = new System.Drawing.Size(404, 279);
 			this.chart3.TabIndex = 3;
 			this.chart3.Text = "chart3";
@@ -158,6 +163,23 @@
 			this.ucDailyMissionAverageCost1.Size = new System.Drawing.Size(194, 279);
 			this.ucDailyMissionAverageCost1.TabIndex = 5;
 			// 
+			// cmenuDashboard
+			// 
+			this.cmenuDashboard.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.cmenuDashboard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmenuItemUpdateDashboard});
+			this.cmenuDashboard.Name = "cmenuDashboard";
+			this.cmenuDashboard.Size = new System.Drawing.Size(211, 56);
+			// 
+			// cmenuItemUpdateDashboard
+			// 
+			this.cmenuItemUpdateDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.cmenuItemUpdateDashboard.ForeColor = System.Drawing.Color.White;
+			this.cmenuItemUpdateDashboard.Name = "cmenuItemUpdateDashboard";
+			this.cmenuItemUpdateDashboard.Size = new System.Drawing.Size(210, 24);
+			this.cmenuItemUpdateDashboard.Text = "Update";
+			this.cmenuItemUpdateDashboard.Click += new System.EventHandler(this.cmenuItemUpdateDashboard_Click);
+			// 
 			// UcDashboard
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -170,6 +192,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart3)).EndInit();
+			this.cmenuDashboard.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -182,5 +205,7 @@
 		private System.Windows.Forms.DataVisualization.Charting.Chart chart3;
 		private UcDailyMissionCount ucDailyMissionCount1;
 		private UcDailyMissionAverageCost ucDailyMissionAverageCost1;
+		private System.Windows.Forms.ContextMenuStrip cmenuDashboard;
+		private System.Windows.Forms.ToolStripMenuItem cmenuItemUpdateDashboard;
 	}
 }

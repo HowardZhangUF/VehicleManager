@@ -20,5 +20,15 @@ namespace TrafficControlTest.Module.Dashboard
 			mStartDate = mCollection.First().mDate;
 			mEndDate = mCollection.Last().mDate;
 		}
+		public MultiDayVehicleMissionCount(string VehicleId, DateTime StartDate, DateTime EndDate)
+		{
+			mVehicleId = VehicleId;
+			mStartDate = StartDate.Date;
+			mEndDate = EndDate.Date;
+			for (DateTime i = mStartDate; i.Date <= mEndDate; i = i.AddDays(1))
+			{
+				mCollection.Add(new DailyVehicleMissionCount(mVehicleId, i, 0, 0));
+			}
+		}
 	}
 }
