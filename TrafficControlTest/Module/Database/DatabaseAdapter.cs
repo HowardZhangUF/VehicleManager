@@ -59,8 +59,6 @@ namespace TrafficControlTest.Library
 		public static string mFileNameOfNonQueryCmds = "RemainingNonQueryCommands.txt";
 		/// <summary>儲存未執行查詢類 Sql 指令的檔案名稱</summary>
 		public static string mFileNameOfQueryCmds = "RemainingQueryCommands.txt";
-		/// <summary>儲存例外記錄的檔案名稱</summary>
-		public static string mFileNameOfExceptionRecord = "Exception.txt";
 
 		protected bool _mIsConnected = false;
 		protected bool _IsExecuting = false;
@@ -82,8 +80,6 @@ namespace TrafficControlTest.Library
 		protected string mFilePathOfNonQueryCmds = $"{mDirectoryNameOfFiles}\\{mFileNameOfNonQueryCmds}";
 		/// <summary>尚未執行 Sql 指令(查詢類)的檔案名稱</summary>
 		protected string mFilePathOfQueryCmds = $"{mDirectoryNameOfFiles}\\{mFileNameOfQueryCmds}";
-		/// <summary>儲存例外資訊的檔案名稱</summary>
-		protected string mFilePathOfExceptionRecord = $"{mDirectoryNameOfFiles}\\{mFileNameOfExceptionRecord}";
 		/// <summary>非查詢類 Sql 指令結果預設值</summary>
 		protected int mDefaultValueOfNonQueryCmdResult = -1;
 		/// <summary>查詢類 Sql 指令結果預設值</summary>
@@ -456,7 +452,13 @@ namespace TrafficControlTest.Library
 		/// <summary>例外處理</summary>
 		protected virtual void HandleException(Exception Ex)
 		{
-			File.AppendAllText(mFilePathOfExceptionRecord, $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")} - {Ex.ToString()}\n");
+			string directory = ".\\Exception";
+			string file = $".\\Exception\\Exception{DateTime.Now.ToString("yyyyMMdd")}.txt";
+			string message = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")} - [DatabaseAdapterException] - {Ex.ToString()}\r\n";
+
+			if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
+			if (!System.IO.File.Exists(file)) System.IO.File.Create(file);
+			System.IO.File.AppendAllText(file, message);
 		}
 		/// <summary>例外處理 (Sql)</summary>
 		protected virtual void HandleDbException(DbException DbEx)

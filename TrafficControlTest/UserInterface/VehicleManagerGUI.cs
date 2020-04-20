@@ -53,7 +53,13 @@ namespace TrafficControlTest.UserInterface
 		}
 		private void HandleException(Exception Ex)
 		{
-			Console.WriteLine(Ex.ToString());
+			string directory = ".\\Exception";
+			string file = $".\\Exception\\Exception{DateTime.Now.ToString("yyyyMMdd")}.txt";
+			string message = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")} - [MainException] - {Ex.ToString()}\r\n";
+
+			if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
+			if (!System.IO.File.Exists(file)) System.IO.File.Create(file);
+			System.IO.File.AppendAllText(file, message);
 		}
 		private void VehicleManagerGUI_Load(object sender, EventArgs e)
 		{

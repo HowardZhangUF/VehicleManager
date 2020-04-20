@@ -372,11 +372,23 @@ namespace TrafficControlTest.Process
 		{
 			System.Windows.Forms.Application.ThreadException += (sender, e) =>
 			{
-				System.IO.File.AppendAllText($"Exception{DateTime.Now.ToString("yyyyMMdd")}.txt", $"{DateTime.Now.ToString(TIME_FORMAT)} - {e.Exception.ToString()}\r\n");
+				string directory = ".\\Exception";
+				string file = $".\\Exception\\Exception{DateTime.Now.ToString("yyyyMMdd")}.txt";
+				string message = $"{DateTime.Now.ToString(TIME_FORMAT)} - [ThreadException] - {e.Exception.ToString()}\r\n";
+
+				if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
+				if (!System.IO.File.Exists(file)) System.IO.File.Create(file);
+				System.IO.File.AppendAllText(file, message);
 			};
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
-				System.IO.File.AppendAllText($"Exception{DateTime.Now.ToString("yyyyMMdd")}.txt", $"{DateTime.Now.ToString(TIME_FORMAT)} - {e.ExceptionObject.ToString()}\r\n");
+				string directory = ".\\Exception";
+				string file = $".\\Exception\\Exception{DateTime.Now.ToString("yyyyMMdd")}.txt";
+				string message = $"{DateTime.Now.ToString(TIME_FORMAT)} - [UnhandledException] - {e.ExceptionObject.ToString()}\r\n";
+
+				if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
+				if (!System.IO.File.Exists(file)) System.IO.File.Create(file);
+				System.IO.File.AppendAllText(file, message);
 			};
 		}
 		private void SubscribeEvent_IConfigurator(IConfigurator Configurator)
