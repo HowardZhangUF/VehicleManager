@@ -57,12 +57,15 @@ namespace TrafficControlTest.Library
 			{
 				if (!string.IsNullOrEmpty(NonQueryCmd))
 				{
-					using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+					lock (mLockOfSqlConnection)
 					{
-						if (sql.State == ConnectionState.Closed) sql.Open();
-						using (SQLiteCommand sqlc = new SQLiteCommand(NonQueryCmd, sql))
+						using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
 						{
-							result = sqlc.ExecuteNonQuery();
+							if (sql.State == ConnectionState.Closed) sql.Open();
+							using (SQLiteCommand sqlc = new SQLiteCommand(NonQueryCmd, sql))
+							{
+								result = sqlc.ExecuteNonQuery();
+							}
 						}
 					}
 				}
@@ -82,19 +85,22 @@ namespace TrafficControlTest.Library
 			List<int> result = new List<int>();
 			try
 			{
-				using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+				lock (mLockOfSqlConnection)
 				{
-					if (sql.State == ConnectionState.Closed) sql.Open();
-					using (SQLiteTransaction sqlTrans = sql.BeginTransaction())
+					using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
 					{
-						for (int i = 0; i < NonQueryCmds.Count(); ++i)
+						if (sql.State == ConnectionState.Closed) sql.Open();
+						using (SQLiteTransaction sqlTrans = sql.BeginTransaction())
 						{
-							using (SQLiteCommand sqlc = new SQLiteCommand(NonQueryCmds.ElementAt(i), sql))
+							for (int i = 0; i < NonQueryCmds.Count(); ++i)
 							{
-								result.Add(sqlc.ExecuteNonQuery());
+								using (SQLiteCommand sqlc = new SQLiteCommand(NonQueryCmds.ElementAt(i), sql))
+								{
+									result.Add(sqlc.ExecuteNonQuery());
+								}
 							}
+							sqlTrans.Commit();
 						}
-						sqlTrans.Commit();
 					}
 				}
 			}
@@ -115,16 +121,19 @@ namespace TrafficControlTest.Library
 			{
 				if (!string.IsNullOrEmpty(QueryCmd))
 				{
-					using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+					lock (mLockOfSqlConnection)
 					{
-						if (sql.State == ConnectionState.Closed) sql.Open();
-						using (SQLiteCommand sqlc = new SQLiteCommand(QueryCmd, sql))
+						using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
 						{
-							using (SQLiteDataAdapter sqlda = new SQLiteDataAdapter(sqlc))
+							if (sql.State == ConnectionState.Closed) sql.Open();
+							using (SQLiteCommand sqlc = new SQLiteCommand(QueryCmd, sql))
 							{
-								result = new DataSet();
-								result.Clear();
-								sqlda.Fill(result);
+								using (SQLiteDataAdapter sqlda = new SQLiteDataAdapter(sqlc))
+								{
+									result = new DataSet();
+									result.Clear();
+									sqlda.Fill(result);
+								}
 							}
 						}
 					}
@@ -145,25 +154,28 @@ namespace TrafficControlTest.Library
 			List<DataSet> result = new List<DataSet>();
 			try
 			{
-				using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+				lock (mLockOfSqlConnection)
 				{
-					if (sql.State == ConnectionState.Closed) sql.Open();
-					using (SQLiteTransaction sqlTrans = sql.BeginTransaction())
+					using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
 					{
-						for (int i = 0; i < QueryCmds.Count(); ++i)
+						if (sql.State == ConnectionState.Closed) sql.Open();
+						using (SQLiteTransaction sqlTrans = sql.BeginTransaction())
 						{
-							using (SQLiteCommand sqlc = new SQLiteCommand(QueryCmds.ElementAt(i), sql))
+							for (int i = 0; i < QueryCmds.Count(); ++i)
 							{
-								using (SQLiteDataAdapter sqlda = new SQLiteDataAdapter(sqlc))
+								using (SQLiteCommand sqlc = new SQLiteCommand(QueryCmds.ElementAt(i), sql))
 								{
-									DataSet tmpResult = new DataSet();
-									tmpResult.Clear();
-									sqlda.Fill(tmpResult);
-									result.Add(tmpResult);
+									using (SQLiteDataAdapter sqlda = new SQLiteDataAdapter(sqlc))
+									{
+										DataSet tmpResult = new DataSet();
+										tmpResult.Clear();
+										sqlda.Fill(tmpResult);
+										result.Add(tmpResult);
+									}
 								}
 							}
+							sqlTrans.Commit();
 						}
-						sqlTrans.Commit();
 					}
 				}
 			}

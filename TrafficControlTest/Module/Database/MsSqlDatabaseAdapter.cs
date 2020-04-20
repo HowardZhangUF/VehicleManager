@@ -54,12 +54,15 @@ namespace TrafficControlTest.Library
 						}
 					}
 
-					using (SqlConnection sql = new SqlConnection(mConnectionString))
+					lock (mLockOfSqlConnection)
 					{
-						sql.Open();
-						sql.Close();
-						mIsConnected = true;
-						result = true;
+						using (SqlConnection sql = new SqlConnection(mConnectionString))
+						{
+							sql.Open();
+							sql.Close();
+							mIsConnected = true;
+							result = true;
+						}
 					}
 				}
 			}
@@ -80,12 +83,15 @@ namespace TrafficControlTest.Library
 			{
 				if (!string.IsNullOrEmpty(NonQueryCmd))
 				{
-					using (SqlConnection sql = new SqlConnection(mConnectionString))
+					lock (mLockOfSqlConnection)
 					{
-						if (sql.State == ConnectionState.Closed) sql.Open();
-						using (SqlCommand sqlc = new SqlCommand(NonQueryCmd, sql))
+						using (SqlConnection sql = new SqlConnection(mConnectionString))
 						{
-							result = sqlc.ExecuteNonQuery();
+							if (sql.State == ConnectionState.Closed) sql.Open();
+							using (SqlCommand sqlc = new SqlCommand(NonQueryCmd, sql))
+							{
+								result = sqlc.ExecuteNonQuery();
+							}
 						}
 					}
 				}
@@ -105,19 +111,22 @@ namespace TrafficControlTest.Library
 			List<int> result = new List<int>();
 			try
 			{
-				using (SqlConnection sql = new SqlConnection(mConnectionString))
+				lock (mLockOfSqlConnection)
 				{
-					if (sql.State == ConnectionState.Closed) sql.Open();
-					using (SqlTransaction sqlTrans = sql.BeginTransaction())
+					using (SqlConnection sql = new SqlConnection(mConnectionString))
 					{
-						for (int i = 0; i < NonQueryCmds.Count(); ++i)
+						if (sql.State == ConnectionState.Closed) sql.Open();
+						using (SqlTransaction sqlTrans = sql.BeginTransaction())
 						{
-							using (SqlCommand sqlc = new SqlCommand(NonQueryCmds.ElementAt(i), sql))
+							for (int i = 0; i < NonQueryCmds.Count(); ++i)
 							{
-								result.Add(sqlc.ExecuteNonQuery());
+								using (SqlCommand sqlc = new SqlCommand(NonQueryCmds.ElementAt(i), sql))
+								{
+									result.Add(sqlc.ExecuteNonQuery());
+								}
 							}
+							sqlTrans.Commit();
 						}
-						sqlTrans.Commit();
 					}
 				}
 			}
@@ -138,16 +147,19 @@ namespace TrafficControlTest.Library
 			{
 				if (!string.IsNullOrEmpty(QueryCmd))
 				{
-					using (SqlConnection sql = new SqlConnection(mConnectionString))
+					lock (mLockOfSqlConnection)
 					{
-						if (sql.State == ConnectionState.Closed) sql.Open();
-						using (SqlCommand sqlc = new SqlCommand(QueryCmd, sql))
+						using (SqlConnection sql = new SqlConnection(mConnectionString))
 						{
-							using (SqlDataAdapter sqlda = new SqlDataAdapter(sqlc))
+							if (sql.State == ConnectionState.Closed) sql.Open();
+							using (SqlCommand sqlc = new SqlCommand(QueryCmd, sql))
 							{
-								result = new DataSet();
-								result.Clear();
-								sqlda.Fill(result);
+								using (SqlDataAdapter sqlda = new SqlDataAdapter(sqlc))
+								{
+									result = new DataSet();
+									result.Clear();
+									sqlda.Fill(result);
+								}
 							}
 						}
 					}
@@ -168,27 +180,29 @@ namespace TrafficControlTest.Library
 			List<DataSet> result = new List<DataSet>();
 			try
 			{
-				using (SqlConnection sql = new SqlConnection(mConnectionString))
+				lock (mLockOfSqlConnection)
 				{
-					if (sql.State == ConnectionState.Closed) sql.Open();
-					using (SqlTransaction sqlTrans = sql.BeginTransaction())
+					using (SqlConnection sql = new SqlConnection(mConnectionString))
 					{
-						for (int i = 0; i < QueryCmds.Count(); ++i)
+						if (sql.State == ConnectionState.Closed) sql.Open();
+						using (SqlTransaction sqlTrans = sql.BeginTransaction())
 						{
-							using (SqlCommand sqlc = new SqlCommand(QueryCmds.ElementAt(i), sql))
+							for (int i = 0; i < QueryCmds.Count(); ++i)
 							{
-								using (SqlDataAdapter sqlda = new SqlDataAdapter(sqlc))
+								using (SqlCommand sqlc = new SqlCommand(QueryCmds.ElementAt(i), sql))
 								{
-									DataSet tmpResult = new DataSet();
-									tmpResult.Clear();
-									sqlda.Fill(tmpResult);
-									result.Add(tmpResult);
+									using (SqlDataAdapter sqlda = new SqlDataAdapter(sqlc))
+									{
+										DataSet tmpResult = new DataSet();
+										tmpResult.Clear();
+										sqlda.Fill(tmpResult);
+										result.Add(tmpResult);
+									}
 								}
 							}
+							sqlTrans.Commit();
 						}
-						sqlTrans.Commit();
 					}
-					
 				}
 			}
 			catch (SqlException ex)

@@ -89,6 +89,8 @@ namespace TrafficControlTest.Library
 		/// <summary>查詢類 Sql 指令結果預設值</summary>
 		protected DataSet mDefaultValueOfQueryCmdResult = null;
 		/// <summary>執行緒同步鎖</summary>
+		protected readonly object mLockOfSqlConnection = new object();
+		/// <summary>執行緒同步鎖</summary>
 		protected readonly object mLockOfContainerOfNonQueryCmds = new object();
 		/// <summary>執行緒同步鎖</summary>
 		protected readonly object mLockOfContainerOfQueryCmds = new object();
