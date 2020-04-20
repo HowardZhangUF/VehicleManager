@@ -344,44 +344,47 @@ namespace TrafficControlTest.UserControl
 						}
 					}
 
-					// 優化電量資料，如果時間紀錄有斷層(車子斷線)，則於斷層處補上電量為 0 的資料
-					for (int j = 0; j <= dataFromDatabase[vehicleId].mCollection.Count; ++j)
+					if (dataFromDatabase.ContainsKey(vehicleId))
 					{
-						// 對第一筆資料做處理
-						if (j == 0)
+						// 優化電量資料，如果時間紀錄有斷層(車子斷線)，則於斷層處補上電量為 0 的資料
+						for (int j = 0; j <= dataFromDatabase[vehicleId].mCollection.Count; ++j)
 						{
-							// 如果第一筆資料與當天 00:00:00.000 差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
-							if (dataFromDatabase[vehicleId].mCollection.First().mTimestamp.Subtract(dataFromDatabase[vehicleId].mDate).TotalMilliseconds > 3.0f)
+							// 對第一筆資料做處理
+							if (j == 0)
 							{
-								VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mDate, 0.0f);
-								VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection.First().mTimestamp.AddMinutes(-1), 0.0f);
-								dataFromDatabase[vehicleId].mCollection.Insert(0, tmp2);
-								dataFromDatabase[vehicleId].mCollection.Insert(0, tmp1);
-								j += 2;
+								// 如果第一筆資料與當天 00:00:00.000 差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
+								if (dataFromDatabase[vehicleId].mCollection.First().mTimestamp.Subtract(dataFromDatabase[vehicleId].mDate).TotalMilliseconds > 3.0f)
+								{
+									VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mDate, 0.0f);
+									VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection.First().mTimestamp.AddMinutes(-1), 0.0f);
+									dataFromDatabase[vehicleId].mCollection.Insert(0, tmp2);
+									dataFromDatabase[vehicleId].mCollection.Insert(0, tmp1);
+									j += 2;
+								}
 							}
-						}
-						else if (j == dataFromDatabase[vehicleId].mCollection.Count)
-						{
-							// 如果最後一筆資料與當天 23:59:59.999 差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
-							if (dataFromDatabase[vehicleId].mDate.AddDays(1).AddMilliseconds(-1).Subtract(dataFromDatabase[vehicleId].mCollection.Last().mTimestamp).TotalMinutes > 3.0f)
+							else if (j == dataFromDatabase[vehicleId].mCollection.Count)
 							{
-								VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection.Last().mTimestamp.AddMinutes(1), 0.0f);
-								VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mDate.AddDays(1).AddMilliseconds(-1), 0.0f);
-								dataFromDatabase[vehicleId].mCollection.Add(tmp1);
-								dataFromDatabase[vehicleId].mCollection.Add(tmp2);
-								j += 2;
+								// 如果最後一筆資料與當天 23:59:59.999 差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
+								if (dataFromDatabase[vehicleId].mDate.AddDays(1).AddMilliseconds(-1).Subtract(dataFromDatabase[vehicleId].mCollection.Last().mTimestamp).TotalMinutes > 3.0f)
+								{
+									VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection.Last().mTimestamp.AddMinutes(1), 0.0f);
+									VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mDate.AddDays(1).AddMilliseconds(-1), 0.0f);
+									dataFromDatabase[vehicleId].mCollection.Add(tmp1);
+									dataFromDatabase[vehicleId].mCollection.Add(tmp2);
+									j += 2;
+								}
 							}
-						}
-						else
-						{
-							// 如果與上一筆資料差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
-							if (dataFromDatabase[vehicleId].mCollection[j].mTimestamp.Subtract(dataFromDatabase[vehicleId].mCollection[j - 1].mTimestamp).TotalMinutes > 3.0f)
+							else
 							{
-								VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection[j-1].mTimestamp.AddMinutes(1), 0.0f);
-								VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection[j].mTimestamp.AddMinutes(-1), 0.0f);
-								dataFromDatabase[vehicleId].mCollection.Insert(j, tmp2);
-								dataFromDatabase[vehicleId].mCollection.Insert(j, tmp1);
-								j += 2;
+								// 如果與上一筆資料差距大於 3 分鐘以上時，則於之間加入電量為 0 的資料
+								if (dataFromDatabase[vehicleId].mCollection[j].mTimestamp.Subtract(dataFromDatabase[vehicleId].mCollection[j - 1].mTimestamp).TotalMinutes > 3.0f)
+								{
+									VehicleBatteryState tmp1 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection[j - 1].mTimestamp.AddMinutes(1), 0.0f);
+									VehicleBatteryState tmp2 = new VehicleBatteryState(dataFromDatabase[vehicleId].mCollection[j].mTimestamp.AddMinutes(-1), 0.0f);
+									dataFromDatabase[vehicleId].mCollection.Insert(j, tmp2);
+									dataFromDatabase[vehicleId].mCollection.Insert(j, tmp1);
+									j += 2;
+								}
 							}
 						}
 					}

@@ -306,7 +306,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void cmenuItemCopyCellValue_Click(object sender, EventArgs e)
 		{
-			if (mDgvSearchResultRightClickRowIndex >= 0 && mDgvSearchResultRightClickRowIndex < dgvSearchResult.RowCount && mDgvSearchResultRightClickColIndex >= 0 && mDgvSearchResultRightClickColIndex < dgvSearchResult.ColumnCount)
+			if (mDgvSearchResultRightClickRowIndex >= 0 && mDgvSearchResultRightClickRowIndex < dgvSearchResult.RowCount && mDgvSearchResultRightClickColIndex >= 0 && mDgvSearchResultRightClickColIndex < dgvSearchResult.ColumnCount && !string.IsNullOrEmpty(dgvSearchResult.Rows[mDgvSearchResultRightClickRowIndex].Cells[mDgvSearchResultRightClickColIndex].Value.ToString()))
 			{
 				Clipboard.SetText(dgvSearchResult.Rows[mDgvSearchResultRightClickRowIndex].Cells[mDgvSearchResultRightClickColIndex].Value.ToString());
 			}
