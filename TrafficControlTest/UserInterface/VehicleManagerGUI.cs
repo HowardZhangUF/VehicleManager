@@ -67,6 +67,7 @@ namespace TrafficControlTest.UserInterface
 			{
 				Constructor();
 				VehicleManagerProcessStart();
+				UpdateGui_PnlTop_UpdateButtonText();
 				UpdateGui_UpdateUsableControlAmount(AccountRank.None);
 			}
 			catch (Exception Ex)
@@ -237,6 +238,15 @@ namespace TrafficControlTest.UserInterface
 		#endregion
 
 		#region PnlTop
+		private void UpdateGui_PnlTop_UpdateButtonText()
+		{
+			btnDisplayMap.Text = "  Map";
+			btnDisplayVehicle.Text = "  Vehicle";
+			btnDisplayMission.Text = "  Mission";
+			btnDisplaySetting.Text = "  Setting";
+			btnDisplayLog.Text = "  Log";
+			btnDisplayDashboard.Text = "  Dashboard";
+		}
 		private void UpdateGui_PnlTop_ResetPnlTopMenuButtonBackColor()
 		{
 			if (btnDisplayMap.BackColor != pnlTop.BackColor) btnDisplayMap.BackColor = pnlTop.BackColor;
