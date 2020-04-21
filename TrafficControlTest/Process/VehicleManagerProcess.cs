@@ -8,6 +8,7 @@ using TrafficControlTest.Module.Configure;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.InterveneManager.Interface;
+using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;
@@ -44,6 +45,7 @@ namespace TrafficControlTest.Process
 		private ILogRecorder mLogRecorder = null;
 		private IEventRecorder mEventRecorder = null;
 		private IImportantEventRecorder mImportantEventRecorder = null;
+		private LogExporter mLogExporter = null;
 		private IAccountManager mAccountManager = null;
 		private IAccessControl mAccessControl = null;
 		private IVehicleCommunicator mVehicleCommunicator = null;
@@ -128,6 +130,10 @@ namespace TrafficControlTest.Process
 		{
 			return mConfigurator;
 		}
+		public LogExporter GetReferenceOfLogExporter()
+		{
+			return mLogExporter;
+		}
 		public IVehicleCommunicator GetReferenceOfIVehicleCommunicator()
 		{
 			return mVehicleCommunicator;
@@ -191,6 +197,12 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IConfigurator(mConfigurator);
 			mConfigurator = GenerateIConfigurator("Application.config");
 			SubscribeEvent_IConfigurator(mConfigurator);
+
+			UnsubscribeEvent_LogExporter(mLogExporter);
+			mLogExporter = GenerateLogExporter();
+			mLogExporter.AddDirectoryPaths(new List<string> { ".\\Database", ".\\Map", ".\\Exception", ".\\VMLog" });
+			mLogExporter.AddFilePaths(new List<string> { ".\\Application.config" });
+			SubscribeEvent_LogExporter(mLogExporter);
 
 			UnsubscribeEvent_IAccessControl(mAccessControl);
 			mAccessControl = GenerateIAccessControl(mAccountManager);
@@ -328,6 +340,9 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
 
+			UnsubscribeEvent_LogExporter(mLogExporter);
+			mLogExporter = null;
+
 			UnsubscribeEvent_IConfigurator(mConfigurator);
 			mConfigurator = null;
 
@@ -407,6 +422,22 @@ namespace TrafficControlTest.Process
 				Configurator.ConfigLoaded -= HandleEvent_ConfiguratorConfigLoaded;
 				Configurator.ConfigSaved -= HandleEvent_ConfiguratorConfigSaved;
 				Configurator.ConfigUpdated -= HandleEvent_ConfiguratorConfigUpdated;
+			}
+		}
+		private void SubscribeEvent_LogExporter(LogExporter LogExporter)
+		{
+			if (LogExporter != null)
+			{
+				LogExporter.ExportStarted += HandleEvent_LogExporterExportStarted;
+				LogExporter.ExportCompleted += HandleEvent_LogExporterExportCompleted;
+			}
+		}
+		private void UnsubscribeEvent_LogExporter(LogExporter LogExporter)
+		{
+			if (LogExporter != null)
+			{
+				LogExporter.ExportStarted -= HandleEvent_LogExporterExportStarted;
+				LogExporter.ExportCompleted -= HandleEvent_LogExporterExportCompleted;
 			}
 		}
 		private void SubscribeEvent_IAccessControl(IAccessControl AccessControl)
@@ -855,6 +886,14 @@ namespace TrafficControlTest.Process
 					mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
 					break;
 			}
+		}
+		private void HandleEvent_LogExporterExportStarted(DateTime OccurTime, string DirectoryPath, List<string> Items)
+		{
+			HandleDebugMessage(OccurTime, "LogExporter", "ExportStarted", $"Items: {string.Join(",", Items)}");
+		}
+		private void HandleEvent_LogExporterExportCompleted(DateTime OccurTime, string DirectoryPath, List<string> Items)
+		{
+			HandleDebugMessage(OccurTime, "LogExporter", "ExportCompleted", $"Items: {string.Join(",", Items)}");
 		}
 		private void HandleEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
 		{

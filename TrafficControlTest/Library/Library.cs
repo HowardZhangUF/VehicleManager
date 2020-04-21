@@ -12,6 +12,7 @@ using TrafficControlTest.Module.General.Implement;
 using TrafficControlTest.Module.General.Interface;
 using TrafficControlTest.Module.InterveneManager.Implement;
 using TrafficControlTest.Module.InterveneManager.Interface;
+using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.MissionManager.Implement;
 using TrafficControlTest.Module.MissionManager.Interface;
 
@@ -336,6 +337,10 @@ namespace TrafficControlTest.Library
 		public static ICycleMissionGenerator GenerateICycleMissionGenerator(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
 		{
 			return new CycleMissionGenerator(VehicleInfoManager, MissionStateManager);
+		}
+		public static LogExporter GenerateLogExporter()
+		{
+			return new LogExporter();
 		}
 		#endregion
 

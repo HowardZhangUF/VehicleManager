@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Library\FileOperation.cs" />
+    <Compile Include="Library\ShellCommandExecutor.cs" />
     <Compile Include="Module\Configure\Configuration.cs" />
     <Compile Include="Module\CycleMission\CycleMissionGenerator.cs" />
     <Compile Include="Module\CycleMission\ICycleMissionGenerator.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Module\Log\EventRecorder.cs" />
     <Compile Include="Module\Communication\HostCommunicator.cs" />
     <Compile Include="Module\Log\ImportantEventRecorder.cs" />
+    <Compile Include="Module\Log\LogExporter.cs" />
     <Compile Include="Module\Log\LogRecorder.cs" />
     <Compile Include="Module\Map\MapFileManager.cs" />
     <Compile Include="Module\Map\MapManager.cs" />
