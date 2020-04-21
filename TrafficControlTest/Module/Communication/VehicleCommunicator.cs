@@ -35,6 +35,10 @@ namespace TrafficControlTest.Implement
 		{
 			Constructor();
 		}
+		public bool IsIpPortConnected(string IpPort)
+		{
+			return mClientAddressInfo == null ? false : mClientAddressInfo.Contains(IpPort);
+		}
 		public void StartListen()
 		{
 			if (mSocketServer.ListenStatus == EListenStatus.Idle)

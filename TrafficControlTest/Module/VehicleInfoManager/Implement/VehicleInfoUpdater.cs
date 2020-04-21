@@ -106,17 +106,21 @@ namespace TrafficControlTest.Implement
 		{
 			if (Data is Serializable)
 			{
-				if (Data is AGVStatus)
+				// 處理收到的 Data 前再次確認源頭是否仍為連線中。若為連線中，則繼續處理該 Data ，反之，不處理該 Data
+				if (rVehicleCommunicator.IsIpPortConnected(IpPort))
 				{
-					UpdateIVehicleInfo(IpPort, Data as AGVStatus);
-				}
-				else if (Data is AGVPath)
-				{
-					UpdateIVehicleInfo(IpPort, Data as AGVPath);
-				}
-				else if (Data is RequestMapList && (Data as RequestMapList).Response != null)
-				{
-					UpdateIVehicleInfo(IpPort, (Data as RequestMapList).Response);
+					if (Data is AGVStatus)
+					{
+						UpdateIVehicleInfo(IpPort, Data as AGVStatus);
+					}
+					else if (Data is AGVPath)
+					{
+						UpdateIVehicleInfo(IpPort, Data as AGVPath);
+					}
+					else if (Data is RequestMapList && (Data as RequestMapList).Response != null)
+					{
+						UpdateIVehicleInfo(IpPort, (Data as RequestMapList).Response);
+					}
 				}
 			}
 		}

@@ -26,6 +26,8 @@ namespace TrafficControlTest.Interface
 		/// <summary>連線中的 Client 地址資訊 (IP:Port)</summary>
 		List<string> mClientAddressInfo { get; }
 
+		/// <summary>確認指定 IP:Port 是否連線中</summary>
+		bool IsIpPortConnected(string IpPort);
 		/// <summary>開始監聽</summary>
 		void StartListen();
 		/// <summary>停止監聽</summary>
