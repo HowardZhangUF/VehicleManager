@@ -1,6 +1,6 @@
 ﻿namespace TrafficControlTest.UserControl
 {
-	partial class UcSimpleLog
+	partial class UcConsoleLog
 	{
 		/// <summary> 
 		/// 設計工具所需的變數。
@@ -28,34 +28,34 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.dgvSimpleLog = new System.Windows.Forms.DataGridView();
-			((System.ComponentModel.ISupportInitialize)(this.dgvSimpleLog)).BeginInit();
+			this.dgvConsoleLog = new System.Windows.Forms.DataGridView();
+			((System.ComponentModel.ISupportInitialize)(this.dgvConsoleLog)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// dgvSimpleLog
+			// dgvConsoleLog
 			// 
-			this.dgvSimpleLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvSimpleLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dgvSimpleLog.Location = new System.Drawing.Point(0, 0);
-			this.dgvSimpleLog.Name = "dgvSimpleLog";
-			this.dgvSimpleLog.RowTemplate.Height = 27;
-			this.dgvSimpleLog.Size = new System.Drawing.Size(850, 250);
-			this.dgvSimpleLog.TabIndex = 0;
+			this.dgvConsoleLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvConsoleLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dgvConsoleLog.Location = new System.Drawing.Point(0, 0);
+			this.dgvConsoleLog.Name = "dgvConsoleLog";
+			this.dgvConsoleLog.RowTemplate.Height = 27;
+			this.dgvConsoleLog.Size = new System.Drawing.Size(850, 250);
+			this.dgvConsoleLog.TabIndex = 0;
 			// 
-			// UcSimpleLog
+			// UcConsoleLog
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.Controls.Add(this.dgvSimpleLog);
-			this.Name = "UcSimpleLog";
+			this.Controls.Add(this.dgvConsoleLog);
+			this.Name = "UcConsoleLog";
 			this.Size = new System.Drawing.Size(850, 250);
-			((System.ComponentModel.ISupportInitialize)(this.dgvSimpleLog)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dgvConsoleLog)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.DataGridView dgvSimpleLog;
+		private System.Windows.Forms.DataGridView dgvConsoleLog;
 	}
 }

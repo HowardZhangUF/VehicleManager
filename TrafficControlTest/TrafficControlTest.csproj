@@ -216,6 +216,12 @@
     <Compile Include="UserControl\UcAbout.Designer.cs">
       <DependentUpon>UcAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UcConsoleLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcConsoleLog.Designer.cs">
+      <DependentUpon>UcConsoleLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UcCycleMission.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -355,6 +361,9 @@
     </Compile>
     <EmbeddedResource Include="UserControl\UcAbout.resx">
       <DependentUpon>UcAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcConsoleLog.resx">
+      <DependentUpon>UcConsoleLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcCycleMission.resx">
       <DependentUpon>UcCycleMission.cs</DependentUpon>

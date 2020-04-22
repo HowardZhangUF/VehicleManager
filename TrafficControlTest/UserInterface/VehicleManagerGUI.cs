@@ -45,6 +45,7 @@ namespace TrafficControlTest.UserInterface
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());
 			ucCycleMission1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfCycleMissionGenerator());
 			ucSimpleLog1.Set(mCore);
+			ucConsoleLog1.Set(mCore);
 			ucSystemOverview1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager());
 		}
 		private void Destructor()
@@ -148,9 +149,13 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_PnlRightMain_DisplayDashboard();
 		}
-		private void btnDisplayPnlBtm_Click(object sender, EventArgs e)
+		private void btnDisplaySimpleLog_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlBtm_DisplayPnlBtm(!pnlBtmDisplay);
+			UpdateGui_PnlBtm_DisplaySimpleLog();
+		}
+		private void btnDisplayConsoleLog_Click(object sender, EventArgs e)
+		{
+			UpdateGui_PnlBtm_DisplayConsoleLog();
 		}
 		private void ucVehicleOverview1_DoubleClickOnVehicleInfo(string VehicleName)
 		{
@@ -196,11 +201,13 @@ namespace TrafficControlTest.UserInterface
 						btnDisplayVehicleApi.Visible = true;
 						btnDisplayCycleMission.Visible = true;
 						btnDisplayDashboard.Visible = true;
+						btnDisplayConsoleLog.Visible = true;
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = true;
 						ucCycleMission1.Visible = true;
 						ucLog1.Set(true, true, true);
 						ucDashboard1.Visible = true;
+						ucConsoleLog1.Visible = true;
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.Customer:
@@ -213,11 +220,13 @@ namespace TrafficControlTest.UserInterface
 						btnDisplayVehicleApi.Visible = false;
 						btnDisplayCycleMission.Visible = false;
 						btnDisplayDashboard.Visible = false;
+						btnDisplayConsoleLog.Visible = false;
 						ucVehicleManualControl1.Visible = false;
 						ucVehicleApi1.Visible = false;
 						ucCycleMission1.Visible = false;
 						ucLog1.Set(false, true, true);
 						ucDashboard1.Visible = false;
+						ucConsoleLog1.Visible = false;
 						UpdateGui_InitializeMenuState();
 						break;
 				}
@@ -452,7 +461,7 @@ namespace TrafficControlTest.UserInterface
 			{
 				if (pnlBtmDisplay == false)
 				{
-					pnlBtm.InvokeIfNecessary(() => { pnlBtm.Height = pnlBtmDefaultHeight; btnDisplayPnlBtm.BackColor = pnlTopMarker.BackColor; });
+					pnlBtm.InvokeIfNecessary(() => { pnlBtm.Height = pnlBtmDefaultHeight; });
 					pnlBtmDisplay = true;
 				}
 			}
@@ -460,9 +469,49 @@ namespace TrafficControlTest.UserInterface
 			{
 				if (pnlBtmDisplay == true)
 				{
-					pnlBtm.InvokeIfNecessary(() => { pnlBtm.Height = 0; btnDisplayPnlBtm.BackColor = pnlTop.BackColor; });
+					pnlBtm.InvokeIfNecessary(() => { pnlBtm.Height = 0; btnDisplaySimpleLog.BackColor = pnlTop.BackColor; btnDisplayConsoleLog.BackColor = pnlTop.BackColor; });
 					pnlBtmDisplay = false;
 				}
+			}
+		}
+		private void UpdateGui_PnlBtm_DisplaySimpleLog()
+		{
+			if (!pnlBtmDisplay || (pnlBtmDisplay && btnDisplaySimpleLog.BackColor != pnlTopMarker.BackColor))
+			{
+				UpdateGui_PnlBtm_DisplayPnlBtm(true);
+				btnDisplaySimpleLog.InvokeIfNecessary(() =>
+				{
+					btnDisplaySimpleLog.BackColor = pnlTopMarker.BackColor;
+					btnDisplayConsoleLog.BackColor = pnlTop.BackColor;
+				});
+				ucSimpleLog1.InvokeIfNecessary(() =>
+				{
+					ucSimpleLog1.BringToFront();
+				});
+			}
+			else
+			{
+				UpdateGui_PnlBtm_DisplayPnlBtm(false);
+			}
+		}
+		private void UpdateGui_PnlBtm_DisplayConsoleLog()
+		{
+			if (!pnlBtmDisplay || (pnlBtmDisplay && btnDisplayConsoleLog.BackColor != pnlTopMarker.BackColor))
+			{
+				UpdateGui_PnlBtm_DisplayPnlBtm(true);
+				btnDisplayConsoleLog.InvokeIfNecessary(() =>
+				{
+					btnDisplaySimpleLog.BackColor = pnlTop.BackColor;
+					btnDisplayConsoleLog.BackColor = pnlTopMarker.BackColor;
+				});
+				ucConsoleLog1.InvokeIfNecessary(() =>
+				{
+					ucConsoleLog1.BringToFront();
+				});
+			}
+			else
+			{
+				UpdateGui_PnlBtm_DisplayPnlBtm(false);
 			}
 		}
 		#endregion

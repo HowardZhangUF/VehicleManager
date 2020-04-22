@@ -17,6 +17,7 @@ namespace TrafficControlTest.Process
 {
 	public class VehicleManagerProcess
 	{
+		public event EventHandlerDebugMessage DebugMessage;
 		public event EventHandlerSignificantEvent SignificantEvent;
 		public event EventHandlerLogInOutEvent AccessControlUserLogIn;
 		public event EventHandlerLogInOutEvent AccessControlUserLogOut;
@@ -802,6 +803,17 @@ namespace TrafficControlTest.Process
 				ImportantEventRecorder.ConfigUpdated -= HandleEvent_ImportantEventRecorderConfigUpdated;
 			}
 		}
+		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
+		{
+			if (Sync)
+			{
+				DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message);
+			}
+			else
+			{
+				Task.Run(() => { DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message); });
+			}
+		}
 		protected virtual void RaiseEvent_SignificantEvent(DateTime OccurTime, SignificantEventCategory Category, string Info, bool Sync = true)
 		{
 			RaiseEvent_SignificantEvent(OccurTime.ToString(TIME_FORMAT), Category.ToString(), Info, Sync);
@@ -1166,6 +1178,7 @@ namespace TrafficControlTest.Process
 		{
 			Console.WriteLine($"{OccurTime} [{Category}] [{SubCategory}] - {Message}");
 			mLogRecorder.RecordGeneralLog(OccurTime, Category, SubCategory, Message);
+			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
 		}
 	}
 }

@@ -36,7 +36,7 @@
 			this.btnFormMinimize = new System.Windows.Forms.Button();
 			this.btnFormClose = new System.Windows.Forms.Button();
 			this.btnDisplayAbout = new System.Windows.Forms.Button();
-			this.btnDisplayPnlBtm = new System.Windows.Forms.Button();
+			this.btnDisplaySimpleLog = new System.Windows.Forms.Button();
 			this.pnlLeftSide = new System.Windows.Forms.Panel();
 			this.pnlLeftSideMarker = new System.Windows.Forms.Panel();
 			this.btnDisplayCycleMission = new System.Windows.Forms.Button();
@@ -69,6 +69,8 @@
 			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
 			this.pnlBtmSide = new System.Windows.Forms.Panel();
 			this.ucSystemOverview1 = new TrafficControlTest.UserControl.UcSystemOverview();
+			this.btnDisplayConsoleLog = new System.Windows.Forms.Button();
+			this.ucConsoleLog1 = new TrafficControlTest.UserControl.UcConsoleLog();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlLeftSide.SuspendLayout();
 			this.pnlTop.SuspendLayout();
@@ -176,18 +178,18 @@
 			this.btnDisplayAbout.UseVisualStyleBackColor = true;
 			this.btnDisplayAbout.Click += new System.EventHandler(this.btnDisplayAbout_Click);
 			// 
-			// btnDisplayPnlBtm
+			// btnDisplaySimpleLog
 			// 
-			this.btnDisplayPnlBtm.Dock = System.Windows.Forms.DockStyle.Right;
-			this.btnDisplayPnlBtm.FlatAppearance.BorderSize = 0;
-			this.btnDisplayPnlBtm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnDisplayPnlBtm.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayPnlBtm.Image")));
-			this.btnDisplayPnlBtm.Location = new System.Drawing.Point(800, 0);
-			this.btnDisplayPnlBtm.Name = "btnDisplayPnlBtm";
-			this.btnDisplayPnlBtm.Size = new System.Drawing.Size(50, 50);
-			this.btnDisplayPnlBtm.TabIndex = 0;
-			this.btnDisplayPnlBtm.UseVisualStyleBackColor = true;
-			this.btnDisplayPnlBtm.Click += new System.EventHandler(this.btnDisplayPnlBtm_Click);
+			this.btnDisplaySimpleLog.Dock = System.Windows.Forms.DockStyle.Right;
+			this.btnDisplaySimpleLog.FlatAppearance.BorderSize = 0;
+			this.btnDisplaySimpleLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDisplaySimpleLog.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplaySimpleLog.Image")));
+			this.btnDisplaySimpleLog.Location = new System.Drawing.Point(800, 0);
+			this.btnDisplaySimpleLog.Name = "btnDisplaySimpleLog";
+			this.btnDisplaySimpleLog.Size = new System.Drawing.Size(50, 50);
+			this.btnDisplaySimpleLog.TabIndex = 0;
+			this.btnDisplaySimpleLog.UseVisualStyleBackColor = true;
+			this.btnDisplaySimpleLog.Click += new System.EventHandler(this.btnDisplaySimpleLog_Click);
 			// 
 			// pnlLeftSide
 			// 
@@ -299,7 +301,8 @@
 			// 
 			this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.pnlTop.Controls.Add(this.pnlTopMarker);
-			this.pnlTop.Controls.Add(this.btnDisplayPnlBtm);
+			this.pnlTop.Controls.Add(this.btnDisplayConsoleLog);
+			this.pnlTop.Controls.Add(this.btnDisplaySimpleLog);
 			this.pnlTop.Controls.Add(this.btnDisplayDashboard);
 			this.pnlTop.Controls.Add(this.btnDisplayLog);
 			this.pnlTop.Controls.Add(this.btnDisplaySetting);
@@ -577,6 +580,7 @@
 			// pnlBtm
 			// 
 			this.pnlBtm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.pnlBtm.Controls.Add(this.ucConsoleLog1);
 			this.pnlBtm.Controls.Add(this.ucSimpleLog1);
 			this.pnlBtm.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.pnlBtm.Location = new System.Drawing.Point(450, 450);
@@ -622,6 +626,38 @@
 			this.ucSystemOverview1.Name = "ucSystemOverview1";
 			this.ucSystemOverview1.Size = new System.Drawing.Size(1300, 50);
 			this.ucSystemOverview1.TabIndex = 0;
+			// 
+			// btnDisplayConsoleLog
+			// 
+			this.btnDisplayConsoleLog.Dock = System.Windows.Forms.DockStyle.Right;
+			this.btnDisplayConsoleLog.FlatAppearance.BorderSize = 0;
+			this.btnDisplayConsoleLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDisplayConsoleLog.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayConsoleLog.Image")));
+			this.btnDisplayConsoleLog.Location = new System.Drawing.Point(750, 0);
+			this.btnDisplayConsoleLog.Name = "btnDisplayConsoleLog";
+			this.btnDisplayConsoleLog.Size = new System.Drawing.Size(50, 50);
+			this.btnDisplayConsoleLog.TabIndex = 6;
+			this.btnDisplayConsoleLog.UseVisualStyleBackColor = true;
+			this.btnDisplayConsoleLog.Click += new System.EventHandler(this.btnDisplayConsoleLog_Click);
+			// 
+			// ucConsoleLog1
+			// 
+			this.ucConsoleLog1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucConsoleLog1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucConsoleLog1.Location = new System.Drawing.Point(0, 0);
+			this.ucConsoleLog1.Maximum = 200;
+			this.ucConsoleLog1.Name = "ucConsoleLog1";
+			this.ucConsoleLog1.OrderAscending = false;
+			this.ucConsoleLog1.Size = new System.Drawing.Size(850, 250);
+			this.ucConsoleLog1.TabIndex = 1;
+			this.ucConsoleLog1.TableBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucConsoleLog1.TableEvenRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucConsoleLog1.TableExceptionRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+			this.ucConsoleLog1.TableGridLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(86)))), ((int)(((byte)(86)))));
+			this.ucConsoleLog1.TableHeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(122)))), ((int)(((byte)(233)))));
+			this.ucConsoleLog1.TableHeaderForeColor = System.Drawing.Color.White;
+			this.ucConsoleLog1.TableOddRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.ucConsoleLog1.TableRowForeColor = System.Drawing.Color.White;
 			// 
 			// VehicleManagerGUI
 			// 
@@ -689,7 +725,7 @@
 		private UserControl.UcVehicle ucVehicle1;
 		private System.Windows.Forms.Panel pnlBtm;
 		private UserControl.UcSimpleLog ucSimpleLog1;
-		private System.Windows.Forms.Button btnDisplayPnlBtm;
+		private System.Windows.Forms.Button btnDisplaySimpleLog;
 		private System.Windows.Forms.Button btnLogin;
 		private System.Windows.Forms.Button btnDisplayVehicleApi;
 		private UserControl.UcVehicleApi ucVehicleApi1;
@@ -699,5 +735,7 @@
 		private UserControl.UcSystemOverview ucSystemOverview1;
 		private System.Windows.Forms.Button btnDisplayDashboard;
 		private UserControl.UcDashboard ucDashboard1;
+		private System.Windows.Forms.Button btnDisplayConsoleLog;
+		private UserControl.UcConsoleLog ucConsoleLog1;
 	}
 }
