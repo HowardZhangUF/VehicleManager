@@ -40,6 +40,7 @@ namespace TrafficControlTest.UserInterface
 			ucSetting1.Set(mCore.GetReferenceOfIConfigurator());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapterOfLogRecord(), mCore.GetReferenceOfDatabaseAdapterOfEventRecord());
 			ucDashboard1.Set(mCore.GetReferenceOfDatabaseAdapterOfEventRecord());
+			ucSystemStatus1.Set(mCore.GetReferenceOfIImportantEventRecorder(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfICollisionEventDetector(), mCore.GetReferenceOfIVehicleControlHandler(), mCore.GetReferenceOfIHostCommunicator(), mCore.GetReferenceOfIMissionDispatcher(), mCore.GetReferenceOfCycleMissionGenerator(), mCore.GetReferenceOfLogExporter());
 			ucVehicleOverview1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucVehicleManualControl1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMapManager());
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());
@@ -149,6 +150,10 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_PnlRightMain_DisplayDashboard();
 		}
+		private void btnDisplaySystemStatus_Click(object sender, EventArgs e)
+		{
+			UpdateGui_PnlRightMain_DisplaySystemStatus();
+		}
 		private void btnDisplaySimpleLog_Click(object sender, EventArgs e)
 		{
 			UpdateGui_PnlBtm_DisplaySimpleLog();
@@ -201,12 +206,14 @@ namespace TrafficControlTest.UserInterface
 						btnDisplayVehicleApi.Visible = true;
 						btnDisplayCycleMission.Visible = true;
 						btnDisplayDashboard.Visible = true;
+						btnDisplaySystemStatus.Visible = true;
 						btnDisplayConsoleLog.Visible = true;
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = true;
 						ucCycleMission1.Visible = true;
 						ucLog1.Set(true, true, true);
 						ucDashboard1.Visible = true;
+						ucSystemStatus1.Visible = true;
 						ucConsoleLog1.Visible = true;
 						UpdateGui_InitializeMenuState();
 						break;
@@ -220,12 +227,14 @@ namespace TrafficControlTest.UserInterface
 						btnDisplayVehicleApi.Visible = false;
 						btnDisplayCycleMission.Visible = false;
 						btnDisplayDashboard.Visible = false;
+						btnDisplaySystemStatus.Visible = false;
 						btnDisplayConsoleLog.Visible = false;
 						ucVehicleManualControl1.Visible = false;
 						ucVehicleApi1.Visible = false;
 						ucCycleMission1.Visible = false;
 						ucLog1.Set(false, true, true);
 						ucDashboard1.Visible = false;
+						ucSystemStatus1.Visible = false;
 						ucConsoleLog1.Visible = false;
 						UpdateGui_InitializeMenuState();
 						break;
@@ -255,6 +264,7 @@ namespace TrafficControlTest.UserInterface
 			btnDisplaySetting.Text = "  Setting";
 			btnDisplayLog.Text = "  Log";
 			btnDisplayDashboard.Text = "  Dashboard";
+			btnDisplaySystemStatus.Text = "  System Status";
 		}
 		private void UpdateGui_PnlTop_ResetPnlTopMenuButtonBackColor()
 		{
@@ -264,6 +274,7 @@ namespace TrafficControlTest.UserInterface
 			if (btnDisplaySetting.BackColor != pnlTop.BackColor) btnDisplaySetting.BackColor = pnlTop.BackColor;
 			if (btnDisplayLog.BackColor != pnlTop.BackColor) btnDisplayLog.BackColor = pnlTop.BackColor;
 			if (btnDisplayDashboard.BackColor != pnlTop.BackColor) btnDisplayDashboard.BackColor = pnlTop.BackColor;
+			if (btnDisplaySystemStatus.BackColor != pnlTop.BackColor) btnDisplaySystemStatus.BackColor = pnlTop.BackColor;
 		}
 		private void UpdateGui_PnlTop_HighlightPnlTopMenuButton(Button button)
 		{
@@ -314,6 +325,13 @@ namespace TrafficControlTest.UserInterface
 			pnlTopMarker.Left = btnDisplayDashboard.Left;
 			ucDashboard1.BringToFront();
 			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayDashboard);
+		}
+		private void UpdateGui_PnlRightMain_DisplaySystemStatus()
+		{
+			pnlTopMarker.Width = btnDisplaySystemStatus.Width;
+			pnlTopMarker.Left = btnDisplaySystemStatus.Left;
+			ucSystemStatus1.BringToFront();
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplaySystemStatus);
 		}
 		#region Map
 		private void UpdateGui_UcMap_MapFocusVehicle(string VehicleName)

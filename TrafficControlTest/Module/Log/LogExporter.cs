@@ -45,7 +45,7 @@ namespace TrafficControlTest.Module.Log
 		{
 			Task.Run(() =>
 			{
-				string dstDirectoryFileName = $"{mBaseDirectory}\\LogExport{DateTime.Now.ToString("yyyyMMdd")}";
+				string dstDirectoryFileName = $"{mBaseDirectory}\\CASTEC_VM_Log_{DateTime.Now.ToString("yyyyMMdd")}";
 				List<string> items = new List<string>();
 				items.AddRange(mDirectoryPaths);
 				items.AddRange(mFilePaths);

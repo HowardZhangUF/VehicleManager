@@ -47,12 +47,15 @@
 			this.btnDisplaySetting = new System.Windows.Forms.Button();
 			this.pnlTop = new System.Windows.Forms.Panel();
 			this.pnlTopMarker = new System.Windows.Forms.Panel();
+			this.btnDisplayConsoleLog = new System.Windows.Forms.Button();
+			this.btnDisplaySystemStatus = new System.Windows.Forms.Button();
 			this.btnDisplayDashboard = new System.Windows.Forms.Button();
 			this.btnDisplayLog = new System.Windows.Forms.Button();
 			this.btnDisplayMission = new System.Windows.Forms.Button();
 			this.btnDisplayVehicle = new System.Windows.Forms.Button();
 			this.btnDisplayMap = new System.Windows.Forms.Button();
 			this.pnlRightMain = new System.Windows.Forms.Panel();
+			this.ucSystemStatus1 = new TrafficControlTest.UserControl.UcSystemStatus();
 			this.ucDashboard1 = new TrafficControlTest.UserControl.UcDashboard();
 			this.ucLog1 = new TrafficControlTest.UserControl.UcLog();
 			this.ucSetting1 = new TrafficControlTest.UserControl.UcSetting();
@@ -66,11 +69,10 @@
 			this.ucVehicleManualControl1 = new TrafficControlTest.UserControl.UcVehicleManualControl();
 			this.ucVehicleOverview1 = new TrafficControlTest.UserControl.UcVehicleOverview();
 			this.pnlBtm = new System.Windows.Forms.Panel();
+			this.ucConsoleLog1 = new TrafficControlTest.UserControl.UcConsoleLog();
 			this.ucSimpleLog1 = new TrafficControlTest.UserControl.UcSimpleLog();
 			this.pnlBtmSide = new System.Windows.Forms.Panel();
 			this.ucSystemOverview1 = new TrafficControlTest.UserControl.UcSystemOverview();
-			this.btnDisplayConsoleLog = new System.Windows.Forms.Button();
-			this.ucConsoleLog1 = new TrafficControlTest.UserControl.UcConsoleLog();
 			this.pnlTopSide.SuspendLayout();
 			this.pnlLeftSide.SuspendLayout();
 			this.pnlTop.SuspendLayout();
@@ -303,6 +305,7 @@
 			this.pnlTop.Controls.Add(this.pnlTopMarker);
 			this.pnlTop.Controls.Add(this.btnDisplayConsoleLog);
 			this.pnlTop.Controls.Add(this.btnDisplaySimpleLog);
+			this.pnlTop.Controls.Add(this.btnDisplaySystemStatus);
 			this.pnlTop.Controls.Add(this.btnDisplayDashboard);
 			this.pnlTop.Controls.Add(this.btnDisplayLog);
 			this.pnlTop.Controls.Add(this.btnDisplaySetting);
@@ -322,6 +325,36 @@
 			this.pnlTopMarker.Name = "pnlTopMarker";
 			this.pnlTopMarker.Size = new System.Drawing.Size(850, 4);
 			this.pnlTopMarker.TabIndex = 3;
+			// 
+			// btnDisplayConsoleLog
+			// 
+			this.btnDisplayConsoleLog.Dock = System.Windows.Forms.DockStyle.Right;
+			this.btnDisplayConsoleLog.FlatAppearance.BorderSize = 0;
+			this.btnDisplayConsoleLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDisplayConsoleLog.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayConsoleLog.Image")));
+			this.btnDisplayConsoleLog.Location = new System.Drawing.Point(750, 0);
+			this.btnDisplayConsoleLog.Name = "btnDisplayConsoleLog";
+			this.btnDisplayConsoleLog.Size = new System.Drawing.Size(50, 50);
+			this.btnDisplayConsoleLog.TabIndex = 6;
+			this.btnDisplayConsoleLog.UseVisualStyleBackColor = true;
+			this.btnDisplayConsoleLog.Click += new System.EventHandler(this.btnDisplayConsoleLog_Click);
+			// 
+			// btnDisplaySystemStatus
+			// 
+			this.btnDisplaySystemStatus.AutoSize = true;
+			this.btnDisplaySystemStatus.Dock = System.Windows.Forms.DockStyle.Left;
+			this.btnDisplaySystemStatus.FlatAppearance.BorderSize = 0;
+			this.btnDisplaySystemStatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDisplaySystemStatus.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnDisplaySystemStatus.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplaySystemStatus.Image")));
+			this.btnDisplaySystemStatus.Location = new System.Drawing.Point(300, 0);
+			this.btnDisplaySystemStatus.Name = "btnDisplaySystemStatus";
+			this.btnDisplaySystemStatus.Size = new System.Drawing.Size(50, 50);
+			this.btnDisplaySystemStatus.TabIndex = 7;
+			this.btnDisplaySystemStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.btnDisplaySystemStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+			this.btnDisplaySystemStatus.UseVisualStyleBackColor = true;
+			this.btnDisplaySystemStatus.Click += new System.EventHandler(this.btnDisplaySystemStatus_Click);
 			// 
 			// btnDisplayDashboard
 			// 
@@ -411,6 +444,7 @@
 			// pnlRightMain
 			// 
 			this.pnlRightMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.pnlRightMain.Controls.Add(this.ucSystemStatus1);
 			this.pnlRightMain.Controls.Add(this.ucDashboard1);
 			this.pnlRightMain.Controls.Add(this.ucLog1);
 			this.pnlRightMain.Controls.Add(this.ucSetting1);
@@ -422,6 +456,18 @@
 			this.pnlRightMain.Name = "pnlRightMain";
 			this.pnlRightMain.Size = new System.Drawing.Size(850, 350);
 			this.pnlRightMain.TabIndex = 8;
+			// 
+			// ucSystemStatus1
+			// 
+			this.ucSystemStatus1.AutoScroll = true;
+			this.ucSystemStatus1.AutoSize = true;
+			this.ucSystemStatus1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucSystemStatus1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucSystemStatus1.ForeColor = System.Drawing.Color.White;
+			this.ucSystemStatus1.Location = new System.Drawing.Point(0, 0);
+			this.ucSystemStatus1.Name = "ucSystemStatus1";
+			this.ucSystemStatus1.Size = new System.Drawing.Size(850, 350);
+			this.ucSystemStatus1.TabIndex = 6;
 			// 
 			// ucDashboard1
 			// 
@@ -588,6 +634,25 @@
 			this.pnlBtm.Size = new System.Drawing.Size(850, 250);
 			this.pnlBtm.TabIndex = 5;
 			// 
+			// ucConsoleLog1
+			// 
+			this.ucConsoleLog1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucConsoleLog1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucConsoleLog1.Location = new System.Drawing.Point(0, 0);
+			this.ucConsoleLog1.Maximum = 200;
+			this.ucConsoleLog1.Name = "ucConsoleLog1";
+			this.ucConsoleLog1.OrderAscending = false;
+			this.ucConsoleLog1.Size = new System.Drawing.Size(850, 250);
+			this.ucConsoleLog1.TabIndex = 1;
+			this.ucConsoleLog1.TableBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+			this.ucConsoleLog1.TableEvenRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+			this.ucConsoleLog1.TableExceptionRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+			this.ucConsoleLog1.TableGridLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(86)))), ((int)(((byte)(86)))));
+			this.ucConsoleLog1.TableHeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(122)))), ((int)(((byte)(233)))));
+			this.ucConsoleLog1.TableHeaderForeColor = System.Drawing.Color.White;
+			this.ucConsoleLog1.TableOddRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.ucConsoleLog1.TableRowForeColor = System.Drawing.Color.White;
+			// 
 			// ucSimpleLog1
 			// 
 			this.ucSimpleLog1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
@@ -627,38 +692,6 @@
 			this.ucSystemOverview1.Size = new System.Drawing.Size(1300, 50);
 			this.ucSystemOverview1.TabIndex = 0;
 			// 
-			// btnDisplayConsoleLog
-			// 
-			this.btnDisplayConsoleLog.Dock = System.Windows.Forms.DockStyle.Right;
-			this.btnDisplayConsoleLog.FlatAppearance.BorderSize = 0;
-			this.btnDisplayConsoleLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnDisplayConsoleLog.Image = ((System.Drawing.Image)(resources.GetObject("btnDisplayConsoleLog.Image")));
-			this.btnDisplayConsoleLog.Location = new System.Drawing.Point(750, 0);
-			this.btnDisplayConsoleLog.Name = "btnDisplayConsoleLog";
-			this.btnDisplayConsoleLog.Size = new System.Drawing.Size(50, 50);
-			this.btnDisplayConsoleLog.TabIndex = 6;
-			this.btnDisplayConsoleLog.UseVisualStyleBackColor = true;
-			this.btnDisplayConsoleLog.Click += new System.EventHandler(this.btnDisplayConsoleLog_Click);
-			// 
-			// ucConsoleLog1
-			// 
-			this.ucConsoleLog1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.ucConsoleLog1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ucConsoleLog1.Location = new System.Drawing.Point(0, 0);
-			this.ucConsoleLog1.Maximum = 200;
-			this.ucConsoleLog1.Name = "ucConsoleLog1";
-			this.ucConsoleLog1.OrderAscending = false;
-			this.ucConsoleLog1.Size = new System.Drawing.Size(850, 250);
-			this.ucConsoleLog1.TabIndex = 1;
-			this.ucConsoleLog1.TableBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-			this.ucConsoleLog1.TableEvenRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.ucConsoleLog1.TableExceptionRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-			this.ucConsoleLog1.TableGridLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(86)))), ((int)(((byte)(86)))), ((int)(((byte)(86)))));
-			this.ucConsoleLog1.TableHeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(122)))), ((int)(((byte)(233)))));
-			this.ucConsoleLog1.TableHeaderForeColor = System.Drawing.Color.White;
-			this.ucConsoleLog1.TableOddRowBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
-			this.ucConsoleLog1.TableRowForeColor = System.Drawing.Color.White;
-			// 
 			// VehicleManagerGUI
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -687,6 +720,7 @@
 			this.pnlTop.ResumeLayout(false);
 			this.pnlTop.PerformLayout();
 			this.pnlRightMain.ResumeLayout(false);
+			this.pnlRightMain.PerformLayout();
 			this.pnlLeftMain.ResumeLayout(false);
 			this.pnlBtm.ResumeLayout(false);
 			this.pnlBtmSide.ResumeLayout(false);
@@ -737,5 +771,7 @@
 		private UserControl.UcDashboard ucDashboard1;
 		private System.Windows.Forms.Button btnDisplayConsoleLog;
 		private UserControl.UcConsoleLog ucConsoleLog1;
+		private System.Windows.Forms.Button btnDisplaySystemStatus;
+		private UserControl.UcSystemStatus ucSystemStatus1;
 	}
 }

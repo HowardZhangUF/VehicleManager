@@ -135,6 +135,10 @@ namespace TrafficControlTest.Process
 		{
 			return mLogExporter;
 		}
+		public IImportantEventRecorder GetReferenceOfIImportantEventRecorder()
+		{
+			return mImportantEventRecorder;
+		}
 		public IVehicleCommunicator GetReferenceOfIVehicleCommunicator()
 		{
 			return mVehicleCommunicator;
@@ -147,9 +151,25 @@ namespace TrafficControlTest.Process
 		{
 			return mCollisionEventManager;
 		}
+		public ICollisionEventDetector GetReferenceOfICollisionEventDetector()
+		{
+			return mCollisionEventDetector;
+		}
+		public IVehicleControlHandler GetReferenceOfIVehicleControlHandler()
+		{
+			return mVehicleControlHandler;
+		}
 		public IMissionStateManager GetReferenceOfIMissionStateManager()
 		{
 			return mMissionStateManager;
+		}
+		public IHostCommunicator GetReferenceOfIHostCommunicator()
+		{
+			return mHostCommunicator;
+		}
+		public IMissionDispatcher GetReferenceOfIMissionDispatcher()
+		{
+			return mMissionDispatcher;
 		}
 		public IMapFileManager GetReferenceOfIMapFileManager()
 		{
