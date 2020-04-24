@@ -61,12 +61,12 @@ namespace TrafficControlTest.Module.Log
 				// Copy Directories
 				foreach (string dirPath in mDirectoryPaths)
 				{
-					FileOperation.CopyAllUnder(dirPath, dstDirectoryFileName);
+					FileOperation.CopyAllUnderViaCommandPrompt(dirPath, dstDirectoryFileName);
 				}
 				// Copy Files
 				foreach (string filePath in mFilePaths)
 				{
-					FileOperation.CopyFile(filePath, dstDirectoryFileName);
+					FileOperation.CopyFileViaCommandPrompt(filePath, dstDirectoryFileName);
 				}
 
 				// Compress Directory

@@ -39,6 +39,14 @@ namespace TrafficControlTest.Library
 
 			SrcFileInfo.CopyTo(Path.Combine(DstDirectoryInfo.FullName, SrcFileInfo.Name), true);
 		}
+		public static void CopyFileViaCommandPrompt(string SrcFilePath, string DstDirectoryPath)
+		{
+			if (File.Exists(SrcFilePath) && Directory.Exists(DstDirectoryPath))
+			{
+				string fullCmd = $"COPY \"{SrcFilePath}\" \"{DstDirectoryPath}\"";
+				ShellCommandExecutor.ExecuteInCommadPrompt(fullCmd);
+			}
+		}
 		public static void CopyAll(string SrcDirectoryPath, string DstDirectoryPath)
 		{
 			if (Directory.Exists(SrcDirectoryPath))
@@ -69,6 +77,15 @@ namespace TrafficControlTest.Library
 				CopyAll(srcSubDirectoryInfo, dstSubDirectoryInfo);
 			}
 		}
+		public static void CopyAllViaCommandPrompt(string SrcDirectoryPath, string DstDirectoryPath)
+		{
+			if (Directory.Exists(SrcDirectoryPath))
+			{
+				DeleteFile(DstDirectoryPath);
+				string fullCmd = $"XCOPY \"{SrcDirectoryPath}\" \"{DstDirectoryPath}\" /I /S /E";
+				ShellCommandExecutor.ExecuteInCommadPrompt(fullCmd);
+			}
+		}
 		public static void CopyAllUnder(string SrcDirectoryPath, string DstDirectoryPath)
 		{
 			if (Directory.Exists(SrcDirectoryPath))
@@ -77,6 +94,16 @@ namespace TrafficControlTest.Library
 				DirectoryInfo DstDirectoryInfo = new DirectoryInfo(Path.Combine(DstDirectoryPath, srcDirectoryInfo.Name));
 
 				CopyAll(srcDirectoryInfo, DstDirectoryInfo);
+			}
+		}
+		public static void CopyAllUnderViaCommandPrompt(string SrcDirectoryPath, string DstDirectoryPath)
+		{
+			if (Directory.Exists(SrcDirectoryPath))
+			{
+				DirectoryInfo srcDirectoryInfo = new DirectoryInfo(SrcDirectoryPath);
+				DirectoryInfo dstDirectoryInfo = new DirectoryInfo(Path.Combine(DstDirectoryPath, srcDirectoryInfo.Name));
+
+				CopyAllViaCommandPrompt(srcDirectoryInfo.FullName, dstDirectoryInfo.FullName);
 			}
 		}
 		public static void DeleteFile(string FilePath)
