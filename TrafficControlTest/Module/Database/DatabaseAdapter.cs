@@ -450,21 +450,26 @@ namespace TrafficControlTest.Library
 			}
 		}
 		/// <summary>例外處理</summary>
-		protected virtual void HandleException(Exception Ex)
+		protected virtual void HandleException(Exception Ex, string Cmd = "")
 		{
 			string directory = ".\\Exception";
-			string file = $".\\Exception\\Exception{DateTime.Now.ToString("yyyyMMdd")}.txt";
+			string file = $".\\Exception\\ExceptionDatabaseAdapter{DateTime.Now.ToString("yyyyMMdd")}.txt";
 			string message = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")} - [DatabaseAdapterException] - {Ex.ToString()}\r\n";
+			if (!string.IsNullOrEmpty(Cmd)) message += $"- [Cmd] - {Cmd}\r\n";
 
 			if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
 			if (!System.IO.File.Exists(file)) System.IO.File.Create(file);
 			System.IO.File.AppendAllText(file, message);
 		}
 		/// <summary>例外處理 (Sql)</summary>
-		protected virtual void HandleDbException(DbException DbEx)
+		protected virtual void HandleDbException(DbException DbEx, string Cmd = "")
 		{
 			mIsConnected = false;
 			HandleException(DbEx);
+		}
+		protected virtual void HandleDbException(DbException DbEx, IEnumerable<string> Cmds)
+		{
+			HandleDbException(DbEx, string.Join("\r\n", Cmds));
 		}
 		/// <summary>未連線時，自動連線。連線時，處理佇列中 Sql 指令</summary>
 		protected virtual void TaskProcessCmds(bool[] ExitFlag)

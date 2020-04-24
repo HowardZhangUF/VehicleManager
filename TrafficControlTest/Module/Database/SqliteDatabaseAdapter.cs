@@ -72,7 +72,7 @@ namespace TrafficControlTest.Library
 			}
 			catch (SQLiteException ex)
 			{
-				HandleDbException(ex);
+				HandleDbException(ex, NonQueryCmd);
 			}
 			catch (Exception ex)
 			{
@@ -106,7 +106,7 @@ namespace TrafficControlTest.Library
 			}
 			catch (SQLiteException ex)
 			{
-				HandleDbException(ex);
+				HandleDbException(ex, NonQueryCmds);
 			}
 			catch (Exception ex)
 			{
@@ -141,7 +141,7 @@ namespace TrafficControlTest.Library
 			}
 			catch (SQLiteException ex)
 			{
-				HandleDbException(ex);
+				HandleDbException(ex, QueryCmd);
 			}
 			catch (Exception ex)
 			{
@@ -181,7 +181,7 @@ namespace TrafficControlTest.Library
 			}
 			catch (SQLiteException ex)
 			{
-				HandleDbException(ex);
+				HandleDbException(ex, QueryCmds);
 			}
 			catch (Exception ex)
 			{

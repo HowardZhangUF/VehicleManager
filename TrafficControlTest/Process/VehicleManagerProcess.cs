@@ -409,7 +409,7 @@ namespace TrafficControlTest.Process
 			System.Windows.Forms.Application.ThreadException += (sender, e) =>
 			{
 				string directory = ".\\Exception";
-				string file = $".\\Exception\\Exception{DateTime.Now.ToString("yyyyMMdd")}.txt";
+				string file = $".\\Exception\\ExceptionThread{DateTime.Now.ToString("yyyyMMdd")}.txt";
 				string message = $"{DateTime.Now.ToString(TIME_FORMAT)} - [ThreadException] - {e.Exception.ToString()}\r\n";
 
 				if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
@@ -419,7 +419,7 @@ namespace TrafficControlTest.Process
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
 				string directory = ".\\Exception";
-				string file = $".\\Exception\\Exception{DateTime.Now.ToString("yyyyMMdd")}.txt";
+				string file = $".\\Exception\\ExceptionUnhandled{DateTime.Now.ToString("yyyyMMdd")}.txt";
 				string message = $"{DateTime.Now.ToString(TIME_FORMAT)} - [UnhandledException] - {e.ExceptionObject.ToString()}\r\n";
 
 				if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
