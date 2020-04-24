@@ -47,17 +47,17 @@ namespace TrafficControlTest.Library
 				ShellCommandExecutor.ExecuteInCommadPrompt(fullCmd);
 			}
 		}
-		public static void CopyAll(string SrcDirectoryPath, string DstDirectoryPath)
+		public static void CopyDirectory(string SrcDirectoryPath, string DstDirectoryPath)
 		{
 			if (Directory.Exists(SrcDirectoryPath))
 			{
 				DirectoryInfo srcDirectoryInfo = new DirectoryInfo(SrcDirectoryPath);
-				DirectoryInfo DstDirectoryInfo = new DirectoryInfo(DstDirectoryPath);
+				DirectoryInfo dstDirectoryInfo = new DirectoryInfo(DstDirectoryPath);
 
-				CopyAll(srcDirectoryInfo, DstDirectoryInfo);
+				CopyDirectory(srcDirectoryInfo, dstDirectoryInfo);
 			}
 		}
-		public static void CopyAll(DirectoryInfo SrcDirectoryInfo, DirectoryInfo DstDirectoryInfo)
+		public static void CopyDirectory(DirectoryInfo SrcDirectoryInfo, DirectoryInfo DstDirectoryInfo)
 		{
 			// Reference: https://docs.microsoft.com/en-us/dotnet/api/system.io.directoryinfo?redirectedfrom=MSDN&view=netframework-4.8
 
@@ -74,10 +74,10 @@ namespace TrafficControlTest.Library
 			foreach (DirectoryInfo srcSubDirectoryInfo in SrcDirectoryInfo.GetDirectories())
 			{
 				DirectoryInfo dstSubDirectoryInfo = DstDirectoryInfo.CreateSubdirectory(srcSubDirectoryInfo.Name);
-				CopyAll(srcSubDirectoryInfo, dstSubDirectoryInfo);
+				CopyDirectory(srcSubDirectoryInfo, dstSubDirectoryInfo);
 			}
 		}
-		public static void CopyAllViaCommandPrompt(string SrcDirectoryPath, string DstDirectoryPath)
+		public static void CopyDirectoryViaCommandPrompt(string SrcDirectoryPath, string DstDirectoryPath)
 		{
 			if (Directory.Exists(SrcDirectoryPath))
 			{
@@ -86,24 +86,24 @@ namespace TrafficControlTest.Library
 				ShellCommandExecutor.ExecuteInCommadPrompt(fullCmd);
 			}
 		}
-		public static void CopyAllUnder(string SrcDirectoryPath, string DstDirectoryPath)
-		{
-			if (Directory.Exists(SrcDirectoryPath))
-			{
-				DirectoryInfo srcDirectoryInfo = new DirectoryInfo(SrcDirectoryPath);
-				DirectoryInfo DstDirectoryInfo = new DirectoryInfo(Path.Combine(DstDirectoryPath, srcDirectoryInfo.Name));
-
-				CopyAll(srcDirectoryInfo, DstDirectoryInfo);
-			}
-		}
-		public static void CopyAllUnderViaCommandPrompt(string SrcDirectoryPath, string DstDirectoryPath)
+		public static void CopyDirectoryUnder(string SrcDirectoryPath, string DstDirectoryPath)
 		{
 			if (Directory.Exists(SrcDirectoryPath))
 			{
 				DirectoryInfo srcDirectoryInfo = new DirectoryInfo(SrcDirectoryPath);
 				DirectoryInfo dstDirectoryInfo = new DirectoryInfo(Path.Combine(DstDirectoryPath, srcDirectoryInfo.Name));
 
-				CopyAllViaCommandPrompt(srcDirectoryInfo.FullName, dstDirectoryInfo.FullName);
+				CopyDirectory(srcDirectoryInfo, dstDirectoryInfo);
+			}
+		}
+		public static void CopyDirectoryUnderViaCommandPrompt(string SrcDirectoryPath, string DstDirectoryPath)
+		{
+			if (Directory.Exists(SrcDirectoryPath))
+			{
+				DirectoryInfo srcDirectoryInfo = new DirectoryInfo(SrcDirectoryPath);
+				DirectoryInfo dstDirectoryInfo = new DirectoryInfo(Path.Combine(DstDirectoryPath, srcDirectoryInfo.Name));
+
+				CopyDirectoryViaCommandPrompt(srcDirectoryInfo.FullName, dstDirectoryInfo.FullName);
 			}
 		}
 		public static void DeleteFile(string FilePath)

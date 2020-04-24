@@ -61,7 +61,7 @@ namespace TrafficControlTest.Module.Log
 				// Copy Directories
 				foreach (string dirPath in mDirectoryPaths)
 				{
-					FileOperation.CopyAllUnderViaCommandPrompt(dirPath, dstDirectoryFileName);
+					FileOperation.CopyDirectoryUnderViaCommandPrompt(dirPath, dstDirectoryFileName);
 				}
 				// Copy Files
 				foreach (string filePath in mFilePaths)
