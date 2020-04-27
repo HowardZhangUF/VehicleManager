@@ -458,14 +458,14 @@ namespace TrafficControlTest.Library
 			if (!string.IsNullOrEmpty(Cmd)) message += $"- [Cmd] - {Cmd}\r\n";
 
 			if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
-			if (!System.IO.File.Exists(file)) System.IO.File.Create(file);
+			if (!System.IO.File.Exists(file)) System.IO.File.Create(file).Close();
 			System.IO.File.AppendAllText(file, message);
 		}
 		/// <summary>例外處理 (Sql)</summary>
 		protected virtual void HandleDbException(DbException DbEx, string Cmd = "")
 		{
 			mIsConnected = false;
-			HandleException(DbEx);
+			HandleException(DbEx, Cmd);
 		}
 		protected virtual void HandleDbException(DbException DbEx, IEnumerable<string> Cmds)
 		{

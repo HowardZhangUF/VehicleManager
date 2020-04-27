@@ -413,7 +413,7 @@ namespace TrafficControlTest.Process
 				string message = $"{DateTime.Now.ToString(TIME_FORMAT)} - [ThreadException] - {e.Exception.ToString()}\r\n";
 
 				if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
-				if (!System.IO.File.Exists(file)) System.IO.File.Create(file);
+				if (!System.IO.File.Exists(file)) System.IO.File.Create(file).Close();
 				System.IO.File.AppendAllText(file, message);
 			};
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
@@ -423,7 +423,7 @@ namespace TrafficControlTest.Process
 				string message = $"{DateTime.Now.ToString(TIME_FORMAT)} - [UnhandledException] - {e.ExceptionObject.ToString()}\r\n";
 
 				if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
-				if (!System.IO.File.Exists(file)) System.IO.File.Create(file);
+				if (!System.IO.File.Exists(file)) System.IO.File.Create(file).Close();
 				System.IO.File.AppendAllText(file, message);
 			};
 		}
