@@ -13,9 +13,16 @@ using TrafficControlTest.Library;
 
 namespace TrafficControlTest.UserControl
 {
+	public enum EndDate
+	{
+		Today,
+		Yesterday
+	}
+
 	public partial class UcDashboard : System.Windows.Forms.UserControl
 	{
 		public DateTime mLastUpdateTimestamp { get; private set; } = default(DateTime);
+		public DateTime mEndDate { get; private set; } = default(DateTime);
 
 		private DatabaseAdapter rDatabaseAdapter = null;
 
@@ -26,13 +33,27 @@ namespace TrafficControlTest.UserControl
 		public void Set(DatabaseAdapter DatabaseAdapter)
 		{
 			rDatabaseAdapter = DatabaseAdapter;
-			UpdateDashboard();
+			UpdateDashboard(EndDate.Yesterday);
 		}
 
-		private void UpdateDashboard()
+		private void UpdateDashboard(EndDate EndDate)
+		{
+			switch (EndDate)
+			{
+				case EndDate.Today:
+					UpdateDashboard(DateTime.Now.Date);
+					break;
+				case EndDate.Yesterday:
+				default:
+					UpdateDashboard(DateTime.Now.AddDays(-1).Date);
+					break;
+			}
+		}
+		private void UpdateDashboard(DateTime EndDate)
 		{
 			if (rDatabaseAdapter == null) return;
 
+			mEndDate = EndDate;
 			mLastUpdateTimestamp = DateTime.Now;
 			UpdateDashboardViaDatabase_DailyMissionCount();
 			UpdateDashboardViaDatabase_DailyMissionAverageCost();
@@ -40,15 +61,19 @@ namespace TrafficControlTest.UserControl
 			UpdateDashboardViaDatabase_WeeklyMissionCount();
 			UpdateDashboardViaDatabase_WeeklyVehicleUsage();
 		}
-		private void cmenuItemUpdateDashboard_Click(object sender, EventArgs e)
+		private void cmenuItemUpdateDashboardToday_Click(object sender, EventArgs e)
 		{
-			UpdateDashboard();
+			UpdateDashboard(EndDate.Today);
+		}
+		private void cmenuItemUpdateDashboardYesterday_Click(object sender, EventArgs e)
+		{
+			UpdateDashboard(EndDate.Yesterday);
 		}
 
 		#region DailyMissionCount
 		private void UpdateDashboardViaSampleData_DailyMissionCount()
 		{
-			DailyMissionCount tmp = new DailyMissionCount(DateTime.Now.AddDays(-1), 50, 14);
+			DailyMissionCount tmp = new DailyMissionCount(mEndDate.AddDays(-1), 50, 14);
 			UpdateDashboard_DailyMissionCount(tmp);
 		}
 		private void UpdateDashboardViaDatabase_DailyMissionCount()
@@ -59,9 +84,15 @@ namespace TrafficControlTest.UserControl
 			//		ExecuteSuccessed 30342
 			// Commnet:
 			//		ExecuteFailed Count is 0
-			DailyMissionCount dataFromDatabase = new DailyMissionCount(DateTime.Now.AddDays(-1), 0, 0);
-			string sqlCmd = "SELECT ExecuteState, Count(*) FROM MissionState WHERE(ExecuteState == 'ExecuteSuccessed' OR ExecuteState == 'ExecuteFailed') AND(ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days')) GROUP BY ExecuteState";
-			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			//		Note that the BETWEEN operator is inclusive. https://www.sqlitetutorial.net/sqlite-between/
+			DailyMissionCount dataFromDatabase = new DailyMissionCount(mEndDate, 0, 0);
+			string startTimestamp = $"{dataFromDatabase.mDate.ToString("yyyy-MM-dd")} 00:00:00.000";
+			string endTimestamp = $"{dataFromDatabase.mDate.ToString("yyyy-MM-dd")} 23:59:59.999";
+			string sqlCmd = $"SELECT ExecuteState, Count(*) FROM MissionState WHERE(ExecuteState == 'ExecuteSuccessed' OR ExecuteState == 'ExecuteFailed') AND (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecuteState";
+			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
+			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
+
+			DataTable searchResult = searchData?.Tables[0];
 			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
 			{
 				for (int i = 0; i < searchResult.Rows.Count; ++i)
@@ -92,7 +123,7 @@ namespace TrafficControlTest.UserControl
 		#region DailyMissionAverageCost
 		private void UpdateDashboardViaSampleData_DailyMissionAverageCost()
 		{
-			DailyMissionAverageCost tmp = new DailyMissionAverageCost(DateTime.Now.AddDays(-1), 50, 209.3f);
+			DailyMissionAverageCost tmp = new DailyMissionAverageCost(mEndDate, 50, 209.3f);
 			UpdateDashboard_DailyMissionAverageCost(tmp);
 		}
 		private void UpdateDashboardViaDatabase_DailyMissionAverageCost()
@@ -105,9 +136,14 @@ namespace TrafficControlTest.UserControl
 			//		0
 			// Commnet:
 			//		Average is Empty when COUNT(*) Equals to 0
-			DailyMissionAverageCost dataFromDatabase = new DailyMissionAverageCost(DateTime.Now.AddDays(-1), 0, 0.0f);
-			string sqlCmd = "SELECT COUNT(*), CAST(SUM(JULIANDAY(ExecutionStopTimestamp) - JULIANDAY(ExecutionStartTimestamp)) / COUNT(*) * 24 * 60 * 60 * 1000 AS INTEGER) AS ExeAvgCostInMs FROM MissionState WHERE ExecuteState == 'ExecuteSuccessed' AND (ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days'))";
-			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			DailyMissionAverageCost dataFromDatabase = new DailyMissionAverageCost(mEndDate, 0, 0.0f);
+			string startTimestamp = $"{dataFromDatabase.mDate.ToString("yyyy-MM-dd")} 00:00:00.000";
+			string endTimestamp = $"{dataFromDatabase.mDate.ToString("yyyy-MM-dd")} 23:59:59.999";
+			string sqlCmd = $"SELECT COUNT(*), CAST(SUM(JULIANDAY(ExecutionStopTimestamp) - JULIANDAY(ExecutionStartTimestamp)) / COUNT(*) * 24 * 60 * 60 * 1000 AS INTEGER) AS ExeAvgCostInMs FROM MissionState WHERE ExecuteState == 'ExecuteSuccessed' AND (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}')";
+			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
+			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
+
+			DataTable searchResult = searchData?.Tables[0];
 			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count == 1)
 			{
 				dataFromDatabase.SetSuccessedMissionCount(int.Parse(searchResult.Rows[0].ItemArray[0].ToString()));
@@ -208,31 +244,31 @@ namespace TrafficControlTest.UserControl
 		{
 			List<DateTime> tmp1 = new List<DateTime>()
 			{
-				DateTime.Now.Date.AddDays(-1).AddHours(0.1),
-				DateTime.Now.Date.AddDays(-1).AddHours(1.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(2.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(3.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(4.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(5.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(6.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(7.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(8.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(9.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(10.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(11.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(12.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(13.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(14.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(15.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(16.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(17.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(18.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(19.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(20.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(21.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(22.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(23.0),
-				DateTime.Now.Date.AddDays(-1).AddHours(23.9)
+				mEndDate.AddHours(0.1),
+				mEndDate.AddHours(1.0),
+				mEndDate.AddHours(2.0),
+				mEndDate.AddHours(3.0),
+				mEndDate.AddHours(4.0),
+				mEndDate.AddHours(5.0),
+				mEndDate.AddHours(6.0),
+				mEndDate.AddHours(7.0),
+				mEndDate.AddHours(8.0),
+				mEndDate.AddHours(9.0),
+				mEndDate.AddHours(10.0),
+				mEndDate.AddHours(11.0),
+				mEndDate.AddHours(12.0),
+				mEndDate.AddHours(13.0),
+				mEndDate.AddHours(14.0),
+				mEndDate.AddHours(15.0),
+				mEndDate.AddHours(16.0),
+				mEndDate.AddHours(17.0),
+				mEndDate.AddHours(18.0),
+				mEndDate.AddHours(19.0),
+				mEndDate.AddHours(20.0),
+				mEndDate.AddHours(21.0),
+				mEndDate.AddHours(22.0),
+				mEndDate.AddHours(23.0),
+				mEndDate.AddHours(23.9)
 			};
 			List<double> tmp2 = new List<double>()
 			{
@@ -290,8 +326,8 @@ namespace TrafficControlTest.UserControl
 				90.1f,
 				100.0f
 			};
-			DailyVehicleBatteryState tmp4 = new DailyVehicleBatteryState("Vehicle001", DateTime.Now.AddDays(-1), tmp1, tmp2);
-			DailyVehicleBatteryState tmp5 = new DailyVehicleBatteryState("Vehicle002", DateTime.Now.AddDays(-1), tmp1, tmp3);
+			DailyVehicleBatteryState tmp4 = new DailyVehicleBatteryState("Vehicle001", mEndDate, tmp1, tmp2);
+			DailyVehicleBatteryState tmp5 = new DailyVehicleBatteryState("Vehicle002", mEndDate, tmp1, tmp3);
 			UpdateDashboard_DailyVehicleBatteryState(new DailyVehicleBatteryState[] { tmp4, tmp5 });
 		}
 		private void UpdateDashboardViaDatabase_DailyVehicleBatteryState()
@@ -322,7 +358,9 @@ namespace TrafficControlTest.UserControl
 			//		2020-04-14 10:21:24.360 98.04
 			Dictionary<string, DailyVehicleBatteryState> dataFromDatabase = new Dictionary<string, DailyVehicleBatteryState>();
 			string sqlCmd = "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'HistoryVehicleInfoOf%' ORDER BY UPPER(name)";
-			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
+			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
+			DataTable searchResult = searchData?.Tables[0];
 			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
 			{
 				List<string> vehicleIds = new List<string>();
@@ -330,12 +368,17 @@ namespace TrafficControlTest.UserControl
 				{
 					string tableName = searchResult.Rows[i].ItemArray[0].ToString();
 					string vehicleId = tableName.Replace("HistoryVehicleInfoOf", string.Empty).Replace("Dash", "-");
-					string sqlCmdTmp = $"SELECT RecordTimestamp, BatteryValue FROM {tableName} WHERE RecordTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days')";
-					DataTable searchResultTmp = rDatabaseAdapter.ExecuteQueryCommand(sqlCmdTmp)?.Tables[0];
+					string startTimestamp = $"{mEndDate.ToString("yyyy-MM-dd")} 00:00:00.000";
+					string endTimestamp = $"{mEndDate.ToString("yyyy-MM-dd")} 23:59:59.999";
+					string sqlCmdTmp = $"SELECT RecordTimestamp, BatteryValue FROM {tableName} WHERE RecordTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
+					DataSet searchDataTmp = rDatabaseAdapter.ExecuteQueryCommand(sqlCmdTmp);
+					if (searchDataTmp == null || searchDataTmp.Tables == null || searchDataTmp.Tables.Count == 0) return;
+
+					DataTable searchResultTmp = searchDataTmp?.Tables[0];
 					if (searchResultTmp != null && searchResultTmp.Rows != null && searchResultTmp.Rows.Count > 0)
 					{
 						// 有搜尋到數據才建立容器
-						dataFromDatabase.Add(vehicleId, new DailyVehicleBatteryState(vehicleId, DateTime.Now.AddDays(-1)));
+						dataFromDatabase.Add(vehicleId, new DailyVehicleBatteryState(vehicleId, mEndDate));
 						for (int j = 0; j < searchResultTmp.Rows.Count; ++j)
 						{
 							var timestamp = searchResultTmp.Rows[j].ItemArray[0];
@@ -394,7 +437,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void UpdateDashboard_DailyVehicleBatteryState(DailyVehicleBatteryState[] DailyVehicleBatteryStateCollection)
 		{
-			InitializeChartForDisplayingDailyBatteryState(chart2, DateTime.Now.AddDays(-1));
+			InitializeChartForDisplayingDailyBatteryState(chart2, mEndDate);
 			AddDataToChartForDisplayingDailyBatteryState(chart2, DailyVehicleBatteryStateCollection);
 		}
 
@@ -426,7 +469,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private static Title GenerateMainTitleForDailyVehicleBatteryState()
 		{
-			return new Title("Vehicle Battery State of Last Day", Docking.Top, new Font("新細明體", 16, FontStyle.Bold), Color.White);
+			return new Title("Vehicle Battery State of One Day", Docking.Top, new Font("新細明體", 16, FontStyle.Bold), Color.White);
 		}
 		private static Title GenerateSubTitleForDailyVehicleBatteryState(DateTime Date)
 		{
@@ -494,22 +537,22 @@ namespace TrafficControlTest.UserControl
 		#region WeeklyMissionCout
 		private void UpdateDashboardViaSampleData_WeeklyMissionCount()
 		{
-			DailyVehicleMissionCount tmp01 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-7), 30, 2);
-			DailyVehicleMissionCount tmp02 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-6), 40, 3);
-			DailyVehicleMissionCount tmp03 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-5), 50, 4);
-			DailyVehicleMissionCount tmp04 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-4), 60, 5);
-			DailyVehicleMissionCount tmp05 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-3), 70, 6);
-			DailyVehicleMissionCount tmp06 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-2), 60, 7);
-			DailyVehicleMissionCount tmp07 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-1), 50, 8);
+			DailyVehicleMissionCount tmp01 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-6), 30, 2);
+			DailyVehicleMissionCount tmp02 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-5), 40, 3);
+			DailyVehicleMissionCount tmp03 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-4), 50, 4);
+			DailyVehicleMissionCount tmp04 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-3), 60, 5);
+			DailyVehicleMissionCount tmp05 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-2), 70, 6);
+			DailyVehicleMissionCount tmp06 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-1), 60, 7);
+			DailyVehicleMissionCount tmp07 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(0), 50, 8);
 			MultiDayVehicleMissionCount tmp08 = new MultiDayVehicleMissionCount("Vehicle001", tmp01, tmp02, tmp03, tmp04, tmp05, tmp06, tmp07);
 
-			DailyVehicleMissionCount tmp11 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-7), 20, 12);
-			DailyVehicleMissionCount tmp12 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-6), 30, 3);
-			DailyVehicleMissionCount tmp13 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-5), 40, 12);
-			DailyVehicleMissionCount tmp14 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-4), 50, 3);
-			DailyVehicleMissionCount tmp15 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-3), 60, 7);
-			DailyVehicleMissionCount tmp16 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-2), 70, 9);
-			DailyVehicleMissionCount tmp17 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-1), 80, 1);
+			DailyVehicleMissionCount tmp11 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-6), 20, 12);
+			DailyVehicleMissionCount tmp12 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-5), 30, 3);
+			DailyVehicleMissionCount tmp13 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-4), 40, 12);
+			DailyVehicleMissionCount tmp14 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-3), 50, 3);
+			DailyVehicleMissionCount tmp15 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-2), 60, 7);
+			DailyVehicleMissionCount tmp16 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-1), 70, 9);
+			DailyVehicleMissionCount tmp17 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(0), 80, 1);
 			MultiDayVehicleMissionCount tmp18 = new MultiDayVehicleMissionCount("Vehicle002", tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17);
 
 			UpdateDashboard_WeeklyMissionCount(tmp08, tmp18);
@@ -546,8 +589,12 @@ namespace TrafficControlTest.UserControl
 			//		Vehicle767 2020-04-13 ExecuteFailed    10
 			//		Vehicle767 2020-04-13 ExecuteSuccessed 1607
 			Dictionary<string, MultiDayVehicleMissionCount> dataFromDatabase = new Dictionary<string, MultiDayVehicleMissionCount>();
-			string sqlCmd = "SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
-			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			string startTimestamp = $"{mEndDate.AddDays(-6).ToString("yyyy-MM-dd")} 00:00:00.000";
+			string endTimestamp = $"{mEndDate.ToString("yyyy-MM-dd")} 23:59:59.999";
+			string sqlCmd = $"SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
+			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
+			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
+			DataTable searchResult = searchData?.Tables[0];
 			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
 			{
 				for (int i = 0; i < searchResult.Rows.Count; ++i)
@@ -559,7 +606,7 @@ namespace TrafficControlTest.UserControl
 					// 如果還未建立該 Vehicle 的容器，則建立之
 					if (!dataFromDatabase.ContainsKey(vehicleId))
 					{
-						dataFromDatabase.Add(vehicleId, new MultiDayVehicleMissionCount(vehicleId, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1)));
+						dataFromDatabase.Add(vehicleId, new MultiDayVehicleMissionCount(vehicleId, mEndDate.AddDays(-6), mEndDate));
 					}
 
 					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteSuccessed.ToString())
@@ -580,7 +627,7 @@ namespace TrafficControlTest.UserControl
 		{
 			chart3.InvokeIfNecessary(() =>
 			{
-				InitializeChartForWeeklyMissionCout(chart3, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1));
+				InitializeChartForWeeklyMissionCout(chart3, mEndDate.AddDays(-6), mEndDate);
 				AddDataToChartForWeeklyMissionCout(chart3, MultiDayVehicleMissionCountCollection);
 			});
 		}
@@ -625,7 +672,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private static Title GenerateMainTitleForWeeklyMissionCout()
 		{
-			return new Title("Mission Count of Last Week", Docking.Top, new Font("新細明體", 16, FontStyle.Bold), Color.White);
+			return new Title("Mission Count of Seven Days", Docking.Top, new Font("新細明體", 16, FontStyle.Bold), Color.White);
 		}
 		private static Title GenerateSubTitleForWeeklyMissionCout(DateTime StartDate, DateTime EndDate)
 		{
@@ -688,22 +735,22 @@ namespace TrafficControlTest.UserControl
 		#region WeeklyVehicleUsage
 		private void UpdateDashboardViaSampleData_WeeklyVehicleUsage()
 		{
-			DailyVehicleMissionCount tmp01 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-7), 30, 2);
-			DailyVehicleMissionCount tmp02 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-6), 40, 3);
-			DailyVehicleMissionCount tmp03 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-5), 50, 4);
-			DailyVehicleMissionCount tmp04 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-4), 60, 5);
-			DailyVehicleMissionCount tmp05 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-3), 70, 6);
-			DailyVehicleMissionCount tmp06 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-2), 60, 7);
-			DailyVehicleMissionCount tmp07 = new DailyVehicleMissionCount("Vehicle001", DateTime.Now.AddDays(-1), 50, 8);
+			DailyVehicleMissionCount tmp01 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-6), 30, 2);
+			DailyVehicleMissionCount tmp02 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-5), 40, 3);
+			DailyVehicleMissionCount tmp03 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-4), 50, 4);
+			DailyVehicleMissionCount tmp04 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-3), 60, 5);
+			DailyVehicleMissionCount tmp05 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-2), 70, 6);
+			DailyVehicleMissionCount tmp06 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(-1), 60, 7);
+			DailyVehicleMissionCount tmp07 = new DailyVehicleMissionCount("Vehicle001", mEndDate.AddDays(0), 50, 8);
 			MultiDayVehicleMissionCount tmp08 = new MultiDayVehicleMissionCount("Vehicle001", tmp01, tmp02, tmp03, tmp04, tmp05, tmp06, tmp07);
 
-			DailyVehicleMissionCount tmp11 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-7), 20, 12);
-			DailyVehicleMissionCount tmp12 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-6), 30, 3);
-			DailyVehicleMissionCount tmp13 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-5), 40, 12);
-			DailyVehicleMissionCount tmp14 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-4), 50, 3);
-			DailyVehicleMissionCount tmp15 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-3), 60, 7);
-			DailyVehicleMissionCount tmp16 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-2), 70, 9);
-			DailyVehicleMissionCount tmp17 = new DailyVehicleMissionCount("Vehicle002", DateTime.Now.AddDays(-1), 80, 1);
+			DailyVehicleMissionCount tmp11 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-6), 20, 12);
+			DailyVehicleMissionCount tmp12 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-5), 30, 3);
+			DailyVehicleMissionCount tmp13 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-4), 40, 12);
+			DailyVehicleMissionCount tmp14 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-3), 50, 3);
+			DailyVehicleMissionCount tmp15 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-2), 60, 7);
+			DailyVehicleMissionCount tmp16 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(-1), 70, 9);
+			DailyVehicleMissionCount tmp17 = new DailyVehicleMissionCount("Vehicle002", mEndDate.AddDays(0), 80, 1);
 			MultiDayVehicleMissionCount tmp18 = new MultiDayVehicleMissionCount("Vehicle002", tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17);
 
 			InitializeChartForWeeklyVehicleUsage(chart4, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1));
@@ -741,8 +788,12 @@ namespace TrafficControlTest.UserControl
 			//		Vehicle767 2020-04-13 ExecuteFailed    10
 			//		Vehicle767 2020-04-13 ExecuteSuccessed 1607
 			Dictionary<string, MultiDayVehicleMissionCount> dataFromDatabase = new Dictionary<string, MultiDayVehicleMissionCount>();
-			string sqlCmd = "SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
-			DataTable searchResult = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd)?.Tables[0];
+			string startTimestamp = $"{mEndDate.AddDays(-6).ToString("yyyy-MM-dd")} 00:00:00.000";
+			string endTimestamp = $"{mEndDate.ToString("yyyy-MM-dd")} 23:59:59.999";
+			string sqlCmd = $"SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
+			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
+			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
+			DataTable searchResult = searchData?.Tables[0];
 			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
 			{
 				for (int i = 0; i < searchResult.Rows.Count; ++i)
@@ -754,7 +805,7 @@ namespace TrafficControlTest.UserControl
 					// 如果還未建立該 Vehicle 的容器，則建立之
 					if (!dataFromDatabase.ContainsKey(vehicleId))
 					{
-						dataFromDatabase.Add(vehicleId, new MultiDayVehicleMissionCount(vehicleId, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1)));
+						dataFromDatabase.Add(vehicleId, new MultiDayVehicleMissionCount(vehicleId, mEndDate.AddDays(-6), mEndDate));
 					}
 
 					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteSuccessed.ToString())
@@ -775,7 +826,7 @@ namespace TrafficControlTest.UserControl
 		{
 			chart4.InvokeIfNecessary(() =>
 			{
-				InitializeChartForWeeklyVehicleUsage(chart4, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-1));
+				InitializeChartForWeeklyVehicleUsage(chart4, mEndDate.AddDays(-6), mEndDate);
 				AddDataToChartForWeeklyVehicleUsage(chart4, MultiDayVehicleMissionCountCollection);
 			});
 		}
@@ -804,7 +855,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private static Title GenerateMainTitleForWeeklyVehicleUsage()
 		{
-			return new Title("Vehicle Usage of Last Week", Docking.Top, new Font("新細明體", 16, FontStyle.Bold), Color.White);
+			return new Title("Vehicle Usage of Seven Days", Docking.Top, new Font("新細明體", 16, FontStyle.Bold), Color.White);
 		}
 		private static Title GenerateSubTitleForWeeklyVehicleUsage(DateTime StartDate, DateTime EndDate)
 		{

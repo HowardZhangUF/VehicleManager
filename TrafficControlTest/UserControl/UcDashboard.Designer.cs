@@ -39,18 +39,19 @@
 			System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
 			System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.cmenuDashboard = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.cmenuItemUpdateDashboardToday = new System.Windows.Forms.ToolStripMenuItem();
 			this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.chart4 = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.ucDailyMissionCount1 = new TrafficControlTest.UserControl.UcDailyMissionCount();
 			this.ucDailyMissionAverageCost1 = new TrafficControlTest.UserControl.UcDailyMissionAverageCost();
-			this.cmenuDashboard = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.cmenuItemUpdateDashboard = new System.Windows.Forms.ToolStripMenuItem();
+			this.cmenuItemUpdateDashboardYesterday = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableLayoutPanel1.SuspendLayout();
+			this.cmenuDashboard.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart3)).BeginInit();
-			this.cmenuDashboard.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -84,6 +85,24 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(850, 600);
 			this.tableLayoutPanel1.TabIndex = 0;
+			// 
+			// cmenuDashboard
+			// 
+			this.cmenuDashboard.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.cmenuDashboard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmenuItemUpdateDashboardToday,
+            this.cmenuItemUpdateDashboardYesterday});
+			this.cmenuDashboard.Name = "cmenuDashboard";
+			this.cmenuDashboard.Size = new System.Drawing.Size(213, 80);
+			// 
+			// cmenuItemUpdateDashboardToday
+			// 
+			this.cmenuItemUpdateDashboardToday.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.cmenuItemUpdateDashboardToday.ForeColor = System.Drawing.Color.White;
+			this.cmenuItemUpdateDashboardToday.Name = "cmenuItemUpdateDashboardToday";
+			this.cmenuItemUpdateDashboardToday.Size = new System.Drawing.Size(212, 24);
+			this.cmenuItemUpdateDashboardToday.Text = "Update (Today)";
+			this.cmenuItemUpdateDashboardToday.Click += new System.EventHandler(this.cmenuItemUpdateDashboardToday_Click);
 			// 
 			// chart2
 			// 
@@ -163,22 +182,14 @@
 			this.ucDailyMissionAverageCost1.Size = new System.Drawing.Size(194, 279);
 			this.ucDailyMissionAverageCost1.TabIndex = 5;
 			// 
-			// cmenuDashboard
+			// cmenuItemUpdateDashboardYesterday
 			// 
-			this.cmenuDashboard.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.cmenuDashboard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmenuItemUpdateDashboard});
-			this.cmenuDashboard.Name = "cmenuDashboard";
-			this.cmenuDashboard.Size = new System.Drawing.Size(211, 56);
-			// 
-			// cmenuItemUpdateDashboard
-			// 
-			this.cmenuItemUpdateDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
-			this.cmenuItemUpdateDashboard.ForeColor = System.Drawing.Color.White;
-			this.cmenuItemUpdateDashboard.Name = "cmenuItemUpdateDashboard";
-			this.cmenuItemUpdateDashboard.Size = new System.Drawing.Size(210, 24);
-			this.cmenuItemUpdateDashboard.Text = "Update";
-			this.cmenuItemUpdateDashboard.Click += new System.EventHandler(this.cmenuItemUpdateDashboard_Click);
+			this.cmenuItemUpdateDashboardYesterday.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.cmenuItemUpdateDashboardYesterday.ForeColor = System.Drawing.Color.White;
+			this.cmenuItemUpdateDashboardYesterday.Name = "cmenuItemUpdateDashboardYesterday";
+			this.cmenuItemUpdateDashboardYesterday.Size = new System.Drawing.Size(212, 24);
+			this.cmenuItemUpdateDashboardYesterday.Text = "Update (Yesterday)";
+			this.cmenuItemUpdateDashboardYesterday.Click += new System.EventHandler(this.cmenuItemUpdateDashboardYesterday_Click);
 			// 
 			// UcDashboard
 			// 
@@ -189,10 +200,10 @@
 			this.Name = "UcDashboard";
 			this.Size = new System.Drawing.Size(850, 600);
 			this.tableLayoutPanel1.ResumeLayout(false);
+			this.cmenuDashboard.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart3)).EndInit();
-			this.cmenuDashboard.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -206,6 +217,7 @@
 		private UcDailyMissionCount ucDailyMissionCount1;
 		private UcDailyMissionAverageCost ucDailyMissionAverageCost1;
 		private System.Windows.Forms.ContextMenuStrip cmenuDashboard;
-		private System.Windows.Forms.ToolStripMenuItem cmenuItemUpdateDashboard;
+		private System.Windows.Forms.ToolStripMenuItem cmenuItemUpdateDashboardToday;
+		private System.Windows.Forms.ToolStripMenuItem cmenuItemUpdateDashboardYesterday;
 	}
 }

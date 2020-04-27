@@ -30,6 +30,7 @@ namespace TrafficControlTest.UserControl
 
 		private void UpdateGui(DateTime Date, int SuccessedMissionCount, double AverageCostInSec)
 		{
+			label1.InvokeIfNecessary(() => label1.Text = Date.ToString("yyyy / MM / dd"));
 			lblMissionAverageCost.InvokeIfNecessary(() => lblMissionAverageCost.Text = AverageCostInSec.ToString("F1"));
 		}
 	}

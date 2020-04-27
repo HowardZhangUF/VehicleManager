@@ -31,6 +31,7 @@ namespace TrafficControlTest.UserControl
 		
 		private void UpdateGui(DateTime Date, int SuccessedCount, int FailedCount)
 		{
+			label1.InvokeIfNecessary(() => label1.Text = Date.ToString("yyyy / MM / dd"));
 			lblMissionCount.InvokeIfNecessary(() => lblMissionCount.Text = mTotalCount.ToString());
 		}
 	}
