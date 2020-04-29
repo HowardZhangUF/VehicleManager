@@ -546,11 +546,9 @@ namespace TrafficControlTest.Implement
 		private bool TryUpdateCurrentMapName(string NewMapName)
 		{
 			bool result = false;
-			if (mCurrentMapName != NewMapName)
-			{
-				mCurrentMapName = NewMapName ?? string.Empty;
-				result = true;
-			}
+			// 不做新舊地圖名的比較，因為有時候會有檔案內容有修改但檔案名稱卻不修改的情況
+			mCurrentMapName = NewMapName ?? string.Empty;
+			result = true;
 			return result;
 		}
 		private bool TryUpdateCurrentMapNameList(IEnumerable<string> NewMapNameList)

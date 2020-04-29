@@ -27,6 +27,7 @@ namespace TrafficControlTest.Module.General.Interface
 		void Set(IVehicleInfoManager VehicleInfoManager, IMapFileManager MapFileManager);
 		void LoadMap(string MapFileName);
 		string GetCurrentMapName();
+		string GetCurrentMapHash();
 		string[] GetGoalNameList();
 		int[] GetGoalCoordinate(string GoalName);
 	}

@@ -19,6 +19,7 @@ namespace TrafficControlTest.Module.General.Implement
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMapFileManager rMapFileManager = null;
 		private string mCurrentMapName = string.Empty;
+		private string mCurrentMapHash = string.Empty;
 		private bool mAutoLoadMap = false;
 
 		public MapManager(IVehicleInfoManager VehicleInfoManager, IMapFileManager MapFileManager)
@@ -46,11 +47,16 @@ namespace TrafficControlTest.Module.General.Implement
 		{
 			GLCMD.CMD.LoadMap(rMapFileManager.GetMapFileFullPath(MapFileName), 3);
 			mCurrentMapName = MapFileName;
+			mCurrentMapHash = MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName));
 			RaiseEvent_MapLoaded(MapFileName);
 		}
 		public string GetCurrentMapName()
 		{
 			return mCurrentMapName;
+		}
+		public string GetCurrentMapHash()
+		{
+			return mCurrentMapHash;
 		}
 		public string[] GetGoalNameList()
 		{
@@ -154,10 +160,19 @@ namespace TrafficControlTest.Module.General.Implement
 			DateTime tmpTimestamp = DateTime.Now;
 			while (DateTime.Now.Subtract(tmpTimestamp).TotalMilliseconds < 5000)
 			{
-				if (!rMapFileManager.mIsGettingMap && rMapFileManager.GetLocalMapNameList().Any(o => o == MapFileName))
+				// 當下載地圖完成時
+				if (!rMapFileManager.mIsGettingMap)
 				{
-					LoadMap(MapFileName);
-					return;
+					// 若有該地圖存在，且該地圖 Hash 與當前地圖 Hash 不同時
+					if (rMapFileManager.GetLocalMapNameList().Any(o => o == MapFileName) && MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)) != GetCurrentMapHash())
+					{
+						LoadMap(MapFileName);
+						break;
+					}
+					else
+					{
+						break;
+					}
 				}
 				Thread.Sleep(600);
 			}
