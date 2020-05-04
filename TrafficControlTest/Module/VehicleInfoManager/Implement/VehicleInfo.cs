@@ -378,11 +378,12 @@ namespace TrafficControlTest.Implement
 		private static IList<IPoint2D> CalculatePathDetail(IPoint2D CurrentPosition, IEnumerable<IPoint2D> Path, int Interval)
 		{
 			List<IPoint2D> result = null;
-			if (Path != null && Path.Count() > 0)
+			List<IPoint2D> tmpPath = new List<IPoint2D>();
+			if (CurrentPosition != null) tmpPath.Add(CurrentPosition);
+			if (Path != null && Path.Count() > 0) tmpPath.AddRange(Path);
+			if (tmpPath.Count > 0)
 			{
 				result = new List<IPoint2D>();
-				List<IPoint2D> tmpPath = Path.ToList();
-				tmpPath.Insert(0, CurrentPosition);
 				tmpPath.Reverse(); // 計算路徑詳細點時，先將路徑點順序反轉，從終點開始往回算
 				result.Add(tmpPath[0]);
 				for (int i = 1; i < tmpPath.Count; ++i)
@@ -397,10 +398,11 @@ namespace TrafficControlTest.Implement
 		private static IRectangle2D CalculatePathRegion(IPoint2D CurrentPosition, IEnumerable<IPoint2D> Path, int Amplify)
 		{
 			IRectangle2D result = null;
-			if (Path != null && Path.Count() > 0)
+			List<IPoint2D> tmpPath = new List<IPoint2D>();
+			if (CurrentPosition != null) tmpPath.Add(CurrentPosition);
+			if (Path != null && Path.Count() > 0) tmpPath.AddRange(Path);
+			if (tmpPath.Count > 0)
 			{
-				List<IPoint2D> tmpPath = Path.ToList();
-				tmpPath.Insert(0, CurrentPosition);
 				result = Library.Library.GetCoverRectangle(tmpPath);
 				result = Library.Library.GetAmplifyRectangle(result, Amplify, Amplify);
 			}

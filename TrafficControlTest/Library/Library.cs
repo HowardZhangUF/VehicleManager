@@ -642,7 +642,7 @@ namespace TrafficControlTest.Library
 		public static IRectangle2D GetCoverRectangle(IEnumerable<IPoint2D> Points)
 		{
 			IRectangle2D result = null;
-			if (Points.Count() > 1)
+			if (Points != null && Points.Count() > 0)
 			{
 				result = GenerateIRectangle2D(GetDeepClone(Points.ElementAt(0)), GetDeepClone(Points.ElementAt(0)));
 				for (int i = 1; i < Points.Count(); ++i)
@@ -887,23 +887,16 @@ namespace TrafficControlTest.Library
 		}
 		public static bool IsAnyCollisionPair(IEnumerable<IVehicleInfo> Vehicles, out IEnumerable<ICollisionPair> CollisionPairs)
 		{
-			try
+			if (IsAnyPathRegionOverlapPair(Vehicles, out IEnumerable<IPathRegionOverlapPair> tmpPathRegionOverlapPairs))
 			{
-				if (IsAnyPathRegionOverlapPair(Vehicles, out IEnumerable<IPathRegionOverlapPair> tmpPathRegionOverlapPairs))
+				if (IsAnyPathOverlapPair(tmpPathRegionOverlapPairs, out IEnumerable<IPathOverlapPair> tmpPathOverlapPairs))
 				{
-					if (IsAnyPathOverlapPair(tmpPathRegionOverlapPairs, out IEnumerable<IPathOverlapPair> tmpPathOverlapPairs))
+					if (IsAnyCollisionPair(tmpPathOverlapPairs, out IEnumerable<ICollisionPair> tmpCollisionPairs))
 					{
-						if (IsAnyCollisionPair(tmpPathOverlapPairs, out IEnumerable<ICollisionPair> tmpCollisionPairs))
-						{
-							CollisionPairs = tmpCollisionPairs;
-							return true;
-						}
+						CollisionPairs = tmpCollisionPairs;
+						return true;
 					}
 				}
-			}
-			catch (Exception Ex)
-			{
-				Console.WriteLine(Ex.ToString());
 			}
 
 			CollisionPairs = null;
@@ -1067,6 +1060,12 @@ namespace TrafficControlTest.Library
 				double exitSeconds = (velocity > -double.Epsilon && velocity < double.Epsilon ? 600 : (ExitDistance / velocity));
 				PassPeriod = GenerateITimePeriod(DateTime.Now.AddSeconds(enterSeconds), DateTime.Now.AddSeconds(exitSeconds));
 				PassPeriodWithMaximumVelocity = GenerateITimePeriod(DateTime.Now.AddSeconds(EnterDistance / Vehicle.mVelocityMaximum), DateTime.Now.AddSeconds(ExitDistance / Vehicle.mVelocityMaximum));
+			}
+			else if (Vehicle.mPath.Count == 0 && Region.IsIncludePoint(Vehicle.mLocationCoordinate))
+			{
+				// 若車子路徑點數量為 0 (閒置/沒有在移動)，且車子座標位於交會區域 (Region) 內
+				PassPeriod = GenerateITimePeriod(DateTime.Now, DateTime.MaxValue);
+				PassPeriodWithMaximumVelocity = GenerateITimePeriod(DateTime.Now, DateTime.MaxValue);
 			}
 		}
 		#endregion
