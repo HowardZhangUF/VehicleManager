@@ -96,7 +96,7 @@ namespace TrafficControlTest.UserControl
 				dgv.Columns.Add("Category", "Category");
 				dgv.Columns[0].Width = 200;
 				dgv.Columns.Add("Name", "Name");
-				dgv.Columns[1].Width = 200;
+				dgv.Columns[1].Width = 220;
 				dgv.Columns.Add("Value", "Value");
 				dgv.Columns[2].Width = 70;
 				dgv.Columns.Add("Description", "Description");

@@ -12,6 +12,14 @@ namespace TrafficControlTest.Module.General.Implement
 {
 	public class Configurator : IConfigurator
 	{
+		/*
+		 * 新增一個 Configuration 時：
+		 * 1. Configurator 要新增其 Default 資訊
+		 * 2. 對應類別的 GetConfig() 與 SetConfig() 方法需要更新
+		 * 3. VehicleManagerProcess 的 LoadConfigFileAndUpdateSystemConfig() 與 LoadSystemConfigAndUpdateConfigFile() 方法需要更新
+		 * 4. VehicleManagerProcess 的 HandleEvent_ConfiguratorConfigUpdated() 方法需要更新
+		 */
+
 		public event EventHandlerDateTime ConfigLoaded;
 		public event EventHandlerDateTime ConfigSaved;
 		public event EventHandlerItem<Configuration> ConfigUpdated;
@@ -152,6 +160,30 @@ namespace TrafficControlTest.Module.General.Implement
 				"Time Period of Detecting Collision Event",
 				"偵測碰撞事件的時間間隔",
 				"侦测碰撞事件的时间间隔"));
+			defaultConfigs.Add(new Configuration(
+				"CollisionEventDetector",
+				"NeighborPointAmount",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"10",
+				"3",
+				"100",
+				"Using Neighbor Point Amount when Detecting Collision Event",
+				"偵測會車事件時使用的鄰近點數量",
+				"侦测会车事件时使用的邻近点数量"
+				));
+			defaultConfigs.Add(new Configuration(
+				"CollisionEventDetector",
+				"VehicleLocationScoreThreshold",
+				ConfigurationType.Double,
+				ConfigurationLevel.Normal,
+				"30",
+				"0",
+				"100",
+				"Detecting Collision Event when Vehicle's Location Score Greater than this Threshold",
+				"當自走車的定位分數高於此閾值時才會對其偵測會車事件",
+				"当自走车的定位分数高于此阈值时才会对其侦测会车事件"
+				));
 			defaultConfigs.Add(new Configuration(
 				"VehicleControlHandler",
 				"TimePeriod",

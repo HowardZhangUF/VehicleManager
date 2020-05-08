@@ -381,6 +381,8 @@ namespace TrafficControlTest.Process
 			mVehicleCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("VehicleCommunicator/ListenPort"));
 			mVehicleCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
 			mCollisionEventDetector.SetConfig("TimePeriod", mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
+			mCollisionEventDetector.SetConfig("NeighborPointAmount", mConfigurator.GetValue("CollisionEventDetector/NeighborPointAmount"));
+			mCollisionEventDetector.SetConfig("VehicleLocationScoreThreshold", mConfigurator.GetValue("CollisionEventDetector/VehicleLocationScoreThreshold"));
 			mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
 			mHostCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("HostCommunicator/ListenPort"));
 			mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
@@ -398,6 +400,8 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfig("ListenPort"));
 			mConfigurator.SetValue("VehicleControlHandler/TimePeriod", mVehicleControlHandler.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("CollisionEventDetector/VehicleLocationScoreThreshold", mCollisionEventDetector.GetConfig("VehicleLocationScoreThreshold"));
+			mConfigurator.SetValue("CollisionEventDetector/NeighborPointAmount", mCollisionEventDetector.GetConfig("NeighborPointAmount"));
 			mConfigurator.SetValue("CollisionEventDetector/TimePeriod", mCollisionEventDetector.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("VehicleCommunicator/TimePeriod", mVehicleCommunicator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfig("ListenPort"));
@@ -895,6 +899,12 @@ namespace TrafficControlTest.Process
 					break;
 				case "CollisionEventDetector/TimePeriod":
 					mCollisionEventDetector.SetConfig("TimePeriod", mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
+					break;
+				case "CollisionEventDetector/NeighborPointAmount":
+					mCollisionEventDetector.SetConfig("NeighborPointAmount", mConfigurator.GetValue("CollisionEventDetector/NeighborPointAmount"));
+					break;
+				case "CollisionEventDetector/VehicleLocationScoreThreshold":
+					mCollisionEventDetector.SetConfig("VehicleLocationScoreThreshold", mConfigurator.GetValue("CollisionEventDetector/VehicleLocationScoreThreshold"));
 					break;
 				case "VehicleControlHandler/TimePeriod":
 					mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
