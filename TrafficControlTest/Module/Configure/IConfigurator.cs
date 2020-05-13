@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.Configure;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.General.Interface
+namespace TrafficControlTest.Module.Configure
 {
 	public interface IConfigurator
 	{

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Module.General.Interface;
+using TrafficControlTest.Library;
+using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.Map;
+using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.UserControl
 {

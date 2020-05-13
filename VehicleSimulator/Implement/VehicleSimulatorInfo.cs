@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TrafficControlTest.Interface;
+using TrafficControlTest.Module.General;
 using VehicleSimulator.Interface;
 using static TrafficControlTest.Library.Library;
 using static VehicleSimulator.Library.EventHandlerLibraryOfIVehicleSimulator;

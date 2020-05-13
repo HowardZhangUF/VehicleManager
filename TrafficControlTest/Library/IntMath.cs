@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrafficControlTest
+namespace TrafficControlTest.Library
 {
 	[Serializable]
 	public class IntMath : TypeMath<int>

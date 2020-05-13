@@ -1,5 +1,5 @@
 ﻿using System;
-using TrafficControlTest.Interface;
+using TrafficControlTest.Module.Communication;
 using VehicleSimulator.Implement;
 using VehicleSimulator.Interface;
 

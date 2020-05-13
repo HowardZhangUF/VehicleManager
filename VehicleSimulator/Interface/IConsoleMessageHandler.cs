@@ -1,4 +1,4 @@
-﻿using TrafficControlTest.Interface;
+﻿using TrafficControlTest.Module.Communication;
 
 namespace VehicleSimulator.Interface
 {

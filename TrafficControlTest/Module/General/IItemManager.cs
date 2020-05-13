@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.General.Implement
+namespace TrafficControlTest.Module.General
 {
 	/// <summary>
 	/// - 儲存所有的 IItem

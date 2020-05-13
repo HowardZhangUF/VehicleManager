@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.MissionManager.Interface;
 using static TrafficControlTest.Library.Library;
 
-namespace TrafficControlTest.Module.MissionManager.Implement
+namespace TrafficControlTest.Module.Mission
 {
 	public abstract class MissionAnalyzer : IMissionAnalyzer
 	{

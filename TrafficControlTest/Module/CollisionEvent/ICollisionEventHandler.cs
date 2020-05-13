@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrafficControlTest.Module.InterveneCommand;
+using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	/// <summary>
 	/// - Reference: ICollisionEventManager, IVehicleControlManager, IVehicleInfoManager

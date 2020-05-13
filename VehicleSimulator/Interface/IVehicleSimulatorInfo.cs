@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TrafficControlTest.Interface;
+using TrafficControlTest.Module.General;
 using static VehicleSimulator.Library.EventHandlerLibraryOfIVehicleSimulator;
 
 namespace VehicleSimulator.Interface

@@ -1,7 +1,6 @@
 ﻿using System;
-using TrafficControlTest.Interface;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.General
 {
 	[Serializable]
 	public class Rectangle2D : IRectangle2D

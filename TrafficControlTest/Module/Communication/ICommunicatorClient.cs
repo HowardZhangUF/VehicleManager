@@ -1,7 +1,7 @@
 ﻿using TrafficControlTest.Library;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.Communication
 {
 	public interface ICommunicatorClient
 	{

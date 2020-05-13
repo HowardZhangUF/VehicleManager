@@ -3,13 +3,12 @@ using Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.MissionManager.Interface;
+using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Mission;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.Vehicle
 {
 	public class VehicleInfoUpdater : IVehicleInfoUpdater
 	{

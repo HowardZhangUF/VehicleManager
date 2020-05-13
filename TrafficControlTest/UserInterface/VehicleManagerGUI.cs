@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using TrafficControlTest.Process;
-using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
 using TrafficControlTest.UserControl;
 

@@ -1,15 +1,12 @@
 ﻿using SerialData;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Interface;
-using TrafficControlTest.Module.MissionManager.Interface;
+using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.Map;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Module.MissionManager.Implement
+namespace TrafficControlTest.Module.Mission
 {
 	public class MissionUpdater : IMissionUpdater
 	{
@@ -181,7 +178,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			string missionId = GetMissionId(IpPort, Data);
 			if (!string.IsNullOrEmpty(missionId))
 			{
-				rMissionStateManager.GetItem(missionId).UpdateSendState(Interface.SendState.SendSuccessed);
+				rMissionStateManager.GetItem(missionId).UpdateSendState(SendState.SendSuccessed);
 				rMissionStateManager.GetItem(missionId).UpdateExecuteState(ExecuteState.Executing);
 			}
 		}
@@ -190,7 +187,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			string missionId = GetMissionId(IpPort, Data);
 			if (!string.IsNullOrEmpty(missionId))
 			{
-				rMissionStateManager.GetItem(missionId).UpdateSendState(Interface.SendState.SendFailed);
+				rMissionStateManager.GetItem(missionId).UpdateSendState(SendState.SendFailed);
 				rMissionStateManager.GetItem(missionId).UpdateExecuteState(ExecuteState.Unexecute);
 			}
 		}
@@ -237,17 +234,17 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				if (Data is GoTo)
 				{
 					GoTo tmpData = Data as GoTo;
-					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require)?.mName;
+					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require)?.mName;
 				}
 				else if (Data is GoToPoint)
 				{
 					GoToPoint tmpData = Data as GoToPoint;
-					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString())?.mName;
+					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString())?.mName;
 				}
 				else if (Data is GoToTowardPoint)
 				{
 					GoToTowardPoint tmpData = Data as GoToTowardPoint;
-					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == Interface.SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString() && o.mMission.mParameters[2] == tmpData.Require[2].ToString())?.mName;
+					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString() && o.mMission.mParameters[2] == tmpData.Require[2].ToString())?.mName;
 				}
 			}
 			return missionId;

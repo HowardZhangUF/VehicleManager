@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using TrafficControlTest.Module.General.Implement;
+using TrafficControlTest.Module.General;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.Vehicle
 {
 	/// <summary>
 	/// - 儲存所有的車子的資訊 (IVehicleInfo)

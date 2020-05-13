@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.General
 {
 	public interface ITimePeriod
 	{

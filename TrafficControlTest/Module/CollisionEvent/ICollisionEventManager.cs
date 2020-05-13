@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	public interface ICollisionEventManager
 	{

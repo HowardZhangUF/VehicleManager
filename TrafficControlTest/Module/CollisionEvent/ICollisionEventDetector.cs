@@ -1,7 +1,7 @@
-﻿using TrafficControlTest.Module.General.Interface;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	/// <summary>
 	/// - Reference: IVehicleInfoManager, ICollisionEventManager

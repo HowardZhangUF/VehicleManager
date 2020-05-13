@@ -1,4 +1,8 @@
-﻿namespace TrafficControlTest.Interface
+﻿
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
+
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	/// <summary>「路徑線區域」重疊的組合</summary>
 	public interface IPathRegionOverlapPair

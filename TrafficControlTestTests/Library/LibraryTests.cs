@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Module.MissionManager.Implement;
-using TrafficControlTest.Module.MissionManager.Interface;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Mission;
 
 namespace TrafficControlTest.Library.Tests
 {

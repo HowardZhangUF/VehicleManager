@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.Configure;
-using TrafficControlTest.Module.General.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.General.Implement
+namespace TrafficControlTest.Module.Configure
 {
 	public class Configurator : IConfigurator
 	{

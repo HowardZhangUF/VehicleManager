@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using TrafficControlTest.Module.Dashboard;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.Mission;
 
 namespace TrafficControlTest.UserControl
 {
@@ -97,12 +98,12 @@ namespace TrafficControlTest.UserControl
 			{
 				for (int i = 0; i < searchResult.Rows.Count; ++i)
 				{
-					if (searchResult.Rows[i].ItemArray[0].ToString() == Module.MissionManager.Interface.ExecuteState.ExecuteSuccessed.ToString())
+					if (searchResult.Rows[i].ItemArray[0].ToString() == ExecuteState.ExecuteSuccessed.ToString())
 					{
 						dataFromDatabase.SetSuccessedCount(int.Parse(searchResult.Rows[i].ItemArray[1].ToString()));
 						continue;
 					}
-					if (searchResult.Rows[i].ItemArray[0].ToString() == Module.MissionManager.Interface.ExecuteState.ExecuteFailed.ToString())
+					if (searchResult.Rows[i].ItemArray[0].ToString() == ExecuteState.ExecuteFailed.ToString())
 					{
 						dataFromDatabase.SetFailedCount(int.Parse(searchResult.Rows[i].ItemArray[1].ToString()));
 						continue;
@@ -609,12 +610,12 @@ namespace TrafficControlTest.UserControl
 						dataFromDatabase.Add(vehicleId, new MultiDayVehicleMissionCount(vehicleId, mEndDate.AddDays(-6), mEndDate));
 					}
 
-					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteSuccessed.ToString())
+					if (type == ExecuteState.ExecuteSuccessed.ToString())
 					{
 						dataFromDatabase[vehicleId].mCollection.First(o => o.mDate.ToString("yyyy-MM-dd") == date).SetSuccessedMissionCount(count);
 						continue;
 					}
-					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteFailed.ToString())
+					if (type == ExecuteState.ExecuteFailed.ToString())
 					{
 						dataFromDatabase[vehicleId].mCollection.First(o => o.mDate.ToString("yyyy-MM-dd") == date).SetFailedMissionCount(count);
 						continue;
@@ -808,12 +809,12 @@ namespace TrafficControlTest.UserControl
 						dataFromDatabase.Add(vehicleId, new MultiDayVehicleMissionCount(vehicleId, mEndDate.AddDays(-6), mEndDate));
 					}
 
-					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteSuccessed.ToString())
+					if (type == ExecuteState.ExecuteSuccessed.ToString())
 					{
 						dataFromDatabase[vehicleId].mCollection.First(o => o.mDate.ToString("yyyy-MM-dd") == date).SetSuccessedMissionCount(count);
 						continue;
 					}
-					if (type == Module.MissionManager.Interface.ExecuteState.ExecuteFailed.ToString())
+					if (type == ExecuteState.ExecuteFailed.ToString())
 					{
 						dataFromDatabase[vehicleId].mCollection.First(o => o.mDate.ToString("yyyy-MM-dd") == date).SetFailedMissionCount(count);
 						continue;

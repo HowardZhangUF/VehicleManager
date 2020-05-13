@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.General;
 using VehicleSimulator.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;

@@ -1,8 +1,7 @@
 ﻿using System;
-using TrafficControlTest.Module.General.Interface;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Module.General;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.InterveneCommand
 {
 	/// <summary>傳送狀態。有收到回應代表傳送成功，反之為傳送失敗</summary>
 	public enum SendState

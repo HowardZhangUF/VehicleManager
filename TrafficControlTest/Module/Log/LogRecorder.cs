@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Interface;
-using TrafficControlTest.Module.MissionManager.Interface;
+﻿using TrafficControlTest.Library;
 
-namespace TrafficControlTest.Module.General.Implement
+namespace TrafficControlTest.Module.Log
 {
 	public class LogRecorder : ILogRecorder
 	{

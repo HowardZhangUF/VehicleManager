@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Library;
+﻿using TrafficControlTest.Library;
+using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.General.Interface
+namespace TrafficControlTest.Module.Communication
 {
 	/// <summary>
 	/// - 提供監聽方法以供客戶端系統建立連線

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TrafficControlTest.Interface;
+using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	public class CollisionEventManager : ICollisionEventManager
 	{

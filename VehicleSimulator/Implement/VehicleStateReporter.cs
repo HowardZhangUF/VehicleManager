@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.Communication;
 using VehicleSimulator.Interface;
 
 namespace VehicleSimulator.Implement

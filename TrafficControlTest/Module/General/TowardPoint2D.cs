@@ -1,6 +1,4 @@
-﻿using TrafficControlTest.Interface;
-
-namespace TrafficControlTest.Implement
+﻿namespace TrafficControlTest.Module.General
 {
 	public class TowardPoint2D : ITowardPoint2D
 	{

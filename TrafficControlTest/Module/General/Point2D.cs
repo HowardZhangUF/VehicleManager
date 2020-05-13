@@ -1,7 +1,6 @@
 ﻿using System;
-using TrafficControlTest.Interface;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.General
 {
 	[Serializable]
 	public class Point2D : IPoint2D

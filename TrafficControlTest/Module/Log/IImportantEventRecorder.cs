@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Module.MissionManager.Interface;
-using static TrafficControlTest.Library.DatabaseAdapter;
+﻿using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Module.General.Interface
+namespace TrafficControlTest.Module.Log
 {
 	/// <summary>
 	/// - Reference: IEventRecorder, IVehicleInfoManager, IMissionStateManager

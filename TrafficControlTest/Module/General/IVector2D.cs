@@ -1,4 +1,5 @@
-﻿namespace TrafficControlTest.Interface
+﻿
+namespace TrafficControlTest.Module.General
 {
 	public interface IVector2D
 	{

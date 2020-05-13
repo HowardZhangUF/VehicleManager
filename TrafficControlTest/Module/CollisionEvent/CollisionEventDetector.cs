@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Module.General.Implement;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Library;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.Library;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	public class CollisionEventDetector : SystemWithLoopTask, ICollisionEventDetector
 	{

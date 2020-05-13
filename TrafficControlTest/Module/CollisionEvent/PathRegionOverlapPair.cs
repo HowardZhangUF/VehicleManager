@@ -1,6 +1,7 @@
-﻿using TrafficControlTest.Interface;
+﻿using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	class PathRegionOverlapPair : IPathRegionOverlapPair
 	{

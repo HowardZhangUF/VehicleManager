@@ -5,13 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Implement;
+using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.Communication
 {
 	class VehicleCommunicator : SystemWithLoopTask, IVehicleCommunicator
 	{

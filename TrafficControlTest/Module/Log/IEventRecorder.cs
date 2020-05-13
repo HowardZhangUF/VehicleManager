@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.MissionManager.Interface;
+using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Module.General.Interface
+namespace TrafficControlTest.Module.Log
 {
 	/// <summary>提供記錄 Event (CurrentVehicleInfo, HistoryVehicleInfo, AllMissionState, HistoryHostCommunication ... etc.) 至資料庫的功能</summary>
 	public interface IEventRecorder

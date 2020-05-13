@@ -1,14 +1,8 @@
-﻿using SerialData;
-using Serialization;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Implement;
+using TrafficControlTest.Module.General;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.Vehicle
 {
 	public class VehicleInfoManager : ItemManager<IVehicleInfo>, IVehicleInfoManager
 	{

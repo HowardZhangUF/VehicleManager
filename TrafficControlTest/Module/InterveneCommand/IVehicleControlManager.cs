@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Module.General.Implement;
+﻿using TrafficControlTest.Module.General;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.InterveneCommand
 {
 	/// <summary>
 	/// - 儲存所有的預計對車子進行的干預 (IVechielControl)

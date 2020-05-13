@@ -1,17 +1,13 @@
-﻿using SerialData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Implement;
-using TrafficControlTest.Module.MissionManager.Interface;
+using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.MissionManager.Implement
+namespace TrafficControlTest.Module.Mission
 {
 	public class MissionDispatcher : SystemWithLoopTask, IMissionDispatcher
 	{
@@ -68,7 +64,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetItems().FirstOrDefault(o => o.mCurrentState == "Idle" && o.mCurrentStateDuration.TotalSeconds > 1 && string.IsNullOrEmpty(o.mCurrentMissionId))?.mName : mission.mMission.mVehicleId;
 				if (!string.IsNullOrEmpty(vehicleId))
 				{
-					mission.UpdateSendState(Interface.SendState.Sending);
+					mission.UpdateSendState(SendState.Sending);
 					mission.UpdateExecutorId(vehicleId);
 					SendMission(vehicleId, mission.mMission);
 					RaiseEvent_MissionDispatched(mission, rVehicleInfoManager.GetItem(vehicleId));
@@ -107,7 +103,7 @@ namespace TrafficControlTest.Module.MissionManager.Implement
 			if (VehicleInfoManager == null || VehicleInfoManager.mCount == 0) return null;
 
 			List<IMissionState> result = null;
-			result = MissionStateManager.GetItems().Where(o => (o.mSendState == Interface.SendState.Unsend && o.mExecuteState == ExecuteState.Unexecute) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle"))).ToList();
+			result = MissionStateManager.GetItems().Where(o => (o.mSendState == SendState.Unsend && o.mExecuteState == ExecuteState.Unexecute) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle"))).ToList();
 			return result;
 		}
 	}

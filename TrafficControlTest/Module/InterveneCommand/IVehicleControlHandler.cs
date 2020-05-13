@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Module.General.Interface;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.InterveneCommand
 {
 	/// <summary>
 	/// - Reference: IVehicleControlManager, IVehicleInfoManager, IVehicleCommunicator

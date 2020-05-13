@@ -1,7 +1,9 @@
 ﻿using System;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	/// <summary>會發生交會的組合</summary>
 	public interface ICollisionPair

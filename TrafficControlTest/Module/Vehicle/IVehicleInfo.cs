@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TrafficControlTest.Module.General.Interface;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Module.General;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.Vehicle
 {
 	/// <summary>
 	/// - 儲存車子的資訊

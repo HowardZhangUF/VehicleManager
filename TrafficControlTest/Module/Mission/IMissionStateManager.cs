@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Module.General.Implement;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using TrafficControlTest.Module.General;
 
-namespace TrafficControlTest.Module.MissionManager.Interface
+namespace TrafficControlTest.Module.Mission
 {
 	/// <summary>
 	/// - 儲存所有的任務資訊及狀態 (IMissionState)

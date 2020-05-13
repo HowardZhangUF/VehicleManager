@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TrafficControlTest.Library;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.General.Interface
+namespace TrafficControlTest.Module.Account
 {
 	/// <summary>
 	/// - Reference: IAccountManager

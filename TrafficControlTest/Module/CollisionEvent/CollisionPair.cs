@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Library;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	class CollisionPair : ICollisionPair
 	{

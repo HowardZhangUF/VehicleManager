@@ -1,7 +1,6 @@
 ﻿using System;
-using TrafficControlTest.Interface;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.General
 {
 	class Vector2D : IVector2D
 	{

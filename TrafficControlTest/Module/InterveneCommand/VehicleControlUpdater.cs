@@ -1,14 +1,10 @@
-﻿using SerialData;
-using Serialization;
+﻿using Serialization;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Module.InterveneManager.Interface;
+using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Module.InterveneManager.Implement
+namespace TrafficControlTest.Module.InterveneCommand
 {
 	public class VehicleControlUpdater : IVehicleControlUpdater
 	{

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Module.General.Interface;
+﻿using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Module.MissionManager.Interface
+namespace TrafficControlTest.Module.Mission
 {
 	/// <summary>
 	/// - Reference: IHostCommunicator, IMissionStateManager, IMissionAnalyzer

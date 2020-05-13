@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Implement;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Vehicle;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.InterveneCommand
 {
 	public class VehicleControlHandler : SystemWithLoopTask, IVehicleControlHandler
 	{

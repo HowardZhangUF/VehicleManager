@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Library;
 
-namespace TrafficControlTest.Module.General.Interface
+namespace TrafficControlTest.Module.Account
 {
 	/// <summary>
 	/// - 帳號資訊，有名稱、密碼、階級等欄位

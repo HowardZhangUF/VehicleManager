@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Library;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.InterveneCommand
 {
 	public class VehicleControl : IVehicleControl
 	{

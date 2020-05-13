@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using TrafficControlTest.Module.General.Implement;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using System.Linq;
+using TrafficControlTest.Module.General;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.InterveneCommand
 {
 	class VehicleControlManager : ItemManager<IVehicleControl>, IVehicleControlManager
 	{

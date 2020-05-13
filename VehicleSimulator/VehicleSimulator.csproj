@@ -53,33 +53,21 @@
   <ItemGroup>
     <Compile Include="Implement\ConsoleMessageHandler.cs" />
     <Compile Include="Process\VehicleSimulatorProcess.cs" />
-    <Compile Include="TrashCan\DebugMessage.cs" />
     <Compile Include="Library\Extension.cs" />
     <Compile Include="Implement\VehicleSimulatorInfo.cs" />
     <Compile Include="Implement\VehicleStateReporter.cs" />
     <Compile Include="Interface\IConsoleMessageHandler.cs" />
     <Compile Include="Interface\IVehicleSimulatorInfo.cs" />
     <Compile Include="Interface\IVehicleStateReporter.cs" />
-    <Compile Include="TrashCan\IntMath.cs" />
     <Compile Include="Library\Library.cs" />
-    <Compile Include="TrashCan\MapSimulator.cs" />
     <Compile Include="UserInterface\VehicleSimulatorGUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UserInterface\VehicleSimulatorGUI.Designer.cs">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="TrashCan\VehicleSimulator.cs" />
-    <Compile Include="TrashCan\VehicleSimulatorGUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TrashCan\VehicleSimulatorGUI.Designer.cs">
-      <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrashCan\VehicleSimulatorProcess.cs" />
-    <Compile Include="TrashCan\ConsoleCommunicator.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -91,9 +79,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="UserInterface\VehicleSimulatorGUI.resx">
-      <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TrashCan\VehicleSimulatorGUI.resx">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

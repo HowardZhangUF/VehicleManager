@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.General.Interface
+namespace TrafficControlTest.Module.General
 {
-    public interface ISystemWithLoopTask : ISystemWithConfig
+	public interface ISystemWithLoopTask : ISystemWithConfig
 	{
         event EventHandlerDateTime SystemStarted;
         event EventHandlerDateTime SystemStopped;

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Library;
+﻿using TrafficControlTest.Library;
 
-namespace TrafficControlTest.Module.MissionManager.Interface
+namespace TrafficControlTest.Module.Mission
 {
 	/// <summary>
 	/// - 儲存任務的資訊

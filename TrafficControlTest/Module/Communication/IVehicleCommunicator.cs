@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Interface;
+using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Interface
+namespace TrafficControlTest.Module.Communication
 {
 	/// <summary>
 	/// - 提供監聽方法以供車子建立連線

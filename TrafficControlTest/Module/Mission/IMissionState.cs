@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Module.General.Interface;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Module.General;
 
-namespace TrafficControlTest.Module.MissionManager.Interface
+namespace TrafficControlTest.Module.Mission
 {
 	public enum SendState
 	{

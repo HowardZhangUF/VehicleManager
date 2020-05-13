@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using TrafficControlTest.Interface;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Module.InterveneCommand;
+using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.Library;
 
-namespace TrafficControlTest.Implement
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	class CollisionEventHandler : ICollisionEventHandler
 	{

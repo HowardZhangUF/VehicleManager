@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General.Interface;
+using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.General.Implement
+namespace TrafficControlTest.Module.Communication
 {
 	public class HostCommunicator : SystemWithLoopTask, IHostCommunicator
 	{

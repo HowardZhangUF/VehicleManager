@@ -148,13 +148,7 @@
     <Compile Include="Module\Mission\IMissionStateManager.cs" />
     <Compile Include="Module\Mission\IMissionStateReporter.cs" />
     <Compile Include="Module\Mission\IMissionUpdater.cs" />
-    <Compile Include="TrashCan\AGVInfo.cs" />
-    <Compile Include="TrashCan\AGVInfoManager.cs" />
-    <Compile Include="TrashCan\AGVMonitor.cs" />
     <Compile Include="Process\VehicleManagerProcess.cs" />
-    <Compile Include="TrashCan\CollisionEventMonitor.cs" />
-    <Compile Include="TrashCan\CollisionPair.cs" />
-    <Compile Include="TrashCan\DebugMessage.cs" />
     <Compile Include="Library\Extension.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventDetector.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventManager.cs" />
@@ -186,21 +180,10 @@
     <Compile Include="Module\CollisionEvent\PathOverlapPair.cs" />
     <Compile Include="Module\CollisionEvent\PathRegionOverlapPair.cs" />
     <Compile Include="Module\General\Vector2D.cs" />
-    <Compile Include="TrashCan\PathOverlapPair.cs" />
-    <Compile Include="TrashCan\PathRegionOverlapPair.cs" />
     <Compile Include="Module\General\Point2D.cs" />
-    <Compile Include="TrashCan\Rectangle.cs" />
     <Compile Include="Module\General\Rectangle2D.cs" />
-    <Compile Include="TrashCan\TrafficControlTestGUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TrashCan\TrafficControlTestGUI.Designer.cs">
-      <DependentUpon>TrafficControlTestGUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrashCan\TrafficControlTestProcess.cs" />
-    <Compile Include="TrashCan\TrafficController.cs" />
     <Compile Include="UserControl\ButtonWithToolTip.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -335,12 +318,6 @@
     <Compile Include="UserControl\UcVehicleInfo.Designer.cs">
       <DependentUpon>UcVehicleInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="TrashCan\UCVehicleInfoList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TrashCan\UCVehicleInfoList.Designer.cs">
-      <DependentUpon>UCVehicleInfoList.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserControl\UcVehicleOverview.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -353,10 +330,6 @@
     <Compile Include="UserInterface\VehicleManagerGUI.Designer.cs">
       <DependentUpon>VehicleManagerGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="TrashCan\Vector2D.cs" />
-    <EmbeddedResource Include="TrashCan\TrafficControlTestGUI.resx">
-      <DependentUpon>TrafficControlTestGUI.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -423,9 +396,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcVehicleInfo.resx">
       <DependentUpon>UcVehicleInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TrashCan\UCVehicleInfoList.resx">
-      <DependentUpon>UCVehicleInfoList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcVehicleOverview.resx">
       <DependentUpon>UcVehicleOverview.cs</DependentUpon>

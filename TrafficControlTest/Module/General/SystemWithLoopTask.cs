@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using TrafficControlTest.Module.General.Interface;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.General.Implement
+namespace TrafficControlTest.Module.General
 {
-    public abstract class SystemWithLoopTask : SystemWithConfig, ISystemWithLoopTask
+	public abstract class SystemWithLoopTask : SystemWithConfig, ISystemWithLoopTask
     {
         public event EventHandlerDateTime SystemStarted;
         public event EventHandlerDateTime SystemStopped;
