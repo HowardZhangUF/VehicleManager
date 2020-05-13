@@ -216,12 +216,11 @@ namespace TrafficControlTest.Module.General.Implement
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
 		{
-			// 做兩次判斷式，因為僅一次判斷有可能抓到 "CurrentMapName" 與 "CurrentMapNameList" 兩種結果，所以再做第二次判斷確認
-			// 當 CurrentMapName 改變時去將該地圖抓下來
-			if (StateName.Contains("CurrentMapName"))
+			// 做兩次判斷式，因為僅使用 Contains 判斷有可能抓到 "CurrentMapName" 與 "CurrentMapNameList" 兩種結果，所以再做第二次判斷確認
+			// 當 CurrentMapName 改變且 CurrentMapName 不為空或 Null 時去將該地圖抓下來
+			if (StateName.Contains("CurrentMapName") && StateName.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(o => o == "CurrentMapName"))
 			{
-				string[] tmpStateNames = StateName.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-				if (tmpStateNames.Any(o => o == "CurrentMapName"))
+				if (!string.IsNullOrEmpty(Item.mCurrentMapName))
 				{
 					rVehicleCommunicator.SendSerializableData_GetMap(Item.mIpPort, Item.mCurrentMapName);
 					mMapsOfGetting.Add(Item.mCurrentMapName);
