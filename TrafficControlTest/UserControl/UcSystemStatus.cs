@@ -4,10 +4,11 @@ using System.Drawing;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Log;
-using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.CollisionEvent;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.CommunicationVehicle;
+using TrafficControlTest.Module.CommunicationHost;
 
 namespace TrafficControlTest.UserControl
 {

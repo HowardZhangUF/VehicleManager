@@ -1,4 +1,4 @@
-﻿using TrafficControlTest.Module.Communication;
+﻿using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.EventHandlerLibrary;

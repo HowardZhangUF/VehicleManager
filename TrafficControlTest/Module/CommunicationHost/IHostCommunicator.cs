@@ -2,7 +2,7 @@
 using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.Communication
+namespace TrafficControlTest.Module.CommunicationHost
 {
 	/// <summary>
 	/// - 提供監聽方法以供客戶端系統建立連線

@@ -1,4 +1,4 @@
-﻿using TrafficControlTest.Module.Communication;
+﻿using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Mission;
 
 namespace TrafficControlTest.Module.Vehicle

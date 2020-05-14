@@ -2,7 +2,7 @@
 using System.Data;
 using System.Linq;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;
 

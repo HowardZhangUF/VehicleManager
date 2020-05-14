@@ -1,4 +1,4 @@
-﻿using TrafficControlTest.Module.Communication;
+﻿using TrafficControlTest.Module.CommunicationHost;
 
 namespace TrafficControlTest.Module.Mission
 {

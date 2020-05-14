@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.Vehicle;

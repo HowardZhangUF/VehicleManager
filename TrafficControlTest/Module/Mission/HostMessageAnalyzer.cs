@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Mission

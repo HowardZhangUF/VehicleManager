@@ -1,7 +1,7 @@
 ﻿using Serialization;
 using System;
 using System.Linq;
-using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.InterveneCommand

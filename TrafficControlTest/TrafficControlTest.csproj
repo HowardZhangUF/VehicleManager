@@ -100,7 +100,7 @@
     <Compile Include="Module\General\ISystemWithConfig.cs" />
     <Compile Include="Module\General\ISystemWithLoopTask.cs" />
     <Compile Include="Module\Log\EventRecorder.cs" />
-    <Compile Include="Module\Communication\HostCommunicator.cs" />
+    <Compile Include="Module\CommunicationHost\HostCommunicator.cs" />
     <Compile Include="Module\Log\ImportantEventRecorder.cs" />
     <Compile Include="Module\Log\LogExporter.cs" />
     <Compile Include="Module\Log\LogRecorder.cs" />
@@ -115,7 +115,7 @@
     <Compile Include="Module\General\IItemManager.cs" />
     <Compile Include="Module\General\ItemManager.cs" />
     <Compile Include="Module\Communication\ICommunicatorServer.cs" />
-    <Compile Include="Module\Communication\IHostCommunicator.cs" />
+    <Compile Include="Module\CommunicationHost\IHostCommunicator.cs" />
     <Compile Include="Module\General\IItem.cs" />
     <Compile Include="Module\Log\ILogRecorder.cs" />
     <Compile Include="Module\Map\IMapFileManager.cs" />
@@ -155,7 +155,7 @@
     <Compile Include="Module\Communication\CommunicatorClient.cs" />
     <Compile Include="Module\General\TimePeriod.cs" />
     <Compile Include="Module\General\TowardPoint2D.cs" />
-    <Compile Include="Module\Communication\VehicleCommunicator.cs" />
+    <Compile Include="Module\CommunicationVehicle\VehicleCommunicator.cs" />
     <Compile Include="Module\Vehicle\VehicleInfo.cs" />
     <Compile Include="Module\Vehicle\VehicleInfoManager.cs" />
     <Compile Include="Module\Vehicle\VehicleInfoUpdater.cs" />
@@ -173,7 +173,7 @@
     <Compile Include="Module\General\IPoint2D.cs" />
     <Compile Include="Module\General\IRectangle2D.cs" />
     <Compile Include="Module\General\IVector2D.cs" />
-    <Compile Include="Module\Communication\IVehicleCommunicator.cs" />
+    <Compile Include="Module\CommunicationVehicle\IVehicleCommunicator.cs" />
     <Compile Include="Module\Vehicle\IVehicleInfo.cs" />
     <Compile Include="Module\Vehicle\IVehicleInfoManager.cs" />
     <Compile Include="Library\Library.cs" />

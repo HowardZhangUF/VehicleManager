@@ -1,4 +1,4 @@
-﻿using TrafficControlTest.Module.Communication;
+﻿using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;
 

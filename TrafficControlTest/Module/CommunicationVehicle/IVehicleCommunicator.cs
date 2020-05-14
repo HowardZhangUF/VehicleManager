@@ -3,7 +3,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.Communication
+namespace TrafficControlTest.Module.CommunicationVehicle
 {
 	/// <summary>
 	/// - 提供監聽方法以供車子建立連線

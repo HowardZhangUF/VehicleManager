@@ -8,7 +8,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 
-namespace TrafficControlTest.Module.Communication
+namespace TrafficControlTest.Module.CommunicationHost
 {
 	public class HostCommunicator : SystemWithLoopTask, IHostCommunicator
 	{

@@ -5,8 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.Vehicle;
+using TrafficControlTest.Module.CommunicationVehicle;
 
 namespace TrafficControlTest.UserControl
 {

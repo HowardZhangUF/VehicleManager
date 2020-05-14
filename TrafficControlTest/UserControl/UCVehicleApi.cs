@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Map;
-using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.UserControl

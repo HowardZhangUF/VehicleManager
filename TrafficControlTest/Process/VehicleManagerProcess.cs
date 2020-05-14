@@ -5,6 +5,8 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.Account;
 using TrafficControlTest.Module.CollisionEvent;
 using TrafficControlTest.Module.Communication;
+using TrafficControlTest.Module.CommunicationHost;
+using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Configure;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.InterveneCommand;
