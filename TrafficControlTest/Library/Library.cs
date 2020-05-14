@@ -520,7 +520,7 @@ namespace TrafficControlTest.Library
 					for (double i = Start.mX + distance; i < End.mX; i += distance)
 					{
 						double y = Math.Round(m * i + c, 0, MidpointRounding.AwayFromZero);
-						result.Add(GenerateIPoint2D((int)i, (int)y));
+						result.Add(GenerateIPoint2D((int)Math.Round(i, 0, MidpointRounding.AwayFromZero), (int)y));
 					}
 				}
 				else
@@ -528,7 +528,7 @@ namespace TrafficControlTest.Library
 					for (double i = Start.mX - distance; i > End.mX; i -= distance)
 					{
 						double y = Math.Round(m * i + c, 0, MidpointRounding.AwayFromZero);
-						result.Add(GenerateIPoint2D((int)i, (int)y));
+						result.Add(GenerateIPoint2D((int)Math.Round(i, 0, MidpointRounding.AwayFromZero), (int)y));
 					}
 				}
 			}
