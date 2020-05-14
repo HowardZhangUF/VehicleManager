@@ -141,15 +141,15 @@ namespace TrafficControlTest.Module.Map
 				Task.Run(() => { MapLoaded?.Invoke(DateTime.Now, MapFileName); });
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
 			if (mAutoLoadMap)
 			{
 				// 要確實抓到 "CurrentMapName" 而非 "CurrentMapNameList"
-				if (StateName.Contains("CurrentMapName") && StateName.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(o => o == "CurrentMapName"))
+				if (Args.StatusName.Contains("CurrentMapName") && Args.StatusName.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(o => o == "CurrentMapName"))
 				{
 					DateTime tmpTimestamp = DateTime.Now;
-					Task.Run(() => TryLoadMap(Item.mCurrentMapName));
+					Task.Run(() => TryLoadMap(Args.Item.mCurrentMapName));
 				}
 			}
 		}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Mission;
 
 namespace TrafficControlTest.UserControl
@@ -88,14 +89,14 @@ namespace TrafficControlTest.UserControl
 				}
 			}
 		}
-		public void UpdateRow(string Id, string StateName, string NewValue)
+		public void UpdateRow(string Id, string StatusName, string NewValue)
 		{
 			lock (mLockOfDgvMission)
 			{
 				int rowIndex = GetRowIndex(Id);
 				if (rowIndex >= 0 && rowIndex < dgvMission.Columns.Count)
 				{
-					if (StateName == "Priority")
+					if (StatusName == "Priority")
 					{
 						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["Priority"]].Value.ToString() != NewValue)
 						{
@@ -106,21 +107,21 @@ namespace TrafficControlTest.UserControl
 							UpdateGui_RefreshDgvMissionRowsBackColor();
 						}
 					}
-					else if (StateName == "SourceIpPort")
+					else if (StatusName == "SourceIpPort")
 					{
 						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["SourceIpPort"]].Value.ToString() != NewValue)
 						{
 							dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["SourceIpPort"]].Value = NewValue;
 						}
 					}
-					else if (StateName == "ExecutorId")
+					else if (StatusName == "ExecutorId")
 					{
 						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["ExecutorId"]].Value.ToString() != NewValue)
 						{
 							dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["ExecutorId"]].Value = NewValue;
 						}
 					}
-					else if (StateName.StartsWith("SendState"))
+					else if (StatusName.StartsWith("SendState"))
 					{
 						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["SendState"]].Value.ToString() != NewValue)
 						{
@@ -128,7 +129,7 @@ namespace TrafficControlTest.UserControl
 							UpdateGui_RefreshDgvMissionRowBackColor(rowIndex);
 						}
 					}
-					else if (StateName.StartsWith("ExecuteState"))
+					else if (StatusName.StartsWith("ExecuteState"))
 					{
 						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["ExecuteState"]].Value.ToString() != NewValue)
 						{
@@ -158,41 +159,41 @@ namespace TrafficControlTest.UserControl
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
 			}
 		}
-		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string Name, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			AddRow(Name, Item.ToStringArray());
+			AddRow(Args.ItemName, Args.Item.ToStringArray());
 		}
-		private void HandleEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string Name, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			RemoveRow(Name);
+			RemoveRow(Args.ItemName);
 		}
-		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
 			string newValue = null;
-			if (StateName == "Priority")
+			if (Args.StatusName == "Priority")
 			{
-				newValue = Item.mMission.mPriority.ToString();
+				newValue = Args.Item.mMission.mPriority.ToString();
 			}
-			else if (StateName == "SourceIpPort")
+			else if (Args.StatusName == "SourceIpPort")
 			{
-				newValue = Item.mSourceIpPort;
+				newValue = Args.Item.mSourceIpPort;
 			}
-			else if (StateName == "ExecutorId")
+			else if (Args.StatusName == "ExecutorId")
 			{
-				newValue = Item.mExecutorId;
+				newValue = Args.Item.mExecutorId;
 			}
-			else if (StateName.StartsWith("SendState"))
+			else if (Args.StatusName.StartsWith("SendState"))
 			{
-				newValue = $"{Item.mSendState.ToString()} / {Item.mExecuteState.ToString()}";
+				newValue = $"{Args.Item.mSendState.ToString()} / {Args.Item.mExecuteState.ToString()}";
 			}
-			else if (StateName.StartsWith("ExecuteState"))
+			else if (Args.StatusName.StartsWith("ExecuteState"))
 			{
-				newValue = $"{Item.mSendState.ToString()} / {Item.mExecuteState.ToString()}";
+				newValue = $"{Args.Item.mSendState.ToString()} / {Args.Item.mExecuteState.ToString()}";
 			}
 
 			if (newValue != null)
 			{
-				UpdateRow(Name, StateName, newValue);
+				UpdateRow(Args.ItemName, Args.StatusName, newValue);
 			}
 		}
 		private void UpdateGui_InsertRow(int RowIndex, string[] RowData)

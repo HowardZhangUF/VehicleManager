@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General
 {
 	public abstract class ItemManager<T> : IItemManager<T> where T : IItem
 	{
-		public event EventHandlerItem<T> ItemAdded;
-		public event EventHandlerItem<T> ItemRemoved;
-		public event EventHandlerItemUpdated<T> ItemUpdated;
+		public event EventHandler<ItemCountChangedEventArgs<T>> ItemAdded;
+		public event EventHandler<ItemCountChangedEventArgs<T>> ItemRemoved;
+		public event EventHandler<ItemUpdatedEventArgs<T>> ItemUpdated;
 
 		public int mCount { get { return mItems.Count; } }
 
@@ -18,13 +17,13 @@ namespace TrafficControlTest.Module.General
 		protected readonly object mLock = new object();
 
 		public ItemManager() { }
-		public bool IsExist(string Name)
+		public bool IsExist(string ItemName)
 		{
-			return mItems.Keys.Contains(Name);
+			return mItems.Keys.Contains(ItemName);
 		}
-		public T GetItem(string Name)
+		public T GetItem(string ItemName)
 		{
-			return mItems.Keys.Contains(Name) ? mItems[Name] : default(T);
+			return mItems.Keys.Contains(ItemName) ? mItems[ItemName] : default(T);
 		}
 		public IEnumerable<T> GetItems()
 		{
@@ -34,16 +33,16 @@ namespace TrafficControlTest.Module.General
 		{
 			return mItems.Keys;
 		}
-		public bool Add(string Name, T Item)
+		public bool Add(string ItemName, T Item)
 		{
 			bool result = false;
 			lock (mLock)
 			{
-				if (!mItems.Keys.Contains(Name))
+				if (!mItems.Keys.Contains(ItemName))
 				{
-					mItems.Add(Name, Item);
+					mItems.Add(ItemName, Item);
 					SubscribeEvent_Item(Item);
-					RaiseEvent_ItemAdded(Name, mItems[Name]);
+					RaiseEvent_ItemAdded(ItemName, mItems[ItemName]);
 					result = true;
 				}
 				else
@@ -53,17 +52,17 @@ namespace TrafficControlTest.Module.General
 			}
 			return result;
 		}
-		public bool Remove(string Name)
+		public bool Remove(string ItemName)
 		{
 			bool result = false;
 			lock (mLock)
 			{
-				if (mItems.Keys.Contains(Name))
+				if (mItems.Keys.Contains(ItemName))
 				{
-					T tmpData = mItems[Name];
-					UnsubscribeEvent_Item(mItems[Name]);
-					mItems.Remove(Name);
-					RaiseEvent_ItemRemoved(Name, tmpData);
+					T tmpData = mItems[ItemName];
+					UnsubscribeEvent_Item(mItems[ItemName]);
+					mItems.Remove(ItemName);
+					RaiseEvent_ItemRemoved(ItemName, tmpData);
 					result = true;
 				}
 				else
@@ -88,42 +87,42 @@ namespace TrafficControlTest.Module.General
 				Item.Updated -= HandleEvent_ItemUpdated;
 			}
 		}
-		protected virtual void RaiseEvent_ItemAdded(string Name, T Item, bool Sync = true)
+		protected virtual void RaiseEvent_ItemAdded(string ItemName, T Item, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ItemAdded?.Invoke(DateTime.Now, Name, Item);
+				ItemAdded?.Invoke(this, new ItemCountChangedEventArgs<T>(DateTime.Now, ItemName, Item));
 			}
 			else
 			{
-				Task.Run(() => { ItemAdded?.Invoke(DateTime.Now, Name, Item); });
+				Task.Run(() => { ItemAdded?.Invoke(this, new ItemCountChangedEventArgs<T>(DateTime.Now, ItemName, Item)); });
 			}
 		}
-		protected virtual void RaiseEvent_ItemRemoved(string Name, T Item, bool Sync = true)
+		protected virtual void RaiseEvent_ItemRemoved(string ItemName, T Item, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ItemRemoved?.Invoke(DateTime.Now, Name, Item);
+				ItemRemoved?.Invoke(this, new ItemCountChangedEventArgs<T>(DateTime.Now, ItemName, Item));
 			}
 			else
 			{
-				Task.Run(() => { ItemRemoved?.Invoke(DateTime.Now, Name, Item); });
+				Task.Run(() => { ItemRemoved?.Invoke(this, new ItemCountChangedEventArgs<T>(DateTime.Now, ItemName, Item)); });
 			}
 		}
-		protected virtual void RaiseEvent_ItemUpdated(string Name, string StateName, T Item, bool Sync = true)
+		protected virtual void RaiseEvent_ItemUpdated(string ItemName, string StatusName, T Item, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ItemUpdated?.Invoke(DateTime.Now, Name, StateName, Item);
+				ItemUpdated?.Invoke(this, new ItemUpdatedEventArgs<T>(DateTime.Now, ItemName, StatusName, Item));
 			}
 			else
 			{
-				Task.Run(() => { ItemUpdated?.Invoke(DateTime.Now, Name, StateName, Item); });
+				Task.Run(() => { ItemUpdated?.Invoke(this, new ItemUpdatedEventArgs<T>(DateTime.Now, ItemName, StatusName, Item)); });
 			}
 		}
-		private void HandleEvent_ItemUpdated(DateTime OccurTime, string Name, string StateName)
+		private void HandleEvent_ItemUpdated(DateTime OccurTime, string ItemName, string StatusName)
 		{
-			RaiseEvent_ItemUpdated(Name, StateName, mItems[Name]);
+			RaiseEvent_ItemUpdated(ItemName, StatusName, mItems[ItemName]);
 		}
 	}
 }

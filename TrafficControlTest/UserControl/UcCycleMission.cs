@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.Vehicle;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.UserControl
 {
@@ -108,12 +109,12 @@ namespace TrafficControlTest.UserControl
 				CycleMissionGenerator.CycleMissionIndexUpdated -= HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateGui_CbVehicleStateList_UpdateItems();
 			cbVehicleStateList_SelectedIndexChanged(null, null);
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			if (rCycleMissionGenerator.GetAssigned(Name))
 			{

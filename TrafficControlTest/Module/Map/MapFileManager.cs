@@ -199,30 +199,30 @@ namespace TrafficControlTest.Module.Map
 				}
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			rVehicleCommunicator.SendSerializableData_RequestMapList(Item.mIpPort);
+			rVehicleCommunicator.SendSerializableData_RequestMapList(Args.Item.mIpPort);
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			if (!string.IsNullOrEmpty(Item.mCurrentMapName) && mMapsOfGetting.Count > 0)
+			if (!string.IsNullOrEmpty(Args.Item.mCurrentMapName) && mMapsOfGetting.Count > 0)
 			{
-				if (mMapsOfGetting.Contains(Item.mCurrentMapName))
+				if (mMapsOfGetting.Contains(Args.Item.mCurrentMapName))
 				{
-					mMapsOfGetting.Remove(Item.mCurrentMapName);
+					mMapsOfGetting.Remove(Args.Item.mCurrentMapName);
 				}
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
 			// 做兩次判斷式，因為僅使用 Contains 判斷有可能抓到 "CurrentMapName" 與 "CurrentMapNameList" 兩種結果，所以再做第二次判斷確認
 			// 當 CurrentMapName 改變且 CurrentMapName 不為空或 Null 時去將該地圖抓下來
-			if (StateName.Contains("CurrentMapName") && StateName.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(o => o == "CurrentMapName"))
+			if (Args.StatusName.Contains("CurrentMapName") && Args.StatusName.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(o => o == "CurrentMapName"))
 			{
-				if (!string.IsNullOrEmpty(Item.mCurrentMapName))
+				if (!string.IsNullOrEmpty(Args.Item.mCurrentMapName))
 				{
-					rVehicleCommunicator.SendSerializableData_GetMap(Item.mIpPort, Item.mCurrentMapName);
-					mMapsOfGetting.Add(Item.mCurrentMapName);
+					rVehicleCommunicator.SendSerializableData_GetMap(Args.Item.mIpPort, Args.Item.mCurrentMapName);
+					mMapsOfGetting.Add(Args.Item.mCurrentMapName);
 				}
 			}
 		}

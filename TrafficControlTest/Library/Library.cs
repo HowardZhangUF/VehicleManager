@@ -693,8 +693,6 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerSignificantEvent(string OccurTime, string Category, string Info);
 		public delegate void EventHandlerLogInOutEvent(DateTime OccurTime, string Name, AccountRank Rank);
 
-		public delegate void EventHandlerConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue);
-
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);
 		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState, int Port);
@@ -706,9 +704,6 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
 
 		public delegate void EventHandlerIItemUpdated(DateTime OccurTime, string Name, string StateName);
-
-		public delegate void EventHandlerItem<T>(DateTime OccurTime, string Name, T Item);
-		public delegate void EventHandlerItemUpdated<T>(DateTime OccurTime, string Name, string StateName, T Item);
 
 		public delegate void EventHandlerMapFileName(DateTime OccurTime, string MapFileName);
 		public delegate void EventHandlerVehicleNamesMapFileName(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName);

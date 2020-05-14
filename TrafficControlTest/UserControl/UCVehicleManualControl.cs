@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
+using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;
 
@@ -143,11 +144,11 @@ namespace TrafficControlTest.UserControl
 				MapManager.MapLoaded -= HandleEvent_MapManagerMapLoaded;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateGui_UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateGui_UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
 		}

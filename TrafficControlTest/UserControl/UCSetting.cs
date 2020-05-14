@@ -35,17 +35,17 @@ namespace TrafficControlTest.UserControl
 		{
 			if (Configurator != null)
 			{
-				Configurator.ConfigLoaded += HandleEvent_ConfiguratorConfigLoaded;
+				Configurator.ConfigFileLoaded += HandleEvent_ConfiguratorConfigLoaded;
 			}
 		}
 		private void UnsubscribeEvent_IConfigurator(IConfigurator Configurator)
 		{
 			if (Configurator != null)
 			{
-				Configurator.ConfigLoaded -= HandleEvent_ConfiguratorConfigLoaded;
+				Configurator.ConfigFileLoaded -= HandleEvent_ConfiguratorConfigLoaded;
 			}
 		}
-		private void HandleEvent_ConfiguratorConfigLoaded(DateTime OccurTime)
+		private void HandleEvent_ConfiguratorConfigLoaded(object Sender, ConfigFileLoadedEventArgs Args)
 		{
 			UpdateGui_DgvSettings_RowsClear();
 			List<string[]> rowDataCollection = rConfigurator.GetConfigDataGridViewRowDataCollection();

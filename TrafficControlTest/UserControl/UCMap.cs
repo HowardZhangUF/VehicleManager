@@ -6,6 +6,7 @@ using GLCore;
 using GLStyle;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.CollisionEvent;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.UserControl
 {
@@ -175,17 +176,17 @@ namespace TrafficControlTest.UserControl
 				CollisionEventManager.CollisionEventStateUpdated -= HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			RegisterIconId(Item);
+			RegisterIconId(Args.Item);
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			EraseIcon(Item);
+			EraseIcon(Args.Item);
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			PrintIcon(Item);
+			PrintIcon(Args.Item);
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
 		{

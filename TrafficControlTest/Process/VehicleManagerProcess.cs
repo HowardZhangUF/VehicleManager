@@ -9,6 +9,7 @@ using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Configure;
 using TrafficControlTest.Module.CycleMission;
+using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
@@ -439,18 +440,18 @@ namespace TrafficControlTest.Process
 		{
 			if (Configurator != null)
 			{
-				Configurator.ConfigLoaded += HandleEvent_ConfiguratorConfigLoaded;
-				Configurator.ConfigSaved += HandleEvent_ConfiguratorConfigSaved;
-				Configurator.ConfigUpdated += HandleEvent_ConfiguratorConfigUpdated;
+				Configurator.ConfigFileLoaded += HandleEvent_ConfiguratorConfigFileLoaded;
+				Configurator.ConfigFileSaved += HandleEvent_ConfiguratorConfigFileSaved;
+				Configurator.ConfigurationUpdated += HandleEvent_ConfiguratorConfigurationUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IConfigurator(IConfigurator Configurator)
 		{
 			if (Configurator != null)
 			{
-				Configurator.ConfigLoaded -= HandleEvent_ConfiguratorConfigLoaded;
-				Configurator.ConfigSaved -= HandleEvent_ConfiguratorConfigSaved;
-				Configurator.ConfigUpdated -= HandleEvent_ConfiguratorConfigUpdated;
+				Configurator.ConfigFileLoaded -= HandleEvent_ConfiguratorConfigFileLoaded;
+				Configurator.ConfigFileSaved -= HandleEvent_ConfiguratorConfigFileSaved;
+				Configurator.ConfigurationUpdated -= HandleEvent_ConfiguratorConfigurationUpdated;
 			}
 		}
 		private void SubscribeEvent_LogExporter(LogExporter LogExporter)
@@ -489,8 +490,7 @@ namespace TrafficControlTest.Process
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.SystemStarted += HandleEvent_VehicleCommunicatorSystemStarted;
-				VehicleCommunicator.SystemStopped += HandleEvent_VehicleCommunicatorSystemStopped;
+				VehicleCommunicator.SystemStatusChanged += HandleEvent_VehicleCommunicatorSystemStatusChanged;
 				VehicleCommunicator.ConfigUpdated += HandleEvent_VehicleCommunicatorConfigUpdated;
 				VehicleCommunicator.LocalListenStateChanged += HandleEvent_VehicleCommunicatorLocalListenStateChagned;
 				VehicleCommunicator.RemoteConnectStateChanged += HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
@@ -504,8 +504,7 @@ namespace TrafficControlTest.Process
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.SystemStarted -= HandleEvent_VehicleCommunicatorSystemStarted;
-				VehicleCommunicator.SystemStopped -= HandleEvent_VehicleCommunicatorSystemStopped;
+				VehicleCommunicator.SystemStatusChanged -= HandleEvent_VehicleCommunicatorSystemStatusChanged;
 				VehicleCommunicator.ConfigUpdated -= HandleEvent_VehicleCommunicatorConfigUpdated;
 				VehicleCommunicator.LocalListenStateChanged -= HandleEvent_VehicleCommunicatorLocalListenStateChagned;
 				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
@@ -555,8 +554,7 @@ namespace TrafficControlTest.Process
 		{
 			if (CollisionEventDetector != null)
 			{
-				CollisionEventDetector.SystemStarted += HandleEvent_CollisionEventDetectorSystemStarted;
-				CollisionEventDetector.SystemStopped += HandleEvent_CollisionEventDetectorSystemStopped;
+				CollisionEventDetector.SystemStatusChanged += HandleEvent_CollisionEventDetectorSystemStatusChanged;
 				CollisionEventDetector.ConfigUpdated += HandleEvent_CollisionEventDetectorConfigUpdated;
 			}
 		}
@@ -564,8 +562,7 @@ namespace TrafficControlTest.Process
 		{
 			if (CollisionEventDetector != null)
 			{
-				CollisionEventDetector.SystemStarted -= HandleEvent_CollisionEventDetectorSystemStarted;
-				CollisionEventDetector.SystemStopped -= HandleEvent_CollisionEventDetectorSystemStopped;
+				CollisionEventDetector.SystemStatusChanged -= HandleEvent_CollisionEventDetectorSystemStatusChanged;
 				CollisionEventDetector.ConfigUpdated -= HandleEvent_CollisionEventDetectorConfigUpdated;
 			}
 		}
@@ -605,8 +602,7 @@ namespace TrafficControlTest.Process
 		{
 			if (VehicleControlHandler != null)
 			{
-				VehicleControlHandler.SystemStarted += HandleEvent_VehicleControlHandlerSystemStarted;
-				VehicleControlHandler.SystemStopped += HandleEvent_VehicleControlHandlerSystemStopped;
+				VehicleControlHandler.SystemStatusChanged += HandleEvent_VehicleControlHandlerSystemStatusChanged;
 				VehicleControlHandler.ConfigUpdated += HandleEvent_VehicleControlHandlerConfigUpdated;
 			}
 		}
@@ -614,8 +610,7 @@ namespace TrafficControlTest.Process
 		{
 			if (VehicleControlHandler != null)
 			{
-				VehicleControlHandler.SystemStarted -= HandleEvent_VehicleControlHandlerSystemStarted;
-				VehicleControlHandler.SystemStopped -= HandleEvent_VehicleControlHandlerSystemStopped;
+				VehicleControlHandler.SystemStatusChanged -= HandleEvent_VehicleControlHandlerSystemStatusChanged;
 				VehicleControlHandler.ConfigUpdated -= HandleEvent_VehicleControlHandlerConfigUpdated;
 			}
 		}
@@ -669,8 +664,7 @@ namespace TrafficControlTest.Process
 		{
 			if (HostCommunicator != null)
 			{
-				HostCommunicator.SystemStarted += HandleEvent_HostCommunicatorSystemStarted;
-				HostCommunicator.SystemStopped += HandleEvent_HostCommunicatorSystemStopped;
+				HostCommunicator.SystemStatusChanged += HandleEvent_HostCommunicatorSystemStatusChanged;
 				HostCommunicator.ConfigUpdated += HandleEvent_HostCommunicatorConfigUpdated;
 				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged += HandleEvent_HostCommunicatorRemoteConnectStateChanged;
@@ -682,8 +676,7 @@ namespace TrafficControlTest.Process
 		{
 			if (HostCommunicator != null)
 			{
-				HostCommunicator.SystemStarted -= HandleEvent_HostCommunicatorSystemStarted;
-				HostCommunicator.SystemStopped -= HandleEvent_HostCommunicatorSystemStopped;
+				HostCommunicator.SystemStatusChanged -= HandleEvent_HostCommunicatorSystemStatusChanged;
 				HostCommunicator.ConfigUpdated -= HandleEvent_HostCommunicatorConfigUpdated;
 				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged -= HandleEvent_HostCommunicatorRemoteConnectStateChanged;
@@ -709,8 +702,7 @@ namespace TrafficControlTest.Process
 		{
 			if (MissionDispatcher != null)
 			{
-				MissionDispatcher.SystemStarted += HandleEvent_MissionDispatcherSystemStarted;
-				MissionDispatcher.SystemStopped += HandleEvent_MissionDispatcherSystemStopped;
+				MissionDispatcher.SystemStatusChanged += HandleEvent_MissionDispatcherSystemStatusChanged;
 				MissionDispatcher.ConfigUpdated += HandleEvent_MissionDispatcherConfigUpdated;
 				MissionDispatcher.MissionDispatched += HandleEvent_MissionDispatcherMissionDispatched;
 			}
@@ -719,8 +711,7 @@ namespace TrafficControlTest.Process
 		{
 			if (MissionDispatcher != null)
 			{
-				MissionDispatcher.SystemStarted -= HandleEvent_MissionDispatcherSystemStarted;
-				MissionDispatcher.SystemStopped -= HandleEvent_MissionDispatcherSystemStopped;
+				MissionDispatcher.SystemStatusChanged -= HandleEvent_MissionDispatcherSystemStatusChanged;
 				MissionDispatcher.ConfigUpdated -= HandleEvent_MissionDispatcherConfigUpdated;
 				MissionDispatcher.MissionDispatched -= HandleEvent_MissionDispatcherMissionDispatched;
 			}
@@ -793,8 +784,7 @@ namespace TrafficControlTest.Process
 		{
 			if (CycleMissionGenerator != null)
 			{
-				CycleMissionGenerator.SystemStarted += HandleEvent_CycleMissionGeneratorSystemStarted;
-				CycleMissionGenerator.SystemStopped += HandleEvent_CycleMissionGeneratorSystemStopped;
+				CycleMissionGenerator.SystemStatusChanged += HandleEvent_CycleMissionGeneratorSystemStatusChanged;
 				CycleMissionGenerator.ConfigUpdated += HandleEvent_CycleMissionGeneratorConfigUpdated;
 				CycleMissionGenerator.CycleMissionAssigned += HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
 				CycleMissionGenerator.CycleMissionRemoved += HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
@@ -805,8 +795,7 @@ namespace TrafficControlTest.Process
 		{
 			if (CycleMissionGenerator != null)
 			{
-				CycleMissionGenerator.SystemStarted -= HandleEvent_CycleMissionGeneratorSystemStarted;
-				CycleMissionGenerator.SystemStopped -= HandleEvent_CycleMissionGeneratorSystemStopped;
+				CycleMissionGenerator.SystemStatusChanged -= HandleEvent_CycleMissionGeneratorSystemStatusChanged;
 				CycleMissionGenerator.ConfigUpdated -= HandleEvent_CycleMissionGeneratorConfigUpdated;
 				CycleMissionGenerator.CycleMissionAssigned -= HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
 				CycleMissionGenerator.CycleMissionRemoved -= HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
@@ -817,8 +806,7 @@ namespace TrafficControlTest.Process
 		{
 			if (ImportantEventRecorder != null)
 			{
-				ImportantEventRecorder.SystemStarted += HandleEvent_ImportantEventRecorderSystemStarted;
-				ImportantEventRecorder.SystemStopped += HandleEvent_ImportantEventRecorderSystemStopped;
+				ImportantEventRecorder.SystemStatusChanged += HandleEvent_ImportantEventRecorderSystemStatusChanged;
 				ImportantEventRecorder.ConfigUpdated += HandleEvent_ImportantEventRecorderConfigUpdated;
 			}
 		}
@@ -826,8 +814,7 @@ namespace TrafficControlTest.Process
 		{
 			if (ImportantEventRecorder != null)
 			{
-				ImportantEventRecorder.SystemStarted -= HandleEvent_ImportantEventRecorderSystemStarted;
-				ImportantEventRecorder.SystemStopped -= HandleEvent_ImportantEventRecorderSystemStopped;
+				ImportantEventRecorder.SystemStatusChanged -= HandleEvent_ImportantEventRecorderSystemStatusChanged;
 				ImportantEventRecorder.ConfigUpdated -= HandleEvent_ImportantEventRecorderConfigUpdated;
 			}
 		}
@@ -879,18 +866,18 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { AccessControlUserLogOut?.Invoke(OccurTime, Name, Rank); });
 			}
 		}
-		private void HandleEvent_ConfiguratorConfigLoaded(DateTime OccurTime)
+		private void HandleEvent_ConfiguratorConfigFileLoaded(object Sender, ConfigFileLoadedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "Configurator", "ConfigLoaded", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "Configurator", "ConfigFileLoaded", $"FilePath: {Args.FilePath}");
 		}
-		private void HandleEvent_ConfiguratorConfigSaved(DateTime OccurTime)
+		private void HandleEvent_ConfiguratorConfigFileSaved(object Sender, ConfigFileSavedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "Configurator", "ConfigSaved", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "Configurator", "ConfigFileSaved", $"FilePath: {Args.FilePath}");
 		}
-		private void HandleEvent_ConfiguratorConfigUpdated(DateTime OccurTime, string Name, Configuration Item)
+		private void HandleEvent_ConfiguratorConfigurationUpdated(object Sender, ConfigurationUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "Configurator", "ConfigUpdated", $"Name: {Name}, NewValue: {Item.mValue}");
-			switch (Name)
+			HandleDebugMessage(Args.OccurTime, "Configurator", "ConfigurationUpdated", $"Name: {Args.ConfigName}, ConfigNewValue: {Args.Configuration.mValue}");
+			switch (Args.ConfigName)
 			{
 				case "ImportantEventRecorder/TimePeriod":
 					mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
@@ -951,17 +938,13 @@ namespace TrafficControlTest.Process
 			HandleDebugMessage(OccurTime, "AccessControl", "UserLogOut", $"Name: {Name}, Rank: {Rank.ToString()}");
 			RaiseEvent_AccessControlUserLogOut(OccurTime, Name, Rank);
 		}
-		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
+		private void HandleEvent_VehicleCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SystemStarted", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorSystemStopped(DateTime OccurTime)
+		private void HandleEvent_VehicleCommunicatorConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SystemStopped", string.Empty);
-		}
-		private void HandleEvent_VehicleCommunicatorConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
-		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
 		{
@@ -991,22 +974,22 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentDataFailed", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemAdded", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
-			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Name} ] Connected");
+			HandleDebugMessage(Args.OccurTime, "VehicleInfoManager", "ItemAdded", $"Name: {Args.ItemName}, Info: {Args.Item.ToString()}");
+			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Args.ItemName} ] Connected");
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemRemoved", $"Name: {Name}, Info: {VehicleInfo.ToString()}");
-			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Name} ] Disconnected");
+			HandleDebugMessage(Args.OccurTime, "VehicleInfoManager", "ItemRemoved", $"Name: {Args.ItemName}, Info: {Args.Item.ToString()}");
+			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Args.ItemName} ] Disconnected");
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
 			// 僅有重要的狀態 (CurrentState, CurrentTarget, AlarmMessage, CurrentMissionId, CurrentInterveneCommand, CurrentMapName) 變化時才做 General Log 記錄與使用 Console.WriteLine() 顯示
-			if (StateName.Contains("CurrentState") || StateName.Contains("CurrentTarget") || StateName.Contains("AlarmMessage") || StateName.Contains("CurrentMissionId") || StateName.Contains("CurrentInterveneCommand") || StateName.Contains("CurrentMapName"))
+			if (Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget") || Args.StatusName.Contains("AlarmMessage") || Args.StatusName.Contains("CurrentMissionId") || Args.StatusName.Contains("CurrentInterveneCommand") || Args.StatusName.Contains("CurrentMapName"))
 			{
-				HandleDebugMessage(OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info: {VehicleInfo.ToString()}");
+				HandleDebugMessage(Args.OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info: {Args.Item.ToString()}");
 			}
 		}
 		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
@@ -1021,74 +1004,62 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemUpdated", $"Name: {Name}, Info:{CollisionPair.ToString()}");
 		}
-		private void HandleEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime)
+		private void HandleEvent_CollisionEventDetectorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventDetector", "SystemStarted", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "CollisionEventDetector", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
-		private void HandleEvent_CollisionEventDetectorSystemStopped(DateTime OccurTime)
+		private void HandleEvent_CollisionEventDetectorConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventDetector", "SystemStopped", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "CollisionEventDetector", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_CollisionEventDetectorConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		private void HandleEvent_VehicleControlManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleControl> Args)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventDetector", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "VehicleControlManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
 		}
-		private void HandleEvent_VehicleControlManagerItemAdded(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
+		private void HandleEvent_VehicleControlManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleControl> Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemAdded", $"Name: {Name}, Info:{VehicleControl.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "VehicleControlManager", "ItemRemoved", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
 		}
-		private void HandleEvent_VehicleControlManagerItemRemoved(DateTime OccurTime, string Name, IVehicleControl VehicleControl)
+		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemRemoved", $"Name: {Name}, Info:{VehicleControl.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "VehicleControlManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
 		}
-		private void HandleEvent_VehicleControlManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl VehicleControl)
+		private void HandleEvent_VehicleControlHandlerSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlManager", "ItemUpdated", $"Name: {Name}, StateName: {StateName}, Info:{VehicleControl.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "VehicleControlHandler", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
-		private void HandleEvent_VehicleControlHandlerSystemStarted(DateTime OccurTime)
+		private void HandleEvent_VehicleControlHandlerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlHandler", "SystemStarted", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "VehicleControlHandler", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_VehicleControlHandlerSystemStopped(DateTime OccurTime)
+		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlHandler", "SystemStopped", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {Args.ItemName}, Info: {Args.Item.ToString()}");
+			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Created");
 		}
-		private void HandleEvent_VehicleControlHandlerConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		private void HandleEvent_MissionStateManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleControlHandler", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "MissionStateManager", "ItemRemoved", $"MissionID: {Args.ItemName}, Info: {Args.Item.ToString()}");
 		}
-		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string MissionId, IMissionState MissionState)
+		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
-			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
-			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {MissionState.GetMissionId()} ] Created");
-		}
-		private void HandleEvent_MissionStateManagerItemRemoved(DateTime OccurTime, string MissionId, IMissionState MissionState)
-		{
-			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemRemoved", $"MissionID: {MissionId}, Info: {MissionState.ToString()}");
-		}
-		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string MissionId, string StateName, IMissionState MissionState)
-		{
-			HandleDebugMessage(OccurTime, "MissionStateManager", "ItemUpdated", $"MissionID: {MissionId}, StateName: {StateName}, Info: {MissionState.ToString()}");
-			if (StateName.Contains("ExecutionStartTimestamp"))
+			HandleDebugMessage(Args.OccurTime, "MissionStateManager", "ItemUpdated", $"MissionID: {Args.ItemName}, StatusName:{Args.StatusName}, Info: {Args.Item.ToString()}");
+			if (Args.StatusName.Contains("ExecutionStartTimestamp"))
 			{
-				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {MissionState.GetMissionId()} ] Started by Vehicle [ {MissionState.mExecutorId} ]");
+				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Started by Vehicle [ {Args.Item.mExecutorId} ]");
 			}
-			else if (StateName.Contains("ExecutionStopTimestamp"))
+			else if (Args.StatusName.Contains("ExecutionStopTimestamp"))
 			{
-				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {MissionState.GetMissionId()} ] Completed [ {MissionState.mExecuteState.ToString().Replace("Execute", string.Empty)} ] by Vehicle [ {MissionState.mExecutorId} ]");
+				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Completed [ {Args.Item.mExecuteState.ToString().Replace("Execute", string.Empty)} ] by Vehicle [ {Args.Item.mExecutorId} ]");
 			}
 		}
-		private void HandleEvent_HostCommunicatorSystemStarted(DateTime OccurTime)
+		private void HandleEvent_HostCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "HostCommunicator", "SystemStarted", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
-		private void HandleEvent_HostCommunicatorSystemStopped(DateTime OccurTime)
+		private void HandleEvent_HostCommunicatorConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "HostCommunicator", "SystemStopped", string.Empty);
-		}
-		private void HandleEvent_HostCommunicatorConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
-		{
-			HandleDebugMessage(OccurTime, "HostCommunicator", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
 		{
@@ -1116,25 +1087,21 @@ namespace TrafficControlTest.Process
 			HandleDebugMessage(OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {IpPort}, Data: {Data}");
 			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {IpPort} ] [ {Data} ]");
 		}
-		private void HandleEvent_MissionDispatcherSystemStarted(DateTime OccurTime)
+		private void HandleEvent_MissionDispatcherSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MissionDispatcher", "SystemStarted", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "MissionDispatcher", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
-		private void HandleEvent_MissionDispatcherSystemStopped(DateTime OccurTime)
+		private void HandleEvent_MissionDispatcherConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MissionDispatcher", "SystemStopped", string.Empty);
-		}
-		private void HandleEvent_MissionDispatcherConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
-		{
-			HandleDebugMessage(OccurTime, "MissionDispatcher", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "MissionDispatcher", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleEvent_MissionDispatcherMissionDispatched(DateTime OccurTime, IMissionState MissionState, IVehicleInfo VehicleInfo)
 		{
 			HandleDebugMessage(OccurTime, "MissionDispatcher", "MissionDispatched", $"MissionName: {MissionState.mName} Dispatched To VehicleName: {VehicleInfo.mName}");
 		}
-		private void HandleEvent_MapFileManagerConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		private void HandleEvent_MapFileManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MapFileManager", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{
@@ -1148,21 +1115,17 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
 		}
-		private void HandleEvent_MapManagerConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		private void HandleEvent_MapManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
 		{
 			HandleDebugMessage(OccurTime, "MapManager", "MapLoaded", $"MapName: {MapFileName}");
 		}
-		private void HandleEvent_CycleMissionGeneratorSystemStarted(DateTime OccurTime)
+		private void HandleEvent_CycleMissionGeneratorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "SystemStarted", string.Empty);
-		}
-		private void HandleEvent_CycleMissionGeneratorSystemStopped(DateTime OccurTime)
-		{
-			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "SystemStopped", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "CycleMissionGenerator", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
 		private void HandleEvent_CycleMissionGeneratorCycleMissionAssigned(DateTime OccurTime, string VehicleId)
 		{
@@ -1176,21 +1139,17 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionIndexUpdated", $"VehicleID: {VehicleId}, Index: {Index.ToString()}");
 		}
-		private void HandleEvent_CycleMissionGeneratorConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
+		private void HandleEvent_CycleMissionGeneratorConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "CycleMissionGenerator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_ImportantEventRecorderSystemStarted(DateTime OccurTime)
+		private void HandleEvent_ImportantEventRecorderSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "SystemStarted", string.Empty);
+			HandleDebugMessage(Args.OccurTime, "ImportantEventRecorder", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
-		private void HandleEvent_ImportantEventRecorderSystemStopped(DateTime OccurTime)
+		private void HandleEvent_ImportantEventRecorderConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "SystemStopped", string.Empty);
-		}
-		private void HandleEvent_ImportantEventRecorderConfigUpdated(DateTime OccurTime, string ConfigName, string NewValue)
-		{
-			HandleDebugMessage(OccurTime, "ImportantEventRecorder", "ConfigUpdated", $"ConfigName: {ConfigName}, NewValue: {NewValue}");
+			HandleDebugMessage(Args.OccurTime, "ImportantEventRecorder", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleDebugMessage(string Message)
 		{

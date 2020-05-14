@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TrafficControlTest.Library;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Configure
 {
 	public interface IConfigurator
 	{
-		event EventHandlerDateTime ConfigLoaded;
-		event EventHandlerDateTime ConfigSaved;
-		event EventHandlerItem<Configuration> ConfigUpdated;
+		event EventHandler<ConfigFileLoadedEventArgs> ConfigFileLoaded;
+		event EventHandler<ConfigFileSavedEventArgs> ConfigFileSaved;
+		event EventHandler<ConfigurationUpdatedEventArgs> ConfigurationUpdated;
 
 		/// <summary>語系</summary>
 		Language mLanguage { get; }
 		/// <summary>儲存 Configuration 檔案的名稱，例： .\\Application.config</summary>
-		string mFileName { get; }
+		string mFilePath { get; }
 
 		/// <summary>設定 Configuration 檔案的名稱</summary>
 		void Set(string FileName);
@@ -27,5 +27,41 @@ namespace TrafficControlTest.Module.Configure
 		bool SetValue(string Keyword, string Value);
 		/// <summary>取得所有的 Configuration</summary>
 		List<string[]> GetConfigDataGridViewRowDataCollection();
+	}
+
+	public class ConfigFileLoadedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string FilePath { get; private set; }
+
+		public ConfigFileLoadedEventArgs(DateTime OccurTime, string FilePath) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.FilePath = FilePath;
+		}
+	}
+	public class ConfigFileSavedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string FilePath { get; private set; }
+
+		public ConfigFileSavedEventArgs(DateTime OccurTime, string FilePath) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.FilePath = FilePath;
+		}
+	}
+	public class ConfigurationUpdatedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string ConfigName { get; private set; }
+		public Configuration Configuration { get; private set; }
+
+		public ConfigurationUpdatedEventArgs(DateTime OccurTime, string ConfigName, Configuration Configuration) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.ConfigName = ConfigName;
+			this.Configuration = Configuration;
+		}
 	}
 }

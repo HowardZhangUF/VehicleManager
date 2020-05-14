@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Threading;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General
 {
 	public abstract class SystemWithLoopTask : SystemWithConfig, ISystemWithLoopTask
-    {
-        public event EventHandlerDateTime SystemStarted;
-        public event EventHandlerDateTime SystemStopped;
+	{
+		public event EventHandler<SystemStatusChangedEventArgs> SystemStatusChanged;
 
-        public bool mIsExecuting 
+		public bool mIsExecuting 
         {
             get
             {
@@ -18,8 +16,7 @@ namespace TrafficControlTest.Module.General
             private set
             {
                 _IsExecuting = value;
-                if (_IsExecuting) RaiseEvent_SystemStarted();
-                else RaiseEvent_SystemStopped();
+				RaiseEvent_SystemStatusChanged(_IsExecuting);
             }
         }
         public int mTimePeriod { get; set; } = 500;
@@ -60,28 +57,17 @@ namespace TrafficControlTest.Module.General
 			}
 		}
 
-		protected virtual void RaiseEvent_SystemStarted(bool Sync = true)
-        {
-            if (Sync)
-            {
-                SystemStarted?.Invoke(DateTime.Now);
-            }
-            else
-            {
-				System.Threading.Tasks.Task.Run(() => { SystemStarted?.Invoke(DateTime.Now); });
-            }
-        }
-        protected virtual void RaiseEvent_SystemStopped(bool Sync = true)
-        {
-            if (Sync)
-            {
-                SystemStopped?.Invoke(DateTime.Now);
-            }
-            else
-            {
-				System.Threading.Tasks.Task.Run(() => { SystemStopped?.Invoke(DateTime.Now); });
-            }
-        }
+		protected virtual void RaiseEvent_SystemStatusChanged(bool SystemNewStatus, bool Sync = true)
+		{
+			if (Sync)
+			{
+				SystemStatusChanged?.Invoke(this, new SystemStatusChangedEventArgs(DateTime.Now, SystemNewStatus));
+			}
+			else
+			{
+				System.Threading.Tasks.Task.Run(() => { SystemStatusChanged?.Invoke(this, new SystemStatusChangedEventArgs(DateTime.Now, SystemNewStatus)); });
+			}
+		}
 
         private void InitializeThread()
         {

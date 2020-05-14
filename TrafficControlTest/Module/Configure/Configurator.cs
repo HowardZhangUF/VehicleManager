@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TrafficControlTest.Library;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Configure
 {
@@ -17,40 +16,40 @@ namespace TrafficControlTest.Module.Configure
 		 * 4. VehicleManagerProcess 的 HandleEvent_ConfiguratorConfigUpdated() 方法需要更新
 		 */
 
-		public event EventHandlerDateTime ConfigLoaded;
-		public event EventHandlerDateTime ConfigSaved;
-		public event EventHandlerItem<Configuration> ConfigUpdated;
+		public event EventHandler<ConfigFileLoadedEventArgs> ConfigFileLoaded;
+		public event EventHandler<ConfigFileSavedEventArgs> ConfigFileSaved;
+		public event EventHandler<ConfigurationUpdatedEventArgs> ConfigurationUpdated;
 
 		public Language mLanguage { get; private set; } = Language.Enus;
-		public string mFileName { get; private set; } = string.Empty;
+		public string mFilePath { get; private set; } = string.Empty;
 
 		private readonly Dictionary<string, Configuration> mConfigs = new Dictionary<string, Configuration>();
 
-		public Configurator(string FileName)
+		public Configurator(string FilePath)
 		{
-			Set(FileName);
+			Set(FilePath);
 		}
 		public void Set(string FileName)
 		{
 			if (!string.IsNullOrEmpty(FileName))
 			{
-				mFileName = FileName;
+				mFilePath = FileName;
 			}
 		}
 		public void Load()
 		{
-			if (!string.IsNullOrEmpty(mFileName))
+			if (!string.IsNullOrEmpty(mFilePath))
 			{
 				GenerateDefaultConfiguration();
-				if (!File.Exists(mFileName))
+				if (!File.Exists(mFilePath))
 				{
-					RaiseEvent_ConfigLoaded();
+					RaiseEvent_ConfigFileLoaded();
 					Save();
 					return;
 				}
 				else
 				{
-					string[] datas = File.ReadAllLines(mFileName);
+					string[] datas = File.ReadAllLines(mFilePath);
 					foreach (string data in datas)
 					{
 						string[] keyValue = data.Split('=');
@@ -62,22 +61,22 @@ namespace TrafficControlTest.Module.Configure
 							}
 						}
 					}
-					RaiseEvent_ConfigLoaded();
+					RaiseEvent_ConfigFileLoaded();
 					Save();
 				}
 			}
 		}
 		public void Save()
 		{
-			if (!string.IsNullOrEmpty(mFileName))
+			if (!string.IsNullOrEmpty(mFilePath))
 			{
 				List<string> result = new List<string>();
 				foreach (Configuration config in mConfigs.Values)
 				{
 					result.Add(config.ToString());
 				}
-				File.WriteAllLines(mFileName, result);
-				RaiseEvent_ConfigSaved();
+				File.WriteAllLines(mFilePath, result);
+				RaiseEvent_ConfigFileSaved();
 			}
 		}
 		public string GetValue(string Keyword)
@@ -99,7 +98,7 @@ namespace TrafficControlTest.Module.Configure
 				if (mConfigs[Keyword].SetValue(Value))
 				{
 					result = true;
-					RaiseEvent_ConfigUpdated(Keyword, mConfigs[Keyword]);
+					RaiseEvent_ConfigurationUpdated(Keyword, mConfigs[Keyword]);
 					Save();
 				}
 			}
@@ -265,37 +264,37 @@ namespace TrafficControlTest.Module.Configure
 				mConfigs.Add(defaultConfigs[i].mFullName, defaultConfigs[i]);
 			}
 		}
-		protected virtual void RaiseEvent_ConfigLoaded(bool Sync = true)
+		protected virtual void RaiseEvent_ConfigFileLoaded(bool Sync = true)
 		{
 			if (Sync)
 			{
-				ConfigLoaded?.Invoke(DateTime.Now);
+				ConfigFileLoaded?.Invoke(this, new ConfigFileLoadedEventArgs(DateTime.Now, mFilePath));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { ConfigLoaded?.Invoke(DateTime.Now); });
+				System.Threading.Tasks.Task.Run(() => { ConfigFileLoaded?.Invoke(this, new ConfigFileLoadedEventArgs(DateTime.Now, mFilePath)); });
 			}
 		}
-		protected virtual void RaiseEvent_ConfigSaved(bool Sync = true)
+		protected virtual void RaiseEvent_ConfigFileSaved(bool Sync = true)
 		{
 			if (Sync)
 			{
-				ConfigSaved?.Invoke(DateTime.Now);
+				ConfigFileSaved?.Invoke(this, new ConfigFileSavedEventArgs(DateTime.Now, mFilePath));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { ConfigSaved?.Invoke(DateTime.Now); });
+				System.Threading.Tasks.Task.Run(() => { ConfigFileSaved?.Invoke(this, new ConfigFileSavedEventArgs(DateTime.Now, mFilePath)); });
 			}
 		}
-		protected virtual void RaiseEvent_ConfigUpdated(string Name, Configuration Item, bool Sync = true)
+		protected virtual void RaiseEvent_ConfigurationUpdated(string ConfigName, Configuration Configuration, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ConfigUpdated?.Invoke(DateTime.Now, Name, Item);
+				ConfigurationUpdated?.Invoke(this, new ConfigurationUpdatedEventArgs(DateTime.Now, ConfigName, Configuration));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { ConfigUpdated?.Invoke(DateTime.Now, Name, Item); });
+				System.Threading.Tasks.Task.Run(() => { ConfigurationUpdated?.Invoke(this, new ConfigurationUpdatedEventArgs(DateTime.Now, ConfigName, Configuration)); });
 			}
 		}
 	}

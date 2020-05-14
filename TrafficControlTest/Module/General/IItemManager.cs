@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TrafficControlTest.Module.General
 {
@@ -10,9 +10,9 @@ namespace TrafficControlTest.Module.General
 	/// </summary>
 	public interface IItemManager<T> where T : IItem
 	{
-		event EventHandlerItem<T> ItemAdded;
-		event EventHandlerItem<T> ItemRemoved;
-		event EventHandlerItemUpdated<T> ItemUpdated;
+		event EventHandler<ItemCountChangedEventArgs<T>> ItemAdded;
+		event EventHandler<ItemCountChangedEventArgs<T>> ItemRemoved;
+		event EventHandler<ItemUpdatedEventArgs<T>> ItemUpdated;
 
 		int mCount { get; }
 
@@ -22,5 +22,34 @@ namespace TrafficControlTest.Module.General
 		IEnumerable<string> GetItemNames();
 		bool Add(string Name, T Item);
 		bool Remove(string Name);
+	}
+
+	public class ItemCountChangedEventArgs<T> : EventArgs where T : IItem
+	{
+		public DateTime OccurTime { get; private set; }
+		public string ItemName { get; private set; }
+		public T Item { get; private set; }
+
+		public ItemCountChangedEventArgs(DateTime OccurTime, string ItemName, T Item) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.ItemName = ItemName;
+			this.Item = Item;
+		}
+	}
+	public class ItemUpdatedEventArgs<T> : EventArgs where T : IItem
+	{
+		public DateTime OccurTime { get; private set; }
+		public string ItemName { get; private set; }
+		public string StatusName { get; private set; }
+		public T Item { get; private set; }
+
+		public ItemUpdatedEventArgs(DateTime OccurTime, string ItemName, string StatusName, T Item) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.ItemName = ItemName;
+			this.StatusName = StatusName;
+			this.Item = Item;
+		}
 	}
 }

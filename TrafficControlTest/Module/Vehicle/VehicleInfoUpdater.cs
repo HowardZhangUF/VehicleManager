@@ -138,42 +138,42 @@ namespace TrafficControlTest.Module.Vehicle
 				}
 			}
 		}
-		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
-			if (StateName.Contains("ExecuteState"))
+			if (Args.StatusName.Contains("ExecuteState"))
 			{
-				switch (Item.mExecuteState)
+				switch (Args.Item.mExecuteState)
 				{
 					case ExecuteState.Unexecute:
 						break;
 					case ExecuteState.Executing:
-						rVehicleInfoManager.UpdateItemMissionId(Item.mExecutorId, Item.mName);
+						rVehicleInfoManager.UpdateItemMissionId(Args.Item.mExecutorId, Args.Item.mName);
 						break;
 					case ExecuteState.ExecuteSuccessed:
 					case ExecuteState.ExecuteFailed:
-						rVehicleInfoManager.UpdateItemMissionId(Item.mExecutorId, string.Empty);
+						rVehicleInfoManager.UpdateItemMissionId(Args.Item.mExecutorId, string.Empty);
 						break;
 				}
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			if (!string.IsNullOrEmpty(Item.mCurrentInterveneCommand))
+			if (!string.IsNullOrEmpty(Args.Item.mCurrentInterveneCommand))
 			{
-				if (StateName.Contains("Path") && Item.mCurrentInterveneCommand.StartsWith("InsertMovingBuffer"))
+				if (Args.StatusName.Contains("Path") && Args.Item.mCurrentInterveneCommand.StartsWith("InsertMovingBuffer"))
 				{
-					string movingBuffer = Item.mCurrentInterveneCommand.Replace("InsertMovingBuffer", string.Empty);
-					if (!Item.mPathString.Contains(movingBuffer))
+					string movingBuffer = Args.Item.mCurrentInterveneCommand.Replace("InsertMovingBuffer", string.Empty);
+					if (!Args.Item.mPathString.Contains(movingBuffer))
 					{
-						Item.UpdateCurrentInterveneCommand(string.Empty);
+						Args.Item.UpdateCurrentInterveneCommand(string.Empty);
 					}
 				}
 
-				if (StateName.Contains("CurrentState") && Item.mCurrentInterveneCommand.StartsWith("PauseMoving"))
+				if (Args.StatusName.Contains("CurrentState") && Args.Item.mCurrentInterveneCommand.StartsWith("PauseMoving"))
 				{
-					if (Item.mCurrentState != "Pause")
+					if (Args.Item.mCurrentState != "Pause")
 					{
-						Item.UpdateCurrentInterveneCommand(string.Empty);
+						Args.Item.UpdateCurrentInterveneCommand(string.Empty);
 					}
 				}
 			}

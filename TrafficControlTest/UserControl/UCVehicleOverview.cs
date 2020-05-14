@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using static TrafficControlTest.UserControl.UcVehicleInfo;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Vehicle;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.UserControl
 {
@@ -176,20 +177,20 @@ namespace TrafficControlTest.UserControl
 				RaiseEvent_DoubleClickOnVehicleInfo(vehicleName);
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			Add(Item.mName, Item.mBatteryValue.ToString("F2"), Item.mLocationScore.ToString("F2"), Item.mCurrentState, Item.mCurrentTarget);
+			Add(Args.Item.mName, Args.Item.mBatteryValue.ToString("F2"), Args.Item.mLocationScore.ToString("F2"), Args.Item.mCurrentState, Args.Item.mCurrentTarget);
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			Remove(Item.mName);
+			Remove(Args.Item.mName);
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			if (StateName.Contains("BatteryValue")) Update(Item.mName, Property.Battery, Item.mBatteryValue.ToString("F2"));
-			if (StateName.Contains("LocationScore")) Update(Item.mName, Property.LocationScore, Item.mLocationScore.ToString("F2"));
-			if (StateName.Contains("CurrentState")) Update(Item.mName, Property.State, Item.mCurrentState);
-			if (StateName.Contains("CurrentTarget")) Update(Item.mName, Property.Target, Item.mCurrentTarget);
+			if (Args.StatusName.Contains("BatteryValue")) Update(Args.Item.mName, Property.Battery, Args.Item.mBatteryValue.ToString("F2"));
+			if (Args.StatusName.Contains("LocationScore")) Update(Args.Item.mName, Property.LocationScore, Args.Item.mLocationScore.ToString("F2"));
+			if (Args.StatusName.Contains("CurrentState")) Update(Args.Item.mName, Property.State, Args.Item.mCurrentState);
+			if (Args.StatusName.Contains("CurrentTarget")) Update(Args.Item.mName, Property.Target, Args.Item.mCurrentTarget);
 		}
 	}
 }

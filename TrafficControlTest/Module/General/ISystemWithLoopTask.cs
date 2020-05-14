@@ -1,11 +1,10 @@
-﻿using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using System;
 
 namespace TrafficControlTest.Module.General
 {
 	public interface ISystemWithLoopTask : ISystemWithConfig
 	{
-        event EventHandlerDateTime SystemStarted;
-        event EventHandlerDateTime SystemStopped;
+		event EventHandler<SystemStatusChangedEventArgs> SystemStatusChanged;
 
         bool mIsExecuting { get; }
         int mTimePeriod { get; set; }
@@ -15,4 +14,16 @@ namespace TrafficControlTest.Module.General
 		/// <summary>此方法將被迴圈執行</summary>
         void Task();
     }
+
+	public class SystemStatusChangedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public bool SystemNewStatus { get; private set; }
+
+		public SystemStatusChangedEventArgs(DateTime OccurTime, bool SystemNewStatus) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.SystemNewStatus = SystemNewStatus;
+		}
+	}
 }

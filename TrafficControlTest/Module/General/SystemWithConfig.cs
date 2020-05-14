@@ -1,24 +1,23 @@
 ﻿using System;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General
 {
 	public abstract class SystemWithConfig : ISystemWithConfig
 	{
-		public event EventHandlerConfigUpdated ConfigUpdated;
+		public event EventHandler<ConfigUpdatedEventArgs> ConfigUpdated;
 
 		public abstract string GetConfig(string ConfigName);
 		public abstract void SetConfig(string ConfigName, string NewValue);
 
-		protected virtual void RaiseEvent_ConfigUpdated(string ConfigName, string NewValue, bool Sync = true)
+		protected virtual void RaiseEvent_ConfigUpdated(string ConfigName, string ConfigNewValue, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ConfigUpdated?.Invoke(DateTime.Now, ConfigName, NewValue);
+				ConfigUpdated?.Invoke(this, new ConfigUpdatedEventArgs(DateTime.Now, ConfigName, ConfigNewValue));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { ConfigUpdated?.Invoke(DateTime.Now, ConfigName, NewValue); });
+				System.Threading.Tasks.Task.Run(() => { ConfigUpdated?.Invoke(this, new ConfigUpdatedEventArgs(DateTime.Now, ConfigName, ConfigNewValue)); });
 			}
 		}
 	}

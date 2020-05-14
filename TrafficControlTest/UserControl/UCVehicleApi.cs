@@ -6,6 +6,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Vehicle;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.UserControl
 {
@@ -233,17 +234,17 @@ namespace TrafficControlTest.UserControl
 				MapManager.MapLoaded -= HandleEvent_MapManagerMapLoaded;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			if (!string.IsNullOrEmpty(CurrentVehicleName) && StateName.Contains("CurrentMapNameList"))
+			if (!string.IsNullOrEmpty(CurrentVehicleName) && Args.StatusName.Contains("CurrentMapNameList"))
 			{
 				UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
 				UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());

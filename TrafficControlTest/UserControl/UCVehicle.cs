@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.UserControl
@@ -174,31 +175,31 @@ namespace TrafficControlTest.UserControl
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateGui_UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateGui_UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
 			if (CurrentVehicleName == Name)
 			{
-				UpdateGui_UpdateVehicleState(Item.mCurrentState);
-				UpdateGui_UpdateVehicleLocation(Item.mLocationCoordinate.mX, Item.mLocationCoordinate.mY, Item.mLocationToward);
-				UpdateGui_UpdateVehicleTarget(Item.mCurrentTarget);
-				UpdateGui_UpdateVehicleVelocity(Item.mVelocity);
-				UpdateGui_UpdateVehicleLocationScore(Item.mLocationScore);
-				UpdateGui_UpdateVehicleBatteryValue(Item.mBatteryValue);
-				UpdateGui_UpdateVehicleAlarmMessage(Item.mAlarmMessage);
-				UpdateGui_UpdateVehiclePath(Item.mPathString);
-				UpdateGui_UpdateVehicleIpPort(Item.mIpPort);
-				UpdateGui_UpdateVehicleMissionId(Item.mCurrentMissionId);
-				UpdateGui_UpdateVehicleInterveneCommand(Item.mCurrentInterveneCommand);
-				UpdateGui_UpdateVehicleMapName(Item.mCurrentMapName);
-				UpdateGui_UpdateVehicleLastUpdateTime(Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT));
+				UpdateGui_UpdateVehicleState(Args.Item.mCurrentState);
+				UpdateGui_UpdateVehicleLocation(Args.Item.mLocationCoordinate.mX, Args.Item.mLocationCoordinate.mY, Args.Item.mLocationToward);
+				UpdateGui_UpdateVehicleTarget(Args.Item.mCurrentTarget);
+				UpdateGui_UpdateVehicleVelocity(Args.Item.mVelocity);
+				UpdateGui_UpdateVehicleLocationScore(Args.Item.mLocationScore);
+				UpdateGui_UpdateVehicleBatteryValue(Args.Item.mBatteryValue);
+				UpdateGui_UpdateVehicleAlarmMessage(Args.Item.mAlarmMessage);
+				UpdateGui_UpdateVehiclePath(Args.Item.mPathString);
+				UpdateGui_UpdateVehicleIpPort(Args.Item.mIpPort);
+				UpdateGui_UpdateVehicleMissionId(Args.Item.mCurrentMissionId);
+				UpdateGui_UpdateVehicleInterveneCommand(Args.Item.mCurrentInterveneCommand);
+				UpdateGui_UpdateVehicleMapName(Args.Item.mCurrentMapName);
+				UpdateGui_UpdateVehicleLastUpdateTime(Args.Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT));
 			}
 		}
 		private void btnRefreshVehicleState_Click(object sender, EventArgs e)

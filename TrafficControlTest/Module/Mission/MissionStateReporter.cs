@@ -1,5 +1,6 @@
 ﻿using System;
 using TrafficControlTest.Module.CommunicationHost;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Mission
 {
@@ -60,25 +61,25 @@ namespace TrafficControlTest.Module.Mission
 
 			}
 		}
-		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string Name, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			rHostCommunicator.SendString($"Event=MissionCreated MissionID={Item.GetMissionId()}");
+			rHostCommunicator.SendString($"Event=MissionCreated MissionID={Args.Item.GetMissionId()}");
 		}
-		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
-			if (StateName.Contains("ExecuteState"))
+			if (Args.StatusName.Contains("ExecuteState"))
 			{
 				string msg = null;
-				switch (Item.mExecuteState)
+				switch (Args.Item.mExecuteState)
 				{
 					case ExecuteState.Executing:
-						msg = $"Event=MissionStarted MissionID={Item.GetMissionId()}";
+						msg = $"Event=MissionStarted MissionID={Args.Item.GetMissionId()}";
 						break;
 					case ExecuteState.ExecuteSuccessed:
-						msg = $"Event=MissionCompleted Result=Successed MissionID={Item.GetMissionId()}";
+						msg = $"Event=MissionCompleted Result=Successed MissionID={Args.Item.GetMissionId()}";
 						break;
 					case ExecuteState.ExecuteFailed:
-						msg = $"Event=MissionCompleted Result=Failed MissionID={Item.GetMissionId()}";
+						msg = $"Event=MissionCompleted Result=Failed MissionID={Args.Item.GetMissionId()}";
 						break;
 				}
 				if (!string.IsNullOrEmpty(msg))

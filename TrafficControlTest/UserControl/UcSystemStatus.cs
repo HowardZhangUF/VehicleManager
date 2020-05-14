@@ -9,6 +9,7 @@ using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.CommunicationHost;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.UserControl
 {
@@ -96,16 +97,14 @@ namespace TrafficControlTest.UserControl
 		{
 			if (ImportantEventRecorder != null)
 			{
-				ImportantEventRecorder.SystemStarted += HandleEvent_ImportantEventRecorderSystemStarted;
-				ImportantEventRecorder.SystemStopped += HandleEvent_ImportantEventRecorderSystemStopped;
+				ImportantEventRecorder.SystemStatusChanged += HandleEvent_ImportantEventRecorderSystemStatusChanged;
 			}
 		}
 		private void UnsubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
 		{
 			if (ImportantEventRecorder != null)
 			{
-				ImportantEventRecorder.SystemStarted -= HandleEvent_ImportantEventRecorderSystemStarted;
-				ImportantEventRecorder.SystemStopped -= HandleEvent_ImportantEventRecorderSystemStopped;
+				ImportantEventRecorder.SystemStatusChanged -= HandleEvent_ImportantEventRecorderSystemStatusChanged;
 			}
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -113,8 +112,7 @@ namespace TrafficControlTest.UserControl
 			if (VehicleCommunicator != null)
 			{
 				VehicleCommunicator.LocalListenStateChanged += HandleEvent_VehicleCommunicatorLocalListenStateChanged;
-				VehicleCommunicator.SystemStarted += HandleEvent_VehicleCommunicatorSystemStarted;
-				VehicleCommunicator.SystemStopped += HandleEvent_VehicleCommunicatorSystemStopped;
+				VehicleCommunicator.SystemStatusChanged += HandleEvent_VehicleCommunicatorSystemStatusChanged;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -122,40 +120,35 @@ namespace TrafficControlTest.UserControl
 			if (VehicleCommunicator != null)
 			{
 				VehicleCommunicator.LocalListenStateChanged -= HandleEvent_VehicleCommunicatorLocalListenStateChanged;
-				VehicleCommunicator.SystemStarted -= HandleEvent_VehicleCommunicatorSystemStarted;
-				VehicleCommunicator.SystemStopped -= HandleEvent_VehicleCommunicatorSystemStopped;
+				VehicleCommunicator.SystemStatusChanged -= HandleEvent_VehicleCommunicatorSystemStatusChanged;
 			}
 		}
 		private void SubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
 		{
 			if (CollisionEventDetector != null)
 			{
-				CollisionEventDetector.SystemStarted += HandleEvent_CollisionEventDetectorSystemStarted;
-				CollisionEventDetector.SystemStopped += HandleEvent_CollisionEventDetectorSystemStopped;
+				CollisionEventDetector.SystemStatusChanged += HandleEvent_CollisionEventDetectorSystemStatusChanged;
 			}
 		}
 		private void UnsubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
 		{
 			if (CollisionEventDetector != null)
 			{
-				CollisionEventDetector.SystemStarted -= HandleEvent_CollisionEventDetectorSystemStarted;
-				CollisionEventDetector.SystemStopped -= HandleEvent_CollisionEventDetectorSystemStopped;
+				CollisionEventDetector.SystemStatusChanged -= HandleEvent_CollisionEventDetectorSystemStatusChanged;
 			}
 		}
 		private void SubscribeEvent_IVehicleControlHandler(IVehicleControlHandler VehicleControlHandler)
 		{
 			if (VehicleControlHandler != null)
 			{
-				VehicleControlHandler.SystemStarted += HandleEvent_VehicleControlHandlerSystemStarted;
-				VehicleControlHandler.SystemStopped += HandleEvent_VehicleControlHandlerSystemStopped;
+				VehicleControlHandler.SystemStatusChanged += HandleEvent_VehicleControlHandlerSystemStatusChanged;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleControlHandler(IVehicleControlHandler VehicleControlHandler)
 		{
 			if (VehicleControlHandler != null)
 			{
-				VehicleControlHandler.SystemStarted -= HandleEvent_VehicleControlHandlerSystemStarted;
-				VehicleControlHandler.SystemStopped -= HandleEvent_VehicleControlHandlerSystemStopped;
+				VehicleControlHandler.SystemStatusChanged -= HandleEvent_VehicleControlHandlerSystemStatusChanged;
 			}
 		}
 		private void SubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
@@ -163,8 +156,7 @@ namespace TrafficControlTest.UserControl
 			if (HostCommunicator != null)
 			{
 				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
-				HostCommunicator.SystemStarted += HandleEvent_HostCommunicatorSystemStarted;
-				HostCommunicator.SystemStopped += HandleEvent_HostCommunicatorSystemStopped;
+				HostCommunicator.SystemStatusChanged += HandleEvent_HostCommunicatorSystemStatusChanged;
 			}
 		}
 		private void UnsubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
@@ -172,40 +164,35 @@ namespace TrafficControlTest.UserControl
 			if (HostCommunicator != null)
 			{
 				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
-				HostCommunicator.SystemStarted -= HandleEvent_HostCommunicatorSystemStarted;
-				HostCommunicator.SystemStopped -= HandleEvent_HostCommunicatorSystemStopped;
+				HostCommunicator.SystemStatusChanged -= HandleEvent_HostCommunicatorSystemStatusChanged;
 			}
 		}
 		private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
 		{
 			if (MissionDispatcher != null)
 			{
-				MissionDispatcher.SystemStarted += HandleEvent_MissionDispatcherSystemStarted;
-				MissionDispatcher.SystemStopped += HandleEvent_MissionDispatcherSystemStopped;
+				MissionDispatcher.SystemStatusChanged += HandleEvent_MissionDispatcherSystemStatusChanged;
 			}
 		}
 		private void UnsubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
 		{
 			if (MissionDispatcher != null)
 			{
-				MissionDispatcher.SystemStarted -= HandleEvent_MissionDispatcherSystemStarted;
-				MissionDispatcher.SystemStopped -= HandleEvent_MissionDispatcherSystemStopped;
+				MissionDispatcher.SystemStatusChanged -= HandleEvent_MissionDispatcherSystemStatusChanged;
 			}
 		}
 		private void SubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
 		{
 			if (CycleMissionGenerator != null)
 			{
-				CycleMissionGenerator.SystemStarted += HandleEvent_CycleMissionGeneratorSystemStarted;
-				CycleMissionGenerator.SystemStopped += HandleEvent_CycleMissionGeneratorSystemStopped;
+				CycleMissionGenerator.SystemStatusChanged += HandleEvent_CycleMissionGeneratorSystemStatusChanged;
 			}
 		}
 		private void UnsubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
 		{
 			if (CycleMissionGenerator != null)
 			{
-				CycleMissionGenerator.SystemStarted -= HandleEvent_CycleMissionGeneratorSystemStarted;
-				CycleMissionGenerator.SystemStopped -= HandleEvent_CycleMissionGeneratorSystemStopped;
+				CycleMissionGenerator.SystemStatusChanged -= HandleEvent_CycleMissionGeneratorSystemStatusChanged;
 			}
 		}
 		private void SubscribeEvent_LogExporter(LogExporter LogExporter)
@@ -224,13 +211,9 @@ namespace TrafficControlTest.UserControl
 				LogExporter.ExportCompleted -= HandleEvent_LogExporterExportCompleted;
 			}
 		}
-		private void HandleEvent_ImportantEventRecorderSystemStarted(DateTime OccurTime)
+		private void HandleEvent_ImportantEventRecorderSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnImportantEventRecorder, SwitchState.On);
-		}
-		private void HandleEvent_ImportantEventRecorderSystemStopped(DateTime OccurTime)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnImportantEventRecorder, SwitchState.Off);
+			UpdateGui_UpdateSwitchButtonSwitchState(sbtnImportantEventRecorder, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
 		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
 		{
@@ -243,29 +226,17 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicatorServer, SwitchState.Off);
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSystemStarted(DateTime OccurTime)
+		private void HandleEvent_VehicleCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicator, SwitchState.On);
+			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicator, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_VehicleCommunicatorSystemStopped(DateTime OccurTime)
+		private void HandleEvent_CollisionEventDetectorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicator, SwitchState.Off);
+			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCollisionEventDetector, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_CollisionEventDetectorSystemStarted(DateTime OccurTime)
+		private void HandleEvent_VehicleControlHandlerSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCollisionEventDetector, SwitchState.On);
-		}
-		private void HandleEvent_CollisionEventDetectorSystemStopped(DateTime OccurTime)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCollisionEventDetector, SwitchState.Off);
-		}
-		private void HandleEvent_VehicleControlHandlerSystemStarted(DateTime OccurTime)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleControlHandler, SwitchState.On);
-		}
-		private void HandleEvent_VehicleControlHandlerSystemStopped(DateTime OccurTime)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleControlHandler, SwitchState.Off);
+			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleControlHandler, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
 		{
@@ -278,29 +249,17 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_UpdateSwitchButtonSwitchState(sbtnHostCommunicatorServer, SwitchState.Off);
 			}
 		}
-		private void HandleEvent_HostCommunicatorSystemStarted(DateTime OccurTime)
+		private void HandleEvent_HostCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnHostCommunicator, SwitchState.On);
+			UpdateGui_UpdateSwitchButtonSwitchState(sbtnHostCommunicator, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_HostCommunicatorSystemStopped(DateTime OccurTime)
+		private void HandleEvent_MissionDispatcherSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnHostCommunicator, SwitchState.Off);
+			UpdateGui_UpdateSwitchButtonSwitchState(sbtnMissionDispatcher, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_MissionDispatcherSystemStarted(DateTime OccurTime)
+		private void HandleEvent_CycleMissionGeneratorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnMissionDispatcher, SwitchState.On);
-		}
-		private void HandleEvent_MissionDispatcherSystemStopped(DateTime OccurTime)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnMissionDispatcher, SwitchState.Off);
-		}
-		private void HandleEvent_CycleMissionGeneratorSystemStarted(DateTime OccurTime)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCycleMissionGenerator, SwitchState.On);
-		}
-		private void HandleEvent_CycleMissionGeneratorSystemStopped(DateTime OccurTime)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCycleMissionGenerator, SwitchState.Off);
+			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCycleMissionGenerator, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
 		private void HandleEvent_LogExporterExportStarted(DateTime OccurTime, string DirectoryPath, List<string> Items)
 		{

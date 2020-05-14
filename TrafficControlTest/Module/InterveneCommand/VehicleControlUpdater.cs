@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using TrafficControlTest.Module.CommunicationVehicle;
+using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.InterveneCommand
@@ -69,13 +70,13 @@ namespace TrafficControlTest.Module.InterveneCommand
 				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
 			}
 		}
-		private void HandleEvent_VehicleControlManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleControl Item)
+		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
 		{
-			if (StateName.Contains("SendState"))
+			if (Args.StatusName.Contains("SendState"))
 			{
-				if (Item.mSendState == SendState.SentSuccessed || Item.mSendState == SendState.SentFailed)
+				if (Args.Item.mSendState == SendState.SentSuccessed || Args.Item.mSendState == SendState.SentFailed)
 				{
-					rVehicleControlManager.Remove(Name);
+					rVehicleControlManager.Remove(Args.ItemName);
 				}
 			}
 		}

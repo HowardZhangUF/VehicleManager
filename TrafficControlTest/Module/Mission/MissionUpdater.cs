@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
+using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;
 
@@ -99,23 +100,23 @@ namespace TrafficControlTest.Module.Mission
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			if (!string.IsNullOrEmpty(Item.mCurrentMissionId))
+			if (!string.IsNullOrEmpty(Args.Item.mCurrentMissionId))
 			{
-				IMissionState missionState = rMissionStateManager[Item.mCurrentMissionId];
+				IMissionState missionState = rMissionStateManager[Args.Item.mCurrentMissionId];
 				if (missionState != null)
 				{
 					missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
 				}
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo VehicleInfo)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			if (rMissionStateManager.mCount > 0 && StateName.Contains("CurrentState") && !string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && rMissionStateManager.IsExist(VehicleInfo.mCurrentMissionId))
+			if (rMissionStateManager.mCount > 0 && Args.StatusName.Contains("CurrentState") && !string.IsNullOrEmpty(Args.Item.mCurrentMissionId) && rMissionStateManager.IsExist(Args.Item.mCurrentMissionId))
 			{
-				IMissionState missionState = rMissionStateManager[VehicleInfo.mCurrentMissionId];
-				switch (VehicleInfo.mCurrentState)
+				IMissionState missionState = rMissionStateManager[Args.Item.mCurrentMissionId];
+				switch (Args.Item.mCurrentState)
 				{
 					case "RouteNotFind":
 					case "ObstacleExists":
@@ -126,7 +127,7 @@ namespace TrafficControlTest.Module.Mission
 						switch (missionState.mMission.mMissionType)
 						{
 							case MissionType.Goto:
-								if (IsVehicleArrived(VehicleInfo, missionState.mMission.mParameters[0]))
+								if (IsVehicleArrived(Args.Item, missionState.mMission.mParameters[0]))
 								{
 									missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
 								}
@@ -138,7 +139,7 @@ namespace TrafficControlTest.Module.Mission
 							case MissionType.GotoPoint:
 								if (missionState.mMission.mParameters.Length == 2)
 								{
-									if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1])))
+									if (IsVehicleArrived(Args.Item, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1])))
 									{
 										missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
 									}
@@ -149,7 +150,7 @@ namespace TrafficControlTest.Module.Mission
 								}
 								else if (missionState.mMission.mParameters.Length == 3)
 								{
-									if (IsVehicleArrived(VehicleInfo, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1]), int.Parse(missionState.mMission.mParameters[2])))
+									if (IsVehicleArrived(Args.Item, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1]), int.Parse(missionState.mMission.mParameters[2])))
 									{
 										missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
 									}
@@ -191,15 +192,15 @@ namespace TrafficControlTest.Module.Mission
 				rMissionStateManager.GetItem(missionId).UpdateExecuteState(ExecuteState.Unexecute);
 			}
 		}
-		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
-			if (StateName.Contains("ExecuteState"))
+			if (Args.StatusName.Contains("ExecuteState"))
 			{
-				switch (Item.mExecuteState)
+				switch (Args.Item.mExecuteState)
 				{
 					case ExecuteState.ExecuteSuccessed:
 					case ExecuteState.ExecuteFailed:
-						rMissionStateManager.Remove(Name);
+						rMissionStateManager.Remove(Args.ItemName);
 						break;
 				}
 			}

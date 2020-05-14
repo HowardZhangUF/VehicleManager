@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.CommunicationVehicle;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.UserControl
 {
@@ -172,24 +173,24 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_UpdateControlText(lblConnection, "0");
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkGreen);
 			UpdateGui_UpdateControlText(lblConnection, rVehicleInfoManager.mCount.ToString());
-			AddVehicleIconView(Item.mName, Item.mCurrentState, Item.mCurrentTarget, Item.mBatteryValue.ToString("F2"), Item.mLocationScore.ToString("F2"));
+			AddVehicleIconView(Args.Item.mName, Args.Item.mCurrentState, Args.Item.mCurrentTarget, Args.Item.mBatteryValue.ToString("F2"), Args.Item.mLocationScore.ToString("F2"));
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			UpdateGui_UpdateControlBackColor(lblConnection, rVehicleInfoManager.mCount > 0 ? Color.DarkGreen : Color.DarkOrange);
 			UpdateGui_UpdateControlText(lblConnection, rVehicleInfoManager.mCount.ToString());
-			RemoveVehicleIconView(Item.mName);
+			RemoveVehicleIconView(Args.Item.mName);
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			if (StateName.Contains("CurrentState")) UpdateVehicleIconView(Item.mName, UcVehicleIconView.Property.State, Item.mCurrentState);
-			if (StateName.Contains("CurrentTarget")) UpdateVehicleIconView(Item.mName, UcVehicleIconView.Property.Target, Item.mCurrentTarget);
-			if (StateName.Contains("BatteryValue")) UpdateVehicleIconView(Item.mName, UcVehicleIconView.Property.Battery, Item.mBatteryValue.ToString("F2"));
-			if (StateName.Contains("LocationScore")) UpdateVehicleIconView(Item.mName, UcVehicleIconView.Property.LocationScore, Item.mLocationScore.ToString("F2"));
+			if (Args.StatusName.Contains("CurrentState")) UpdateVehicleIconView(Args.Item.mName, UcVehicleIconView.Property.State, Args.Item.mCurrentState);
+			if (Args.StatusName.Contains("CurrentTarget")) UpdateVehicleIconView(Args.Item.mName, UcVehicleIconView.Property.Target, Args.Item.mCurrentTarget);
+			if (Args.StatusName.Contains("BatteryValue")) UpdateVehicleIconView(Args.Item.mName, UcVehicleIconView.Property.Battery, Args.Item.mBatteryValue.ToString("F2"));
+			if (Args.StatusName.Contains("LocationScore")) UpdateVehicleIconView(Args.Item.mName, UcVehicleIconView.Property.LocationScore, Args.Item.mLocationScore.ToString("F2"));
 		}
 		private void UpdateGui_UpdateControlText(Control Control, string Text)
 		{

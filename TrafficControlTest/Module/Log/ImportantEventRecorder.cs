@@ -108,26 +108,26 @@ namespace TrafficControlTest.Module.Log
 				HostCommunicator.ReceivedString -= HandleEvent_HostCommunicatorReceivedString;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemAdded(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Add, Item);
-			rEventRecorder.CreateTableOfHistoryVehicleInfo(Name);
+			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Add, Args.Item);
+			rEventRecorder.CreateTableOfHistoryVehicleInfo(Args.ItemName);
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(DateTime OccurTime, string Name, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Remove, Item);
+			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Remove, Args.Item);
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IVehicleInfo Item)
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Update, Item);
+			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Update, Args.Item);
 		}
-		private void HandleEvent_MissionStateManagerItemAdded(DateTime OccurTime, string Name, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			rEventRecorder.RecordMissionState(DatabaseDataOperation.Add, Item);
+			rEventRecorder.RecordMissionState(DatabaseDataOperation.Add, Args.Item);
 		}
-		private void HandleEvent_MissionStateManagerItemUpdated(DateTime OccurTime, string Name, string StateName, IMissionState Item)
+		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
-			rEventRecorder.RecordMissionState(DatabaseDataOperation.Update, Item);
+			rEventRecorder.RecordMissionState(DatabaseDataOperation.Update, Args.Item);
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
 		{
