@@ -185,7 +185,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			if (CurrentVehicleName == Name)
+			if (CurrentVehicleName == Args.ItemName)
 			{
 				UpdateGui_UpdateVehicleState(Args.Item.mCurrentState);
 				UpdateGui_UpdateVehicleLocation(Args.Item.mLocationCoordinate.mX, Args.Item.mLocationCoordinate.mY, Args.Item.mLocationToward);
