@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrafficControlTest.Module.General;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Vehicle
 {
 	class VehicleInfo : IVehicleInfo
 	{
-		public event EventHandlerIItemUpdated Updated;
+		public event EventHandler<StatusUpdatedEventArgs> StatusUpdated;
 
 		public string mName { get; private set; } = string.Empty;
 		public string mCurrentState { get; private set; } = string.Empty;
@@ -73,7 +72,7 @@ namespace TrafficControlTest.Module.Vehicle
 		{
 			mName = Name;
 			mLastUpdated = DateTime.Now;
-			RaiseEvent_StateUpdated("Name");
+			RaiseEvent_StatusUpdated("Name");
 		}
 
 		public void BeginUpdate()
@@ -86,7 +85,7 @@ namespace TrafficControlTest.Module.Vehicle
 			if (mUpdatedItems.Count > 0)
 			{
 				mLastUpdated = DateTime.Now;
-				RaiseEvent_StateUpdated(string.Join(",", mUpdatedItems));
+				RaiseEvent_StatusUpdated(string.Join(",", mUpdatedItems));
 				mUpdatedItems.Clear();
 			}
 		}
@@ -101,7 +100,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("CurrentState");
+					RaiseEvent_StatusUpdated("CurrentState");
 				}
 			}
 		}
@@ -116,7 +115,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("LocationCoordinate");
+					RaiseEvent_StatusUpdated("LocationCoordinate");
 				}
 			}
 		}
@@ -131,7 +130,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("LocationToward");
+					RaiseEvent_StatusUpdated("LocationToward");
 				}
 			}
 		}
@@ -146,7 +145,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("CurrentTarget");
+					RaiseEvent_StatusUpdated("CurrentTarget");
 				}
 			}
 		}
@@ -161,7 +160,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("Velocity");
+					RaiseEvent_StatusUpdated("Velocity");
 				}
 			}
 		}
@@ -176,7 +175,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("LocationScore");
+					RaiseEvent_StatusUpdated("LocationScore");
 				}
 			}
 		}
@@ -191,7 +190,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("BatteryValue");
+					RaiseEvent_StatusUpdated("BatteryValue");
 				}
 			}
 		}
@@ -206,7 +205,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("AlarmMessage");
+					RaiseEvent_StatusUpdated("AlarmMessage");
 				}
 			}
 		}
@@ -221,7 +220,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("Path");
+					RaiseEvent_StatusUpdated("Path");
 				}
 			}
 		}
@@ -236,7 +235,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("IpPort");
+					RaiseEvent_StatusUpdated("IpPort");
 				}
 			}
 		}
@@ -251,7 +250,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("CurrentMissionId");
+					RaiseEvent_StatusUpdated("CurrentMissionId");
 				}
 			}
 		}
@@ -266,7 +265,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("CurrentInterveneCommand");
+					RaiseEvent_StatusUpdated("CurrentInterveneCommand");
 				}
 			}
 		}
@@ -281,7 +280,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("CurrentMapName");
+					RaiseEvent_StatusUpdated("CurrentMapName");
 				}
 			}
 		}
@@ -296,7 +295,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("CurrentMapNameList");
+					RaiseEvent_StatusUpdated("CurrentMapNameList");
 				}
 			}
 		}
@@ -311,7 +310,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("VelocityMaximum");
+					RaiseEvent_StatusUpdated("VelocityMaximum");
 				}
 			}
 		}
@@ -326,7 +325,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("SafetyFrameRadius");
+					RaiseEvent_StatusUpdated("SafetyFrameRadius");
 				}
 			}
 		}
@@ -341,7 +340,7 @@ namespace TrafficControlTest.Module.Vehicle
 				else
 				{
 					mLastUpdated = DateTime.Now;
-					RaiseEvent_StateUpdated("BufferFrameRadius");
+					RaiseEvent_StatusUpdated("BufferFrameRadius");
 				}
 			}
 		}
@@ -363,15 +362,15 @@ namespace TrafficControlTest.Module.Vehicle
 			return result;
 		}
 
-		protected virtual void RaiseEvent_StateUpdated(string StateName, bool Sync = true)
+		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
 		{
 			if (Sync)
 			{
-				Updated?.Invoke(DateTime.Now, mName, StateName);
+				StatusUpdated?.Invoke(this, new StatusUpdatedEventArgs(DateTime.Now, mName, StatusName));
 			}
 			else
 			{
-				Task.Run(() => Updated?.Invoke(DateTime.Now, mName, StateName));
+				Task.Run(() => { StatusUpdated?.Invoke(this, new StatusUpdatedEventArgs(DateTime.Now, mName, StatusName)); });
 			}
 		}
 		private static IList<IPoint2D> CalculatePathDetail(IPoint2D CurrentPosition, IEnumerable<IPoint2D> Path, int Interval)

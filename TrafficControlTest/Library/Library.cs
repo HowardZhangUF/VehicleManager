@@ -703,8 +703,6 @@ namespace TrafficControlTest.Library
 
 		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
 
-		public delegate void EventHandlerIItemUpdated(DateTime OccurTime, string Name, string StateName);
-
 		public delegate void EventHandlerMapFileName(DateTime OccurTime, string MapFileName);
 		public delegate void EventHandlerVehicleNamesMapFileName(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName);
 	}

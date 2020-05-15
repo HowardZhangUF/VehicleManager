@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.InterveneCommand
 {
 	public class VehicleControl : IVehicleControl
 	{
-		public event EventHandlerIItemUpdated Updated;
+		public event EventHandler<StatusUpdatedEventArgs> StatusUpdated;
 
 		public string mName { get; private set; }
 		public string mVehicleId { get; private set; }
@@ -35,7 +35,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			mExecutionStartTimestamp = DateTime.Now;
 			mExecutionStopTimestamp = DateTime.Now;
 			mLastUpdated = DateTime.Now;
-			RaiseEvent_StateUpdated("Name,Command,Parameters,CauseId,CauseDetail");
+			RaiseEvent_StatusUpdated("Name,Command,Parameters,CauseId,CauseDetail");
 		}
 		public void UpdateSendState(SendState SendState)
 		{
@@ -43,29 +43,29 @@ namespace TrafficControlTest.Module.InterveneCommand
 			{
 				mSendState = SendState;
 				mLastUpdated = DateTime.Now;
-				RaiseEvent_StateUpdated("SendState");
+				RaiseEvent_StatusUpdated("SendState");
 			}
 		}
 		public void UpdateParameters(string[] Parameters)
 		{
 			mParameters = Parameters;
 			mLastUpdated = DateTime.Now;
-			RaiseEvent_StateUpdated("Parameters");
+			RaiseEvent_StatusUpdated("Parameters");
 		}
 		public override string ToString()
 		{
 			return $"{mName}/{mCommand.ToString()}/{(mParameters != null ? string.Join(",", mParameters) : string.Empty)}/{mVehicleId}/{mCauseId}/{mSendState.ToString()}";
 		}
 
-		protected virtual void RaiseEvent_StateUpdated(string StateName, bool Sync = true)
+		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
 		{
 			if (Sync)
 			{
-				Updated?.Invoke(DateTime.Now, mName, StateName);
+				StatusUpdated?.Invoke(this, new StatusUpdatedEventArgs(DateTime.Now, mName, StatusName));
 			}
 			else
 			{
-				Task.Run(() => Updated?.Invoke(DateTime.Now, mName, StateName));
+				Task.Run(() => { StatusUpdated?.Invoke(this, new StatusUpdatedEventArgs(DateTime.Now, mName, StatusName)); });
 			}
 		}
 	}

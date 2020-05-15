@@ -1,4 +1,5 @@
-﻿using static TrafficControlTest.Library.EventHandlerLibrary;
+﻿using System;
+using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General
 {
@@ -8,8 +9,22 @@ namespace TrafficControlTest.Module.General
 	/// </summary>
 	public interface IItem
 	{
-		event EventHandlerIItemUpdated Updated;
+		event EventHandler<StatusUpdatedEventArgs> StatusUpdated;
 
 		string mName { get; }
+	}
+
+	public class StatusUpdatedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string ItemName { get; private set; }
+		public string StatusName { get; private set; }
+
+		public StatusUpdatedEventArgs(DateTime OccurTime, string ItemName, string StatusName) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.ItemName = ItemName;
+			this.StatusName = StatusName;
+		}
 	}
 }

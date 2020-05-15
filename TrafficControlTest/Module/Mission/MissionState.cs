@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using static TrafficControlTest.Library.EventHandlerLibrary;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Mission
 {
 	public class MissionState : IMissionState
 	{
-		public event EventHandlerIItemUpdated Updated;
+		public event EventHandler<StatusUpdatedEventArgs> StatusUpdated;
 
 		public IMission mMission { get; private set; }
 		public string mSourceIpPort { get; private set; }
@@ -47,7 +47,7 @@ namespace TrafficControlTest.Module.Mission
 			{
 				mMission.UpdatePriority(Priority);
 				mLastUpdate = DateTime.Now;
-				RaiseEvent_StateUpdated("Priority");
+				RaiseEvent_StatusUpdated("Priority");
 			}
 		}
 		public void UpdateSourceIpPort(string SourceIpPort)
@@ -56,7 +56,7 @@ namespace TrafficControlTest.Module.Mission
 			{
 				mSourceIpPort = SourceIpPort;
 				mLastUpdate = DateTime.Now;
-				RaiseEvent_StateUpdated("SourceIpPort");
+				RaiseEvent_StatusUpdated("SourceIpPort");
 			}
 		}
 		public void UpdateExecutorId(string ExecutorId)
@@ -65,7 +65,7 @@ namespace TrafficControlTest.Module.Mission
 			{
 				mExecutorId = ExecutorId;
 				mLastUpdate = DateTime.Now;
-				RaiseEvent_StateUpdated("ExecutorId");
+				RaiseEvent_StatusUpdated("ExecutorId");
 			}
 		}
 		public void UpdateSendState(SendState SendState)
@@ -74,7 +74,7 @@ namespace TrafficControlTest.Module.Mission
 			{
 				mSendState = SendState;
 				mLastUpdate = DateTime.Now;
-				RaiseEvent_StateUpdated("SendState");
+				RaiseEvent_StatusUpdated("SendState");
 			}
 		}
 		public void UpdateExecuteState(ExecuteState ExecuteState)
@@ -86,13 +86,13 @@ namespace TrafficControlTest.Module.Mission
 				{
 					mExecutionStartTimestamp = DateTime.Now;
 					mLastUpdate = DateTime.Now;
-					RaiseEvent_StateUpdated("ExecuteState,ExecutionStartTimestamp");
+					RaiseEvent_StatusUpdated("ExecuteState,ExecutionStartTimestamp");
 				}
 				else if (mExecuteState == ExecuteState.ExecuteSuccessed || mExecuteState == ExecuteState.ExecuteFailed)
 				{
 					mExecutionStopTimestamp = DateTime.Now;
 					mLastUpdate = DateTime.Now;
-					RaiseEvent_StateUpdated("ExecuteState,ExecutionStopTimestamp");
+					RaiseEvent_StatusUpdated("ExecuteState,ExecutionStopTimestamp");
 				}
 			}
 		}
@@ -107,15 +107,15 @@ namespace TrafficControlTest.Module.Mission
 			return $"{mName}/{mMission.ToString()}/{mExecutorId}/{mSendState.ToString()}/{mExecuteState.ToString()}";
 		}
 
-		protected virtual void RaiseEvent_StateUpdated(string StateName, bool Sync = true)
+		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
 		{
 			if (Sync)
 			{
-				Updated?.Invoke(DateTime.Now, mName, StateName);
+				StatusUpdated?.Invoke(this, new StatusUpdatedEventArgs(DateTime.Now, mName, StatusName));
 			}
 			else
 			{
-				Task.Run(() => Updated?.Invoke(DateTime.Now, mName, StateName));
+				Task.Run(() => { StatusUpdated?.Invoke(this, new StatusUpdatedEventArgs(DateTime.Now, mName, StatusName)); });
 			}
 		}
 	}

@@ -77,14 +77,14 @@ namespace TrafficControlTest.Module.General
 		{
 			if (Item != null)
 			{
-				Item.Updated += HandleEvent_ItemUpdated;
+				Item.StatusUpdated += HandleEvent_ItemStatusUpdated;
 			}
 		}
 		private void UnsubscribeEvent_Item(T Item)
 		{
 			if (Item != null)
 			{
-				Item.Updated -= HandleEvent_ItemUpdated;
+				Item.StatusUpdated -= HandleEvent_ItemStatusUpdated;
 			}
 		}
 		protected virtual void RaiseEvent_ItemAdded(string ItemName, T Item, bool Sync = true)
@@ -120,9 +120,9 @@ namespace TrafficControlTest.Module.General
 				Task.Run(() => { ItemUpdated?.Invoke(this, new ItemUpdatedEventArgs<T>(DateTime.Now, ItemName, StatusName, Item)); });
 			}
 		}
-		private void HandleEvent_ItemUpdated(DateTime OccurTime, string ItemName, string StatusName)
+		private void HandleEvent_ItemStatusUpdated(object Sender, StatusUpdatedEventArgs Args)
 		{
-			RaiseEvent_ItemUpdated(ItemName, StatusName, mItems[ItemName]);
+			RaiseEvent_ItemUpdated(Args.ItemName, Args.StatusName, mItems[Args.ItemName]);
 		}
 	}
 }
