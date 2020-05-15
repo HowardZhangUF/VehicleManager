@@ -1,7 +1,7 @@
-﻿using TrafficControlTest.Module.CommunicationVehicle;
+﻿using System;
+using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Mission
 {
@@ -11,11 +11,25 @@ namespace TrafficControlTest.Module.Mission
 	/// </summary>
 	public interface IMissionDispatcher : ISystemWithLoopTask
 	{
-		event EventHandlerMissionDispatched MissionDispatched;
+		event EventHandler<MissionDispatchedEventArgs> MissionDispatched;
 
 		void Set(IMissionStateManager MissionStateManager);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator);
+	}
+
+	public class MissionDispatchedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public IMissionState MissionState { get; private set; }
+		public IVehicleInfo VehicleInfo { get; private set; }
+
+		public MissionDispatchedEventArgs(DateTime OccurTime, IMissionState MissionState, IVehicleInfo VehicleInfo) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.MissionState = MissionState;
+			this.VehicleInfo = VehicleInfo;
+		}
 	}
 }

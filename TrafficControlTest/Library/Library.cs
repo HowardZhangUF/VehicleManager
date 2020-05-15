@@ -707,7 +707,5 @@ namespace TrafficControlTest.Library
 
 		public delegate void EventHandlerMapFileName(DateTime OccurTime, string MapFileName);
 		public delegate void EventHandlerVehicleNamesMapFileName(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName);
-
-		public delegate void EventHandlerMissionDispatched(DateTime OccurTime, IMissionState MissionState, IVehicleInfo VehicleInfo);
 	}
 }

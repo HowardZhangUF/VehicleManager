@@ -1095,9 +1095,9 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "MissionDispatcher", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_MissionDispatcherMissionDispatched(DateTime OccurTime, IMissionState MissionState, IVehicleInfo VehicleInfo)
+		private void HandleEvent_MissionDispatcherMissionDispatched(object Sender, MissionDispatchedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MissionDispatcher", "MissionDispatched", $"MissionName: {MissionState.mName} Dispatched To VehicleName: {VehicleInfo.mName}");
+			HandleDebugMessage(Args.OccurTime, "MissionDispatcher", "MissionDispatched", $"MissionName: {Args.MissionState.mName} Dispatched To VehicleName: {Args.VehicleInfo.mName}");
 		}
 		private void HandleEvent_MapFileManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{

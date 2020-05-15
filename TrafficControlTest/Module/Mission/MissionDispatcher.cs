@@ -5,13 +5,12 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Mission
 {
 	public class MissionDispatcher : SystemWithLoopTask, IMissionDispatcher
 	{
-		public event EventHandlerMissionDispatched MissionDispatched;
+		public event EventHandler<MissionDispatchedEventArgs> MissionDispatched;
 
 		private IMissionStateManager rMissionStateManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
@@ -48,11 +47,11 @@ namespace TrafficControlTest.Module.Mission
 		{
 			if (Sync)
 			{
-				MissionDispatched?.Invoke(DateTime.Now, MissionState, VehicleInfo);
+				MissionDispatched?.Invoke(this, new MissionDispatchedEventArgs(DateTime.Now, MissionState, VehicleInfo));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { MissionDispatched?.Invoke(DateTime.Now, MissionState, VehicleInfo); });
+				System.Threading.Tasks.Task.Run(() => { MissionDispatched?.Invoke(this, new MissionDispatchedEventArgs(DateTime.Now, MissionState, VehicleInfo)); });
 			}
 		}
 		private void Subtask_DispatchMission()
