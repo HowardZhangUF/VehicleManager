@@ -78,9 +78,9 @@ namespace TrafficControlTest.UserControl
 				VehicleManagerProcess.DebugMessage -= HandleEvent_VehicleManagerProcessDebugMessage;
 			}
 		}
-		private void HandleEvent_VehicleManagerProcessDebugMessage(string OccurTime, string Category, string SubCategory, string Message)
+		private void HandleEvent_VehicleManagerProcessDebugMessage(object Sender, DebugMessageEventArgs Args)
 		{
-			AddLog(OccurTime, Category, SubCategory, Message);
+			AddLog(Args.OccurTime, Args.Category, Args.SubCategory, Args.Message);
 		}
 		private void UpdateGui_InitializeDgvConsoleLog()
 		{

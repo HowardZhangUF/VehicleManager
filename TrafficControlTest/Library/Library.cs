@@ -689,8 +689,6 @@ namespace TrafficControlTest.Library
 
 	public static class EventHandlerLibrary
 	{
-		public delegate void EventHandlerDebugMessage(string OccurTime, string Category, string SubCategory, string Message);
-		public delegate void EventHandlerSignificantEvent(string OccurTime, string Category, string Info);
 		public delegate void EventHandlerLogInOutEvent(DateTime OccurTime, string Name, AccountRank Rank);
 
 		public delegate void EventHandlerDateTime(DateTime OccurTime);

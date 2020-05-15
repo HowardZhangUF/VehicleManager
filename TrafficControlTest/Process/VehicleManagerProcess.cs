@@ -22,8 +22,8 @@ namespace TrafficControlTest.Process
 {
 	public class VehicleManagerProcess
 	{
-		public event EventHandlerDebugMessage DebugMessage;
-		public event EventHandlerSignificantEvent SignificantEvent;
+		public event EventHandler<DebugMessageEventArgs> DebugMessage;
+		public event EventHandler<SignificantEventEventArgs> SignificantEvent;
 		public event EventHandlerLogInOutEvent AccessControlUserLogIn;
 		public event EventHandlerLogInOutEvent AccessControlUserLogOut;
 
@@ -822,11 +822,11 @@ namespace TrafficControlTest.Process
 		{
 			if (Sync)
 			{
-				DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message);
+				DebugMessage?.Invoke(this, new DebugMessageEventArgs(OccurTime, Category, SubCategory, Message));
 			}
 			else
 			{
-				Task.Run(() => { DebugMessage?.Invoke(OccurTime, Category, SubCategory, Message); });
+				Task.Run(() => { DebugMessage?.Invoke(this, new DebugMessageEventArgs(OccurTime, Category, SubCategory, Message)); });
 			}
 		}
 		protected virtual void RaiseEvent_SignificantEvent(DateTime OccurTime, SignificantEventCategory Category, string Info, bool Sync = true)
@@ -837,11 +837,11 @@ namespace TrafficControlTest.Process
 		{
 			if (Sync)
 			{
-				SignificantEvent?.Invoke(OccurTime, Category, Info);
+				SignificantEvent?.Invoke(this, new SignificantEventEventArgs(OccurTime, Category, Info));
 			}
 			else
 			{
-				Task.Run(() => { SignificantEvent?.Invoke(OccurTime, Category, Info); });
+				Task.Run(() => { SignificantEvent?.Invoke(this, new SignificantEventEventArgs(OccurTime, Category, Info)); });
 			}
 		}
 		protected virtual void RaiseEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank, bool Sync = true)
@@ -1172,6 +1172,35 @@ namespace TrafficControlTest.Process
 			Console.WriteLine($"{OccurTime} [{Category}] [{SubCategory}] - {Message}");
 			mLogRecorder.RecordGeneralLog(OccurTime, Category, SubCategory, Message);
 			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
+		}
+	}
+
+	public class DebugMessageEventArgs : EventArgs
+	{
+		public string OccurTime { get; private set; }
+		public string Category { get; private set; }
+		public string SubCategory { get; private set; }
+		public string Message { get; private set; }
+
+		public DebugMessageEventArgs(string OccurTime, string Category, string SubCategory, string Message) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.Category = Category;
+			this.SubCategory = SubCategory;
+			this.Message = Message;
+		}
+	}
+	public class SignificantEventEventArgs : EventArgs
+	{
+		public string OccurTime { get; private set; }
+		public string Category { get; private set; }
+		public string Info { get; private set; }
+
+		public SignificantEventEventArgs(string OccurTime, string Category, string Info) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.Category = Category;
+			this.Info = Info;
 		}
 	}
 }

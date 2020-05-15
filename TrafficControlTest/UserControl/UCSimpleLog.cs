@@ -78,9 +78,9 @@ namespace TrafficControlTest.UserControl
 				VehicleManagerProcess.SignificantEvent -= HandleEvent_VehicleManagerProcessSignificantEvent;
 			}
 		}
-		private void HandleEvent_VehicleManagerProcessSignificantEvent(string OccurTime, string Category, string Info)
+		private void HandleEvent_VehicleManagerProcessSignificantEvent(object Sender, SignificantEventEventArgs Args)
 		{
-			AddLog(OccurTime, Category, Info);
+			AddLog(Args.OccurTime, Args.Category, Args.Info);
 		}
 		private void UpdateGui_InitializeDgvSimpleLog()
 		{
