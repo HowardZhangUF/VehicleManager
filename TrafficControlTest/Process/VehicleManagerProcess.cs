@@ -1127,17 +1127,17 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "CycleMissionGenerator", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleMissionAssigned(DateTime OccurTime, string VehicleId)
+		private void HandleEvent_CycleMissionGeneratorCycleMissionAssigned(object Sender, CycleMissionAssignedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionAssigned", $"VehicleID: {VehicleId}");
+			HandleDebugMessage(Args.OccurTime, "CycleMissionGenerator", "CycleMissionAssigned", $"VehicleID: {Args.VehicleId}, Missions: ({string.Join(")(", Args.Missions)})");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleMissionUnassigned(DateTime OccurTime, string VehicleId)
+		private void HandleEvent_CycleMissionGeneratorCycleMissionUnassigned(object Sender, CycleMissionUnassignedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionUnassigned", $"VehicleID: {VehicleId}");
+			HandleDebugMessage(Args.OccurTime, "CycleMissionGenerator", "CycleMissionUnassigned", $"VehicleID: {Args.VehicleId}");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged(DateTime OccurTime, string VehicleId, int Index)
+		private void HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged(object Sender, CycleMissionExecutedIndexChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionExecutedIndexChanged", $"VehicleID: {VehicleId}, Index: {Index.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "CycleMissionGenerator", "CycleMissionExecutedIndexChanged", $"VehicleID: {Args.VehicleId}, Index: {Args.Index.ToString()}");
 		}
 		private void HandleEvent_CycleMissionGeneratorConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{

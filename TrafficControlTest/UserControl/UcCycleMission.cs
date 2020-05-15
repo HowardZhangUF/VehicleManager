@@ -123,19 +123,19 @@ namespace TrafficControlTest.UserControl
 			UpdateGui_CbVehicleStateList_UpdateItems();
 			cbVehicleStateList_SelectedIndexChanged(null, null);
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleMissionAssigned(DateTime OccurTime, string VehicleId)
+		private void HandleEvent_CycleMissionGeneratorCycleMissionAssigned(object Sender, CycleMissionAssignedEventArgs Args)
 		{
-			UpdateGui_CbVehicleStateList_UpdateSpecificItem(VehicleId, "Started");
+			UpdateGui_CbVehicleStateList_UpdateSpecificItem(Args.VehicleId, "Started");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleMissionUnassigned(DateTime OccurTime, string VehicleId)
+		private void HandleEvent_CycleMissionGeneratorCycleMissionUnassigned(object Sender, CycleMissionUnassignedEventArgs Args)
 		{
-			UpdateGui_CbVehicleStateList_UpdateSpecificItem(VehicleId, "Stopped");
+			UpdateGui_CbVehicleStateList_UpdateSpecificItem(Args.VehicleId, "Stopped");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged(DateTime OccurTime, string VehicleId, int Index)
+		private void HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged(object Sender, CycleMissionExecutedIndexChangedEventArgs Args)
 		{
-			if (CurrentVehicleName == VehicleId)
+			if (CurrentVehicleName == Args.VehicleId)
 			{
-				UpdateGui_DgvMissionList_UpdateSelectedRowIndex(Index);
+				UpdateGui_DgvMissionList_UpdateSelectedRowIndex(Args.Index);
 			}
 		}
 		private void UpdateGui_CbVehicleStateList_UpdateItems()
