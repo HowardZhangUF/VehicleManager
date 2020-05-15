@@ -787,8 +787,8 @@ namespace TrafficControlTest.Process
 				CycleMissionGenerator.SystemStatusChanged += HandleEvent_CycleMissionGeneratorSystemStatusChanged;
 				CycleMissionGenerator.ConfigUpdated += HandleEvent_CycleMissionGeneratorConfigUpdated;
 				CycleMissionGenerator.CycleMissionAssigned += HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
-				CycleMissionGenerator.CycleMissionRemoved += HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
-				CycleMissionGenerator.CycleMissionIndexUpdated += HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
+				CycleMissionGenerator.CycleMissionUnassigned += HandleEvent_CycleMissionGeneratorCycleMissionUnassigned;
+				CycleMissionGenerator.CycleMissionExecutedIndexChanged += HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged;
 			}
 		}
 		private void UnsubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
@@ -798,8 +798,8 @@ namespace TrafficControlTest.Process
 				CycleMissionGenerator.SystemStatusChanged -= HandleEvent_CycleMissionGeneratorSystemStatusChanged;
 				CycleMissionGenerator.ConfigUpdated -= HandleEvent_CycleMissionGeneratorConfigUpdated;
 				CycleMissionGenerator.CycleMissionAssigned -= HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
-				CycleMissionGenerator.CycleMissionRemoved -= HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
-				CycleMissionGenerator.CycleMissionIndexUpdated -= HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
+				CycleMissionGenerator.CycleMissionUnassigned -= HandleEvent_CycleMissionGeneratorCycleMissionUnassigned;
+				CycleMissionGenerator.CycleMissionExecutedIndexChanged -= HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged;
 			}
 		}
 		private void SubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
@@ -1131,13 +1131,13 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionAssigned", $"VehicleID: {VehicleId}");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleMissionRemoved(DateTime OccurTime, string VehicleId)
+		private void HandleEvent_CycleMissionGeneratorCycleMissionUnassigned(DateTime OccurTime, string VehicleId)
 		{
-			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionRemoved", $"VehicleID: {VehicleId}");
+			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionUnassigned", $"VehicleID: {VehicleId}");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated(DateTime OccurTime, string VehicleId, int Index)
+		private void HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged(DateTime OccurTime, string VehicleId, int Index)
 		{
-			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionIndexUpdated", $"VehicleID: {VehicleId}, Index: {Index.ToString()}");
+			HandleDebugMessage(OccurTime, "CycleMissionGenerator", "CycleMissionExecutedIndexChanged", $"VehicleID: {VehicleId}, Index: {Index.ToString()}");
 		}
 		private void HandleEvent_CycleMissionGeneratorConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{

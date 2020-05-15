@@ -8,15 +8,15 @@ namespace TrafficControlTest.Module.CycleMission
 	public interface ICycleMissionGenerator : ISystemWithLoopTask
 	{
 		event EventHandlerCycleMissionAssigned CycleMissionAssigned;
-		event EventHandlerCycleMissionRemoved CycleMissionRemoved;
-		event EventHandlerCycleMissionIndexUpdated CycleMissionIndexUpdated;
+		event EventHandlerCycleMissionUnassigned CycleMissionUnassigned;
+		event EventHandlerCycleMissionExecutedIndexChanged CycleMissionExecutedIndexChanged;
 
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IMissionStateManager MissionStateManager);
 		void Set(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager);
 		void AssignCycleMission(string VehicleId, string[] Targets, int StartIndex = 0);
-		void RemoveCycleMission(string VehicleId);
-		bool GetAssigned(string VehicleId);
+		void UnassignCycleMission(string VehicleId);
+		bool IsAssigned(string VehicleId);
 		string[] GetMissionList(string VehicleId);
 		int GetCurrentMissionIndex(string VehicleId);
 	}

@@ -711,7 +711,7 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerMissionDispatched(DateTime OccurTime, IMissionState MissionState, IVehicleInfo VehicleInfo);
 
 		public delegate void EventHandlerCycleMissionAssigned(DateTime OccurTime, string VehicleId);
-		public delegate void EventHandlerCycleMissionRemoved(DateTime OccurTime, string VehicleId);
-		public delegate void EventHandlerCycleMissionIndexUpdated(DateTime OccurTime, string VehicleId, int Index);
+		public delegate void EventHandlerCycleMissionUnassigned(DateTime OccurTime, string VehicleId);
+		public delegate void EventHandlerCycleMissionExecutedIndexChanged(DateTime OccurTime, string VehicleId, int Index);
 	}
 }

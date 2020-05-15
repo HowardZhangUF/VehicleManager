@@ -10,8 +10,8 @@ namespace TrafficControlTest.Module.CycleMission
 	public class CycleMissionGenerator : SystemWithLoopTask, ICycleMissionGenerator
 	{
 		public event EventHandlerCycleMissionAssigned CycleMissionAssigned;
-		public event EventHandlerCycleMissionRemoved CycleMissionRemoved;
-		public event EventHandlerCycleMissionIndexUpdated CycleMissionIndexUpdated;
+		public event EventHandlerCycleMissionUnassigned CycleMissionUnassigned;
+		public event EventHandlerCycleMissionExecutedIndexChanged CycleMissionExecutedIndexChanged;
 
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMissionStateManager rMissionStateManager = null;
@@ -43,14 +43,14 @@ namespace TrafficControlTest.Module.CycleMission
 			mCollectionOfCurrentMissionIndex.Add(VehicleId, StartIndex == 0 ? Targets.Length - 1 : StartIndex - 1);
 			RaiseEvent_CycleMissionAssigned(VehicleId);
 		}
-		public void RemoveCycleMission(string VehicleId)
+		public void UnassignCycleMission(string VehicleId)
 		{
 			mCollectionOfVehicleId.Remove(VehicleId);
 			mCollectionOfMissionList.Remove(VehicleId);
 			mCollectionOfCurrentMissionIndex.Remove(VehicleId);
-			RaiseEvent_CycleMissionRemoved(VehicleId);
+			RaiseEvent_CycleMissionUnassigned(VehicleId);
 		}
-		public bool GetAssigned(string VehicleId)
+		public bool IsAssigned(string VehicleId)
 		{
 			return mCollectionOfVehicleId.Contains(VehicleId);
 		}
@@ -78,26 +78,26 @@ namespace TrafficControlTest.Module.CycleMission
 				System.Threading.Tasks.Task.Run(() => { CycleMissionAssigned?.Invoke(DateTime.Now, VehicleId); });
 			}
 		}
-		protected virtual void RaiseEvent_CycleMissionRemoved(string VehicleId, bool Sync = true)
+		protected virtual void RaiseEvent_CycleMissionUnassigned(string VehicleId, bool Sync = true)
 		{
 			if (Sync)
 			{
-				CycleMissionRemoved?.Invoke(DateTime.Now, VehicleId);
+				CycleMissionUnassigned?.Invoke(DateTime.Now, VehicleId);
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { CycleMissionRemoved?.Invoke(DateTime.Now, VehicleId); });
+				System.Threading.Tasks.Task.Run(() => { CycleMissionUnassigned?.Invoke(DateTime.Now, VehicleId); });
 			}
 		}
-		protected virtual void RaiseEvent_CycleMissionIndexUpdated(string VehicleId, int Index, bool Sync = true)
+		protected virtual void RaiseEvent_CycleMissionExecutedIndexChanged(string VehicleId, int Index, bool Sync = true)
 		{
 			if (Sync)
 			{
-				CycleMissionIndexUpdated?.Invoke(DateTime.Now, VehicleId, Index);
+				CycleMissionExecutedIndexChanged?.Invoke(DateTime.Now, VehicleId, Index);
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { CycleMissionIndexUpdated?.Invoke(DateTime.Now, VehicleId, Index); });
+				System.Threading.Tasks.Task.Run(() => { CycleMissionExecutedIndexChanged?.Invoke(DateTime.Now, VehicleId, Index); });
 			}
 		}
 		private void Subtask_GenerateMission()
@@ -109,7 +109,7 @@ namespace TrafficControlTest.Module.CycleMission
 					mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] = mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] == mCollectionOfMissionList[mCollectionOfVehicleId[i]].Length - 1 ? 0 : mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] + 1;
 					IMissionState missionState = GenerateIMissionState(mCollectionOfVehicleId[i], mCollectionOfMissionList[mCollectionOfVehicleId[i]][mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]]]);
 					rMissionStateManager.Add(missionState.mName, missionState);
-					RaiseEvent_CycleMissionIndexUpdated(mCollectionOfVehicleId[i], mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]]);
+					RaiseEvent_CycleMissionExecutedIndexChanged(mCollectionOfVehicleId[i], mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]]);
 				}
 			}
 		}

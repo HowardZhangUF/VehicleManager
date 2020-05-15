@@ -96,8 +96,8 @@ namespace TrafficControlTest.UserControl
 			if (CycleMissionGenerator != null)
 			{
 				CycleMissionGenerator.CycleMissionAssigned += HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
-				CycleMissionGenerator.CycleMissionRemoved += HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
-				CycleMissionGenerator.CycleMissionIndexUpdated += HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
+				CycleMissionGenerator.CycleMissionUnassigned += HandleEvent_CycleMissionGeneratorCycleMissionUnassigned;
+				CycleMissionGenerator.CycleMissionExecutedIndexChanged += HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged;
 			}
 		}
 		private void UnsubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
@@ -105,8 +105,8 @@ namespace TrafficControlTest.UserControl
 			if (CycleMissionGenerator != null)
 			{
 				CycleMissionGenerator.CycleMissionAssigned -= HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
-				CycleMissionGenerator.CycleMissionRemoved -= HandleEvent_CycleMissionGeneratorCycleMissionRemoved;
-				CycleMissionGenerator.CycleMissionIndexUpdated -= HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated;
+				CycleMissionGenerator.CycleMissionUnassigned -= HandleEvent_CycleMissionGeneratorCycleMissionUnassigned;
+				CycleMissionGenerator.CycleMissionExecutedIndexChanged -= HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged;
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
@@ -116,9 +116,9 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			if (rCycleMissionGenerator.GetAssigned(Name))
+			if (rCycleMissionGenerator.IsAssigned(Name))
 			{
-				rCycleMissionGenerator.RemoveCycleMission(Name);
+				rCycleMissionGenerator.UnassignCycleMission(Name);
 			}
 			UpdateGui_CbVehicleStateList_UpdateItems();
 			cbVehicleStateList_SelectedIndexChanged(null, null);
@@ -127,11 +127,11 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateGui_CbVehicleStateList_UpdateSpecificItem(VehicleId, "Started");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleMissionRemoved(DateTime OccurTime, string VehicleId)
+		private void HandleEvent_CycleMissionGeneratorCycleMissionUnassigned(DateTime OccurTime, string VehicleId)
 		{
 			UpdateGui_CbVehicleStateList_UpdateSpecificItem(VehicleId, "Stopped");
 		}
-		private void HandleEvent_CycleMissionGeneratorCycleMissionIndexUpdated(DateTime OccurTime, string VehicleId, int Index)
+		private void HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged(DateTime OccurTime, string VehicleId, int Index)
 		{
 			if (CurrentVehicleName == VehicleId)
 			{
@@ -140,7 +140,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void UpdateGui_CbVehicleStateList_UpdateItems()
 		{
-			UpdateGui_CbVehicleStateList_UpdateItems(rVehicleInfoManager.GetItemNames().OrderBy(o => o).ToArray(), rVehicleInfoManager.GetItems().OrderBy(o => o.mName).Select(o => rCycleMissionGenerator.GetAssigned(o.mName) ? "Started" : "Stopped").ToArray());
+			UpdateGui_CbVehicleStateList_UpdateItems(rVehicleInfoManager.GetItemNames().OrderBy(o => o).ToArray(), rVehicleInfoManager.GetItems().OrderBy(o => o.mName).Select(o => rCycleMissionGenerator.IsAssigned(o.mName) ? "Started" : "Stopped").ToArray());
 		}
 		private void UpdateGui_CbVehicleStateList_UpdateItems(string[] VehicleNameList, string[] SuffixList)
 		{
@@ -281,7 +281,7 @@ namespace TrafficControlTest.UserControl
 			string vehicleId = CurrentVehicleName;
 			if (!string.IsNullOrEmpty(vehicleId))
 			{
-				if (rCycleMissionGenerator.GetAssigned(vehicleId))
+				if (rCycleMissionGenerator.IsAssigned(vehicleId))
 				{
 					this.InvokeIfNecessary(() =>
 					{
@@ -349,7 +349,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void btnStopCycle_Click(object sender, EventArgs e)
 		{
-			rCycleMissionGenerator.RemoveCycleMission(CurrentVehicleName);
+			rCycleMissionGenerator.UnassignCycleMission(CurrentVehicleName);
 			txtMissionListString.Enabled = true;
 			btnAnalyzeMissionListString.Enabled = true;
 			dgvMissionList.Enabled = true;
