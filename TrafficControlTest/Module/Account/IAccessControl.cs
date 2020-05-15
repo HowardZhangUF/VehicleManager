@@ -15,8 +15,7 @@ namespace TrafficControlTest.Module.Account
 	/// </summary>
 	public interface IAccessControl
 	{
-		event EventHandlerLogInOutEvent UserLogIn;
-		event EventHandlerLogInOutEvent UserLogOut;
+		event EventHandler<UserLogChangedEventArgs> UserLogChanged;
 
 		string mCurrentUser { get; }
 		AccountRank mCurrentRank { get; }
@@ -24,5 +23,21 @@ namespace TrafficControlTest.Module.Account
 		void Set(IAccountManager AccountManager);
 		bool LogIn(string Password);
 		bool LogOut();
+	}
+
+	public class UserLogChangedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string UserName { get; private set; }
+		public AccountRank UserRank { get; private set; }
+		public bool IsLogin { get; private set; }
+
+		public UserLogChangedEventArgs(DateTime OccurTime, string UserName, AccountRank UserRank, bool IsLogin) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.UserName = UserName;
+			this.UserRank = UserRank;
+			this.IsLogin = IsLogin;
+		}
 	}
 }

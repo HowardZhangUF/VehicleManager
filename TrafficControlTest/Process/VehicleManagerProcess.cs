@@ -24,8 +24,7 @@ namespace TrafficControlTest.Process
 	{
 		public event EventHandler<DebugMessageEventArgs> DebugMessage;
 		public event EventHandler<SignificantEventEventArgs> SignificantEvent;
-		public event EventHandlerLogInOutEvent AccessControlUserLogIn;
-		public event EventHandlerLogInOutEvent AccessControlUserLogOut;
+		public event EventHandler<UserLogChangedEventArgs> AccessControlUserLogChanged;
 
 		public bool mIsAnyUserLoggedIn { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser)); } }
 		public string mCurrentLoggedInUserName { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser) ? mAccessControl.mCurrentUser : string.Empty); } }
@@ -474,16 +473,14 @@ namespace TrafficControlTest.Process
 		{
 			if (AccessControl != null)
 			{
-				AccessControl.UserLogIn += HandleEvent_AccessControlUserLogIn;
-				AccessControl.UserLogOut += HandleEvent_AccessControlUserLogOut;
+				AccessControl.UserLogChanged += HandleEvent_AccessControlUserLogChanged;
 			}
 		}
 		private void UnsubscribeEvent_IAccessControl(IAccessControl AccessControl)
 		{
 			if (AccessControl != null)
 			{
-				AccessControl.UserLogIn -= HandleEvent_AccessControlUserLogIn;
-				AccessControl.UserLogOut -= HandleEvent_AccessControlUserLogOut;
+				AccessControl.UserLogChanged -= HandleEvent_AccessControlUserLogChanged;
 			}
 		}
 		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -844,26 +841,15 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { SignificantEvent?.Invoke(this, new SignificantEventEventArgs(OccurTime, Category, Info)); });
 			}
 		}
-		protected virtual void RaiseEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank, bool Sync = true)
+		protected virtual void RaiseEvent_AccessControlUserLogChanged(DateTime OccurTime, string UserName, AccountRank UserRank, bool IsLogin, bool Sync = true)
 		{
 			if (Sync)
 			{
-				AccessControlUserLogIn?.Invoke(OccurTime, Name, Rank);
+				AccessControlUserLogChanged?.Invoke(this, new UserLogChangedEventArgs(OccurTime, UserName, UserRank, IsLogin));
 			}
 			else
 			{
-				Task.Run(() => { AccessControlUserLogIn?.Invoke(OccurTime, Name, Rank); });
-			}
-		}
-		protected virtual void RaiseEvent_AccessControlUserLogOut(DateTime OccurTime, string Name, AccountRank Rank, bool Sync = true)
-		{
-			if (Sync)
-			{
-				AccessControlUserLogOut?.Invoke(OccurTime, Name, Rank);
-			}
-			else
-			{
-				Task.Run(() => { AccessControlUserLogOut?.Invoke(OccurTime, Name, Rank); });
+				Task.Run(() => { AccessControlUserLogChanged?.Invoke(this, new UserLogChangedEventArgs(OccurTime, UserName, UserRank, IsLogin)); });
 			}
 		}
 		private void HandleEvent_ConfiguratorConfigFileLoaded(object Sender, ConfigFileLoadedEventArgs Args)
@@ -928,15 +914,10 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "LogExporter", "ExportCompleted", $"Items: {string.Join(",", Items)}");
 		}
-		private void HandleEvent_AccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
+		private void HandleEvent_AccessControlUserLogChanged(object Sender, UserLogChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "AccessControl", "UserLogIn", $"Name: {Name}, Rank: {Rank.ToString()}");
-			RaiseEvent_AccessControlUserLogIn(OccurTime, Name, Rank);
-		}
-		private void HandleEvent_AccessControlUserLogOut(DateTime OccurTime, string Name, AccountRank Rank)
-		{
-			HandleDebugMessage(OccurTime, "AccessControl", "UserLogOut", $"Name: {Name}, Rank: {Rank.ToString()}");
-			RaiseEvent_AccessControlUserLogOut(OccurTime, Name, Rank);
+			HandleDebugMessage(Args.OccurTime, "AccessControl", "UserLogChanged", $"Name: {Args.UserName}, Rank: {Args.UserRank.ToString()}, IsLogin: {Args.IsLogin.ToString()}");
+			RaiseEvent_AccessControlUserLogChanged(Args.OccurTime, Args.UserName, Args.UserRank, Args.IsLogin);
 		}
 		private void HandleEvent_VehicleCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{

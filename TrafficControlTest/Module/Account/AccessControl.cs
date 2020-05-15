@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TrafficControlTest.Library;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Account
 {
 	public class AccessControl : IAccessControl
 	{
-		public event EventHandlerLogInOutEvent UserLogIn;
-		public event EventHandlerLogInOutEvent UserLogOut;
+		public event EventHandler<UserLogChangedEventArgs> UserLogChanged;
 
 		public string mCurrentUser { get; private set; } = string.Empty;
 		public AccountRank mCurrentRank { get; private set; } = AccountRank.None;
@@ -35,7 +33,7 @@ namespace TrafficControlTest.Module.Account
 				{
 					mCurrentUser = tmp.mName;
 					mCurrentRank = tmp.mRank;
-					RaiseEvent_UserLogIn(mCurrentUser, mCurrentRank);
+					RaiseEvent_UserLogChagned(mCurrentUser, mCurrentRank, true);
 					return true;
 				}
 				else
@@ -56,7 +54,7 @@ namespace TrafficControlTest.Module.Account
 				AccountRank mLastRank = mCurrentRank;
 				mCurrentUser = string.Empty;
 				mCurrentRank = AccountRank.None;
-				RaiseEvent_UserLogOut(mLastUser, mLastRank);
+				RaiseEvent_UserLogChagned(mLastUser, mLastRank, false);
 				return true;
 			}
 			else
@@ -65,26 +63,15 @@ namespace TrafficControlTest.Module.Account
 			}
 		}
 
-		protected virtual void RaiseEvent_UserLogIn(string Name, AccountRank Rank, bool Sync = true)
+		protected virtual void RaiseEvent_UserLogChagned(string UserName, AccountRank UserRank, bool IsLogin, bool Sync = true)
 		{
 			if (Sync)
 			{
-				UserLogIn?.Invoke(DateTime.Now, Name, Rank);
+				UserLogChanged?.Invoke(this, new UserLogChangedEventArgs(DateTime.Now, UserName, UserRank, IsLogin));
 			}
 			else
 			{
-				Task.Run(() => { UserLogIn?.Invoke(DateTime.Now, Name, Rank); });
-			}
-		}
-		protected virtual void RaiseEvent_UserLogOut(string Name, AccountRank Rank, bool Sync = true)
-		{
-			if (Sync)
-			{
-				UserLogOut?.Invoke(DateTime.Now, Name, Rank);
-			}
-			else
-			{
-				Task.Run(() => { UserLogOut?.Invoke(DateTime.Now, Name, Rank); });
+				Task.Run(() => { UserLogChanged?.Invoke(this, new UserLogChangedEventArgs(DateTime.Now, UserName, UserRank, IsLogin)); });
 			}
 		}
 	}

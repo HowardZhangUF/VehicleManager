@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using TrafficControlTest.Process;
 using TrafficControlTest.Library;
 using TrafficControlTest.UserControl;
+using TrafficControlTest.Module.Account;
 
 namespace TrafficControlTest.UserInterface
 {
@@ -569,29 +570,30 @@ namespace TrafficControlTest.UserInterface
 		{
 			if (VehicleManagerProcess != null)
 			{
-				VehicleManagerProcess.AccessControlUserLogIn += HandleEvent_VehicleManagerProcessAccessControlUserLogIn;
-				VehicleManagerProcess.AccessControlUserLogOut += HandleEvent_VehicleManagerProcessAccessControlUserLogOut;
+				VehicleManagerProcess.AccessControlUserLogChanged += HandleEvent_VehicleManagerProcessAccessControlUserLogChanged;
 			}
 		}
 		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
 		{
 			if (VehicleManagerProcess != null)
 			{
-				VehicleManagerProcess.AccessControlUserLogIn -= HandleEvent_VehicleManagerProcessAccessControlUserLogIn;
-				VehicleManagerProcess.AccessControlUserLogOut -= HandleEvent_VehicleManagerProcessAccessControlUserLogOut;
+				VehicleManagerProcess.AccessControlUserLogChanged -= HandleEvent_VehicleManagerProcessAccessControlUserLogChanged;
 			}
 		}
-		private void HandleEvent_VehicleManagerProcessAccessControlUserLogIn(DateTime OccurTime, string Name, AccountRank Rank)
+		private void HandleEvent_VehicleManagerProcessAccessControlUserLogChanged(object Sender, UserLogChangedEventArgs Args)
 		{
-			UpdateGui_UpdateUsableControlAmount(Rank);
-			UpdateGui_UpdateControlText(btnLogin, Name);
-			UpdateGui_UpdateControlBackColor(btnLogin, Color.DarkOrange);
-		}
-		private void HandleEvent_VehicleManagerProcessAccessControlUserLogOut(DateTime OccurTime, string Name, AccountRank Rank)
-		{
-			UpdateGui_UpdateUsableControlAmount(AccountRank.None);
-			UpdateGui_UpdateControlText(btnLogin, string.Empty);
-			UpdateGui_UpdateControlBackColor(btnLogin, Color.FromArgb(20, 20, 20));
+			if (Args.IsLogin)
+			{
+				UpdateGui_UpdateUsableControlAmount(Args.UserRank);
+				UpdateGui_UpdateControlText(btnLogin, Args.UserName);
+				UpdateGui_UpdateControlBackColor(btnLogin, Color.DarkOrange);
+			}
+			else
+			{
+				UpdateGui_UpdateUsableControlAmount(AccountRank.None);
+				UpdateGui_UpdateControlText(btnLogin, string.Empty);
+				UpdateGui_UpdateControlBackColor(btnLogin, Color.FromArgb(20, 20, 20));
+			}
 		}
 		#endregion
 	}

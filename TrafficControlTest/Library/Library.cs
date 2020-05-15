@@ -689,8 +689,6 @@ namespace TrafficControlTest.Library
 
 	public static class EventHandlerLibrary
 	{
-		public delegate void EventHandlerLogInOutEvent(DateTime OccurTime, string Name, AccountRank Rank);
-
 		public delegate void EventHandlerDateTime(DateTime OccurTime);
 		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);
 		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState, int Port);
