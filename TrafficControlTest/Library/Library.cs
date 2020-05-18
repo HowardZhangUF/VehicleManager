@@ -292,13 +292,13 @@ namespace TrafficControlTest.Library
 		{
 			return new MissionUpdater(VehicleCommunicator, VehicleInfoManager, MissionStateManager, MapManager);
 		}
-		public static IMapFileManager GenerateIMapFileManager(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		public static IMapFileManager GenerateIMapFileManager()
 		{
-			return new MapFileManager(VehicleCommunicator, VehicleInfoManager);
+			return new MapFileManager();
 		}
-		public static IMapManager GenerateIMapManager(IVehicleInfoManager VehicleInfoManager, IMapFileManager MapFileManager)
+		public static IMapManager GenerateIMapManager(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMapFileManager MapFileManager)
 		{
-			return new MapManager(VehicleInfoManager, MapFileManager);
+			return new MapManager(VehicleCommunicator, VehicleInfoManager, MapFileManager);
 		}
 		public static IMissionStateReporter GenerateIMissionStateReporter(IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
 		{

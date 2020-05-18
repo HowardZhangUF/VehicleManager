@@ -290,11 +290,11 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 
 			UnsubscribeEvent_IMapFileManager(mMapFileManager);
-			mMapFileManager = GenerateIMapFileManager(mVehicleCommunicator, mVehicleInfoManager);
+			mMapFileManager = GenerateIMapFileManager();
 			SubscribeEvent_IMapFileManager(mMapFileManager);
 
 			UnsubscribeEvent_IMapManager(mMapManager);
-			mMapManager = GenerateIMapManager(mVehicleInfoManager, mMapFileManager);
+			mMapManager = GenerateIMapManager(mVehicleCommunicator, mVehicleInfoManager, mMapFileManager);
 			SubscribeEvent_IMapManager(mMapManager);
 
 			UnsubscribeEvent_IMissionStateReporter(mMissionStateReporter);
@@ -720,7 +720,6 @@ namespace TrafficControlTest.Process
 				MapFileManager.ConfigUpdated += HandleEvent_MapFileManagerConfigUpdated;
 				MapFileManager.MapFileAdded += HandleEvent_MapFileManagerMapFileAdded;
 				MapFileManager.MapFileRemoved += HandleEvent_MapFileManagerMapFileRemoved;
-				MapFileManager.VehicleCurrentMapSynchronized += HandleEvent_MapFileManagerVehicleCurrentMapSynchronized;
 			}
 		}
 		private void UnsubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
@@ -730,7 +729,6 @@ namespace TrafficControlTest.Process
 				MapFileManager.ConfigUpdated -= HandleEvent_MapFileManagerConfigUpdated;
 				MapFileManager.MapFileAdded -= HandleEvent_MapFileManagerMapFileAdded;
 				MapFileManager.MapFileRemoved -= HandleEvent_MapFileManagerMapFileRemoved;
-				MapFileManager.VehicleCurrentMapSynchronized -= HandleEvent_MapFileManagerVehicleCurrentMapSynchronized;
 			}
 		}
 		private void SubscribeEvent_IMapManager(IMapManager MapManager)
@@ -739,6 +737,7 @@ namespace TrafficControlTest.Process
 			{
 				MapManager.ConfigUpdated += HandleEvent_MapManagerConfigUpdated;
 				MapManager.MapLoaded += HandleEvent_MapManagerMapLoaded;
+				MapManager.VehicleCurrentMapSynchronized += HandleEvent_MapManagerVehicleCurrentMapSynchronized;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
@@ -747,6 +746,7 @@ namespace TrafficControlTest.Process
 			{
 				MapManager.ConfigUpdated -= HandleEvent_MapManagerConfigUpdated;
 				MapManager.MapLoaded -= HandleEvent_MapManagerMapLoaded;
+				MapManager.VehicleCurrentMapSynchronized -= HandleEvent_MapManagerVehicleCurrentMapSynchronized;
 			}
 		}
 		private void SubscribeEvent_IMissionStateReporter(IMissionStateReporter MissionStateReporter)
@@ -1092,10 +1092,6 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {MapFileName}");
 		}
-		private void HandleEvent_MapFileManagerVehicleCurrentMapSynchronized(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName)
-		{
-			HandleDebugMessage(OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
-		}
 		private void HandleEvent_MapManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
@@ -1103,6 +1099,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
 		{
 			HandleDebugMessage(OccurTime, "MapManager", "MapLoaded", $"MapName: {MapFileName}");
+		}
+		private void HandleEvent_MapManagerVehicleCurrentMapSynchronized(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName)
+		{
+			HandleDebugMessage(OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
 		}
 		private void HandleEvent_CycleMissionGeneratorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{

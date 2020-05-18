@@ -247,12 +247,12 @@ namespace TrafficControlTest.UserControl
 			if (!string.IsNullOrEmpty(CurrentVehicleName) && Args.StatusName.Contains("CurrentMapNameList"))
 			{
 				UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
-				UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());
+				UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
 			}
 		}
 		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
 		{
-			UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());
+			UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
 		}
 		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
 		{
@@ -366,7 +366,7 @@ namespace TrafficControlTest.UserControl
 			if (!string.IsNullOrEmpty(CurrentVehicleName))
 			{
 				UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
-				UpdateLocalMapNameList(rMapFileManager.GetLocalMapNameList());
+				UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
 			}
 		}
 	}

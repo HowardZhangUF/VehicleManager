@@ -213,19 +213,22 @@ namespace TrafficControlTest.Module.Vehicle
 		}
 		private void UpdateIVehicleInfo(string IpPort, List<string> MapList)
 		{
+			// 從 iTS 拿到的 MapList 資訊：
+			// 1. 沒有副檔名 (.map)
+			// 2. 名稱為 * 符號結尾的代表其為當前使用地圖
 			if (rVehicleInfoManager.IsExistByIpPort(IpPort))
 			{
 				IVehicleInfo tmpData = rVehicleInfoManager.GetItemByIpPort(IpPort);
 				tmpData.BeginUpdate();
 				if (MapList.Any(o => o.EndsWith("*")))
 				{
-					tmpData.UpdateCurrentMapName(MapList.First(o => o.EndsWith("*")).TrimEnd('*'));
+					tmpData.UpdateCurrentMapName(MapList.First(o => o.EndsWith("*")).TrimEnd('*') + ".map");
 				}
 				else
 				{
 					tmpData.UpdateCurrentMapName(string.Empty);
 				}
-				tmpData.UpdateCurrentMapNameList(MapList);
+				tmpData.UpdateCurrentMapNameList(MapList.Select(o => o + ".map"));
 				tmpData.EndUpdate();
 			}
 		}

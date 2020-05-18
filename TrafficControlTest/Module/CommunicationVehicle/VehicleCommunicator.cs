@@ -106,7 +106,8 @@ namespace TrafficControlTest.Module.CommunicationVehicle
 		}
 		public void SendSerializableData_GetMap(string IpPort, string MapName)
 		{
-			SendSerializableData(IpPort, new GetMap(MapName));
+			// 與 iTS 通訊時， GetMap 帶的參數要移除副檔名
+			SendSerializableData(IpPort, new GetMap(MapName.Replace(".map", string.Empty)));
 		}
 		public void SendSerializableData_UploadMapToAGV(string IpPort, string MapPath)
 		{
@@ -114,7 +115,8 @@ namespace TrafficControlTest.Module.CommunicationVehicle
 		}
 		public void SendSerializableData_ChangeMap(string IpPort, string MapName)
 		{
-			SendSerializableData(IpPort, new ChangeMap(MapName));
+			// 與 iTS 通訊時， ChangeMap 帶的參數要移除副檔名
+			SendSerializableData(IpPort, new ChangeMap(MapName.Replace(".map", string.Empty)));
 		}
 		public override string GetConfig(string ConfigName)
 		{
