@@ -264,15 +264,15 @@ namespace TrafficControlTest.Module.Map
 			// 當車的「當前使用地圖」屬性改變時 (僅使用 Contains 判斷有可能抓到 "CurrentMapName" 與 "CurrentMapNameList" 兩種結果，所以需要做更細節的字串判斷)
 			if (Args.StatusName.Contains("CurrentMapName") && Args.StatusName.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(o => o == "CurrentMapName"))
 			{
-				// 當 CurrentMapName 不為空或 Null 時發送「下載地圖」的請求，並更新「下載中地圖清單」
+				// 當 CurrentMapName 不為空或 Null 時，發送「下載地圖」的請求，並更新「下載中地圖清單」
 				if (!string.IsNullOrEmpty(Args.Item.mCurrentMapName))
 				{
 					rVehicleCommunicator.SendSerializableData_GetMap(Args.Item.mIpPort, Args.Item.mCurrentMapName);
 					mMapFileNamesOfDownloading.Add(Args.Item.mCurrentMapName);
 				}
 
-				// 當啟用「自動讀取地圖」功能時將嘗試讀取地圖
-				if (mAutoLoadMap)
+				// 當啟用「自動讀取地圖」功能時，且當前使用地圖不為空或 null ，將嘗試讀取地圖
+				if (mAutoLoadMap && !string.IsNullOrEmpty(Args.Item.mCurrentMapName))
 				{
 					DateTime tmpTimestamp = DateTime.Now;
 					Task.Run(() => TryLoadMap(Args.Item.mCurrentMapName));
