@@ -28,6 +28,7 @@ namespace TrafficControlTest.Module.Map
 	public interface IMapManager : ISystemWithConfig
 	{
 		event EventHandler<LoadMapSuccessedEventArgs> LoadMapSuccessed;
+		event EventHandler<LoadMapFailedEventArgs> LoadMapFailed;
 		event EventHandler<SynchronizeMapStartedEventArgs> SynchronizeMapStarted;
 
 		void Set(IVehicleCommunicator VehicleCommunicator);
@@ -45,6 +46,13 @@ namespace TrafficControlTest.Module.Map
 		void SynchronizeMapToOnlineVehicles2(string MapFileNameWithoutExtension);
 	}
 
+	public enum ReasonOfLoadMapFail
+	{
+		None,
+		IsDownloadingMapFile,
+		MapFileIsNotExist,
+		MapFileHashIsEqualToOldMap
+	}
 	public class LoadMapSuccessedEventArgs : EventArgs
 	{
 		public DateTime OccurTime { get; private set; }
@@ -54,6 +62,19 @@ namespace TrafficControlTest.Module.Map
 		{
 			this.OccurTime = OccurTime;
 			this.MapFileName = MapFileName;
+		}
+	}
+	public class LoadMapFailedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string MapFileName { get; private set; }
+		public ReasonOfLoadMapFail Reason { get; private set; }
+
+		public LoadMapFailedEventArgs(DateTime OccurTime, string MapFileName, ReasonOfLoadMapFail Reason)
+		{
+			this.OccurTime = OccurTime;
+			this.MapFileName = MapFileName;
+			this.Reason = Reason;
 		}
 	}
 	public class SynchronizeMapStartedEventArgs : EventArgs

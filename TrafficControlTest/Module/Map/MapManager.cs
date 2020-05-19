@@ -16,6 +16,7 @@ namespace TrafficControlTest.Module.Map
 	public class MapManager : SystemWithConfig, IMapManager
 	{
 		public event EventHandler<LoadMapSuccessedEventArgs> LoadMapSuccessed;
+		public event EventHandler<LoadMapFailedEventArgs> LoadMapFailed;
 		public event EventHandler<SynchronizeMapStartedEventArgs> SynchronizeMapStarted;
 
 		private IVehicleCommunicator rVehicleCommunicator = null;
@@ -197,6 +198,17 @@ namespace TrafficControlTest.Module.Map
 				Task.Run(() => { LoadMapSuccessed?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName)); });
 			}
 		}
+		protected virtual void RaiseEvent_LoadMapFailed(string MapFileName, ReasonOfLoadMapFail Reason, bool Sync = true)
+		{
+			if (Sync)
+			{
+				LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileName, Reason));
+			}
+			else
+			{
+				Task.Run(() => { LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileName, Reason)); });
+			}
+		}
 		protected virtual void RaiseEvent_SynchronizeMapStarted(string MapFileName, IEnumerable<string> VehicleNames, bool Sync = true)
 		{
 			if (Sync)
@@ -269,24 +281,44 @@ namespace TrafficControlTest.Module.Map
 		}
 		private void TryLoadMap(string MapFileName)
 		{
+			bool isLoadMapSuccess = false;
+			ReasonOfLoadMapFail reason = ReasonOfLoadMapFail.None;
+
 			DateTime tmpTimestamp = DateTime.Now;
 			while (DateTime.Now.Subtract(tmpTimestamp).TotalMilliseconds < 5000)
 			{
 				// 當下載地圖完成時
 				if (!mIsDownloadingMapFile)
 				{
-					// 若有該地圖存在，且該地圖 Hash 與當前地圖 Hash 不同時
-					if (rMapFileManager.GetLocalMapFileNameList().Any(o => o == MapFileName) && MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)) != GetCurrentMapFileHash())
+					// 若有該地圖存在
+					if (rMapFileManager.GetLocalMapFileNameList().Any(o => o == MapFileName))
 					{
-						LoadMap(MapFileName);
-						break;
+						// 該地圖 Hash 與當前地圖 Hash 不同時
+						if (MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)) != GetCurrentMapFileHash())
+						{
+							LoadMap(MapFileName);
+							isLoadMapSuccess = true;
+							break;
+						}
+						else
+						{
+							reason = ReasonOfLoadMapFail.MapFileHashIsEqualToOldMap;
+							break;
+						}
 					}
 					else
 					{
+						reason = ReasonOfLoadMapFail.MapFileIsNotExist;
 						break;
 					}
 				}
 				Thread.Sleep(600);
+			}
+
+			if (!isLoadMapSuccess)
+			{
+				if (reason == ReasonOfLoadMapFail.None) reason = ReasonOfLoadMapFail.IsDownloadingMapFile;
+				RaiseEvent_LoadMapFailed(MapFileName, reason);
 			}
 		}
 		private void TryLoadMap2(string MapFileNameWithoutExtension)

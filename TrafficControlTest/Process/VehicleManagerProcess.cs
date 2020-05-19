@@ -737,6 +737,7 @@ namespace TrafficControlTest.Process
 			{
 				MapManager.ConfigUpdated += HandleEvent_MapManagerConfigUpdated;
 				MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.LoadMapFailed += HandleEvent_MapManagerLoadMapFailed;
 				MapManager.SynchronizeMapStarted += HandleEvent_MapManagerSynchronizeMapStarted;
 			}
 		}
@@ -746,6 +747,7 @@ namespace TrafficControlTest.Process
 			{
 				MapManager.ConfigUpdated -= HandleEvent_MapManagerConfigUpdated;
 				MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.LoadMapFailed -= HandleEvent_MapManagerLoadMapFailed;
 				MapManager.SynchronizeMapStarted -= HandleEvent_MapManagerSynchronizeMapStarted;
 			}
 		}
@@ -1098,11 +1100,15 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_MapManagerLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapManager", "MapLoaded", $"MapName: {Args.MapFileName}");
+			HandleDebugMessage(Args.OccurTime, "MapManager", "LoadMapSuccessed", $"MapName: {Args.MapFileName}");
+		}
+		private void HandleEvent_MapManagerLoadMapFailed(object Sender, LoadMapFailedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapManager", "LoadMapFailed", $"MapName: {Args.MapFileName}, Reason: {Args.Reason.ToString()}");
 		}
 		private void HandleEvent_MapManagerSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "SynchronizeMapStarted", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
 		}
 		private void HandleEvent_CycleMissionGeneratorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
