@@ -1084,25 +1084,25 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
+		private void HandleEvent_MapFileManagerMapFileAdded(object Sender, MapFileCountChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MapFileManager", "ItemAdded", $"MapFileName: {MapFileName}");
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemAdded", $"MapFileName: {Args.MapFileName}");
 		}
-		private void HandleEvent_MapFileManagerMapFileRemoved(DateTime OccurTime, string MapFileName)
+		private void HandleEvent_MapFileManagerMapFileRemoved(object Sender, MapFileCountChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {MapFileName}");
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {Args.MapFileName}");
 		}
 		private void HandleEvent_MapManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
+		private void HandleEvent_MapManagerMapLoaded(object Sender, LoadMapSuccessedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MapManager", "MapLoaded", $"MapName: {MapFileName}");
+			HandleDebugMessage(Args.OccurTime, "MapManager", "MapLoaded", $"MapName: {Args.MapFileName}");
 		}
-		private void HandleEvent_MapManagerVehicleCurrentMapSynchronized(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName)
+		private void HandleEvent_MapManagerVehicleCurrentMapSynchronized(object Sender, SynchronizeMapStartedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"VehicleNames: {string.Join(",", VehicleNames)}, MapFileName: {MapFileName}");
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
 		}
 		private void HandleEvent_CycleMissionGeneratorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{

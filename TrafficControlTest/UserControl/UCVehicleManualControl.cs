@@ -152,7 +152,7 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateGui_UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
 		}
-		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
+		private void HandleEvent_MapManagerMapLoaded(object Sender, LoadMapSuccessedEventArgs Args)
 		{
 			UpdateGui_UpdateGoalList(rMapManager.GetGoalNameList());
 		}

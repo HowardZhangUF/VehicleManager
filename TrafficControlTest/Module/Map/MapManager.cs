@@ -3,7 +3,6 @@ using SerialData;
 using Serialization;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,14 +10,13 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Map
 {
 	public class MapManager : SystemWithConfig, IMapManager
 	{
-		public event EventHandlerMapFileName MapLoaded;
-		public event EventHandlerVehicleNamesMapFileName VehicleCurrentMapSynchronized;
+		public event EventHandler<LoadMapSuccessedEventArgs> MapLoaded;
+		public event EventHandler<SynchronizeMapStartedEventArgs> VehicleCurrentMapSynchronized;
 
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
@@ -112,7 +110,7 @@ namespace TrafficControlTest.Module.Map
 				{
 					rVehicleCommunicator.SendSerializableData_ChangeMap(rVehicleInfoManager.GetItem(vehicleName).mIpPort, MapFileName);
 				}
-				RaiseEvent_VehicleCurrentMapSynchronized(vehicleNames, MapFileName);
+				RaiseEvent_VehicleCurrentMapSynchronized(MapFileName, vehicleNames);
 			}
 		}
 		public void SynchronizeVehicleCurrentMap2(string MapFileNameWithoutExtension)
@@ -192,22 +190,22 @@ namespace TrafficControlTest.Module.Map
 		{
 			if (Sync)
 			{
-				MapLoaded?.Invoke(DateTime.Now, MapFileName);
+				MapLoaded?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName));
 			}
 			else
 			{
-				Task.Run(() => { MapLoaded?.Invoke(DateTime.Now, MapFileName); });
+				Task.Run(() => { MapLoaded?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName)); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCurrentMapSynchronized(IEnumerable<string> VehicleNames, string MapFileName, bool Sync = true)
+		protected virtual void RaiseEvent_VehicleCurrentMapSynchronized(string MapFileName, IEnumerable<string> VehicleNames, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleCurrentMapSynchronized?.Invoke(DateTime.Now, VehicleNames, MapFileName);
+				VehicleCurrentMapSynchronized?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames));
 			}
 			else
 			{
-				Task.Run(() => { VehicleCurrentMapSynchronized?.Invoke(DateTime.Now, VehicleNames, MapFileName); });
+				Task.Run(() => { VehicleCurrentMapSynchronized?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames)); });
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)

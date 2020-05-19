@@ -1,21 +1,15 @@
-﻿using SerialData;
-using Serialization;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
-using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Map
 {
 	public class MapFileManager : SystemWithConfig, IMapFileManager
 	{
-		public event EventHandlerMapFileName MapFileAdded;
-		public event EventHandlerMapFileName MapFileRemoved;
+		public event EventHandler<MapFileCountChangedEventArgs> MapFileAdded;
+		public event EventHandler<MapFileCountChangedEventArgs> MapFileRemoved;
 
 		private string mMapFileDirectory { get; set; } = string.Empty;
 
@@ -101,22 +95,22 @@ namespace TrafficControlTest.Module.Map
 		{
 			if (Sync)
 			{
-				MapFileAdded?.Invoke(DateTime.Now, MapFileName);
+				MapFileAdded?.Invoke(this, new MapFileCountChangedEventArgs(DateTime.Now, MapFileName));
 			}
 			else
 			{
-				Task.Run(() => { MapFileAdded?.Invoke(DateTime.Now, MapFileName); });
+				Task.Run(() => { MapFileAdded?.Invoke(this, new MapFileCountChangedEventArgs(DateTime.Now, MapFileName)); });
 			}
 		}
 		protected virtual void RaiseEvent_MapFileRemoved(string MapFileName, bool Sync = true)
 		{
 			if (Sync)
 			{
-				MapFileRemoved?.Invoke(DateTime.Now, MapFileName);
+				MapFileRemoved?.Invoke(this, new MapFileCountChangedEventArgs(DateTime.Now, MapFileName));
 			}
 			else
 			{
-				Task.Run(() => { MapFileRemoved?.Invoke(DateTime.Now, MapFileName); });
+				Task.Run(() => { MapFileRemoved?.Invoke(this, new MapFileCountChangedEventArgs(DateTime.Now, MapFileName)); });
 			}
 		}
 	}

@@ -250,11 +250,11 @@ namespace TrafficControlTest.UserControl
 				UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
 			}
 		}
-		private void HandleEvent_MapFileManagerMapFileAdded(DateTime OccurTime, string MapFileName)
+		private void HandleEvent_MapFileManagerMapFileAdded(object Sender, MapFileCountChangedEventArgs Args)
 		{
 			UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
 		}
-		private void HandleEvent_MapManagerMapLoaded(DateTime OccurTime, string MapFileName)
+		private void HandleEvent_MapManagerMapLoaded(object Sender, LoadMapSuccessedEventArgs Args)
 		{
 			UpdateGoalNameList(rMapManager.GetGoalNameList());
 		}

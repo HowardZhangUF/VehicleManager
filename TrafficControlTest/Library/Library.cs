@@ -698,8 +698,5 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerReceivedString(DateTime OccurTime, string IpPort, string Data);
 
 		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
-
-		public delegate void EventHandlerMapFileName(DateTime OccurTime, string MapFileName);
-		public delegate void EventHandlerVehicleNamesMapFileName(DateTime OccurTime, IEnumerable<string> VehicleNames, string MapFileName);
 	}
 }

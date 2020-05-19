@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using TrafficControlTest.Module.CommunicationVehicle;
+﻿using System;
 using TrafficControlTest.Module.General;
-using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Map
 {
@@ -28,8 +25,8 @@ namespace TrafficControlTest.Module.Map
 	/// </remarks>
 	public interface IMapFileManager : ISystemWithConfig
 	{
-		event EventHandlerMapFileName MapFileAdded;
-		event EventHandlerMapFileName MapFileRemoved;
+		event EventHandler<MapFileCountChangedEventArgs> MapFileAdded;
+		event EventHandler<MapFileCountChangedEventArgs> MapFileRemoved;
 
 		string[] GetLocalMapFileNameList();
 		string[] GetLocalMapFileNameWithoutExtensionList();
@@ -39,5 +36,17 @@ namespace TrafficControlTest.Module.Map
 		void AddMapFile2(string MapFileNameWithoutExtension, byte[] MapData);
 		void RemoveMapFile(string MapFileName);
 		void RemoveMapFile2(string MapFileNameWithoutExtension);
+	}
+
+	public class MapFileCountChangedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string MapFileName { get; private set; }
+
+		public MapFileCountChangedEventArgs(DateTime OccurTime, string MapFileName) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.MapFileName = MapFileName;
+		}
 	}
 }

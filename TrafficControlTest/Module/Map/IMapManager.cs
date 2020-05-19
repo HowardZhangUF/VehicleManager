@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.Map
 {
@@ -27,8 +27,8 @@ namespace TrafficControlTest.Module.Map
 	/// </summary>
 	public interface IMapManager : ISystemWithConfig
 	{
-		event EventHandlerMapFileName MapLoaded;
-		event EventHandlerVehicleNamesMapFileName VehicleCurrentMapSynchronized;
+		event EventHandler<LoadMapSuccessedEventArgs> MapLoaded;
+		event EventHandler<SynchronizeMapStartedEventArgs> VehicleCurrentMapSynchronized;
 
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IVehicleInfoManager VehicleInfoManager);
@@ -43,5 +43,30 @@ namespace TrafficControlTest.Module.Map
 		int[] GetGoalCoordinate(string GoalName);
 		void SynchronizeVehicleCurrentMap(string MapFileName);
 		void SynchronizeVehicleCurrentMap2(string MapFileNameWithoutExtension);
+	}
+
+	public class LoadMapSuccessedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string MapFileName { get; private set; }
+
+		public LoadMapSuccessedEventArgs(DateTime OccurTime, string MapFileName) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.MapFileName = MapFileName;
+		}
+	}
+	public class SynchronizeMapStartedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string MapFileName { get; private set; }
+		public IEnumerable<string> VehicleNames { get; private set; }
+
+		public SynchronizeMapStartedEventArgs(DateTime OccurTime, string MapFileName, IEnumerable<string> VehicleNames) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.MapFileName = MapFileName;
+			this.VehicleNames = VehicleNames;
+		}
 	}
 }
