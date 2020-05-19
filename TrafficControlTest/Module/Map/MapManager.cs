@@ -15,8 +15,8 @@ namespace TrafficControlTest.Module.Map
 {
 	public class MapManager : SystemWithConfig, IMapManager
 	{
-		public event EventHandler<LoadMapSuccessedEventArgs> MapLoaded;
-		public event EventHandler<SynchronizeMapStartedEventArgs> VehicleCurrentMapSynchronized;
+		public event EventHandler<LoadMapSuccessedEventArgs> LoadMapSuccessed;
+		public event EventHandler<SynchronizeMapStartedEventArgs> SynchronizeMapStarted;
 
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
@@ -60,7 +60,7 @@ namespace TrafficControlTest.Module.Map
 			GLCMD.CMD.LoadMap(rMapFileManager.GetMapFileFullPath(MapFileName), 3);
 			mCurrentMapName = MapFileName;
 			mCurrentMapHash = MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName));
-			RaiseEvent_MapLoaded(MapFileName);
+			RaiseEvent_LoadMapSuccessed(MapFileName);
 		}
 		public void LoadMap2(string MapFileNameWithoutExtension)
 		{
@@ -101,7 +101,7 @@ namespace TrafficControlTest.Module.Map
 				return new int[] { 0, 0, 0 };
 			}
 		}
-		public void SynchronizeVehicleCurrentMap(string MapFileName)
+		public void SynchronizeMapToOnlineVehicles(string MapFileName)
 		{
 			IEnumerable<string> vehicleNames = rVehicleInfoManager.GetItemNames();
 			if (vehicleNames != null && vehicleNames.Count() > 0)
@@ -110,12 +110,12 @@ namespace TrafficControlTest.Module.Map
 				{
 					rVehicleCommunicator.SendSerializableData_ChangeMap(rVehicleInfoManager.GetItem(vehicleName).mIpPort, MapFileName);
 				}
-				RaiseEvent_VehicleCurrentMapSynchronized(MapFileName, vehicleNames);
+				RaiseEvent_SynchronizeMapStarted(MapFileName, vehicleNames);
 			}
 		}
-		public void SynchronizeVehicleCurrentMap2(string MapFileNameWithoutExtension)
+		public void SynchronizeMapToOnlineVehicles2(string MapFileNameWithoutExtension)
 		{
-			SynchronizeVehicleCurrentMap(MapFileNameWithoutExtension + ".map");
+			SynchronizeMapToOnlineVehicles(MapFileNameWithoutExtension + ".map");
 		}
 		public override string GetConfig(string ConfigName)
 		{
@@ -186,26 +186,26 @@ namespace TrafficControlTest.Module.Map
 
 			}
 		}
-		protected virtual void RaiseEvent_MapLoaded(string MapFileName, bool Sync = true)
+		protected virtual void RaiseEvent_LoadMapSuccessed(string MapFileName, bool Sync = true)
 		{
 			if (Sync)
 			{
-				MapLoaded?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName));
+				LoadMapSuccessed?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName));
 			}
 			else
 			{
-				Task.Run(() => { MapLoaded?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName)); });
+				Task.Run(() => { LoadMapSuccessed?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName)); });
 			}
 		}
-		protected virtual void RaiseEvent_VehicleCurrentMapSynchronized(string MapFileName, IEnumerable<string> VehicleNames, bool Sync = true)
+		protected virtual void RaiseEvent_SynchronizeMapStarted(string MapFileName, IEnumerable<string> VehicleNames, bool Sync = true)
 		{
 			if (Sync)
 			{
-				VehicleCurrentMapSynchronized?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames));
+				SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames));
 			}
 			else
 			{
-				Task.Run(() => { VehicleCurrentMapSynchronized?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames)); });
+				Task.Run(() => { SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames)); });
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)

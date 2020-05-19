@@ -736,8 +736,8 @@ namespace TrafficControlTest.Process
 			if (MapManager != null)
 			{
 				MapManager.ConfigUpdated += HandleEvent_MapManagerConfigUpdated;
-				MapManager.MapLoaded += HandleEvent_MapManagerMapLoaded;
-				MapManager.VehicleCurrentMapSynchronized += HandleEvent_MapManagerVehicleCurrentMapSynchronized;
+				MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.SynchronizeMapStarted += HandleEvent_MapManagerSynchronizeMapStarted;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
@@ -745,8 +745,8 @@ namespace TrafficControlTest.Process
 			if (MapManager != null)
 			{
 				MapManager.ConfigUpdated -= HandleEvent_MapManagerConfigUpdated;
-				MapManager.MapLoaded -= HandleEvent_MapManagerMapLoaded;
-				MapManager.VehicleCurrentMapSynchronized -= HandleEvent_MapManagerVehicleCurrentMapSynchronized;
+				MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.SynchronizeMapStarted -= HandleEvent_MapManagerSynchronizeMapStarted;
 			}
 		}
 		private void SubscribeEvent_IMissionStateReporter(IMissionStateReporter MissionStateReporter)
@@ -1096,11 +1096,11 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_MapManagerMapLoaded(object Sender, LoadMapSuccessedEventArgs Args)
+		private void HandleEvent_MapManagerLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MapManager", "MapLoaded", $"MapName: {Args.MapFileName}");
 		}
-		private void HandleEvent_MapManagerVehicleCurrentMapSynchronized(object Sender, SynchronizeMapStartedEventArgs Args)
+		private void HandleEvent_MapManagerSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MapFileManager", "VehicleCurrentMapSynchronized", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
 		}

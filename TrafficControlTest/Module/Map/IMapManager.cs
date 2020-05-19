@@ -27,8 +27,8 @@ namespace TrafficControlTest.Module.Map
 	/// </summary>
 	public interface IMapManager : ISystemWithConfig
 	{
-		event EventHandler<LoadMapSuccessedEventArgs> MapLoaded;
-		event EventHandler<SynchronizeMapStartedEventArgs> VehicleCurrentMapSynchronized;
+		event EventHandler<LoadMapSuccessedEventArgs> LoadMapSuccessed;
+		event EventHandler<SynchronizeMapStartedEventArgs> SynchronizeMapStarted;
 
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IVehicleInfoManager VehicleInfoManager);
@@ -41,8 +41,8 @@ namespace TrafficControlTest.Module.Map
 		string GetCurrentMapFileHash();
 		string[] GetGoalNameList();
 		int[] GetGoalCoordinate(string GoalName);
-		void SynchronizeVehicleCurrentMap(string MapFileName);
-		void SynchronizeVehicleCurrentMap2(string MapFileNameWithoutExtension);
+		void SynchronizeMapToOnlineVehicles(string MapFileName);
+		void SynchronizeMapToOnlineVehicles2(string MapFileNameWithoutExtension);
 	}
 
 	public class LoadMapSuccessedEventArgs : EventArgs
