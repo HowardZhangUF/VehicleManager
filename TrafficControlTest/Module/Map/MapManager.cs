@@ -178,7 +178,7 @@ namespace TrafficControlTest.Module.Map
 		{
 			if (MapFileManager != null)
 			{
-				
+
 			}
 		}
 		private void UnsubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
@@ -219,7 +219,7 @@ namespace TrafficControlTest.Module.Map
 				{
 					GetMap tmpData = Data as GetMap;
 					rMapFileManager.AddMapFile(tmpData.Response.Name, tmpData.Response.Data);
-					if (mMapFileNamesOfDownloading.Contains(Path.GetFileNameWithoutExtension(tmpData.Response.Name))) mMapFileNamesOfDownloading.Remove(Path.GetFileNameWithoutExtension(tmpData.Response.Name));
+					if (mMapFileNamesOfDownloading.Contains(tmpData.Response.Name)) mMapFileNamesOfDownloading.Remove(tmpData.Response.Name);
 				}
 				// 當收到「上傳地圖檔」的回覆，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
 				else if (Data is UploadMapToAGV)
