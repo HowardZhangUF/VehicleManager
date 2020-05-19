@@ -1,4 +1,5 @@
 ﻿using System;
+using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.Library;
@@ -44,18 +45,18 @@ namespace TrafficControlTest.Module.CollisionEvent
 		{
 			if (CollisionEventManager != null)
 			{
-				rCollisionEventManager.CollisionEventAdded += HandleEvent_CollisionEventManagerCollisionEventAdded;
-				rCollisionEventManager.CollisionEventRemoved += HandleEvent_CollisionEventManagerCollisionEventRemoved;
-				rCollisionEventManager.CollisionEventStateUpdated += HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+				CollisionEventManager.ItemAdded += HandleEvent_CollisionEventManagerItemAdded;
+				CollisionEventManager.ItemRemoved += HandleEvent_CollisionEventManagerItemRemoved;
+				CollisionEventManager.ItemUpdated += HandleEvent_CollisionEventManagerItemUpdated;
 			}
 		}
 		private void UnsubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
 		{
 			if (CollisionEventManager != null)
 			{
-				rCollisionEventManager.CollisionEventAdded -= HandleEvent_CollisionEventManagerCollisionEventAdded;
-				rCollisionEventManager.CollisionEventRemoved -= HandleEvent_CollisionEventManagerCollisionEventRemoved;
-				rCollisionEventManager.CollisionEventStateUpdated -= HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+				CollisionEventManager.ItemAdded -= HandleEvent_CollisionEventManagerItemAdded;
+				CollisionEventManager.ItemRemoved -= HandleEvent_CollisionEventManagerItemRemoved;
+				CollisionEventManager.ItemUpdated -= HandleEvent_CollisionEventManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
@@ -86,20 +87,20 @@ namespace TrafficControlTest.Module.CollisionEvent
 
 			}
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
-			HandleCollisionPair(CollisionPair);
+			HandleCollisionPair(Args.Item);
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemRemoved(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
 			// 當 CollisionEvent 消失時，移除跟該 CollisionEvent 有關的且尚未被送出的 VehicleControl
-			RemoveRelatedVehicleControl(CollisionPair);
+			RemoveRelatedVehicleControl(Args.Item);
 			// 當 CollisionEvent 消失時，讓跟該 CollisionEvent 有關的 Vehicle 恢復成沒有被干預的狀態
-			UninterveneRelatedVehicle(CollisionPair);
+			UninterveneRelatedVehicle(Args.Item);
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemUpdated(object Sender, ItemUpdatedEventArgs<ICollisionPair> Args)
 		{
-			HandleCollisionPair(CollisionPair);
+			HandleCollisionPair(Args.Item);
 		}
 		private void HandleCollisionPair(ICollisionPair CollisionPair)
 		{

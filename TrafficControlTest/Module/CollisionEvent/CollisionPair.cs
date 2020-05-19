@@ -2,13 +2,12 @@
 using System.Threading.Tasks;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.CollisionEvent
 {
 	class CollisionPair : ICollisionPair
 	{
-		public event EventHandlerICollisionPair StateUpdated;
+		public event EventHandler<StatusUpdatedEventArgs> StatusUpdated;
 
 		public string mName { get; private set; }
 		public IVehicleInfo mVehicle1 { get; private set; }
@@ -42,7 +41,7 @@ namespace TrafficControlTest.Module.CollisionEvent
             mPassPeriodOfVehicle2WithMaximumVeloctiy = PassPeriodOfVehicle2WithMaximumVeloctiy;
             mStartTimestamp = DateTime.Now;
 			mLastUpdated = DateTime.Now;
-			RaiseEvent_StateUpdated();
+			RaiseEvent_StatusUpdated("Name");
 		}
 		public void Update(IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)
 		{
@@ -53,7 +52,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 			mPassPeriodOfVehicle1WithMaximumVeloctiy = PassPeriodOfVehicle1WithMaximumVeloctiy;
 			mPassPeriodOfVehicle2WithMaximumVeloctiy = PassPeriodOfVehicle2WithMaximumVeloctiy;
 			mLastUpdated = DateTime.Now;
-			RaiseEvent_StateUpdated();
+			RaiseEvent_StatusUpdated("CollisionRegion,Period");
 		}
 		public override string ToString()
 		{
@@ -62,15 +61,15 @@ namespace TrafficControlTest.Module.CollisionEvent
 			return result;
 		}
 
-		private void RaiseEvent_StateUpdated(bool Sync = true)
+		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
 		{
 			if (Sync)
 			{
-				StateUpdated?.Invoke(DateTime.Now, mName, this);
+				StatusUpdated?.Invoke(this, new StatusUpdatedEventArgs(DateTime.Now, mName, StatusName));
 			}
 			else
 			{
-				Task.Run(() => StateUpdated?.Invoke(DateTime.Now, mName, this));
+				Task.Run(() => { StatusUpdated?.Invoke(this, new StatusUpdatedEventArgs(DateTime.Now, mName, StatusName)); });
 			}
 		}
 	}

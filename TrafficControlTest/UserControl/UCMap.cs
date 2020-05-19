@@ -162,18 +162,18 @@ namespace TrafficControlTest.UserControl
 		{
 			if (CollisionEventManager != null)
 			{
-				CollisionEventManager.CollisionEventAdded += HandleEvent_CollisionEventManagerCollisionEventAdded;
-				CollisionEventManager.CollisionEventRemoved += HandleEvent_CollisionEventManagerCollisionEventRemoved;
-				CollisionEventManager.CollisionEventStateUpdated += HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+				CollisionEventManager.ItemAdded += HandleEvent_CollisionEventManagerItemAdded;
+				CollisionEventManager.ItemRemoved += HandleEvent_CollisionEventManagerItemRemoved;
+				CollisionEventManager.ItemUpdated += HandleEvent_CollisionEventManagerItemUpdated;
 			}
 		}
 		private void UnsubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
 		{
 			if (CollisionEventManager != null)
 			{
-				CollisionEventManager.CollisionEventAdded -= HandleEvent_CollisionEventManagerCollisionEventAdded;
-				CollisionEventManager.CollisionEventRemoved -= HandleEvent_CollisionEventManagerCollisionEventRemoved;
-				CollisionEventManager.CollisionEventStateUpdated -= HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+				CollisionEventManager.ItemAdded -= HandleEvent_CollisionEventManagerItemAdded;
+				CollisionEventManager.ItemRemoved -= HandleEvent_CollisionEventManagerItemRemoved;
+				CollisionEventManager.ItemUpdated -= HandleEvent_CollisionEventManagerItemUpdated;
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
@@ -188,17 +188,17 @@ namespace TrafficControlTest.UserControl
 		{
 			PrintIcon(Args.Item);
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
-			RegisterIconId(CollisionPair);
+			RegisterIconId(Args.Item);
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemRemoved(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
-			EraseIcon(CollisionPair);
+			EraseIcon(Args.Item);
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemUpdated(object Sender, ItemUpdatedEventArgs<ICollisionPair> Args)
 		{
-			PrintIcon(CollisionPair);
+			PrintIcon(Args.Item);
 		}
 		private static IEnumerable<IPair> GetPath(IVehicleInfo VehicleInfo)
 		{

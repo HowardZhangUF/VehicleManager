@@ -533,18 +533,18 @@ namespace TrafficControlTest.Process
 		{
 			if (CollisionEventManager != null)
 			{
-				CollisionEventManager.CollisionEventAdded += HandleEvent_CollisionEventManagerCollisionEventAdded;
-				CollisionEventManager.CollisionEventRemoved += HandleEvent_CollisionEventManagerCollisionEventRemoved;
-				CollisionEventManager.CollisionEventStateUpdated += HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+				CollisionEventManager.ItemAdded += HandleEvent_CollisionEventManagerItemAdded;
+				CollisionEventManager.ItemRemoved += HandleEvent_CollisionEventManagerItemRemoved;
+				CollisionEventManager.ItemUpdated += HandleEvent_CollisionEventManagerItemUpdated;
 			}
 		}
 		private void UnsubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
 		{
 			if (CollisionEventManager != null)
 			{
-				CollisionEventManager.CollisionEventAdded -= HandleEvent_CollisionEventManagerCollisionEventAdded;
-				CollisionEventManager.CollisionEventRemoved -= HandleEvent_CollisionEventManagerCollisionEventRemoved;
-				CollisionEventManager.CollisionEventStateUpdated -= HandleEvent_CollisionEventManagerCollisionEventStateUpdated;
+				CollisionEventManager.ItemAdded -= HandleEvent_CollisionEventManagerItemAdded;
+				CollisionEventManager.ItemRemoved -= HandleEvent_CollisionEventManagerItemRemoved;
+				CollisionEventManager.ItemUpdated -= HandleEvent_CollisionEventManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
@@ -975,17 +975,17 @@ namespace TrafficControlTest.Process
 				HandleDebugMessage(Args.OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info: {Args.Item.ToString()}");
 			}
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventAdded(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemAdded", $"Name: {Name}, Info:{CollisionPair.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "CollisionEventManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventRemoved(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemRemoved(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemRemoved", $"Name: {Name}, Info:{CollisionPair.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "CollisionEventManager", "ItemRemoved", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
 		}
-		private void HandleEvent_CollisionEventManagerCollisionEventStateUpdated(DateTime OccurTime, string Name, ICollisionPair CollisionPair)
+		private void HandleEvent_CollisionEventManagerItemUpdated(object Sender, ItemUpdatedEventArgs<ICollisionPair> Args)
 		{
-			HandleDebugMessage(OccurTime, "CollisionEventManager", "ItemUpdated", $"Name: {Name}, Info:{CollisionPair.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "CollisionEventManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
 		}
 		private void HandleEvent_CollisionEventDetectorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{

@@ -129,10 +129,10 @@ namespace TrafficControlTest.Module.CollisionEvent
 				}
 
 				// 若舊有的 Collision Pair 沒有新的、對應的 Collision Pair ，代表該 Collision Pair 被解除了
-				List<string> collisionNameList = rCollisionEventManager.GetNames();
+				List<string> collisionNameList = rCollisionEventManager.GetItemNames().ToList();
 				if (collisionNameList != null && collisionNameList.Count > 0)
 				{
-					List<string> solvedCollisionPairs = rCollisionEventManager.GetList().Where((o) => !IsCorrespondenceExist(o, collisionPairs)).Select((o) => o.mName).ToList();
+					List<string> solvedCollisionPairs = rCollisionEventManager.GetItems().Where((o) => !IsCorrespondenceExist(o, collisionPairs)).Select((o) => o.mName).ToList();
 					if (solvedCollisionPairs != null && solvedCollisionPairs.Count > 0)
 					{
 						for (int i = 0; i < solvedCollisionPairs.Count; ++i)

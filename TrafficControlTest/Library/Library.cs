@@ -696,7 +696,5 @@ namespace TrafficControlTest.Library
 		public delegate void EventHandlerReceivedSerializableData(DateTime OccurTime, string IpPort, object Data);
 		public delegate void EventHandlerSentString(DateTime OccurTime, string IpPort, string Data);
 		public delegate void EventHandlerReceivedString(DateTime OccurTime, string IpPort, string Data);
-
-		public delegate void EventHandlerICollisionPair(DateTime OccurTime, string Name, ICollisionPair CollisionPair);
 	}
 }
