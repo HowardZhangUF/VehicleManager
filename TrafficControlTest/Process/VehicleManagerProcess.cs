@@ -908,13 +908,13 @@ namespace TrafficControlTest.Process
 					break;
 			}
 		}
-		private void HandleEvent_LogExporterExportStarted(DateTime OccurTime, string DirectoryPath, List<string> Items)
+		private void HandleEvent_LogExporterExportStarted(object Sender, LogExportedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "LogExporter", "ExportStarted", $"Items: {string.Join(",", Items)}");
+			HandleDebugMessage(Args.OccurTime, "LogExporter", "ExportStarted", $"Items: {string.Join(",", Args.Items)}");
 		}
-		private void HandleEvent_LogExporterExportCompleted(DateTime OccurTime, string DirectoryPath, List<string> Items)
+		private void HandleEvent_LogExporterExportCompleted(object Sender, LogExportedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "LogExporter", "ExportCompleted", $"Items: {string.Join(",", Items)}");
+			HandleDebugMessage(Args.OccurTime, "LogExporter", "ExportCompleted", $"Items: {string.Join(",", Args.Items)}");
 		}
 		private void HandleEvent_AccessControlUserLogChanged(object Sender, UserLogChangedEventArgs Args)
 		{

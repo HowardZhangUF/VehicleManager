@@ -7,10 +7,8 @@ namespace TrafficControlTest.Module.Log
 {
 	public class LogExporter
 	{
-		public delegate void EventHandlerExportLog(DateTime OccurTime, string DirectoryPath, List<string> Items);
-
-		public event EventHandlerExportLog ExportStarted;
-		public event EventHandlerExportLog ExportCompleted;
+		public event EventHandler<LogExportedEventArgs> ExportStarted;
+		public event EventHandler<LogExportedEventArgs> ExportCompleted;
 
 		public bool mIsExporting { get; private set; }
 
@@ -77,27 +75,41 @@ namespace TrafficControlTest.Module.Log
 			});
 		}
 
-		protected virtual void RaiseEvent_ExportStarted(string DirectoryPath, List<string> Items, bool Sync = true)
+		protected virtual void RaiseEvent_ExportStarted(string DirectoryPath, IEnumerable<string> Items, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ExportStarted?.Invoke(DateTime.Now, DirectoryPath, Items);
+				ExportStarted?.Invoke(this, new LogExportedEventArgs(DateTime.Now, DirectoryPath, Items));
 			}
 			else
 			{
-				Task.Run(() => ExportStarted?.Invoke(DateTime.Now, DirectoryPath, Items));
+				Task.Run(() => { ExportStarted?.Invoke(this, new LogExportedEventArgs(DateTime.Now, DirectoryPath, Items)); });
 			}
 		}
-		protected virtual void RaiseEvent_ExportCompleted(string DirectoryPath, List<string> Items, bool Sync = true)
+		protected virtual void RaiseEvent_ExportCompleted(string DirectoryPath, IEnumerable<string> Items, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ExportCompleted?.Invoke(DateTime.Now, DirectoryPath, Items);
+				ExportCompleted?.Invoke(this, new LogExportedEventArgs(DateTime.Now, DirectoryPath, Items));
 			}
 			else
 			{
-				Task.Run(() => ExportCompleted?.Invoke(DateTime.Now, DirectoryPath, Items));
+				Task.Run(() => { ExportCompleted?.Invoke(this, new LogExportedEventArgs(DateTime.Now, DirectoryPath, Items)); });
 			}
+		}
+	}
+
+	public class LogExportedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string DirectoryPath { get; private set; }
+		public IEnumerable<string> Items { get; private set; }
+
+		public LogExportedEventArgs(DateTime OccurTime, string DirectoryPath, IEnumerable<string> Items) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.DirectoryPath = DirectoryPath;
+			this.Items = Items;
 		}
 	}
 }

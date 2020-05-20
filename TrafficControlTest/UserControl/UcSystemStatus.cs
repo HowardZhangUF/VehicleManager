@@ -261,14 +261,14 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCycleMissionGenerator, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_LogExporterExportStarted(DateTime OccurTime, string DirectoryPath, List<string> Items)
+		private void HandleEvent_LogExporterExportStarted(object Sender, LogExportedEventArgs Args)
 		{
 			btnExportLog.InvokeIfNecessary(() =>
 			{
 				btnExportLog.Enabled = false;
 			});
 		}
-		private void HandleEvent_LogExporterExportCompleted(DateTime OccurTime, string DirectoryPath, List<string> Items)
+		private void HandleEvent_LogExporterExportCompleted(object Sender, LogExportedEventArgs Args)
 		{
 			btnExportLog.InvokeIfNecessary(() =>
 			{
