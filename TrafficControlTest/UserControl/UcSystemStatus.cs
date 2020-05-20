@@ -22,7 +22,7 @@ namespace TrafficControlTest.UserControl
 		private IHostCommunicator rHostCommunicator = null;
 		private IMissionDispatcher rMissionDispatcher = null;
 		private ICycleMissionGenerator rCycleMissionGenerator = null;
-		private LogExporter rLogExporter = null;
+		private ILogExporter rLogExporter = null;
 
 		public UcSystemStatus()
 		{
@@ -70,13 +70,13 @@ namespace TrafficControlTest.UserControl
 			rCycleMissionGenerator = CycleMissionGenerator;
 			SubscribeEvent_ICycleMissionGenerator(rCycleMissionGenerator);
 		}
-		public void Set(LogExporter LogExporter)
+		public void Set(ILogExporter LogExporter)
 		{
-			UnsubscribeEvent_LogExporter(rLogExporter);
+			UnsubscribeEvent_ILogExporter(rLogExporter);
 			rLogExporter = LogExporter;
-			SubscribeEvent_LogExporter(rLogExporter);
+			SubscribeEvent_ILogExporter(rLogExporter);
 		}
-		public void Set(IImportantEventRecorder ImportantEventRecorder, IVehicleCommunicator VehicleCommunicator, ICollisionEventDetector CollisionEventDetector, IVehicleControlHandler VehicleControlHandler, IHostCommunicator HostCommunicator, IMissionDispatcher MissionDispatcher, ICycleMissionGenerator CycleMissionGenerator, LogExporter LogExporter)
+		public void Set(IImportantEventRecorder ImportantEventRecorder, IVehicleCommunicator VehicleCommunicator, ICollisionEventDetector CollisionEventDetector, IVehicleControlHandler VehicleControlHandler, IHostCommunicator HostCommunicator, IMissionDispatcher MissionDispatcher, ICycleMissionGenerator CycleMissionGenerator, ILogExporter LogExporter)
 		{
 			Set(ImportantEventRecorder);
 			Set(VehicleCommunicator);
@@ -195,7 +195,7 @@ namespace TrafficControlTest.UserControl
 				CycleMissionGenerator.SystemStatusChanged -= HandleEvent_CycleMissionGeneratorSystemStatusChanged;
 			}
 		}
-		private void SubscribeEvent_LogExporter(LogExporter LogExporter)
+		private void SubscribeEvent_ILogExporter(ILogExporter LogExporter)
 		{
 			if (LogExporter != null)
 			{
@@ -203,7 +203,7 @@ namespace TrafficControlTest.UserControl
 				LogExporter.ExportCompleted += HandleEvent_LogExporterExportCompleted;
 			}
 		}
-		private void UnsubscribeEvent_LogExporter(LogExporter LogExporter)
+		private void UnsubscribeEvent_ILogExporter(ILogExporter LogExporter)
 		{
 			if (LogExporter != null)
 			{

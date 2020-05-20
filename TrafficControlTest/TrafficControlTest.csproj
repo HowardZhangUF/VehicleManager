@@ -101,6 +101,7 @@
     <Compile Include="Module\General\ISystemWithLoopTask.cs" />
     <Compile Include="Module\Log\EventRecorder.cs" />
     <Compile Include="Module\CommunicationHost\HostCommunicator.cs" />
+    <Compile Include="Module\Log\ILogExporter.cs" />
     <Compile Include="Module\Log\ImportantEventRecorder.cs" />
     <Compile Include="Module\Log\LogExporter.cs" />
     <Compile Include="Module\Log\LogRecorder.cs" />

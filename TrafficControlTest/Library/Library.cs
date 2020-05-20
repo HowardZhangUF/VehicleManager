@@ -340,7 +340,7 @@ namespace TrafficControlTest.Library
 		{
 			return new CycleMissionGenerator(VehicleInfoManager, MissionStateManager);
 		}
-		public static LogExporter GenerateLogExporter()
+		public static ILogExporter GenerateILogExporter()
 		{
 			return new LogExporter();
 		}

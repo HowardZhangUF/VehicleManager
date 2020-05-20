@@ -5,46 +5,75 @@ using TrafficControlTest.Library;
 
 namespace TrafficControlTest.Module.Log
 {
-	public class LogExporter
+	public class LogExporter : ILogExporter
 	{
 		public event EventHandler<LogExportedEventArgs> ExportStarted;
 		public event EventHandler<LogExportedEventArgs> ExportCompleted;
 
 		public bool mIsExporting { get; private set; }
 
-		public static string mBaseDirectory { get; private set; } = ".\\LogExport";
-
 		private List<string> mDirectoryPaths { get; set; } = new List<string>();
 		private List<string> mFilePaths { get; set; } = new List<string>();
+		private string mBaseDirectory { get; set; } = ".\\LogExport";
+		private string mDirectoryNamePrefix { get; set; } = "CASTEC_Log_VM_";
+		private string mDirectoryNameTimeFormat { get; set; } = "yyyyMMdd";
+		private string mExportDirectoryFullPath { get { return $"{mBaseDirectory}\\{mDirectoryNamePrefix}{DateTime.Now.ToString(mDirectoryNameTimeFormat)}"; } }
 
 		public LogExporter()
 		{
 
 		}
-		public void AddDirectoryPaths(List<string> DirectoryPaths)
+		public IEnumerable<string> GetDirectoryPaths()
 		{
-			mDirectoryPaths.AddRange(DirectoryPaths);
+			return mDirectoryPaths;
+		}
+		public void AddDirectoryPaths(IEnumerable<string> DirectoryPaths)
+		{
+			foreach (string dirPath in DirectoryPaths)
+			{
+				if (!mDirectoryPaths.Contains(dirPath))
+				{
+					mDirectoryPaths.Add(dirPath);
+				}
+			}
 		}
 		public void ClearDirectoryPaths()
 		{
 			mDirectoryPaths.Clear();
 		}
-		public void AddFilePaths(List<string> FilePaths)
+		public IEnumerable<string> GetFilePaths()
 		{
-			mFilePaths.AddRange(FilePaths);
+			return mFilePaths;
+		}
+		public void AddFilePaths(IEnumerable<string> FilePaths)
+		{
+			foreach (string filePath in FilePaths)
+			{
+				if (!mFilePaths.Contains(filePath))
+				{
+					mFilePaths.Add(filePath);
+				}
+			}
 		}
 		public void ClearFilePaths()
 		{
 			mFilePaths.Clear();
 		}
+		public IEnumerable<string> GetTotalItemPaths()
+		{
+			List<string> result = new List<string>();
+			result.AddRange(mDirectoryPaths);
+			result.AddRange(mFilePaths);
+			return result;
+		}
 		public void StartExport()
 		{
 			Task.Run(() =>
 			{
-				string dstDirectoryFileName = $"{mBaseDirectory}\\CASTEC_VM_Log_{DateTime.Now.ToString("yyyyMMdd")}";
-				List<string> items = new List<string>();
-				items.AddRange(mDirectoryPaths);
-				items.AddRange(mFilePaths);
+				string dstDirectoryFileName = mExportDirectoryFullPath;
+				IEnumerable<string> items = GetTotalItemPaths();
+
+				mIsExporting = true;
 				RaiseEvent_ExportStarted(dstDirectoryFileName, items);
 
 				// Create Base Directory
@@ -64,6 +93,7 @@ namespace TrafficControlTest.Module.Log
 				FileOperation.CompressDirectory(dstDirectoryFileName);
 
 				RaiseEvent_ExportCompleted(dstDirectoryFileName, items);
+				mIsExporting = false;
 
 				// Open Directory
 				System.Diagnostics.Process.Start(mBaseDirectory);
@@ -91,22 +121,6 @@ namespace TrafficControlTest.Module.Log
 			{
 				Task.Run(() => { ExportCompleted?.Invoke(this, new LogExportedEventArgs(DateTime.Now, DirectoryPath, Items)); });
 			}
-		}
-	}
-
-
-
-	public class LogExportedEventArgs : EventArgs
-	{
-		public DateTime OccurTime { get; private set; }
-		public string DirectoryPath { get; private set; }
-		public IEnumerable<string> Items { get; private set; }
-
-		public LogExportedEventArgs(DateTime OccurTime, string DirectoryPath, IEnumerable<string> Items) : base()
-		{
-			this.OccurTime = OccurTime;
-			this.DirectoryPath = DirectoryPath;
-			this.Items = Items;
 		}
 	}
 }
