@@ -55,15 +55,10 @@ namespace TrafficControlTest.Module.Log
 				FileOperation.CreateDirectory(dstDirectoryFileName);
 
 				// Copy Directories
-				foreach (string dirPath in mDirectoryPaths)
-				{
-					FileOperation.CopyDirectoryUnderViaCommandPrompt(dirPath, dstDirectoryFileName);
-				}
+				FileOperation.CopyDirectoriesUnderViaCommandPrompt(mDirectoryPaths, dstDirectoryFileName);
+
 				// Copy Files
-				foreach (string filePath in mFilePaths)
-				{
-					FileOperation.CopyFileViaCommandPrompt(filePath, dstDirectoryFileName);
-				}
+				FileOperation.CopyFilesViaCommandPrompt(mFilePaths, dstDirectoryFileName);
 
 				// Compress Directory
 				FileOperation.CompressDirectory(dstDirectoryFileName);
@@ -98,6 +93,8 @@ namespace TrafficControlTest.Module.Log
 			}
 		}
 	}
+
+
 
 	public class LogExportedEventArgs : EventArgs
 	{

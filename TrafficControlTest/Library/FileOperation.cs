@@ -47,6 +47,13 @@ namespace TrafficControlTest.Library
 				ShellCommandExecutor.ExecuteInCommadPrompt(fullCmd);
 			}
 		}
+		public static void CopyFilesViaCommandPrompt(IEnumerable<string> SrcFilePaths, string DstDirectoryPath)
+		{
+			foreach (string filePath in SrcFilePaths)
+			{
+				CopyFileViaCommandPrompt(filePath, DstDirectoryPath);
+			}
+		}
 		public static void CopyDirectory(string SrcDirectoryPath, string DstDirectoryPath)
 		{
 			if (Directory.Exists(SrcDirectoryPath))
@@ -96,6 +103,13 @@ namespace TrafficControlTest.Library
 				CopyDirectory(srcDirectoryInfo, dstDirectoryInfo);
 			}
 		}
+		public static void CopyDirectoriesUnder(IEnumerable<string> SrcDirectoryPaths, string DstDirectoryPath)
+		{
+			foreach (string dirPath in SrcDirectoryPaths)
+			{
+				CopyDirectoryUnder(dirPath, DstDirectoryPath);
+			}
+		}
 		public static void CopyDirectoryUnderViaCommandPrompt(string SrcDirectoryPath, string DstDirectoryPath)
 		{
 			if (Directory.Exists(SrcDirectoryPath))
@@ -104,6 +118,13 @@ namespace TrafficControlTest.Library
 				DirectoryInfo dstDirectoryInfo = new DirectoryInfo(Path.Combine(DstDirectoryPath, srcDirectoryInfo.Name));
 
 				CopyDirectoryViaCommandPrompt(srcDirectoryInfo.FullName, dstDirectoryInfo.FullName);
+			}
+		}
+		public static void CopyDirectoriesUnderViaCommandPrompt(IEnumerable<string> SrcDirectoryPaths, string DstDirectoryPath)
+		{
+			foreach (string dirPath in SrcDirectoryPaths)
+			{
+				CopyDirectoryUnderViaCommandPrompt(dirPath, DstDirectoryPath);
 			}
 		}
 		public static void DeleteFile(string FilePath)
