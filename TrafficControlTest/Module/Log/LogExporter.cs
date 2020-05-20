@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Log
 {
-	public class LogExporter : ILogExporter
+	public class LogExporter : SystemWithConfig, ILogExporter
 	{
 		public event EventHandler<LogExportedEventArgs> ExportStarted;
 		public event EventHandler<LogExportedEventArgs> ExportCompleted;
@@ -15,9 +16,9 @@ namespace TrafficControlTest.Module.Log
 		private List<string> mDirectoryPaths { get; set; } = new List<string>();
 		private List<string> mFilePaths { get; set; } = new List<string>();
 		private string mBaseDirectory { get; set; } = ".\\LogExport";
-		private string mDirectoryNamePrefix { get; set; } = "CASTEC_Log_VM_";
-		private string mDirectoryNameTimeFormat { get; set; } = "yyyyMMdd";
-		private string mExportDirectoryFullPath { get { return $"{mBaseDirectory}\\{mDirectoryNamePrefix}{DateTime.Now.ToString(mDirectoryNameTimeFormat)}"; } }
+		private string mExportDirectoryNamePrefix { get; set; } = "CASTEC_Log_VM_";
+		private string mExportDirectoryNameTimeFormat { get; set; } = "yyyyMMdd";
+		private string mExportDirectoryFullPath { get { return $"{mBaseDirectory}\\{mExportDirectoryNamePrefix}{DateTime.Now.ToString(mExportDirectoryNameTimeFormat)}"; } }
 
 		public LogExporter()
 		{
@@ -98,6 +99,40 @@ namespace TrafficControlTest.Module.Log
 				// Open Directory
 				System.Diagnostics.Process.Start(mBaseDirectory);
 			});
+		}
+		public override string GetConfig(string ConfigName)
+		{
+			switch (ConfigName)
+			{
+				case "BaseDirectory":
+					return mBaseDirectory;
+				case "ExportDirectoryNamePrefix":
+					return mExportDirectoryNamePrefix;
+				case "ExportDirectoryNameTimeFormat":
+					return mExportDirectoryNameTimeFormat;
+				default:
+					return null;
+			}
+		}
+		public override void SetConfig(string ConfigName, string NewValue)
+		{
+			switch (ConfigName)
+			{
+				case "BaseDirectory":
+					mBaseDirectory = NewValue;
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ExportDirectoryNamePrefix":
+					mExportDirectoryNamePrefix = NewValue;
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ExportDirectoryNameTimeFormat":
+					mExportDirectoryNameTimeFormat = NewValue;
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				default:
+					break;
+			}
 		}
 
 		protected virtual void RaiseEvent_ExportStarted(string DirectoryPath, IEnumerable<string> Items, bool Sync = true)

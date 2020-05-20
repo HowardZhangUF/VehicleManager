@@ -13,7 +13,7 @@ namespace TrafficControlTest.Module.Configure
 		 * 1. Configurator 要新增其 Default 資訊
 		 * 2. 對應類別的 GetConfig() 與 SetConfig() 方法需要更新
 		 * 3. VehicleManagerProcess 的 LoadConfigFileAndUpdateSystemConfig() 與 LoadSystemConfigAndUpdateConfigFile() 方法需要更新
-		 * 4. VehicleManagerProcess 的 HandleEvent_ConfiguratorConfigUpdated() 方法需要更新
+		 * 4. VehicleManagerProcess 的 HandleEvent_ConfiguratorConfigurationUpdated() 方法需要更新
 		 */
 
 		public event EventHandler<ConfigFileLoadedEventArgs> ConfigFileLoaded;
@@ -112,6 +112,39 @@ namespace TrafficControlTest.Module.Configure
 		protected virtual void GenerateDefaultConfiguration()
 		{
 			List<Configuration> defaultConfigs = new List<Configuration>();
+			defaultConfigs.Add(new Configuration(
+				"LogExporter",
+				"BaseDirectory",
+				ConfigurationType.String,
+				ConfigurationLevel.Normal,
+				".\\LogExport",
+				string.Empty,
+				string.Empty,
+				"Base Directory of Saving Exported Log",
+				"儲存輸出日誌的資料夾",
+				"储存输出日志的资料夹"));
+			defaultConfigs.Add(new Configuration(
+				"LogExporter",
+				"ExportDirectoryNamePrefix",
+				ConfigurationType.String,
+				ConfigurationLevel.Normal,
+				"CASTEC_Log_VM_",
+				string.Empty,
+				string.Empty,
+				"Prefix of Exported Log Name",
+				"輸出日誌名稱的前綴文字",
+				"输出日志名称的前缀文字"));
+			defaultConfigs.Add(new Configuration(
+				"LogExporter",
+				"ExportDirectoryNameTimeFormat",
+				ConfigurationType.String,
+				ConfigurationLevel.Normal,
+				"yyyyMMdd",
+				string.Empty,
+				string.Empty,
+				"Time Format in Exported Log Name",
+				"輸出日誌名稱的日期文字的格式",
+				"输出日志名称的日期文字的格式"));
 			defaultConfigs.Add(new Configuration(
 				"ImportantEventRecorder",
 				"TimePeriod",

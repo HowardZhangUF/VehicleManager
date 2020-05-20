@@ -381,6 +381,9 @@ namespace TrafficControlTest.Process
 		private void LoadConfigFileAndUpdateSystemConfig()
 		{
 			mConfigurator.Load();
+			mLogExporter.SetConfig("BaseDirectory", mConfigurator.GetValue("LogExporter/BaseDirectory"));
+			mLogExporter.SetConfig("ExportDirectoryNamePrefix", mConfigurator.GetValue("LogExporter/ExportDirectoryNamePrefix"));
+			mLogExporter.SetConfig("ExportDirectoryNameTimeFormat", mConfigurator.GetValue("LogExporter/ExportDirectoryNameTimeFormat"));
 			mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
 			mVehicleCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("VehicleCommunicator/ListenPort"));
 			mVehicleCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
@@ -410,6 +413,9 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("VehicleCommunicator/TimePeriod", mVehicleCommunicator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfig("ListenPort"));
 			mConfigurator.SetValue("ImportantEventRecorder/TimePeriod", mImportantEventRecorder.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("LogExporter/ExportDirectoryNameTimeFormat", mLogExporter.GetConfig("ExportDirectoryNameTimeFormat"));
+			mConfigurator.SetValue("LogExporter/ExportDirectoryNamePrefix", mLogExporter.GetConfig("ExportDirectoryNamePrefix"));
+			mConfigurator.SetValue("LogExporter/BaseDirectory", mLogExporter.GetConfig("BaseDirectory"));
 			mConfigurator.Save();
 		}
 		private void SubscribeEvent_Exception()
@@ -457,6 +463,7 @@ namespace TrafficControlTest.Process
 		{
 			if (LogExporter != null)
 			{
+				LogExporter.ConfigUpdated += HandleEvent_LogExporterConfigUpdated;
 				LogExporter.ExportStarted += HandleEvent_LogExporterExportStarted;
 				LogExporter.ExportCompleted += HandleEvent_LogExporterExportCompleted;
 			}
@@ -465,6 +472,7 @@ namespace TrafficControlTest.Process
 		{
 			if (LogExporter != null)
 			{
+				LogExporter.ConfigUpdated -= HandleEvent_LogExporterConfigUpdated;
 				LogExporter.ExportStarted -= HandleEvent_LogExporterExportStarted;
 				LogExporter.ExportCompleted -= HandleEvent_LogExporterExportCompleted;
 			}
@@ -867,6 +875,15 @@ namespace TrafficControlTest.Process
 			HandleDebugMessage(Args.OccurTime, "Configurator", "ConfigurationUpdated", $"Name: {Args.ConfigName}, ConfigNewValue: {Args.Configuration.mValue}");
 			switch (Args.ConfigName)
 			{
+				case "LogExporter/BaseDirectory":
+					mLogExporter.SetConfig("BaseDirectory", mConfigurator.GetValue("LogExporter/BaseDirectory"));
+					break;
+				case "LogExporter/ExportDirectoryNamePrefix":
+					mLogExporter.SetConfig("ExportDirectoryNamePrefix", mConfigurator.GetValue("LogExporter/ExportDirectoryNamePrefix"));
+					break;
+				case "LogExporter/ExportDirectoryNameTimeFormat":
+					mLogExporter.SetConfig("ExportDirectoryNameTimeFormat", mConfigurator.GetValue("LogExporter/ExportDirectoryNameTimeFormat"));
+					break;
 				case "ImportantEventRecorder/TimePeriod":
 					mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
 					break;
@@ -907,6 +924,10 @@ namespace TrafficControlTest.Process
 					mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
 					break;
 			}
+		}
+		private void HandleEvent_LogExporterConfigUpdated(object sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "LogExporter", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleEvent_LogExporterExportStarted(object Sender, LogExportedEventArgs Args)
 		{

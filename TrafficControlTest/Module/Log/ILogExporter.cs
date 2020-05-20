@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Log
 {
-	public interface ILogExporter
+	public interface ILogExporter : ISystemWithConfig
 	{
 		/*
 		 * 使用 Add() 方法設定要輸出的資料夾、檔案的路徑，
