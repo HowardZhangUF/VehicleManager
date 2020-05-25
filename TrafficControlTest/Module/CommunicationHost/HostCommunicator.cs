@@ -47,7 +47,7 @@ namespace TrafficControlTest.Module.CommunicationHost
 		}
 		public void SendString(string Data)
 		{
-			foreach (string ipPort in mServer.ClientDictionary.Keys)
+			foreach (string ipPort in mServer.ClientDictionary.Keys.ToArray())
 			{
 				SendString(ipPort, Data);
 			}
