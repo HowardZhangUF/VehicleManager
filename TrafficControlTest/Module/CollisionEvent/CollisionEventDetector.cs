@@ -503,13 +503,13 @@ namespace TrafficControlTest.Module.CollisionEvent
 					}
 				}
 
-				double velocity = !double.IsNaN(Vehicle.mAverageVelocity) ? Vehicle.mAverageVelocity : Vehicle.mVelocity;
+				double velocity = !double.IsNaN(Vehicle.mAverageTranslationVelocity) ? Vehicle.mAverageTranslationVelocity : Vehicle.mTranslationVelocity;
 				// 當速度為 0 時，改使用最高速度下去計算
-				velocity = (velocity > -double.Epsilon && velocity < double.Epsilon) ? Vehicle.mVelocityMaximum : velocity;
+				velocity = (velocity > -double.Epsilon && velocity < double.Epsilon) ? Vehicle.mTranslationVelocityMaximum : velocity;
 				double enterSeconds = (velocity > -double.Epsilon && velocity < double.Epsilon ? 600 : (EnterDistance / velocity));
 				double exitSeconds = (velocity > -double.Epsilon && velocity < double.Epsilon ? 600 : (ExitDistance / velocity));
 				PassPeriod = GenerateITimePeriod(DateTime.Now.AddSeconds(enterSeconds), DateTime.Now.AddSeconds(exitSeconds));
-				PassPeriodWithMaximumVelocity = GenerateITimePeriod(DateTime.Now.AddSeconds(EnterDistance / Vehicle.mVelocityMaximum), DateTime.Now.AddSeconds(ExitDistance / Vehicle.mVelocityMaximum));
+				PassPeriodWithMaximumVelocity = GenerateITimePeriod(DateTime.Now.AddSeconds(EnterDistance / Vehicle.mTranslationVelocityMaximum), DateTime.Now.AddSeconds(ExitDistance / Vehicle.mTranslationVelocityMaximum));
 			}
 			else if (Vehicle.mPath.Count == 0 && Region.IsIncludePoint(Vehicle.mLocationCoordinate))
 			{

@@ -188,10 +188,10 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"{VehicleInfo.mLocationCoordinate.mY.ToString()}, ";
 			tmp += $"{((int)VehicleInfo.mLocationToward).ToString()}, ";
 			tmp += $"'{VehicleInfo.mCurrentTarget}', ";
-			tmp += $"{VehicleInfo.mVelocity.ToString("F2")}, ";
+			tmp += $"{VehicleInfo.mTranslationVelocity.ToString("F2")}, ";
 			tmp += $"{VehicleInfo.mLocationScore.ToString("F2")}, ";
 			tmp += $"{VehicleInfo.mBatteryValue.ToString("F2")}, ";
-			tmp += $"'{VehicleInfo.mAlarmMessage}', ";
+			tmp += $"'{VehicleInfo.mErrorMessage}', ";
 			tmp += $"'{VehicleInfo.mPathString}', ";
 			tmp += $"'{VehicleInfo.mIpPort}', ";
 			tmp += $"'{VehicleInfo.mCurrentMissionId}', ";
@@ -215,10 +215,10 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"Y = {VehicleInfo.mLocationCoordinate.mY.ToString()}, ";
 			tmp += $"Toward = {((int)VehicleInfo.mLocationToward).ToString()}, ";
 			tmp += $"Target = '{VehicleInfo.mCurrentTarget}', ";
-			tmp += $"Velocity = {VehicleInfo.mVelocity.ToString("F2")}, ";
+			tmp += $"Velocity = {VehicleInfo.mTranslationVelocity.ToString("F2")}, ";
 			tmp += $"LocationScore = {VehicleInfo.mLocationScore.ToString("F2")}, ";
 			tmp += $"BatteryValue = {VehicleInfo.mBatteryValue.ToString("F2")}, ";
-			tmp += $"AlarmMessage = '{VehicleInfo.mAlarmMessage}', ";
+			tmp += $"AlarmMessage = '{VehicleInfo.mErrorMessage}', ";
 			tmp += $"Path = '{VehicleInfo.mPathString}', ";
 			tmp += $"IPPort = '{VehicleInfo.mIpPort}', ";
 			tmp += $"MissionID = '{VehicleInfo.mCurrentMissionId}', ";
@@ -239,10 +239,10 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"{VehicleInfo.mLocationCoordinate.mY.ToString()}, ";
 			tmp += $"{((int)VehicleInfo.mLocationToward).ToString()}, ";
 			tmp += $"'{VehicleInfo.mCurrentTarget}', ";
-			tmp += $"{VehicleInfo.mVelocity.ToString("F2")}, ";
+			tmp += $"{VehicleInfo.mTranslationVelocity.ToString("F2")}, ";
 			tmp += $"{VehicleInfo.mLocationScore.ToString("F2")}, ";
 			tmp += $"{VehicleInfo.mBatteryValue.ToString("F2")}, ";
-			tmp += $"'{VehicleInfo.mAlarmMessage}', ";
+			tmp += $"'{VehicleInfo.mErrorMessage}', ";
 			tmp += $"'{VehicleInfo.mPathString}', ";
 			tmp += $"'{VehicleInfo.mIpPort}', ";
 			tmp += $"'{VehicleInfo.mCurrentMissionId}', ";

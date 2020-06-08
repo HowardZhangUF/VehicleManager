@@ -32,10 +32,10 @@ namespace TrafficControlTest.Module.Vehicle
 				mItems[Name].UpdateLocationCoordinate(NewLocationCoordinate);
 				mItems[Name].UpdateLocationToward(NewLocationToward);
 				mItems[Name].UpdateCurrentTarget(NewTarget);
-				mItems[Name].UpdateVelocity(NewVelocity);
+				mItems[Name].UpdateTranslationVelocity(NewVelocity);
 				mItems[Name].UpdateLocationScore(NewLocationScore);
 				mItems[Name].UpdateBatteryValue(NewBatteryValue);
-				mItems[Name].UpdateAlarmMessage(NewAlarmMessage);
+				mItems[Name].UpdateErrorMessage(NewAlarmMessage);
 				mItems[Name].EndUpdate();
 			}
 		}

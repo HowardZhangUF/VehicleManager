@@ -991,7 +991,7 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
 			// 僅有重要的狀態 (CurrentState, CurrentTarget, AlarmMessage, CurrentMissionId, CurrentInterveneCommand, CurrentMapName) 變化時才做 General Log 記錄與使用 Console.WriteLine() 顯示
-			if (Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget") || Args.StatusName.Contains("AlarmMessage") || Args.StatusName.Contains("CurrentMissionId") || Args.StatusName.Contains("CurrentInterveneCommand") || Args.StatusName.Contains("CurrentMapName"))
+			if (Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget") || Args.StatusName.Contains("AlarmMessage") || Args.StatusName.Contains("CurrentMissionId") || Args.StatusName.Contains("CurrentInterveneCommand") || Args.StatusName.Contains("CurrentMapName") || Args.StatusName.Contains("IsTranslating") || Args.StatusName.Contains("IsRotating"))
 			{
 				HandleDebugMessage(Args.OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info: {Args.Item.ToString()}");
 			}

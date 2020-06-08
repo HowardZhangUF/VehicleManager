@@ -190,10 +190,10 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_UpdateVehicleState(Args.Item.mCurrentState);
 				UpdateGui_UpdateVehicleLocation(Args.Item.mLocationCoordinate.mX, Args.Item.mLocationCoordinate.mY, Args.Item.mLocationToward);
 				UpdateGui_UpdateVehicleTarget(Args.Item.mCurrentTarget);
-				UpdateGui_UpdateVehicleVelocity(Args.Item.mVelocity);
+				UpdateGui_UpdateVehicleVelocity(Args.Item.mTranslationVelocity);
 				UpdateGui_UpdateVehicleLocationScore(Args.Item.mLocationScore);
 				UpdateGui_UpdateVehicleBatteryValue(Args.Item.mBatteryValue);
-				UpdateGui_UpdateVehicleAlarmMessage(Args.Item.mAlarmMessage);
+				UpdateGui_UpdateVehicleAlarmMessage(Args.Item.mErrorMessage);
 				UpdateGui_UpdateVehiclePath(Args.Item.mPathString);
 				UpdateGui_UpdateVehicleIpPort(Args.Item.mIpPort);
 				UpdateGui_UpdateVehicleMissionId(Args.Item.mCurrentMissionId);
@@ -210,10 +210,10 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_UpdateVehicleState(tmpVehicleInfo.mCurrentState);
 				UpdateGui_UpdateVehicleLocation(tmpVehicleInfo.mLocationCoordinate.mX, tmpVehicleInfo.mLocationCoordinate.mY, tmpVehicleInfo.mLocationToward);
 				UpdateGui_UpdateVehicleTarget(tmpVehicleInfo.mCurrentTarget);
-				UpdateGui_UpdateVehicleVelocity(tmpVehicleInfo.mVelocity);
+				UpdateGui_UpdateVehicleVelocity(tmpVehicleInfo.mTranslationVelocity);
 				UpdateGui_UpdateVehicleLocationScore(tmpVehicleInfo.mLocationScore);
 				UpdateGui_UpdateVehicleBatteryValue(tmpVehicleInfo.mBatteryValue);
-				UpdateGui_UpdateVehicleAlarmMessage(tmpVehicleInfo.mAlarmMessage);
+				UpdateGui_UpdateVehicleAlarmMessage(tmpVehicleInfo.mErrorMessage);
 				UpdateGui_UpdateVehiclePath(tmpVehicleInfo.mPathString);
 				UpdateGui_UpdateVehicleIpPort(tmpVehicleInfo.mIpPort);
 				UpdateGui_UpdateVehicleMissionId(tmpVehicleInfo.mCurrentMissionId);
@@ -230,10 +230,10 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_UpdateVehicleState(tmpVehicleInfo.mCurrentState);
 				UpdateGui_UpdateVehicleLocation(tmpVehicleInfo.mLocationCoordinate.mX, tmpVehicleInfo.mLocationCoordinate.mY, tmpVehicleInfo.mLocationToward);
 				UpdateGui_UpdateVehicleTarget(tmpVehicleInfo.mCurrentTarget);
-				UpdateGui_UpdateVehicleVelocity(tmpVehicleInfo.mVelocity);
+				UpdateGui_UpdateVehicleVelocity(tmpVehicleInfo.mTranslationVelocity);
 				UpdateGui_UpdateVehicleLocationScore(tmpVehicleInfo.mLocationScore);
 				UpdateGui_UpdateVehicleBatteryValue(tmpVehicleInfo.mBatteryValue);
-				UpdateGui_UpdateVehicleAlarmMessage(tmpVehicleInfo.mAlarmMessage);
+				UpdateGui_UpdateVehicleAlarmMessage(tmpVehicleInfo.mErrorMessage);
 				UpdateGui_UpdateVehiclePath(tmpVehicleInfo.mPathString);
 				UpdateGui_UpdateVehicleIpPort(tmpVehicleInfo.mIpPort);
 				UpdateGui_UpdateVehicleMissionId(tmpVehicleInfo.mCurrentMissionId);
