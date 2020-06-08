@@ -83,7 +83,7 @@ namespace VehicleSimulator.Implement
 		}
 		private void HandleEvent_VehicleSimulatorInfoStateUpdated(DateTime OccurTime, string Name, IVehicleSimulatorInfo VehicleSimulatorInfo)
 		{
-			Subtask_ReportVehicleState();
+			//Subtask_ReportVehicleState();
 		}
 		private void HandleEvent_CommunicatorClientConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
 		{
