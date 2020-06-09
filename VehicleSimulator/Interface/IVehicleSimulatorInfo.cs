@@ -44,6 +44,8 @@ namespace VehicleSimulator.Interface
 
 		/// <summary>設定路徑並開始移動</summary>
 		void StartMove(IEnumerable<IPoint2D> Path);
+		/// <summary>設定路徑與目標並開始移動</summary>
+		void StartMove(IEnumerable<IPoint2D> Path, string Target);
 		/// <summary>停止移動</summary>
 		void StopMove();
 		/// <summary>暫停移動</summary>

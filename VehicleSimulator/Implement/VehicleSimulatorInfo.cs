@@ -57,8 +57,12 @@ namespace VehicleSimulator.Implement
 		}
 		public void StartMove(IEnumerable<IPoint2D> Path)
 		{
+			StartMove(Path, Path.Last().ToString());
+		}
+		public void StartMove(IEnumerable<IPoint2D> Path, string Target)
+		{
 			mPath = Path;
-			mTarget = mPath.Last().ToString();
+			mTarget = Target;
 			mTranslationVelocity = MAX_TRANSLATION_VELOCITY;
 			mRotationVelocity = MAX_ROTATION_VELOCITY;
 			if (mInterveneCommand != "PauseMoving") mState = "Running";

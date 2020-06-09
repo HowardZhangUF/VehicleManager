@@ -11,6 +11,7 @@ namespace VehicleSimulator.Implement
 	{
 		private IVehicleSimulatorInfo rVehicleSimulatorInfo = null;
 		private ICommunicatorClient rCommunicatorClient = null;
+		private Random mRandom = new Random();
 
 		public ConsoleMessageHandler(IVehicleSimulatorInfo VehicleSimulatorInfo, ICommunicatorClient CommunicatorClient)
 		{
@@ -168,7 +169,7 @@ namespace VehicleSimulator.Implement
 				if (!string.IsNullOrEmpty(Data.Require))
 				{
 					Data.Response = true;
-					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(int.Parse(DateTime.Now.ToString("ssff")), int.Parse(DateTime.Now.ToString("sfff"))) });
+					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(mRandom.Next(-10000, 10000), mRandom.Next(-10000, 10000)) }, Data.Require);
 				}
 			}
 		}
