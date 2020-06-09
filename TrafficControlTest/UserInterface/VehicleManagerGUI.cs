@@ -38,7 +38,7 @@ namespace TrafficControlTest.UserInterface
 			ucSetting1.Set(mCore.GetReferenceOfIConfigurator());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapterOfLogRecord(), mCore.GetReferenceOfDatabaseAdapterOfEventRecord());
 			ucDashboard1.Set(mCore.GetReferenceOfDatabaseAdapterOfEventRecord());
-			ucSystemStatus1.Set(mCore.GetReferenceOfIImportantEventRecorder(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfICollisionEventDetector(), mCore.GetReferenceOfIVehicleControlHandler(), mCore.GetReferenceOfIHostCommunicator(), mCore.GetReferenceOfIMissionDispatcher(), mCore.GetReferenceOfCycleMissionGenerator(), mCore.GetReferenceOfILogExporter());
+			ucSystemStatus1.Set(mCore.GetReferenceOfIImportantEventRecorder(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfICollisionEventDetector(), mCore.GetReferenceOfIVehicleControlHandler(), mCore.GetReferenceOfIHostCommunicator(), mCore.GetReferenceOfIMissionDispatcher(), mCore.GetReferenceOfIMissionUpdater(), mCore.GetReferenceOfCycleMissionGenerator(), mCore.GetReferenceOfILogExporter());
 			ucVehicleOverview1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucVehicleManualControl1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMapManager());
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());

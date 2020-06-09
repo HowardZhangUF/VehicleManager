@@ -39,6 +39,7 @@ namespace TrafficControlTest.Process
 					&& !mVehicleControlHandler.mIsExecuting
 					&& !mHostCommunicator.mIsExecuting
 					&& !mMissionDispatcher.mIsExecuting
+					&& !mMissionUpdater.mIsExecuting
 					&& !mCycleMissionGenerator.mIsExecuting;
 			}
 		}
@@ -99,12 +100,14 @@ namespace TrafficControlTest.Process
 			mVehicleControlHandler.Start();
 			mHostCommunicator.StartListen();
 			mMissionDispatcher.Start();
+			mMissionUpdater.Start();
 			mCycleMissionGenerator.Start();
 		}
 		public void Stop()
 		{
 			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
 			mCycleMissionGenerator.Stop();
+			mMissionUpdater.Stop();
 			mMissionDispatcher.Stop();
 			mHostCommunicator.StopListen();
 			mVehicleControlHandler.Stop();
@@ -174,6 +177,10 @@ namespace TrafficControlTest.Process
 		public IMissionDispatcher GetReferenceOfIMissionDispatcher()
 		{
 			return mMissionDispatcher;
+		}
+		public IMissionUpdater GetReferenceOfIMissionUpdater()
+		{
+			return mMissionUpdater;
 		}
 		public IMapFileManager GetReferenceOfIMapFileManager()
 		{
@@ -302,7 +309,7 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IMissionStateReporter(mMissionStateReporter);
 
 			UnsubscribeEvent_IMissionUpdater(mMissionUpdater);
-			mMissionUpdater = GenerateIMissionUpdater(mVehicleCommunicator, mVehicleInfoManager, mMissionStateManager, mMapManager);
+			mMissionUpdater = GenerateIMissionUpdater(mVehicleInfoManager, mMissionStateManager, mMapManager);
 			SubscribeEvent_IMissionUpdater(mMissionUpdater);
 
 			UnsubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
@@ -394,6 +401,12 @@ namespace TrafficControlTest.Process
 			mHostCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("HostCommunicator/ListenPort"));
 			mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
 			mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
+			mMissionUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("MissionUpdater/TimePeriod"));
+			mMissionUpdater.SetConfig("TimeoutOfSendingMission", mConfigurator.GetValue("MissionUpdater/TimeoutOfSendingMission"));
+			mMissionUpdater.SetConfig("TimeoutOfExecutingMission", mConfigurator.GetValue("MissionUpdater/TimeoutOfExecutingMission"));
+			mMissionUpdater.SetConfig("ToleranceOfX", mConfigurator.GetValue("MissionUpdater/ToleranceOfX"));
+			mMissionUpdater.SetConfig("ToleranceOfY", mConfigurator.GetValue("MissionUpdater/ToleranceOfY"));
+			mMissionUpdater.SetConfig("ToleranceOfToward", mConfigurator.GetValue("MissionUpdater/ToleranceOfToward"));
 			mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
 			mMapManager.SetConfig("AutoLoadMap", mConfigurator.GetValue("MapManager/AutoLoadMap"));
 			mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
@@ -403,6 +416,12 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("CycleMissionGenerator/TimePeriod", mCycleMissionGenerator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfig("AutoLoadMap"));
 			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfig("MapFileDirectory"));
+			mConfigurator.SetValue("MissionUpdater/ToleranceOfToward", mMissionUpdater.GetConfig("ToleranceOfToward"));
+			mConfigurator.SetValue("MissionUpdater/ToleranceOfY", mMissionUpdater.GetConfig("ToleranceOfY"));
+			mConfigurator.SetValue("MissionUpdater/ToleranceOfX", mMissionUpdater.GetConfig("ToleranceOfX"));
+			mConfigurator.SetValue("MissionUpdater/TimeoutOfExecutingMission", mMissionUpdater.GetConfig("TimeoutOfExecutingMission"));
+			mConfigurator.SetValue("MissionUpdater/TimeoutOfSendingMission", mMissionUpdater.GetConfig("TimeoutOfSendingMission"));
+			mConfigurator.SetValue("MissionUpdater/TimePeriod", mMissionUpdater.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfig("ListenPort"));
@@ -777,14 +796,16 @@ namespace TrafficControlTest.Process
 		{
 			if (MissionUpdater != null)
 			{
-				// do nothing
+				MissionUpdater.SystemStatusChanged += HandleEvent_MissionUpdaterSystemStatusChanged;
+				MissionUpdater.ConfigUpdated += HandleEvent_MissionUpdaterConfigUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
 		{
 			if (MissionUpdater != null)
 			{
-				// do nothing
+				MissionUpdater.SystemStatusChanged -= HandleEvent_MissionUpdaterSystemStatusChanged;
+				MissionUpdater.ConfigUpdated -= HandleEvent_MissionUpdaterConfigUpdated;
 			}
 		}
 		private void SubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
@@ -913,6 +934,24 @@ namespace TrafficControlTest.Process
 					break;
 				case "MissionDispatcher/TimePeriod":
 					mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
+					break;
+				case "MissionUpdater/TimePeriod":
+					mMissionUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("MissionUpdater/TimePeriod"));
+					break;
+				case "MissionUpdater/TimeoutOfSendingMission":
+					mMissionUpdater.SetConfig("TimeoutOfSendingMission", mConfigurator.GetValue("MissionUpdater/TimeoutOfSendingMission"));
+					break;
+				case "MissionUpdater/TimeoutOfExecutingMission":
+					mMissionUpdater.SetConfig("TimeoutOfExecutingMission", mConfigurator.GetValue("MissionUpdater/TimeoutOfExecutingMission"));
+					break;
+				case "MissionUpdater/ToleranceOfX":
+					mMissionUpdater.SetConfig("ToleranceOfX", mConfigurator.GetValue("MissionUpdater/ToleranceOfX"));
+					break;
+				case "MissionUpdater/ToleranceOfY":
+					mMissionUpdater.SetConfig("ToleranceOfY", mConfigurator.GetValue("MissionUpdater/ToleranceOfY"));
+					break;
+				case "MissionUpdater/ToleranceOfToward":
+					mMissionUpdater.SetConfig("ToleranceOfToward", mConfigurator.GetValue("MissionUpdater/ToleranceOfToward"));
 					break;
 				case "MapFileManager/MapFileDirectory":
 					mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
@@ -1130,6 +1169,14 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MapManagerSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MapFileManager", "SynchronizeMapStarted", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
+		}
+		private void HandleEvent_MissionUpdaterSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MissionUpdater", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
+		}
+		private void HandleEvent_MissionUpdaterConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MissionUpdater", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleEvent_CycleMissionGeneratorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{

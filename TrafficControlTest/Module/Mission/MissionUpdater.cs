@@ -1,34 +1,28 @@
-﻿using SerialData;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Mission
 {
-	public class MissionUpdater : IMissionUpdater
+	public class MissionUpdater : SystemWithLoopTask, IMissionUpdater
 	{
-		private IVehicleCommunicator rVehicleCommunicator = null;
+		public int mTimeoutOfSendingMission { get; private set; } = 5;
+		public int mTimeoutOfExecutingMission { get; private set; } = 600;
+		public int mToleranceOfX { get; private set; } = 500;
+		public int mToleranceOfY { get; private set; } = 500;
+		public int mToleranceOfToward { get; private set; } = 5;
+
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMissionStateManager rMissionStateManager = null;
 		private IMapManager rMapManager = null;
 
-		public int mToleranceOfX { get; } = 500;
-		public int mToleranceOfY { get; } = 500;
-		public int mToleranceOfToward { get; } = 5;
-
-		public MissionUpdater(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
+		public MissionUpdater(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
 		{
-			Set(VehicleCommunicator, VehicleInfoManager, MissionStateManager, MapManager);
-		}
-		public void Set(IVehicleCommunicator VehicleCommunicator)
-		{
-			UnsubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
-			rVehicleCommunicator = VehicleCommunicator;
-			SubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
+			Set(VehicleInfoManager, MissionStateManager, MapManager);
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
@@ -46,44 +40,82 @@ namespace TrafficControlTest.Module.Mission
 		{
 			rMapManager = MapManager;
 		}
-		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
+		public void Set(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
 		{
-			Set(VehicleCommunicator);
 			Set(VehicleInfoManager);
 			Set(MissionStateManager);
 			Set(MapManager);
+		}
+		public override string GetConfig(string ConfigName)
+		{
+			switch (ConfigName)
+			{
+				case "TimePeriod":
+					return mTimePeriod.ToString();
+				case "TimeoutOfSendingMission":
+					return mTimeoutOfSendingMission.ToString();
+				case "TimeoutOfExecutingMission":
+					return mTimeoutOfExecutingMission.ToString();
+				case "ToleranceOfX":
+					return mToleranceOfX.ToString();
+				case "ToleranceOfY":
+					return mToleranceOfY.ToString();
+				case "ToleranceOfToward":
+					return mToleranceOfToward.ToString();
+				default:
+					return null;
+			}
+		}
+		public override void SetConfig(string ConfigName, string NewValue)
+		{
+			switch (ConfigName)
+			{
+				case "TimePeriod":
+					mTimePeriod = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "TimeoutOfSendingMission":
+					mTimeoutOfSendingMission = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "TimeoutOfExecutingMission":
+					mTimeoutOfExecutingMission = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ToleranceOfX":
+					mToleranceOfX = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ToleranceOfY":
+					mToleranceOfY = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ToleranceOfToward":
+					mToleranceOfToward = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				default:
+					break;
+			}
+		}
+		public override void Task()
+		{
+			Subtask_CheckMissionSendState();
+			Subtask_CheckMissionExecuteState();
 		}
 
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
 			if (VehicleInfoManager != null)
 			{
-				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
-				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
+				// do nothing
 			}
 		}
 		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
 			if (VehicleInfoManager != null)
 			{
-				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
-				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
-			}
-		}
-		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
-		{
-			if (VehicleCommunicator != null)
-			{
-				VehicleCommunicator.SentSerializableDataSuccessed += HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-				VehicleCommunicator.SentSerializableDataFailed += HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
-			}
-		}
-		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
-		{
-			if (VehicleCommunicator != null)
-			{
-				VehicleCommunicator.SentSerializableDataSuccessed -= HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
+				// do nothing
 			}
 		}
 		private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
@@ -111,87 +143,6 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
-		{
-			if (rMissionStateManager.mCount > 0 && Args.StatusName.Contains("CurrentState") && !string.IsNullOrEmpty(Args.Item.mCurrentMissionId) && rMissionStateManager.IsExist(Args.Item.mCurrentMissionId))
-			{
-				IMissionState missionState = rMissionStateManager[Args.Item.mCurrentMissionId];
-				switch (Args.Item.mCurrentState)
-				{
-					case "RouteNotFind":
-					case "ObstacleExists":
-					case "BumperTrigger":
-						missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
-						break;
-					case "Idle":
-						switch (missionState.mMission.mMissionType)
-						{
-							case MissionType.Goto:
-								if (IsVehicleArrived(Args.Item, missionState.mMission.mParameters[0]))
-								{
-									missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-								}
-								else
-								{
-									missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
-								}
-								break;
-							case MissionType.GotoPoint:
-								if (missionState.mMission.mParameters.Length == 2)
-								{
-									if (IsVehicleArrived(Args.Item, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1])))
-									{
-										missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-									}
-									else
-									{
-										missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
-									}
-								}
-								else if (missionState.mMission.mParameters.Length == 3)
-								{
-									if (IsVehicleArrived(Args.Item, int.Parse(missionState.mMission.mParameters[0]), int.Parse(missionState.mMission.mParameters[1]), int.Parse(missionState.mMission.mParameters[2])))
-									{
-										missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-									}
-									else
-									{
-										missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
-									}
-								}
-								break;
-							case MissionType.Dock:
-								missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
-								break;
-						}
-						break;
-					case "Charge":
-						if (missionState.mMission.mMissionType == MissionType.Dock)
-						{
-							missionState.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-						}
-						break;
-				}
-			}
-		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
-		{
-			string missionId = GetMissionId(IpPort, Data);
-			if (!string.IsNullOrEmpty(missionId))
-			{
-				rMissionStateManager.GetItem(missionId).UpdateSendState(SendState.SendSuccessed);
-				rMissionStateManager.GetItem(missionId).UpdateExecuteState(ExecuteState.Executing);
-			}
-		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
-		{
-			string missionId = GetMissionId(IpPort, Data);
-			if (!string.IsNullOrEmpty(missionId))
-			{
-				rMissionStateManager.GetItem(missionId).UpdateSendState(SendState.SendFailed);
-				rMissionStateManager.GetItem(missionId).UpdateExecuteState(ExecuteState.Unexecute);
-			}
-		}
 		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
 			if (Args.StatusName.Contains("ExecuteState"))
@@ -204,6 +155,129 @@ namespace TrafficControlTest.Module.Mission
 						break;
 				}
 			}
+		}
+		private void Subtask_CheckMissionSendState()
+		{
+			List<IMissionState> sendingMissions = rMissionStateManager.GetItems().Where(o => o.mSendState == SendState.Sending).ToList();
+			for (int i = 0; i < sendingMissions.Count; ++i)
+			{
+				if (rVehicleInfoManager.IsExist(sendingMissions[i].mExecutorId))
+				{
+					if (rVehicleInfoManager.GetItem(sendingMissions[i].mExecutorId).mCurrentTarget == sendingMissions[i].mMission.mParametersString)
+					{
+						// 如果該車存在，且「該車的當前目標」與「任務目標」相同，標示該任務為傳送成功、執行中
+						sendingMissions[i].UpdateSendState(SendState.SendSuccessed);
+						sendingMissions[i].UpdateExecuteState(ExecuteState.Executing);
+					}
+					else
+					{
+						// 如果該車存在，但持續 n 秒都未達成上述條件，標示該任務為傳送失敗、執行失敗
+						if (DateTime.Now.Subtract(sendingMissions[i].mLastUpdate).TotalSeconds > mTimeoutOfSendingMission)
+						{
+							sendingMissions[i].UpdateSendState(SendState.SendFailed);
+							sendingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+						}
+					}
+				}
+				else
+				{
+					// 如果執行該任務的車子不存在，代表該車斷線，標示該任務為執行失敗
+					sendingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+				}
+			}
+		}
+		private void Subtask_CheckMissionExecuteState()
+		{
+			List<IMissionState> executingMissions = rMissionStateManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Executing).ToList();
+			for (int i = 0; i < executingMissions.Count; ++i)
+			{
+				if (rVehicleInfoManager.IsExist(executingMissions[i].mExecutorId))
+				{
+					ExecuteState executeState = GetMissionExecuteStatus(rVehicleInfoManager.GetItem(executingMissions[i].mExecutorId), executingMissions[i]);
+					switch (executeState)
+					{
+						case ExecuteState.Executing:
+							if (DateTime.Now.Subtract(executingMissions[i].mLastUpdate).TotalSeconds > mTimeoutOfExecutingMission)
+							{
+								executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+							}
+							break;
+						case ExecuteState.ExecuteSuccessed:
+							executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+							break;
+						case ExecuteState.ExecuteFailed:
+							executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+							break;
+					}
+				}
+				else
+				{
+					// 如果執行該任務的車子不存在，代表該車斷線，標示該任務為執行失敗
+					executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+				}
+			}
+		}
+		private ExecuteState GetMissionExecuteStatus(IVehicleInfo VehicleInfo, IMissionState MissionState)
+		{
+			ExecuteState result = ExecuteState.Executing;
+			if (IsVehicleError(VehicleInfo))
+			{
+				result = ExecuteState.ExecuteFailed;
+			}
+			else if (VehicleInfo.mCurrentState == "Charge")
+			{
+				if (MissionState.mMission.mMissionType == MissionType.Dock)
+				{
+					result = ExecuteState.ExecuteSuccessed;
+				}
+				else
+				{
+					result = ExecuteState.ExecuteFailed;
+				}
+			}
+			else if (VehicleInfo.mCurrentState == "Idle")
+			{
+				switch (MissionState.mMission.mMissionType)
+				{
+					case MissionType.Goto:
+						result = IsVehicleArrived(VehicleInfo, MissionState.mMission.mParameters[0]) ? ExecuteState.ExecuteSuccessed : ExecuteState.ExecuteFailed;
+						break;
+					case MissionType.GotoPoint:
+						if (MissionState.mMission.mParameters.Length == 2)
+						{
+							result = IsVehicleArrived(VehicleInfo, int.Parse(MissionState.mMission.mParameters[0]), int.Parse(MissionState.mMission.mParameters[1])) ? ExecuteState.ExecuteSuccessed : ExecuteState.ExecuteFailed;
+						}
+						else if (MissionState.mMission.mParameters.Length == 3)
+						{
+							result = IsVehicleArrived(VehicleInfo, int.Parse(MissionState.mMission.mParameters[0]), int.Parse(MissionState.mMission.mParameters[1]), int.Parse(MissionState.mMission.mParameters[2])) ? ExecuteState.ExecuteSuccessed : ExecuteState.ExecuteFailed;
+						}
+						break;
+					case MissionType.Dock:
+						result = ExecuteState.ExecuteFailed;
+						break;
+				}
+			}
+			else if (VehicleInfo.mCurrentState == "Running")
+			{
+				result = ExecuteState.Executing;
+			}
+			return result;
+		}
+		private bool IsVehicleError(IVehicleInfo VehicleInfo)
+		{
+			bool result = false;
+			switch (VehicleInfo.mCurrentState)
+			{
+				case "RouteNotFind":
+				case "ObstacleExists":
+				case "BumperTrigger":
+					result = true;
+					break;
+				default:
+					result = false;
+					break;
+			}
+			return result;
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, string Target)
 		{
@@ -220,35 +294,6 @@ namespace TrafficControlTest.Module.Mission
 			int diffY = Math.Abs(VehicleInfo.mLocationCoordinate.mY - Y);
 			int diffToward = Math.Abs((int)(VehicleInfo.mLocationToward) - Toward);
 			return VehicleInfo.mCurrentState == "Idle" && diffX < mToleranceOfX && diffY < mToleranceOfY && ((diffToward < mToleranceOfToward) || (diffToward <= 360 && diffToward > (360 - mToleranceOfToward)));
-		}
-		private bool IsVehicleDocked(IVehicleInfo VehicleInfo)
-		{
-			return VehicleInfo.mCurrentState == "Charge";
-		}
-		/// <summary>透過 Serializable 物件的發送來源及其本身判斷是哪個任務的相關訊息並輸出任務識別碼</summary>
-		private string GetMissionId(string IpPort, object Data)
-		{
-			string vehicleId = rVehicleInfoManager.GetItemByIpPort(IpPort)?.mName;
-			string missionId = null;
-			if (!string.IsNullOrEmpty(vehicleId))
-			{
-				if (Data is GoTo)
-				{
-					GoTo tmpData = Data as GoTo;
-					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.Dock) && o.mSendState == SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require)?.mName;
-				}
-				else if (Data is GoToPoint)
-				{
-					GoToPoint tmpData = Data as GoToPoint;
-					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString())?.mName;
-				}
-				else if (Data is GoToTowardPoint)
-				{
-					GoToTowardPoint tmpData = Data as GoToTowardPoint;
-					missionId = rMissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mSendState == SendState.Sending && o.mExecutorId == vehicleId && o.mMission.mParameters[0] == tmpData.Require[0].ToString() && o.mMission.mParameters[1] == tmpData.Require[1].ToString() && o.mMission.mParameters[2] == tmpData.Require[2].ToString())?.mName;
-				}
-			}
-			return missionId;
 		}
 	}
 }

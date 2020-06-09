@@ -43,8 +43,6 @@
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnLockPanel = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-			this.btnExportLog = new System.Windows.Forms.Button();
 			this.sbtnCycleMissionGenerator = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnMissionDispatcher = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnHostCommunicator = new TrafficControlTest.UserControl.SwitchButton();
@@ -54,6 +52,10 @@
 			this.sbtnVehicleCommunicator = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnVehicleCommunicatorServer = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnImportantEventRecorder = new TrafficControlTest.UserControl.SwitchButton();
+			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.btnExportLog = new System.Windows.Forms.Button();
+			this.label12 = new System.Windows.Forms.Label();
+			this.sbtnMissionUpdater = new TrafficControlTest.UserControl.SwitchButton();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.SuspendLayout();
@@ -129,7 +131,7 @@
 			this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.label7.AutoSize = true;
 			this.label7.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label7.Location = new System.Drawing.Point(23, 442);
+			this.label7.Location = new System.Drawing.Point(23, 477);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(184, 20);
 			this.label7.TabIndex = 7;
@@ -222,10 +224,8 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.Controls.Add(this.label10, 1, 1);
 			this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 2);
-			this.tableLayoutPanel1.Controls.Add(this.sbtnCycleMissionGenerator, 2, 14);
 			this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 7);
 			this.tableLayoutPanel1.Controls.Add(this.sbtnMissionDispatcher, 2, 13);
 			this.tableLayoutPanel1.Controls.Add(this.label8, 1, 3);
@@ -237,7 +237,6 @@
 			this.tableLayoutPanel1.Controls.Add(this.sbtnHostCommunicatorServer, 2, 4);
 			this.tableLayoutPanel1.Controls.Add(this.sbtnVehicleCommunicator, 2, 9);
 			this.tableLayoutPanel1.Controls.Add(this.sbtnVehicleCommunicatorServer, 2, 3);
-			this.tableLayoutPanel1.Controls.Add(this.label7, 1, 14);
 			this.tableLayoutPanel1.Controls.Add(this.label1, 1, 8);
 			this.tableLayoutPanel1.Controls.Add(this.label6, 1, 13);
 			this.tableLayoutPanel1.Controls.Add(this.sbtnImportantEventRecorder, 2, 8);
@@ -245,10 +244,14 @@
 			this.tableLayoutPanel1.Controls.Add(this.label2, 1, 9);
 			this.tableLayoutPanel1.Controls.Add(this.label4, 1, 11);
 			this.tableLayoutPanel1.Controls.Add(this.label3, 1, 10);
+			this.tableLayoutPanel1.Controls.Add(this.label7, 1, 15);
+			this.tableLayoutPanel1.Controls.Add(this.sbtnCycleMissionGenerator, 2, 15);
+			this.tableLayoutPanel1.Controls.Add(this.label12, 1, 14);
+			this.tableLayoutPanel1.Controls.Add(this.sbtnMissionUpdater, 2, 14);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 16;
+			this.tableLayoutPanel1.RowCount = 17;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
@@ -264,43 +267,10 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(689, 490);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(689, 525);
 			this.tableLayoutPanel1.TabIndex = 23;
-			// 
-			// tableLayoutPanel2
-			// 
-			this.tableLayoutPanel2.AutoScroll = true;
-			this.tableLayoutPanel2.ColumnCount = 3;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.Controls.Add(this.btnLockPanel, 1, 1);
-			this.tableLayoutPanel2.Controls.Add(this.btnExportLog, 1, 3);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(689, 0);
-			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 5;
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(140, 579);
-			this.tableLayoutPanel2.TabIndex = 24;
-			// 
-			// btnExportLog
-			// 
-			this.btnExportLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnExportLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnExportLog.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnExportLog.Location = new System.Drawing.Point(23, 88);
-			this.btnExportLog.Name = "btnExportLog";
-			this.btnExportLog.Size = new System.Drawing.Size(94, 54);
-			this.btnExportLog.TabIndex = 23;
-			this.btnExportLog.Text = "Export Log";
-			this.btnExportLog.UseVisualStyleBackColor = true;
-			this.btnExportLog.Click += new System.EventHandler(this.btnExportLog_Click);
 			// 
 			// sbtnCycleMissionGenerator
 			// 
@@ -310,7 +280,7 @@
 			this.sbtnCycleMissionGenerator.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
 			this.sbtnCycleMissionGenerator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(25)))), ((int)(((byte)(32)))));
 			this.sbtnCycleMissionGenerator.InActiveText = "OFF";
-			this.sbtnCycleMissionGenerator.Location = new System.Drawing.Point(273, 440);
+			this.sbtnCycleMissionGenerator.Location = new System.Drawing.Point(273, 475);
 			this.sbtnCycleMissionGenerator.MinimumSize = new System.Drawing.Size(75, 24);
 			this.sbtnCycleMissionGenerator.Name = "sbtnCycleMissionGenerator";
 			this.sbtnCycleMissionGenerator.Size = new System.Drawing.Size(75, 24);
@@ -475,6 +445,70 @@
 			this.sbtnImportantEventRecorder.TextColor = System.Drawing.Color.White;
 			this.sbtnImportantEventRecorder.DoubleClick += new System.EventHandler(this.sbtnImportantEventRecorder_DoubleClick);
 			// 
+			// tableLayoutPanel2
+			// 
+			this.tableLayoutPanel2.AutoScroll = true;
+			this.tableLayoutPanel2.ColumnCount = 3;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.Controls.Add(this.btnLockPanel, 1, 1);
+			this.tableLayoutPanel2.Controls.Add(this.btnExportLog, 1, 3);
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(689, 0);
+			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+			this.tableLayoutPanel2.RowCount = 5;
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(140, 579);
+			this.tableLayoutPanel2.TabIndex = 24;
+			// 
+			// btnExportLog
+			// 
+			this.btnExportLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnExportLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnExportLog.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnExportLog.Location = new System.Drawing.Point(23, 88);
+			this.btnExportLog.Name = "btnExportLog";
+			this.btnExportLog.Size = new System.Drawing.Size(94, 54);
+			this.btnExportLog.TabIndex = 23;
+			this.btnExportLog.Text = "Export Log";
+			this.btnExportLog.UseVisualStyleBackColor = true;
+			this.btnExportLog.Click += new System.EventHandler(this.btnExportLog_Click);
+			// 
+			// label12
+			// 
+			this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.label12.AutoSize = true;
+			this.label12.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label12.Location = new System.Drawing.Point(23, 442);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(127, 20);
+			this.label12.TabIndex = 22;
+			this.label12.Text = "MissionUpdater";
+			// 
+			// sbtnMissionUpdater
+			// 
+			this.sbtnMissionUpdater.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(170)))), ((int)(((byte)(70)))));
+			this.sbtnMissionUpdater.ActiveText = "ON";
+			this.sbtnMissionUpdater.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.sbtnMissionUpdater.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+			this.sbtnMissionUpdater.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(25)))), ((int)(((byte)(32)))));
+			this.sbtnMissionUpdater.InActiveText = "OFF";
+			this.sbtnMissionUpdater.Location = new System.Drawing.Point(273, 440);
+			this.sbtnMissionUpdater.MinimumSize = new System.Drawing.Size(75, 24);
+			this.sbtnMissionUpdater.Name = "sbtnMissionUpdater";
+			this.sbtnMissionUpdater.Size = new System.Drawing.Size(75, 24);
+			this.sbtnMissionUpdater.SliderColor = System.Drawing.Color.White;
+			this.sbtnMissionUpdater.SwitchState = TrafficControlTest.UserControl.SwitchState.Off;
+			this.sbtnMissionUpdater.TabIndex = 23;
+			this.sbtnMissionUpdater.Text = "switchButton7";
+			this.sbtnMissionUpdater.TextColor = System.Drawing.Color.White;
+			this.sbtnMissionUpdater.DoubleClick += new System.EventHandler(this.sbtnMissionUpdater_DoubleClick);
+			// 
 			// UcSystemStatus
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -521,5 +555,7 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 		private System.Windows.Forms.Button btnExportLog;
+		private System.Windows.Forms.Label label12;
+		private SwitchButton sbtnMissionUpdater;
 	}
 }

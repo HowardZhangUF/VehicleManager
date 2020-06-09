@@ -258,6 +258,72 @@ namespace TrafficControlTest.Module.Configure
 				"確認佇列並分配任務給自走車的時間間隔",
 				"确认伫列并分配任务给自走车的时间间隔"));
 			defaultConfigs.Add(new Configuration(
+				"MissionUpdater",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"300",
+				"100",
+				"2000",
+				"Time Period of Checking Send State and Execute State of Mission",
+				"確認任務傳送狀態與執行狀態的時間間隔",
+				"确认任务传送状态与执行状态的时间间隔"));
+			defaultConfigs.Add(new Configuration(
+				"MissionUpdater",
+				"TimeoutOfSendingMission",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"5",
+				"1",
+				"20",
+				"Timeout of Checking Sending Mission Successed or Failed",
+				"傳送任務後若過了此秒數仍未偵測到車子相應的變化，則判斷任務傳送失敗",
+				"传送任务后若过了此秒数仍未侦测到车子相应的变化，则判断任务传送失败"));
+			defaultConfigs.Add(new Configuration(
+				"MissionUpdater",
+				"TimeoutOfExecutingMission",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"600",
+				"10",
+				"6000",
+				"Timeout of Checking Executing Mission Successed or Failed",
+				"執行任務後若過了此秒數任務仍未完成，則判斷任務執行失敗",
+				"执行任务后若过了此秒数任务仍未完成，则判断任务执行失败"));
+			defaultConfigs.Add(new Configuration(
+				"MissionUpdater",
+				"ToleranceOfX",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"500",
+				"1",
+				"10000",
+				"Tolerance of X of Checking Mission Is Completed or Failed",
+				"判斷任務是否完成的座標 (X) 容許誤差",
+				"判断任务是否完成的座标 (X) 容许误差"));
+			defaultConfigs.Add(new Configuration(
+				"MissionUpdater",
+				"ToleranceOfY",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"500",
+				"1",
+				"10000",
+				"Tolerance of Y of Checking Mission Is Completed or Failed",
+				"判斷任務是否完成的座標 (Y) 容許誤差",
+				"判断任务是否完成的座标 (Y) 容许误差"));
+			defaultConfigs.Add(new Configuration(
+				"MissionUpdater",
+				"ToleranceOfToward",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"5",
+				"1",
+				"360",
+				"Tolerance of Toward of Checking Mission Is Completed or Failed",
+				"判斷任務是否完成的座標 (Toward) 容許誤差",
+				"判断任务是否完成的座标 (Toward) 容许误差"));
+			defaultConfigs.Add(new Configuration(
 				"MapFileManager",
 				"MapFileDirectory",
 				ConfigurationType.String,
