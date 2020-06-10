@@ -132,17 +132,6 @@ namespace TrafficControlTest.Module.Mission
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
 			}
 		}
-		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
-		{
-			if (!string.IsNullOrEmpty(Args.Item.mCurrentMissionId))
-			{
-				IMissionState missionState = rMissionStateManager[Args.Item.mCurrentMissionId];
-				if (missionState != null)
-				{
-					missionState.UpdateExecuteState(ExecuteState.ExecuteFailed);
-				}
-			}
-		}
 		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
 			if (Args.StatusName.Contains("ExecuteState"))
