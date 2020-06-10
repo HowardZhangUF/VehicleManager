@@ -142,11 +142,11 @@ namespace TrafficControlTest.Module.Vehicle
 		DateTime mTimestampOfBeingIntervened { get; }
 		/// <summary>是否移動(平移)中</summary>
 		bool mIsTranslating { get; }
-		/// <summary>移動(平移)持續時間</summary>
+		/// <summary>移動(平移)持續時間。 mIsTranslating 為 true 時此為移動(平移)持續時間，為 false 時此為停止移動(平移)持續時間</summary>
 		TimeSpan mTranslatingDuration { get; }
 		/// <summary>是否移動(旋轉)中</summary>
 		bool mIsRotating { get; }
-		/// <summary>移動(旋轉)持續時間</summary>
+		/// <summary>移動(旋轉)持續時間。 mIsRotating 為 true 時此為移動(旋轉)持續時間，為 false 時此為停止移動(旋轉)持續時間</summary>
 		TimeSpan mRotatingDuration { get; }
 		/// <summary>上次更新時間</summary>
 		DateTime mLastUpdated { get; }

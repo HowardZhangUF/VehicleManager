@@ -96,9 +96,9 @@ namespace TrafficControlTest.Module.Vehicle
 		public bool mIsBeingIntervened { get { return !string.IsNullOrEmpty(mCurrentInterveneCommand); } }
 		public DateTime mTimestampOfBeingIntervened { get; private set; } = default(DateTime);
 		public bool mIsTranslating { get; private set; } = false;
-		public TimeSpan mTranslatingDuration { get { return DateTime.Now.Subtract(mTimestampOfStartingTranslate); } }
+		public TimeSpan mTranslatingDuration { get { return DateTime.Now.Subtract(mTimestampOfIsTranslatingChanged); } }
 		public bool mIsRotating { get; private set; } = false;
-		public TimeSpan mRotatingDuration { get { return DateTime.Now.Subtract(mTimestampOfStartingRotate); } }
+		public TimeSpan mRotatingDuration { get { return DateTime.Now.Subtract(mTimestampOfIsRotatingChanged); } }
 		public DateTime mLastUpdated { get; private set; } = default(DateTime);
 
 		private DateTime mStateStartTimestamp = DateTime.Now;
@@ -117,9 +117,9 @@ namespace TrafficControlTest.Module.Vehicle
 		private IList<IPoint2D> _EstimatedPathDetail = null;
 		private IRectangle2D _EstimatedPathRegion = null;
 		private double mThresholdOfTranslating = 0.0f;
-		private DateTime mTimestampOfStartingTranslate = default(DateTime);
+		private DateTime mTimestampOfIsTranslatingChanged = default(DateTime);
 		private double mThresholdOfRotating = 0.0f;
-		private DateTime mTimestampOfStartingRotate = default(DateTime);
+		private DateTime mTimestampOfIsRotatingChanged = default(DateTime);
 
 		private List<string> mUpdatedItems = new List<string>();
 		private bool mIsUpdating = false;
@@ -1108,7 +1108,7 @@ namespace TrafficControlTest.Module.Vehicle
 			if (mIsTranslating != IsTranslating)
 			{
 				mIsTranslating = IsTranslating;
-				if (mIsTranslating) mTimestampOfStartingTranslate = DateTime.Now;
+				mTimestampOfIsTranslatingChanged = DateTime.Now;
 				result = true;
 			}
 			return result;
@@ -1119,7 +1119,7 @@ namespace TrafficControlTest.Module.Vehicle
 			if (mIsRotating != IsRotating)
 			{
 				mIsRotating = IsRotating;
-				if (mIsRotating) mTimestampOfStartingRotate = DateTime.Now;
+				mTimestampOfIsRotatingChanged = DateTime.Now;
 				result = true;
 			}
 			return result;
