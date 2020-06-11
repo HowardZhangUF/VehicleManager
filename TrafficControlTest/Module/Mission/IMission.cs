@@ -8,6 +8,7 @@ namespace TrafficControlTest.Module.Mission
 	public interface IMission
 	{
 		MissionType mMissionType { get; }
+		/// <summary>與 Host 端通訊時使用，可為空</summary>
 		string mMissionId { get; }
 		int mPriority { get; }
 		string mVehicleId { get; }
