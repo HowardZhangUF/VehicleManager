@@ -15,6 +15,7 @@ namespace TrafficControlTest.Module.Mission
 		public int mToleranceOfX { get; private set; } = 500;
 		public int mToleranceOfY { get; private set; } = 500;
 		public int mToleranceOfToward { get; private set; } = 5;
+		public bool mAutoDetectNonSystemMission { get; private set; } = true;
 
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMissionStateManager rMissionStateManager = null;
@@ -62,6 +63,8 @@ namespace TrafficControlTest.Module.Mission
 					return mToleranceOfY.ToString();
 				case "ToleranceOfToward":
 					return mToleranceOfToward.ToString();
+				case "AutoDetectNonSystemMission":
+					return mAutoDetectNonSystemMission.ToString();
 				default:
 					return null;
 			}
@@ -94,6 +97,10 @@ namespace TrafficControlTest.Module.Mission
 					mToleranceOfToward = int.Parse(NewValue);
 					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
 					break;
+				case "AutoDetectNonSystemMission":
+					mAutoDetectNonSystemMission = bool.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
 				default:
 					break;
 			}
@@ -108,14 +115,14 @@ namespace TrafficControlTest.Module.Mission
 		{
 			if (VehicleInfoManager != null)
 			{
-				// do nothing
+				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
 			if (VehicleInfoManager != null)
 			{
-				// do nothing
+				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
@@ -130,6 +137,30 @@ namespace TrafficControlTest.Module.Mission
 			if (MissionStateManager != null)
 			{
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
+		{
+			if (mAutoDetectNonSystemMission)
+			{
+				if (Args.StatusName.Contains("CurrentTarget") && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
+				{
+					// 該車沒有在執行任務，且任務佇列也沒有指派任務給該車
+					if (string.IsNullOrEmpty(Args.Item.mCurrentMissionId) && !rMissionStateManager.GetItems().Where(o => o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing).Any(o => o.mExecutorId == Args.Item.mName))
+					{
+						// 根據該車的「當前目標」資訊去生成任務
+						IMissionState tmpMissionState = GenerateIMissionState(Args.Item.mName, Args.Item.mCurrentTarget);
+						if (tmpMissionState != null)
+						{
+							// 更新任務資訊並加入佇列
+							tmpMissionState.UpdateSendState(SendState.SendSuccessed);
+							tmpMissionState.UpdateExecutorId(Args.Item.mName);
+							tmpMissionState.UpdateSourceIpPort($"{Args.Item.mName}Self");
+							rMissionStateManager.Add(tmpMissionState.mName, tmpMissionState);
+							tmpMissionState.UpdateExecuteState(ExecuteState.Executing); // 系統偵測到「任務執行狀態」改變時會更新「對應車輛的當前任務識別碼」資訊，故將此行放在 Add 之後
+						}
+					}
+				}
 			}
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
@@ -204,6 +235,38 @@ namespace TrafficControlTest.Module.Mission
 					// 如果執行該任務的車子不存在，代表該車斷線，標示該任務為執行失敗
 					executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
 				}
+			}
+		}
+		private IMissionState GenerateIMissionState(string VehicleId, string Target)
+		{
+			IMission tmpMission = null;
+			if (Target.Contains("(") && Target.Contains(")") && Target.Contains(","))
+			{
+				// Target 為座標
+				string[] tmpSplit = Target.Split(new string[] { "(", ")", "," }, StringSplitOptions.RemoveEmptyEntries);
+				switch (tmpSplit.Length)
+				{
+					case 2:
+						tmpMission = Library.Library.GenerateIMission(MissionType.GotoPoint, string.Empty, 50, VehicleId, tmpSplit);
+						break;
+					case 3:
+						tmpMission = Library.Library.GenerateIMission(MissionType.GotoPoint, string.Empty, 50, VehicleId, tmpSplit);
+						break;
+				}
+			}
+			else
+			{
+				// Target 為站點
+				tmpMission = Library.Library.GenerateIMission(MissionType.Goto, string.Empty, 50, VehicleId, new string[] { Target });
+			}
+
+			if (tmpMission != null)
+			{
+				return Library.Library.GenerateIMissionState(tmpMission);
+			}
+			else
+			{
+				return null;
 			}
 		}
 		private ExecuteState GetMissionExecuteStatus(IVehicleInfo VehicleInfo, IMissionState MissionState)

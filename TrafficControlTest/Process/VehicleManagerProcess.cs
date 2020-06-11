@@ -407,6 +407,7 @@ namespace TrafficControlTest.Process
 			mMissionUpdater.SetConfig("ToleranceOfX", mConfigurator.GetValue("MissionUpdater/ToleranceOfX"));
 			mMissionUpdater.SetConfig("ToleranceOfY", mConfigurator.GetValue("MissionUpdater/ToleranceOfY"));
 			mMissionUpdater.SetConfig("ToleranceOfToward", mConfigurator.GetValue("MissionUpdater/ToleranceOfToward"));
+			mMissionUpdater.SetConfig("AutoDetectNonSystemMission", mConfigurator.GetValue("MissionUpdater/AutoDetectNonSystemMission"));
 			mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
 			mMapManager.SetConfig("AutoLoadMap", mConfigurator.GetValue("MapManager/AutoLoadMap"));
 			mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
@@ -416,6 +417,7 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("CycleMissionGenerator/TimePeriod", mCycleMissionGenerator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfig("AutoLoadMap"));
 			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfig("MapFileDirectory"));
+			mConfigurator.SetValue("MissionUpdater/AutoDetectNonSystemMission", mMissionUpdater.GetConfig("AutoDetectNonSystemMission"));
 			mConfigurator.SetValue("MissionUpdater/ToleranceOfToward", mMissionUpdater.GetConfig("ToleranceOfToward"));
 			mConfigurator.SetValue("MissionUpdater/ToleranceOfY", mMissionUpdater.GetConfig("ToleranceOfY"));
 			mConfigurator.SetValue("MissionUpdater/ToleranceOfX", mMissionUpdater.GetConfig("ToleranceOfX"));
@@ -952,6 +954,9 @@ namespace TrafficControlTest.Process
 					break;
 				case "MissionUpdater/ToleranceOfToward":
 					mMissionUpdater.SetConfig("ToleranceOfToward", mConfigurator.GetValue("MissionUpdater/ToleranceOfToward"));
+					break;
+				case "MissionUpdater/AutoDetectNonSystemMission":
+					mMissionUpdater.SetConfig("AutoDetectNonSystemMission", mConfigurator.GetValue("MissionUpdater/AutoDetectNonSystemMission"));
 					break;
 				case "MapFileManager/MapFileDirectory":
 					mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));

@@ -324,6 +324,17 @@ namespace TrafficControlTest.Module.Configure
 				"判斷任務是否完成的座標 (Toward) 容許誤差",
 				"判断任务是否完成的座标 (Toward) 容许误差"));
 			defaultConfigs.Add(new Configuration(
+				"MissionUpdater",
+				"AutoDetectNonSystemMission",
+				ConfigurationType.Bool,
+				ConfigurationLevel.Normal,
+				"True",
+				string.Empty,
+				string.Empty,
+				"Auto Add Mission to Queue when Vehicle is Executing a Mission that is not from System",
+				"自動偵測自走車所執行的非系統任務並將該任務加入至系統佇列中",
+				"自动侦测自走车所执行的非系统任务并将该任务加入至系统伫列中"));
+			defaultConfigs.Add(new Configuration(
 				"MapFileManager",
 				"MapFileDirectory",
 				ConfigurationType.String,
