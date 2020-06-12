@@ -143,7 +143,7 @@ namespace TrafficControlTest.Module.Mission
 		{
 			if (mAutoDetectNonSystemMission)
 			{
-				if (Args.StatusName.Contains("CurrentTarget") && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
+				if ((Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget")) && Args.Item.mCurrentState == "Running" && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
 				{
 					// 該車沒有在執行任務，且任務佇列也沒有指派任務給該車
 					if (string.IsNullOrEmpty(Args.Item.mCurrentMissionId) && !rMissionStateManager.GetItems().Where(o => o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing).Any(o => o.mExecutorId == Args.Item.mName))
