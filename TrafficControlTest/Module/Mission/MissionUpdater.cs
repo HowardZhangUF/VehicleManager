@@ -107,8 +107,8 @@ namespace TrafficControlTest.Module.Mission
 		}
 		public override void Task()
 		{
-			Subtask_CheckMissionSendState();
-			Subtask_CheckMissionExecuteState();
+			Subtask_CheckMissionSendTimeout();
+			Subtask_CheckMissionExecuteTimeout();
 		}
 
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -141,12 +141,20 @@ namespace TrafficControlTest.Module.Mission
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			if (mAutoDetectNonSystemMission)
+			// 當車子進入執行任務狀態
+			if ((Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget")) && Args.Item.mCurrentState == "Running" && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
 			{
-				if ((Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget")) && Args.Item.mCurrentState == "Running" && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
+				IMissionState executingMission = rMissionStateManager.GetItems().FirstOrDefault(o => o.mSendState == SendState.Sending && o.mExecutorId == Args.Item.mName && o.mMission.mParametersString == Args.Item.mCurrentTarget);
+				// 如果車子執行的任務來自於任務佇列
+				if (executingMission != null)
 				{
-					// 該車沒有在執行任務，且任務佇列也沒有指派任務給該車
-					if (string.IsNullOrEmpty(Args.Item.mCurrentMissionId) && !rMissionStateManager.GetItems().Where(o => o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing).Any(o => o.mExecutorId == Args.Item.mName))
+					executingMission.UpdateSendState(SendState.SendSuccessed);
+					executingMission.UpdateExecuteState(ExecuteState.Executing);
+				}
+				// 反之
+				else
+				{
+					if (mAutoDetectNonSystemMission)
 					{
 						// 根據該車的「當前目標」資訊去生成任務
 						IMissionState tmpMissionState = GenerateIMissionState(Args.Item.mName, Args.Item.mCurrentTarget);
@@ -159,6 +167,23 @@ namespace TrafficControlTest.Module.Mission
 							rMissionStateManager.Add(tmpMissionState.mName, tmpMissionState);
 							tmpMissionState.UpdateExecuteState(ExecuteState.Executing); // 系統偵測到「任務執行狀態」改變時會更新「對應車輛的當前任務識別碼」資訊，故將此行放在 Add 之後
 						}
+					}
+				}
+			}
+
+			// 當車子離開執行任務狀態
+			if (Args.StatusName.Contains("CurrentState") && Args.Item.mCurrentState != "Running")
+			{
+				IMissionState executingMission = rMissionStateManager.GetItems().FirstOrDefault(o => o.mExecuteState == ExecuteState.Executing && o.mExecutorId == Args.Item.mName);
+				if (executingMission != null)
+				{
+					if (IsVehicleCompletedMission(Args.Item, executingMission))
+					{
+						executingMission.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+					}
+					else
+					{
+						executingMission.UpdateExecuteState(ExecuteState.ExecuteFailed);
 					}
 				}
 			}
@@ -176,63 +201,42 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 		}
-		private void Subtask_CheckMissionSendState()
+		private void Subtask_CheckMissionSendTimeout()
 		{
 			List<IMissionState> sendingMissions = rMissionStateManager.GetItems().Where(o => o.mSendState == SendState.Sending).ToList();
 			for (int i = 0; i < sendingMissions.Count; ++i)
 			{
 				if (rVehicleInfoManager.IsExist(sendingMissions[i].mExecutorId))
 				{
-					if (rVehicleInfoManager.GetItem(sendingMissions[i].mExecutorId).mCurrentTarget == sendingMissions[i].mMission.mParametersString)
+					// 若指定車存在，但持續 n 秒任務傳送狀態皆未改變，標示該任務為傳送失敗、執行失敗
+					if (DateTime.Now.Subtract(sendingMissions[i].mLastUpdate).TotalSeconds > mTimeoutOfSendingMission)
 					{
-						// 如果該車存在，且「該車的當前目標」與「任務目標」相同，標示該任務為傳送成功、執行中
-						sendingMissions[i].UpdateSendState(SendState.SendSuccessed);
-						sendingMissions[i].UpdateExecuteState(ExecuteState.Executing);
-					}
-					else
-					{
-						// 如果該車存在，但持續 n 秒都未達成上述條件，標示該任務為傳送失敗、執行失敗
-						if (DateTime.Now.Subtract(sendingMissions[i].mLastUpdate).TotalSeconds > mTimeoutOfSendingMission)
-						{
-							sendingMissions[i].UpdateSendState(SendState.SendFailed);
-							sendingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
-						}
+						sendingMissions[i].UpdateSendState(SendState.SendFailed);
 					}
 				}
 				else
 				{
-					// 如果執行該任務的車子不存在，代表該車斷線，標示該任務為執行失敗
-					sendingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+					// 若指定車不存在，標示該任務為傳送失敗、執行失敗
+					sendingMissions[i].UpdateSendState(SendState.SendFailed);
 				}
 			}
 		}
-		private void Subtask_CheckMissionExecuteState()
+		private void Subtask_CheckMissionExecuteTimeout()
 		{
 			List<IMissionState> executingMissions = rMissionStateManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Executing).ToList();
 			for (int i = 0; i < executingMissions.Count; ++i)
 			{
 				if (rVehicleInfoManager.IsExist(executingMissions[i].mExecutorId))
 				{
-					ExecuteState executeState = GetMissionExecuteStatus(rVehicleInfoManager.GetItem(executingMissions[i].mExecutorId), executingMissions[i]);
-					switch (executeState)
+					// 若指定車存在，但持續 n 秒任務執行狀態皆未改變，標示該任務為執行失敗
+					if (DateTime.Now.Subtract(executingMissions[i].mLastUpdate).TotalSeconds > mTimeoutOfExecutingMission)
 					{
-						case ExecuteState.Executing:
-							if (DateTime.Now.Subtract(executingMissions[i].mLastUpdate).TotalSeconds > mTimeoutOfExecutingMission)
-							{
-								executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
-							}
-							break;
-						case ExecuteState.ExecuteSuccessed:
-							executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-							break;
-						case ExecuteState.ExecuteFailed:
-							executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
-							break;
+						executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
 					}
 				}
 				else
 				{
-					// 如果執行該任務的車子不存在，代表該車斷線，標示該任務為執行失敗
+					// 若指定車不存在，標示該任務為執行失敗
 					executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
 				}
 			}
@@ -269,22 +273,22 @@ namespace TrafficControlTest.Module.Mission
 				return null;
 			}
 		}
-		private ExecuteState GetMissionExecuteStatus(IVehicleInfo VehicleInfo, IMissionState MissionState)
+		private bool IsVehicleCompletedMission(IVehicleInfo VehicleInfo, IMissionState MissionState)
 		{
-			ExecuteState result = ExecuteState.Executing;
-			if (IsVehicleError(VehicleInfo))
+			bool result = false;
+			if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger")
 			{
-				result = ExecuteState.ExecuteFailed;
+				result = false;
 			}
 			else if (VehicleInfo.mCurrentState == "Charge")
 			{
 				if (MissionState.mMission.mMissionType == MissionType.Dock)
 				{
-					result = ExecuteState.ExecuteSuccessed;
+					result = true;
 				}
 				else
 				{
-					result = ExecuteState.ExecuteFailed;
+					result = false;
 				}
 			}
 			else if (VehicleInfo.mCurrentState == "Idle")
@@ -292,42 +296,22 @@ namespace TrafficControlTest.Module.Mission
 				switch (MissionState.mMission.mMissionType)
 				{
 					case MissionType.Goto:
-						result = IsVehicleArrived(VehicleInfo, MissionState.mMission.mParameters[0]) ? ExecuteState.ExecuteSuccessed : ExecuteState.ExecuteFailed;
+						result = IsVehicleArrived(VehicleInfo, MissionState.mMission.mParameters[0]);
 						break;
 					case MissionType.GotoPoint:
 						if (MissionState.mMission.mParameters.Length == 2)
 						{
-							result = IsVehicleArrived(VehicleInfo, int.Parse(MissionState.mMission.mParameters[0]), int.Parse(MissionState.mMission.mParameters[1])) ? ExecuteState.ExecuteSuccessed : ExecuteState.ExecuteFailed;
+							result = IsVehicleArrived(VehicleInfo, int.Parse(MissionState.mMission.mParameters[0]), int.Parse(MissionState.mMission.mParameters[1]));
 						}
 						else if (MissionState.mMission.mParameters.Length == 3)
 						{
-							result = IsVehicleArrived(VehicleInfo, int.Parse(MissionState.mMission.mParameters[0]), int.Parse(MissionState.mMission.mParameters[1]), int.Parse(MissionState.mMission.mParameters[2])) ? ExecuteState.ExecuteSuccessed : ExecuteState.ExecuteFailed;
+							result = IsVehicleArrived(VehicleInfo, int.Parse(MissionState.mMission.mParameters[0]), int.Parse(MissionState.mMission.mParameters[1]), int.Parse(MissionState.mMission.mParameters[2]));
 						}
 						break;
 					case MissionType.Dock:
-						result = ExecuteState.ExecuteFailed;
+						result = false;
 						break;
 				}
-			}
-			else if (VehicleInfo.mCurrentState == "Running")
-			{
-				result = ExecuteState.Executing;
-			}
-			return result;
-		}
-		private bool IsVehicleError(IVehicleInfo VehicleInfo)
-		{
-			bool result = false;
-			switch (VehicleInfo.mCurrentState)
-			{
-				case "RouteNotFind":
-				case "ObstacleExists":
-				case "BumperTrigger":
-					result = true;
-					break;
-				default:
-					result = false;
-					break;
 			}
 			return result;
 		}
