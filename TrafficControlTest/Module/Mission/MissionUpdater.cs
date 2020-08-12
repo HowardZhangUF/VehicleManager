@@ -141,8 +141,8 @@ namespace TrafficControlTest.Module.Mission
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			// 當車子進入執行任務狀態
-			if ((Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget")) && Args.Item.mCurrentState == "Running" && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
+			// 當車子進入執行任務狀態且上一狀態不是干預狀態
+			if ((Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget")) && Args.Item.mCurrentState == "Running" && Args.Item.mPreviousState != "Pause" && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
 			{
 				IMissionState executingMission = rMissionStateManager.GetItems().FirstOrDefault(o => o.mSendState == SendState.Sending && o.mExecutorId == Args.Item.mName && o.mMission.mParametersString == Args.Item.mCurrentTarget);
 				// 如果車子執行的任務來自於任務佇列
@@ -171,8 +171,8 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 
-			// 當車子離開執行任務狀態
-			if (Args.StatusName.Contains("CurrentState") && Args.Item.mCurrentState != "Running")
+			// 當車子離開執行任務狀態或是干預狀態
+			if (Args.StatusName.Contains("CurrentState") && Args.Item.mCurrentState != "Running" && Args.Item.mCurrentState != "Pause")
 			{
 				IMissionState executingMission = rMissionStateManager.GetItems().FirstOrDefault(o => o.mExecuteState == ExecuteState.Executing && o.mExecutorId == Args.Item.mName);
 				if (executingMission != null)
