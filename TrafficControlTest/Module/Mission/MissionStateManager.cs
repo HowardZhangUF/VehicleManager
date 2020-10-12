@@ -5,8 +5,6 @@ namespace TrafficControlTest.Module.Mission
 {
 	public class MissionStateManager : ItemManager<IMissionState>, IMissionStateManager
 	{
-		public IMissionState this[string MissionId] => GetItem(MissionId);
-
 		public MissionStateManager()
 		{
 		}

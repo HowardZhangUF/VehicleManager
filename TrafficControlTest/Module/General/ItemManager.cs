@@ -11,6 +11,7 @@ namespace TrafficControlTest.Module.General
 		public event EventHandler<ItemCountChangedEventArgs<T>> ItemRemoved;
 		public event EventHandler<ItemUpdatedEventArgs<T>> ItemUpdated;
 
+		public T this[string Name] { get { return GetItem(Name); } }
 		public int mCount { get { return mItems.Count; } }
 
 		protected Dictionary<string, T> mItems = new Dictionary<string, T>();

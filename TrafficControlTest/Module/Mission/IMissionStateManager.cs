@@ -9,8 +9,6 @@ namespace TrafficControlTest.Module.Mission
 	/// </summary>
 	public interface IMissionStateManager : IItemManager<IMissionState>
 	{
-		IMissionState this[string MissionId] { get; }
-
 		bool IsExistByHostMissionId(string HostMissionId);
 		void UpdateExecutorId(string MissionId, string ExecutorId);
 		void UpdateSendState(string MissionId, SendState SendState);

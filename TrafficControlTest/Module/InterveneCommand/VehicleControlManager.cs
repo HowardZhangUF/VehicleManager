@@ -5,8 +5,6 @@ namespace TrafficControlTest.Module.InterveneCommand
 {
 	class VehicleControlManager : ItemManager<IVehicleControl>, IVehicleControlManager
 	{
-		public IVehicleControl this[string Name] { get { return GetItem(Name); } }
-
 		public VehicleControlManager()
 		{
 

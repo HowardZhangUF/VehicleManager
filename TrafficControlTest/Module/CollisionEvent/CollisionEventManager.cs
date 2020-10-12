@@ -9,8 +9,6 @@ namespace TrafficControlTest.Module.CollisionEvent
 {
 	public class CollisionEventManager : ItemManager<ICollisionPair>, ICollisionEventManager
 	{
-		public ICollisionPair this[string Name] { get { return GetItem(Name); } }
-
 		public CollisionEventManager()
 		{
 		}

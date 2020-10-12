@@ -14,6 +14,7 @@ namespace TrafficControlTest.Module.General
 		event EventHandler<ItemCountChangedEventArgs<T>> ItemRemoved;
 		event EventHandler<ItemUpdatedEventArgs<T>> ItemUpdated;
 
+		T this[string Name] { get; }
 		int mCount { get; }
 
 		bool IsExist(string Name);
