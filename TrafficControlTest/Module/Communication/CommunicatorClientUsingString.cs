@@ -37,6 +37,16 @@ namespace TrafficControlTest.Module.Communication
 				mSocketClient.Connect(Ip, Port);
 			}
 		}
+		public void Connect(string IpPort)
+		{
+			if (IpPort.Contains(":"))
+			{
+				int seperatorIndex = IpPort.IndexOf(":");
+				string ip = IpPort.Substring(0, seperatorIndex);
+				int port = int.Parse(IpPort.Substring(seperatorIndex + 1));
+				Connect(ip, port);
+			}
+		}
 		public void Disconnect()
 		{
 			if (mIsConnected)

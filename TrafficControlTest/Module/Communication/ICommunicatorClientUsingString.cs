@@ -19,6 +19,7 @@ namespace TrafficControlTest.Module.Communication
 		bool mIsConnected { get; }
 
 		void Connect(string Ip, int Port);
+		void Connect(string IpPort);
 		void Disconnect();
 		void Send(string Data);
 	}
