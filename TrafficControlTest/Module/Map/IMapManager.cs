@@ -41,7 +41,9 @@ namespace TrafficControlTest.Module.Map
 		string GetCurrentMapFileNameWithoutExtension();
 		string GetCurrentMapFileHash();
 		string[] GetGoalNameList();
+		string[] GetAutomaticDoorAreaNameList();
 		int[] GetGoalCoordinate(string GoalName);
+		string[] GetAutomaticDoorAreaInfo(string AutomaticDoorName);
 		void SynchronizeMapToOnlineVehicles(string MapFileName);
 		void SynchronizeMapToOnlineVehicles2(string MapFileNameWithoutExtension);
 	}

@@ -90,6 +90,17 @@ namespace TrafficControlTest.Module.Map
 				return GLCMD.CMD.SingleTowerPairInfo.Select(o => o.Name).ToArray();
 			}
 		}
+		public string[] GetAutomaticDoorAreaNameList()
+		{
+			if (string.IsNullOrEmpty(mCurrentMapName))
+			{
+				return new string[0];
+			}
+			else
+			{
+				return GLCMD.CMD.SingleAreaInfo.Where(o => o.StyleName == "AutoDoorArea").Select(o => o.Name).ToArray();
+			}
+		}
 		public int[] GetGoalCoordinate(string GoalName)
 		{
 			if (GLCMD.CMD.SingleTowerPairInfo.Any(o => o.Name == GoalName))
@@ -100,6 +111,25 @@ namespace TrafficControlTest.Module.Map
 			else
 			{
 				return new int[] { 0, 0, 0 };
+			}
+		}
+		public string[] GetAutomaticDoorAreaInfo(string AutomaticDoorName)
+		{
+			if (!string.IsNullOrEmpty(AutomaticDoorName) && GLCMD.CMD.SingleAreaInfo.Any(o => o.Name == AutomaticDoorName))
+			{
+				var areaData = GLCMD.CMD.SingleAreaInfo.First(o => o.StyleName == "AutoDoorArea" && o.Name == AutomaticDoorName);
+				if (areaData.Parameters == null || areaData.Parameters.Count == 0)
+				{
+					return null;
+				}
+				else
+				{
+					return new string[] { areaData.MaxX.ToString(), areaData.MaxY.ToString(), areaData.MinX.ToString(), areaData.MinY.ToString(), areaData.Parameters[0] };
+				}
+			}
+			else
+			{
+				return null;
 			}
 		}
 		public void SynchronizeMapToOnlineVehicles(string MapFileName)
