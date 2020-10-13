@@ -73,6 +73,13 @@ namespace TrafficControlTest.Module.General
 			}
 			return result;
 		}
+		public void RemoveAll()
+		{
+			while (mItems.Any())
+			{
+				Remove(mItems.Keys.First());
+			}
+		}
 
 		private void SubscribeEvent_Item(T Item)
 		{

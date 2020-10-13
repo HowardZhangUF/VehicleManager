@@ -23,6 +23,7 @@ namespace TrafficControlTest.Module.General
 		IEnumerable<string> GetItemNames();
 		bool Add(string Name, T Item);
 		bool Remove(string Name);
+		void RemoveAll();
 	}
 
 	public class ItemCountChangedEventArgs<T> : EventArgs where T : IItem
