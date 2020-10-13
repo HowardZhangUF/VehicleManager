@@ -15,8 +15,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		bool mIsOpened { get; }
 		DateTime mLastUpdated { get; }
 
-		void UpdateRange(IRectangle2D Range);
-		void UpdateIpPort(string IpPort);
+		void Set(string Name, IRectangle2D Range, string IpPort);
 		void UpdateIsConnected(bool IsConnected);
 		void UpdateIsOpened(bool IsOpened);
 	}

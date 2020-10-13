@@ -18,23 +18,16 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		public bool mIsOpened { get; private set; } = false;
 		public DateTime mLastUpdated { get; private set; } = DateTime.Now;
 
-		public void UpdateRange(IRectangle2D Range)
+		public AutomaticDoorInfo(string Name, IRectangle2D Range, string IpPort)
 		{
-			if (Range != null)
-			{
-				mRange = Range;
-				mLastUpdated = DateTime.Now;
-				RaiseEvent_StatusUpdated("Range");
-			}
+			Set(Name, Range, IpPort);
 		}
-		public void UpdateIpPort(string IpPort)
+		public void Set(string Name, IRectangle2D Range, string IpPort)
 		{
-			if (!string.IsNullOrEmpty(IpPort) && mIpPort != IpPort)
-			{
-				mIpPort = IpPort;
-				mLastUpdated = DateTime.Now;
-				RaiseEvent_StatusUpdated("IpPort");
-			}
+			mName = Name;
+			mRange = Range;
+			mIpPort = IpPort;
+			mLastUpdated = DateTime.Now;
 		}
 		public void UpdateIsConnected(bool IsConnected)
 		{
