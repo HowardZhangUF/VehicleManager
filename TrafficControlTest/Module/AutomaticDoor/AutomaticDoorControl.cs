@@ -18,6 +18,10 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		public AutomaticDoorControlCommandSendState mSendState { get; private set; } = AutomaticDoorControlCommandSendState.Unsend;
 		public DateTime mLastUpdated { get; private set; } = DateTime.Now;
 
+		public AutomaticDoorControl(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause)
+		{
+			Set(AutomaticDoorName, Command, Cause);
+		}
 		public void Set(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause)
 		{
 			mName = $"ControlFor{AutomaticDoorName}";

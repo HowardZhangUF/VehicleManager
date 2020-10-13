@@ -56,6 +56,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		{
 			if (mClients.Keys.Contains(IpPort))
 			{
+				if (mClients[IpPort].mIsConnected) mClients[IpPort].Disconnect();
 				mClients[IpPort].ConnectStateChanged -= HandleEvent_ICommunicatorClientUsingStringConnectStateChanged;
 				mClients[IpPort].SentString -= HandleEvent_ICommunicatorClientUsingStringSentString;
 				mClients[IpPort].ReceivedString -= HandleEvent_ICommunicatorClientUsingStringReceivedString;
