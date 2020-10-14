@@ -18,21 +18,21 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		public void Set(IVehicleControlManager VehicleControlManager)
 		{
-			UnsubscribeEvent_IVehicleControlManager(VehicleControlManager);
+			UnsubscribeEvent_IVehicleControlManager(rVehicleControlManager);
 			rVehicleControlManager = VehicleControlManager;
-			SubscribeEvent_IVehicleControlManager(VehicleControlManager);
+			SubscribeEvent_IVehicleControlManager(rVehicleControlManager);
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
-			UnsubscribeEvent_IVehicleInfoManager(VehicleInfoManager);
+			UnsubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
-			SubscribeEvent_IVehicleInfoManager(VehicleInfoManager);
+			SubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator)
 		{
-			UnsubscribeEvent_IVehicleCommunicator(VehicleCommunicator);
+			UnsubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
 			rVehicleCommunicator = VehicleCommunicator;
-			SubscribeEvent_IVehicleCommunicator(VehicleCommunicator);
+			SubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
 		}
 		public void Set(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
 		{

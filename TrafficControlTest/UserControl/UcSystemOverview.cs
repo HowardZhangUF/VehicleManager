@@ -24,15 +24,15 @@ namespace TrafficControlTest.UserControl
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator)
 		{
-			UnsubscribeEvent_VehicleCommunicator(VehicleCommunicator);
+			UnsubscribeEvent_VehicleCommunicator(rVehicleCommunicator);
 			rVehicleCommunicator = VehicleCommunicator;
-			SubscribeEvent_VehicleCommunicator(VehicleCommunicator);
+			SubscribeEvent_VehicleCommunicator(rVehicleCommunicator);
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
-			UnsubscribeEvent_VehicleInfoManager(VehicleInfoManager);
+			UnsubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
-			SubscribeEvent_VehicleInfoManager(VehicleInfoManager);
+			SubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
 		{
