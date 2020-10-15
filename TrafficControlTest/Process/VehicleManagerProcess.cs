@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Account;
+using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.CollisionEvent;
 using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.CommunicationHost;
@@ -40,7 +41,9 @@ namespace TrafficControlTest.Process
 					&& !mHostCommunicator.mIsExecuting
 					&& !mMissionDispatcher.mIsExecuting
 					&& !mMissionUpdater.mIsExecuting
-					&& !mCycleMissionGenerator.mIsExecuting;
+					&& !mCycleMissionGenerator.mIsExecuting
+					&& !mAutomaticDoorCommunicator.mIsExecuting
+					&& !mAutomaticDoorControlHandler.mIsExecuting;
 			}
 		}
 
@@ -72,6 +75,13 @@ namespace TrafficControlTest.Process
 		private IMissionStateReporter mMissionStateReporter = null;
 		private IMissionUpdater mMissionUpdater = null;
 		private ICycleMissionGenerator mCycleMissionGenerator = null;
+		private IAutomaticDoorInfoManager mAutomaticDoorInfoManager = null;
+		private IAutomaticDoorCommunicator mAutomaticDoorCommunicator = null;
+		private IAutomaticDoorInfoManagerUpdater mAutomaticDoorInfoManagerUpdater = null;
+		private IAutomaticDoorCommunicatorUpdater mAutomaticDoorCommunicatorUpdater = null;
+		private IAutomaticDoorControlManager mAutomaticDoorControlManager = null;
+		private IAutomaticDoorControlManagerUpdater mAutomaticDoorControlManagerUpdater = null;
+		private IAutomaticDoorControlHandler mAutomaticDoorControlHandler = null;
 
 		public VehicleManagerProcess()
 		{
@@ -102,10 +112,14 @@ namespace TrafficControlTest.Process
 			mMissionDispatcher.Start();
 			mMissionUpdater.Start();
 			mCycleMissionGenerator.Start();
+			mAutomaticDoorCommunicator.Start();
+			mAutomaticDoorControlHandler.Start();
 		}
 		public void Stop()
 		{
 			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
+			mAutomaticDoorControlHandler.Stop();
+			mAutomaticDoorCommunicator.Stop();
 			mCycleMissionGenerator.Stop();
 			mMissionUpdater.Stop();
 			mMissionDispatcher.Stop();
@@ -315,6 +329,34 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
 			mCycleMissionGenerator = GenerateICycleMissionGenerator(mVehicleInfoManager, mMissionStateManager);
 			SubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
+
+			UnsubscribeEvent_IAutomaticDoorInfoManager(mAutomaticDoorInfoManager);
+			mAutomaticDoorInfoManager = GenerateIAutomaticDoorInfoManager();
+			SubscribeEvent_IAutomaticDoorInfoManager(mAutomaticDoorInfoManager);
+
+			UnsubscribeEvent_IAutomaticDoorCommunicator(mAutomaticDoorCommunicator);
+			mAutomaticDoorCommunicator = GenerateIAutomaticDoorCommunicator();
+			SubscribeEvent_IAutomaticDoorCommunicator(mAutomaticDoorCommunicator);
+
+			UnsubscribeEvent_IAutomaticDoorInfoManagerUpdater(mAutomaticDoorInfoManagerUpdater);
+			mAutomaticDoorInfoManagerUpdater = GenerateIAutomaticDoorInfoManagerUpdater(mAutomaticDoorInfoManager, mMapManager, mAutomaticDoorCommunicator);
+			SubscribeEvent_IAutomaticDoorInfoManagerUpdater(mAutomaticDoorInfoManagerUpdater);
+
+			UnsubscribeEvent_IAutomaticDoorCommunicatorUpdater(mAutomaticDoorCommunicatorUpdater);
+			mAutomaticDoorCommunicatorUpdater = GenerateIAutomaticDoorCommunicatorUpdater(mAutomaticDoorCommunicator, mAutomaticDoorInfoManager);
+			SubscribeEvent_IAutomaticDoorCommunicatorUpdater(mAutomaticDoorCommunicatorUpdater);
+
+			UnsubscribeEvent_IAutomaticDoorControlManager(mAutomaticDoorControlManager);
+			mAutomaticDoorControlManager = GenerateIAutomaticDoorControlManager();
+			SubscribeEvent_IAutomaticDoorControlManager(mAutomaticDoorControlManager);
+
+			UnsubscribeEvent_IAutomaticDoorControlManagerUpdater(mAutomaticDoorControlManagerUpdater);
+			mAutomaticDoorControlManagerUpdater = GenerateIAutomaticDoorControlManagerUpdater(mAutomaticDoorControlManager, mAutomaticDoorInfoManager, mAutomaticDoorCommunicator);
+			SubscribeEvent_IAutomaticDoorControlManagerUpdater(mAutomaticDoorControlManagerUpdater);
+
+			UnsubscribeEvent_IAutomaticDoorControlHandler(mAutomaticDoorControlHandler);
+			mAutomaticDoorControlHandler = GenerateIAutomaticDoorControlHandler(mAutomaticDoorControlManager, mAutomaticDoorInfoManager, mAutomaticDoorCommunicator);
+			SubscribeEvent_IAutomaticDoorControlHandler(mAutomaticDoorControlHandler);
 		}
 		private void Destructor()
 		{
@@ -369,6 +411,27 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_ICycleMissionGenerator(mCycleMissionGenerator);
 			mCycleMissionGenerator = null;
 
+			UnsubscribeEvent_IAutomaticDoorInfoManager(mAutomaticDoorInfoManager);
+			mAutomaticDoorInfoManager = null;
+
+			UnsubscribeEvent_IAutomaticDoorCommunicator(mAutomaticDoorCommunicator);
+			mAutomaticDoorCommunicator = null;
+
+			UnsubscribeEvent_IAutomaticDoorInfoManagerUpdater(mAutomaticDoorInfoManagerUpdater);
+			mAutomaticDoorInfoManagerUpdater = null;
+
+			UnsubscribeEvent_IAutomaticDoorCommunicatorUpdater(mAutomaticDoorCommunicatorUpdater);
+			mAutomaticDoorCommunicatorUpdater = null;
+
+			UnsubscribeEvent_IAutomaticDoorControlManager(mAutomaticDoorControlManager);
+			mAutomaticDoorControlManager = null;
+
+			UnsubscribeEvent_IAutomaticDoorControlManagerUpdater(mAutomaticDoorControlManagerUpdater);
+			mAutomaticDoorControlManagerUpdater = null;
+
+			UnsubscribeEvent_IAutomaticDoorControlHandler(mAutomaticDoorControlHandler);
+			mAutomaticDoorControlHandler = null;
+
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
 
@@ -411,9 +474,15 @@ namespace TrafficControlTest.Process
 			mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
 			mMapManager.SetConfig("AutoLoadMap", mConfigurator.GetValue("MapManager/AutoLoadMap"));
 			mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
+			mAutomaticDoorCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorCommunicator/TimePeriod"));
+			mAutomaticDoorCommunicator.SetConfig("AutoConnect", mConfigurator.GetValue("AutomaticDoorCommunicator/AutoConnect"));
+			mAutomaticDoorControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorControlHandler/TimePeriod"));
 		}
 		private void LoadSystemConfigAndUpdateConfigFile()
 		{
+			mConfigurator.SetValue("AutomaticDoorControlHandler/TimePeriod", mAutomaticDoorControlHandler.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("AutomaticDoorCommunicator/AutoConnect", mAutomaticDoorCommunicator.GetConfig("AutoConnect"));
+			mConfigurator.SetValue("AutomaticDoorCommunicator/TimePeriod", mAutomaticDoorCommunicator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("CycleMissionGenerator/TimePeriod", mCycleMissionGenerator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfig("AutoLoadMap"));
 			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfig("MapFileDirectory"));
@@ -848,6 +917,126 @@ namespace TrafficControlTest.Process
 				ImportantEventRecorder.ConfigUpdated -= HandleEvent_ImportantEventRecorderConfigUpdated;
 			}
 		}
+		private void SubscribeEvent_IAutomaticDoorInfoManager(IAutomaticDoorInfoManager AutomaticDoorInfoManager)
+		{
+			if (AutomaticDoorInfoManager != null)
+			{
+				AutomaticDoorInfoManager.ItemAdded += HandleEvent_AutomaticDoorInfoManagerItemAdded;
+				AutomaticDoorInfoManager.ItemRemoved += HandleEvent_AutomaticDoorInfoManagerItemRemoved;
+				AutomaticDoorInfoManager.ItemUpdated += HandleEvent_AutomaticDoorInfoManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IAutomaticDoorInfoManager(IAutomaticDoorInfoManager AutomaticDoorInfoManager)
+		{
+			if (AutomaticDoorInfoManager != null)
+			{
+				AutomaticDoorInfoManager.ItemAdded -= HandleEvent_AutomaticDoorInfoManagerItemAdded;
+				AutomaticDoorInfoManager.ItemRemoved -= HandleEvent_AutomaticDoorInfoManagerItemRemoved;
+				AutomaticDoorInfoManager.ItemUpdated -= HandleEvent_AutomaticDoorInfoManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IAutomaticDoorCommunicator(IAutomaticDoorCommunicator AutomaticDoorCommunicator)
+		{
+			if (AutomaticDoorCommunicator != null)
+			{
+				AutomaticDoorCommunicator.SystemStatusChanged += HandleEvent_AutomaticDoorCommunicatorSystemStatusChanged;
+				AutomaticDoorCommunicator.ConfigUpdated += HandleEvent_AutomaticDoorCommunicatorConfigUpdated;
+				AutomaticDoorCommunicator.ClientAdded += HandleEvent_AutomaticDoorCommunicatorClientAdded;
+				AutomaticDoorCommunicator.ClientRemoved += HandleEvent_AutomaticDoorCommunicatorClientRemoved;
+				AutomaticDoorCommunicator.RemoteConnectStateChanged += HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged;
+				AutomaticDoorCommunicator.SentData += HandleEvent_AutomaticDoorCommunicatorSentData;
+				AutomaticDoorCommunicator.ReceivedData += HandleEvent_AutomaticDoorCommunicatorReceivedData;
+			}
+		}
+		private void UnsubscribeEvent_IAutomaticDoorCommunicator(IAutomaticDoorCommunicator AutomaticDoorCommunicator)
+		{
+			if (AutomaticDoorCommunicator != null)
+			{
+				AutomaticDoorCommunicator.SystemStatusChanged -= HandleEvent_AutomaticDoorCommunicatorSystemStatusChanged;
+				AutomaticDoorCommunicator.ConfigUpdated -= HandleEvent_AutomaticDoorCommunicatorConfigUpdated;
+				AutomaticDoorCommunicator.ClientAdded -= HandleEvent_AutomaticDoorCommunicatorClientAdded;
+				AutomaticDoorCommunicator.ClientRemoved -= HandleEvent_AutomaticDoorCommunicatorClientRemoved;
+				AutomaticDoorCommunicator.RemoteConnectStateChanged -= HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged;
+				AutomaticDoorCommunicator.SentData -= HandleEvent_AutomaticDoorCommunicatorSentData;
+				AutomaticDoorCommunicator.ReceivedData -= HandleEvent_AutomaticDoorCommunicatorReceivedData;
+			}
+		}
+		private void SubscribeEvent_IAutomaticDoorInfoManagerUpdater(IAutomaticDoorInfoManagerUpdater AutomaticDoorInfoManagerUpdater)
+		{
+			if (AutomaticDoorInfoManagerUpdater != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IAutomaticDoorInfoManagerUpdater(IAutomaticDoorInfoManagerUpdater AutomaticDoorInfoManagerUpdater)
+		{
+			if (AutomaticDoorInfoManagerUpdater != null)
+			{
+				// do nothing
+			}
+		}
+		private void SubscribeEvent_IAutomaticDoorCommunicatorUpdater(IAutomaticDoorCommunicatorUpdater AutomaticDoorCommunicatorUpdater)
+		{
+			if (AutomaticDoorCommunicatorUpdater != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IAutomaticDoorCommunicatorUpdater(IAutomaticDoorCommunicatorUpdater AutomaticDoorCommunicatorUpdater)
+		{
+			if (AutomaticDoorCommunicatorUpdater != null)
+			{
+				// do nothing
+			}
+		}
+		private void SubscribeEvent_IAutomaticDoorControlManager(IAutomaticDoorControlManager AutomaticDoorControlManager)
+		{
+			if (AutomaticDoorControlManager != null)
+			{
+				AutomaticDoorControlManager.ItemAdded += HandleEvent_AutomaticDoorControlManagerItemAdded;
+				AutomaticDoorControlManager.ItemRemoved += HandleEvent_AutomaticDoorControlManagerItemRemoved;
+				AutomaticDoorControlManager.ItemUpdated += HandleEvent_AutomaticDoorControlManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IAutomaticDoorControlManager(IAutomaticDoorControlManager AutomaticDoorControlManager)
+		{
+			if (AutomaticDoorControlManager != null)
+			{
+				AutomaticDoorControlManager.ItemAdded -= HandleEvent_AutomaticDoorControlManagerItemAdded;
+				AutomaticDoorControlManager.ItemRemoved -= HandleEvent_AutomaticDoorControlManagerItemRemoved;
+				AutomaticDoorControlManager.ItemUpdated -= HandleEvent_AutomaticDoorControlManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IAutomaticDoorControlManagerUpdater(IAutomaticDoorControlManagerUpdater AutomaticDoorControlManagerUpdater)
+		{
+			if (AutomaticDoorControlManagerUpdater != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IAutomaticDoorControlManagerUpdater(IAutomaticDoorControlManagerUpdater AutomaticDoorControlManagerUpdater)
+		{
+			if (AutomaticDoorControlManagerUpdater != null)
+			{
+				// do nothing
+			}
+		}
+		private void SubscribeEvent_IAutomaticDoorControlHandler(IAutomaticDoorControlHandler AutomaticDoorControlHandler)
+		{
+			if (AutomaticDoorControlHandler != null)
+			{
+				AutomaticDoorControlHandler.SystemStatusChanged += HandleEvent_AutomaticDoorControlHandlerSystemStatusChanged;
+				AutomaticDoorControlHandler.ConfigUpdated += HandleEvent_AutomaticDoorControlHandlerConfigUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IAutomaticDoorControlHandler(IAutomaticDoorControlHandler AutomaticDoorControlHandler)
+		{
+			if (AutomaticDoorControlHandler != null)
+			{
+				AutomaticDoorControlHandler.SystemStatusChanged -= HandleEvent_AutomaticDoorControlHandlerSystemStatusChanged;
+				AutomaticDoorControlHandler.ConfigUpdated -= HandleEvent_AutomaticDoorControlHandlerConfigUpdated;
+			}
+		}
 		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
 		{
 			if (Sync)
@@ -966,6 +1155,15 @@ namespace TrafficControlTest.Process
 					break;
 				case "CycleMissionGenerator/TimePeriod":
 					mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
+					break;
+				case "AutomaticDoorCommunicator/TimePeriod":
+					mAutomaticDoorCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorCommunicator/TimePeriod"));
+					break;
+				case "AutomaticDoorCommunicator/AutoConnect":
+					mAutomaticDoorCommunicator.SetConfig("AutoConnect", mConfigurator.GetValue("AutomaticDoorCommunicator/AutoConnect"));
+					break;
+				case "AutomaticDoorControlHandler/TimePeriod":
+					mAutomaticDoorControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorControlHandler/TimePeriod"));
 					break;
 			}
 		}
@@ -1210,6 +1408,66 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_ImportantEventRecorderConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "ImportantEventRecorder", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_AutomaticDoorInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IAutomaticDoorInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorInfoManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IAutomaticDoorInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorInfoManager", "ItemRemoved", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IAutomaticDoorInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorCommunicatorConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_AutomaticDoorCommunicatorClientAdded(object Sender, ClientAddedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ClientAdded", $"IPPort: {Args.IpPort}");
+		}
+		private void HandleEvent_AutomaticDoorCommunicatorClientRemoved(object Sender, ClientRemovedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ClientRemoved", $"IPPort: {Args.IpPort}");
+		}
+		private void HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged(object Sender, RemoteConnectStateChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, Connected: {Args.Connected.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorCommunicatorSentData(object Sender, SentDataEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "SentData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
+		}
+		private void HandleEvent_AutomaticDoorCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
+		}
+		private void HandleEvent_AutomaticDoorControlManagerItemAdded(object Sender, ItemCountChangedEventArgs<IAutomaticDoorControl> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorControlManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorControlManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IAutomaticDoorControl> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorControlManager", "ItemRemoved", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IAutomaticDoorControl> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorControlManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorControlHandlerSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorControlHandler", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
+		}
+		private void HandleEvent_AutomaticDoorControlHandlerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorControlHandler", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleDebugMessage(string Message)
 		{

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using TrafficControlTest.Module.Account;
+using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.CollisionEvent;
 using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.CommunicationHost;
@@ -339,6 +340,42 @@ namespace TrafficControlTest.Library
 		public static ILogExporter GenerateILogExporter()
 		{
 			return new LogExporter();
+		}
+		public static IAutomaticDoorInfo GenerateIAutomaticDoorInfo(string Name, IRectangle2D Range, string IpPort)
+		{
+			return new AutomaticDoorInfo(Name, Range, IpPort);
+		}
+		public static IAutomaticDoorInfoManager GenerateIAutomaticDoorInfoManager()
+		{
+			return new AutomaticDoorInfoManager();
+		}
+		public static IAutomaticDoorCommunicator GenerateIAutomaticDoorCommunicator()
+		{
+			return new AutomaticDoorCommunicator();
+		}
+		public static IAutomaticDoorInfoManagerUpdater GenerateIAutomaticDoorInfoManagerUpdater(IAutomaticDoorInfoManager AutomaticDoorInfoManager, IMapManager MapManager, IAutomaticDoorCommunicator AutomaticDoorCommunicator)
+		{
+			return new AutomaticDoorInfoManagerUpdater(AutomaticDoorInfoManager, MapManager, AutomaticDoorCommunicator);
+		}
+		public static IAutomaticDoorCommunicatorUpdater GenerateIAutomaticDoorCommunicatorUpdater(IAutomaticDoorCommunicator AutomaticDoorCommunicator, IAutomaticDoorInfoManager AutomaticDoorInfoManager)
+		{
+			return new AutomaticDoorCommunicatorUpdater(AutomaticDoorCommunicator, AutomaticDoorInfoManager);
+		}
+		public static IAutomaticDoorControl GenerateIAutomaticDoorControl(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause)
+		{
+			return new AutomaticDoorControl(AutomaticDoorName, Command, Cause);
+		}
+		public static IAutomaticDoorControlManager GenerateIAutomaticDoorControlManager()
+		{
+			return new AutomaticDoorControlManager();
+		}
+		public static IAutomaticDoorControlManagerUpdater GenerateIAutomaticDoorControlManagerUpdater(IAutomaticDoorControlManager AutomaticDoorControlManager, IAutomaticDoorInfoManager AutomaticDoorInfoManager, IAutomaticDoorCommunicator AutomaticDoorCommunicator)
+		{
+			return new AutomaticDoorControlManagerUpdater(AutomaticDoorControlManager, AutomaticDoorInfoManager, AutomaticDoorCommunicator);
+		}
+		public static IAutomaticDoorControlHandler GenerateIAutomaticDoorControlHandler(IAutomaticDoorControlManager AutomaticDoorControlManager, IAutomaticDoorInfoManager AutomaticDoorInfoManager, IAutomaticDoorCommunicator AutomaticDoorCommunicator)
+		{
+			return new AutomaticDoorControlHandler(AutomaticDoorControlManager, AutomaticDoorInfoManager, AutomaticDoorCommunicator);
 		}
 		#endregion
 

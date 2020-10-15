@@ -367,6 +367,39 @@ namespace TrafficControlTest.Module.Configure
 				"Time Period of Checking Vehicle State and Generating Next Mission",
 				"確認自走車狀態並產生下一個任務的時間間隔",
 				"确认自走车状态并产生下一个任务的时间间隔"));
+			defaultConfigs.Add(new Configuration(
+				"AutomaticDoorCommunicator",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"5000",
+				"1000",
+				"10000",
+				"Time Period of Connect to Automatic Door",
+				"嘗試連線至自動門的時間間隔",
+				"尝试连线至自动门的时间间隔"));
+			defaultConfigs.Add(new Configuration(
+				"AutomaticDoorCommunicator",
+				"AutoConnect",
+				ConfigurationType.Bool,
+				ConfigurationLevel.Normal,
+				"True",
+				string.Empty,
+				string.Empty,
+				"Auto Connect to Automatic Door",
+				"是否自動連線至自動門",
+				"是否自动连线至自动门"));
+			defaultConfigs.Add(new Configuration(
+				"AutomaticDoorControlHandler",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"500",
+				"100",
+				"2000",
+				"Time Period of Handle Automatic Door Control",
+				"處理自動門控制的時間間隔",
+				"处理自动门控制的时间间隔"));
 
 			mConfigs.Clear();
 			for (int i = 0; i < defaultConfigs.Count; ++i)
