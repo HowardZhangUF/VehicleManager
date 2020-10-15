@@ -13,9 +13,9 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		private IAutomaticDoorInfoManager rAutomaticDoorInfoManager = null;
 		private IAutomaticDoorCommunicator rAutomaticDoorCommunicator = null;
 
-		public AutomaticDoorControlHandler(IAutomaticDoorControlManager AutomaticDoorControlManager, IAutomaticDoorInfoManager AutomaticDoorManager, IAutomaticDoorCommunicator AutomaticDoorCommunicator)
+		public AutomaticDoorControlHandler(IAutomaticDoorControlManager AutomaticDoorControlManager, IAutomaticDoorInfoManager AutomaticDoorInfoManager, IAutomaticDoorCommunicator AutomaticDoorCommunicator)
 		{
-			Set(AutomaticDoorControlManager, AutomaticDoorManager, AutomaticDoorCommunicator);
+			Set(AutomaticDoorControlManager, AutomaticDoorInfoManager, AutomaticDoorCommunicator);
 		}
 		public void Set(IAutomaticDoorControlManager AutomaticDoorControlManager)
 		{

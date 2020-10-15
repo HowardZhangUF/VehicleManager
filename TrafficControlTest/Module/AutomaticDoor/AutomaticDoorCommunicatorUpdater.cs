@@ -66,7 +66,8 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		}
 		private void HandleEvent_AutomaticDoorInfoManagerItemAdded(object sender, ItemCountChangedEventArgs<IAutomaticDoorInfo> e)
 		{
-			if (!rAutomaticDoorCommunicator.GetClientList().Contains(e.Item.mIpPort))
+			List<string> currentClientList = rAutomaticDoorCommunicator.GetClientList();
+			if (currentClientList == null || currentClientList.Count == 0 || !currentClientList.Contains(e.Item.mIpPort))
 			{
 				rAutomaticDoorCommunicator.Add(e.Item.mIpPort);
 			}

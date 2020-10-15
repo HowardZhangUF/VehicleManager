@@ -49,6 +49,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 				mClients[IpPort].ConnectStateChanged += HandleEvent_ICommunicatorClientUsingStringConnectStateChanged;
 				mClients[IpPort].SentString += HandleEvent_ICommunicatorClientUsingStringSentString;
 				mClients[IpPort].ReceivedString += HandleEvent_ICommunicatorClientUsingStringReceivedString;
+				mClients[IpPort].Start();
 				RaiseEvent_ClientAdded(IpPort);
 			}
 		}
@@ -57,6 +58,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 			if (mClients.Keys.Contains(IpPort))
 			{
 				if (mClients[IpPort].mIsConnected) mClients[IpPort].Disconnect();
+				mClients[IpPort].Stop();
 				mClients[IpPort].ConnectStateChanged -= HandleEvent_ICommunicatorClientUsingStringConnectStateChanged;
 				mClients[IpPort].SentString -= HandleEvent_ICommunicatorClientUsingStringSentString;
 				mClients[IpPort].ReceivedString -= HandleEvent_ICommunicatorClientUsingStringReceivedString;
