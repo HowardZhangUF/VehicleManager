@@ -47,6 +47,10 @@ namespace TrafficControlTest.Module.AutomaticDoor
 				RaiseEvent_StatusUpdated("IsOpened");
 			}
 		}
+		public override string ToString()
+		{
+			return $"{mName}/IPPort:{mIpPort}/IsConnected:{mIsConnected.ToString()}/IsOpened:{mIsOpened.ToString()}";
+		}
 
 		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
 		{

@@ -37,6 +37,10 @@ namespace TrafficControlTest.Module.AutomaticDoor
 			mLastUpdated = DateTime.Now;
 			RaiseEvent_StatusUpdated("SendState");
 		}
+		public override string ToString()
+		{
+			return $"{mName}/AutomaticDoorName:{mAutomaticDoorName}/Command:{mCommand.ToString()}/Cause:{mCause}/SendState:{mSendState.ToString()}";
+		}
 
 		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
 		{
