@@ -28,11 +28,11 @@ namespace TrafficControlTest.Module.General
 		}
 		public IEnumerable<T> GetItems()
 		{
-			return mItems.Values;
+			return mItems.Values.ToArray();
 		}
 		public IEnumerable<string> GetItemNames()
 		{
-			return mItems.Keys;
+			return mItems.Keys.ToArray();
 		}
 		public bool Add(string ItemName, T Item)
 		{
