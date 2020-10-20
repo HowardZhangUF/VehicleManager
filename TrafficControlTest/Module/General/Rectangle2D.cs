@@ -5,8 +5,8 @@ namespace TrafficControlTest.Module.General
 	[Serializable]
 	public class Rectangle2D : IRectangle2D
 	{
-		public IPoint2D mMaxPoint { get; set; }
-		public IPoint2D mMinPoint { get; set; }
+		public IPoint2D mMaxPoint { get; private set; }
+		public IPoint2D mMinPoint { get; private set; }
 
 		public int mMaxX { get { return mMaxPoint.mX; } }
 		public int mMaxY { get { return mMaxPoint.mY; } }
