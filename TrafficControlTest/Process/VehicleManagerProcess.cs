@@ -208,6 +208,10 @@ namespace TrafficControlTest.Process
 		{
 			return mCycleMissionGenerator;
 		}
+		public IAutomaticDoorControlManager GetReferenceOfIAutomaticDoorControlManager()
+		{
+			return mAutomaticDoorControlManager;
+		}
 		public DatabaseAdapter GetReferenceOfDatabaseAdapterOfLogRecord()
 		{
 			return mDatabaseAdapterOfLogRecord;

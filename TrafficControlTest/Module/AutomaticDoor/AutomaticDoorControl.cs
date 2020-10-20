@@ -24,7 +24,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		}
 		public void Set(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause)
 		{
-			mName = $"ControlFor{AutomaticDoorName}";
+			mName = $"ControlFor{AutomaticDoorName}With{Command.ToString()}";
 			mAutomaticDoorName = AutomaticDoorName;
 			mCommand = Command;
 			mCause = Cause;
@@ -33,9 +33,12 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		}
 		public void UpdateSendState(AutomaticDoorControlCommandSendState SendState)
 		{
-			mSendState = SendState;
-			mLastUpdated = DateTime.Now;
-			RaiseEvent_StatusUpdated("SendState");
+			if (mSendState != SendState)
+			{
+				mSendState = SendState;
+				mLastUpdated = DateTime.Now;
+				RaiseEvent_StatusUpdated("SendState");
+			}
 		}
 		public override string ToString()
 		{
