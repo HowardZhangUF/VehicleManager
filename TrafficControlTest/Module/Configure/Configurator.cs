@@ -400,6 +400,39 @@ namespace TrafficControlTest.Module.Configure
 				"Time Period of Handle Automatic Door Control",
 				"處理自動門控制的時間間隔",
 				"处理自动门控制的时间间隔"));
+			defaultConfigs.Add(new Configuration(
+				"VehiclePassThroughAutomaticDoorEventManagerUpdater",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1000",
+				"500",
+				"5000",
+				"Time Period of Detecting Vehicle Pass Through Automatic Door Event",
+				"偵測車子通過自動門事件的時間間隔",
+				"侦测车子通过自动门事件的时间间隔"));
+			defaultConfigs.Add(new Configuration(
+				"VehiclePassThroughAutomaticDoorEventManagerUpdater",
+				"OpenDoorDistance",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"2500",
+				"100",
+				"5000",
+				"Distance Threshold of Open Automatic Door",
+				"當車子與自動門的距離小於此數值時開啟自動門",
+				"当车子与自动门的距离小于此数值时开启自动门"));
+			defaultConfigs.Add(new Configuration(
+				"VehiclePassThroughAutomaticDoorEventManagerUpdater",
+				"CloseDoorDistance",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"2500",
+				"100",
+				"5000",
+				"Distance Threshold of Close Automatic Door",
+				"當車子與自動門的距離大於此數值時關閉自動門",
+				"当车子与自动门的距离大于此数值时关闭自动门"));
 
 			mConfigs.Clear();
 			for (int i = 0; i < defaultConfigs.Count; ++i)

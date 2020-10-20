@@ -18,6 +18,7 @@ using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.Vehicle;
+using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
 
 namespace TrafficControlTest.Library
 {
@@ -376,6 +377,22 @@ namespace TrafficControlTest.Library
 		public static IAutomaticDoorControlHandler GenerateIAutomaticDoorControlHandler(IAutomaticDoorControlManager AutomaticDoorControlManager, IAutomaticDoorInfoManager AutomaticDoorInfoManager, IAutomaticDoorCommunicator AutomaticDoorCommunicator)
 		{
 			return new AutomaticDoorControlHandler(AutomaticDoorControlManager, AutomaticDoorInfoManager, AutomaticDoorCommunicator);
+		}
+		public static IVehiclePassThroughAutomaticDoorEvent GenerateIVehiclePassThroughAutomaticDoorEvent(string VehicleName, string AutomaticDoorName, int Distance)
+		{
+			return new VehiclePassThroughAutomaticDoorEvent(VehicleName, AutomaticDoorName, Distance);
+		}
+		public static IVehiclePassThroughAutomaticDoorEventManager GenerateIVehiclePassThroughAutomaticDoorEventManager()
+		{
+			return new VehiclePassThroughAutomaticDoorEventManager();
+		}
+		public static IVehiclePassThroughAutomaticDoorEventManagerUpdater GenerateIVehiclePassThroughAutomaticDoorEventManagerUpdater(IVehicleInfoManager VehicleInfoManager, IAutomaticDoorInfoManager AutomaticDoorInfoManager, IVehiclePassThroughAutomaticDoorEventManager VehiclePassThroughAutomaticDoorEventManager)
+		{
+			return new VehiclePassThroughAutomaticDoorEventManagerUpdater(VehicleInfoManager, AutomaticDoorInfoManager, VehiclePassThroughAutomaticDoorEventManager);
+		}
+		public static IVehiclePassThroughAutomaticDoorEventHandler GenerateIVehiclePassThroughAutomaticDoorEventHandler(IVehiclePassThroughAutomaticDoorEventManager VehiclePassThroughAutomaticDoorEventManager, IAutomaticDoorControlManager AutomaticDoorControlManager)
+		{
+			return new VehiclePassThroughAutomaticDoorEventHandler(VehiclePassThroughAutomaticDoorEventManager, AutomaticDoorControlManager);
 		}
 		#endregion
 

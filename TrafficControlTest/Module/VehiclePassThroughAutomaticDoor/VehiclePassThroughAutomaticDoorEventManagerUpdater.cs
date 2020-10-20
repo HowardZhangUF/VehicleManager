@@ -181,7 +181,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 						{
 							PassThroughState state = IsVehicleInAutomaticDoor(vehicleInfos[i], automaticDoorInfos[j]) ? PassThroughState.Passing : PassThroughState.WillPass;
 							int distance = GetDistanceBetweenVehicleAndAutomaticDoor(vehicleInfos[i], automaticDoorInfos[j]);
-							IVehiclePassThroughAutomaticDoorEvent e = new VehiclePassThroughAutomaticDoorEvent(vehicleInfos[i].mName, automaticDoorInfos[j].mName, distance);
+							IVehiclePassThroughAutomaticDoorEvent e = Library.Library.GenerateIVehiclePassThroughAutomaticDoorEvent(vehicleInfos[i].mName, automaticDoorInfos[j].mName, distance);
 							// 檢查是否正在通過自動門或是車子與自動門的距離是否小於 mOpenDoorDistance
 							if (state == PassThroughState.Passing || distance < mOpenDoorDistance)
 							{

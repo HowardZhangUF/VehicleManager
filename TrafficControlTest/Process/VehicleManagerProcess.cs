@@ -16,6 +16,7 @@ using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.Vehicle;
+using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
 using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;
 
@@ -43,7 +44,8 @@ namespace TrafficControlTest.Process
 					&& !mMissionUpdater.mIsExecuting
 					&& !mCycleMissionGenerator.mIsExecuting
 					&& !mAutomaticDoorCommunicator.mIsExecuting
-					&& !mAutomaticDoorControlHandler.mIsExecuting;
+					&& !mAutomaticDoorControlHandler.mIsExecuting
+					&& !mVehiclePassThroughAutomaticDoorEventManagerUpdater.mIsExecuting;
 			}
 		}
 
@@ -82,6 +84,9 @@ namespace TrafficControlTest.Process
 		private IAutomaticDoorControlManager mAutomaticDoorControlManager = null;
 		private IAutomaticDoorControlManagerUpdater mAutomaticDoorControlManagerUpdater = null;
 		private IAutomaticDoorControlHandler mAutomaticDoorControlHandler = null;
+		private IVehiclePassThroughAutomaticDoorEventManager mVehiclePassThroughAutomaticDoorEventManager = null;
+		private IVehiclePassThroughAutomaticDoorEventManagerUpdater mVehiclePassThroughAutomaticDoorEventManagerUpdater = null;
+		private IVehiclePassThroughAutomaticDoorEventHandler mVehiclePassThroughAutomaticDoorEventHandler = null;
 
 		public VehicleManagerProcess()
 		{
@@ -114,10 +119,12 @@ namespace TrafficControlTest.Process
 			mCycleMissionGenerator.Start();
 			mAutomaticDoorCommunicator.Start();
 			mAutomaticDoorControlHandler.Start();
+			mVehiclePassThroughAutomaticDoorEventManagerUpdater.Start();
 		}
 		public void Stop()
 		{
 			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
+			mVehiclePassThroughAutomaticDoorEventManagerUpdater.Stop();
 			mAutomaticDoorControlHandler.Stop();
 			mAutomaticDoorCommunicator.Stop();
 			mCycleMissionGenerator.Stop();
@@ -361,6 +368,18 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IAutomaticDoorControlHandler(mAutomaticDoorControlHandler);
 			mAutomaticDoorControlHandler = GenerateIAutomaticDoorControlHandler(mAutomaticDoorControlManager, mAutomaticDoorInfoManager, mAutomaticDoorCommunicator);
 			SubscribeEvent_IAutomaticDoorControlHandler(mAutomaticDoorControlHandler);
+
+			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventManager(mVehiclePassThroughAutomaticDoorEventManager);
+			mVehiclePassThroughAutomaticDoorEventManager = GenerateIVehiclePassThroughAutomaticDoorEventManager();
+			SubscribeEvent_IVehiclePassThroughAutomaticDoorEventManager(mVehiclePassThroughAutomaticDoorEventManager);
+
+			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventManagerUpdater(mVehiclePassThroughAutomaticDoorEventManagerUpdater);
+			mVehiclePassThroughAutomaticDoorEventManagerUpdater = GenerateIVehiclePassThroughAutomaticDoorEventManagerUpdater(mVehicleInfoManager, mAutomaticDoorInfoManager, mVehiclePassThroughAutomaticDoorEventManager);
+			SubscribeEvent_IVehiclePassThroughAutomaticDoorEventManagerUpdater(mVehiclePassThroughAutomaticDoorEventManagerUpdater);
+
+			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventHandler);
+			mVehiclePassThroughAutomaticDoorEventHandler = GenerateIVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventManager, mAutomaticDoorControlManager);
+			SubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventHandler);
 		}
 		private void Destructor()
 		{
@@ -436,6 +455,15 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IAutomaticDoorControlHandler(mAutomaticDoorControlHandler);
 			mAutomaticDoorControlHandler = null;
 
+			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventManager(mVehiclePassThroughAutomaticDoorEventManager);
+			mVehiclePassThroughAutomaticDoorEventManager = null;
+
+			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventManagerUpdater(mVehiclePassThroughAutomaticDoorEventManagerUpdater);
+			mVehiclePassThroughAutomaticDoorEventManagerUpdater = null;
+
+			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventHandler);
+			mVehiclePassThroughAutomaticDoorEventHandler = null;
+
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
 
@@ -481,9 +509,15 @@ namespace TrafficControlTest.Process
 			mAutomaticDoorCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorCommunicator/TimePeriod"));
 			mAutomaticDoorCommunicator.SetConfig("AutoConnect", mConfigurator.GetValue("AutomaticDoorCommunicator/AutoConnect"));
 			mAutomaticDoorControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorControlHandler/TimePeriod"));
+			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod"));
+			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("OpenDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDoorDistance"));
+			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("CloseDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance"));
 		}
 		private void LoadSystemConfigAndUpdateConfigFile()
 		{
+			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDistanceDoor", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("CloseDistanceDoor"));
+			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDistanceDoor", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("OpenDistanceDoor"));
+			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("AutomaticDoorControlHandler/TimePeriod", mAutomaticDoorControlHandler.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("AutomaticDoorCommunicator/AutoConnect", mAutomaticDoorCommunicator.GetConfig("AutoConnect"));
 			mConfigurator.SetValue("AutomaticDoorCommunicator/TimePeriod", mAutomaticDoorCommunicator.GetConfig("TimePeriod"));
@@ -1041,6 +1075,54 @@ namespace TrafficControlTest.Process
 				AutomaticDoorControlHandler.ConfigUpdated -= HandleEvent_AutomaticDoorControlHandlerConfigUpdated;
 			}
 		}
+		private void SubscribeEvent_IVehiclePassThroughAutomaticDoorEventManager(IVehiclePassThroughAutomaticDoorEventManager VehiclePassThroughAutomaticDoorEventManager)
+		{
+			if (VehiclePassThroughAutomaticDoorEventManager != null)
+			{
+				VehiclePassThroughAutomaticDoorEventManager.ItemAdded += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemAdded;
+				VehiclePassThroughAutomaticDoorEventManager.ItemRemoved += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemRemoved;
+				VehiclePassThroughAutomaticDoorEventManager.ItemUpdated += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventManager(IVehiclePassThroughAutomaticDoorEventManager VehiclePassThroughAutomaticDoorEventManager)
+		{
+			if (VehiclePassThroughAutomaticDoorEventManager != null)
+			{
+				VehiclePassThroughAutomaticDoorEventManager.ItemAdded -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemAdded;
+				VehiclePassThroughAutomaticDoorEventManager.ItemRemoved -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemRemoved;
+				VehiclePassThroughAutomaticDoorEventManager.ItemUpdated -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IVehiclePassThroughAutomaticDoorEventManagerUpdater(IVehiclePassThroughAutomaticDoorEventManagerUpdater VehiclePassThroughAutomaticDoorEventManagerUpdater)
+		{
+			if (VehiclePassThroughAutomaticDoorEventManagerUpdater != null)
+			{
+				VehiclePassThroughAutomaticDoorEventManagerUpdater.SystemStatusChanged += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterSystemStatusChanged;
+				VehiclePassThroughAutomaticDoorEventManagerUpdater.ConfigUpdated += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterConfigUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventManagerUpdater(IVehiclePassThroughAutomaticDoorEventManagerUpdater VehiclePassThroughAutomaticDoorEventManagerUpdater)
+		{
+			if (VehiclePassThroughAutomaticDoorEventManagerUpdater != null)
+			{
+				VehiclePassThroughAutomaticDoorEventManagerUpdater.SystemStatusChanged -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterSystemStatusChanged;
+				VehiclePassThroughAutomaticDoorEventManagerUpdater.ConfigUpdated -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterConfigUpdated;
+			}
+		}
+		private void SubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(IVehiclePassThroughAutomaticDoorEventHandler VehiclePassThroughAutomaticDoorEventHandler)
+		{
+			if (VehiclePassThroughAutomaticDoorEventHandler != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(IVehiclePassThroughAutomaticDoorEventHandler VehiclePassThroughAutomaticDoorEventHandler)
+		{
+			if (VehiclePassThroughAutomaticDoorEventHandler != null)
+			{
+				// do nothing
+			}
+		}
 		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
 		{
 			if (Sync)
@@ -1168,6 +1250,15 @@ namespace TrafficControlTest.Process
 					break;
 				case "AutomaticDoorControlHandler/TimePeriod":
 					mAutomaticDoorControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorControlHandler/TimePeriod"));
+					break;
+				case "VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod":
+					mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod"));
+					break;
+				case "VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDoorDistance":
+					mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("OpenDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDoorDistance"));
+					break;
+				case "VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance":
+					mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("CloseDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance"));
 					break;
 			}
 		}
@@ -1472,6 +1563,26 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_AutomaticDoorControlHandlerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorControlHandler", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehiclePassThroughAutomaticDoorEvent> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "VehiclePassThroughAutomaticDoorEventManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehiclePassThroughAutomaticDoorEvent> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "VehiclePassThroughAutomaticDoorEventManager", "ItemRemoved", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehiclePassThroughAutomaticDoorEvent> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "VehiclePassThroughAutomaticDoorEventManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "VehiclePassThroughAutomaticDoorEventManagerUpdater", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
+		}
+		private void HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "VehiclePassThroughAutomaticDoorEventManagerUpdater", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleDebugMessage(string Message)
 		{
