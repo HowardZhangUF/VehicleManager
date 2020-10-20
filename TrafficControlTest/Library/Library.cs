@@ -407,7 +407,6 @@ namespace TrafficControlTest.Library
 			return (int)(Math.Pow(Point2.mX - Point1.mX, 2) + Math.Pow(Point2.mY - Point1.mY, 2));
 		}
 		/// <summary>計算指定矩形與指定線段(由兩點組成)的交點。最多有可能會有兩個交點</summary>
-		/// <remarks></remarks>
 		public static IEnumerable<IPoint2D> GetIntersectionPoint(IRectangle2D Rectangle, IPoint2D Point1, IPoint2D Point2)
 		{
 			List<IPoint2D> result = null;
@@ -611,6 +610,21 @@ namespace TrafficControlTest.Library
 		#endregion
 
 		#region IRectangle2D
+		/// <summary>計算指定點與指定矩形的邊的距離</summary>
+		public static int GetDistanceBetweenPointAndRectangleEdge(IPoint2D Point, IRectangle2D Rectangle)
+		{
+			int result = 0;
+			if (!Rectangle.IsIncludePoint(Point))
+			{
+				IPoint2D rectangleCenter = GenerateIPoint2D((Rectangle.mMaxX + Rectangle.mMinX) / 2, (Rectangle.mMaxY + Rectangle.mMinY) / 2);
+				IEnumerable<IPoint2D> intersectionPoints = GetIntersectionPoint(Rectangle, Point, rectangleCenter);
+				if (intersectionPoints.Count() == 1)
+				{
+					result = (int)GetDistance(Point, intersectionPoints.ElementAt(0));
+				}
+			}
+			return result;
+		}
 		/// <summary>判斷兩個矩形是否有重疊。共用同一個邊不算重疊</summary>
 		public static bool IsRectangleOverlap(IRectangle2D Rectangle1, IRectangle2D Rectangle2)
 		{
@@ -623,6 +637,20 @@ namespace TrafficControlTest.Library
 		public static bool IsPointInside(IPoint2D Point, IRectangle2D Rectangle)
 		{
 			return (Point.mX >= Rectangle.mMinX && Point.mX <= Rectangle.mMaxX && Point.mY >= Rectangle.mMinY && Point.mY <= Rectangle.mMaxY);
+		}
+		/// <summary>判斷指定線段(點集合)是否有穿越指定矩形</summary>
+		public static bool IsLinePassThroughRectangle(IEnumerable<IPoint2D> Points, IRectangle2D Rectangle)
+		{
+			bool result = false;
+			for (int i = 0; i < Points.Count() - 1; ++i)
+			{
+				if (GetIntersectionPoint(Rectangle, Points.ElementAt(i), Points.ElementAt(i + 1)).Count() > 0)
+				{
+					result = true;
+					break;
+				}
+			}
+			return result;
 		}
 		/// <summary>計算能涵蓋兩個指定矩形的矩形</summary>
 		public static IRectangle2D GetCoverRectangle(IRectangle2D Rectangle1, IRectangle2D Rectangle2)

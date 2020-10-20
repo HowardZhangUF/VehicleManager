@@ -169,6 +169,14 @@
     <Compile Include="Module\Mission\IMissionStateManager.cs" />
     <Compile Include="Module\Mission\IMissionStateReporter.cs" />
     <Compile Include="Module\Mission\IMissionUpdater.cs" />
+    <Compile Include="Module\VehiclePassThroughAutomaticDoor\IVehiclePassThroughAutomaticDoorEventHandler.cs" />
+    <Compile Include="Module\VehiclePassThroughAutomaticDoor\IVehiclePassThroughAutomaticDoorEventManagerUpdater.cs" />
+    <Compile Include="Module\VehiclePassThroughAutomaticDoor\IVehiclePassThroughAutomaticDoorEvent.cs" />
+    <Compile Include="Module\VehiclePassThroughAutomaticDoor\IVehiclePassThroughAutomaticDoorEventManager.cs" />
+    <Compile Include="Module\VehiclePassThroughAutomaticDoor\VehiclePassThroughAutomaticDoorEvent.cs" />
+    <Compile Include="Module\VehiclePassThroughAutomaticDoor\VehiclePassThroughAutomaticDoorEventHandler.cs" />
+    <Compile Include="Module\VehiclePassThroughAutomaticDoor\VehiclePassThroughAutomaticDoorEventManager.cs" />
+    <Compile Include="Module\VehiclePassThroughAutomaticDoor\VehiclePassThroughAutomaticDoorEventManagerUpdater.cs" />
     <Compile Include="Process\VehicleManagerProcess.cs" />
     <Compile Include="Library\Extension.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventDetector.cs" />
