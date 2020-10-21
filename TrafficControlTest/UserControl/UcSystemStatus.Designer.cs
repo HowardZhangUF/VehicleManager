@@ -43,7 +43,6 @@
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnLockPanel = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.sbtnCycleMissionGenerator = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnMissionDispatcher = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnHostCommunicator = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnVehicleControlHandler = new TrafficControlTest.UserControl.SwitchButton();
@@ -52,10 +51,12 @@
 			this.sbtnVehicleCommunicator = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnVehicleCommunicatorServer = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnImportantEventRecorder = new TrafficControlTest.UserControl.SwitchButton();
-			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-			this.btnExportLog = new System.Windows.Forms.Button();
+			this.sbtnCycleMissionGenerator = new TrafficControlTest.UserControl.SwitchButton();
 			this.label12 = new System.Windows.Forms.Label();
 			this.sbtnMissionUpdater = new TrafficControlTest.UserControl.SwitchButton();
+			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.btnExportLog = new System.Windows.Forms.Button();
+			this.btnLoadMap = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.SuspendLayout();
@@ -272,25 +273,6 @@
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(689, 525);
 			this.tableLayoutPanel1.TabIndex = 23;
 			// 
-			// sbtnCycleMissionGenerator
-			// 
-			this.sbtnCycleMissionGenerator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(170)))), ((int)(((byte)(70)))));
-			this.sbtnCycleMissionGenerator.ActiveText = "ON";
-			this.sbtnCycleMissionGenerator.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.sbtnCycleMissionGenerator.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-			this.sbtnCycleMissionGenerator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(25)))), ((int)(((byte)(32)))));
-			this.sbtnCycleMissionGenerator.InActiveText = "OFF";
-			this.sbtnCycleMissionGenerator.Location = new System.Drawing.Point(273, 475);
-			this.sbtnCycleMissionGenerator.MinimumSize = new System.Drawing.Size(75, 24);
-			this.sbtnCycleMissionGenerator.Name = "sbtnCycleMissionGenerator";
-			this.sbtnCycleMissionGenerator.Size = new System.Drawing.Size(75, 24);
-			this.sbtnCycleMissionGenerator.SliderColor = System.Drawing.Color.White;
-			this.sbtnCycleMissionGenerator.SwitchState = TrafficControlTest.UserControl.SwitchState.Off;
-			this.sbtnCycleMissionGenerator.TabIndex = 13;
-			this.sbtnCycleMissionGenerator.Text = "switchButton7";
-			this.sbtnCycleMissionGenerator.TextColor = System.Drawing.Color.White;
-			this.sbtnCycleMissionGenerator.DoubleClick += new System.EventHandler(this.sbtnCycleMissionGenerator_DoubleClick);
-			// 
 			// sbtnMissionDispatcher
 			// 
 			this.sbtnMissionDispatcher.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(170)))), ((int)(((byte)(70)))));
@@ -445,39 +427,24 @@
 			this.sbtnImportantEventRecorder.TextColor = System.Drawing.Color.White;
 			this.sbtnImportantEventRecorder.DoubleClick += new System.EventHandler(this.sbtnImportantEventRecorder_DoubleClick);
 			// 
-			// tableLayoutPanel2
+			// sbtnCycleMissionGenerator
 			// 
-			this.tableLayoutPanel2.AutoScroll = true;
-			this.tableLayoutPanel2.ColumnCount = 3;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.Controls.Add(this.btnLockPanel, 1, 1);
-			this.tableLayoutPanel2.Controls.Add(this.btnExportLog, 1, 3);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(689, 0);
-			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 5;
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(140, 579);
-			this.tableLayoutPanel2.TabIndex = 24;
-			// 
-			// btnExportLog
-			// 
-			this.btnExportLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnExportLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnExportLog.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnExportLog.Location = new System.Drawing.Point(23, 88);
-			this.btnExportLog.Name = "btnExportLog";
-			this.btnExportLog.Size = new System.Drawing.Size(94, 54);
-			this.btnExportLog.TabIndex = 23;
-			this.btnExportLog.Text = "Export Log";
-			this.btnExportLog.UseVisualStyleBackColor = true;
-			this.btnExportLog.Click += new System.EventHandler(this.btnExportLog_Click);
+			this.sbtnCycleMissionGenerator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(170)))), ((int)(((byte)(70)))));
+			this.sbtnCycleMissionGenerator.ActiveText = "ON";
+			this.sbtnCycleMissionGenerator.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.sbtnCycleMissionGenerator.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+			this.sbtnCycleMissionGenerator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(25)))), ((int)(((byte)(32)))));
+			this.sbtnCycleMissionGenerator.InActiveText = "OFF";
+			this.sbtnCycleMissionGenerator.Location = new System.Drawing.Point(273, 475);
+			this.sbtnCycleMissionGenerator.MinimumSize = new System.Drawing.Size(75, 24);
+			this.sbtnCycleMissionGenerator.Name = "sbtnCycleMissionGenerator";
+			this.sbtnCycleMissionGenerator.Size = new System.Drawing.Size(75, 24);
+			this.sbtnCycleMissionGenerator.SliderColor = System.Drawing.Color.White;
+			this.sbtnCycleMissionGenerator.SwitchState = TrafficControlTest.UserControl.SwitchState.Off;
+			this.sbtnCycleMissionGenerator.TabIndex = 13;
+			this.sbtnCycleMissionGenerator.Text = "switchButton7";
+			this.sbtnCycleMissionGenerator.TextColor = System.Drawing.Color.White;
+			this.sbtnCycleMissionGenerator.DoubleClick += new System.EventHandler(this.sbtnCycleMissionGenerator_DoubleClick);
 			// 
 			// label12
 			// 
@@ -508,6 +475,56 @@
 			this.sbtnMissionUpdater.Text = "switchButton7";
 			this.sbtnMissionUpdater.TextColor = System.Drawing.Color.White;
 			this.sbtnMissionUpdater.DoubleClick += new System.EventHandler(this.sbtnMissionUpdater_DoubleClick);
+			// 
+			// tableLayoutPanel2
+			// 
+			this.tableLayoutPanel2.AutoScroll = true;
+			this.tableLayoutPanel2.ColumnCount = 3;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.Controls.Add(this.btnLoadMap, 1, 5);
+			this.tableLayoutPanel2.Controls.Add(this.btnLockPanel, 1, 1);
+			this.tableLayoutPanel2.Controls.Add(this.btnExportLog, 1, 3);
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(689, 0);
+			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+			this.tableLayoutPanel2.RowCount = 7;
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(140, 579);
+			this.tableLayoutPanel2.TabIndex = 24;
+			// 
+			// btnExportLog
+			// 
+			this.btnExportLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnExportLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnExportLog.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnExportLog.Location = new System.Drawing.Point(23, 88);
+			this.btnExportLog.Name = "btnExportLog";
+			this.btnExportLog.Size = new System.Drawing.Size(94, 54);
+			this.btnExportLog.TabIndex = 23;
+			this.btnExportLog.Text = "Export Log";
+			this.btnExportLog.UseVisualStyleBackColor = true;
+			this.btnExportLog.Click += new System.EventHandler(this.btnExportLog_Click);
+			// 
+			// btnLoadMap
+			// 
+			this.btnLoadMap.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnLoadMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnLoadMap.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnLoadMap.Location = new System.Drawing.Point(23, 168);
+			this.btnLoadMap.Name = "btnLoadMap";
+			this.btnLoadMap.Size = new System.Drawing.Size(94, 54);
+			this.btnLoadMap.TabIndex = 24;
+			this.btnLoadMap.Text = "Load Map";
+			this.btnLoadMap.UseVisualStyleBackColor = true;
+			this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
 			// 
 			// UcSystemStatus
 			// 
@@ -557,5 +574,6 @@
 		private System.Windows.Forms.Button btnExportLog;
 		private System.Windows.Forms.Label label12;
 		private SwitchButton sbtnMissionUpdater;
+		private System.Windows.Forms.Button btnLoadMap;
 	}
 }

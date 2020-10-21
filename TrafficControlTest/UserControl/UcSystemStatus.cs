@@ -10,6 +10,8 @@ using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
+using System.Windows.Forms;
+using TrafficControlTest.Module.Map;
 
 namespace TrafficControlTest.UserControl
 {
@@ -24,6 +26,7 @@ namespace TrafficControlTest.UserControl
 		private IMissionUpdater rMissionUpdater = null;
 		private ICycleMissionGenerator rCycleMissionGenerator = null;
 		private ILogExporter rLogExporter = null;
+		private IMapManager rMapManager = null;
 
 		public UcSystemStatus()
 		{
@@ -83,7 +86,13 @@ namespace TrafficControlTest.UserControl
 			rLogExporter = LogExporter;
 			SubscribeEvent_ILogExporter(rLogExporter);
 		}
-		public void Set(IImportantEventRecorder ImportantEventRecorder, IVehicleCommunicator VehicleCommunicator, ICollisionEventDetector CollisionEventDetector, IVehicleControlHandler VehicleControlHandler, IHostCommunicator HostCommunicator, IMissionDispatcher MissionDispatcher, IMissionUpdater MissionUpdater, ICycleMissionGenerator CycleMissionGenerator, ILogExporter LogExporter)
+		public void Set(IMapManager MapManager)
+		{
+			UnsubscribeEvent_IMapManager(rMapManager);
+			rMapManager = MapManager;
+			SubscribeEvent_IMapManager(rMapManager);
+		}
+		public void Set(IImportantEventRecorder ImportantEventRecorder, IVehicleCommunicator VehicleCommunicator, ICollisionEventDetector CollisionEventDetector, IVehicleControlHandler VehicleControlHandler, IHostCommunicator HostCommunicator, IMissionDispatcher MissionDispatcher, IMissionUpdater MissionUpdater, ICycleMissionGenerator CycleMissionGenerator, ILogExporter LogExporter, IMapManager MapManager)
 		{
 			Set(ImportantEventRecorder);
 			Set(VehicleCommunicator);
@@ -94,6 +103,7 @@ namespace TrafficControlTest.UserControl
 			Set(MissionUpdater);
 			Set(CycleMissionGenerator);
 			Set(LogExporter);
+			Set(MapManager);
 		}
 		public new void BringToFront()
 		{
@@ -233,6 +243,20 @@ namespace TrafficControlTest.UserControl
 				LogExporter.ExportCompleted -= HandleEvent_LogExporterExportCompleted;
 			}
 		}
+		private void SubscribeEvent_IMapManager(IMapManager MapManager)
+		{
+			if (MapManager != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
+		{
+			if (MapManager != null)
+			{
+				// do nothing
+			}
+		}
 		private void HandleEvent_ImportantEventRecorderSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
 			UpdateGui_UpdateSwitchButtonSwitchState(sbtnImportantEventRecorder, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
@@ -349,6 +373,19 @@ namespace TrafficControlTest.UserControl
 			if (!rLogExporter.mIsExporting)
 			{
 				rLogExporter.StartExport();
+			}
+		}
+		private void btnLoadMap_Click(object sender, EventArgs e)
+		{
+			using (var ofd = new OpenFileDialog())
+			{
+				ofd.Title = "Choose iTS Map File";
+				ofd.Filter = "map files (*.map)|*.map";
+				ofd.Multiselect = false;
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					rMapManager.LoadMap(ofd.FileName);
+				}
 			}
 		}
 		private void sbtnVehicleCommunicatorServer_DoubleClick(object sender, EventArgs e)
