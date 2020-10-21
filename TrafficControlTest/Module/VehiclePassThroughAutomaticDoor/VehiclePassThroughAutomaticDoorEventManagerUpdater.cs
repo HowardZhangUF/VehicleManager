@@ -168,7 +168,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 		private void Subtask_DetectEvent()
 		{
 			// 使用移動中的 IVehicleInfo 與所有的 IAutomaticDoorInfo 計算是否有 Event 發生，若有，則將其新增/更新至 IVehiclePassThroughAutomaticDoorEventManager 中
-			List<IVehicleInfo> vehicleInfos = rVehicleInfoManager.GetItems().Where(o => o.mCurrentState == "Running").ToList();
+			List<IVehicleInfo> vehicleInfos = rVehicleInfoManager.GetItems().Where(o => o.mCurrentState == "Running" || o.mCurrentState == "Pause").ToList();
 			List<IAutomaticDoorInfo> automaticDoorInfos = rAutomaticDoorInfoManager.GetItems().ToList();
 			if (vehicleInfos != null && vehicleInfos.Count > 0)
 			{
@@ -182,6 +182,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 							PassThroughState state = IsVehicleInAutomaticDoor(vehicleInfos[i], automaticDoorInfos[j]) ? PassThroughState.Passing : PassThroughState.WillPass;
 							int distance = GetDistanceBetweenVehicleAndAutomaticDoor(vehicleInfos[i], automaticDoorInfos[j]);
 							IVehiclePassThroughAutomaticDoorEvent e = Library.Library.GenerateIVehiclePassThroughAutomaticDoorEvent(vehicleInfos[i].mName, automaticDoorInfos[j].mName, distance);
+							e.UpdateState(state);
 							// 檢查是否正在通過自動門或是車子與自動門的距離是否小於 mOpenDoorDistance
 							if (state == PassThroughState.Passing || distance < mOpenDoorDistance)
 							{
@@ -202,7 +203,10 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 		}
 		private bool IsVehiclePassThroughAutomaticDoor(IVehicleInfo VehicleInfo, IAutomaticDoorInfo AutomaticDoorInfo)
 		{
-			return Library.Library.IsLinePassThroughRectangle(VehicleInfo.mPath, AutomaticDoorInfo.mRange);
+			List<IPoint2D> fullPath = new List<IPoint2D>();
+			fullPath.Add(VehicleInfo.mLocationCoordinate);
+			fullPath.AddRange(VehicleInfo.mPath);
+			return Library.Library.IsLinePassThroughRectangle(fullPath, AutomaticDoorInfo.mRange);
 		}
 		private bool IsVehicleInAutomaticDoor(IVehicleInfo VehicleInfo, IAutomaticDoorInfo AutomaticDoorInfo)
 		{
