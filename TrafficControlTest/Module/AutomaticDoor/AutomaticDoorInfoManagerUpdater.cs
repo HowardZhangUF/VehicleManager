@@ -119,11 +119,11 @@ namespace TrafficControlTest.Module.AutomaticDoor
 			{
 				if (e.Data.Contains("OpenDoor"))
 				{
-					rAutomaticDoorInfoManager.GetItemByIpPort(e.IpPort).UpdateIsOpened(true);
+					rAutomaticDoorInfoManager.GetItemByIpPort(e.IpPort).UpdateState(AutomaticDoorState.Opened);
 				}
 				else if (e.Data.Contains("CloseDoor"))
 				{
-					rAutomaticDoorInfoManager.GetItemByIpPort(e.IpPort).UpdateIsOpened(false);
+					rAutomaticDoorInfoManager.GetItemByIpPort(e.IpPort).UpdateState(AutomaticDoorState.Closed);
 				}
 			}
 		}

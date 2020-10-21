@@ -15,7 +15,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		public IRectangle2D mRange { get; private set; } = null;
 		public string mIpPort { get; private set; } = string.Empty;
 		public bool mIsConnected { get; private set; } = false;
-		public bool mIsOpened { get; private set; } = false;
+		public AutomaticDoorState mState { get; private set; } = AutomaticDoorState.Closed;
 		public DateTime mLastUpdated { get; private set; } = DateTime.Now;
 
 		public AutomaticDoorInfo(string Name, IRectangle2D Range, string IpPort)
@@ -38,18 +38,18 @@ namespace TrafficControlTest.Module.AutomaticDoor
 				RaiseEvent_StatusUpdated("IsConnected");
 			}
 		}
-		public void UpdateIsOpened(bool IsOpened)
+		public void UpdateState(AutomaticDoorState State)
 		{
-			if (mIsOpened != IsOpened)
+			if (mState != State)
 			{
-				mIsOpened = IsOpened;
+				mState = State;
 				mLastUpdated = DateTime.Now;
-				RaiseEvent_StatusUpdated("IsOpened");
+				RaiseEvent_StatusUpdated("State");
 			}
 		}
 		public override string ToString()
 		{
-			return $"{mName}/IPPort:{mIpPort}/IsConnected:{mIsConnected.ToString()}/IsOpened:{mIsOpened.ToString()}";
+			return $"{mName}/IPPort:{mIpPort}/IsConnected:{mIsConnected.ToString()}/State:{mState.ToString()}";
 		}
 
 		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
