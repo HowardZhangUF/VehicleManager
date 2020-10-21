@@ -57,11 +57,13 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		{
 			if (mClients.Keys.Contains(IpPort))
 			{
-				if (mClients[IpPort].mIsConnected) mClients[IpPort].Disconnect();
-				mClients[IpPort].Stop();
+				// 底層的 Disconnect 動作非預期。若未取消訂閱事件就 Disconnect 的話，會發生系統在處理事件的執行緒裡面卡住。
+				// 為避免此不明原因的錯誤，決定先取消訂閱事件在執行 Disconnect 動作。
 				mClients[IpPort].ConnectStateChanged -= HandleEvent_ICommunicatorClientUsingStringConnectStateChanged;
 				mClients[IpPort].SentString -= HandleEvent_ICommunicatorClientUsingStringSentString;
 				mClients[IpPort].ReceivedString -= HandleEvent_ICommunicatorClientUsingStringReceivedString;
+				if (mClients[IpPort].mIsConnected) mClients[IpPort].Disconnect();
+				mClients[IpPort].Stop();
 				mClients.Remove(IpPort);
 				RaiseEvent_ClientRemoved(IpPort);
 			}
