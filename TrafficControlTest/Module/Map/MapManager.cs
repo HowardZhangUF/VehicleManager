@@ -124,7 +124,12 @@ namespace TrafficControlTest.Module.Map
 				}
 				else
 				{
-					return new string[] { areaData.MaxX.ToString(), areaData.MaxY.ToString(), areaData.MinX.ToString(), areaData.MinY.ToString(), areaData.Parameters[0] };
+					string ipPort = string.Empty;
+					if (areaData.Parameters.Any(o => o.StartsWith("IPPort=")))
+					{
+						ipPort = areaData.Parameters.First(o => o.StartsWith("IPPort=")).Replace("IPPort=", string.Empty);
+					}
+					return new string[] { areaData.MaxX.ToString(), areaData.MaxY.ToString(), areaData.MinX.ToString(), areaData.MinY.ToString(), ipPort };
 				}
 			}
 			else

@@ -69,7 +69,10 @@ namespace TrafficControlTest.Module.AutomaticDoor
 			List<string> currentClientList = rAutomaticDoorCommunicator.GetClientList();
 			if (currentClientList == null || currentClientList.Count == 0 || !currentClientList.Contains(e.Item.mIpPort))
 			{
-				rAutomaticDoorCommunicator.Add(e.Item.mIpPort);
+				if (!string.IsNullOrEmpty(e.Item.mIpPort))
+				{
+					rAutomaticDoorCommunicator.Add(e.Item.mIpPort);
+				}
 			}
 		}
 		private void HandleEvent_AutomaticDoorInfoManagerItemRemoved(object sender, ItemCountChangedEventArgs<IAutomaticDoorInfo> e)
