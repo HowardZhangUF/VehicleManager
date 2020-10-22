@@ -41,7 +41,6 @@
 			this.dgvMission.AllowUserToAddRows = false;
 			this.dgvMission.AllowUserToDeleteRows = false;
 			this.dgvMission.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvMission.ContextMenuStrip = this.cmenuDgvMission;
 			this.dgvMission.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dgvMission.Location = new System.Drawing.Point(0, 0);
 			this.dgvMission.Name = "dgvMission";
@@ -58,14 +57,14 @@
 			this.cmenuDgvMission.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmenuItemRemoveMission});
 			this.cmenuDgvMission.Name = "cmenuDgvMission";
-			this.cmenuDgvMission.Size = new System.Drawing.Size(211, 56);
+			this.cmenuDgvMission.Size = new System.Drawing.Size(194, 28);
 			// 
 			// cmenuItemRemoveMission
 			// 
 			this.cmenuItemRemoveMission.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.cmenuItemRemoveMission.ForeColor = System.Drawing.Color.White;
 			this.cmenuItemRemoveMission.Name = "cmenuItemRemoveMission";
-			this.cmenuItemRemoveMission.Size = new System.Drawing.Size(210, 24);
+			this.cmenuItemRemoveMission.Size = new System.Drawing.Size(193, 24);
 			this.cmenuItemRemoveMission.Text = "Remove Mission";
 			this.cmenuItemRemoveMission.Click += new System.EventHandler(this.cmenuItemRemoveMission_Click);
 			// 

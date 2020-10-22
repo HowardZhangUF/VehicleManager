@@ -47,6 +47,8 @@ namespace TrafficControlTest.UserInterface
 			ucSimpleLog1.Set(mCore);
 			ucConsoleLog1.Set(mCore);
 			ucSystemOverview1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager());
+			UpdateGui_PnlTop_UpdateButtonText();
+			UpdateGui_UpdateUsableControlAmount(AccountRank.None);
 		}
 		private void Destructor()
 		{
@@ -68,8 +70,6 @@ namespace TrafficControlTest.UserInterface
 			{
 				Constructor();
 				VehicleManagerProcessStart();
-				UpdateGui_PnlTop_UpdateButtonText();
-				UpdateGui_UpdateUsableControlAmount(AccountRank.None);
 			}
 			catch (Exception Ex)
 			{
@@ -208,13 +208,16 @@ namespace TrafficControlTest.UserInterface
 						btnDisplayVehicleManualControl.Visible = true;
 						btnDisplayVehicleApi.Visible = true;
 						btnDisplayCycleMission.Visible = true;
+						btnDisplaySetting.Visible = true;
 						btnDisplayDashboard.Visible = true;
 						btnDisplaySystemStatus.Visible = true;
 						btnDisplayConsoleLog.Visible = true;
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = true;
 						ucCycleMission1.Visible = true;
+						ucMission1.EnableManualControl(true);
 						ucAutomaticDoor1.EnableManualControl(true);
+						ucSetting1.Visible = true;
 						ucLog1.Set(true, true, true);
 						ucDashboard1.Visible = true;
 						ucSystemStatus1.Visible = true;
@@ -223,21 +226,27 @@ namespace TrafficControlTest.UserInterface
 						break;
 					case AccountRank.Customer:
 						btnDisplayVehicleManualControl.Visible = true;
+						btnDisplaySetting.Visible = true;
 						ucVehicleManualControl1.Visible = true;
+						ucMission1.EnableManualControl(true);
 						ucAutomaticDoor1.EnableManualControl(true);
+						ucSetting1.Visible = true;
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.None:
 						btnDisplayVehicleManualControl.Visible = false;
 						btnDisplayVehicleApi.Visible = false;
 						btnDisplayCycleMission.Visible = false;
+						btnDisplaySetting.Visible = false;
 						btnDisplayDashboard.Visible = false;
 						btnDisplaySystemStatus.Visible = false;
 						btnDisplayConsoleLog.Visible = false;
 						ucVehicleManualControl1.Visible = false;
 						ucVehicleApi1.Visible = false;
 						ucCycleMission1.Visible = false;
+						ucMission1.EnableManualControl(false);
 						ucAutomaticDoor1.EnableManualControl(false);
+						ucSetting1.Visible = false;
 						ucLog1.Set(false, true, true);
 						ucDashboard1.Visible = false;
 						ucSystemStatus1.Visible = false;

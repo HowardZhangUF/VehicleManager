@@ -46,6 +46,17 @@ namespace TrafficControlTest.UserControl
 			rMissionStateManager = MissionStateManager;
 			SubscribeEvent_IMissionStateManager(rMissionStateManager);
 		}
+		public void EnableManualControl(bool Enable)
+		{
+			if (Enable)
+			{
+				dgvMission.ContextMenuStrip = cmenuDgvMission;
+			}
+			else
+			{
+				dgvMission.ContextMenuStrip = null;
+			}
+		}
 		public void AddRow(string Id, string[] Datas)
 		{
 			lock (mLockOfDgvMission)
