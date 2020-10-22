@@ -106,17 +106,17 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		{
 			if (rAutomaticDoorInfoManager.IsExist(AutomaticDoorControl.mAutomaticDoorName))
 			{
-				if (AutomaticDoorControl.mSendState == AutomaticDoorControlCommandSendState.Unsend)
+				IAutomaticDoorInfo automaticDoorInfo = rAutomaticDoorInfoManager.GetItem(AutomaticDoorControl.mAutomaticDoorName);
+				if (AutomaticDoorControl.mSendState == AutomaticDoorControlCommandSendState.Unsend && automaticDoorInfo.mIsConnected)
 				{
-					string ipPort = rAutomaticDoorInfoManager.GetItem(AutomaticDoorControl.mAutomaticDoorName).mIpPort;
 					AutomaticDoorControl.UpdateSendState(AutomaticDoorControlCommandSendState.Sending);
 					switch (AutomaticDoorControl.mCommand)
 					{
 						case AutomaticDoorControlCommand.Open:
-							rAutomaticDoorCommunicator.SendData(ipPort, $"Command=OpenDoor ID={AutomaticDoorControl.mAutomaticDoorName}");
+							rAutomaticDoorCommunicator.SendData(automaticDoorInfo.mIpPort, $"Command=OpenDoor ID={AutomaticDoorControl.mAutomaticDoorName}");
 							break;
 						case AutomaticDoorControlCommand.Close:
-							rAutomaticDoorCommunicator.SendData(ipPort, $"Command=CloseDoor ID={AutomaticDoorControl.mAutomaticDoorName}");
+							rAutomaticDoorCommunicator.SendData(automaticDoorInfo.mIpPort, $"Command=CloseDoor ID={AutomaticDoorControl.mAutomaticDoorName}");
 							break;
 					}
 				}
