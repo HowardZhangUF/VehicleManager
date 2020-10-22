@@ -230,6 +230,12 @@
     <Compile Include="UserControl\UcAbout.Designer.cs">
       <DependentUpon>UcAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UcAutomaticDoor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcAutomaticDoor.Designer.cs">
+      <DependentUpon>UcAutomaticDoor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UcConsoleLog.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -371,6 +377,9 @@
     </Compile>
     <EmbeddedResource Include="UserControl\UcAbout.resx">
       <DependentUpon>UcAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcAutomaticDoor.resx">
+      <DependentUpon>UcAutomaticDoor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcConsoleLog.resx">
       <DependentUpon>UcConsoleLog.cs</DependentUpon>

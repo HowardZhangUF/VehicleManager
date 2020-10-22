@@ -311,6 +311,16 @@
         1p/NeuzWti2qCIJfYTT/MEYkNIwAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="btnDisplayAutomaticDoor.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAD5SURBVFhH7dexCcJAGIbh9FpaCI4gbuEEgp1gI46g4ADiAkJS2GhtIQ4hioWNjeACWtiIYKHx
+        veQCIRC8C4YU/h885DTmz4cR4Zys8X2/gRG22Oi38ws3KaGNOS6I56o/9tswuIo+1nggLUEBjl0MEwao
+        BwNtwkU9PGGSqMAC+4Qb3GCoTbjIg2lSHwHnlvD0S/Ooi9Rkw0gBKSAFpMB/FlD/8eNwWUyBHSrhspgC
+        b5zCpfwIpYAUkAJSIJ8CrppsmKAAxxXOCXdk2piozecUR3xLVKAFtZVLst+axcOAMpqYQG23Xogn9RHk
+        Em5YQwczqK/5oE9ZxnE+aTGWYkf9cS8AAAAASUVORK5CYII=
+</value>
+  </data>
   <data name="btnDisplayMission.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAjxJREFUWEft

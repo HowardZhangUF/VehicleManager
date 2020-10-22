@@ -34,29 +34,29 @@
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.label1 = new System.Windows.Forms.Label();
 			this.lblVehicleState = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
-			this.lblVehicleLocation = new System.Windows.Forms.Label();
-			this.lblVehicleTarget = new System.Windows.Forms.Label();
-			this.label23 = new System.Windows.Forms.Label();
 			this.lblVehiclePath = new System.Windows.Forms.Label();
+			this.lblVehicleLocationScore = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
 			this.lblVehicleVelocity = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.lblVehicleLocationScore = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
+			this.lblVehicleLocation = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.lblVehicleTarget = new System.Windows.Forms.Label();
+			this.label23 = new System.Windows.Forms.Label();
 			this.label14 = new System.Windows.Forms.Label();
 			this.lblVehicleBatteryValue = new System.Windows.Forms.Label();
-			this.label29 = new System.Windows.Forms.Label();
-			this.lblVehicleLastUpdateTime = new System.Windows.Forms.Label();
-			this.label28 = new System.Windows.Forms.Label();
-			this.lblVehicleInterveneCommand = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.lblVehicleIpPort = new System.Windows.Forms.Label();
 			this.lblVehicleAlarmMessage = new System.Windows.Forms.Label();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label9 = new System.Windows.Forms.Label();
+			this.label29 = new System.Windows.Forms.Label();
+			this.lblVehicleLastUpdateTime = new System.Windows.Forms.Label();
+			this.label28 = new System.Windows.Forms.Label();
+			this.lblVehicleInterveneCommand = new System.Windows.Forms.Label();
 			this.lblVehicleMissionId = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
 			this.lblVehicleMapName = new System.Windows.Forms.Label();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -183,61 +183,6 @@
 			this.lblVehicleState.TabIndex = 1;
 			this.lblVehicleState.Text = "Running";
 			// 
-			// label5
-			// 
-			this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label5.Location = new System.Drawing.Point(484, 10);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(83, 20);
-			this.label5.TabIndex = 4;
-			this.label5.Text = "Location :";
-			// 
-			// label6
-			// 
-			this.label6.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label6.AutoSize = true;
-			this.label6.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label6.Location = new System.Drawing.Point(101, 50);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(66, 20);
-			this.label6.TabIndex = 5;
-			this.label6.Text = "Target :";
-			// 
-			// lblVehicleLocation
-			// 
-			this.lblVehicleLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVehicleLocation.AutoSize = true;
-			this.lblVehicleLocation.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblVehicleLocation.Location = new System.Drawing.Point(573, 10);
-			this.lblVehicleLocation.Name = "lblVehicleLocation";
-			this.lblVehicleLocation.Size = new System.Drawing.Size(254, 20);
-			this.lblVehicleLocation.TabIndex = 9;
-			this.lblVehicleLocation.Text = "(235, 122, 20.34)";
-			// 
-			// lblVehicleTarget
-			// 
-			this.lblVehicleTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVehicleTarget.AutoSize = true;
-			this.lblVehicleTarget.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblVehicleTarget.Location = new System.Drawing.Point(173, 50);
-			this.lblVehicleTarget.Name = "lblVehicleTarget";
-			this.lblVehicleTarget.Size = new System.Drawing.Size(204, 20);
-			this.lblVehicleTarget.TabIndex = 10;
-			this.lblVehicleTarget.Text = "Goal8";
-			// 
-			// label23
-			// 
-			this.label23.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label23.AutoSize = true;
-			this.label23.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label23.Location = new System.Drawing.Point(516, 90);
-			this.label23.Name = "label23";
-			this.label23.Size = new System.Drawing.Size(51, 20);
-			this.label23.TabIndex = 24;
-			this.label23.Text = "Path :";
-			// 
 			// lblVehiclePath
 			// 
 			this.lblVehiclePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -248,6 +193,17 @@
 			this.lblVehiclePath.Size = new System.Drawing.Size(254, 20);
 			this.lblVehiclePath.TabIndex = 25;
 			this.lblVehiclePath.Text = "(112,346)(234,1234)";
+			// 
+			// lblVehicleLocationScore
+			// 
+			this.lblVehicleLocationScore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVehicleLocationScore.AutoSize = true;
+			this.lblVehicleLocationScore.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblVehicleLocationScore.Location = new System.Drawing.Point(173, 130);
+			this.lblVehicleLocationScore.Name = "lblVehicleLocationScore";
+			this.lblVehicleLocationScore.Size = new System.Drawing.Size(204, 20);
+			this.lblVehicleLocationScore.TabIndex = 3;
+			this.lblVehicleLocationScore.Text = "90 %";
 			// 
 			// label7
 			// 
@@ -271,27 +227,60 @@
 			this.lblVehicleVelocity.TabIndex = 11;
 			this.lblVehicleVelocity.Text = "999 (mm/s)";
 			// 
-			// label3
+			// label5
 			// 
-			this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label3.Location = new System.Drawing.Point(38, 130);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(129, 20);
-			this.label3.TabIndex = 2;
-			this.label3.Text = "Location Score :";
+			this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label5.Location = new System.Drawing.Point(484, 10);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(83, 20);
+			this.label5.TabIndex = 4;
+			this.label5.Text = "Location :";
 			// 
-			// lblVehicleLocationScore
+			// lblVehicleLocation
 			// 
-			this.lblVehicleLocationScore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVehicleLocationScore.AutoSize = true;
-			this.lblVehicleLocationScore.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblVehicleLocationScore.Location = new System.Drawing.Point(173, 130);
-			this.lblVehicleLocationScore.Name = "lblVehicleLocationScore";
-			this.lblVehicleLocationScore.Size = new System.Drawing.Size(204, 20);
-			this.lblVehicleLocationScore.TabIndex = 3;
-			this.lblVehicleLocationScore.Text = "90 %";
+			this.lblVehicleLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVehicleLocation.AutoSize = true;
+			this.lblVehicleLocation.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblVehicleLocation.Location = new System.Drawing.Point(573, 10);
+			this.lblVehicleLocation.Name = "lblVehicleLocation";
+			this.lblVehicleLocation.Size = new System.Drawing.Size(254, 20);
+			this.lblVehicleLocation.TabIndex = 9;
+			this.lblVehicleLocation.Text = "(235, 122, 20.34)";
+			// 
+			// label6
+			// 
+			this.label6.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label6.Location = new System.Drawing.Point(101, 50);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(66, 20);
+			this.label6.TabIndex = 5;
+			this.label6.Text = "Target :";
+			// 
+			// lblVehicleTarget
+			// 
+			this.lblVehicleTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVehicleTarget.AutoSize = true;
+			this.lblVehicleTarget.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblVehicleTarget.Location = new System.Drawing.Point(173, 50);
+			this.lblVehicleTarget.Name = "lblVehicleTarget";
+			this.lblVehicleTarget.Size = new System.Drawing.Size(204, 20);
+			this.lblVehicleTarget.TabIndex = 10;
+			this.lblVehicleTarget.Text = "Goal8";
+			// 
+			// label23
+			// 
+			this.label23.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label23.AutoSize = true;
+			this.label23.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label23.Location = new System.Drawing.Point(516, 90);
+			this.label23.Name = "label23";
+			this.label23.Size = new System.Drawing.Size(51, 20);
+			this.label23.TabIndex = 24;
+			this.label23.Text = "Path :";
 			// 
 			// label14
 			// 
@@ -315,49 +304,16 @@
 			this.lblVehicleBatteryValue.TabIndex = 23;
 			this.lblVehicleBatteryValue.Text = "50.9 %";
 			// 
-			// label29
+			// label3
 			// 
-			this.label29.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label29.AutoSize = true;
-			this.label29.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label29.Location = new System.Drawing.Point(415, 250);
-			this.label29.Name = "label29";
-			this.label29.Size = new System.Drawing.Size(152, 20);
-			this.label29.TabIndex = 30;
-			this.label29.Text = "Last Update Time :";
-			// 
-			// lblVehicleLastUpdateTime
-			// 
-			this.lblVehicleLastUpdateTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVehicleLastUpdateTime.AutoSize = true;
-			this.lblVehicleLastUpdateTime.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblVehicleLastUpdateTime.Location = new System.Drawing.Point(573, 250);
-			this.lblVehicleLastUpdateTime.Name = "lblVehicleLastUpdateTime";
-			this.lblVehicleLastUpdateTime.Size = new System.Drawing.Size(254, 20);
-			this.lblVehicleLastUpdateTime.TabIndex = 31;
-			this.lblVehicleLastUpdateTime.Text = "2019/11/07 11:25:30.231";
-			// 
-			// label28
-			// 
-			this.label28.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label28.AutoSize = true;
-			this.label28.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label28.Location = new System.Drawing.Point(397, 210);
-			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(170, 20);
-			this.label28.TabIndex = 29;
-			this.label28.Text = "Intervene Command :";
-			// 
-			// lblVehicleInterveneCommand
-			// 
-			this.lblVehicleInterveneCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVehicleInterveneCommand.AutoSize = true;
-			this.lblVehicleInterveneCommand.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblVehicleInterveneCommand.Location = new System.Drawing.Point(573, 210);
-			this.lblVehicleInterveneCommand.Name = "lblVehicleInterveneCommand";
-			this.lblVehicleInterveneCommand.Size = new System.Drawing.Size(254, 20);
-			this.lblVehicleInterveneCommand.TabIndex = 28;
-			this.lblVehicleInterveneCommand.Text = "Pausing";
+			this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label3.AutoSize = true;
+			this.label3.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label3.Location = new System.Drawing.Point(38, 130);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(129, 20);
+			this.label3.TabIndex = 2;
+			this.label3.Text = "Location Score :";
 			// 
 			// label2
 			// 
@@ -403,27 +359,49 @@
 			this.lblVehicleAlarmMessage.TabIndex = 35;
 			this.lblVehicleAlarmMessage.Text = "Alarm Message";
 			// 
-			// label8
+			// label29
 			// 
-			this.label8.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label8.AutoSize = true;
-			this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label8.Location = new System.Drawing.Point(64, 210);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(103, 20);
-			this.label8.TabIndex = 36;
-			this.label8.Text = "Map Name :";
+			this.label29.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label29.AutoSize = true;
+			this.label29.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label29.Location = new System.Drawing.Point(415, 250);
+			this.label29.Name = "label29";
+			this.label29.Size = new System.Drawing.Size(152, 20);
+			this.label29.TabIndex = 30;
+			this.label29.Text = "Last Update Time :";
 			// 
-			// label9
+			// lblVehicleLastUpdateTime
 			// 
-			this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
-			this.label9.AutoSize = true;
-			this.label9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label9.Location = new System.Drawing.Point(464, 170);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(103, 20);
-			this.label9.TabIndex = 37;
-			this.label9.Text = "Mission ID :";
+			this.lblVehicleLastUpdateTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVehicleLastUpdateTime.AutoSize = true;
+			this.lblVehicleLastUpdateTime.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblVehicleLastUpdateTime.Location = new System.Drawing.Point(573, 250);
+			this.lblVehicleLastUpdateTime.Name = "lblVehicleLastUpdateTime";
+			this.lblVehicleLastUpdateTime.Size = new System.Drawing.Size(254, 20);
+			this.lblVehicleLastUpdateTime.TabIndex = 31;
+			this.lblVehicleLastUpdateTime.Text = "2019/11/07 11:25:30.231";
+			// 
+			// label28
+			// 
+			this.label28.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label28.AutoSize = true;
+			this.label28.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label28.Location = new System.Drawing.Point(397, 210);
+			this.label28.Name = "label28";
+			this.label28.Size = new System.Drawing.Size(170, 20);
+			this.label28.TabIndex = 29;
+			this.label28.Text = "Intervene Command :";
+			// 
+			// lblVehicleInterveneCommand
+			// 
+			this.lblVehicleInterveneCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVehicleInterveneCommand.AutoSize = true;
+			this.lblVehicleInterveneCommand.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblVehicleInterveneCommand.Location = new System.Drawing.Point(573, 210);
+			this.lblVehicleInterveneCommand.Name = "lblVehicleInterveneCommand";
+			this.lblVehicleInterveneCommand.Size = new System.Drawing.Size(254, 20);
+			this.lblVehicleInterveneCommand.TabIndex = 28;
+			this.lblVehicleInterveneCommand.Text = "Pausing";
 			// 
 			// lblVehicleMissionId
 			// 
@@ -436,6 +414,28 @@
 			this.lblVehicleMissionId.TabIndex = 38;
 			this.lblVehicleMissionId.Text = "20191114153022777";
 			// 
+			// label9
+			// 
+			this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label9.AutoSize = true;
+			this.label9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label9.Location = new System.Drawing.Point(464, 170);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(103, 20);
+			this.label9.TabIndex = 37;
+			this.label9.Text = "Mission ID :";
+			// 
+			// label8
+			// 
+			this.label8.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label8.AutoSize = true;
+			this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label8.Location = new System.Drawing.Point(64, 210);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(103, 20);
+			this.label8.TabIndex = 36;
+			this.label8.Text = "Map Name :";
+			// 
 			// lblVehicleMapName
 			// 
 			this.lblVehicleMapName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -447,7 +447,7 @@
 			this.lblVehicleMapName.TabIndex = 39;
 			this.lblVehicleMapName.Text = "20191111.map";
 			// 
-			// UCVehicle
+			// UcVehicle
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.AutoScroll = true;
@@ -455,7 +455,7 @@
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Controls.Add(this.tableLayoutPanel2);
 			this.ForeColor = System.Drawing.Color.White;
-			this.Name = "UCVehicle";
+			this.Name = "UcVehicle";
 			this.Size = new System.Drawing.Size(850, 600);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);

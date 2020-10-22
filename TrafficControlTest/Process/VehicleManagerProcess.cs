@@ -215,6 +215,10 @@ namespace TrafficControlTest.Process
 		{
 			return mCycleMissionGenerator;
 		}
+		public IAutomaticDoorInfoManager GetReferenceOfAutomaticDoorInfoManager()
+		{
+			return mAutomaticDoorInfoManager;
+		}
 		public IAutomaticDoorControlManager GetReferenceOfIAutomaticDoorControlManager()
 		{
 			return mAutomaticDoorControlManager;

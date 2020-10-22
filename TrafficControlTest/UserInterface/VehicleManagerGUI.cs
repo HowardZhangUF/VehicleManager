@@ -35,6 +35,7 @@ namespace TrafficControlTest.UserInterface
 			ucMap1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfICollisionEventManager());
 			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
+			ucAutomaticDoor1.Set(mCore.GetReferenceOfAutomaticDoorInfoManager(), mCore.GetReferenceOfIAutomaticDoorControlManager());
 			ucSetting1.Set(mCore.GetReferenceOfIConfigurator());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapterOfLogRecord(), mCore.GetReferenceOfDatabaseAdapterOfEventRecord());
 			ucDashboard1.Set(mCore.GetReferenceOfDatabaseAdapterOfEventRecord());
@@ -136,6 +137,10 @@ namespace TrafficControlTest.UserInterface
 		{
 			UpdateGui_PnlRightMain_DisplayMission();
 		}
+		private void btnDisplayAutomaticDoor_Click(object sender, EventArgs e)
+		{
+			UpdateGui_PnlRightMain_DisplayAutomaticDoor();
+		}
 		private void btnDisplaySetting_Click(object sender, EventArgs e)
 		{
 			UpdateGui_PnlRightMain_DisplaySetting();
@@ -209,6 +214,7 @@ namespace TrafficControlTest.UserInterface
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = true;
 						ucCycleMission1.Visible = true;
+						ucAutomaticDoor1.EnableManualControl(true);
 						ucLog1.Set(true, true, true);
 						ucDashboard1.Visible = true;
 						ucSystemStatus1.Visible = true;
@@ -218,6 +224,7 @@ namespace TrafficControlTest.UserInterface
 					case AccountRank.Customer:
 						btnDisplayVehicleManualControl.Visible = true;
 						ucVehicleManualControl1.Visible = true;
+						ucAutomaticDoor1.EnableManualControl(true);
 						UpdateGui_InitializeMenuState();
 						break;
 					case AccountRank.None:
@@ -230,6 +237,7 @@ namespace TrafficControlTest.UserInterface
 						ucVehicleManualControl1.Visible = false;
 						ucVehicleApi1.Visible = false;
 						ucCycleMission1.Visible = false;
+						ucAutomaticDoor1.EnableManualControl(false);
 						ucLog1.Set(false, true, true);
 						ucDashboard1.Visible = false;
 						ucSystemStatus1.Visible = false;
@@ -259,6 +267,7 @@ namespace TrafficControlTest.UserInterface
 			btnDisplayMap.Text = "  Map";
 			btnDisplayVehicle.Text = "  Vehicle";
 			btnDisplayMission.Text = "  Mission";
+			btnDisplayAutomaticDoor.Text = "  AutomaticDoor";
 			btnDisplaySetting.Text = "  Setting";
 			btnDisplayLog.Text = "  Log";
 			btnDisplayDashboard.Text = "  Dashboard";
@@ -269,6 +278,7 @@ namespace TrafficControlTest.UserInterface
 			if (btnDisplayMap.BackColor != pnlTop.BackColor) btnDisplayMap.BackColor = pnlTop.BackColor;
 			if (btnDisplayVehicle.BackColor != pnlTop.BackColor) btnDisplayVehicle.BackColor = pnlTop.BackColor;
 			if (btnDisplayMission.BackColor != pnlTop.BackColor) btnDisplayMission.BackColor = pnlTop.BackColor;
+			if (btnDisplayAutomaticDoor.BackColor != pnlTop.BackColor) btnDisplayAutomaticDoor.BackColor = pnlTop.BackColor;
 			if (btnDisplaySetting.BackColor != pnlTop.BackColor) btnDisplaySetting.BackColor = pnlTop.BackColor;
 			if (btnDisplayLog.BackColor != pnlTop.BackColor) btnDisplayLog.BackColor = pnlTop.BackColor;
 			if (btnDisplayDashboard.BackColor != pnlTop.BackColor) btnDisplayDashboard.BackColor = pnlTop.BackColor;
@@ -302,6 +312,13 @@ namespace TrafficControlTest.UserInterface
 			pnlTopMarker.Left = btnDisplayMission.Left;
 			ucMission1.BringToFront();
 			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayMission);
+		}
+		private void UpdateGui_PnlRightMain_DisplayAutomaticDoor()
+		{
+			pnlTopMarker.Width = btnDisplayAutomaticDoor.Width;
+			pnlTopMarker.Left = btnDisplayAutomaticDoor.Left;
+			ucAutomaticDoor1.BringToFront();
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayAutomaticDoor);
 		}
 		private void UpdateGui_PnlRightMain_DisplaySetting()
 		{
