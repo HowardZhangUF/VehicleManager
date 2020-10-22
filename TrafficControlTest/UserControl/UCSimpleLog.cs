@@ -113,7 +113,7 @@ namespace TrafficControlTest.UserControl
 				dgv.DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Regular);
 				dgv.DefaultCellStyle.BackColor = TableEvenRowBackColor;
 				dgv.DefaultCellStyle.ForeColor = TableRowForeColor;
-				dgv.RowTemplate.Height = 30;
+				dgv.RowTemplate.Height = 25;
 
 				dgv.Columns.Add("Date", "Date");
 				dgv.Columns[0].Width = 230;
