@@ -14,6 +14,7 @@ namespace TrafficControlTest.UserInterface
 		private bool pnlBtmDisplay = true;
 		private int pnlLeftMainDefaultWidth = 400;
 		private int pnlBtmDefaultHeight = 250;
+		private formProgress formClosing = null;
 
 		public VehicleManagerGUI()
 		{
@@ -96,8 +97,12 @@ namespace TrafficControlTest.UserInterface
 		{
 			System.Threading.Tasks.Task.Run(() =>
 			{
+				formClosing = new formProgress();
+				UpdateGui_FormClosing_Show();
 				VehicleManagerProcessStop();
 				Destructor();
+				UpdateGui_FormClosing_Close();
+				formClosing = null;
 				this.InvokeIfNecessary(() => Close());
 			});
 		}
@@ -557,6 +562,46 @@ namespace TrafficControlTest.UserInterface
 			}
 		}
 		#endregion
+
+		#region FormClosing
+		private void UpdateGui_FormClosing_Show()
+		{
+			if (formClosing != null)
+			{
+				formClosing.InvokeIfNecessary(() =>
+				{
+					formClosing.SetTitleText("Closing Program ...");
+					formClosing.SetProgressValue(0);
+					formClosing.Show();
+				});
+				Application.DoEvents();
+			}
+		}
+		private void UpdateGui_FormClosing_UpdateProgress(int ProgressValue)
+		{
+			if (formClosing != null)
+			{
+				formClosing.InvokeIfNecessary(() =>
+				{
+					formClosing.SetProgressValue(ProgressValue);
+				});
+				Application.DoEvents();
+			}
+		}
+		private void UpdateGui_FormClosing_Close()
+		{
+			if (formClosing != null)
+			{
+				// 刻意加上時間延遲，已讓使用者可看到此視窗
+				System.Threading.Thread.Sleep(1000);
+				formClosing.InvokeIfNecessary(() =>
+				{
+					formClosing.Close();
+				});
+				Application.DoEvents();
+			}
+		}
+		#endregion
 		#endregion
 
 		#region VehicleManagerProcess
@@ -597,6 +642,7 @@ namespace TrafficControlTest.UserInterface
 			if (VehicleManagerProcess != null)
 			{
 				VehicleManagerProcess.AccessControlUserLogChanged += HandleEvent_VehicleManagerProcessAccessControlUserLogChanged;
+				VehicleManagerProcess.DestructProgressChanged += HandleEvent_VehicleManagerProcessDestructProgressChanged;
 			}
 		}
 		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
@@ -604,6 +650,7 @@ namespace TrafficControlTest.UserInterface
 			if (VehicleManagerProcess != null)
 			{
 				VehicleManagerProcess.AccessControlUserLogChanged -= HandleEvent_VehicleManagerProcessAccessControlUserLogChanged;
+				VehicleManagerProcess.DestructProgressChanged -= HandleEvent_VehicleManagerProcessDestructProgressChanged;
 			}
 		}
 		private void HandleEvent_VehicleManagerProcessAccessControlUserLogChanged(object Sender, UserLogChangedEventArgs Args)
@@ -619,6 +666,17 @@ namespace TrafficControlTest.UserInterface
 				UpdateGui_UpdateUsableControlAmount(AccountRank.None);
 				UpdateGui_UpdateControlText(btnLogin, string.Empty);
 				UpdateGui_UpdateControlBackColor(btnLogin, Color.FromArgb(20, 20, 20));
+			}
+		}
+		private void HandleEvent_VehicleManagerProcessDestructProgressChanged(object Sender, DestructProgressChangedEventArgs Args)
+		{
+			if (Args.ProgressValue == 0)
+			{
+				UpdateGui_FormClosing_Show();
+			}
+			else
+			{
+				UpdateGui_FormClosing_UpdateProgress(Args.ProgressValue);
 			}
 		}
 		#endregion

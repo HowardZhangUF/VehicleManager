@@ -27,6 +27,7 @@ namespace TrafficControlTest.Process
 		public event EventHandler<DebugMessageEventArgs> DebugMessage;
 		public event EventHandler<SignificantEventEventArgs> SignificantEvent;
 		public event EventHandler<UserLogChangedEventArgs> AccessControlUserLogChanged;
+		public event EventHandler<DestructProgressChangedEventArgs> DestructProgressChanged;
 
 		public bool mIsAnyUserLoggedIn { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser)); } }
 		public string mCurrentLoggedInUserName { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser) ? mAccessControl.mCurrentUser : string.Empty); } }
@@ -137,10 +138,13 @@ namespace TrafficControlTest.Process
 			mImportantEventRecorder.Stop();
 			mAccountManager.Save();
 
+			RaiseEvent_DestructProgressChanged(0);
+
 			DateTime tmp = DateTime.Now;
 			while (!mIsAllSystemStopped)
 			{
 				if (DateTime.Now.Subtract(tmp).TotalSeconds > 5) break;
+				RaiseEvent_DestructProgressChanged(GetCurrentThreadClosingProgress());
 				System.Threading.Thread.Sleep(100);
 			}
 
@@ -150,8 +154,11 @@ namespace TrafficControlTest.Process
 			while (mEventRecorder.mIsExecuting || mLogRecorder.mIsExecuting)
 			{
 				if (DateTime.Now.Subtract(tmp).TotalSeconds > 5) break;
+				RaiseEvent_DestructProgressChanged(GetCurrentThreadClosingProgress());
 				System.Threading.Thread.Sleep(100);
 			}
+
+			RaiseEvent_DestructProgressChanged(100);
 
 			LoadSystemConfigAndUpdateConfigFile();
 		}
@@ -1164,6 +1171,17 @@ namespace TrafficControlTest.Process
 				Task.Run(() => { AccessControlUserLogChanged?.Invoke(this, new UserLogChangedEventArgs(OccurTime, UserName, UserRank, IsLogin)); });
 			}
 		}
+		protected virtual void RaiseEvent_DestructProgressChanged(int ProgressValue, bool Sync = true)
+		{
+			if (Sync)
+			{
+				DestructProgressChanged?.Invoke(this, new DestructProgressChangedEventArgs(DateTime.Now, ProgressValue));
+			}
+			else
+			{
+				Task.Run(() => { DestructProgressChanged?.Invoke(this, new DestructProgressChangedEventArgs(DateTime.Now, ProgressValue)); });
+			}
+		}
 		private void HandleEvent_ConfiguratorConfigFileLoaded(object Sender, ConfigFileLoadedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "Configurator", "ConfigFileLoaded", $"FilePath: {Args.FilePath}");
@@ -1610,6 +1628,25 @@ namespace TrafficControlTest.Process
 			mLogRecorder.RecordGeneralLog(OccurTime, Category, SubCategory, Message);
 			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
 		}
+		private int GetCurrentThreadClosingProgress()
+		{
+			int totalCount = 11;
+			int closedCount = 0;
+
+			if (!mImportantEventRecorder.mIsExecuting) closedCount += 1;
+			if (!mVehicleCommunicator.mIsExecuting) closedCount += 1;
+			if (!mCollisionEventDetector.mIsExecuting) closedCount += 1;
+			if (!mVehicleControlHandler.mIsExecuting) closedCount += 1;
+			if (!mHostCommunicator.mIsExecuting) closedCount += 1;
+			if (!mMissionDispatcher.mIsExecuting) closedCount += 1;
+			if (!mMissionUpdater.mIsExecuting) closedCount += 1;
+			if (!mCycleMissionGenerator.mIsExecuting) closedCount += 1;
+			if (!mAutomaticDoorCommunicator.mIsExecuting) closedCount += 1;
+			if (!mAutomaticDoorControlHandler.mIsExecuting) closedCount += 1;
+			if (!mVehiclePassThroughAutomaticDoorEventManagerUpdater.mIsExecuting) closedCount += 1;
+
+			return closedCount * 100 / totalCount;
+		}
 	}
 
 	public class DebugMessageEventArgs : EventArgs
@@ -1638,6 +1675,17 @@ namespace TrafficControlTest.Process
 			this.OccurTime = OccurTime;
 			this.Category = Category;
 			this.Info = Info;
+		}
+	}
+	public class DestructProgressChangedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public int ProgressValue { get; private set; }
+
+		public DestructProgressChangedEventArgs(DateTime OccurTime, int ProgressValue)
+		{
+			this.OccurTime = OccurTime;
+			this.ProgressValue = ProgressValue;
 		}
 	}
 }
