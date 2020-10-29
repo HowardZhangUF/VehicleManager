@@ -56,11 +56,26 @@ namespace TrafficControlTest.Module.Mission
 		}
 		private void Subtask_DispatchMission()
 		{
-			List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager);
-			if (executableMissions != null && executableMissions.Count > 0)
+            List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager);
+            List<IVehicleInfo> executableVehicles = ExtractExecutableVehicles(rVehicleInfoManager, rMissionStateManager);
+			if (executableMissions != null && executableMissions.Count > 0 && executableVehicles != null && executableVehicles.Count > 0)
 			{
 				IMissionState mission = executableMissions.OrderBy(o => o.mMission.mPriority).ThenBy(o => o.mReceivedTimestamp).First();
-				string vehicleId = string.IsNullOrEmpty(mission.mMission.mVehicleId) ? rVehicleInfoManager.GetItems().FirstOrDefault(o => o.mCurrentState == "Idle" && o.mCurrentStateDuration.TotalSeconds > 1 && string.IsNullOrEmpty(o.mCurrentMissionId))?.mName : mission.mMission.mVehicleId;
+                string vehicleId = string.Empty;
+                if (string.IsNullOrEmpty(mission.mMission.mVehicleId))
+                {
+                    // 如果沒有指定車
+                    vehicleId = executableVehicles.First().mName;
+                }
+                else
+                {
+                    // 如果該任務有指定車
+                    if (executableVehicles.Any(o => o.mName == mission.mMission.mVehicleId))
+                    {
+                        vehicleId = mission.mMission.mVehicleId;
+                    }
+                }
+
 				if (!string.IsNullOrEmpty(vehicleId))
 				{
 					mission.UpdateSendState(SendState.Sending);
@@ -105,5 +120,31 @@ namespace TrafficControlTest.Module.Mission
 			result = MissionStateManager.GetItems().Where(o => (o.mSendState == SendState.Unsend && o.mExecuteState == ExecuteState.Unexecute) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle"))).ToList();
 			return result;
 		}
+        private static List<IVehicleInfo> ExtractExecutableVehicles(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
+        {
+            IEnumerable<IMissionState> sendingAndExecutingMissions = MissionStateManager.GetItems().Where(o => o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing);
+            IEnumerable<IVehicleInfo> idleVehicles = VehicleInfoManager.GetItems().Where(o => o.mCurrentState == "Idle" && o.mCurrentStateDuration.TotalSeconds > 1 && string.IsNullOrEmpty(o.mCurrentMissionId));
+            List<IVehicleInfo> resultVehicles = new List<IVehicleInfo>();
+            if (idleVehicles != null && idleVehicles.Count() > 0)
+            {
+                foreach (IVehicleInfo vehicle in idleVehicles)
+                {
+                    if (!sendingAndExecutingMissions.Any(o => o.mExecutorId == vehicle.mName))
+                    {
+                        resultVehicles.Add(vehicle);
+                    }
+                }
+            }
+            // 閒置且沒有被 Sending 任務的車
+            return resultVehicles;
+        }
+        private static int CalculateDistance(IPoint2D Point1, IPoint2D Point2)
+        {
+            return CalculateDistance(Point1.mX, Point1.mY, Point2.mX, Point2.mY);
+        }
+        private static int CalculateDistance(int X1, int Y1, int X2, int Y2)
+        {
+            return (int)Math.Sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1));
+        }
 	}
 }
