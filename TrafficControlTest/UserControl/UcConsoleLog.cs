@@ -101,7 +101,7 @@ namespace TrafficControlTest.UserControl
 				dgv.BorderStyle = BorderStyle.None;
 
 				dgv.EnableHeadersVisualStyles = false;
-				dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+				dgv.ColumnHeadersDefaultCellStyle.Font = new Font(dgv.ColumnHeadersDefaultCellStyle.Font.FontFamily, 12, FontStyle.Bold);
 				dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 				dgv.ColumnHeadersDefaultCellStyle.BackColor = TableHeaderBackColor;
 				dgv.ColumnHeadersDefaultCellStyle.ForeColor = TableHeaderForeColor;
@@ -110,17 +110,17 @@ namespace TrafficControlTest.UserControl
 				dgv.ColumnHeadersHeight = 35;
 
 				dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
-				dgv.DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Regular);
+				dgv.DefaultCellStyle.Font = new Font(dgv.DefaultCellStyle.Font.FontFamily, 12, FontStyle.Regular);
 				dgv.DefaultCellStyle.BackColor = TableEvenRowBackColor;
 				dgv.DefaultCellStyle.ForeColor = TableRowForeColor;
 				dgv.RowTemplate.Height = 25;
 
 				dgv.Columns.Add("Date", "Date");
-				dgv.Columns[0].Width = 230;
+				dgv.Columns[0].Width = 175;
 				dgv.Columns.Add("Category", "Category");
-				dgv.Columns[1].Width = 230;
+				dgv.Columns[1].Width = 200;
 				dgv.Columns.Add("SubCategory", "SubCategory");
-				dgv.Columns[2].Width = 240;
+				dgv.Columns[2].Width = 200;
 				dgv.Columns.Add("Message", "Message");
 				dgv.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
