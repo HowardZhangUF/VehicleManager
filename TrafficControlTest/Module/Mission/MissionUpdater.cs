@@ -200,6 +200,15 @@ namespace TrafficControlTest.Module.Mission
 						break;
 				}
 			}
+            if (Args.StatusName.Contains("SendState"))
+            {
+                switch (Args.Item.mSendState)
+                {
+                    case SendState.SendFailed:
+                        rMissionStateManager.Remove(Args.ItemName);
+                        break;
+                }
+            }
 		}
 		private void Subtask_CheckMissionSendTimeout()
 		{
