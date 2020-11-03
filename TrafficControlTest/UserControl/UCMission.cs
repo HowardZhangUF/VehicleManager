@@ -20,18 +20,6 @@ namespace TrafficControlTest.UserControl
 
 		private IMissionStateManager rMissionStateManager = null;
 		private object mLockOfDgvMission = new object();
-		private Dictionary<string, int> mColumnHeaderDictionary = new Dictionary<string, int>()
-		{
-			{ "ID", 0 },
-			{ "HostMissionID", 1 },
-			{ "Priority", 2 },
-			{ "Type", 3 },
-			{ "Parameter", 5 },
-			{ "SendState", 6 },
-			{ "ExecuteState", 6 },
-			{ "ExecutorId", 7 },
-			{ "SourceIpPort", 8 }
-		};
 		private int mDgvMissionRightClickRowIndex { get; set; } = -1;
 		private int mDgvMissionRightClickColIndex { get; set; } = -1;
 
@@ -72,8 +60,8 @@ namespace TrafficControlTest.UserControl
 					{
 						for (int i = 0; i < dgvMission.Rows.Count; ++i)
 						{
-							int currPriority = int.Parse(dgvMission.Rows[i].Cells[mColumnHeaderDictionary["Priority"]].Value.ToString());
-							int newPriority = int.Parse(Datas[mColumnHeaderDictionary["Priority"]].ToString());
+							int currPriority = int.Parse(dgvMission.Rows[i].Cells["Priority"].Value.ToString());
+							int newPriority = int.Parse(Datas[dgvMission.Columns["Priority"].Index].ToString());
 							if (newPriority < currPriority)
 							{
 								rowIndex = i;
@@ -109,9 +97,9 @@ namespace TrafficControlTest.UserControl
 				{
 					if (StatusName == "Priority")
 					{
-						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["Priority"]].Value.ToString() != NewValue)
+						if (dgvMission.Rows[rowIndex].Cells["Priority"].Value.ToString() != NewValue)
 						{
-							dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["Priority"]].Value = NewValue;
+							dgvMission.Rows[rowIndex].Cells["Priority"].Value = NewValue;
 							string[] tmp = ConvertToStringArray(dgvMission.Rows[rowIndex].Cells);
 							RemoveRow(Id);
 							AddRow(Id, tmp);
@@ -120,31 +108,31 @@ namespace TrafficControlTest.UserControl
 					}
 					else if (StatusName == "SourceIpPort")
 					{
-						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["SourceIpPort"]].Value.ToString() != NewValue)
+						if (dgvMission.Rows[rowIndex].Cells["SourceIpPort"].Value.ToString() != NewValue)
 						{
-							dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["SourceIpPort"]].Value = NewValue;
+							dgvMission.Rows[rowIndex].Cells["SourceIpPort"].Value = NewValue;
 						}
 					}
 					else if (StatusName == "ExecutorId")
 					{
-						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["ExecutorId"]].Value.ToString() != NewValue)
+						if (dgvMission.Rows[rowIndex].Cells["Executor"].Value.ToString() != NewValue)
 						{
-							dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["ExecutorId"]].Value = NewValue;
+							dgvMission.Rows[rowIndex].Cells["Executor"].Value = NewValue;
 						}
 					}
 					else if (StatusName.StartsWith("SendState"))
 					{
-						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["SendState"]].Value.ToString() != NewValue)
+						if (dgvMission.Rows[rowIndex].Cells["State"].Value.ToString() != NewValue)
 						{
-							dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["SendState"]].Value = NewValue;
+							dgvMission.Rows[rowIndex].Cells["State"].Value = NewValue;
 							UpdateGui_RefreshDgvMissionRowBackColor(rowIndex);
 						}
 					}
 					else if (StatusName.StartsWith("ExecuteState"))
 					{
-						if (dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["ExecuteState"]].Value.ToString() != NewValue)
+						if (dgvMission.Rows[rowIndex].Cells["State"].Value.ToString() != NewValue)
 						{
-							dgvMission.Rows[rowIndex].Cells[mColumnHeaderDictionary["ExecuteState"]].Value = NewValue;
+							dgvMission.Rows[rowIndex].Cells["State"].Value = NewValue;
 							UpdateGui_RefreshDgvMissionRowBackColor(rowIndex);
 						}
 					}
@@ -320,7 +308,7 @@ namespace TrafficControlTest.UserControl
 		{
 			dgvMission.InvokeIfNecessary(() =>
 			{
-				if (dgvMission.Rows[RowIndex].Cells[mColumnHeaderDictionary["ExecuteState"]].Value.ToString().EndsWith("Executing"))
+				if (dgvMission.Rows[RowIndex].Cells["State"].Value.ToString().EndsWith("Executing"))
 				{
 					if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableRowExecutingBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableRowExecutingBackColor;
 				}
@@ -349,7 +337,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private int GetRowIndex(string Id)
 		{
-			return GetRowIndex(mColumnHeaderDictionary["ID"], Id);
+			return GetRowIndex(dgvMission.Columns["ID"].Index, Id);
 		}
 		private int GetRowIndex(int ColumnIndex, string CellValue)
 		{
@@ -392,9 +380,9 @@ namespace TrafficControlTest.UserControl
 		{
 			if (mDgvMissionRightClickRowIndex >= 0 && mDgvMissionRightClickRowIndex < dgvMission.RowCount)
 			{
-				string tmpId = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells[mColumnHeaderDictionary["ID"]].Value.ToString();
-				string tmpType = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells[mColumnHeaderDictionary["Type"]].Value.ToString();
-				string tmpParameter = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells[mColumnHeaderDictionary["Parameter"]].Value.ToString();
+				string tmpId = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["ID"].Value.ToString();
+				string tmpType = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["Type"].Value.ToString();
+				string tmpParameter = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["Parameter"].Value.ToString();
 				string tmpMessage = $"Sure to Remove Mission:\n{tmpId} / {tmpType}{(string.IsNullOrEmpty(tmpParameter) ? string.Empty : " / " + tmpParameter)}";
 				if (CustomMessageBox.ConfirmBox(tmpMessage) == DialogResult.OK)
 				{
