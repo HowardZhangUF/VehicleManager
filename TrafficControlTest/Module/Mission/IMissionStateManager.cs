@@ -13,5 +13,6 @@ namespace TrafficControlTest.Module.Mission
 		void UpdateExecutorId(string MissionId, string ExecutorId);
 		void UpdateSendState(string MissionId, SendState SendState);
 		void UpdateExecuteState(string MissionId, ExecuteState ExecuteState);
+        void UpdateFailedReason(string MissionId, MissionFailedReason FailedReason);
 	}
 }

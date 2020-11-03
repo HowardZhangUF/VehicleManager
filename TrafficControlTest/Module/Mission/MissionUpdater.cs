@@ -183,6 +183,7 @@ namespace TrafficControlTest.Module.Mission
 					}
 					else
 					{
+                        executingMission.UpdateFailedReason(MissionFailedReason.VehicleIdleButNotArrived);
 						executingMission.UpdateExecuteState(ExecuteState.ExecuteFailed);
 					}
 				}
@@ -219,13 +220,15 @@ namespace TrafficControlTest.Module.Mission
 				{
 					// 若指定車存在，但持續 n 秒任務傳送狀態皆未改變，標示該任務為傳送失敗、執行失敗
 					if (DateTime.Now.Subtract(sendingMissions[i].mLastUpdate).TotalSeconds > mTimeoutOfSendingMission)
-					{
-						sendingMissions[i].UpdateSendState(SendState.SendFailed);
+                    {
+                        sendingMissions[i].UpdateFailedReason(MissionFailedReason.SentTimeout);
+                        sendingMissions[i].UpdateSendState(SendState.SendFailed);
 					}
 				}
 				else
 				{
-					// 若指定車不存在，標示該任務為傳送失敗、執行失敗
+                    // 若指定車不存在，標示該任務為傳送失敗、執行失敗
+                    sendingMissions[i].UpdateFailedReason(MissionFailedReason.VehicleDisconnected);
 					sendingMissions[i].UpdateSendState(SendState.SendFailed);
 				}
 			}
@@ -240,12 +243,14 @@ namespace TrafficControlTest.Module.Mission
 					// 若指定車存在，但持續 n 秒任務執行狀態皆未改變，標示該任務為執行失敗
 					if (DateTime.Now.Subtract(executingMissions[i].mLastUpdate).TotalSeconds > mTimeoutOfExecutingMission)
 					{
+                        executingMissions[i].UpdateFailedReason(MissionFailedReason.ExectutedTimeout);
 						executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
 					}
 				}
 				else
 				{
-					// 若指定車不存在，標示該任務為執行失敗
+                    // 若指定車不存在，標示該任務為執行失敗
+                    executingMissions[i].UpdateFailedReason(MissionFailedReason.VehicleDisconnected);
 					executingMissions[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
 				}
 			}

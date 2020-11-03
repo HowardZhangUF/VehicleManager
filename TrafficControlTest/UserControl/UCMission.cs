@@ -398,6 +398,7 @@ namespace TrafficControlTest.UserControl
 				string tmpMessage = $"Sure to Remove Mission:\n{tmpId} / {tmpType}{(string.IsNullOrEmpty(tmpParameter) ? string.Empty : " / " + tmpParameter)}";
 				if (CustomMessageBox.ConfirmBox(tmpMessage) == DialogResult.OK)
 				{
+                    rMissionStateManager.UpdateFailedReason(tmpId, MissionFailedReason.CancelByGUI);
 					rMissionStateManager.UpdateExecuteState(tmpId, ExecuteState.ExecuteFailed);
 				}
 			}

@@ -161,7 +161,8 @@ namespace TrafficControlTest.Module.Log
 			tmp += "ExecutorID TEXT, ";
 			tmp += "SendState TEXT, ";
 			tmp += "ExecuteState TEXT, ";
-			tmp += "ReceiveTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+			tmp += "FailedReason TEXT, ";
+            tmp += "ReceiveTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ExecutionStartTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ExecutionStopTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
@@ -265,7 +266,8 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"'{MissionState.mExecutorId}', ";
 			tmp += $"'{MissionState.mSendState.ToString()}', ";
 			tmp += $"'{MissionState.mExecuteState.ToString()}', ";
-			tmp += $"'{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"'{MissionState.mFailedReason.ToString()}', ";
+            tmp += $"'{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{MissionState.mExecutionStartTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{MissionState.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{MissionState.mLastUpdate.ToString(Library.Library.TIME_FORMAT)}')";
@@ -279,7 +281,8 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"ExecutorID = '{MissionState.mExecutorId}', ";
 			tmp += $"SendState = '{MissionState.mSendState.ToString()}', ";
 			tmp += $"ExecuteState = '{MissionState.mExecuteState.ToString()}', ";
-			tmp += $"ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"FailedReason = '{MissionState.mFailedReason.ToString()}', ";
+            tmp += $"ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"ExecutionStartTimestamp = '{MissionState.mExecutionStartTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"ExecutionStopTimestamp = '{MissionState.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"LastUpdateTimestamp = '{MissionState.mLastUpdate.ToString(Library.Library.TIME_FORMAT)}' ";

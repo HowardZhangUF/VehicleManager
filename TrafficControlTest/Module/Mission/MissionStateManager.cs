@@ -42,5 +42,15 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 		}
+        public void UpdateFailedReason(string MissionId, MissionFailedReason FailedReason)
+        {
+            lock (mLock)
+            {
+                if (mItems.Keys.Contains(MissionId))
+                {
+                    mItems[MissionId].UpdateFailedReason(FailedReason);
+                }
+            }
+        }
 	}
 }

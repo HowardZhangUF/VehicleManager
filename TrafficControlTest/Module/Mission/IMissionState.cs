@@ -19,6 +19,17 @@ namespace TrafficControlTest.Module.Mission
 		ExecuteFailed
 	}
 
+    public enum MissionFailedReason
+    {
+        None,
+        VehicleDisconnected,
+        VehicleIdleButNotArrived,
+        ExectutedTimeout,
+        SentTimeout,
+        CancelByGUI,
+        CancelByHostCommand
+    }
+
 	/// <summary>
 	/// - 儲存任務的資訊及狀態
 	/// </summary>
@@ -34,6 +45,7 @@ namespace TrafficControlTest.Module.Mission
 		string mExecutorId { get; }
 		SendState mSendState { get; }
 		ExecuteState mExecuteState { get; }
+        MissionFailedReason mFailedReason { get; }
 		DateTime mReceivedTimestamp { get; }
 		DateTime mExecutionStartTimestamp { get; }
 		DateTime mExecutionStopTimestamp { get; }
@@ -46,6 +58,7 @@ namespace TrafficControlTest.Module.Mission
 		void UpdateExecutorId(string ExecutorId);
 		void UpdateSendState(SendState SendState);
 		void UpdateExecuteState(ExecuteState ExecuteState);
+        void UpdateFailedReason(MissionFailedReason FailedReason);
 		string[] ToStringArray();
 	}
 }

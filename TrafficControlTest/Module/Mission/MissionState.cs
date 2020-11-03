@@ -14,6 +14,7 @@ namespace TrafficControlTest.Module.Mission
 		public string mExecutorId { get; private set; }
 		public SendState mSendState { get; private set; }
 		public ExecuteState mExecuteState { get; private set; }
+        public MissionFailedReason mFailedReason { get; private set; }
 		public DateTime mReceivedTimestamp { get; private set; }
 		public DateTime mExecutionStartTimestamp { get; private set; }
 		public DateTime mExecutionStopTimestamp { get; private set; }
@@ -23,7 +24,6 @@ namespace TrafficControlTest.Module.Mission
 		{
 			Set(Mission);
 		}
-
 		public void Set(IMission Mission)
 		{
 			DateTime tmp = DateTime.Now;
@@ -32,6 +32,7 @@ namespace TrafficControlTest.Module.Mission
 			mExecutorId = string.Empty;
 			mSendState = SendState.Unsend;
 			mExecuteState = ExecuteState.Unexecute;
+            mFailedReason = MissionFailedReason.None;
 			mReceivedTimestamp = tmp;
 			mExecutionStartTimestamp = DateTime.MinValue;
 			mExecutionStopTimestamp = DateTime.MinValue;
@@ -96,6 +97,15 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 		}
+        public void UpdateFailedReason(MissionFailedReason FailedReason)
+        {
+            if (mFailedReason != FailedReason)
+            {
+                mFailedReason = FailedReason;
+                mLastUpdate = DateTime.Now;
+                RaiseEvent_StatusUpdated("FailedReason");
+            }
+        }
 		public string[] ToStringArray()
 		{
 			string[] result = null;
