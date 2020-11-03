@@ -109,7 +109,7 @@ namespace TrafficControlTest.Module.Mission
 		public string[] ToStringArray()
 		{
 			string[] result = null;
-			result = new string[] { mName, mMission.mMissionId, mMission.mPriority.ToString(), mMission.mMissionType.ToString(), mMission.mVehicleId, mMission.mParametersString, $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
+			result = new string[] { mName, mMission.mMissionId, mMission.mPriority.ToString(), mMission.mMissionType.ToString(), mMission.mVehicleId, mMission.mParametersString, mSourceIpPort, $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
 			return result;
 		}
 		public override string ToString()

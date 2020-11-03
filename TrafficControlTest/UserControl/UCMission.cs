@@ -274,14 +274,14 @@ namespace TrafficControlTest.UserControl
 				dgv.Columns[4].Width = 130;
 				dgv.Columns.Add("Parameter", "Parameter");
 				dgv.Columns[5].Width = 160;
-				dgv.Columns.Add("State", "State");
-				dgv.Columns[6].Width = 240;
+                dgv.Columns.Add("SourceIpPort", "SourceIPPort");
+                dgv.Columns[6].Width = 180;
+                dgv.Columns.Add("State", "State");
+				dgv.Columns[7].Width = 240;
 				dgv.Columns.Add("Executor", "Executor");
-				dgv.Columns[7].Width = 130;
+				dgv.Columns[8].Width = 130;
 				dgv.Columns.Add("ReceivedTime", "ReceivedTime");
-				dgv.Columns[8].Width = 190;
-				dgv.Columns.Add("FillColumn", "");
-				dgv.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+				dgv.Columns[9].Width = 190;
 
 				foreach (DataGridViewColumn column in dgv.Columns)
 				{
@@ -316,23 +316,6 @@ namespace TrafficControlTest.UserControl
 				{
 					if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableRowUnexecuteBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableRowUnexecuteBackColor;
 				}
-			});
-		}
-		private void UpdateGui_InsertSampleDataToDgvMission()
-		{
-			dgvMission.InvokeIfNecessary(() =>
-			{
-				DataGridView dgv = dgvMission;
-
-				dgv.Rows.Add("Mission20191122142552342", "2", "Goto", "Vehicle982", "Goal999", "Unsend / Unexecute", "", "127.0.0.1:65535", "2019/11/22 14:25:52.342");
-				dgv.Rows.Add("Mission20191122142552342", "2", "Goto", "", "Goal999", "Unsend / Executing", "", "127.0.0.1:65535", "2019/11/22 14:25:52.342");
-				dgv.Rows.Add("Mission20191122142552342", "2", "GotoPoint", "Vehicle982", "(456347,939399,120)", "Unsend / Executing", "", "127.0.0.1:65535", "2019/11/22 14:25:52.342");
-				dgv.Rows.Add("Mission20191122142552342", "2", "GotoPoint", "", "(1111,2222)", "Unsend / Unexecute", "", "127.123.123.123:65535", "2019/11/22 14:25:52.342");
-				dgv.Rows.Add("Mission20191122142552342", "2", "Dock", "Vehicle982", "Goal999", "SendSuccessed / ExecuteSuccessed", "", "127.0.0.1:65535", "2019/11/22 14:25:52.342");
-				dgv.Rows.Add("Mission20191122142552342", "2", "Dock", "Vehicle982", "Goal999", "SendSuccessed / ExecuteSuccessed", "", "127.0.0.1:65535", "2019/11/22 14:25:52.342");
-				dgv.Rows.Add("Mission20191122142552342", "2", "Dock", "Vehicle982", "Goal999", "SendSuccessed / Executing", "", "127.0.0.1:65535", "2019/11/22 14:25:52.342");
-
-				UpdateGui_RefreshDgvMissionRowsBackColor();
 			});
 		}
 		private int GetRowIndex(string Id)
