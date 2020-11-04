@@ -506,7 +506,8 @@ namespace TrafficControlTest.Process
 			mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
 			mHostCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("HostCommunicator/ListenPort"));
 			mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
-			mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
+			mHostMessageAnalyzer.SetConfig("FilterDuplicateMissionWhenReceivedCommand", mConfigurator.GetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand"));
+            mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
 			mMissionUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("MissionUpdater/TimePeriod"));
 			mMissionUpdater.SetConfig("TimeoutOfSendingMission", mConfigurator.GetValue("MissionUpdater/TimeoutOfSendingMission"));
 			mMissionUpdater.SetConfig("TimeoutOfExecutingMission", mConfigurator.GetValue("MissionUpdater/TimeoutOfExecutingMission"));
@@ -543,6 +544,7 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("MissionUpdater/TimeoutOfSendingMission", mMissionUpdater.GetConfig("TimeoutOfSendingMission"));
 			mConfigurator.SetValue("MissionUpdater/TimePeriod", mMissionUpdater.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand", mHostMessageAnalyzer.GetConfig("FilterDuplicateMissionWhenReceivedCommand"));
 			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfig("ListenPort"));
 			mConfigurator.SetValue("VehicleControlHandler/TimePeriod", mVehicleControlHandler.GetConfig("TimePeriod"));
@@ -832,17 +834,17 @@ namespace TrafficControlTest.Process
 		{
 			if (HostMessageAnalyzer != null)
 			{
-				// do nothing
+                HostMessageAnalyzer.ConfigUpdated += HandleEvent_HostMessageAnalyzerConfigUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IHostMessageAnalyzer(IHostMessageAnalyzer HostMessageAnalyzer)
 		{
 			if (HostMessageAnalyzer != null)
-			{
-				// do nothing
-			}
+            {
+                HostMessageAnalyzer.ConfigUpdated -= HandleEvent_HostMessageAnalyzerConfigUpdated;
+            }
 		}
-		private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
+        private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
 		{
 			if (MissionDispatcher != null)
 			{
@@ -1231,7 +1233,10 @@ namespace TrafficControlTest.Process
 				case "HostCommunicator/TimePeriod":
 					mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
 					break;
-				case "MissionDispatcher/TimePeriod":
+                case "HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand":
+                    mHostMessageAnalyzer.SetConfig("FilterDuplicateMissionWhenReceivedCommand", mConfigurator.GetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand"));
+                    break;
+                case "MissionDispatcher/TimePeriod":
 					mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
 					break;
 				case "MissionUpdater/TimePeriod":
@@ -1449,8 +1454,12 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {IpPort}, Data: {Data}");
 			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {IpPort} ] [ {Data} ]");
-		}
-		private void HandleEvent_MissionDispatcherSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+        }
+        private void HandleEvent_HostMessageAnalyzerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+        {
+            HandleDebugMessage(Args.OccurTime, "HostMessageAnalyzer", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+        }
+        private void HandleEvent_MissionDispatcherSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MissionDispatcher", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}

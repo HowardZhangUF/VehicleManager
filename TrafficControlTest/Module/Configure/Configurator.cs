@@ -246,7 +246,18 @@ namespace TrafficControlTest.Module.Configure
 				"Time Period of Checking Queue and Handling Received Message with Host",
 				"確認佇列並處理與上位系統傳送/接受訊息的時間間隔",
 				"确认伫列并处理与上位系统传送/接受讯息的时间间隔"));
-			defaultConfigs.Add(new Configuration(
+            defaultConfigs.Add(new Configuration(
+                "HostMessageAnalyzer",
+                "FilterDuplicateMissionWhenReceivedCommand",
+                ConfigurationType.Bool,
+                ConfigurationLevel.Normal,
+                "True",
+                string.Empty,
+                string.Empty,
+                "When Received Command, If There is Already a Mission with Same Content in Mission Collection, Then the New Mission Will Not Be Added.",
+                "解析訊息時，若任務集合中已有相同內容的任務，則不將該新任務加入",
+                "解析讯息时，若任务集合中已有相同内容的任务，则不将该新任务加入"));
+            defaultConfigs.Add(new Configuration(
 				"MissionDispatcher",
 				"TimePeriod",
 				ConfigurationType.Int,
