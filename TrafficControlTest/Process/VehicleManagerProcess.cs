@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Account;
 using TrafficControlTest.Module.AutomaticDoor;
+using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CollisionEvent;
 using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.CommunicationHost;
@@ -88,6 +89,8 @@ namespace TrafficControlTest.Process
 		private IVehiclePassThroughAutomaticDoorEventManager mVehiclePassThroughAutomaticDoorEventManager = null;
 		private IVehiclePassThroughAutomaticDoorEventManagerUpdater mVehiclePassThroughAutomaticDoorEventManagerUpdater = null;
 		private IVehiclePassThroughAutomaticDoorEventHandler mVehiclePassThroughAutomaticDoorEventHandler = null;
+		private IChargeStationInfoManager mChargeStationInfoManager = null;
+		private IChargeStationInfoManagerUpdater mChargeStationInfoManagerUpdater = null;
 
 		public VehicleManagerProcess()
 		{
@@ -391,6 +394,14 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventHandler);
 			mVehiclePassThroughAutomaticDoorEventHandler = GenerateIVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventManager, mAutomaticDoorControlManager);
 			SubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventHandler);
+
+			UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+			mChargeStationInfoManager = GenerateIChargeStationInfoManager();
+			SubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+
+			UnsubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
+			mChargeStationInfoManagerUpdater = GenerateIChargeStationInfoManagerUpdater(mChargeStationInfoManager, mMapManager, mVehicleInfoManager);
+			SubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
 		}
 		private void Destructor()
 		{
@@ -475,6 +486,12 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventHandler);
 			mVehiclePassThroughAutomaticDoorEventHandler = null;
 
+			UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+			mChargeStationInfoManager = null;
+
+			UnsubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
+			mChargeStationInfoManagerUpdater = null;
+
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
 
@@ -524,9 +541,11 @@ namespace TrafficControlTest.Process
 			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod"));
 			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("OpenDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDoorDistance"));
 			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("CloseDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance"));
+			mChargeStationInfoManagerUpdater.SetConfig("MaximumDistanceBetweenChargeStationAndVehicle", mConfigurator.GetValue("ChargeStationInfoManagerUpdater/MaximumDistanceBetweenChargeStationAndVehicle"));
 		}
 		private void LoadSystemConfigAndUpdateConfigFile()
 		{
+			mConfigurator.SetValue("ChargeStationInfoManagerUpdater/MaximumDistanceBetweenChargeStationAndVehicle", mChargeStationInfoManagerUpdater.GetConfig("MaximumDistanceBetweenChargeStationAndVehicle"));
 			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDistanceDoor", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("CloseDistanceDoor"));
 			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDistanceDoor", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("OpenDistanceDoor"));
 			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("TimePeriod"));
@@ -1136,6 +1155,38 @@ namespace TrafficControlTest.Process
 				// do nothing
 			}
 		}
+		private void SubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
+		{
+			if (ChargeStationInfoManager != null)
+			{
+				ChargeStationInfoManager.ItemAdded += HandleEvent_ChargeStationInfoManagerItemAdded;
+				ChargeStationInfoManager.ItemRemoved += HandleEvent_ChargeStationInfoManagerItemRemoved;
+				ChargeStationInfoManager.ItemUpdated += HandleEvent_ChargeStationInfoManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
+		{
+			if (ChargeStationInfoManager != null)
+			{
+				ChargeStationInfoManager.ItemAdded -= HandleEvent_ChargeStationInfoManagerItemAdded;
+				ChargeStationInfoManager.ItemRemoved -= HandleEvent_ChargeStationInfoManagerItemRemoved;
+				ChargeStationInfoManager.ItemUpdated -= HandleEvent_ChargeStationInfoManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IChargeStationInfoManagerUpdater(IChargeStationInfoManagerUpdater ChargeStationInfoManagerUpdater)
+		{
+			if (ChargeStationInfoManagerUpdater != null)
+			{
+				ChargeStationInfoManagerUpdater.ConfigUpdated += HandleEvent_ChargeStationInfoManagerUpdaterConfigUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IChargeStationInfoManagerUpdater(IChargeStationInfoManagerUpdater ChargeStationInfoManagerUpdater)
+		{
+			if (ChargeStationInfoManagerUpdater != null)
+			{
+				ChargeStationInfoManagerUpdater.ConfigUpdated -= HandleEvent_ChargeStationInfoManagerUpdaterConfigUpdated;
+			}
+		}
 		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
 		{
 			if (Sync)
@@ -1286,6 +1337,9 @@ namespace TrafficControlTest.Process
 					break;
 				case "VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance":
 					mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("CloseDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance"));
+					break;
+				case "ChargeStationInfoManagerUpdater/MaximumDistanceBetweenChargeStationAndVehicle":
+					mChargeStationInfoManagerUpdater.SetConfig("MaximumDistanceBetweenChargeStationAndVehicle", mConfigurator.GetValue("ChargeStationInfoManagerUpdater/MaximumDistanceBetweenChargeStationAndVehicle"));
 					break;
 			}
 		}
@@ -1614,6 +1668,22 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehiclePassThroughAutomaticDoorEventManagerUpdater", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_ChargeStationInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IChargeStationInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "ChargeStationInfoManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_ChargeStationInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IChargeStationInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "ChargeStationInfoManager", "ItemRemoved", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_ChargeStationInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IChargeStationInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "ChargeStationInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_ChargeStationInfoManagerUpdaterConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "ChargeStationInfoManagerUpdater", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleDebugMessage(string Message)
 		{

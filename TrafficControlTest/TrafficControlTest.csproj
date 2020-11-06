@@ -95,6 +95,12 @@
     <Compile Include="Module\AutomaticDoor\IAutomaticDoorInfo.cs" />
     <Compile Include="Module\AutomaticDoor\IAutomaticDoorInfoManager.cs" />
     <Compile Include="Module\AutomaticDoor\IAutomaticDoorInfoManagerUpdater.cs" />
+    <Compile Include="Module\ChargeStation\ChargeStationInfo.cs" />
+    <Compile Include="Module\ChargeStation\ChargeStationInfoManager.cs" />
+    <Compile Include="Module\ChargeStation\ChargeStationInfoManagerUpdater.cs" />
+    <Compile Include="Module\ChargeStation\IChargeStationInfo.cs" />
+    <Compile Include="Module\ChargeStation\IChargeStationInfoManager.cs" />
+    <Compile Include="Module\ChargeStation\IChargeStationInfoManagerUpdater.cs" />
     <Compile Include="Module\Communication\CommunicatorClientUsingString.cs" />
     <Compile Include="Module\Communication\ICommunicatorClientUsingString.cs" />
     <Compile Include="Module\Configure\Configuration.cs" />

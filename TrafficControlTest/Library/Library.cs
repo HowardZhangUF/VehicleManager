@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using TrafficControlTest.Module.Account;
 using TrafficControlTest.Module.AutomaticDoor;
+using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CollisionEvent;
 using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.CommunicationHost;
@@ -394,7 +395,19 @@ namespace TrafficControlTest.Library
 		{
 			return new VehiclePassThroughAutomaticDoorEventHandler(VehiclePassThroughAutomaticDoorEventManager, AutomaticDoorControlManager);
 		}
-		#endregion
+		public static IChargeStationInfo GenerateIChargeStationInfo(string Name, ITowardPoint2D Location)
+        {
+            return new ChargeStationInfo(Name, Location);
+        }
+        public static IChargeStationInfoManager GenerateIChargeStationInfoManager()
+        {
+            return new ChargeStationInfoManager();
+        }
+        public static IChargeStationInfoManagerUpdater GenerateIChargeStationInfoManagerUpdater(IChargeStationInfoManager ChargeStationInfoManager, IMapManager MapManager, IVehicleInfoManager VehicleInfoManager)
+        {
+            return new ChargeStationInfoManagerUpdater(ChargeStationInfoManager, MapManager, VehicleInfoManager);
+        }
+        #endregion
 
 		#region IPoint2D
 		/// <summary>計算向量 (End - Start) 與 X+ 的夾角。範圍為 -180 ~ 180 ，單位為 degree</summary>

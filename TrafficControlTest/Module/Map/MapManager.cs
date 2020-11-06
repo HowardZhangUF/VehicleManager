@@ -89,8 +89,19 @@ namespace TrafficControlTest.Module.Map
 			{
 				return GLCMD.CMD.SingleTowerPairInfo.Select(o => o.Name).ToArray();
 			}
-		}
-		public string[] GetAutomaticDoorAreaNameList()
+        }
+        public string[] GetChargeStationNameList()
+        {
+            if (string.IsNullOrEmpty(mCurrentMapName))
+            {
+                return new string[0];
+            }
+            else
+            {
+                return GLCMD.CMD.SingleTowerPairInfo.Where(o => o.StyleName == "ChargingDocking").Select(o => o.Name).ToArray();
+            }
+        }
+        public string[] GetAutomaticDoorAreaNameList()
 		{
 			if (string.IsNullOrEmpty(mCurrentMapName))
 			{
@@ -112,8 +123,12 @@ namespace TrafficControlTest.Module.Map
 			{
 				return new int[] { 0, 0, 0 };
 			}
-		}
-		public string[] GetAutomaticDoorAreaInfo(string AutomaticDoorName)
+        }
+        public int[] GetChargeStationCoordinate(string ChargeStationName)
+        {
+            return GetGoalCoordinate(ChargeStationName);
+        }
+        public string[] GetAutomaticDoorAreaInfo(string AutomaticDoorName)
 		{
 			if (!string.IsNullOrEmpty(AutomaticDoorName) && GLCMD.CMD.SingleAreaInfo.Any(o => o.Name == AutomaticDoorName))
 			{

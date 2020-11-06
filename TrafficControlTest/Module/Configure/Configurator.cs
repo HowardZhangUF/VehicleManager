@@ -444,6 +444,17 @@ namespace TrafficControlTest.Module.Configure
 				"Distance Threshold of Close Automatic Door",
 				"當車子與自動門的距離大於此數值時關閉自動門",
 				"当车子与自动门的距离大于此数值时关闭自动门"));
+			defaultConfigs.Add(new Configuration(
+				"ChargeStationInfoManagerUpdater",
+				"MaximumDistanceBetweenChargeStationAndVehicle",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1500",
+				"100",
+				"5000",
+				"Maximum Distance Between Vehicle and Charge Station when Vehicle is Charging",
+				"車子充電時與充電站的距離最大值",
+				"车子充电时与充电站的距离最大值"));
 
 			mConfigs.Clear();
 			for (int i = 0; i < defaultConfigs.Count; ++i)
