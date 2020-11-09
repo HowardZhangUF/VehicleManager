@@ -161,9 +161,9 @@ namespace TrafficControlTest.UserControl
 				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
+		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(object Sender, LocalListenStateChangedEventArgs Args)
 		{
-			if (NewState == ListenState.Listening)
+			if (Args.NewState == ListenState.Listening)
 			{
 				UpdateGui_UpdateControlBackColor(lblConnection, Color.DarkOrange);
 			}

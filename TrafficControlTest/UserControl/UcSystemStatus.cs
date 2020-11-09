@@ -261,9 +261,9 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateGui_UpdateSwitchButtonSwitchState(sbtnImportantEventRecorder, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
+		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(object Sender, LocalListenStateChangedEventArgs Args)
 		{
-			if (NewState == ListenState.Listening)
+			if (Args.NewState == ListenState.Listening)
 			{
 				UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicatorServer, SwitchState.On);
 			}

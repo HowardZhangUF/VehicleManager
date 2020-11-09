@@ -13,13 +13,13 @@ namespace TrafficControlTest.Module.CommunicationVehicle
 {
 	class VehicleCommunicator : SystemWithLoopTask, IVehicleCommunicator
 	{
-		public event EventHandlerLocalListenState LocalListenStateChanged;
-		public event EventHandlerRemoteConnectState RemoteConnectStateChanged;
-		public event EventHandlerSentSerializableData SentSerializableData;
-		public event EventHandlerReceivedSerializableData ReceivedSerializableData;
-		public event EventHandlerSentSerializableData SentSerializableDataSuccessed;
-		public event EventHandlerSentSerializableData SentSerializableDataFailed;
-		
+		public event EventHandler<RemoteConnectStateChangedEventArgs> RemoteConnectStateChanged;
+		public event EventHandler<LocalListenStateChangedEventArgs> LocalListenStateChanged;
+		public event EventHandler<SentSerializableDataEventArgs> SentSerializableData;
+		public event EventHandler<ReceivedSerializableDataEventArgs> ReceivedSerializableData;
+		public event EventHandler<SentSerializableDataEventArgs> SentSerializableDataSuccessed;
+		public event EventHandler<SentSerializableDataEventArgs> SentSerializableDataFailed;
+
 		public ListenState mListenState { get { return mSocketServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
 		public int mClientCount { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? 0 : mSocketServer.ClientCount; } }
 		public List<string> mClientAddressInfo { get { return (mSocketServer == null || mSocketServer.ListenStatus == EListenStatus.Idle) ? null : mSocketServer.ClientDictionary.Keys.ToList(); } }
@@ -197,66 +197,66 @@ namespace TrafficControlTest.Module.CommunicationVehicle
 		{
 			if (Sync)
 			{
-				LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port);
+				LocalListenStateChanged?.Invoke(this, new LocalListenStateChangedEventArgs(DateTime.Now, NewState, Port));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port); });
+				System.Threading.Tasks.Task.Run(() => { LocalListenStateChanged?.Invoke(this, new LocalListenStateChangedEventArgs(DateTime.Now, NewState, Port)); });
 			}
 		}
 		protected virtual void RaiseEvent_RemoteConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState);
+				RemoteConnectStateChanged?.Invoke(this, new RemoteConnectStateChangedEventArgs(DateTime.Now, IpPort, NewState));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
+				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(this, new RemoteConnectStateChangedEventArgs(DateTime.Now, IpPort, NewState)); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableData(string IpPort, object Data, bool Sync = true)
 		{
 			if (Sync)
 			{
-				SentSerializableData?.Invoke(DateTime.Now, IpPort, Data);
+				SentSerializableData?.Invoke(this, new SentSerializableDataEventArgs(DateTime.Now, IpPort, Data));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { SentSerializableData?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { SentSerializableData?.Invoke(this, new SentSerializableDataEventArgs(DateTime.Now, IpPort, Data)); });
 			}
 		}
 		protected virtual void RaiseEvent_ReceivedSerializableData(string IpPort, object Data, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ReceivedSerializableData?.Invoke(DateTime.Now, IpPort, Data);
+				ReceivedSerializableData?.Invoke(this, new ReceivedSerializableDataEventArgs(DateTime.Now, IpPort, Data));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { ReceivedSerializableData?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { ReceivedSerializableData?.Invoke(this, new ReceivedSerializableDataEventArgs(DateTime.Now, IpPort, Data)); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableDataSuccessed(string IpPort, object Data, bool Sync = true)
 		{
 			if (Sync)
 			{
-				SentSerializableDataSuccessed?.Invoke(DateTime.Now, IpPort, Data);
+				SentSerializableDataSuccessed?.Invoke(this, new SentSerializableDataEventArgs(DateTime.Now, IpPort, Data));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { SentSerializableDataSuccessed?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { SentSerializableDataSuccessed?.Invoke(this, new SentSerializableDataEventArgs(DateTime.Now, IpPort, Data)); });
 			}
 		}
 		protected virtual void RaiseEvent_SentSerializableDataFailed(string IpPort, object Data, bool Sync = true)
 		{
 			if (Sync)
 			{
-				SentSerializableDataFailed?.Invoke(DateTime.Now, IpPort, Data);
+				SentSerializableDataFailed?.Invoke(this, new SentSerializableDataEventArgs(DateTime.Now, IpPort, Data));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { SentSerializableDataFailed?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { SentSerializableDataFailed?.Invoke(this, new SentSerializableDataEventArgs(DateTime.Now, IpPort, Data)); });
 			}
 		}
 		private void HandleEvent_SerialServerListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)

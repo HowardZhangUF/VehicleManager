@@ -1368,33 +1368,33 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(DateTime OccurTime, ListenState NewState, int Port)
+		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(object Sender, LocalListenStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "LocalListenStateChanged", $"State: {NewState.ToString()}, Port: {Port}");
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "LocalListenStateChanged", $"State: {Args.NewState.ToString()}, Port: {Args.Port}");
 		}
-		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(DateTime OccurTime, string IpPort, ConnectState NewState)
+		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(object Sender, Module.CommunicationVehicle.RemoteConnectStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "RemoteConnectStateChanged", $"IPPort: {IpPort}, State: {NewState}");
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, State: {Args.NewState}");
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableData(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorSentSerializableData(object Sender, SentSerializableDataEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentData", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(object Sender, ReceivedSerializableDataEventArgs Args)
 		{
 			// 常態事件不做 General Log 記錄(避免資料庫儲存太多的資訊)，也不使用 Console.WriteLine() 顯示(避免資訊過多)
-			if (!(Data is SerialData.AGVStatus) && !(Data is SerialData.AGVPath))
+			if (!(Args.Data is SerialData.AGVStatus) && !(Args.Data is SerialData.AGVPath))
 			{
-				HandleDebugMessage(OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
+				HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(object Sender, SentSerializableDataEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentDataSuccessed", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentDataSuccessed", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(object Sender, SentSerializableDataEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "VehicleCommunicator", "SentDataFailed", $"IPPort: {IpPort}, DataType: {Data.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentDataFailed", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
@@ -1617,7 +1617,7 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ClientRemoved", $"IPPort: {Args.IpPort}");
 		}
-		private void HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged(object Sender, RemoteConnectStateChangedEventArgs Args)
+		private void HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged(object Sender, Module.AutomaticDoor.RemoteConnectStateChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, Connected: {Args.Connected.ToString()}");
 		}

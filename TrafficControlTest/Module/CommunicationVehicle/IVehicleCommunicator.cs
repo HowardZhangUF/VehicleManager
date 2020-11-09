@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.General;
 using static TrafficControlTest.Library.EventHandlerLibrary;
@@ -12,12 +13,12 @@ namespace TrafficControlTest.Module.CommunicationVehicle
 	/// </summary>
 	public interface IVehicleCommunicator : ISystemWithLoopTask
 	{
-		event EventHandlerRemoteConnectState RemoteConnectStateChanged;
-		event EventHandlerLocalListenState LocalListenStateChanged;
-		event EventHandlerSentSerializableData SentSerializableData;
-		event EventHandlerReceivedSerializableData ReceivedSerializableData;
-		event EventHandlerSentSerializableData SentSerializableDataSuccessed;
-		event EventHandlerSentSerializableData SentSerializableDataFailed;
+		event EventHandler<RemoteConnectStateChangedEventArgs> RemoteConnectStateChanged;
+		event EventHandler<LocalListenStateChangedEventArgs> LocalListenStateChanged;
+		event EventHandler<SentSerializableDataEventArgs> SentSerializableData;
+		event EventHandler<ReceivedSerializableDataEventArgs> ReceivedSerializableData;
+		event EventHandler<SentSerializableDataEventArgs> SentSerializableDataSuccessed;
+		event EventHandler<SentSerializableDataEventArgs> SentSerializableDataFailed;
 		
 		/// <summary>監聽狀態</summary>
 		ListenState mListenState { get; }
@@ -60,5 +61,61 @@ namespace TrafficControlTest.Module.CommunicationVehicle
 		void SendSerializableData_UploadMapToAGV(string IpPort, string MapPath);
 		/// <summary>向指定 IP:Port 傳送序列化資料 ChangeMap</summary>
 		void SendSerializableData_ChangeMap(string IpPort, string MapName);
+	}
+
+	public class RemoteConnectStateChangedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string IpPort { get; private set; }
+		public ConnectState NewState { get; private set; }
+
+		public RemoteConnectStateChangedEventArgs(DateTime OccurTime, string IpPort, ConnectState NewState) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.IpPort = IpPort;
+			this.NewState = NewState;
+		}
+	}
+
+	public class LocalListenStateChangedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public int Port { get; private set; }
+		public ListenState NewState { get; private set; }
+
+		public LocalListenStateChangedEventArgs(DateTime OccurTime, ListenState NewState, int Port) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.NewState = NewState;
+			this.Port = Port;
+		}
+	}
+
+	public class SentSerializableDataEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string IpPort { get; private set; }
+		public object Data { get; private set; }
+
+		public SentSerializableDataEventArgs(DateTime OccurTime, string IpPort, object Data) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.IpPort = IpPort;
+			this.Data = Data;
+		}
+	}
+
+	public class ReceivedSerializableDataEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public string IpPort { get; private set; }
+		public object Data { get; private set; }
+
+		public ReceivedSerializableDataEventArgs(DateTime OccurTime, string IpPort, object Data) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.IpPort = IpPort;
+			this.Data = Data;
+		}
 	}
 }

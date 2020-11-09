@@ -80,22 +80,22 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(object Sender, SentSerializableDataEventArgs Args)
 		{
-			if (Data is Serializable)
+			if (Args.Data is Serializable)
 			{
-				string vehicleId = rVehicleInfoManager.GetItemByIpPort(IpPort).mName;
+				string vehicleId = rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName;
 				if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
 				{
 					rVehicleControlManager.GetItems().First(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending).UpdateSendState(SendState.SentSuccessed);
 				}
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(object Sender, SentSerializableDataEventArgs Args)
 		{
-			if (Data is Serializable && rVehicleInfoManager.IsExistByIpPort(IpPort))
+			if (Args.Data is Serializable && rVehicleInfoManager.IsExistByIpPort(Args.IpPort))
 			{
-				string vehicleId = rVehicleInfoManager.GetItemByIpPort(IpPort).mName;
+				string vehicleId = rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName;
 				if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
 				{
 					rVehicleControlManager.GetItems().First(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending).UpdateSendState(SendState.SentFailed);

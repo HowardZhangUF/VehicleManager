@@ -270,26 +270,26 @@ namespace TrafficControlTest.Module.Map
 				Task.Run(() => { SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames)); });
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(object Sender, ReceivedSerializableDataEventArgs Args)
 		{
-			if (Data is Serializable)
+			if (Args.Data is Serializable)
 			{
 				// 當收到「下載地圖」的回覆，使用 IMapFileManager 將其儲存，並更新「下載中地圖清單」
-				if (Data is GetMap)
+				if (Args.Data is GetMap)
 				{
-					GetMap tmpData = Data as GetMap;
+					GetMap tmpData = Args.Data as GetMap;
 					rMapFileManager.AddMapFile(tmpData.Response.Name, tmpData.Response.Data);
 					if (mMapFileNamesOfDownloading.Contains(tmpData.Response.Name)) mMapFileNamesOfDownloading.Remove(tmpData.Response.Name);
 				}
 				// 當收到「上傳地圖檔」的回覆，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
-				else if (Data is UploadMapToAGV)
+				else if (Args.Data is UploadMapToAGV)
 				{
-					rVehicleCommunicator.SendSerializableData_RequestMapList(IpPort);
+					rVehicleCommunicator.SendSerializableData_RequestMapList(Args.IpPort);
 				}
 				// 當收到「改變當前地圖」的回覆，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
-				else if (Data is ChangeMap)
+				else if (Args.Data is ChangeMap)
 				{
-					rVehicleCommunicator.SendSerializableData_RequestMapList(IpPort);
+					rVehicleCommunicator.SendSerializableData_RequestMapList(Args.IpPort);
 				}
 			}
 		}

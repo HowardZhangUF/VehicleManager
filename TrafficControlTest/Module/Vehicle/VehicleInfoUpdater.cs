@@ -91,50 +91,50 @@ namespace TrafficControlTest.Module.Vehicle
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
+		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChanged(object Sender, RemoteConnectStateChangedEventArgs Args)
 		{
-			if (NewState == ConnectState.Disconnected)
+			if (Args.NewState == ConnectState.Disconnected)
 			{
-				if (rVehicleInfoManager.IsExistByIpPort(IpPort))
+				if (rVehicleInfoManager.IsExistByIpPort(Args.IpPort))
 				{
-					rVehicleInfoManager.Remove(rVehicleInfoManager.GetItemByIpPort(IpPort).mName);
+					rVehicleInfoManager.Remove(rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName);
 				}
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(object Sender, ReceivedSerializableDataEventArgs Args)
 		{
-			if (Data is Serializable)
+			if (Args.Data is Serializable)
 			{
 				// 處理收到的 Data 前再次確認源頭是否仍為連線中。若為連線中，則繼續處理該 Data ，反之，不處理該 Data
-				if (rVehicleCommunicator.IsIpPortConnected(IpPort))
+				if (rVehicleCommunicator.IsIpPortConnected(Args.IpPort))
 				{
-					if (Data is AGVStatus)
+					if (Args.Data is AGVStatus)
 					{
-						UpdateIVehicleInfo(IpPort, Data as AGVStatus);
+						UpdateIVehicleInfo(Args.IpPort, Args.Data as AGVStatus);
 					}
-					else if (Data is AGVPath)
+					else if (Args.Data is AGVPath)
 					{
-						UpdateIVehicleInfo(IpPort, Data as AGVPath);
+						UpdateIVehicleInfo(Args.IpPort, Args.Data as AGVPath);
 					}
-					else if (Data is RequestMapList && (Data as RequestMapList).Response != null)
+					else if (Args.Data is RequestMapList && (Args.Data as RequestMapList).Response != null)
 					{
-						UpdateIVehicleInfo(IpPort, (Data as RequestMapList).Response);
+						UpdateIVehicleInfo(Args.IpPort, (Args.Data as RequestMapList).Response);
 					}
 				}
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(DateTime OccurTime, string IpPort, object Data)
+		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(object Sender, SentSerializableDataEventArgs Args)
 		{
-			if (Data is Serializable)
+			if (Args.Data is Serializable)
 			{
-				if (Data is InsertMovingBuffer)
+				if (Args.Data is InsertMovingBuffer)
 				{
-					InsertMovingBuffer tmpData = (Data as InsertMovingBuffer);
-					rVehicleInfoManager.GetItemByIpPort(IpPort)?.UpdateCurrentInterveneCommand($"InsertMovingBuffer({tmpData.Require[0]},{tmpData.Require[1]})");
+					InsertMovingBuffer tmpData = (Args.Data as InsertMovingBuffer);
+					rVehicleInfoManager.GetItemByIpPort(Args.IpPort)?.UpdateCurrentInterveneCommand($"InsertMovingBuffer({tmpData.Require[0]},{tmpData.Require[1]})");
 				}
-				else if (Data is PauseMoving)
+				else if (Args.Data is PauseMoving)
 				{
-					rVehicleInfoManager.GetItemByIpPort(IpPort)?.UpdateCurrentInterveneCommand("PauseMoving");
+					rVehicleInfoManager.GetItemByIpPort(Args.IpPort)?.UpdateCurrentInterveneCommand("PauseMoving");
 				}
 			}
 		}
