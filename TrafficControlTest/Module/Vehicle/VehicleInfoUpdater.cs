@@ -187,8 +187,11 @@ namespace TrafficControlTest.Module.Vehicle
 				rVehicleInfoManager.Add(AgvStatus.Name, tmpData);
 			}
 
+			// 因應 iTSLibrary 的 EDescription 新增了 Operating 與 PathPlanning 項目，暫且先將二狀態轉換為 Running ，好讓原有系統能正常運作
+			string newState = AgvStatus.Description.ToString();
+			if (newState == EDescription.Operating.ToString() || newState == EDescription.PathPlanning.ToString()) newState = EDescription.Running.ToString();
 			rVehicleInfoManager.UpdateItem(AgvStatus.Name, IpPort);
-			rVehicleInfoManager.UpdateItem(AgvStatus.Name, AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D(double.IsNaN(AgvStatus.X) ? 0 : (int)AgvStatus.X, double.IsNaN(AgvStatus.Y) ? 0 : (int)AgvStatus.Y), double.IsNaN(AgvStatus.Toward) ? 0 : AgvStatus.Toward, AgvStatus.GoalName, double.IsNaN(AgvStatus.Velocity) ? 0 : AgvStatus.Velocity, double.IsNaN(AgvStatus.MapMatch) ? 0 : AgvStatus.MapMatch * 100, double.IsNaN(AgvStatus.Battery) ? 0 : AgvStatus.Battery, AgvStatus.AlarmMessage);
+			rVehicleInfoManager.UpdateItem(AgvStatus.Name, newState, Library.Library.GenerateIPoint2D(double.IsNaN(AgvStatus.X) ? 0 : (int)AgvStatus.X, double.IsNaN(AgvStatus.Y) ? 0 : (int)AgvStatus.Y), double.IsNaN(AgvStatus.Toward) ? 0 : AgvStatus.Toward, AgvStatus.GoalName, double.IsNaN(AgvStatus.Velocity) ? 0 : AgvStatus.Velocity, double.IsNaN(AgvStatus.MapMatch) ? 0 : AgvStatus.MapMatch * 100, double.IsNaN(AgvStatus.Battery) ? 0 : AgvStatus.Battery, AgvStatus.AlarmMessage);
 		}
 		private void UpdateIVehicleInfo(string IpPort, AGVPath AgvPath)
 		{
