@@ -1368,7 +1368,7 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(object Sender, LocalListenStateChangedEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(object Sender, Module.CommunicationVehicle.LocalListenStateChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "LocalListenStateChanged", $"State: {Args.NewState.ToString()}, Port: {Args.Port}");
 		}
@@ -1483,31 +1483,31 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, Module.CommunicationHost.LocalListenStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "HostCommunicator", "LocalListenStateChanged", $"State: {NewState.ToString()}, Port: {Port}");
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "LocalListenStateChanged", $"State: {Args.NewState.ToString()}, Port: {Args.Port}");
 		}
-		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
+		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, Module.CommunicationHost.RemoteConnectStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "HostCommunicator", "RemoteConnectStateChanged", $"IPPort: {IpPort}, State: {NewState}");
-			if (NewState == ConnectState.Connected)
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, State: {Args.NewState}");
+			if (Args.NewState == ConnectState.Connected)
 			{
-				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Host [ {IpPort} ] Connected");
+				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Connected");
 			}
-			else if (NewState == ConnectState.Disconnected)
+			else if (Args.NewState == ConnectState.Disconnected)
 			{
-				RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Host [ {IpPort} ] Disconnected");
+				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Disconnected");
 			}
 		}
-		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
+		private void HandleEvent_HostCommunicatorSentString(object Sender, Module.CommunicationHost.SentStringEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "HostCommunicator", "SentString", $"IPPort: {IpPort}, Data: {Data}");
-			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {IpPort} ] [ {Data} ]");
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "SentString", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
+			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {Args.IpPort} ] [ {Args.Data} ]");
 		}
-		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
+		private void HandleEvent_HostCommunicatorReceivedString(object Sender, Module.CommunicationHost.ReceivedStringEventArgs Args)
 		{
-			HandleDebugMessage(OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {IpPort}, Data: {Data}");
-			RaiseEvent_SignificantEvent(OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {IpPort} ] [ {Data} ]");
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
+			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {Args.IpPort} ] [ {Args.Data} ]");
         }
         private void HandleEvent_HostMessageAnalyzerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
         {

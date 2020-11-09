@@ -129,21 +129,21 @@ namespace TrafficControlTest.Module.Log
 		{
 			rEventRecorder.RecordMissionState(DatabaseDataOperation.Update, Args.Item);
 		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(DateTime OccurTime, ListenState NewState, int Port)
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, LocalListenStateChangedEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "LocalListenStateChanged", Port.ToString(), $"State: {NewState.ToString()}");
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "LocalListenStateChanged", Args.Port.ToString(), $"State: {Args.NewState.ToString()}");
 		}
-		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(DateTime OccurTime, string IpPort, ConnectState NewState)
+		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, RemoteConnectStateChangedEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "RemoteConnectStateChanged", IpPort, $"State: {NewState}");
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "RemoteConnectStateChanged", Args.IpPort, $"State: {Args.NewState}");
 		}
-		private void HandleEvent_HostCommunicatorSentString(DateTime OccurTime, string IpPort, string Data)
+		private void HandleEvent_HostCommunicatorSentString(object Sender, SentStringEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "SentData", IpPort, $"Data: {Data}");
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "SentData", Args.IpPort, $"Data: {Args.Data}");
 		}
-		private void HandleEvent_HostCommunicatorReceivedString(DateTime OccurTime, string IpPort, string Data)
+		private void HandleEvent_HostCommunicatorReceivedString(object Sender, ReceivedStringEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, OccurTime, "RecievedData", IpPort, $"Data: {Data}");
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "RecievedData", Args.IpPort, $"Data: {Args.Data}");
 		}
 		private void Subtask_RecordVehicleInfo()
 		{

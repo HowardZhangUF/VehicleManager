@@ -12,10 +12,10 @@ namespace TrafficControlTest.Module.CommunicationHost
 {
 	public class HostCommunicator : SystemWithLoopTask, IHostCommunicator
 	{
-		public event EventHandlerLocalListenState LocalListenStateChanged;
-		public event EventHandlerRemoteConnectState RemoteConnectStateChanged;
-		public event EventHandlerSentString SentString;
-		public event EventHandlerReceivedString ReceivedString;
+		public event EventHandler<RemoteConnectStateChangedEventArgs> RemoteConnectStateChanged;
+		public event EventHandler<LocalListenStateChangedEventArgs> LocalListenStateChanged;
+		public event EventHandler<SentStringEventArgs> SentString;
+		public event EventHandler<ReceivedStringEventArgs> ReceivedString;
 
 		public ListenState mListenState { get { return mServer.ListenStatus == EListenStatus.Idle ? ListenState.Closed : ListenState.Listening; } }
 		public int mClientCout { get { return (mServer == null || mServer.ListenStatus == EListenStatus.Idle) ? 0 : mServer.ClientCount; } }
@@ -135,44 +135,44 @@ namespace TrafficControlTest.Module.CommunicationHost
 		{
 			if (Sync)
 			{
-				LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port);
+				LocalListenStateChanged?.Invoke(this, new LocalListenStateChangedEventArgs(DateTime.Now, NewState, Port));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { LocalListenStateChanged?.Invoke(DateTime.Now, NewState, Port); });
+				System.Threading.Tasks.Task.Run(() => { LocalListenStateChanged?.Invoke(this, new LocalListenStateChangedEventArgs(DateTime.Now, NewState, Port)); });
 			}
 		}
 		protected virtual void RaiseEvent_RemoteConnectStateChanged(string IpPort, ConnectState NewState, bool Sync = true)
 		{
 			if (Sync)
 			{
-				RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState);
+				RemoteConnectStateChanged?.Invoke(this, new RemoteConnectStateChangedEventArgs(DateTime.Now, IpPort, NewState));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(DateTime.Now, IpPort, NewState); });
+				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(this, new RemoteConnectStateChangedEventArgs(DateTime.Now, IpPort, NewState)); });
 			}
 		}
 		protected virtual void RaiseEvent_SentString(string IpPort, string Data, bool Sync = true)
 		{
 			if (Sync)
 			{
-				SentString?.Invoke(DateTime.Now, IpPort, Data);
+				SentString?.Invoke(this, new SentStringEventArgs(DateTime.Now, IpPort, Data));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { SentString?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { SentString?.Invoke(this, new SentStringEventArgs(DateTime.Now, IpPort, Data)); });
 			}
 		}
 		protected virtual void RaiseEvent_ReceivedString(string IpPort, string Data, bool Sync = true)
 		{
 			if (Sync)
 			{
-				ReceivedString?.Invoke(DateTime.Now, IpPort, Data);
+				ReceivedString?.Invoke(this, new ReceivedStringEventArgs(DateTime.Now, IpPort, Data));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { ReceivedString?.Invoke(DateTime.Now, IpPort, Data); });
+				System.Threading.Tasks.Task.Run(() => { ReceivedString?.Invoke(this, new ReceivedStringEventArgs(DateTime.Now, IpPort, Data)); });
 			}
 		}
 		private void HandleEvent_ServerListenStatusChangedEvent(object sender, ListenStatusChangedEventArgs e)
