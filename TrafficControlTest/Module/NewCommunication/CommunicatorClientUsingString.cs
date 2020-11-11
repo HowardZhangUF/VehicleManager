@@ -98,7 +98,7 @@ namespace TrafficControlTest.Module.NewCommunication
             Subtask_HandleClientReceivedDataEvents();
         }
 
-        protected void SubscribeEvent_Client(Client Client)
+        protected virtual void SubscribeEvent_Client(Client Client)
         {
             if (Client != null)
             {
@@ -106,7 +106,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 Client.ReceivedDataEvent += HandleEvent_ClientReceivedDataEvent;
             }
         }
-        protected void UnsubscribeEvent_Client(Client Client)
+        protected virtual void UnsubscribeEvent_Client(Client Client)
         {
             if (Client != null)
             {

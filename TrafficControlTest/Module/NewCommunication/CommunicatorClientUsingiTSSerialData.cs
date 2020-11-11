@@ -99,7 +99,7 @@ namespace TrafficControlTest.Module.NewCommunication
             Subtask_HandleSerialClientReceivedSerialDataEvents();
         }
 
-        protected void SubscribeEvent_SerialClient(SerialClient SerialClient)
+        protected virtual void SubscribeEvent_SerialClient(SerialClient SerialClient)
         {
             if (SerialClient != null)
             {
@@ -107,7 +107,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 SerialClient.ReceivedSerialDataEvent += HandleEvent_SerialClientReceivedSerialDataEvent;
             }
         }
-        protected void UnsubscribeEvent_SerialClient(SerialClient SerialClient)
+        protected virtual void UnsubscribeEvent_SerialClient(SerialClient SerialClient)
         {
             if (SerialClient != null)
             {

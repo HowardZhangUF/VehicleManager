@@ -21,8 +21,8 @@ namespace TrafficControlTest.Module.NewCommunication
         public string[] mClientIpPorts { get { return mSerialServer.ClientDictionary.Keys.ToArray(); } }
 
         private SerialServer mSerialServer = null;
-        protected readonly Queue<ReceivedSerialDataEventArgs> mSerialServerReceivedSerialDataEventArgs = new Queue<ReceivedSerialDataEventArgs>();
-        protected readonly object mLockOfSerialServerReceivedSerialDataEventArgs = new object();
+        private readonly Queue<ReceivedSerialDataEventArgs> mSerialServerReceivedSerialDataEventArgs = new Queue<ReceivedSerialDataEventArgs>();
+        private readonly object mLockOfSerialServerReceivedSerialDataEventArgs = new object();
 
         public CommunicatorServerUsingiTSSerialData()
         {
@@ -105,7 +105,7 @@ namespace TrafficControlTest.Module.NewCommunication
             Subtask_HandleSerialServerReceivedSerialDataEventArgs();
         }
 
-        protected void SubscribeEvent_SerialServer(SerialServer SerialServer)
+        protected virtual void SubscribeEvent_SerialServer(SerialServer SerialServer)
         {
             if (SerialServer != null)
             {
@@ -114,7 +114,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 SerialServer.ReceivedSerialDataEvent += HandleEvent_SerialServerReceivedSerialDataEvent;
             }
         }
-        protected void UnsubscribeEvent_SerialServer(SerialServer SerialServer)
+        protected virtual void UnsubscribeEvent_SerialServer(SerialServer SerialServer)
         {
             if (SerialServer != null)
             {
