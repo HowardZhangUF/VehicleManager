@@ -226,7 +226,7 @@ namespace TrafficControlTest.Module.Configure
 				"确认伫列并传送控制指令给自走车的时间间隔"));
 			defaultConfigs.Add(new Configuration(
 				"HostCommunicator",
-				"ListenPort",
+                "LocalPort",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"9000",

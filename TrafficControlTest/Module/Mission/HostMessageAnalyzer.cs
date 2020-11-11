@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Mission
@@ -74,14 +75,14 @@ namespace TrafficControlTest.Module.Mission
         {
             if (HostCommunicator != null)
             {
-                HostCommunicator.ReceivedString += HandleEvent_HostCommunicatorReceivedString;
+                HostCommunicator.ReceivedData += HandleEvent_HostCommunicatorReceivedData;
             }
         }
         private void UnsubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
         {
             if (HostCommunicator != null)
             {
-                HostCommunicator.ReceivedString -= HandleEvent_HostCommunicatorReceivedString;
+                HostCommunicator.ReceivedData -= HandleEvent_HostCommunicatorReceivedData;
             }
         }
         private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
@@ -98,14 +99,14 @@ namespace TrafficControlTest.Module.Mission
                 // do nothing
             }
         }
-        private void HandleEvent_HostCommunicatorReceivedString(object Sender, ReceivedStringEventArgs Args)
+        private void HandleEvent_HostCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
         {
-            string serialInfo = GetSerial(Args.Data);
+            string serialInfo = GetSerial(Args.Data.ToString());
             string replyMsg = string.IsNullOrEmpty(serialInfo) ? string.Empty : $"Serial={serialInfo} ";
 
-            if (IsCommandTypeMission(Args.Data))
+            if (IsCommandTypeMission(Args.Data.ToString()))
             {
-                IMissionState missionState = ConvertToIMissionState(Args.IpPort, Args.Data, out string analyzeFailedDetail);
+                IMissionState missionState = ConvertToIMissionState(Args.IpPort, Args.Data.ToString(), out string analyzeFailedDetail);
                 if (missionState != null)
                 {
                     if (mFilterDuplicateMissionWhenReceivedCommand)
@@ -113,43 +114,43 @@ namespace TrafficControlTest.Module.Mission
                         if (!rMissionStateManager.GetItems().Any(o => AreTheyHaveSameContent(o, missionState)))
                         {
                             replyMsg += $"Reply=CommandAccepted MissionID={missionState.GetMissionId()}";
-                            rHostCommunicator.SendString(Args.IpPort, replyMsg);
+                            rHostCommunicator.SendData(Args.IpPort, replyMsg);
                             rMissionStateManager.Add(missionState.mName, missionState);
                         }
                         else
                         {
                             replyMsg += $"Reply=CommandRejected Reason=MissionHasAlreadyExisted";
-                            rHostCommunicator.SendString(Args.IpPort, replyMsg);
+                            rHostCommunicator.SendData(Args.IpPort, replyMsg);
                         }
                     }
 					else
                     {
                         replyMsg += $"Reply=CommandAccepted MissionID={missionState.GetMissionId()}";
-                        rHostCommunicator.SendString(Args.IpPort, replyMsg);
+                        rHostCommunicator.SendData(Args.IpPort, replyMsg);
                         rMissionStateManager.Add(missionState.mName, missionState);
                     }
                 }
                 else
                 {
                     replyMsg += $"Reply=CommandRejected Reason={analyzeFailedDetail}";
-                    rHostCommunicator.SendString(Args.IpPort, replyMsg);
+                    rHostCommunicator.SendData(Args.IpPort, replyMsg);
                 }
             }
-            else if (IsCommandTypeQueryCommand(Args.Data))
+            else if (IsCommandTypeQueryCommand(Args.Data.ToString()))
             {
-                if (Args.Data.Contains("Command=QueryVehicleList"))
+                if (Args.Data.ToString().Contains("Command=QueryVehicleList"))
                 {
                     replyMsg += $"Reply=QueryVehicleList VehicleCount={rVehicleInfoManager.mCount}" + GetVehicleListString();
                 }
-                else if (Args.Data.Contains("Command=QueryVehicleInfo"))
+                else if (Args.Data.ToString().Contains("Command=QueryVehicleInfo"))
                 {
                     replyMsg += $"Reply=QueryVehicleInfo VehicleCount={rVehicleInfoManager.mCount}" + GetVehicleInfoString();
                 }
-                else if (Args.Data.Contains("Command=QueryMissionList"))
+                else if (Args.Data.ToString().Contains("Command=QueryMissionList"))
                 {
                     replyMsg += $"Reply=QueryMissionList MissionCount={rMissionStateManager.mCount}" + GetMissionListString();
                 }
-                else if (Args.Data.Contains("Command=QueryMissionInfo"))
+                else if (Args.Data.ToString().Contains("Command=QueryMissionInfo"))
                 {
                     replyMsg += $"Reply=QueryMissionInfo MissionCount={rMissionStateManager.mCount}" + GetMissionInfoString();
                 }
@@ -157,12 +158,12 @@ namespace TrafficControlTest.Module.Mission
                 {
                     replyMsg += $"Reply=CommandRejected Reason=UnknownCommand";
                 }
-                rHostCommunicator.SendString(Args.IpPort, replyMsg);
+                rHostCommunicator.SendData(Args.IpPort, replyMsg);
             }
             else
             {
                 replyMsg += $"Reply=CommandRejected Reason=UnknownCommand";
-                rHostCommunicator.SendString(Args.IpPort, replyMsg);
+                rHostCommunicator.SendData(Args.IpPort, replyMsg);
             }
         }
         private IMissionState ConvertToIMissionState(string IpPort, string Data, out string AnalyzeFailedDetail)

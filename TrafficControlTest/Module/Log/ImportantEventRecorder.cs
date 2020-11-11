@@ -5,6 +5,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Log
@@ -94,8 +95,8 @@ namespace TrafficControlTest.Module.Log
 			{
 				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged += HandleEvent_HostCommunicatorRemoteConnectStateChanged;
-				HostCommunicator.SentString += HandleEvent_HostCommunicatorSentString;
-				HostCommunicator.ReceivedString += HandleEvent_HostCommunicatorReceivedString;
+				HostCommunicator.SentData += HandleEvent_HostCommunicatorSentData;
+				HostCommunicator.ReceivedData += HandleEvent_HostCommunicatorReceivedData;
 			}
 		}
 		private void UnsubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
@@ -104,8 +105,8 @@ namespace TrafficControlTest.Module.Log
 			{
 				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged -= HandleEvent_HostCommunicatorRemoteConnectStateChanged;
-				HostCommunicator.SentString -= HandleEvent_HostCommunicatorSentString;
-				HostCommunicator.ReceivedString -= HandleEvent_HostCommunicatorReceivedString;
+				HostCommunicator.SentData -= HandleEvent_HostCommunicatorSentData;
+				HostCommunicator.ReceivedData -= HandleEvent_HostCommunicatorReceivedData;
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
@@ -129,19 +130,19 @@ namespace TrafficControlTest.Module.Log
 		{
 			rEventRecorder.RecordMissionState(DatabaseDataOperation.Update, Args.Item);
 		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, LocalListenStateChangedEventArgs Args)
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "LocalListenStateChanged", Args.Port.ToString(), $"State: {Args.NewState.ToString()}");
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "LocalListenStateChanged", Args.Port.ToString(), $"IsListened: {Args.IsListened.ToString()}");
 		}
-		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, RemoteConnectStateChangedEventArgs Args)
+		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, ConnectStateChangedEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "RemoteConnectStateChanged", Args.IpPort, $"State: {Args.NewState}");
+			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "RemoteConnectStateChanged", Args.IpPort, $"IsConnected: {Args.IsConnected.ToString()}");
 		}
-		private void HandleEvent_HostCommunicatorSentString(object Sender, SentStringEventArgs Args)
+		private void HandleEvent_HostCommunicatorSentData(object Sender, SentDataEventArgs Args)
 		{
 			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "SentData", Args.IpPort, $"Data: {Args.Data}");
 		}
-		private void HandleEvent_HostCommunicatorReceivedString(object Sender, ReceivedStringEventArgs Args)
+		private void HandleEvent_HostCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
 		{
 			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "RecievedData", Args.IpPort, $"Data: {Args.Data}");
 		}

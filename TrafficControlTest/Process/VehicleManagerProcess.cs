@@ -117,6 +117,7 @@ namespace TrafficControlTest.Process
 			mVehicleCommunicator.StartListen();
 			mCollisionEventDetector.Start();
 			mVehicleControlHandler.Start();
+            mHostCommunicator.Start();
 			mHostCommunicator.StartListen();
 			mMissionDispatcher.Start();
 			mMissionUpdater.Start();
@@ -135,6 +136,7 @@ namespace TrafficControlTest.Process
 			mMissionUpdater.Stop();
 			mMissionDispatcher.Stop();
 			mHostCommunicator.StopListen();
+            mHostCommunicator.Stop();
 			mVehicleControlHandler.Stop();
 			mCollisionEventDetector.Stop();
 			mVehicleCommunicator.StopListen();
@@ -521,7 +523,7 @@ namespace TrafficControlTest.Process
 			mCollisionEventDetector.SetConfig("NeighborPointAmount", mConfigurator.GetValue("CollisionEventDetector/NeighborPointAmount"));
 			mCollisionEventDetector.SetConfig("VehicleLocationScoreThreshold", mConfigurator.GetValue("CollisionEventDetector/VehicleLocationScoreThreshold"));
 			mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
-			mHostCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("HostCommunicator/ListenPort"));
+			mHostCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("HostCommunicator/LocalPort"));
 			mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
 			mHostMessageAnalyzer.SetConfig("FilterDuplicateMissionWhenReceivedCommand", mConfigurator.GetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand"));
             mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
@@ -565,7 +567,7 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand", mHostMessageAnalyzer.GetConfig("FilterDuplicateMissionWhenReceivedCommand"));
 			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("HostCommunicator/ListenPort", mHostCommunicator.GetConfig("ListenPort"));
+			mConfigurator.SetValue("HostCommunicator/LocalPort", mHostCommunicator.GetConfig("LocalPort"));
 			mConfigurator.SetValue("VehicleControlHandler/TimePeriod", mVehicleControlHandler.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("CollisionEventDetector/VehicleLocationScoreThreshold", mCollisionEventDetector.GetConfig("VehicleLocationScoreThreshold"));
 			mConfigurator.SetValue("CollisionEventDetector/NeighborPointAmount", mCollisionEventDetector.GetConfig("NeighborPointAmount"));
@@ -833,8 +835,8 @@ namespace TrafficControlTest.Process
 				HostCommunicator.ConfigUpdated += HandleEvent_HostCommunicatorConfigUpdated;
 				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged += HandleEvent_HostCommunicatorRemoteConnectStateChanged;
-				HostCommunicator.SentString += HandleEvent_HostCommunicatorSentString;
-				HostCommunicator.ReceivedString += HandleEvent_HostCommunicatorReceivedString;
+				HostCommunicator.SentData += HandleEvent_HostCommunicatorSentData;
+				HostCommunicator.ReceivedData += HandleEvent_HostCommunicatorReceivedData;
 			}
 		}
 		private void UnsubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
@@ -845,8 +847,8 @@ namespace TrafficControlTest.Process
 				HostCommunicator.ConfigUpdated -= HandleEvent_HostCommunicatorConfigUpdated;
 				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged -= HandleEvent_HostCommunicatorRemoteConnectStateChanged;
-				HostCommunicator.SentString -= HandleEvent_HostCommunicatorSentString;
-				HostCommunicator.ReceivedString -= HandleEvent_HostCommunicatorReceivedString;
+				HostCommunicator.SentData -= HandleEvent_HostCommunicatorSentData;
+				HostCommunicator.ReceivedData -= HandleEvent_HostCommunicatorReceivedData;
 			}
 		}
 		private void SubscribeEvent_IHostMessageAnalyzer(IHostMessageAnalyzer HostMessageAnalyzer)
@@ -1278,8 +1280,8 @@ namespace TrafficControlTest.Process
 				case "VehicleControlHandler/TimePeriod":
 					mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
 					break;
-				case "HostCommunicator/ListenPort":
-					mHostCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("HostCommunicator/ListenPort"));
+				case "HostCommunicator/LocalPort":
+					mHostCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("HostCommunicator/LocalPort"));
 					break;
 				case "HostCommunicator/TimePeriod":
 					mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
@@ -1483,30 +1485,30 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, Module.CommunicationHost.LocalListenStateChangedEventArgs Args)
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, Module.NewCommunication.ListenStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "LocalListenStateChanged", $"State: {Args.NewState.ToString()}, Port: {Args.Port}");
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "LocalListenStateChanged", $"IsListened: {Args.IsListened.ToString()}, Port: {Args.Port}");
 		}
-		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, Module.CommunicationHost.RemoteConnectStateChangedEventArgs Args)
+		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, Module.NewCommunication.ConnectStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, State: {Args.NewState}");
-			if (Args.NewState == ConnectState.Connected)
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, IsConnected: {Args.IsConnected}");
+			if (Args.IsConnected)
 			{
 				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Connected");
 			}
-			else if (Args.NewState == ConnectState.Disconnected)
+			else
 			{
 				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Disconnected");
 			}
 		}
-		private void HandleEvent_HostCommunicatorSentString(object Sender, Module.CommunicationHost.SentStringEventArgs Args)
+		private void HandleEvent_HostCommunicatorSentData(object Sender, Module.NewCommunication.SentDataEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "SentString", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "SentData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {Args.IpPort} ] [ {Args.Data} ]");
 		}
-		private void HandleEvent_HostCommunicatorReceivedString(object Sender, Module.CommunicationHost.ReceivedStringEventArgs Args)
+		private void HandleEvent_HostCommunicatorReceivedData(object Sender, Module.NewCommunication.ReceivedDataEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ReceivedString", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {Args.IpPort} ] [ {Args.Data} ]");
         }
         private void HandleEvent_HostMessageAnalyzerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)

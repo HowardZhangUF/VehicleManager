@@ -63,7 +63,7 @@ namespace TrafficControlTest.Module.Mission
 		}
 		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			rHostCommunicator.SendString($"Event=MissionCreated MissionID={Args.Item.GetMissionId()}");
+			rHostCommunicator.SendData($"Event=MissionCreated MissionID={Args.Item.GetMissionId()}");
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
@@ -84,7 +84,7 @@ namespace TrafficControlTest.Module.Mission
 				}
 				if (!string.IsNullOrEmpty(msg))
 				{
-					rHostCommunicator.SendString(msg);
+					rHostCommunicator.SendData(msg);
 				}
 			}
 		}

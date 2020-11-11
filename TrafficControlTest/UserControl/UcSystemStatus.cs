@@ -284,9 +284,9 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleControlHandler, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, Module.CommunicationHost.LocalListenStateChangedEventArgs Args)
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, Module.NewCommunication.ListenStateChangedEventArgs Args)
 		{
-			if (Args.NewState == ListenState.Listening)
+			if (Args.IsListened)
 			{
 				UpdateGui_UpdateSwitchButtonSwitchState(sbtnHostCommunicatorServer, SwitchState.On);
 			}
@@ -404,9 +404,11 @@ namespace TrafficControlTest.UserControl
 			if (sbtnHostCommunicatorServer.SwitchState == SwitchState.On)
 			{
 				rHostCommunicator.StopListen();
+                rHostCommunicator.Stop();
 			}
 			else
 			{
+                rHostCommunicator.Start();
 				rHostCommunicator.StartListen();
 			}
 		}
