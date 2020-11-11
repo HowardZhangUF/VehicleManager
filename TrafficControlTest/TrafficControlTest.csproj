@@ -175,6 +175,17 @@
     <Compile Include="Module\Mission\IMissionStateManager.cs" />
     <Compile Include="Module\Mission\IMissionStateReporter.cs" />
     <Compile Include="Module\Mission\IMissionUpdater.cs" />
+    <Compile Include="Module\NewCommunication\CommunicatorClientUsingString.cs" />
+    <Compile Include="Module\NewCommunication\CommunicatorClientUsingiTSSerialData.cs" />
+    <Compile Include="Module\NewCommunication\CommunicatorServerUsingiTSSerialData.cs" />
+    <Compile Include="Module\NewCommunication\CommunicatorServerUsingString.cs" />
+    <Compile Include="Module\NewCommunication\ConnectStateChangedEventArgs.cs" />
+    <Compile Include="Module\NewCommunication\ICommunicator.cs" />
+    <Compile Include="Module\NewCommunication\ICommunicatorClient.cs" />
+    <Compile Include="Module\NewCommunication\ICommunicatorServer.cs" />
+    <Compile Include="Module\NewCommunication\ListenStateChangedEventArgs.cs" />
+    <Compile Include="Module\NewCommunication\ReceivedDataEventArgs.cs" />
+    <Compile Include="Module\NewCommunication\SentDataEventArgs.cs" />
     <Compile Include="Module\VehiclePassThroughAutomaticDoor\IVehiclePassThroughAutomaticDoorEventHandler.cs" />
     <Compile Include="Module\VehiclePassThroughAutomaticDoor\IVehiclePassThroughAutomaticDoorEventManagerUpdater.cs" />
     <Compile Include="Module\VehiclePassThroughAutomaticDoor\IVehiclePassThroughAutomaticDoorEvent.cs" />
