@@ -94,20 +94,20 @@ namespace TrafficControlTest.Module.Mission
 			switch (Mission.mMissionType)
 			{
 				case MissionType.Goto:
-					rVehicleCommunicator.SendSerializableData_Goto(IpPort, Mission.mParameters[0]);
+					rVehicleCommunicator.SendDataOfGoto(IpPort, Mission.mParameters[0]);
 					break;
 				case MissionType.GotoPoint:
 					if (Mission.mParameters.Length == 2)
 					{
-						rVehicleCommunicator.SendSerializableData_GotoPoint(IpPort, int.Parse(Mission.mParameters[0]), int.Parse(Mission.mParameters[1]));
+						rVehicleCommunicator.SendDataOfGotoPoint(IpPort, int.Parse(Mission.mParameters[0]), int.Parse(Mission.mParameters[1]));
 					}
 					else if (Mission.mParameters.Length == 3)
 					{
-						rVehicleCommunicator.SendSerializableData_GotoTowardPoint(IpPort, int.Parse(Mission.mParameters[0]), int.Parse(Mission.mParameters[1]), int.Parse(Mission.mParameters[2]));
+						rVehicleCommunicator.SendDataOfGotoTowardPoint(IpPort, int.Parse(Mission.mParameters[0]), int.Parse(Mission.mParameters[1]), int.Parse(Mission.mParameters[2]));
 					}
 					break;
 				case MissionType.Dock:
-					rVehicleCommunicator.SendSerializableData_Dock(IpPort);
+					rVehicleCommunicator.SendDataOfDock(IpPort);
 					break;
 			}
 		}

@@ -158,7 +158,7 @@ namespace TrafficControlTest.Module.Configure
 				"记录自走车历史记录的时间间隔"));
 			defaultConfigs.Add(new Configuration(
 				"VehicleCommunicator",
-				"ListenPort",
+				"LocalPort",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"8000",

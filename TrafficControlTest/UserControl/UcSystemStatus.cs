@@ -12,6 +12,7 @@ using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
 using System.Windows.Forms;
 using TrafficControlTest.Module.Map;
+using TrafficControlTest.Module.NewCommunication;
 
 namespace TrafficControlTest.UserControl
 {
@@ -261,9 +262,9 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateGui_UpdateSwitchButtonSwitchState(sbtnImportantEventRecorder, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(object Sender, Module.CommunicationVehicle.LocalListenStateChangedEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
 		{
-			if (Args.NewState == ListenState.Listening)
+			if (Args.IsListened)
 			{
 				UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicatorServer, SwitchState.On);
 			}
@@ -284,7 +285,7 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleControlHandler, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, Module.NewCommunication.ListenStateChangedEventArgs Args)
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
 		{
 			if (Args.IsListened)
 			{
@@ -393,9 +394,11 @@ namespace TrafficControlTest.UserControl
 			if (sbtnVehicleCommunicatorServer.SwitchState == SwitchState.On)
 			{
 				rVehicleCommunicator.StopListen();
+                rVehicleCommunicator.Stop();
 			}
 			else
 			{
+                rVehicleCommunicator.Start();
 				rVehicleCommunicator.StartListen();
 			}
 		}

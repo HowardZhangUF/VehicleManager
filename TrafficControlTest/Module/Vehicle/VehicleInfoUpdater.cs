@@ -7,6 +7,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.NewCommunication;
 
 namespace TrafficControlTest.Module.Vehicle
 {
@@ -50,18 +51,18 @@ namespace TrafficControlTest.Module.Vehicle
 			if (VehicleCommunicator != null)
 			{
 				VehicleCommunicator.RemoteConnectStateChanged += HandleEvent_VehicleCommunicatorRemoteConnectStateChanged;
-				VehicleCommunicator.ReceivedSerializableData += HandleEvent_VehicleCommunicatorReceivedSerializableData;
-				VehicleCommunicator.SentSerializableDataSuccessed += HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
+				VehicleCommunicator.ReceivedData += HandleEvent_VehicleCommunicatorReceivedData;
+				VehicleCommunicator.SentDataSuccessed += HandleEvent_VehicleCommunicatorSentDataSuccessed;
 			}
 		}
 		private void Unsubscribe_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
 			if (VehicleCommunicator != null)
-			{
-				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChanged;
-				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
-				VehicleCommunicator.SentSerializableDataSuccessed -= HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-			}
+            {
+                VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChanged;
+                VehicleCommunicator.ReceivedData -= HandleEvent_VehicleCommunicatorReceivedData;
+                VehicleCommunicator.SentDataSuccessed -= HandleEvent_VehicleCommunicatorSentDataSuccessed;
+            }
 		}
 		private void Subscribe_IMissionStateManager(IMissionStateManager MissionStateManager)
 		{
@@ -91,9 +92,9 @@ namespace TrafficControlTest.Module.Vehicle
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChanged(object Sender, RemoteConnectStateChangedEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChanged(object Sender, ConnectStateChangedEventArgs Args)
 		{
-			if (Args.NewState == ConnectState.Disconnected)
+			if (Args.IsConnected == false)
 			{
 				if (rVehicleInfoManager.IsExistByIpPort(Args.IpPort))
 				{
@@ -101,12 +102,12 @@ namespace TrafficControlTest.Module.Vehicle
 				}
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(object Sender, ReceivedSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
 		{
 			if (Args.Data is Serializable)
 			{
 				// 處理收到的 Data 前再次確認源頭是否仍為連線中。若為連線中，則繼續處理該 Data ，反之，不處理該 Data
-				if (rVehicleCommunicator.IsIpPortConnected(Args.IpPort))
+				if (rVehicleCommunicator.mClientIpPorts.Contains(Args.IpPort))
 				{
 					if (Args.Data is AGVStatus)
 					{
@@ -123,7 +124,7 @@ namespace TrafficControlTest.Module.Vehicle
 				}
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(object Sender, SentSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentDataSuccessed(object Sender, SentDataEventArgs Args)
 		{
 			if (Args.Data is Serializable)
 			{

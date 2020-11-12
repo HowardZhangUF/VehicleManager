@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.InterveneCommand
@@ -58,16 +59,16 @@ namespace TrafficControlTest.Module.InterveneCommand
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.SentSerializableDataSuccessed += HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-				VehicleCommunicator.SentSerializableDataFailed += HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
+				VehicleCommunicator.SentDataSuccessed += HandleEvent_VehicleCommunicatorSentDataSuccessed;
+				VehicleCommunicator.SentDataFailed += HandleEvent_VehicleCommunicatorSentDataFailed;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.SentSerializableDataSuccessed -= HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
+				VehicleCommunicator.SentDataSuccessed -= HandleEvent_VehicleCommunicatorSentDataSuccessed;
+				VehicleCommunicator.SentDataFailed -= HandleEvent_VehicleCommunicatorSentDataFailed;
 			}
 		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
@@ -80,7 +81,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(object Sender, SentSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentDataSuccessed(object Sender, SentDataEventArgs Args)
 		{
 			if (Args.Data is Serializable)
 			{
@@ -91,7 +92,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(object Sender, SentSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentDataFailed(object Sender, SentDataEventArgs Args)
 		{
 			if (Args.Data is Serializable && rVehicleInfoManager.IsExistByIpPort(Args.IpPort))
 			{

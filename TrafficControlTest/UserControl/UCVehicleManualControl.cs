@@ -160,14 +160,14 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null && lbGoalNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_Goto(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, lbGoalNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendDataOfGoto(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, lbGoalNameList.SelectedItem.ToString());
 			}
 		}
 		private void btnStop_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_Stop(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				rVehicleCommunicator.SendDataOfStop(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 	}

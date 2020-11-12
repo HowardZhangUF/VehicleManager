@@ -16,6 +16,7 @@ using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
 using static TrafficControlTest.Library.EventHandlerLibrary;
@@ -114,6 +115,7 @@ namespace TrafficControlTest.Process
 			mEventRecorder.Start();
 			mAccountManager.Read();
 			mImportantEventRecorder.Start();
+            mVehicleCommunicator.Start();
 			mVehicleCommunicator.StartListen();
 			mCollisionEventDetector.Start();
 			mVehicleControlHandler.Start();
@@ -140,6 +142,7 @@ namespace TrafficControlTest.Process
 			mVehicleControlHandler.Stop();
 			mCollisionEventDetector.Stop();
 			mVehicleCommunicator.StopListen();
+            mVehicleCommunicator.Stop();
 			mImportantEventRecorder.Stop();
 			mAccountManager.Save();
 
@@ -517,7 +520,7 @@ namespace TrafficControlTest.Process
 			mLogExporter.SetConfig("ExportDirectoryNamePrefix", mConfigurator.GetValue("LogExporter/ExportDirectoryNamePrefix"));
 			mLogExporter.SetConfig("ExportDirectoryNameTimeFormat", mConfigurator.GetValue("LogExporter/ExportDirectoryNameTimeFormat"));
 			mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
-			mVehicleCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("VehicleCommunicator/ListenPort"));
+			mVehicleCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("VehicleCommunicator/LocalPort"));
 			mVehicleCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
 			mCollisionEventDetector.SetConfig("TimePeriod", mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
 			mCollisionEventDetector.SetConfig("NeighborPointAmount", mConfigurator.GetValue("CollisionEventDetector/NeighborPointAmount"));
@@ -573,7 +576,7 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("CollisionEventDetector/NeighborPointAmount", mCollisionEventDetector.GetConfig("NeighborPointAmount"));
 			mConfigurator.SetValue("CollisionEventDetector/TimePeriod", mCollisionEventDetector.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("VehicleCommunicator/TimePeriod", mVehicleCommunicator.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("VehicleCommunicator/ListenPort", mVehicleCommunicator.GetConfig("ListenPort"));
+			mConfigurator.SetValue("VehicleCommunicator/LocalPort", mVehicleCommunicator.GetConfig("LocalPort"));
 			mConfigurator.SetValue("ImportantEventRecorder/TimePeriod", mImportantEventRecorder.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("LogExporter/ExportDirectoryNameTimeFormat", mLogExporter.GetConfig("ExportDirectoryNameTimeFormat"));
 			mConfigurator.SetValue("LogExporter/ExportDirectoryNamePrefix", mLogExporter.GetConfig("ExportDirectoryNamePrefix"));
@@ -661,10 +664,10 @@ namespace TrafficControlTest.Process
 				VehicleCommunicator.ConfigUpdated += HandleEvent_VehicleCommunicatorConfigUpdated;
 				VehicleCommunicator.LocalListenStateChanged += HandleEvent_VehicleCommunicatorLocalListenStateChagned;
 				VehicleCommunicator.RemoteConnectStateChanged += HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
-				VehicleCommunicator.SentSerializableData += HandleEvent_VehicleCommunicatorSentSerializableData;
-				VehicleCommunicator.ReceivedSerializableData += HandleEvent_VehicleCommunicatorReceivedSerializableData;
-				VehicleCommunicator.SentSerializableDataSuccessed += HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-				VehicleCommunicator.SentSerializableDataFailed += HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
+				VehicleCommunicator.SentData += HandleEvent_VehicleCommunicatorSentData;
+				VehicleCommunicator.ReceivedData += HandleEvent_VehicleCommunicatorReceivedData;
+				VehicleCommunicator.SentDataSuccessed += HandleEvent_VehicleCommunicatorSentDataSuccessed;
+				VehicleCommunicator.SentDataFailed += HandleEvent_VehicleCommunicatorSentDataFailed;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -675,10 +678,10 @@ namespace TrafficControlTest.Process
 				VehicleCommunicator.ConfigUpdated -= HandleEvent_VehicleCommunicatorConfigUpdated;
 				VehicleCommunicator.LocalListenStateChanged -= HandleEvent_VehicleCommunicatorLocalListenStateChagned;
 				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
-				VehicleCommunicator.SentSerializableData -= HandleEvent_VehicleCommunicatorSentSerializableData;
-				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
-				VehicleCommunicator.SentSerializableDataSuccessed -= HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed;
-				VehicleCommunicator.SentSerializableDataFailed -= HandleEvent_VehicleCommunicatorSentSerializableDataFailed;
+				VehicleCommunicator.SentData -= HandleEvent_VehicleCommunicatorSentData;
+				VehicleCommunicator.ReceivedData -= HandleEvent_VehicleCommunicatorReceivedData;
+				VehicleCommunicator.SentDataSuccessed -= HandleEvent_VehicleCommunicatorSentDataSuccessed;
+				VehicleCommunicator.SentDataFailed -= HandleEvent_VehicleCommunicatorSentDataFailed;
 			}
 		}
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -1262,8 +1265,8 @@ namespace TrafficControlTest.Process
 				case "ImportantEventRecorder/TimePeriod":
 					mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
 					break;
-				case "VehicleCommunicator/ListenPort":
-					mVehicleCommunicator.SetConfig("ListenPort", mConfigurator.GetValue("VehicleCommunicator/ListenPort"));
+				case "VehicleCommunicator/LocalPort":
+					mVehicleCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("VehicleCommunicator/LocalPort"));
 					break;
 				case "VehicleCommunicator/TimePeriod":
 					mVehicleCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
@@ -1370,19 +1373,19 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(object Sender, Module.CommunicationVehicle.LocalListenStateChangedEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorLocalListenStateChagned(object Sender, ListenStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "LocalListenStateChanged", $"State: {Args.NewState.ToString()}, Port: {Args.Port}");
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "LocalListenStateChanged", $"Port: {Args.Port}, IsListened: {Args.IsListened.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(object Sender, Module.CommunicationVehicle.RemoteConnectStateChangedEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(object Sender, Module.NewCommunication.ConnectStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, State: {Args.NewState}");
+			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, IsConnected: {Args.IsConnected.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableData(object Sender, SentSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentData(object Sender, Module.NewCommunication.SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentData", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(object Sender, ReceivedSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorReceivedData(object Sender, Module.NewCommunication.ReceivedDataEventArgs Args)
 		{
 			// 常態事件不做 General Log 記錄(避免資料庫儲存太多的資訊)，也不使用 Console.WriteLine() 顯示(避免資訊過多)
 			if (!(Args.Data is SerialData.AGVStatus) && !(Args.Data is SerialData.AGVPath))
@@ -1390,11 +1393,11 @@ namespace TrafficControlTest.Process
 				HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataSuccessed(object Sender, SentSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentDataSuccessed(object Sender, Module.NewCommunication.SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentDataSuccessed", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorSentSerializableDataFailed(object Sender, SentSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentDataFailed(object Sender, Module.NewCommunication.SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentDataFailed", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
@@ -1487,7 +1490,7 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, Module.NewCommunication.ListenStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "LocalListenStateChanged", $"IsListened: {Args.IsListened.ToString()}, Port: {Args.Port}");
+			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "LocalListenStateChanged", $"Port: {Args.Port}, IsListened: {Args.IsListened.ToString()}");
 		}
 		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, Module.NewCommunication.ConnectStateChangedEventArgs Args)
 		{
@@ -1619,15 +1622,15 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ClientRemoved", $"IPPort: {Args.IpPort}");
 		}
-		private void HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged(object Sender, Module.AutomaticDoor.RemoteConnectStateChangedEventArgs Args)
+		private void HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged(object Sender, RemoteConnectStateChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, Connected: {Args.Connected.ToString()}");
 		}
-		private void HandleEvent_AutomaticDoorCommunicatorSentData(object Sender, SentDataEventArgs Args)
+		private void HandleEvent_AutomaticDoorCommunicatorSentData(object Sender, Module.AutomaticDoor.SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "SentData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 		}
-		private void HandleEvent_AutomaticDoorCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
+		private void HandleEvent_AutomaticDoorCommunicatorReceivedData(object Sender, Module.AutomaticDoor.ReceivedDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 		}

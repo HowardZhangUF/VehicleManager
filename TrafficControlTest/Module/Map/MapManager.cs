@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Map
@@ -159,7 +160,7 @@ namespace TrafficControlTest.Module.Map
 			{
 				foreach (string vehicleName in vehicleNames)
 				{
-					rVehicleCommunicator.SendSerializableData_ChangeMap(rVehicleInfoManager.GetItem(vehicleName).mIpPort, MapFileName);
+					rVehicleCommunicator.SendDataOfChangeMap(rVehicleInfoManager.GetItem(vehicleName).mIpPort, MapFileName);
 				}
 				RaiseEvent_SynchronizeMapStarted(MapFileName, vehicleNames);
 			}
@@ -195,14 +196,14 @@ namespace TrafficControlTest.Module.Map
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.ReceivedSerializableData += HandleEvent_VehicleCommunicatorReceivedSerializableData;
+				VehicleCommunicator.ReceivedData += HandleEvent_VehicleCommunicatorReceivedData;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.ReceivedSerializableData -= HandleEvent_VehicleCommunicatorReceivedSerializableData;
+				VehicleCommunicator.ReceivedData -= HandleEvent_VehicleCommunicatorReceivedData;
 			}
 		}
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -270,7 +271,7 @@ namespace TrafficControlTest.Module.Map
 				Task.Run(() => { SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames)); });
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorReceivedSerializableData(object Sender, ReceivedSerializableDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
 		{
 			if (Args.Data is Serializable)
 			{
@@ -284,19 +285,19 @@ namespace TrafficControlTest.Module.Map
 				// 當收到「上傳地圖檔」的回覆，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
 				else if (Args.Data is UploadMapToAGV)
 				{
-					rVehicleCommunicator.SendSerializableData_RequestMapList(Args.IpPort);
+					rVehicleCommunicator.SendDataOfRequestMapList(Args.IpPort);
 				}
 				// 當收到「改變當前地圖」的回覆，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
 				else if (Args.Data is ChangeMap)
 				{
-					rVehicleCommunicator.SendSerializableData_RequestMapList(Args.IpPort);
+					rVehicleCommunicator.SendDataOfRequestMapList(Args.IpPort);
 				}
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			// 當有車連線時，向其發送「取得當前地圖清單」的請求
-			rVehicleCommunicator.SendSerializableData_RequestMapList(Args.Item.mIpPort);
+			rVehicleCommunicator.SendDataOfRequestMapList(Args.Item.mIpPort);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
@@ -317,7 +318,7 @@ namespace TrafficControlTest.Module.Map
 				// 當 CurrentMapName 不為空或 Null 時，發送「下載地圖」的請求，並更新「下載中地圖清單」
 				if (!string.IsNullOrEmpty(Args.Item.mCurrentMapName))
 				{
-					rVehicleCommunicator.SendSerializableData_GetMap(Args.Item.mIpPort, Args.Item.mCurrentMapName);
+					rVehicleCommunicator.SendDataOfGetMap(Args.Item.mIpPort, Args.Item.mCurrentMapName);
 					mMapFileNamesOfDownloading.Add(Args.Item.mCurrentMapName);
 				}
 

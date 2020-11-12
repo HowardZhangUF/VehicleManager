@@ -269,7 +269,7 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbGoalNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_Goto(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbGoalNameList.SelectedItem.ToString());
+				rVehicleCommunicator.SendDataOfGoto(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbGoalNameList.SelectedItem.ToString());
 			}
 		}
 		private void btnVehicleGotoPoint_Click(object sender, EventArgs e)
@@ -279,11 +279,11 @@ namespace TrafficControlTest.UserControl
 				string[] datas = txtCoordinate1.Text.Split(',');
 				if (datas.Length == 2)
 				{
-					rVehicleCommunicator.SendSerializableData_GotoPoint(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]));
+					rVehicleCommunicator.SendDataOfGotoPoint(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]));
 				}
 				else if (datas.Length == 3)
 				{
-					rVehicleCommunicator.SendSerializableData_GotoTowardPoint(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]), int.Parse(datas[2]));
+					rVehicleCommunicator.SendDataOfGotoTowardPoint(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]), int.Parse(datas[2]));
 				}
 			}
 		}
@@ -298,7 +298,7 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_Stop(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				rVehicleCommunicator.SendDataOfStop(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehicleInsertMovingBuffer_Click(object sender, EventArgs e)
@@ -308,7 +308,7 @@ namespace TrafficControlTest.UserControl
 				string[] datas = txtCoordinate2.Text.Split(',');
 				if (datas.Length == 2)
 				{
-					rVehicleCommunicator.SendSerializableData_InsertMovingBuffer(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]));
+					rVehicleCommunicator.SendDataOfInsertMovingBuffer(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, int.Parse(datas[0]), int.Parse(datas[1]));
 				}
 			}
 		}
@@ -316,49 +316,49 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				rVehicleCommunicator.SendDataOfRemoveMovingBuffer(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehiclePause_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_PauseMoving(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				rVehicleCommunicator.SendDataOfPauseMoving(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehicleResume_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_ResumeMoving(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				rVehicleCommunicator.SendDataOfResumeMoving(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehicleRequestMapList_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_RequestMapList(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				rVehicleCommunicator.SendDataOfRequestMapList(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
 			}
 		}
 		private void btnVehicleGetMap_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList1.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_GetMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList1.SelectedItem.ToString().Replace("*", string.Empty));
+				rVehicleCommunicator.SendDataOfGetMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList1.SelectedItem.ToString().Replace("*", string.Empty));
 			}
 		}
 		private void btnVehicleUploadMap_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbLocalMapNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_UploadMapToAGV(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, rMapFileManager.GetMapFileFullPath(cbLocalMapNameList.SelectedItem.ToString()));
+				rVehicleCommunicator.SendDataOfUploadMapToAGV(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, rMapFileManager.GetMapFileFullPath(cbLocalMapNameList.SelectedItem.ToString()));
 			}
 		}
 		private void btnVehicleChangeMap_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList2.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendSerializableData_ChangeMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList2.SelectedItem.ToString().Replace("*", string.Empty));
+				rVehicleCommunicator.SendDataOfChangeMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList2.SelectedItem.ToString().Replace("*", string.Empty));
 			}
 		}
 		private void cbVehicleNameList_SelectedIndexChanged(object sender, EventArgs e)

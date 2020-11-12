@@ -112,16 +112,16 @@ namespace TrafficControlTest.Module.InterveneCommand
 				switch (VehicleControl.mCommand)
 				{
 					case Command.InsertMovingBuffer:
-						rVehicleCommunicator.SendSerializableData_InsertMovingBuffer(ipPort, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]));
+						rVehicleCommunicator.SendDataOfInsertMovingBuffer(ipPort, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]));
 						break;
 					case Command.RemoveMovingBuffer:
-						rVehicleCommunicator.SendSerializableData_RemoveMovingBuffer(ipPort);
+						rVehicleCommunicator.SendDataOfRemoveMovingBuffer(ipPort);
 						break;
 					case Command.PauseMoving:
-						rVehicleCommunicator.SendSerializableData_PauseMoving(ipPort);
+						rVehicleCommunicator.SendDataOfPauseMoving(ipPort);
 						break;
 					case Command.ResumeMoving:
-						rVehicleCommunicator.SendSerializableData_ResumeMoving(ipPort);
+						rVehicleCommunicator.SendDataOfResumeMoving(ipPort);
 						break;
 					default:
 						break;
