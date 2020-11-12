@@ -17,9 +17,9 @@ namespace TrafficControlTest.Module.NewCommunication
         public string mRemoteIpPort { get; private set; } = "127.0.0.1:1025";
         public bool mIsConnected { get { return mClient.ConnectStatus == EConnectStatus.Connect ? true : false; } }
 
-        private Client mClient = null;
-        private readonly Queue<AsyncSocket.ReceivedDataEventArgs> mClientReceivedDataEventArgs = new Queue<AsyncSocket.ReceivedDataEventArgs>();
-        private readonly object mLockOfClientReceivedDataEventArgs = new object();
+        protected Client mClient = null;
+        protected readonly Queue<AsyncSocket.ReceivedDataEventArgs> mClientReceivedDataEventArgs = new Queue<AsyncSocket.ReceivedDataEventArgs>();
+        protected readonly object mLockOfClientReceivedDataEventArgs = new object();
 
         public CommunicatorClientUsingString()
         {
@@ -54,7 +54,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 mClient.Disconnect();
             }
         }
-        public void SendData(object Data)
+        public virtual void SendData(object Data)
         {
             if (mClient.ConnectStatus == EConnectStatus.Connect)
             {

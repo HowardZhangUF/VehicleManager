@@ -20,9 +20,9 @@ namespace TrafficControlTest.Module.NewCommunication
         public bool mIsListened { get { return mSerialServer.ListenStatus == EListenStatus.Listening ? true : false; } }
         public string[] mClientIpPorts { get { return mSerialServer.ClientDictionary.Keys.ToArray(); } }
 
-        private SerialServer mSerialServer = null;
-        private readonly Queue<ReceivedSerialDataEventArgs> mSerialServerReceivedSerialDataEventArgs = new Queue<ReceivedSerialDataEventArgs>();
-        private readonly object mLockOfSerialServerReceivedSerialDataEventArgs = new object();
+        protected SerialServer mSerialServer = null;
+        protected readonly Queue<ReceivedSerialDataEventArgs> mSerialServerReceivedSerialDataEventArgs = new Queue<ReceivedSerialDataEventArgs>();
+        protected readonly object mLockOfSerialServerReceivedSerialDataEventArgs = new object();
 
         public CommunicatorServerUsingiTSSerialData()
         {
@@ -54,7 +54,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 mSerialServer.StopListen();
             }
         }
-        public void SendData(string IpPort, object Data)
+        public virtual void SendData(string IpPort, object Data)
         {
             if (mSerialServer.ClientDictionary.Keys.Contains(IpPort))
             {
@@ -65,7 +65,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 }
             }
         }
-        public void SendData(object Data)
+        public virtual void SendData(object Data)
         {
             foreach (string ipPort in mSerialServer.ClientDictionary.Keys.ToArray())
             {

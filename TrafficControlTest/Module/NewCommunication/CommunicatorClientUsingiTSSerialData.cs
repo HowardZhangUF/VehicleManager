@@ -18,9 +18,9 @@ namespace TrafficControlTest.Module.NewCommunication
         public string mRemoteIpPort { get; private set; } = "127.0.0.1:1025";
         public bool mIsConnected { get { return mSerialClient.ConnectStatus == EConnectStatus.Connect ? true : false; } }
 
-        private SerialClient mSerialClient = null;
-        private readonly Queue<ReceivedSerialDataEventArgs> mSerialClientReceivedSerialDataEventArgs = new Queue<ReceivedSerialDataEventArgs>();
-        private readonly object mLockOfSerialClientReceivedSerialDataEventArgs = new object();
+        protected SerialClient mSerialClient = null;
+        protected readonly Queue<ReceivedSerialDataEventArgs> mSerialClientReceivedSerialDataEventArgs = new Queue<ReceivedSerialDataEventArgs>();
+        protected readonly object mLockOfSerialClientReceivedSerialDataEventArgs = new object();
 
         public CommunicatorClientUsingiTSSerialData()
         {
@@ -55,7 +55,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 mSerialClient.Disconnect();
             }
         }
-        public void SendData(object Data)
+        public virtual void SendData(object Data)
         {
             if (mSerialClient.ConnectStatus == EConnectStatus.Connect)
             {

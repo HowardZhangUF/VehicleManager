@@ -19,9 +19,9 @@ namespace TrafficControlTest.Module.NewCommunication
         public bool mIsListened { get { return mServer.ListenStatus == EListenStatus.Listening ? true : false; } }
         public string[] mClientIpPorts { get { return mServer.ClientDictionary.Keys.ToArray(); } }
 
-        private Server mServer = null;
-        private readonly Queue<AsyncSocket.ReceivedDataEventArgs> mServerReceivedDataEventArgs = new Queue<AsyncSocket.ReceivedDataEventArgs>();
-        private readonly object mLockOfServerReceivedDataEventArgs = new object();
+        protected Server mServer = null;
+        protected readonly Queue<AsyncSocket.ReceivedDataEventArgs> mServerReceivedDataEventArgs = new Queue<AsyncSocket.ReceivedDataEventArgs>();
+        protected readonly object mLockOfServerReceivedDataEventArgs = new object();
 
         public CommunicatorServerUsingString()
         {
@@ -53,7 +53,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 mServer.StopListen();
             }
         }
-        public void SendData(string IpPort, object Data)
+        public virtual void SendData(string IpPort, object Data)
         {
             if (mServer.ClientDictionary.Keys.Contains(IpPort))
             {
@@ -64,7 +64,7 @@ namespace TrafficControlTest.Module.NewCommunication
                 }
             }
         }
-        public void SendData(object Data)
+        public virtual void SendData(object Data)
         {
             foreach (string ipPort in mServer.ClientDictionary.Keys.ToArray())
             {
