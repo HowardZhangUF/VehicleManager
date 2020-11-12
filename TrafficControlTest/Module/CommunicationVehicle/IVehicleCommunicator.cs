@@ -12,6 +12,7 @@ namespace TrafficControlTest.Module.CommunicationVehicle
         event EventHandler<SentDataEventArgs> SentDataSuccessed;
         event EventHandler<SentDataEventArgs> SentDataFailed;
 
+        void SendDataAndWaitAck(string IpPort, object Data);
         void SendDataOfGoto(string IpPort, string Target);
         void SendDataOfGotoPoint(string IpPort, int X, int Y);
         void SendDataOfGotoTowardPoint(string IpPort, int X, int Y, int Toward);

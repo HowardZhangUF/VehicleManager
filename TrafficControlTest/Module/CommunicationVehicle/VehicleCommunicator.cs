@@ -17,7 +17,7 @@ namespace TrafficControlTest.Module.CommunicationVehicle
         public event EventHandler<SentDataEventArgs> SentDataSuccessed;
         public event EventHandler<SentDataEventArgs> SentDataFailed;
 
-        public override void SendData(string IpPort, object Data)
+        public void SendDataAndWaitAck(string IpPort, object Data)
         {
             if (mSerialServer.ClientDictionary.Keys.Contains(IpPort))
             {
@@ -30,15 +30,15 @@ namespace TrafficControlTest.Module.CommunicationVehicle
         }
         public void SendDataOfGoto(string IpPort, string Target)
         {
-            SendData(IpPort, new GoTo(Target));
+            SendDataAndWaitAck(IpPort, new GoTo(Target));
         }
         public void SendDataOfGotoPoint(string IpPort, int X, int Y)
         {
-            SendData(IpPort, new GoToPoint(new List<int> { X, Y }));
+            SendDataAndWaitAck(IpPort, new GoToPoint(new List<int> { X, Y }));
         }
         public void SendDataOfGotoTowardPoint(string IpPort, int X, int Y, int Toward)
         {
-            SendData(IpPort, new GoToTowardPoint(new List<int> { X, Y, Toward }));
+            SendDataAndWaitAck(IpPort, new GoToTowardPoint(new List<int> { X, Y, Toward }));
         }
         public void SendDataOfDock(string IpPort)
         {
@@ -46,41 +46,41 @@ namespace TrafficControlTest.Module.CommunicationVehicle
         }
         public void SendDataOfStop(string IpPort)
         {
-            SendData(IpPort, new Stop(null));
+            SendDataAndWaitAck(IpPort, new Stop(null));
         }
         public void SendDataOfInsertMovingBuffer(string IpPort, int X, int Y)
         {
-            SendData(IpPort, new InsertMovingBuffer(new List<int>() { X, Y }));
+            SendDataAndWaitAck(IpPort, new InsertMovingBuffer(new List<int>() { X, Y }));
         }
         public void SendDataOfRemoveMovingBuffer(string IpPort)
         {
-            SendData(IpPort, new RemoveMovingBuffer(null));
+            SendDataAndWaitAck(IpPort, new RemoveMovingBuffer(null));
         }
         public void SendDataOfPauseMoving(string IpPort)
         {
-            SendData(IpPort, new PauseMoving(null));
+            SendDataAndWaitAck(IpPort, new PauseMoving(null));
         }
         public void SendDataOfResumeMoving(string IpPort)
         {
-            SendData(IpPort, new ResumeMoving(null));
+            SendDataAndWaitAck(IpPort, new ResumeMoving(null));
         }
         public void SendDataOfRequestMapList(string IpPort)
         {
-            SendData(IpPort, new RequestMapList(null));
+            SendDataAndWaitAck(IpPort, new RequestMapList(null));
         }
         public void SendDataOfGetMap(string IpPort, string MapName)
         {
             // 與 iTS 通訊時， GetMap 帶的參數要移除副檔名
-            SendData(IpPort, new GetMap(MapName.Replace(".map", string.Empty)));
+            SendDataAndWaitAck(IpPort, new GetMap(MapName.Replace(".map", string.Empty)));
         }
         public void SendDataOfUploadMapToAGV(string IpPort, string MapPath)
         {
-            if (System.IO.File.Exists(MapPath)) SendData(IpPort, new UploadMapToAGV(new FileInfo(MapPath)));
+            if (System.IO.File.Exists(MapPath)) SendDataAndWaitAck(IpPort, new UploadMapToAGV(new FileInfo(MapPath)));
         }
         public void SendDataOfChangeMap(string IpPort, string MapName)
         {
             // 與 iTS 通訊時， ChangeMap 帶的參數要移除副檔名
-            SendData(IpPort, new ChangeMap(MapName.Replace(".map", string.Empty)));
+            SendDataAndWaitAck(IpPort, new ChangeMap(MapName.Replace(".map", string.Empty)));
         }
 
         protected override void SubscribeEvent_SerialServer(SerialServer SerialServer)
