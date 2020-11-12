@@ -6,7 +6,6 @@ using TrafficControlTest.Module.Account;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CollisionEvent;
-using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Configure;
@@ -1377,15 +1376,15 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "LocalListenStateChanged", $"Port: {Args.Port}, IsListened: {Args.IsListened.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(object Sender, Module.NewCommunication.ConnectStateChangedEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(object Sender, ConnectStateChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, IsConnected: {Args.IsConnected.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorSentData(object Sender, Module.NewCommunication.SentDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentData(object Sender, SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentData", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorReceivedData(object Sender, Module.NewCommunication.ReceivedDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
 		{
 			// 常態事件不做 General Log 記錄(避免資料庫儲存太多的資訊)，也不使用 Console.WriteLine() 顯示(避免資訊過多)
 			if (!(Args.Data is SerialData.AGVStatus) && !(Args.Data is SerialData.AGVPath))
@@ -1393,11 +1392,11 @@ namespace TrafficControlTest.Process
 				HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 			}
 		}
-		private void HandleEvent_VehicleCommunicatorSentDataSuccessed(object Sender, Module.NewCommunication.SentDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentDataSuccessed(object Sender, SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentDataSuccessed", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
-		private void HandleEvent_VehicleCommunicatorSentDataFailed(object Sender, Module.NewCommunication.SentDataEventArgs Args)
+		private void HandleEvent_VehicleCommunicatorSentDataFailed(object Sender, SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "SentDataFailed", $"IPPort: {Args.IpPort}, DataType: {Args.Data.ToString()}");
 		}
@@ -1488,11 +1487,11 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, Module.NewCommunication.ListenStateChangedEventArgs Args)
+		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "LocalListenStateChanged", $"Port: {Args.Port}, IsListened: {Args.IsListened.ToString()}");
 		}
-		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, Module.NewCommunication.ConnectStateChangedEventArgs Args)
+		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, ConnectStateChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, IsConnected: {Args.IsConnected}");
 			if (Args.IsConnected)
@@ -1504,12 +1503,12 @@ namespace TrafficControlTest.Process
 				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Disconnected");
 			}
 		}
-		private void HandleEvent_HostCommunicatorSentData(object Sender, Module.NewCommunication.SentDataEventArgs Args)
+		private void HandleEvent_HostCommunicatorSentData(object Sender, SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "SentData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {Args.IpPort} ] [ {Args.Data} ]");
 		}
-		private void HandleEvent_HostCommunicatorReceivedData(object Sender, Module.NewCommunication.ReceivedDataEventArgs Args)
+		private void HandleEvent_HostCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {Args.IpPort} ] [ {Args.Data} ]");
@@ -1622,15 +1621,15 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ClientRemoved", $"IPPort: {Args.IpPort}");
 		}
-		private void HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged(object Sender, RemoteConnectStateChangedEventArgs Args)
+		private void HandleEvent_AutomaticDoorCommunicatorRemoteConnectStateChanged(object Sender, ConnectStateChangedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, Connected: {Args.Connected.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, IsConnected: {Args.IsConnected.ToString()}");
 		}
-		private void HandleEvent_AutomaticDoorCommunicatorSentData(object Sender, Module.AutomaticDoor.SentDataEventArgs Args)
+		private void HandleEvent_AutomaticDoorCommunicatorSentData(object Sender, SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "SentData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 		}
-		private void HandleEvent_AutomaticDoorCommunicatorReceivedData(object Sender, Module.AutomaticDoor.ReceivedDataEventArgs Args)
+		private void HandleEvent_AutomaticDoorCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 		}

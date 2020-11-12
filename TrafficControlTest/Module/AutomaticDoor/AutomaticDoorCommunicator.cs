@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.NewCommunication;
 
 namespace TrafficControlTest.Module.AutomaticDoor
 {
@@ -12,11 +12,11 @@ namespace TrafficControlTest.Module.AutomaticDoor
 	{
 		public event EventHandler<ClientAddedEventArgs> ClientAdded;
 		public event EventHandler<ClientRemovedEventArgs> ClientRemoved;
-		public event EventHandler<RemoteConnectStateChangedEventArgs> RemoteConnectStateChanged;
+		public event EventHandler<ConnectStateChangedEventArgs> RemoteConnectStateChanged;
 		public event EventHandler<SentDataEventArgs> SentData;
 		public event EventHandler<ReceivedDataEventArgs> ReceivedData;
 
-		private Dictionary<string, ICommunicatorClientUsingString> mClients = new Dictionary<string, ICommunicatorClientUsingString>();
+		private Dictionary<string, ICommunicatorClient> mClients = new Dictionary<string, ICommunicatorClient>();
 		private bool mAutoConnect = false;
 		
 		public List<string> GetClientList()
@@ -43,12 +43,13 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		}
 		public void Add(string IpPort)
 		{
-			if (!mClients.Keys.Contains(IpPort))
-			{
-				mClients.Add(IpPort, new CommunicatorClientUsingString());
-				mClients[IpPort].ConnectStateChanged += HandleEvent_ICommunicatorClientUsingStringConnectStateChanged;
-				mClients[IpPort].SentString += HandleEvent_ICommunicatorClientUsingStringSentString;
-				mClients[IpPort].ReceivedString += HandleEvent_ICommunicatorClientUsingStringReceivedString;
+            if (!mClients.Keys.Contains(IpPort))
+            {
+                mClients.Add(IpPort, new CommunicatorClientUsingString());
+                mClients[IpPort].ConnectStateChanged += HandleEvent_ICommunicatorClientUsingStringConnectStateChanged;
+                mClients[IpPort].SentData += HandleEvent_ICommunicatorClientSentData;
+                mClients[IpPort].ReceivedData += HandleEvent_ICommunicatorClientReceivedData;
+                mClients[IpPort].SetConfig("RemoteIpPort", IpPort);
 				mClients[IpPort].Start();
 				RaiseEvent_ClientAdded(IpPort);
 			}
@@ -60,8 +61,8 @@ namespace TrafficControlTest.Module.AutomaticDoor
 				// 底層的 Disconnect 動作非預期。若未取消訂閱事件就 Disconnect 的話，會發生系統在處理事件的執行緒裡面卡住。
 				// 為避免此不明原因的錯誤，決定先取消訂閱事件在執行 Disconnect 動作。
 				mClients[IpPort].ConnectStateChanged -= HandleEvent_ICommunicatorClientUsingStringConnectStateChanged;
-				mClients[IpPort].SentString -= HandleEvent_ICommunicatorClientUsingStringSentString;
-				mClients[IpPort].ReceivedString -= HandleEvent_ICommunicatorClientUsingStringReceivedString;
+				mClients[IpPort].SentData -= HandleEvent_ICommunicatorClientSentData;
+				mClients[IpPort].ReceivedData -= HandleEvent_ICommunicatorClientReceivedData;
 				if (mClients[IpPort].mIsConnected) mClients[IpPort].Disconnect();
 				mClients[IpPort].Stop();
 				mClients.Remove(IpPort);
@@ -79,7 +80,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		{
 			if (mClients.Keys.Contains(IpPort) && !mClients[IpPort].mIsConnected)
 			{
-				mClients[IpPort].Connect(IpPort);
+				mClients[IpPort].Connect();
 			}
 		}
 		public void Disconnect(string IpPort)
@@ -93,7 +94,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		{
 			if (mClients.Keys.Contains(IpPort) && mClients[IpPort].mIsConnected)
 			{
-				mClients[IpPort].Send(Data);
+				mClients[IpPort].SendData(Data);
 			}
 		}
 		public override string GetConfig(string ConfigName)
@@ -155,14 +156,14 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		{
 			if (Sync)
 			{
-				RemoteConnectStateChanged?.Invoke(this, new RemoteConnectStateChangedEventArgs(DateTime.Now, IpPort, Connected));
+				RemoteConnectStateChanged?.Invoke(this, new ConnectStateChangedEventArgs(DateTime.Now, IpPort, Connected));
 			}
 			else
 			{
-				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(this, new RemoteConnectStateChangedEventArgs(DateTime.Now, IpPort, Connected)); });
+				System.Threading.Tasks.Task.Run(() => { RemoteConnectStateChanged?.Invoke(this, new ConnectStateChangedEventArgs(DateTime.Now, IpPort, Connected)); });
 			}
 		}
-		protected virtual void RaiseEvent_SentData(string IpPort, string Data, bool Sync = true)
+		protected virtual void RaiseEvent_SentData(string IpPort, object Data, bool Sync = true)
 		{
 			if (Sync)
 			{
@@ -173,7 +174,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 				System.Threading.Tasks.Task.Run(() => { SentData?.Invoke(this, new SentDataEventArgs(DateTime.Now, IpPort, Data)); });
 			}
 		}
-		protected virtual void RaiseEvent_ReceivedData(string IpPort, string Data, bool Sync = true)
+		protected virtual void RaiseEvent_ReceivedData(string IpPort, object Data, bool Sync = true)
 		{
 			if (Sync)
 			{
@@ -187,13 +188,13 @@ namespace TrafficControlTest.Module.AutomaticDoor
 
 		private void HandleEvent_ICommunicatorClientUsingStringConnectStateChanged(object sender, ConnectStateChangedEventArgs e)
 		{
-			RaiseEvent_RemoteConnectStateChanged(e.IpPort, e.Connected);
+			RaiseEvent_RemoteConnectStateChanged(e.IpPort, e.IsConnected);
 		}
-		private void HandleEvent_ICommunicatorClientUsingStringSentString(object sender, SentStringEventArgs e)
+		private void HandleEvent_ICommunicatorClientSentData(object sender, SentDataEventArgs e)
 		{
 			RaiseEvent_SentData(e.IpPort, e.Data);
 		}
-		private void HandleEvent_ICommunicatorClientUsingStringReceivedString(object sender, ReceivedStringEventArgs e)
+		private void HandleEvent_ICommunicatorClientReceivedData(object sender, ReceivedDataEventArgs e)
 		{
 			RaiseEvent_ReceivedData(e.IpPort, e.Data);
 		}
@@ -207,7 +208,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 					{
 						if (!mClients[ipPort].mIsConnected)
 						{
-							mClients[ipPort].Connect(ipPort);
+							mClients[ipPort].Connect();
 						}
 					}
 				}

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.NewCommunication;
 
 namespace TrafficControlTest.Module.AutomaticDoor
 {
@@ -11,7 +12,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 	{
 		event EventHandler<ClientAddedEventArgs> ClientAdded;
 		event EventHandler<ClientRemovedEventArgs> ClientRemoved;
-		event EventHandler<RemoteConnectStateChangedEventArgs> RemoteConnectStateChanged;
+		event EventHandler<ConnectStateChangedEventArgs> RemoteConnectStateChanged;
 		event EventHandler<SentDataEventArgs> SentData;
 		event EventHandler<ReceivedDataEventArgs> ReceivedData;
 
@@ -46,48 +47,6 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		{
 			this.OccurTime = OccurTime;
 			this.IpPort = IpPort;
-		}
-	}
-
-	public class RemoteConnectStateChangedEventArgs : EventArgs
-	{
-		public DateTime OccurTime { get; private set; }
-		public string IpPort { get; private set; }
-		public bool Connected { get; private set; }
-
-		public RemoteConnectStateChangedEventArgs(DateTime OccurTime, string IpPort, bool Connected)
-		{
-			this.OccurTime = OccurTime;
-			this.IpPort = IpPort;
-			this.Connected = Connected;
-		}
-	}
-
-	public class SentDataEventArgs : EventArgs
-	{
-		public DateTime OccurTime { get; private set; }
-		public string IpPort { get; private set; }
-		public string Data { get; private set; }
-
-		public SentDataEventArgs(DateTime OccurTime, string IpPort, string Data)
-		{
-			this.OccurTime = OccurTime;
-			this.IpPort = IpPort;
-			this.Data = Data;
-		}
-	}
-
-	public class ReceivedDataEventArgs : EventArgs
-	{
-		public DateTime OccurTime { get; private set; }
-		public string IpPort { get; private set; }
-		public string Data { get; private set; }
-
-		public ReceivedDataEventArgs(DateTime OccurTime, string IpPort, string Data)
-		{
-			this.OccurTime = OccurTime;
-			this.IpPort = IpPort;
-			this.Data = Data;
 		}
 	}
 }

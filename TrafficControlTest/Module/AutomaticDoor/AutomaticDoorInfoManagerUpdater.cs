@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Map;
+using TrafficControlTest.Module.NewCommunication;
 
 namespace TrafficControlTest.Module.AutomaticDoor
 {
@@ -106,22 +107,22 @@ namespace TrafficControlTest.Module.AutomaticDoor
 				}
 			}
 		}
-		private void HandleEvent_IAutomaticDoorCommunicatorRemoteConnectStateChanged(object sender, RemoteConnectStateChangedEventArgs e)
+		private void HandleEvent_IAutomaticDoorCommunicatorRemoteConnectStateChanged(object sender, ConnectStateChangedEventArgs e)
 		{
 			if (rAutomaticDoorInfoManager.IsExisByIpPortt(e.IpPort))
 			{
-				rAutomaticDoorInfoManager.GetItemByIpPort(e.IpPort).UpdateIsConnected(e.Connected);
+				rAutomaticDoorInfoManager.GetItemByIpPort(e.IpPort).UpdateIsConnected(e.IsConnected);
 			}
 		}
 		private void HandleEvent_IAutomaticDoorCommunicatorSentData(object sender, SentDataEventArgs e)
 		{
 			if (rAutomaticDoorInfoManager.IsExisByIpPortt(e.IpPort))
 			{
-				if (e.Data.Contains("OpenDoor"))
+				if ((e.Data as string).Contains("OpenDoor"))
 				{
 					rAutomaticDoorInfoManager.GetItemByIpPort(e.IpPort).UpdateState(AutomaticDoorState.Opened);
 				}
-				else if (e.Data.Contains("CloseDoor"))
+				else if ((e.Data as string).Contains("CloseDoor"))
 				{
 					rAutomaticDoorInfoManager.GetItemByIpPort(e.IpPort).UpdateState(AutomaticDoorState.Closed);
 				}
