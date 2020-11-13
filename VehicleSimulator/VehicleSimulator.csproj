@@ -51,19 +51,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implement\ConsoleMessageHandler.cs" />
-    <Compile Include="Process\VehicleSimulatorProcess.cs" />
+    <Compile Include="TrashCan\ConsoleMessageHandler.cs" />
+    <Compile Include="TrashCan\VehicleSimulatorProcess.cs" />
     <Compile Include="Library\Extension.cs" />
-    <Compile Include="Implement\VehicleSimulatorInfo.cs" />
-    <Compile Include="Implement\VehicleStateReporter.cs" />
-    <Compile Include="Interface\IConsoleMessageHandler.cs" />
-    <Compile Include="Interface\IVehicleSimulatorInfo.cs" />
-    <Compile Include="Interface\IVehicleStateReporter.cs" />
-    <Compile Include="Library\Library.cs" />
-    <Compile Include="UserInterface\VehicleSimulatorGUI.cs">
+    <Compile Include="TrashCan\VehicleSimulatorInfo.cs" />
+    <Compile Include="TrashCan\VehicleStateReporter.cs" />
+    <Compile Include="TrashCan\IConsoleMessageHandler.cs" />
+    <Compile Include="TrashCan\IVehicleSimulatorInfo.cs" />
+    <Compile Include="TrashCan\IVehicleStateReporter.cs" />
+    <Compile Include="TrashCan\Library.cs" />
+    <Compile Include="TrashCan\VehicleSimulatorGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UserInterface\VehicleSimulatorGUI.Designer.cs">
+    <Compile Include="TrashCan\VehicleSimulatorGUI.Designer.cs">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -78,7 +78,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserInterface\VehicleSimulatorGUI.resx">
+    <EmbeddedResource Include="TrashCan\VehicleSimulatorGUI.resx">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -129,7 +129,12 @@
       <Name>TrafficControlTest</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Implement\" />
+    <Folder Include="Interface\" />
+    <Folder Include="Process\" />
+    <Folder Include="UserInterface\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
