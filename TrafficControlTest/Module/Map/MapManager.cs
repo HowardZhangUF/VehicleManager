@@ -292,6 +292,11 @@ namespace TrafficControlTest.Module.Map
 				{
 					rVehicleCommunicator.SendDataOfRequestMapList(Args.IpPort);
 				}
+                // 當收到「讀取地圖」的事件，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
+                else if (Args.Data is LoadMap)
+                {
+                    rVehicleCommunicator.SendDataOfRequestMapList(Args.IpPort);
+                }
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
