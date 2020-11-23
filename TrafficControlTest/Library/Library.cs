@@ -283,9 +283,9 @@ namespace TrafficControlTest.Library
 		{
 			return new HostMessageAnalyzer(HostCommunicator, VehicleInfoManager, MissionStateManager, MissionAnalyzers);
 		}
-		public static IMissionDispatcher GenerateIMissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
+		public static IMissionDispatcher GenerateIMissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IChargeStationInfoManager ChargeStationInfoManager)
 		{
-			return new MissionDispatcher(MissionStateManager, VehicleInfoManager, VehicleCommunicator);
+			return new MissionDispatcher(MissionStateManager, VehicleInfoManager, VehicleCommunicator, ChargeStationInfoManager);
 		}
 		public static IMissionUpdater GenerateIMissionUpdater(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
 		{

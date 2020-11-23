@@ -1,4 +1,5 @@
 ﻿using System;
+using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
@@ -16,7 +17,8 @@ namespace TrafficControlTest.Module.Mission
 		void Set(IMissionStateManager MissionStateManager);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IVehicleCommunicator VehicleCommunicator);
-		void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator);
+        void Set(IChargeStationInfoManager ChargeStationInfoManager);
+		void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IChargeStationInfoManager ChargeStationInfoManager);
 	}
 
 	public class MissionDispatchedEventArgs : EventArgs

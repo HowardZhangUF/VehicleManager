@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
@@ -15,10 +16,11 @@ namespace TrafficControlTest.Module.Mission
 		private IMissionStateManager rMissionStateManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
+        private IChargeStationInfoManager rChargeStationInfoManager = null;
 
-		public MissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
+		public MissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IChargeStationInfoManager ChargeStationInfoManager)
 		{
-			Set(MissionStateManager, VehicleInfoManager, VehicleCommunicator);
+			Set(MissionStateManager, VehicleInfoManager, VehicleCommunicator, ChargeStationInfoManager);
 		}
 		public void Set(IMissionStateManager MissionStateManager)
 		{
@@ -32,11 +34,16 @@ namespace TrafficControlTest.Module.Mission
 		{
 			rVehicleCommunicator = VehicleCommunicator;
 		}
-		public void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
+        public void Set(IChargeStationInfoManager ChargeStationInfoManager)
+        {
+            rChargeStationInfoManager = ChargeStationInfoManager;
+        }
+		public void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IChargeStationInfoManager ChargeStationInfoManager)
 		{
 			Set(MissionStateManager);
 			Set(VehicleInfoManager);
 			Set(VehicleCommunicator);
+            Set(ChargeStationInfoManager);
 		}
 		public override void Task()
 		{
@@ -107,7 +114,11 @@ namespace TrafficControlTest.Module.Mission
 					}
 					break;
 				case MissionType.Dock:
-					rVehicleCommunicator.SendDataOfDock(IpPort);
+                    IChargeStationInfo tmpChargeStationInfo = GetClosestChargeStationInfo(rVehicleInfoManager.GetItemByIpPort(IpPort), rChargeStationInfoManager);
+                    if (tmpChargeStationInfo != null)
+                    {
+                        rVehicleCommunicator.SendDataOfGoto(IpPort, tmpChargeStationInfo.mName);
+                    }
 					break;
 			}
 		}
@@ -137,6 +148,15 @@ namespace TrafficControlTest.Module.Mission
             }
             // 閒置且沒有被 Sending 任務的車
             return resultVehicles;
+        }
+        private static IChargeStationInfo GetClosestChargeStationInfo(IVehicleInfo VehicleInfo, IChargeStationInfoManager ChargeStationInfoManager)
+        {
+            IChargeStationInfo result = null;
+            if (ChargeStationInfoManager != null && ChargeStationInfoManager.mCount > 0)
+            {
+                result = ChargeStationInfoManager.GetItems().OrderBy(o => CalculateDistance(VehicleInfo.mLocationCoordinate, o.mLocation)).First();
+            }
+            return result;
         }
         private static int CalculateDistance(IPoint2D Point1, IPoint2D Point2)
         {

@@ -73,7 +73,8 @@ namespace TrafficControlTest.Process
 		private IVehicleInfoUpdater mVehicleInfoUpdater = null;
 		private IHostCommunicator mHostCommunicator = null;
 		private IHostMessageAnalyzer mHostMessageAnalyzer = null;
-		private IMissionDispatcher mMissionDispatcher = null;
+        private IChargeStationInfoManager mChargeStationInfoManager = null;
+        private IMissionDispatcher mMissionDispatcher = null;
 		private IMapFileManager mMapFileManager = null;
 		private IMapManager mMapManager = null;
 		private IMissionStateReporter mMissionStateReporter = null;
@@ -89,7 +90,6 @@ namespace TrafficControlTest.Process
 		private IVehiclePassThroughAutomaticDoorEventManager mVehiclePassThroughAutomaticDoorEventManager = null;
 		private IVehiclePassThroughAutomaticDoorEventManagerUpdater mVehiclePassThroughAutomaticDoorEventManagerUpdater = null;
 		private IVehiclePassThroughAutomaticDoorEventHandler mVehiclePassThroughAutomaticDoorEventHandler = null;
-		private IChargeStationInfoManager mChargeStationInfoManager = null;
 		private IChargeStationInfoManagerUpdater mChargeStationInfoManagerUpdater = null;
 
 		public VehicleManagerProcess()
@@ -335,8 +335,12 @@ namespace TrafficControlTest.Process
 			mHostMessageAnalyzer = GenerateIHostMessageAnalyzer(mHostCommunicator, mVehicleInfoManager, mMissionStateManager, GetMissionAnalyzers());
 			SubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 
-			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
-			mMissionDispatcher = GenerateIMissionDispatcher(mMissionStateManager, mVehicleInfoManager, mVehicleCommunicator);
+            UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+            mChargeStationInfoManager = GenerateIChargeStationInfoManager();
+            SubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+
+            UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
+			mMissionDispatcher = GenerateIMissionDispatcher(mMissionStateManager, mVehicleInfoManager, mVehicleCommunicator, mChargeStationInfoManager);
 			SubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 
 			UnsubscribeEvent_IMapFileManager(mMapFileManager);
@@ -399,10 +403,6 @@ namespace TrafficControlTest.Process
 			mVehiclePassThroughAutomaticDoorEventHandler = GenerateIVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventManager, mAutomaticDoorControlManager);
 			SubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventHandler);
 
-			UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
-			mChargeStationInfoManager = GenerateIChargeStationInfoManager();
-			SubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
-
 			UnsubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
 			mChargeStationInfoManagerUpdater = GenerateIChargeStationInfoManagerUpdater(mChargeStationInfoManager, mMapManager, mVehicleInfoManager);
 			SubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
@@ -448,7 +448,10 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 			mHostMessageAnalyzer = null;
 
-			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
+            UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+            mChargeStationInfoManager = null;
+
+            UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 			mMissionDispatcher = null;
 
 			UnsubscribeEvent_IMissionStateReporter(mMissionStateReporter);
@@ -489,9 +492,6 @@ namespace TrafficControlTest.Process
 
 			UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventHandler(mVehiclePassThroughAutomaticDoorEventHandler);
 			mVehiclePassThroughAutomaticDoorEventHandler = null;
-
-			UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
-			mChargeStationInfoManager = null;
 
 			UnsubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
 			mChargeStationInfoManagerUpdater = null;
@@ -866,7 +866,25 @@ namespace TrafficControlTest.Process
             {
                 HostMessageAnalyzer.ConfigUpdated -= HandleEvent_HostMessageAnalyzerConfigUpdated;
             }
-		}
+        }
+        private void SubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
+        {
+            if (ChargeStationInfoManager != null)
+            {
+                ChargeStationInfoManager.ItemAdded += HandleEvent_ChargeStationInfoManagerItemAdded;
+                ChargeStationInfoManager.ItemRemoved += HandleEvent_ChargeStationInfoManagerItemRemoved;
+                ChargeStationInfoManager.ItemUpdated += HandleEvent_ChargeStationInfoManagerItemUpdated;
+            }
+        }
+        private void UnsubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
+        {
+            if (ChargeStationInfoManager != null)
+            {
+                ChargeStationInfoManager.ItemAdded -= HandleEvent_ChargeStationInfoManagerItemAdded;
+                ChargeStationInfoManager.ItemRemoved -= HandleEvent_ChargeStationInfoManagerItemRemoved;
+                ChargeStationInfoManager.ItemUpdated -= HandleEvent_ChargeStationInfoManagerItemUpdated;
+            }
+        }
         private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
 		{
 			if (MissionDispatcher != null)
@@ -1157,24 +1175,6 @@ namespace TrafficControlTest.Process
 			if (VehiclePassThroughAutomaticDoorEventHandler != null)
 			{
 				// do nothing
-			}
-		}
-		private void SubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
-		{
-			if (ChargeStationInfoManager != null)
-			{
-				ChargeStationInfoManager.ItemAdded += HandleEvent_ChargeStationInfoManagerItemAdded;
-				ChargeStationInfoManager.ItemRemoved += HandleEvent_ChargeStationInfoManagerItemRemoved;
-				ChargeStationInfoManager.ItemUpdated += HandleEvent_ChargeStationInfoManagerItemUpdated;
-			}
-		}
-		private void UnsubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
-		{
-			if (ChargeStationInfoManager != null)
-			{
-				ChargeStationInfoManager.ItemAdded -= HandleEvent_ChargeStationInfoManagerItemAdded;
-				ChargeStationInfoManager.ItemRemoved -= HandleEvent_ChargeStationInfoManagerItemRemoved;
-				ChargeStationInfoManager.ItemUpdated -= HandleEvent_ChargeStationInfoManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_IChargeStationInfoManagerUpdater(IChargeStationInfoManagerUpdater ChargeStationInfoManagerUpdater)
