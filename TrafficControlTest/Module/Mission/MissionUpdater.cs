@@ -144,7 +144,7 @@ namespace TrafficControlTest.Module.Mission
 			// 當車子進入執行任務狀態且上一狀態不是干預狀態
 			if ((Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget")) && Args.Item.mCurrentState == "Running" && Args.Item.mPreviousState != "Pause" && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
 			{
-				IMissionState executingMission = rMissionStateManager.GetItems().FirstOrDefault(o => o.mSendState == SendState.Sending && o.mExecutorId == Args.Item.mName && o.mMission.mParametersString == Args.Item.mCurrentTarget);
+				IMissionState executingMission = rMissionStateManager.GetItems().FirstOrDefault(o => o.mSendState == SendState.Sending && o.mExecutorId == Args.Item.mName && (o.mMission.mParametersString == Args.Item.mCurrentTarget || o.mMission.mMissionType == MissionType.Dock));
 				// 如果車子執行的任務來自於任務佇列
 				if (executingMission != null)
 				{
@@ -294,11 +294,14 @@ namespace TrafficControlTest.Module.Mission
 			{
 				result = false;
 			}
-			else if (VehicleInfo.mCurrentState == "Charge")
+			else if (VehicleInfo.mCurrentState == "Charge" || VehicleInfo.mCurrentState == "ChargeIdle")
 			{
 				if (MissionState.mMission.mMissionType == MissionType.Dock)
-				{
-					result = true;
+                {
+                    // 如果當前狀態為 Charge 或 ChargeIdle，
+                    // 且當前任務類型為 Dock 時，
+                    // 代表任務執行成功。
+                    result = true;
 				}
 				else
 				{
