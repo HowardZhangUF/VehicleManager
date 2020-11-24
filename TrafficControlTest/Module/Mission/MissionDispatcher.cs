@@ -134,7 +134,7 @@ namespace TrafficControlTest.Module.Mission
         private static List<IVehicleInfo> ExtractExecutableVehicles(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager)
         {
             IEnumerable<IMissionState> sendingAndExecutingMissions = MissionStateManager.GetItems().Where(o => o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing);
-            IEnumerable<IVehicleInfo> idleVehicles = VehicleInfoManager.GetItems().Where(o => o.mCurrentState == "Idle" && o.mCurrentStateDuration.TotalSeconds > 1 && string.IsNullOrEmpty(o.mCurrentMissionId));
+            IEnumerable<IVehicleInfo> idleVehicles = VehicleInfoManager.GetItems().Where(o => (o.mCurrentState == "Idle" || o.mCurrentState == "ChargeIdle") && o.mCurrentStateDuration.TotalSeconds > 1 && string.IsNullOrEmpty(o.mCurrentMissionId));
             List<IVehicleInfo> resultVehicles = new List<IVehicleInfo>();
             if (idleVehicles != null && idleVehicles.Count() > 0)
             {
