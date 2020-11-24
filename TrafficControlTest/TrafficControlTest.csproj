@@ -101,8 +101,6 @@
     <Compile Include="Module\ChargeStation\IChargeStationInfo.cs" />
     <Compile Include="Module\ChargeStation\IChargeStationInfoManager.cs" />
     <Compile Include="Module\ChargeStation\IChargeStationInfoManagerUpdater.cs" />
-    <Compile Include="Module\Communication\CommunicatorClientUsingString.cs" />
-    <Compile Include="Module\Communication\ICommunicatorClientUsingString.cs" />
     <Compile Include="Module\Configure\Configuration.cs" />
     <Compile Include="Module\CycleMission\CycleMissionGenerator.cs" />
     <Compile Include="Module\CycleMission\ICycleMissionGenerator.cs" />
@@ -141,7 +139,6 @@
     <Compile Include="Module\Log\IImportantEventRecorder.cs" />
     <Compile Include="Module\General\IItemManager.cs" />
     <Compile Include="Module\General\ItemManager.cs" />
-    <Compile Include="Module\Communication\ICommunicatorServer.cs" />
     <Compile Include="Module\CommunicationHost\IHostCommunicator.cs" />
     <Compile Include="Module\General\IItem.cs" />
     <Compile Include="Module\Log\ILogRecorder.cs" />
