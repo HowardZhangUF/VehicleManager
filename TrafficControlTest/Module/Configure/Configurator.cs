@@ -269,6 +269,28 @@ namespace TrafficControlTest.Module.Configure
 				"確認佇列並分配任務給自走車的時間間隔",
 				"确认伫列并分配任务给自走车的时间间隔"));
 			defaultConfigs.Add(new Configuration(
+				"MissionDispatcher",
+				"DispatchRule",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"0",
+				"0",
+				"1",
+				"Dispatch Mission Order. 0 -> Priority > ReceivedTime. 1 -> SpecifyVehicle > Priority > ReceivedTime. (for Thinflex Project)",
+				"任務派送順序。 0 為先看優先度再看接收時間點。 1 為先看是否有指定車再看優先度再看接收時間點(新陽專案使用)",
+				"任务派送顺序。 0 为先看优先度再看接收时间点。 1 为先看是否有指定车再看优先度再看接收时间点(新阳专案使用)"));
+			defaultConfigs.Add(new Configuration(
+				"MissionDispatcher",
+				"IdlePeriodThreshold",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1000",
+				"300",
+				"5000",
+				"System Will Dispatch Mission to Vehicle If Its Idle Time More Than This Threshold (in ms)",
+				"系統會派任務給閒置時間超過此閾值 (ms) 的自走車",
+				"系统会派任务给闲置时间超过此阈值 (ms) 的自走车"));
+			defaultConfigs.Add(new Configuration(
 				"MissionUpdater",
 				"TimePeriod",
 				ConfigurationType.Int,

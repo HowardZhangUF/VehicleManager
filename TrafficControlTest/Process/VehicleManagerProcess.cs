@@ -529,6 +529,8 @@ namespace TrafficControlTest.Process
 			mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
 			mHostMessageAnalyzer.SetConfig("FilterDuplicateMissionWhenReceivedCommand", mConfigurator.GetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand"));
             mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
+            mMissionDispatcher.SetConfig("DispatchRule", mConfigurator.GetValue("MissionDispatcher/DispatchRule"));
+			mMissionDispatcher.SetConfig("IdlePeriodThreshold", mConfigurator.GetValue("MissionDispatcher/IdlePeriodThreshold"));
 			mMissionUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("MissionUpdater/TimePeriod"));
 			mMissionUpdater.SetConfig("TimeoutOfSendingMission", mConfigurator.GetValue("MissionUpdater/TimeoutOfSendingMission"));
 			mMissionUpdater.SetConfig("TimeoutOfExecutingMission", mConfigurator.GetValue("MissionUpdater/TimeoutOfExecutingMission"));
@@ -566,6 +568,8 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("MissionUpdater/TimeoutOfExecutingMission", mMissionUpdater.GetConfig("TimeoutOfExecutingMission"));
 			mConfigurator.SetValue("MissionUpdater/TimeoutOfSendingMission", mMissionUpdater.GetConfig("TimeoutOfSendingMission"));
 			mConfigurator.SetValue("MissionUpdater/TimePeriod", mMissionUpdater.GetConfig("TimePeriod"));
+			mConfigurator.SetValue("MissionDispatcher/IdlePeriodThreshold", mMissionDispatcher.GetConfig("IdlePeriodThreshold"));
+			mConfigurator.SetValue("MissionDispatcher/DispatchRule", mMissionDispatcher.GetConfig("DispatchRule"));
 			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand", mHostMessageAnalyzer.GetConfig("FilterDuplicateMissionWhenReceivedCommand"));
 			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.GetConfig("TimePeriod"));
@@ -1293,6 +1297,12 @@ namespace TrafficControlTest.Process
                     break;
                 case "MissionDispatcher/TimePeriod":
 					mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
+					break;
+				case "MissionDispatcher/DispatchRule":
+					mMissionDispatcher.SetConfig("DispatchRule", mConfigurator.GetValue("MissionDispatcher/DispatchRule"));
+					break;
+				case "MissionDispatcher/IdlePeriodThreshold":
+					mMissionDispatcher.SetConfig("IdlePeriodThreshold", mConfigurator.GetValue("MissionDispatcher/IdlePeriodThreshold"));
 					break;
 				case "MissionUpdater/TimePeriod":
 					mMissionUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("MissionUpdater/TimePeriod"));
