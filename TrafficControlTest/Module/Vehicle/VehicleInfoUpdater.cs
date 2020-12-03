@@ -189,8 +189,9 @@ namespace TrafficControlTest.Module.Vehicle
 			}
 
 			// 因應 iTSLibrary 的 EDescription 新增了 Operating 與 PathPlanning 項目，暫且先將二狀態轉換為 Running ，好讓原有系統能正常運作
+			// Lock 時代表自走車被鎖定，仍屬於 Running 狀態
 			string newState = AgvStatus.Description.ToString();
-			if (newState == EDescription.Operating.ToString() || newState == EDescription.PathPlanning.ToString()) newState = EDescription.Running.ToString();
+			if (newState == EDescription.Operating.ToString() || newState == EDescription.PathPlanning.ToString() || newState == EDescription.Lock.ToString()) newState = EDescription.Running.ToString();
 			rVehicleInfoManager.UpdateItem(AgvStatus.Name, IpPort);
 			rVehicleInfoManager.UpdateItem(AgvStatus.Name, newState, Library.Library.GenerateIPoint2D(double.IsNaN(AgvStatus.X) ? 0 : (int)AgvStatus.X, double.IsNaN(AgvStatus.Y) ? 0 : (int)AgvStatus.Y), double.IsNaN(AgvStatus.Toward) ? 0 : AgvStatus.Toward, AgvStatus.GoalName, double.IsNaN(AgvStatus.Velocity) ? 0 : AgvStatus.Velocity, double.IsNaN(AgvStatus.MapMatch) ? 0 : AgvStatus.MapMatch * 100, double.IsNaN(AgvStatus.Battery) ? 0 : AgvStatus.Battery, AgvStatus.AlarmMessage);
 		}

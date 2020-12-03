@@ -87,6 +87,20 @@ namespace TrafficControlTest.Module.Mission
 					rHostCommunicator.SendData(msg);
 				}
 			}
+			if (Args.StatusName.Contains("SendState"))
+			{
+				string msg = null;
+				switch (Args.Item.mSendState)
+				{
+					case SendState.SendFailed:
+						msg = $"Event=MissionCompleted Result=Failed MissionID={Args.Item.GetMissionId()}";
+						break;
+				}
+				if (!string.IsNullOrEmpty(msg))
+				{
+					rHostCommunicator.SendData(msg);
+				}
+			}
 		}
 	}
 }
