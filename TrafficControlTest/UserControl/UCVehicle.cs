@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
@@ -9,152 +11,27 @@ namespace TrafficControlTest.UserControl
 {
 	public partial class UcVehicle : System.Windows.Forms.UserControl
 	{
-		public string CurrentVehicleName
-		{
-			get
-			{
-				string result = null;
-				cbVehicleNameList.InvokeIfNecessary(() =>
-				{
-					result = cbVehicleNameList.SelectedItem == null ? string.Empty : cbVehicleNameList.SelectedItem.ToString();
-				});
-				return result;
-			}
-		}
+		public Color TableBackColor { get; set; } = Color.FromArgb(53, 53, 53);
+		public Color TableGridLineColor { get; set; } = Color.FromArgb(86, 86, 86);
+		public Color TableHeaderBackColor { get; set; } = Color.FromArgb(0, 122, 204);
+		public Color TableHeaderForeColor { get; set; } = Color.White;
+		public Color TableRowBackColor { get; set; } = Color.FromArgb(31, 31, 31);
+		public Color TableRowForeColor { get; set; } = Color.White;
 
 		private IVehicleInfoManager rVehicleInfoManager = null;
+		private object mLockOfDgvVehicleInfo = new object();
+		private int mDgvVehicleInfoRightClickRowIndex { get; set; } = -1;
 
 		public UcVehicle()
 		{
 			InitializeComponent();
-			InitializeLabelText();
+			UpdateGui_DgvVehicleInfo_Initialize();
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
 			UnsubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
 			SubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
-		}
-		public void UpdateGui_UpdateVehicleNameList(string[] VehicleNameList)
-		{
-			cbVehicleNameList.InvokeIfNecessary(() =>
-			{
-				if (VehicleNameList == null || VehicleNameList.Count() == 0)
-				{
-					cbVehicleNameList.Items.Clear();
-					InitializeLabelText();
-				}
-				else
-				{
-					string lastSelectedItemText = cbVehicleNameList.SelectedItem != null ? cbVehicleNameList.SelectedItem.ToString() : string.Empty;
-					cbVehicleNameList.SelectedIndex = -1;
-					cbVehicleNameList.Items.Clear();
-					cbVehicleNameList.Items.AddRange(VehicleNameList.OrderBy((o) => o).ToArray());
-					if (!string.IsNullOrEmpty(lastSelectedItemText))
-					{
-						for (int i = 0; i < cbVehicleNameList.Items.Count; ++i)
-						{
-							if (lastSelectedItemText == cbVehicleNameList.Items[i].ToString())
-							{
-								cbVehicleNameList.SelectedIndex = i;
-								return;
-							}
-						}
-						InitializeLabelText();
-					}
-				}
-			});
-		}
-		public void UpdateGui_UpdateVehicleState(string State)
-		{
-			lblVehicleState.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleState.Text != State) lblVehicleState.Text = State;
-			});
-		}
-		public void UpdateGui_UpdateVehicleLocation(int X, int Y, double Toward)
-		{
-			lblVehicleLocation.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleLocation.Text != $"({X}, {Y}, {Toward.ToString("F2")})") lblVehicleLocation.Text = $"({X}, {Y}, {Toward.ToString("F2")})";
-			});
-		}
-		public void UpdateGui_UpdateVehicleTarget(string Target)
-		{
-			lblVehicleTarget.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleTarget.Text != Target) lblVehicleTarget.Text = Target;
-			});
-		}
-		public void UpdateGui_UpdateVehicleVelocity(double Velocity)
-		{
-			lblVehicleVelocity.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleVelocity.Text != $"{Velocity.ToString("F2")} (mm/s)") lblVehicleVelocity.Text = $"{Velocity.ToString("F2")} (mm/s)";
-			});
-		}
-		public void UpdateGui_UpdateVehicleLocationScore(double LocationScore)
-		{
-			lblVehicleLocationScore.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleLocationScore.Text != $"{LocationScore.ToString("F2")} %") lblVehicleLocationScore.Text = $"{LocationScore.ToString("F2")} %";
-			});
-		}
-		public void UpdateGui_UpdateVehicleBatteryValue(double BatteryValue)
-		{
-			lblVehicleBatteryValue.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleBatteryValue.Text != $"{BatteryValue.ToString("F2")} %") lblVehicleBatteryValue.Text = $"{BatteryValue.ToString("F2")} %";
-			});
-		}
-		public void UpdateGui_UpdateVehicleAlarmMessage(string AlarmMessage)
-		{
-			lblVehicleAlarmMessage.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleAlarmMessage.Text != AlarmMessage) lblVehicleAlarmMessage.Text = AlarmMessage;
-			});
-		}
-		public void UpdateGui_UpdateVehiclePath(string Path)
-		{
-			lblVehiclePath.InvokeIfNecessary(() =>
-			{
-				if (lblVehiclePath.Text != Path) lblVehiclePath.Text = Path;
-			});
-		}
-		public void UpdateGui_UpdateVehicleIpPort(string IpPort)
-		{
-			lblVehicleIpPort.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleIpPort.Text != IpPort) lblVehicleIpPort.Text = IpPort;
-			});
-		}
-		public void UpdateGui_UpdateVehicleMissionId(string MissionId)
-		{
-			lblVehicleMissionId.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleMissionId.Text != MissionId) lblVehicleMissionId.Text = MissionId;
-			});
-		}
-		public void UpdateGui_UpdateVehicleInterveneCommand(string InterveneCommand)
-		{
-			lblVehicleInterveneCommand.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleInterveneCommand.Text != InterveneCommand) lblVehicleInterveneCommand.Text = InterveneCommand;
-			});
-		}
-		public void UpdateGui_UpdateVehicleMapName(string MapName)
-		{
-			lblVehicleMapName.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleMapName.Text != MapName) lblVehicleMapName.Text = MapName;
-			});
-		}
-		public void UpdateGui_UpdateVehicleLastUpdateTime(string Time)
-		{
-			lblVehicleLastUpdateTime.InvokeIfNecessary(() =>
-			{
-				if (lblVehicleLastUpdateTime.Text != Time) lblVehicleLastUpdateTime.Text = Time;
-			});
 		}
 
 		private void SubscribeEvent_VehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -177,86 +54,180 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			UpdateGui_UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
+			UpdateGui_DgvVehicleInfo_AddItem(Args.Item);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			UpdateGui_UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
+			UpdateGui_DgvVehicleInfo_RemoveItem(Args.Item);
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			if (CurrentVehicleName == Args.ItemName)
+			UpdateGui_DgvVehicleInfo_UpdateItem(Args.Item, Args.StatusName);
+		}
+		private void UpdateGui_DgvVehicleInfo_Initialize()
+		{
+			DataGridView dgv = dgvVehicleInfo;
+
+			dgv.SelectionChanged += ((sender, e) => dgv.ClearSelection());
+
+			dgv.RowHeadersVisible = false;
+			dgv.AllowUserToAddRows = false;
+			dgv.AllowUserToResizeRows = false;
+			dgv.AllowUserToResizeColumns = false;
+			dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+			dgv.MultiSelect = false;
+			dgv.BackgroundColor = TableBackColor;
+			dgv.GridColor = TableGridLineColor;
+			dgv.BorderStyle = BorderStyle.None;
+
+			dgv.EnableHeadersVisualStyles = false;
+			dgv.ColumnHeadersDefaultCellStyle.Font = new Font(dgv.ColumnHeadersDefaultCellStyle.Font.FontFamily, 12, FontStyle.Bold);
+			dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dgv.ColumnHeadersDefaultCellStyle.BackColor = TableHeaderBackColor;
+			dgv.ColumnHeadersDefaultCellStyle.ForeColor = TableHeaderForeColor;
+			dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+			dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+			dgv.ColumnHeadersHeight = 60;
+
+			dgv.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+			dgv.DefaultCellStyle.Font = new Font(dgv.DefaultCellStyle.Font.FontFamily, 12, FontStyle.Regular);
+			dgv.DefaultCellStyle.BackColor = TableRowBackColor;
+			dgv.DefaultCellStyle.ForeColor = TableRowForeColor;
+			dgv.RowTemplate.Height = 40;
+
+			dgv.Columns.Add("Name", "Name");
+			dgv.Columns[0].Width = 180;
+			dgv.Columns.Add("State", "State");
+			dgv.Columns[1].Width = 140;
+			dgv.Columns.Add("Location", "Location");
+			dgv.Columns[2].Width = 170;
+			dgv.Columns.Add("Target", "Target");
+			dgv.Columns[3].Width = 170;
+			dgv.Columns.Add("Battery", "Battery");
+			dgv.Columns[4].Width = 80;
+			dgv.Columns.Add("LocationScore", "LocationScore");
+			dgv.Columns[5].Width = 120;
+			dgv.Columns.Add("MapName", "MapName");
+			dgv.Columns[6].Width = 240;
+			dgv.Columns.Add("IpPort", "IPPort");
+			dgv.Columns[7].Width = 180;
+			dgv.Columns.Add("LastUpdate", "LastUpdate");
+			dgv.Columns[8].Width = 190;
+			dgv.Columns.Add("FillColumn", "");
+			dgv.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+			foreach (DataGridViewColumn column in dgv.Columns)
 			{
-				UpdateGui_UpdateVehicleState(Args.Item.mCurrentState);
-				UpdateGui_UpdateVehicleLocation(Args.Item.mLocationCoordinate.mX, Args.Item.mLocationCoordinate.mY, Args.Item.mLocationToward);
-				UpdateGui_UpdateVehicleTarget(Args.Item.mCurrentTarget);
-				UpdateGui_UpdateVehicleVelocity(Args.Item.mTranslationVelocity);
-				UpdateGui_UpdateVehicleLocationScore(Args.Item.mLocationScore);
-				UpdateGui_UpdateVehicleBatteryValue(Args.Item.mBatteryValue);
-				UpdateGui_UpdateVehicleAlarmMessage(Args.Item.mErrorMessage);
-				UpdateGui_UpdateVehiclePath(Args.Item.mPathString);
-				UpdateGui_UpdateVehicleIpPort(Args.Item.mIpPort);
-				UpdateGui_UpdateVehicleMissionId(Args.Item.mCurrentMissionId);
-				UpdateGui_UpdateVehicleInterveneCommand(Args.Item.mCurrentInterveneCommand);
-				UpdateGui_UpdateVehicleMapName(Args.Item.mCurrentMapName);
-				UpdateGui_UpdateVehicleLastUpdateTime(Args.Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT));
+				column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+				column.SortMode = DataGridViewColumnSortMode.NotSortable;
+				column.ReadOnly = true;
 			}
 		}
-		private void btnRefreshVehicleState_Click(object sender, EventArgs e)
+		private void UpdateGui_DgvVehicleInfo_AddItem(IVehicleInfo Item)
 		{
-			if (!string.IsNullOrEmpty(CurrentVehicleName))
+			dgvVehicleInfo.InvokeIfNecessary(() =>
 			{
-				IVehicleInfo tmpVehicleInfo = rVehicleInfoManager.GetItem(CurrentVehicleName);
-				UpdateGui_UpdateVehicleState(tmpVehicleInfo.mCurrentState);
-				UpdateGui_UpdateVehicleLocation(tmpVehicleInfo.mLocationCoordinate.mX, tmpVehicleInfo.mLocationCoordinate.mY, tmpVehicleInfo.mLocationToward);
-				UpdateGui_UpdateVehicleTarget(tmpVehicleInfo.mCurrentTarget);
-				UpdateGui_UpdateVehicleVelocity(tmpVehicleInfo.mTranslationVelocity);
-				UpdateGui_UpdateVehicleLocationScore(tmpVehicleInfo.mLocationScore);
-				UpdateGui_UpdateVehicleBatteryValue(tmpVehicleInfo.mBatteryValue);
-				UpdateGui_UpdateVehicleAlarmMessage(tmpVehicleInfo.mErrorMessage);
-				UpdateGui_UpdateVehiclePath(tmpVehicleInfo.mPathString);
-				UpdateGui_UpdateVehicleIpPort(tmpVehicleInfo.mIpPort);
-				UpdateGui_UpdateVehicleMissionId(tmpVehicleInfo.mCurrentMissionId);
-				UpdateGui_UpdateVehicleInterveneCommand(tmpVehicleInfo.mCurrentInterveneCommand);
-				UpdateGui_UpdateVehicleMapName(tmpVehicleInfo.mCurrentMapName);
-				UpdateGui_UpdateVehicleLastUpdateTime(tmpVehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT));
-			}
+				lock (mLockOfDgvVehicleInfo)
+				{
+					if (dgvVehicleInfo.RowCount == 0)
+					{
+						dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+					}
+					else
+					{
+						int newItemRowIndex = -1;
+						for (int i = 0; i < dgvVehicleInfo.RowCount; ++i)
+						{
+							if (string.Compare(Item.mName, dgvVehicleInfo.Rows[i].Cells["Name"].Value.ToString()) == -1)
+							{
+								newItemRowIndex = i;
+								break;
+							}
+						}
+
+						if (newItemRowIndex != -1)
+						{
+							dgvVehicleInfo.Rows.Insert(newItemRowIndex, new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+						}
+						else
+						{
+							dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+						}
+					}
+				}
+			});
 		}
-		private void cbVehicleNameList_SelectedIndexChanged(object sender, EventArgs e)
+		private void UpdateGui_DgvVehicleInfo_RemoveItem(IVehicleInfo Item)
 		{
-			if (!string.IsNullOrEmpty(CurrentVehicleName))
+			dgvVehicleInfo.InvokeIfNecessary(() =>
 			{
-				IVehicleInfo tmpVehicleInfo = rVehicleInfoManager.GetItem(CurrentVehicleName);
-				UpdateGui_UpdateVehicleState(tmpVehicleInfo.mCurrentState);
-				UpdateGui_UpdateVehicleLocation(tmpVehicleInfo.mLocationCoordinate.mX, tmpVehicleInfo.mLocationCoordinate.mY, tmpVehicleInfo.mLocationToward);
-				UpdateGui_UpdateVehicleTarget(tmpVehicleInfo.mCurrentTarget);
-				UpdateGui_UpdateVehicleVelocity(tmpVehicleInfo.mTranslationVelocity);
-				UpdateGui_UpdateVehicleLocationScore(tmpVehicleInfo.mLocationScore);
-				UpdateGui_UpdateVehicleBatteryValue(tmpVehicleInfo.mBatteryValue);
-				UpdateGui_UpdateVehicleAlarmMessage(tmpVehicleInfo.mErrorMessage);
-				UpdateGui_UpdateVehiclePath(tmpVehicleInfo.mPathString);
-				UpdateGui_UpdateVehicleIpPort(tmpVehicleInfo.mIpPort);
-				UpdateGui_UpdateVehicleMissionId(tmpVehicleInfo.mCurrentMissionId);
-				UpdateGui_UpdateVehicleInterveneCommand(tmpVehicleInfo.mCurrentInterveneCommand);
-				UpdateGui_UpdateVehicleMapName(tmpVehicleInfo.mCurrentMapName);
-				UpdateGui_UpdateVehicleLastUpdateTime(tmpVehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT));
-			}
+				lock (mLockOfDgvVehicleInfo)
+				{
+					int rowIndex = -1;
+					for (int i = 0; i < dgvVehicleInfo.RowCount; ++i)
+					{
+						if (string.Compare(Item.mName, dgvVehicleInfo.Rows[i].Cells["Name"].Value.ToString()) == 0)
+						{
+							rowIndex = i;
+							break;
+						}
+					}
+					if (rowIndex != -1)
+					{
+						dgvVehicleInfo.Rows.RemoveAt(rowIndex);
+					}
+				}
+			});
 		}
-		private void InitializeLabelText()
+		private void UpdateGui_DgvVehicleInfo_UpdateItem(IVehicleInfo Item, string StateName)
 		{
-			lblVehicleState.Text = string.Empty;
-			lblVehicleLocation.Text = string.Empty;
-			lblVehicleTarget.Text = string.Empty;
-			lblVehicleVelocity.Text = string.Empty;
-			lblVehicleBatteryValue.Text = string.Empty;
-			lblVehiclePath.Text = string.Empty;
-			lblVehicleLocationScore.Text = string.Empty;
-			lblVehicleAlarmMessage.Text = string.Empty;
-			lblVehicleIpPort.Text = string.Empty;
-			lblVehicleMissionId.Text = string.Empty;
-			lblVehicleMapName.Text = string.Empty;
-			lblVehicleInterveneCommand.Text = string.Empty;
-			lblVehicleLastUpdateTime.Text = string.Empty;
+			dgvVehicleInfo.InvokeIfNecessary(() =>
+			{
+				lock (mLockOfDgvVehicleInfo)
+				{
+					int rowIndex = -1;
+					for (int i = 0; i < dgvVehicleInfo.RowCount; ++i)
+					{
+						if (string.Compare(Item.mName, dgvVehicleInfo.Rows[i].Cells["Name"].Value.ToString()) == 0)
+						{
+							rowIndex = i;
+							break;
+						}
+					}
+					if (rowIndex != -1)
+					{
+						if (StateName.Contains("CurrentState"))
+						{
+							dgvVehicleInfo.Rows[rowIndex].Cells["State"].Value = Item.mCurrentState;
+						}
+						if (StateName.Contains("LocationCoordinate") || StateName.Contains("LocationToward"))
+						{
+							dgvVehicleInfo.Rows[rowIndex].Cells["Location"].Value = $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})";
+						}
+						if (StateName.Contains("CurrentTarget"))
+						{
+							dgvVehicleInfo.Rows[rowIndex].Cells["Target"].Value = Item.mCurrentTarget;
+						}
+						if (StateName.Contains("BatteryValue"))
+						{
+							dgvVehicleInfo.Rows[rowIndex].Cells["Battery"].Value = Item.mBatteryValue.ToString("F2") + " %";
+						}
+						if (StateName.Contains("LocationScore"))
+						{
+							dgvVehicleInfo.Rows[rowIndex].Cells["LocationScore"].Value = Item.mBatteryValue.ToString("F2") + " %";
+						}
+						if (StateName.Contains("CurrentMapName"))
+						{
+							dgvVehicleInfo.Rows[rowIndex].Cells["MapName"].Value = Item.mCurrentMapName;
+						}
+						if (StateName.Contains("IpPort"))
+						{
+							dgvVehicleInfo.Rows[rowIndex].Cells["IpPort"].Value = Item.mIpPort;
+						}
+						dgvVehicleInfo.Rows[rowIndex].Cells["LastUpdate"].Value = Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT);
+					}
+				}
+			});
 		}
 	}
 }
