@@ -200,14 +200,25 @@ namespace TrafficControlTest.UserControl
 					}
 					else
 					{
+						int newItemRowIndex = -1;
 						for (int i = 0; i < dgvAutomaticDoorInfo.RowCount; ++i)
 						{
 							if (string.Compare(Item.mName, dgvAutomaticDoorInfo.Rows[i].Cells["Name"].Value.ToString()) == -1)
 							{
-								dgvAutomaticDoorInfo.Rows.Insert(i, new string[] { Item.mName, Item.mIpPort, Item.mIsConnected.ToString(), Item.mState.ToString(), Item.mLastUpdated.ToString(TimestampFormat) });
-								dgvAutomaticDoorInfo.Rows[i].DefaultCellStyle.ForeColor = GetAutomaticDoorInfoRowForeColor(Item.mIsConnected);
+								newItemRowIndex = i;
 								break;
 							}
+						}
+
+						if (newItemRowIndex != -1)
+						{
+							dgvAutomaticDoorInfo.Rows.Insert(newItemRowIndex, new string[] { Item.mName, Item.mIpPort, Item.mIsConnected.ToString(), Item.mState.ToString(), Item.mLastUpdated.ToString(TimestampFormat) });
+							dgvAutomaticDoorInfo.Rows[newItemRowIndex].DefaultCellStyle.ForeColor = GetAutomaticDoorInfoRowForeColor(Item.mIsConnected);
+						}
+						else
+						{
+							dgvAutomaticDoorInfo.Rows.Add(new string[] { Item.mName, Item.mIpPort, Item.mIsConnected.ToString(), Item.mState.ToString(), Item.mLastUpdated.ToString(TimestampFormat) });
+							dgvAutomaticDoorInfo.Rows[dgvAutomaticDoorInfo.RowCount - 1].DefaultCellStyle.ForeColor = GetAutomaticDoorInfoRowForeColor(Item.mIsConnected);
 						}
 					}
 				}
