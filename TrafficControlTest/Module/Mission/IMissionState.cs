@@ -1,34 +1,35 @@
 ﻿using System;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 
 namespace TrafficControlTest.Module.Mission
 {
-	public enum SendState
-	{
-		Unsend,
-		Sending,
-		SendSuccessed,
-		SendFailed
-	}
+	//public enum SendState
+	//{
+	//	Unsend,
+	//	Sending,
+	//	SendSuccessed,
+	//	SendFailed
+	//}
 
-	public enum ExecuteState
-	{
-		Unexecute,
-		Executing,
-		ExecuteSuccessed,
-		ExecuteFailed
-	}
+	//public enum ExecuteState
+	//{
+	//	Unexecute,
+	//	Executing,
+	//	ExecuteSuccessed,
+	//	ExecuteFailed
+	//}
 
-    public enum MissionFailedReason
-    {
-        None,
-        VehicleDisconnected,
-        VehicleIdleButNotArrived,
-        ExectutedTimeout,
-        SentTimeout,
-        CancelByGUI,
-        CancelByHostCommand
-    }
+ //   public enum FailedReason
+ //   {
+ //       None,
+ //       VehicleDisconnected,
+ //       VehicleIdleButNotArrived,
+ //       ExectutedTimeout,
+ //       SentTimeout,
+ //       CancelByGUI,
+ //       CancelByHostCommand
+ //   }
 
 	/// <summary>
 	/// - 儲存任務的資訊及狀態
@@ -43,9 +44,8 @@ namespace TrafficControlTest.Module.Mission
 		IMission mMission { get; }
 		string mSourceIpPort { get; }
 		string mExecutorId { get; }
-		SendState mSendState { get; }
 		ExecuteState mExecuteState { get; }
-        MissionFailedReason mFailedReason { get; }
+        FailedReason mFailedReason { get; }
 		DateTime mReceivedTimestamp { get; }
 		DateTime mExecutionStartTimestamp { get; }
 		DateTime mExecutionStopTimestamp { get; }
@@ -56,9 +56,8 @@ namespace TrafficControlTest.Module.Mission
 		void UpdatePriority(int Priority);
 		void UpdateSourceIpPort(string SourceIpPort);
 		void UpdateExecutorId(string ExecutorId);
-		void UpdateSendState(SendState SendState);
 		void UpdateExecuteState(ExecuteState ExecuteState);
-        void UpdateFailedReason(MissionFailedReason FailedReason);
+        void UpdateFailedReason(FailedReason FailedReason);
 		string[] ToStringArray();
 	}
 }

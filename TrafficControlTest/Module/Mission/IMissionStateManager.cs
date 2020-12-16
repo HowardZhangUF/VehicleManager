@@ -1,4 +1,5 @@
 ﻿using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 
 namespace TrafficControlTest.Module.Mission
 {
@@ -11,8 +12,7 @@ namespace TrafficControlTest.Module.Mission
 	{
 		bool IsExistByHostMissionId(string HostMissionId);
 		void UpdateExecutorId(string MissionId, string ExecutorId);
-		void UpdateSendState(string MissionId, SendState SendState);
 		void UpdateExecuteState(string MissionId, ExecuteState ExecuteState);
-        void UpdateFailedReason(string MissionId, MissionFailedReason FailedReason);
+        void UpdateFailedReason(string MissionId, FailedReason FailedReason);
 	}
 }

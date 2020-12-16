@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 
 namespace TrafficControlTest.Module.Mission
 {
@@ -22,16 +23,6 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 		}
-		public void UpdateSendState(string MissionId, SendState SendState)
-		{
-			lock (mLock)
-			{
-				if (mItems.Keys.Contains(MissionId))
-				{
-					mItems[MissionId].UpdateSendState(SendState);
-				}
-			}
-		}
 		public void UpdateExecuteState(string MissionId, ExecuteState ExecuteState)
 		{
 			lock (mLock)
@@ -42,7 +33,7 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 		}
-        public void UpdateFailedReason(string MissionId, MissionFailedReason FailedReason)
+        public void UpdateFailedReason(string MissionId, FailedReason FailedReason)
         {
             lock (mLock)
             {

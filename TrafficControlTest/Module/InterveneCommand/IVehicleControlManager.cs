@@ -16,6 +16,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		/// <summary>更新指定資料</summary>
 		void UpdateSendState(string Name, SendState SendState);
 		/// <summary>更新指定資料</summary>
-		void UpdateParameters(string Name, string[] Parameters);
+		void UpdateExecuteState(string Name, ExecuteState ExecuteState);
+		/// <summary>更新指定資料</summary>
+		void UpdateExecuteFailedReason(string Name, FailedReason ExecuteFailedReason);
 	}
 }

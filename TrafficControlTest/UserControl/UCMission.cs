@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 
 namespace TrafficControlTest.UserControl
@@ -120,19 +121,11 @@ namespace TrafficControlTest.UserControl
 							dgvMission.Rows[rowIndex].Cells["Executor"].Value = NewValue;
 						}
 					}
-					else if (StatusName.StartsWith("SendState"))
-					{
-						if (dgvMission.Rows[rowIndex].Cells["State"].Value.ToString() != NewValue)
-						{
-							dgvMission.Rows[rowIndex].Cells["State"].Value = NewValue;
-							UpdateGui_RefreshDgvMissionRowBackColor(rowIndex);
-						}
-					}
 					else if (StatusName.StartsWith("ExecuteState"))
 					{
-						if (dgvMission.Rows[rowIndex].Cells["State"].Value.ToString() != NewValue)
+						if (dgvMission.Rows[rowIndex].Cells["ExecuteState"].Value.ToString() != NewValue)
 						{
-							dgvMission.Rows[rowIndex].Cells["State"].Value = NewValue;
+							dgvMission.Rows[rowIndex].Cells["ExecuteState"].Value = NewValue;
 							UpdateGui_RefreshDgvMissionRowBackColor(rowIndex);
 						}
 					}
@@ -181,13 +174,9 @@ namespace TrafficControlTest.UserControl
 			{
 				newValue = Args.Item.mExecutorId;
 			}
-			else if (Args.StatusName.StartsWith("SendState"))
-			{
-				newValue = $"{Args.Item.mSendState.ToString()} / {Args.Item.mExecuteState.ToString()}";
-			}
 			else if (Args.StatusName.StartsWith("ExecuteState"))
 			{
-				newValue = $"{Args.Item.mSendState.ToString()} / {Args.Item.mExecuteState.ToString()}";
+				newValue = Args.Item.mExecuteState.ToString();
 			}
 
 			if (newValue != null)
@@ -276,14 +265,16 @@ namespace TrafficControlTest.UserControl
 				dgv.Columns[5].Width = 160;
                 dgv.Columns.Add("SourceIpPort", "SourceIPPort");
                 dgv.Columns[6].Width = 180;
-                dgv.Columns.Add("State", "State");
-				dgv.Columns[7].Width = 240;
+                dgv.Columns.Add("ExecuteState", "ExecuteState");
+				dgv.Columns[7].Width = 130;
 				dgv.Columns.Add("Executor", "Executor");
 				dgv.Columns[8].Width = 130;
 				dgv.Columns.Add("ReceivedTime", "ReceivedTime");
 				dgv.Columns[9].Width = 190;
+                dgv.Columns.Add("FillColumn", "");
+                dgv.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-				foreach (DataGridViewColumn column in dgv.Columns)
+                foreach (DataGridViewColumn column in dgv.Columns)
 				{
 					column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 					column.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -308,7 +299,7 @@ namespace TrafficControlTest.UserControl
 		{
 			dgvMission.InvokeIfNecessary(() =>
 			{
-				if (dgvMission.Rows[RowIndex].Cells["State"].Value.ToString().EndsWith("Executing"))
+				if (dgvMission.Rows[RowIndex].Cells["ExecuteState"].Value.ToString() == "Executing")
 				{
 					if (dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor != TableRowExecutingBackColor) dgvMission.Rows[RowIndex].DefaultCellStyle.BackColor = TableRowExecutingBackColor;
 				}
@@ -369,7 +360,7 @@ namespace TrafficControlTest.UserControl
 				string tmpMessage = $"Sure to Remove Mission:\n{tmpId} / {tmpType}{(string.IsNullOrEmpty(tmpParameter) ? string.Empty : " / " + tmpParameter)}";
 				if (CustomMessageBox.ConfirmBox(tmpMessage) == DialogResult.OK)
 				{
-                    rMissionStateManager.UpdateFailedReason(tmpId, MissionFailedReason.CancelByGUI);
+                    rMissionStateManager.UpdateFailedReason(tmpId, FailedReason.CancelByGUI);
 					rMissionStateManager.UpdateExecuteState(tmpId, ExecuteState.ExecuteFailed);
 				}
 			}

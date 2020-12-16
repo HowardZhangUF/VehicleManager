@@ -32,14 +32,9 @@
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.cbLocalMapNameList = new System.Windows.Forms.ComboBox();
 			this.btnVehicleGoto = new System.Windows.Forms.Button();
-			this.btnVehicleStop = new System.Windows.Forms.Button();
 			this.btnVehicleGotoPoint = new System.Windows.Forms.Button();
-			this.btnVehicleDock = new System.Windows.Forms.Button();
 			this.cbGoalNameList = new System.Windows.Forms.ComboBox();
-			this.btnVehicleInsertMovingBuffer = new System.Windows.Forms.Button();
-			this.btnVehicleRemoveMovingBuffer = new System.Windows.Forms.Button();
 			this.btnVehiclePause = new System.Windows.Forms.Button();
-			this.btnVehicleResume = new System.Windows.Forms.Button();
 			this.btnVehicleRequestMapList = new System.Windows.Forms.Button();
 			this.btnVehicleGetMap = new System.Windows.Forms.Button();
 			this.btnVehicleChangeMap = new System.Windows.Forms.Button();
@@ -50,7 +45,14 @@
 			this.cbRemoteMapNameList1 = new System.Windows.Forms.ComboBox();
 			this.cbRemoteMapNameList2 = new System.Windows.Forms.ComboBox();
 			this.txtCoordinate1 = new TrafficControlTest.UserControl.TextBoxWithHint();
-			this.txtCoordinate2 = new TrafficControlTest.UserControl.TextBoxWithHint();
+			this.btnVehicleUncharge = new System.Windows.Forms.Button();
+			this.btnVehicleCharge = new System.Windows.Forms.Button();
+			this.btnVehicleStop = new System.Windows.Forms.Button();
+			this.btnVehicleResume = new System.Windows.Forms.Button();
+			this.btnVehicleUnstay = new System.Windows.Forms.Button();
+			this.btnVehicleResumeControl = new System.Windows.Forms.Button();
+			this.btnVehicleStay = new System.Windows.Forms.Button();
+			this.btnVehiclePauseControl = new System.Windows.Forms.Button();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.cbVehicleNameList = new System.Windows.Forms.ComboBox();
 			this.panel1 = new System.Windows.Forms.Panel();
@@ -81,25 +83,27 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.Controls.Add(this.cbLocalMapNameList, 2, 16);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleGoto, 1, 2);
-			this.tableLayoutPanel1.Controls.Add(this.btnVehicleStop, 1, 5);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleGotoPoint, 1, 3);
-			this.tableLayoutPanel1.Controls.Add(this.btnVehicleDock, 1, 4);
 			this.tableLayoutPanel1.Controls.Add(this.cbGoalNameList, 2, 2);
-			this.tableLayoutPanel1.Controls.Add(this.btnVehicleInsertMovingBuffer, 1, 8);
-			this.tableLayoutPanel1.Controls.Add(this.btnVehicleRemoveMovingBuffer, 1, 9);
-			this.tableLayoutPanel1.Controls.Add(this.btnVehiclePause, 1, 10);
-			this.tableLayoutPanel1.Controls.Add(this.btnVehicleResume, 1, 11);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehiclePause, 1, 9);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleRequestMapList, 1, 14);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleGetMap, 1, 15);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleChangeMap, 1, 17);
 			this.tableLayoutPanel1.Controls.Add(this.btnVehicleUploadMap, 1, 16);
 			this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
-			this.tableLayoutPanel1.Controls.Add(this.label3, 1, 7);
+			this.tableLayoutPanel1.Controls.Add(this.label3, 1, 8);
 			this.tableLayoutPanel1.Controls.Add(this.label4, 1, 13);
 			this.tableLayoutPanel1.Controls.Add(this.cbRemoteMapNameList1, 2, 15);
 			this.tableLayoutPanel1.Controls.Add(this.cbRemoteMapNameList2, 2, 17);
 			this.tableLayoutPanel1.Controls.Add(this.txtCoordinate1, 2, 3);
-			this.tableLayoutPanel1.Controls.Add(this.txtCoordinate2, 3, 8);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleUncharge, 1, 6);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleCharge, 1, 5);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleStop, 1, 4);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleResume, 3, 9);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleUnstay, 3, 10);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleResumeControl, 3, 11);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehicleStay, 1, 10);
+			this.tableLayoutPanel1.Controls.Add(this.btnVehiclePauseControl, 1, 11);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -110,9 +114,9 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
@@ -155,21 +159,6 @@
 			this.btnVehicleGoto.Text = "Goto";
 			this.btnVehicleGoto.UseVisualStyleBackColor = true;
 			// 
-			// btnVehicleStop
-			// 
-			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleStop, 3);
-			this.btnVehicleStop.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnVehicleStop.FlatAppearance.BorderColor = System.Drawing.Color.Lime;
-			this.btnVehicleStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnVehicleStop.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnVehicleStop.ForeColor = System.Drawing.Color.White;
-			this.btnVehicleStop.Location = new System.Drawing.Point(23, 158);
-			this.btnVehicleStop.Name = "btnVehicleStop";
-			this.btnVehicleStop.Size = new System.Drawing.Size(333, 34);
-			this.btnVehicleStop.TabIndex = 3;
-			this.btnVehicleStop.Text = "Stop";
-			this.btnVehicleStop.UseVisualStyleBackColor = true;
-			// 
 			// btnVehicleGotoPoint
 			// 
 			this.btnVehicleGotoPoint.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -183,21 +172,6 @@
 			this.btnVehicleGotoPoint.TabIndex = 1;
 			this.btnVehicleGotoPoint.Text = "GotoPoint";
 			this.btnVehicleGotoPoint.UseVisualStyleBackColor = true;
-			// 
-			// btnVehicleDock
-			// 
-			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleDock, 3);
-			this.btnVehicleDock.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnVehicleDock.FlatAppearance.BorderColor = System.Drawing.Color.Lime;
-			this.btnVehicleDock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnVehicleDock.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnVehicleDock.ForeColor = System.Drawing.Color.White;
-			this.btnVehicleDock.Location = new System.Drawing.Point(23, 118);
-			this.btnVehicleDock.Name = "btnVehicleDock";
-			this.btnVehicleDock.Size = new System.Drawing.Size(333, 34);
-			this.btnVehicleDock.TabIndex = 2;
-			this.btnVehicleDock.Text = "Dock";
-			this.btnVehicleDock.UseVisualStyleBackColor = true;
 			// 
 			// cbGoalNameList
 			// 
@@ -214,65 +188,19 @@
 			this.cbGoalNameList.Size = new System.Drawing.Size(223, 41);
 			this.cbGoalNameList.TabIndex = 5;
 			// 
-			// btnVehicleInsertMovingBuffer
-			// 
-			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleInsertMovingBuffer, 2);
-			this.btnVehicleInsertMovingBuffer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnVehicleInsertMovingBuffer.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
-			this.btnVehicleInsertMovingBuffer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnVehicleInsertMovingBuffer.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnVehicleInsertMovingBuffer.ForeColor = System.Drawing.Color.White;
-			this.btnVehicleInsertMovingBuffer.Location = new System.Drawing.Point(23, 233);
-			this.btnVehicleInsertMovingBuffer.Name = "btnVehicleInsertMovingBuffer";
-			this.btnVehicleInsertMovingBuffer.Size = new System.Drawing.Size(164, 34);
-			this.btnVehicleInsertMovingBuffer.TabIndex = 6;
-			this.btnVehicleInsertMovingBuffer.Text = "InsertMovingBuffer";
-			this.btnVehicleInsertMovingBuffer.UseVisualStyleBackColor = true;
-			// 
-			// btnVehicleRemoveMovingBuffer
-			// 
-			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleRemoveMovingBuffer, 3);
-			this.btnVehicleRemoveMovingBuffer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnVehicleRemoveMovingBuffer.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
-			this.btnVehicleRemoveMovingBuffer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnVehicleRemoveMovingBuffer.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnVehicleRemoveMovingBuffer.ForeColor = System.Drawing.Color.White;
-			this.btnVehicleRemoveMovingBuffer.Location = new System.Drawing.Point(23, 273);
-			this.btnVehicleRemoveMovingBuffer.Name = "btnVehicleRemoveMovingBuffer";
-			this.btnVehicleRemoveMovingBuffer.Size = new System.Drawing.Size(333, 34);
-			this.btnVehicleRemoveMovingBuffer.TabIndex = 7;
-			this.btnVehicleRemoveMovingBuffer.Text = "RemoveMovingBuffer";
-			this.btnVehicleRemoveMovingBuffer.UseVisualStyleBackColor = true;
-			// 
 			// btnVehiclePause
 			// 
-			this.tableLayoutPanel1.SetColumnSpan(this.btnVehiclePause, 3);
-			this.btnVehiclePause.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.SetColumnSpan(this.btnVehiclePause, 2);
 			this.btnVehiclePause.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
 			this.btnVehiclePause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btnVehiclePause.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnVehiclePause.ForeColor = System.Drawing.Color.White;
-			this.btnVehiclePause.Location = new System.Drawing.Point(23, 313);
+			this.btnVehiclePause.Location = new System.Drawing.Point(23, 273);
 			this.btnVehiclePause.Name = "btnVehiclePause";
-			this.btnVehiclePause.Size = new System.Drawing.Size(333, 34);
+			this.btnVehiclePause.Size = new System.Drawing.Size(164, 34);
 			this.btnVehiclePause.TabIndex = 8;
 			this.btnVehiclePause.Text = "Pause";
 			this.btnVehiclePause.UseVisualStyleBackColor = true;
-			// 
-			// btnVehicleResume
-			// 
-			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleResume, 3);
-			this.btnVehicleResume.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnVehicleResume.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
-			this.btnVehicleResume.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnVehicleResume.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnVehicleResume.ForeColor = System.Drawing.Color.White;
-			this.btnVehicleResume.Location = new System.Drawing.Point(23, 353);
-			this.btnVehicleResume.Name = "btnVehicleResume";
-			this.btnVehicleResume.Size = new System.Drawing.Size(333, 34);
-			this.btnVehicleResume.TabIndex = 9;
-			this.btnVehicleResume.Text = "Resume";
-			this.btnVehicleResume.UseVisualStyleBackColor = true;
 			// 
 			// btnVehicleRequestMapList
 			// 
@@ -350,7 +278,7 @@
 			this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.label3.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.label3.ForeColor = System.Drawing.Color.White;
-			this.label3.Location = new System.Drawing.Point(23, 200);
+			this.label3.Location = new System.Drawing.Point(23, 240);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(333, 30);
 			this.label3.TabIndex = 18;
@@ -412,16 +340,121 @@
 			this.txtCoordinate1.Size = new System.Drawing.Size(223, 40);
 			this.txtCoordinate1.TabIndex = 23;
 			// 
-			// txtCoordinate2
+			// btnVehicleUncharge
 			// 
-			this.txtCoordinate2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCoordinate2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.txtCoordinate2.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.txtCoordinate2.ForeColor = System.Drawing.Color.White;
-			this.txtCoordinate2.Location = new System.Drawing.Point(193, 233);
-			this.txtCoordinate2.Name = "txtCoordinate2";
-			this.txtCoordinate2.Size = new System.Drawing.Size(163, 40);
-			this.txtCoordinate2.TabIndex = 24;
+			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleUncharge, 3);
+			this.btnVehicleUncharge.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnVehicleUncharge.FlatAppearance.BorderColor = System.Drawing.Color.Lime;
+			this.btnVehicleUncharge.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnVehicleUncharge.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnVehicleUncharge.ForeColor = System.Drawing.Color.White;
+			this.btnVehicleUncharge.Location = new System.Drawing.Point(23, 198);
+			this.btnVehicleUncharge.Name = "btnVehicleUncharge";
+			this.btnVehicleUncharge.Size = new System.Drawing.Size(333, 34);
+			this.btnVehicleUncharge.TabIndex = 25;
+			this.btnVehicleUncharge.Text = "Uncharge";
+			this.btnVehicleUncharge.UseVisualStyleBackColor = true;
+			// 
+			// btnVehicleCharge
+			// 
+			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleCharge, 3);
+			this.btnVehicleCharge.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnVehicleCharge.FlatAppearance.BorderColor = System.Drawing.Color.Lime;
+			this.btnVehicleCharge.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnVehicleCharge.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnVehicleCharge.ForeColor = System.Drawing.Color.White;
+			this.btnVehicleCharge.Location = new System.Drawing.Point(23, 158);
+			this.btnVehicleCharge.Name = "btnVehicleCharge";
+			this.btnVehicleCharge.Size = new System.Drawing.Size(333, 34);
+			this.btnVehicleCharge.TabIndex = 2;
+			this.btnVehicleCharge.Text = "Charge";
+			this.btnVehicleCharge.UseVisualStyleBackColor = true;
+			// 
+			// btnVehicleStop
+			// 
+			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleStop, 3);
+			this.btnVehicleStop.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnVehicleStop.FlatAppearance.BorderColor = System.Drawing.Color.Lime;
+			this.btnVehicleStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnVehicleStop.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnVehicleStop.ForeColor = System.Drawing.Color.White;
+			this.btnVehicleStop.Location = new System.Drawing.Point(23, 118);
+			this.btnVehicleStop.Name = "btnVehicleStop";
+			this.btnVehicleStop.Size = new System.Drawing.Size(333, 34);
+			this.btnVehicleStop.TabIndex = 3;
+			this.btnVehicleStop.Text = "Stop";
+			this.btnVehicleStop.UseVisualStyleBackColor = true;
+			// 
+			// btnVehicleResume
+			// 
+			this.btnVehicleResume.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
+			this.btnVehicleResume.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnVehicleResume.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnVehicleResume.ForeColor = System.Drawing.Color.White;
+			this.btnVehicleResume.Location = new System.Drawing.Point(193, 273);
+			this.btnVehicleResume.Name = "btnVehicleResume";
+			this.btnVehicleResume.Size = new System.Drawing.Size(163, 34);
+			this.btnVehicleResume.TabIndex = 9;
+			this.btnVehicleResume.Text = "Resume";
+			this.btnVehicleResume.UseVisualStyleBackColor = true;
+			// 
+			// btnVehicleUnstay
+			// 
+			this.btnVehicleUnstay.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
+			this.btnVehicleUnstay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnVehicleUnstay.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnVehicleUnstay.ForeColor = System.Drawing.Color.White;
+			this.btnVehicleUnstay.Location = new System.Drawing.Point(193, 313);
+			this.btnVehicleUnstay.Name = "btnVehicleUnstay";
+			this.btnVehicleUnstay.Size = new System.Drawing.Size(163, 34);
+			this.btnVehicleUnstay.TabIndex = 26;
+			this.btnVehicleUnstay.Text = "Unstay";
+			this.btnVehicleUnstay.UseVisualStyleBackColor = true;
+			this.btnVehicleUnstay.Click += new System.EventHandler(this.btnVehicleUnstay_Click);
+			// 
+			// btnVehicleResumeControl
+			// 
+			this.btnVehicleResumeControl.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
+			this.btnVehicleResumeControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnVehicleResumeControl.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnVehicleResumeControl.ForeColor = System.Drawing.Color.White;
+			this.btnVehicleResumeControl.Location = new System.Drawing.Point(193, 353);
+			this.btnVehicleResumeControl.Name = "btnVehicleResumeControl";
+			this.btnVehicleResumeControl.Size = new System.Drawing.Size(163, 34);
+			this.btnVehicleResumeControl.TabIndex = 27;
+			this.btnVehicleResumeControl.Text = "Resume Control";
+			this.btnVehicleResumeControl.UseVisualStyleBackColor = true;
+			this.btnVehicleResumeControl.Click += new System.EventHandler(this.btnVehicleResumeControl_Click);
+			// 
+			// btnVehicleStay
+			// 
+			this.tableLayoutPanel1.SetColumnSpan(this.btnVehicleStay, 2);
+			this.btnVehicleStay.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
+			this.btnVehicleStay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnVehicleStay.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnVehicleStay.ForeColor = System.Drawing.Color.White;
+			this.btnVehicleStay.Location = new System.Drawing.Point(23, 313);
+			this.btnVehicleStay.Name = "btnVehicleStay";
+			this.btnVehicleStay.Size = new System.Drawing.Size(164, 34);
+			this.btnVehicleStay.TabIndex = 28;
+			this.btnVehicleStay.Text = "Stay";
+			this.btnVehicleStay.UseVisualStyleBackColor = true;
+			this.btnVehicleStay.Click += new System.EventHandler(this.btnVehicleStay_Click);
+			// 
+			// btnVehiclePauseControl
+			// 
+			this.tableLayoutPanel1.SetColumnSpan(this.btnVehiclePauseControl, 2);
+			this.btnVehiclePauseControl.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
+			this.btnVehiclePauseControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnVehiclePauseControl.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnVehiclePauseControl.ForeColor = System.Drawing.Color.White;
+			this.btnVehiclePauseControl.Location = new System.Drawing.Point(23, 353);
+			this.btnVehiclePauseControl.Name = "btnVehiclePauseControl";
+			this.btnVehiclePauseControl.Size = new System.Drawing.Size(164, 34);
+			this.btnVehiclePauseControl.TabIndex = 29;
+			this.btnVehiclePauseControl.Text = "Pause Control";
+			this.btnVehiclePauseControl.UseVisualStyleBackColor = true;
+			this.btnVehiclePauseControl.Click += new System.EventHandler(this.btnVehiclePauseControl_Click);
 			// 
 			// tableLayoutPanel2
 			// 
@@ -487,10 +520,8 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.Button btnVehicleGoto;
 		private System.Windows.Forms.Button btnVehicleStop;
-		private System.Windows.Forms.Button btnVehicleDock;
+		private System.Windows.Forms.Button btnVehicleCharge;
 		private System.Windows.Forms.ComboBox cbGoalNameList;
-		private System.Windows.Forms.Button btnVehicleInsertMovingBuffer;
-		private System.Windows.Forms.Button btnVehicleRemoveMovingBuffer;
 		private System.Windows.Forms.Button btnVehiclePause;
 		private System.Windows.Forms.Button btnVehicleResume;
 		private System.Windows.Forms.Button btnVehicleRequestMapList;
@@ -508,6 +539,10 @@
 		private System.Windows.Forms.ComboBox cbRemoteMapNameList2;
 		private System.Windows.Forms.ComboBox cbLocalMapNameList;
 		private TextBoxWithHint txtCoordinate1;
-		private TextBoxWithHint txtCoordinate2;
+        private System.Windows.Forms.Button btnVehicleUncharge;
+		private System.Windows.Forms.Button btnVehicleUnstay;
+		private System.Windows.Forms.Button btnVehicleResumeControl;
+		private System.Windows.Forms.Button btnVehicleStay;
+		private System.Windows.Forms.Button btnVehiclePauseControl;
 	}
 }

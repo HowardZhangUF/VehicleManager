@@ -16,8 +16,9 @@ namespace TrafficControlTest.Module.CommunicationVehicle
         void SendDataOfGoto(string IpPort, string Target);
         void SendDataOfGotoPoint(string IpPort, int X, int Y);
         void SendDataOfGotoTowardPoint(string IpPort, int X, int Y, int Toward);
-        void SendDataOfDock(string IpPort);
         void SendDataOfStop(string IpPort);
+		void SendDataOfCharge(string IpPort);
+		void SendDataOfUncharge(string IpPort);
         void SendDataOfInsertMovingBuffer(string IpPort, int X, int Y);
         void SendDataOfRemoveMovingBuffer(string IpPort);
         void SendDataOfPauseMoving(string IpPort);

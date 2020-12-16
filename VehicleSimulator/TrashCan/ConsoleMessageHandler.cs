@@ -114,6 +114,13 @@ namespace VehicleSimulator.Implement
 				HandleSerializableData_GoToTowardPoint(msg);
 				rCommunicatorClient.SendSerializableData(msg);
 			}
+            else if (Data is Stop)
+            {
+                Stop msg = Data as Stop;
+                msg.Response = false;
+                HandleSerializableData_Stop(msg);
+                rCommunicatorClient.SendSerializableData(msg);
+            }
 		}
 		private void HandleSerializableData_Intervene(InsertMovingBuffer Data)
 		{
@@ -194,6 +201,17 @@ namespace VehicleSimulator.Implement
 					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(Data.Require[0], Data.Require[1]) });
 				}
 			}
-		}
-	}
+        }
+        private void HandleSerializableData_Stop(Stop Data)
+        {
+            if (Data != null && rVehicleSimulatorInfo != null && rVehicleSimulatorInfo.mState == "Running")
+            {
+                if (Data.Require == null)
+                {
+                    Data.Response = true;
+                    rVehicleSimulatorInfo.StopMove(); ;
+                }
+            }
+        }
+    }
 }

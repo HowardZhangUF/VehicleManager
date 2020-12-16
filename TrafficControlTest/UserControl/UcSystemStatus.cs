@@ -24,7 +24,6 @@ namespace TrafficControlTest.UserControl
 		private IVehicleControlHandler rVehicleControlHandler = null;
 		private IHostCommunicator rHostCommunicator = null;
 		private IMissionDispatcher rMissionDispatcher = null;
-		private IMissionUpdater rMissionUpdater = null;
 		private ICycleMissionGenerator rCycleMissionGenerator = null;
 		private ILogExporter rLogExporter = null;
 		private IMapManager rMapManager = null;
@@ -69,12 +68,6 @@ namespace TrafficControlTest.UserControl
 			rMissionDispatcher = MissionDispatcher;
 			SubscribeEvent_IMissionDispatcher(rMissionDispatcher);
 		}
-		public void Set(IMissionUpdater MissionUpdater)
-		{
-			UnsubscribeEvent_IMissionUpdater(rMissionUpdater);
-			rMissionUpdater = MissionUpdater;
-			SubscribeEvent_IMissionUpdater(rMissionUpdater);
-		}
 		public void Set(ICycleMissionGenerator CycleMissionGenerator)
 		{
 			UnsubscribeEvent_ICycleMissionGenerator(rCycleMissionGenerator);
@@ -93,7 +86,7 @@ namespace TrafficControlTest.UserControl
 			rMapManager = MapManager;
 			SubscribeEvent_IMapManager(rMapManager);
 		}
-		public void Set(IImportantEventRecorder ImportantEventRecorder, IVehicleCommunicator VehicleCommunicator, ICollisionEventDetector CollisionEventDetector, IVehicleControlHandler VehicleControlHandler, IHostCommunicator HostCommunicator, IMissionDispatcher MissionDispatcher, IMissionUpdater MissionUpdater, ICycleMissionGenerator CycleMissionGenerator, ILogExporter LogExporter, IMapManager MapManager)
+		public void Set(IImportantEventRecorder ImportantEventRecorder, IVehicleCommunicator VehicleCommunicator, ICollisionEventDetector CollisionEventDetector, IVehicleControlHandler VehicleControlHandler, IHostCommunicator HostCommunicator, IMissionDispatcher MissionDispatcher, ICycleMissionGenerator CycleMissionGenerator, ILogExporter LogExporter, IMapManager MapManager)
 		{
 			Set(ImportantEventRecorder);
 			Set(VehicleCommunicator);
@@ -101,7 +94,6 @@ namespace TrafficControlTest.UserControl
 			Set(VehicleControlHandler);
 			Set(HostCommunicator);
 			Set(MissionDispatcher);
-			Set(MissionUpdater);
 			Set(CycleMissionGenerator);
 			Set(LogExporter);
 			Set(MapManager);
@@ -200,20 +192,6 @@ namespace TrafficControlTest.UserControl
 				MissionDispatcher.SystemStatusChanged -= HandleEvent_MissionDispatcherSystemStatusChanged;
 			}
 		}
-		private void SubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
-		{
-			if (MissionUpdater != null)
-			{
-				MissionUpdater.SystemStatusChanged += HandleEvent_MissionUpdaterSystemStatusChanged;
-			}
-		}
-		private void UnsubscribeEvent_IMissionUpdater(IMissionUpdater MissionUpdater)
-		{
-			if (MissionUpdater != null)
-			{
-				MissionUpdater.SystemStatusChanged -= HandleEvent_MissionUpdaterSystemStatusChanged;
-			}
-		}
 		private void SubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
 		{
 			if (CycleMissionGenerator != null)
@@ -303,10 +281,6 @@ namespace TrafficControlTest.UserControl
 		private void HandleEvent_MissionDispatcherSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
 			UpdateGui_UpdateSwitchButtonSwitchState(sbtnMissionDispatcher, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
-		}
-		private void HandleEvent_MissionUpdaterSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnMissionUpdater, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
 		}
 		private void HandleEvent_CycleMissionGeneratorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
@@ -465,17 +439,6 @@ namespace TrafficControlTest.UserControl
 			else
 			{
 				rMissionDispatcher.Start();
-			}
-		}
-		private void sbtnMissionUpdater_DoubleClick(object sender, EventArgs e)
-		{
-			if (sbtnMissionUpdater.SwitchState == SwitchState.On)
-			{
-				rMissionUpdater.Stop();
-			}
-			else
-			{
-				rMissionUpdater.Start();
 			}
 		}
 		private void sbtnCycleMissionGenerator_DoubleClick(object sender, EventArgs e)

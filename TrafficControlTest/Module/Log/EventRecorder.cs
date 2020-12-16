@@ -159,7 +159,6 @@ namespace TrafficControlTest.Module.Log
 			tmp += "Parameters TEXT, ";
 			tmp += "SourceIPPort TEXT, ";
 			tmp += "ExecutorID TEXT, ";
-			tmp += "SendState TEXT, ";
 			tmp += "ExecuteState TEXT, ";
 			tmp += "FailedReason TEXT, ";
             tmp += "ReceiveTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
@@ -264,7 +263,6 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"'{MissionState.mMission.mParametersString}', ";
 			tmp += $"'{MissionState.mSourceIpPort}', ";
 			tmp += $"'{MissionState.mExecutorId}', ";
-			tmp += $"'{MissionState.mSendState.ToString()}', ";
 			tmp += $"'{MissionState.mExecuteState.ToString()}', ";
 			tmp += $"'{MissionState.mFailedReason.ToString()}', ";
             tmp += $"'{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
@@ -279,7 +277,6 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"UPDATE {mTableNameOfMissionState} SET ";
 			tmp += $"Priority = {MissionState.mMission.mPriority.ToString()}, ";
 			tmp += $"ExecutorID = '{MissionState.mExecutorId}', ";
-			tmp += $"SendState = '{MissionState.mSendState.ToString()}', ";
 			tmp += $"ExecuteState = '{MissionState.mExecuteState.ToString()}', ";
 			tmp += $"FailedReason = '{MissionState.mFailedReason.ToString()}', ";
             tmp += $"ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";

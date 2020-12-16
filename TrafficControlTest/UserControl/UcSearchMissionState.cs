@@ -92,20 +92,18 @@ namespace TrafficControlTest.UserControl
 				dgv.Columns[7].Width = 180;
 				dgv.Columns.Add("ExecutorID", "ExecutorID");
 				dgv.Columns[8].Width = 130;
-				dgv.Columns.Add("SendState", "SendState");
-				dgv.Columns[9].Width = 110;
 				dgv.Columns.Add("ExecuteState", "ExecuteState");
-				dgv.Columns[10].Width = 130;
+				dgv.Columns[9].Width = 130;
                 dgv.Columns.Add("FailedReason", "FailedReason");
-                dgv.Columns[11].Width = 180;
+                dgv.Columns[10].Width = 180;
                 dgv.Columns.Add("ReceiveTimestamp", "ReceiveTimestamp");
-				dgv.Columns[12].Width = 180;
+				dgv.Columns[11].Width = 180;
 				dgv.Columns.Add("StartTimestamp", "StartTimestamp");
-				dgv.Columns[13].Width = 180;
+				dgv.Columns[12].Width = 180;
 				dgv.Columns.Add("StopTimestamp", "StopTimestamp");
-				dgv.Columns[14].Width = 180;
+				dgv.Columns[13].Width = 180;
 				dgv.Columns.Add("LastUpdateTimestamp", "LastUpdateTimestamp");
-				dgv.Columns[15].Width = 180;
+				dgv.Columns[14].Width = 180;
 
 				foreach (DataGridViewColumn column in dgv.Columns)
 				{

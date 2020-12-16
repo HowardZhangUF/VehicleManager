@@ -5,6 +5,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Mission
@@ -22,13 +23,12 @@ namespace TrafficControlTest.Module.Mission
 
 		private IMissionStateManager rMissionStateManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
-		private IVehicleCommunicator rVehicleCommunicator = null;
-        private IChargeStationInfoManager rChargeStationInfoManager = null;
+		private IVehicleControlManager rVehicleControlManager = null;
 
-		public MissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IChargeStationInfoManager ChargeStationInfoManager)
+		public MissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleControlManager VehicleControlManager)
 		{
-			Set(MissionStateManager, VehicleInfoManager, VehicleCommunicator, ChargeStationInfoManager);
-		}
+			Set(MissionStateManager, VehicleInfoManager, VehicleControlManager);
+		} 
 		public void Set(IMissionStateManager MissionStateManager)
 		{
 			rMissionStateManager = MissionStateManager;
@@ -37,20 +37,15 @@ namespace TrafficControlTest.Module.Mission
 		{
 			rVehicleInfoManager = VehicleInfoManager;
 		}
-		public void Set(IVehicleCommunicator VehicleCommunicator)
+		public void Set(IVehicleControlManager VehicleControlManager)
 		{
-			rVehicleCommunicator = VehicleCommunicator;
+			rVehicleControlManager = VehicleControlManager;
 		}
-        public void Set(IChargeStationInfoManager ChargeStationInfoManager)
-        {
-            rChargeStationInfoManager = ChargeStationInfoManager;
-        }
-		public void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IChargeStationInfoManager ChargeStationInfoManager)
+		public void Set(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleControlManager VehicleControlManager)
 		{
 			Set(MissionStateManager);
 			Set(VehicleInfoManager);
-			Set(VehicleCommunicator);
-            Set(ChargeStationInfoManager);
+			Set(VehicleControlManager);
 		}
 		public override string GetConfig(string ConfigName)
 		{
@@ -112,8 +107,8 @@ namespace TrafficControlTest.Module.Mission
 		}
 		private void Subtask_DispatchMission_0()
 		{
-            List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager);
-            List<IVehicleInfo> executableVehicles = ExtractExecutableVehicles(rVehicleInfoManager, rMissionStateManager, mIdlePeriodThreshold);
+            List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager, mIdlePeriodThreshold);
+            List<IVehicleInfo> executableVehicles = ExtractExecutableVehicles(rVehicleInfoManager, rVehicleControlManager, mIdlePeriodThreshold);
 			if (executableMissions != null && executableMissions.Count > 0 && executableVehicles != null && executableVehicles.Count > 0)
 			{
 				IMissionState mission = executableMissions.OrderBy(o => o.mMission.mPriority).ThenBy(o => o.mReceivedTimestamp).First();
@@ -134,17 +129,21 @@ namespace TrafficControlTest.Module.Mission
 
 				if (!string.IsNullOrEmpty(vehicleId))
 				{
-					mission.UpdateSendState(SendState.Sending);
+					if (rVehicleInfoManager[vehicleId].mCurrentState == "ChargeIdle")
+					{
+						IVehicleControl tmpControl = Library.Library.GenerateIVehicleControl(vehicleId, Command.Uncharge, null, mission.mName, string.Empty);
+						rVehicleControlManager.Add(tmpControl.mName, tmpControl);
+					}
 					mission.UpdateExecutorId(vehicleId);
-					SendMission(vehicleId, mission.mMission);
+					SendMission(vehicleId, mission.mMission, mission.mName);
 					RaiseEvent_MissionDispatched(mission, rVehicleInfoManager.GetItem(vehicleId));
 				}
 			}
 		}
 		private void Subtask_DispatchMission_1()
 		{
-			List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager);
-			List<IVehicleInfo> executableVehicles = ExtractExecutableVehicles(rVehicleInfoManager, rMissionStateManager, mIdlePeriodThreshold);
+			List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager, mIdlePeriodThreshold);
+			List<IVehicleInfo> executableVehicles = ExtractExecutableVehicles(rVehicleInfoManager, rVehicleControlManager, mIdlePeriodThreshold);
 			if (executableMissions != null && executableMissions.Count > 0 && executableVehicles != null && executableVehicles.Count > 0)
 			{
 				IMissionState mission = null;
@@ -168,86 +167,69 @@ namespace TrafficControlTest.Module.Mission
 
 				if (!string.IsNullOrEmpty(vehicleId))
 				{
-					mission.UpdateSendState(SendState.Sending);
+					if (rVehicleInfoManager[vehicleId].mCurrentState == "ChargeIdle")
+					{
+						IVehicleControl tmpControl = Library.Library.GenerateIVehicleControl(vehicleId, Command.Uncharge, null, mission.mName, string.Empty);
+						rVehicleControlManager.Add(tmpControl.mName, tmpControl);
+					}
 					mission.UpdateExecutorId(vehicleId);
-					SendMission(vehicleId, mission.mMission);
+					SendMission(vehicleId, mission.mMission, mission.mName);
 					RaiseEvent_MissionDispatched(mission, rVehicleInfoManager.GetItem(vehicleId));
 				}
 			}
 		}
-		private void SendMission(string VehicleId, IMission Mission)
-		{
-			SendMissionByIpPort(rVehicleInfoManager[VehicleId].mIpPort, Mission);
-		}
-		private void SendMissionByIpPort(string IpPort, IMission Mission)
+		private void SendMission(string VehicleId, IMission Mission, string MissionId)
 		{
 			switch (Mission.mMissionType)
 			{
 				case MissionType.Goto:
-					rVehicleCommunicator.SendDataOfGoto(IpPort, Mission.mParameters[0]);
+					IVehicleControl tmpGotoControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Goto, Mission.mParameters, MissionId, string.Empty);
+					rVehicleControlManager.Add(tmpGotoControl.mName, tmpGotoControl);
 					break;
 				case MissionType.GotoPoint:
 					if (Mission.mParameters.Length == 2)
 					{
-						rVehicleCommunicator.SendDataOfGotoPoint(IpPort, int.Parse(Mission.mParameters[0]), int.Parse(Mission.mParameters[1]));
+						IVehicleControl tmpGotoPointControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.GotoPoint, Mission.mParameters, MissionId, string.Empty);
+						rVehicleControlManager.Add(tmpGotoPointControl.mName, tmpGotoPointControl);
 					}
 					else if (Mission.mParameters.Length == 3)
 					{
-						rVehicleCommunicator.SendDataOfGotoTowardPoint(IpPort, int.Parse(Mission.mParameters[0]), int.Parse(Mission.mParameters[1]), int.Parse(Mission.mParameters[2]));
+						IVehicleControl tmpGotoTowardPointControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.GotoTowardPoint, Mission.mParameters, MissionId, string.Empty);
+						rVehicleControlManager.Add(tmpGotoTowardPointControl.mName, tmpGotoTowardPointControl);
 					}
 					break;
 				case MissionType.Dock:
-                    IChargeStationInfo tmpChargeStationInfo = GetClosestChargeStationInfo(rVehicleInfoManager.GetItemByIpPort(IpPort), rChargeStationInfoManager);
-                    if (tmpChargeStationInfo != null)
-                    {
-                        rVehicleCommunicator.SendDataOfGoto(IpPort, tmpChargeStationInfo.mName);
-                    }
+					IVehicleControl tmpChargeControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Charge, Mission.mParameters, MissionId, string.Empty);
+					rVehicleControlManager.Add(tmpChargeControl.mName, tmpChargeControl);
 					break;
 			}
 		}
-		private static List<IMissionState> ExtractExecutableMissions(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager)
+		private static List<IMissionState> ExtractExecutableMissions(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, int IdlePeriodThreshold)
 		{
 			if (MissionStateManager == null || MissionStateManager.mCount == 0) return null;
 			if (VehicleInfoManager == null || VehicleInfoManager.mCount == 0) return null;
 
 			List<IMissionState> result = null;
-			result = MissionStateManager.GetItems().Where(o => (o.mSendState == SendState.Unsend && o.mExecuteState == ExecuteState.Unexecute) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && (VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle" || VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "ChargeIdle")))).ToList();
+			result = MissionStateManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Unexecute && string.IsNullOrEmpty(o.mExecutorId) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && (VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle" || VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "ChargeIdle") && VehicleInfoManager[o.mMission.mVehicleId].mCurrentStateDuration.TotalMilliseconds > IdlePeriodThreshold && string.IsNullOrEmpty(VehicleInfoManager[o.mMission.mVehicleId].mCurrentMissionId)))).ToList();
 			return result;
 		}
-        private static List<IVehicleInfo> ExtractExecutableVehicles(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, int IdlePeriodThreshold)
+        private static List<IVehicleInfo> ExtractExecutableVehicles(IVehicleInfoManager VehicleInfoManager, IVehicleControlManager VehicleControlManager, int IdlePeriodThreshold)
         {
-            IEnumerable<IMissionState> sendingAndExecutingMissions = MissionStateManager.GetItems().Where(o => o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing);
+            IEnumerable<IVehicleControl> schedulingControls = VehicleControlManager.GetItems().Where(o => o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing || o.mExecuteState == ExecuteState.ExecutePaused);
             IEnumerable<IVehicleInfo> idleVehicles = VehicleInfoManager.GetItems().Where(o => (o.mCurrentState == "Idle" || o.mCurrentState == "ChargeIdle") && o.mCurrentStateDuration.TotalMilliseconds > IdlePeriodThreshold && string.IsNullOrEmpty(o.mCurrentMissionId));
             List<IVehicleInfo> resultVehicles = new List<IVehicleInfo>();
             if (idleVehicles != null && idleVehicles.Count() > 0)
             {
                 foreach (IVehicleInfo vehicle in idleVehicles)
                 {
-                    if (!sendingAndExecutingMissions.Any(o => o.mExecutorId == vehicle.mName))
+                    if (!schedulingControls.Any(o => o.mVehicleId == vehicle.mName))
                     {
                         resultVehicles.Add(vehicle);
                     }
                 }
             }
-            // 閒置且沒有被 Sending 任務的車
+            // 閒置且沒有被 Scheduling 控制的車
             return resultVehicles;
-        }
-        private static IChargeStationInfo GetClosestChargeStationInfo(IVehicleInfo VehicleInfo, IChargeStationInfoManager ChargeStationInfoManager)
-        {
-            IChargeStationInfo result = null;
-            if (ChargeStationInfoManager != null && ChargeStationInfoManager.mCount > 0)
-            {
-                result = ChargeStationInfoManager.GetItems().OrderBy(o => CalculateDistance(VehicleInfo.mLocationCoordinate, o.mLocation)).First();
-            }
-            return result;
-        }
-        private static int CalculateDistance(IPoint2D Point1, IPoint2D Point2)
-        {
-            return CalculateDistance(Point1.mX, Point1.mY, Point2.mX, Point2.mY);
-        }
-        private static int CalculateDistance(int X1, int Y1, int X2, int Y2)
-        {
-            return (int)Math.Sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1));
         }
 	}
 }

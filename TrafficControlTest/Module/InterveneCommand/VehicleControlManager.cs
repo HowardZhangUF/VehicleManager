@@ -24,11 +24,18 @@ namespace TrafficControlTest.Module.InterveneCommand
 				mItems[Name].UpdateSendState(SendState);
 			}
 		}
-		public void UpdateParameters(string Name, string[] Parameters)
+		public void UpdateExecuteState(string Name, ExecuteState ExecuteState)
 		{
 			if (IsExist(Name))
 			{
-				mItems[Name].UpdateParameters(Parameters);
+				mItems[Name].UpdateExecuteState(ExecuteState);
+			}
+		}
+		public void UpdateExecuteFailedReason(string Name, FailedReason ExecuteFailedReason)
+		{
+			if (IsExist(Name))
+			{
+				mItems[Name].UpdateExecuteFailedReason(ExecuteFailedReason);
 			}
 		}
 	}

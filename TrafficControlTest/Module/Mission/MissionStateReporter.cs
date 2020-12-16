@@ -1,6 +1,7 @@
 ﻿using System;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 
 namespace TrafficControlTest.Module.Mission
 {
@@ -79,20 +80,6 @@ namespace TrafficControlTest.Module.Mission
 						msg = $"Event=MissionCompleted Result=Successed MissionID={Args.Item.GetMissionId()}";
 						break;
 					case ExecuteState.ExecuteFailed:
-						msg = $"Event=MissionCompleted Result=Failed MissionID={Args.Item.GetMissionId()}";
-						break;
-				}
-				if (!string.IsNullOrEmpty(msg))
-				{
-					rHostCommunicator.SendData(msg);
-				}
-			}
-			if (Args.StatusName.Contains("SendState"))
-			{
-				string msg = null;
-				switch (Args.Item.mSendState)
-				{
-					case SendState.SendFailed:
 						msg = $"Event=MissionCompleted Result=Failed MissionID={Args.Item.GetMissionId()}";
 						break;
 				}

@@ -1,22 +1,31 @@
 ﻿using Serialization;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.InterveneCommand
 {
-	public class VehicleControlUpdater : IVehicleControlUpdater
-	{
+	public class VehicleControlUpdater : SystemWithLoopTask, IVehicleControlUpdater
+    {
+		public int mTimeoutOfSendingVehicleControl { get; private set; } = 5;
+		public int mTimeoutOfExecutingVehicleControl { get; private set; } = 600;
+		public int mToleranceOfXOfArrivedTarget { get; private set; } = 500;
+		public int mToleranceOfYOfArrivedTarget { get; private set; } = 500;
+		public int mToleranceOfTowardOfArrivedTarget { get; private set; } = 5;
+
 		private IVehicleControlManager rVehicleControlManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
+		private IMapManager rMapManager = null;
 
-		public VehicleControlUpdater(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
+		public VehicleControlUpdater(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IMapManager MapManager)
 		{
-			Set(VehicleControlManager, VehicleInfoManager, VehicleCommunicator);
+			Set(VehicleControlManager, VehicleInfoManager, VehicleCommunicator, MapManager);
 		}
 		public void Set(IVehicleControlManager VehicleControlManager)
 		{
@@ -26,7 +35,9 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
+			UnsubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
+			SubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -34,11 +45,73 @@ namespace TrafficControlTest.Module.InterveneCommand
 			rVehicleCommunicator = VehicleCommunicator;
 			SubscribeEvent_IVechielCommunicator(rVehicleCommunicator);
 		}
-		public void Set(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
+		public void Set(IMapManager MapManager)
+		{
+			rMapManager = MapManager;
+		}
+		public void Set(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IMapManager MapManager)
 		{
 			Set(VehicleControlManager);
 			Set(VehicleInfoManager);
 			Set(VehicleCommunicator);
+            Set(MapManager);
+        }
+        public override string GetConfig(string ConfigName)
+        {
+            switch (ConfigName)
+            {
+                case "TimePeriod":
+                    return mTimePeriod.ToString();
+                case "TimeoutOfSendingVehicleControl":
+                    return mTimeoutOfSendingVehicleControl.ToString();
+                case "TimeoutOfExecutingVehicleControl":
+                    return mTimeoutOfExecutingVehicleControl.ToString();
+                case "ToleranceOfXOfArrivedTarget":
+                    return mToleranceOfXOfArrivedTarget.ToString();
+                case "ToleranceOfYOfArrivedTarget":
+                    return mToleranceOfYOfArrivedTarget.ToString();
+                case "ToleranceOfTowardOfArrivedTarget":
+                    return mToleranceOfTowardOfArrivedTarget.ToString();
+                default:
+                    return null;
+            }
+        }
+        public override void SetConfig(string ConfigName, string NewValue)
+        {
+            switch (ConfigName)
+            {
+                case "TimePeriod":
+                    mTimePeriod = int.Parse(NewValue);
+                    RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+                    break;
+                case "TimeoutOfSendingVehicleControl":
+                    mTimeoutOfSendingVehicleControl = int.Parse(NewValue);
+                    RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+                    break;
+                case "TimeoutOfExecutingVehicleControl":
+                    mTimeoutOfExecutingVehicleControl = int.Parse(NewValue);
+                    RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+                    break;
+                case "ToleranceOfXOfArrivedTarget":
+                    mToleranceOfXOfArrivedTarget = int.Parse(NewValue);
+                    RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+                    break;
+                case "ToleranceOfYOfArrivedTarget":
+                    mToleranceOfYOfArrivedTarget = int.Parse(NewValue);
+                    RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+                    break;
+                case "ToleranceOfTowardOfArrivedTarget":
+                    mToleranceOfTowardOfArrivedTarget = int.Parse(NewValue);
+                    RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+                    break;
+                default:
+                    break;
+            }
+        }
+        public override void Task()
+		{
+			Subtask_CheckVehicleControlSendTimeout();
+			Subtask_CheckVehicleControlExecuteTimeout();
 		}
 
 		private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
@@ -53,6 +126,20 @@ namespace TrafficControlTest.Module.InterveneCommand
 			if (VehicleControlManager != null)
 			{
 				VehicleControlManager.ItemUpdated -= HandleEvent_VehicleControlManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
+		{
+			if (VehicleInfoManager != null)
+			{
+				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
+		{
+			if (VehicleInfoManager != null)
+			{
+				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_IVechielCommunicator(IVehicleCommunicator VehicleCommunicator)
@@ -73,35 +160,370 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
 		{
-			if (Args.StatusName.Contains("SendState"))
+			if (Args.StatusName.Contains("ExecuteState"))
 			{
-				if (Args.Item.mSendState == SendState.SentSuccessed || Args.Item.mSendState == SendState.SentFailed)
+				switch (Args.Item.mExecuteState)
 				{
-					rVehicleControlManager.Remove(Args.ItemName);
+					case ExecuteState.ExecuteSuccessed:
+					case ExecuteState.ExecuteFailed:
+						rVehicleControlManager.Remove(Args.ItemName);
+						break;
 				}
 			}
+			if (Args.StatusName.Contains("SendState"))
+			{
+				switch (Args.Item.mSendState)
+				{
+					case SendState.SendFailed:
+						rVehicleControlManager.Remove(Args.ItemName);
+						break;
+				}
+			}
+		}
+		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
+		{
+			if (Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget"))
+            {
+                List<IVehicleControl> controls = GetCorrespondedVehicleControl(Args.Item, rVehicleControlManager);
+                for (int i = 0; i < controls.Count; ++i)
+                {
+                    UpdateVehicleControl(controls[i], Args.Item);
+                }
+            }
 		}
 		private void HandleEvent_VehicleCommunicatorSentDataSuccessed(object Sender, SentDataEventArgs Args)
 		{
-			if (Args.Data is Serializable)
-			{
-				string vehicleId = rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName;
-				if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
-				{
-					rVehicleControlManager.GetItems().First(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending).UpdateSendState(SendState.SentSuccessed);
-				}
-			}
+			//if (Args.Data is Serializable)
+			//{
+			//	string vehicleId = rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName;
+			//	if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
+			//	{
+			//		rVehicleControlManager.GetItems().First(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending).UpdateSendState(SendState.SendSuccessed);
+			//	}
+			//}
 		}
 		private void HandleEvent_VehicleCommunicatorSentDataFailed(object Sender, SentDataEventArgs Args)
 		{
-			if (Args.Data is Serializable && rVehicleInfoManager.IsExistByIpPort(Args.IpPort))
+			//if (Args.Data is Serializable && rVehicleInfoManager.IsExistByIpPort(Args.IpPort))
+			//{
+			//	string vehicleId = rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName;
+			//	if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
+			//	{
+			//		rVehicleControlManager.GetItems().First(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending).UpdateSendState(SendState.SendFailed);
+			//	}
+			//}
+		}
+        private void UpdateVehicleControl(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+        {
+            switch (VehicleControl.mCommand)
+            {
+                case Command.PauseMoving:
+                    UpdateVehicleControlOfPauseMoving(VehicleControl, VehicleInfo);
+                    break;
+                case Command.ResumeMoving:
+                    UpdateVehicleControlOfResumeMoving(VehicleControl, VehicleInfo);
+                    break;
+                case Command.Goto:
+                    UpdateVehicleControlOfGoto(VehicleControl, VehicleInfo);
+                    break;
+                case Command.GotoPoint:
+                    UpdateVehicleControlOfGotoPoint(VehicleControl, VehicleInfo);
+                    break;
+                case Command.GotoTowardPoint:
+                    UpdateVehicleControlOfGotoTowardPoint(VehicleControl, VehicleInfo);
+                    break;
+                case Command.Stop:
+                    UpdateVehicleControlOfStop(VehicleControl, VehicleInfo);
+                    break;
+                case Command.Charge:
+                    UpdateVehicleControlOfCharge(VehicleControl, VehicleInfo);
+                    break;
+                case Command.Uncharge:
+                    UpdateVehicleControlOfUncharge(VehicleControl, VehicleInfo);
+                    break;
+				// 這幾種 Command 不會傳送給車子，所以亦不需要車子的資訊來更新狀態
+				//case Command.Stay:
+				//	break;
+				//case Command.Unstay:
+				//	break;
+				//case Command.PauseControl:
+				//	break;
+				//case Command.ResumeControl:
+				//	break;
+            }
+        }
+        private void UpdateVehicleControlOfPauseMoving(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+			if (VehicleControl.mSendState == SendState.Sending)
 			{
-				string vehicleId = rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName;
-				if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
+				if (VehicleInfo.mCurrentState == "Pause")
 				{
-					rVehicleControlManager.GetItems().First(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending).UpdateSendState(SendState.SentFailed);
+					VehicleControl.UpdateSendState(SendState.SendSuccessed);
+					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
 				}
 			}
 		}
+		private void UpdateVehicleControlOfResumeMoving(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+			if (VehicleControl.mSendState == SendState.Sending)
+			{
+				if (VehicleInfo.mCurrentState == "Running")
+				{
+					VehicleControl.UpdateSendState(SendState.SendSuccessed);
+					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+				}
+			}
+		}
+		private void UpdateVehicleControlOfGoto(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+			if (VehicleControl.mSendState == SendState.Sending)
+			{
+                if (VehicleInfo.mCurrentState == "Running" && VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
+                {
+                    VehicleControl.UpdateSendState(SendState.SendSuccessed);
+                    VehicleControl.UpdateExecuteState(ExecuteState.Executing);
+                }
+			}
+			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
+			{
+                if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Charge" || VehicleInfo.mCurrentState == "ChargeIdle")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleGotoCharge);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Idle")
+                {
+                    if (IsVehicleArrived(VehicleInfo, VehicleControl.mParameters[0]))
+                    {
+                        VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+                    }
+                    else
+                    {
+                        VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+                        VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                    }
+                }
+			}
+		}
+		private void UpdateVehicleControlOfGotoPoint(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+            if (VehicleControl.mSendState == SendState.Sending)
+            {
+                if (VehicleInfo.mCurrentState == "Running" && VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
+                {
+                    VehicleControl.UpdateSendState(SendState.SendSuccessed);
+                    VehicleControl.UpdateExecuteState(ExecuteState.Executing);
+                }
+            }
+            else if (VehicleControl.mExecuteState == ExecuteState.Executing)
+            {
+                if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Charge" || VehicleInfo.mCurrentState == "ChargeIdle")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleGotoCharge);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Idle")
+                {
+                    if (IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1])))
+                    {
+                        VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+                    }
+                    else
+                    {
+                        VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+                        VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                    }
+                }
+            }
+        }
+		private void UpdateVehicleControlOfGotoTowardPoint(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+            if (VehicleControl.mSendState == SendState.Sending)
+            {
+                if (VehicleInfo.mCurrentState == "Running" && VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
+                {
+                    VehicleControl.UpdateSendState(SendState.SendSuccessed);
+                    VehicleControl.UpdateExecuteState(ExecuteState.Executing);
+                }
+            }
+            else if (VehicleControl.mExecuteState == ExecuteState.Executing)
+            {
+                if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Charge" || VehicleInfo.mCurrentState == "ChargeIdle")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleGotoCharge);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Idle")
+                {
+                    if (IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]), int.Parse(VehicleControl.mParameters[2])))
+                    {
+                        VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+                    }
+                    else
+                    {
+                        VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+                        VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                    }
+                }
+            }
+        }
+		private void UpdateVehicleControlOfStop(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+			if (VehicleControl.mSendState == SendState.Sending)
+			{
+                if (VehicleInfo.mCurrentState == "Idle")
+                {
+                    VehicleControl.UpdateSendState(SendState.SendSuccessed);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+                }
+			}
+		}
+		private void UpdateVehicleControlOfCharge(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+            if (VehicleControl.mSendState == SendState.Sending)
+            {
+                if (VehicleInfo.mCurrentState == "Running" && rMapManager.GetChargeStationNameList().Contains(VehicleInfo.mCurrentTarget))
+                {
+                    if (rMapManager.GetChargeStationNameList().Any(o => o == VehicleInfo.mCurrentTarget))
+                    {
+                        VehicleControl.UpdateSendState(SendState.SendSuccessed);
+                        VehicleControl.UpdateExecuteState(ExecuteState.Executing);
+                    }
+                    else
+                    {
+                        VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleNotGoingtoCharge);
+                        VehicleControl.UpdateSendState(SendState.SendFailed);
+                    }
+                }
+            }
+            else if (VehicleControl.mExecuteState == ExecuteState.Executing)
+            {
+                if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Idle")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleStopped);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Charge" || VehicleInfo.mCurrentState == "ChargeIdle")
+                {
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+                }
+            }
+        }
+		private void UpdateVehicleControlOfUncharge(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+			if (VehicleControl.mSendState == SendState.Sending)
+			{
+                // 目前傳送 Uncharge 給自走車 (iTS) 時，狀態會變成 Charge -> Running ，等到退出充電站完成後， Running -> Idle
+                if (VehicleInfo.mCurrentState == "Running")
+                {
+                    VehicleControl.UpdateSendState(SendState.SendSuccessed);
+                    VehicleControl.UpdateExecuteState(ExecuteState.Executing);
+                }
+			}
+			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
+			{
+                if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger")
+                {
+                    VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+                }
+                else if (VehicleInfo.mCurrentState == "Idle")
+                {
+                    VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+                }
+            }
+		}
+		private void Subtask_CheckVehicleControlSendTimeout()
+		{
+			List<IVehicleControl> sendingVehicleControls = rVehicleControlManager.GetItems().Where(o => o.mSendState == SendState.Sending).ToList();
+			for (int i = 0; i < sendingVehicleControls.Count; ++i)
+			{
+				if (rVehicleInfoManager.IsExist(sendingVehicleControls[i].mVehicleId))
+				{
+					// 若指定車存在，但持續 n 秒控制的傳送狀態皆未改變，標示該控制為傳送失敗
+					if (DateTime.Now.Subtract(sendingVehicleControls[i].mLastUpdated).TotalSeconds > mTimeoutOfSendingVehicleControl)
+					{
+						sendingVehicleControls[i].UpdateExecuteFailedReason(FailedReason.SentTimeout);
+						sendingVehicleControls[i].UpdateSendState(SendState.SendFailed);
+					}
+				}
+				else
+				{
+					// 若指定車不存在，標示該控制為傳送失敗
+					sendingVehicleControls[i].UpdateExecuteFailedReason(FailedReason.VehicleDisconnected);
+					sendingVehicleControls[i].UpdateSendState(SendState.SendFailed);
+				}
+			}
+		}
+		private void Subtask_CheckVehicleControlExecuteTimeout()
+		{
+			List<IVehicleControl> executingVehicleControls = rVehicleControlManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Executing).ToList();
+			for (int i = 0; i < executingVehicleControls.Count; ++i)
+			{
+				if (rVehicleInfoManager.IsExist(executingVehicleControls[i].mVehicleId))
+				{
+					// 若指定車存在，但持續 n 秒控制的執行狀態皆未改變，標示該控制為執行失敗
+					if (DateTime.Now.Subtract(executingVehicleControls[i].mLastUpdated).TotalSeconds > mTimeoutOfExecutingVehicleControl)
+					{
+						executingVehicleControls[i].UpdateExecuteFailedReason(FailedReason.ExectutedTimeout);
+						executingVehicleControls[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+					}
+				}
+				else
+				{
+					// 若指定車不存在，標示該控制為執行失敗
+					executingVehicleControls[i].UpdateExecuteFailedReason(FailedReason.VehicleDisconnected);
+					executingVehicleControls[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+				}
+			}
+		}
+		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, string Target)
+		{
+			int[] targetCoordinate = rMapManager.GetGoalCoordinate(Target);
+			return IsVehicleArrived(VehicleInfo, targetCoordinate[0], targetCoordinate[1], targetCoordinate[2]);
+		}
+		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, int X, int Y)
+		{
+			return VehicleInfo.mCurrentState == "Idle" && Math.Abs(VehicleInfo.mLocationCoordinate.mX - X) < mToleranceOfXOfArrivedTarget && Math.Abs(VehicleInfo.mLocationCoordinate.mY - Y) < mToleranceOfYOfArrivedTarget;
+		}
+		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, int X, int Y, int Toward)
+		{
+			int diffX = Math.Abs(VehicleInfo.mLocationCoordinate.mX - X);
+			int diffY = Math.Abs(VehicleInfo.mLocationCoordinate.mY - Y);
+			int diffToward = Math.Abs((int)(VehicleInfo.mLocationToward) - Toward);
+			return VehicleInfo.mCurrentState == "Idle" && diffX < mToleranceOfXOfArrivedTarget && diffY < mToleranceOfYOfArrivedTarget && ((diffToward < mToleranceOfTowardOfArrivedTarget) || (diffToward <= 360 && diffToward > (360 - mToleranceOfTowardOfArrivedTarget)));
+		}
+        private static List<IVehicleControl> GetCorrespondedVehicleControl(IVehicleInfo VehicleInfo, IVehicleControlManager VehicleControlManager)
+        {
+            return VehicleControlManager.GetItems().Where(o => (o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing) && o.mVehicleId == VehicleInfo.mName).ToList();
+        }
+  //      private static List<IVehicleControl> GetCorrespondedSendingVehicleControl(IVehicleInfo VehicleInfo, IVehicleControlManager VehicleControlManager)
+		//{
+		//	return VehicleControlManager.GetItems().Where(o => o.mSendState == SendState.Sending && o.mVehicleId == VehicleInfo.mName).ToList();
+		//}
+		//private static List<IVehicleControl> GetCorrespondedExecutingVehicleControl(IVehicleInfo VehicleInfo, IVehicleControlManager VehicleControlManager)
+		//{
+		//	return VehicleControlManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Executing && o.mVehicleId == VehicleInfo.mName).ToList();
+		//}
 	}
 }

@@ -236,9 +236,9 @@ namespace TrafficControlTest.Library
 		{
 			return new VehicleControlHandler(VehicleControlManager, VehicleInfoManager, VehicleCommunicator);
 		}
-		public static IVehicleControlUpdater GenerateIVehicleControlUpdater(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator)
+		public static IVehicleControlUpdater GenerateIVehicleControlUpdater(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IMapManager MapManager)
 		{
-			return new VehicleControlUpdater(VehicleControlManager, VehicleInfoManager, VehicleCommunicator);
+			return new VehicleControlUpdater(VehicleControlManager, VehicleInfoManager, VehicleCommunicator, MapManager);
 		}
 		public static IMission GenerateIMission(MissionType MissionType, string MissionId, int Priority, string VehicleId, string[] Parameters)
 		{
@@ -283,13 +283,13 @@ namespace TrafficControlTest.Library
 		{
 			return new HostMessageAnalyzer(HostCommunicator, VehicleInfoManager, MissionStateManager, MissionAnalyzers);
 		}
-		public static IMissionDispatcher GenerateIMissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IChargeStationInfoManager ChargeStationInfoManager)
+		public static IMissionDispatcher GenerateIMissionDispatcher(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, IVehicleControlManager VehicleControlManager)
 		{
-			return new MissionDispatcher(MissionStateManager, VehicleInfoManager, VehicleCommunicator, ChargeStationInfoManager);
+			return new MissionDispatcher(MissionStateManager, VehicleInfoManager, VehicleControlManager);
 		}
-		public static IMissionUpdater GenerateIMissionUpdater(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IMapManager MapManager)
+		public static IMissionUpdater GenerateIMissionUpdater(IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager)
 		{
-			return new MissionUpdater(VehicleInfoManager, MissionStateManager, MapManager);
+			return new MissionUpdater(VehicleInfoManager, MissionStateManager, VehicleControlManager);
 		}
 		public static IMapFileManager GenerateIMapFileManager()
 		{

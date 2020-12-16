@@ -40,14 +40,18 @@ namespace TrafficControlTest.Module.CommunicationVehicle
         {
             SendDataAndWaitAck(IpPort, new GoToTowardPoint(new List<int> { X, Y, Toward }));
         }
-        public void SendDataOfDock(string IpPort)
-        {
-
-        }
         public void SendDataOfStop(string IpPort)
         {
             SendDataAndWaitAck(IpPort, new Stop(null));
         }
+		public void SendDataOfCharge(string IpPort)
+		{
+			SendDataAndWaitAck(IpPort, new Charge(string.Empty));
+		}
+		public void SendDataOfUncharge(string IpPort)
+		{
+			SendDataAndWaitAck(IpPort, new Uncharge(null));
+		}
         public void SendDataOfInsertMovingBuffer(string IpPort, int X, int Y)
         {
             SendDataAndWaitAck(IpPort, new InsertMovingBuffer(new List<int>() { X, Y }));

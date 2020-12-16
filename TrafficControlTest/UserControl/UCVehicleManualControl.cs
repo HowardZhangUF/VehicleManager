@@ -4,6 +4,7 @@ using System.Linq;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;
 
@@ -24,7 +25,7 @@ namespace TrafficControlTest.UserControl
 			}
 		}
 
-		private IVehicleCommunicator rVehicleCommunicator = null;
+		private IVehicleControlManager rVehicleControlManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMapManager rMapManager = null;
 
@@ -32,11 +33,11 @@ namespace TrafficControlTest.UserControl
 		{
 			InitializeComponent();
 		}
-		public void Set(IVehicleCommunicator VehicleCommunicator)
+		public void Set(IVehicleControlManager VehicleControlManager)
 		{
-			UnsubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
-			rVehicleCommunicator = VehicleCommunicator;
-			SubscriebEvent_IVehicleCommunicator(rVehicleCommunicator);
+			UnsubscribeEvent_IVehicleControlManager(rVehicleControlManager);
+			rVehicleControlManager = VehicleControlManager;
+			SubscriebEvent_IVehicleControlManager(rVehicleControlManager);
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
@@ -50,9 +51,9 @@ namespace TrafficControlTest.UserControl
 			rMapManager = MapManager;
 			SubscribeEvent_IMapManager(rMapManager);
 		}
-		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMapManager MapManager)
+		public void Set(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IMapManager MapManager)
 		{
-			Set(VehicleCommunicator);
+			Set(VehicleControlManager);
 			Set(VehicleInfoManager);
 			Set(MapManager);
 		}
@@ -100,16 +101,16 @@ namespace TrafficControlTest.UserControl
 			});
 		}
 
-		private void SubscriebEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
+		private void SubscriebEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
 		{
-			if (rVehicleCommunicator != null)
+			if (VehicleControlManager != null)
 			{
 
 			}
 		}
-		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
+		private void UnsubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
 		{
-			if (rVehicleCommunicator != null)
+			if (VehicleControlManager != null)
 			{
 
 			}
@@ -160,14 +161,16 @@ namespace TrafficControlTest.UserControl
 		{
 			if (cbVehicleNameList.SelectedItem != null && lbGoalNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendDataOfGoto(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, lbGoalNameList.SelectedItem.ToString());
+				IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Goto, new string[] { lbGoalNameList.SelectedItem.ToString() }, "Manual", string.Empty);
+				rVehicleControlManager.Add(control.mName, control);
 			}
 		}
 		private void btnStop_Click(object sender, EventArgs e)
 		{
 			if (cbVehicleNameList.SelectedItem != null)
 			{
-				rVehicleCommunicator.SendDataOfStop(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Stop, null, "Manual", string.Empty);
+				rVehicleControlManager.Add(control.mName, control);
 			}
 		}
 	}

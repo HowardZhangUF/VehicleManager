@@ -1,4 +1,6 @@
 ﻿using TrafficControlTest.Module.CommunicationVehicle;
+using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.InterveneCommand
@@ -9,11 +11,12 @@ namespace TrafficControlTest.Module.InterveneCommand
 	/// - 根據 IVehicleCommunicator 的 SendDataSuccessed 事件來更新 IVehicleControl 的 SendState 成 SendSuccessed
 	/// - 根據 IVehicleCommunicator 的 SendDataFailed 事件來更新 IVehicleControl 的 SendState 成 SendFailed
 	/// </summary>
-	public interface IVehicleControlUpdater
-	{
+	public interface IVehicleControlUpdater : ISystemWithLoopTask
+    {
 		void Set(IVehicleControlManager VehicleControlManager);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IVehicleCommunicator VehicleCommunicator);
-		void Set(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator);
+		void Set(IMapManager MapManager);
+        void Set(IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager, IVehicleCommunicator VehicleCommunicator, IMapManager MapManager);
 	}
 }

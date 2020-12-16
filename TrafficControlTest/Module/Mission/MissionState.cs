@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 
 namespace TrafficControlTest.Module.Mission
 {
@@ -12,9 +13,8 @@ namespace TrafficControlTest.Module.Mission
 		public string mSourceIpPort { get; private set; }
 		public string mName { get; private set; }
 		public string mExecutorId { get; private set; }
-		public SendState mSendState { get; private set; }
 		public ExecuteState mExecuteState { get; private set; }
-        public MissionFailedReason mFailedReason { get; private set; }
+        public FailedReason mFailedReason { get; private set; }
 		public DateTime mReceivedTimestamp { get; private set; }
 		public DateTime mExecutionStartTimestamp { get; private set; }
 		public DateTime mExecutionStopTimestamp { get; private set; }
@@ -30,9 +30,8 @@ namespace TrafficControlTest.Module.Mission
 			mMission = Mission;
 			mName = $"Mission{tmp.ToString("yyyyMMddHHmmssfff")}";
 			mExecutorId = string.Empty;
-			mSendState = SendState.Unsend;
 			mExecuteState = ExecuteState.Unexecute;
-            mFailedReason = MissionFailedReason.None;
+            mFailedReason = FailedReason.None;
 			mReceivedTimestamp = tmp;
 			mExecutionStartTimestamp = DateTime.MinValue;
 			mExecutionStopTimestamp = DateTime.MinValue;
@@ -69,15 +68,6 @@ namespace TrafficControlTest.Module.Mission
 				RaiseEvent_StatusUpdated("ExecutorId");
 			}
 		}
-		public void UpdateSendState(SendState SendState)
-		{
-			if (mSendState != SendState)
-			{
-				mSendState = SendState;
-				mLastUpdate = DateTime.Now;
-				RaiseEvent_StatusUpdated("SendState");
-			}
-		}
 		public void UpdateExecuteState(ExecuteState ExecuteState)
 		{
 			if (mExecuteState != ExecuteState)
@@ -97,7 +87,7 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 		}
-        public void UpdateFailedReason(MissionFailedReason FailedReason)
+        public void UpdateFailedReason(FailedReason FailedReason)
         {
             if (mFailedReason != FailedReason)
             {
@@ -109,12 +99,12 @@ namespace TrafficControlTest.Module.Mission
 		public string[] ToStringArray()
 		{
 			string[] result = null;
-			result = new string[] { mName, mMission.mMissionId, mMission.mPriority.ToString(), mMission.mMissionType.ToString(), mMission.mVehicleId, mMission.mParametersString, mSourceIpPort, $"{mSendState.ToString()} / {mExecuteState.ToString()}", mExecutorId, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
+			result = new string[] { mName, mMission.mMissionId, mMission.mPriority.ToString(), mMission.mMissionType.ToString(), mMission.mVehicleId, mMission.mParametersString, mSourceIpPort, mExecuteState.ToString(), mExecutorId, mReceivedTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff") };
 			return result;
 		}
 		public override string ToString()
 		{
-			return $"{mName}/{mMission.ToString()}/{mExecutorId}/{mSendState.ToString()}/{mExecuteState.ToString()}";
+			return $"{mName}/{mMission.ToString()}/{mExecutorId}/{mExecuteState.ToString()}";
 		}
 
 		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
