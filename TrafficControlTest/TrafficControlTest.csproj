@@ -304,6 +304,12 @@
     <Compile Include="UserControl\UcMission.Designer.cs">
       <DependentUpon>UcMission.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UcMissionInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcMissionInfo.Designer.cs">
+      <DependentUpon>UcMissionInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UcSearch.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -427,6 +433,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcMission.resx">
       <DependentUpon>UcMission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcMissionInfo.resx">
+      <DependentUpon>UcMissionInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcSearch.resx">
       <DependentUpon>UcSearch.cs</DependentUpon>
