@@ -23,7 +23,7 @@ namespace TrafficControlTest.UserControl
 			Target
 		}
 
-		public static int DefaultHeight = 100;
+		public static int DefaultHeight = 80;
 		public static string PreFix = "UcVehicleInfo";
 
 		public string mId
@@ -53,8 +53,8 @@ namespace TrafficControlTest.UserControl
 		}
 		public Color mBorderColor
 		{
-			get { return pnlTop.BackColor; }
-			set { pnlSecondTop.BackColor = value; pnlSecondBottom.BackColor = value; pnlSecondLeft.BackColor = value; pnlSecondRight.BackColor = value; }
+			get { return pnlBorder.BackColor; }
+			set { pnlBorder.BackColor = value; }
 		}
 
 		public UcVehicleInfo()

@@ -31,39 +31,27 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcVehicleInfo));
 			this.lblId = new System.Windows.Forms.Label();
 			this.lblBattery = new System.Windows.Forms.Label();
-			this.pnlTop = new System.Windows.Forms.Panel();
-			this.pnlBottom = new System.Windows.Forms.Panel();
-			this.pnlLeft = new System.Windows.Forms.Panel();
-			this.pnlRight = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.panel3 = new System.Windows.Forms.Panel();
-			this.lblLocationScore = new System.Windows.Forms.Label();
-			this.pnlSecondTop = new System.Windows.Forms.Panel();
-			this.pnlSecondBottom = new System.Windows.Forms.Panel();
-			this.pnlSecondRight = new System.Windows.Forms.Panel();
-			this.pnlSecondLeft = new System.Windows.Forms.Panel();
-			this.pnlThirdTop = new System.Windows.Forms.Panel();
-			this.pnlThirdBottom = new System.Windows.Forms.Panel();
-			this.pnlThirdLeft = new System.Windows.Forms.Panel();
-			this.pnlThirdRight = new System.Windows.Forms.Panel();
-			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.lblTarget = new System.Windows.Forms.Label();
 			this.lblState = new System.Windows.Forms.Label();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.lblLocationScore = new System.Windows.Forms.Label();
+			this.pnlBorder = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1.SuspendLayout();
-			this.tableLayoutPanel2.SuspendLayout();
 			this.panel1.SuspendLayout();
+			this.pnlBorder.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// lblId
 			// 
 			this.lblId.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lblId.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblId.Location = new System.Drawing.Point(3, 0);
+			this.lblId.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblId.Location = new System.Drawing.Point(7, 4);
 			this.lblId.Name = "lblId";
-			this.tableLayoutPanel1.SetRowSpan(this.lblId, 2);
-			this.lblId.Size = new System.Drawing.Size(279, 50);
+			this.tableLayoutPanel1.SetRowSpan(this.lblId, 6);
+			this.lblId.Size = new System.Drawing.Size(290, 36);
 			this.lblId.TabIndex = 0;
 			this.lblId.Text = "ID";
 			this.lblId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -75,188 +63,56 @@
 			this.lblBattery.AutoSize = true;
 			this.lblBattery.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblBattery.ForeColor = System.Drawing.Color.White;
-			this.lblBattery.Location = new System.Drawing.Point(313, 5);
+			this.lblBattery.Location = new System.Drawing.Point(327, 8);
 			this.lblBattery.Name = "lblBattery";
+			this.tableLayoutPanel1.SetRowSpan(this.lblBattery, 4);
 			this.lblBattery.Size = new System.Drawing.Size(49, 15);
 			this.lblBattery.TabIndex = 1;
 			this.lblBattery.Text = "100 %";
 			this.lblBattery.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			this.lblBattery.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
-			// pnlTop
-			// 
-			this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlTop.Location = new System.Drawing.Point(0, 0);
-			this.pnlTop.Name = "pnlTop";
-			this.pnlTop.Size = new System.Drawing.Size(400, 4);
-			this.pnlTop.TabIndex = 2;
-			// 
-			// pnlBottom
-			// 
-			this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlBottom.Location = new System.Drawing.Point(0, 96);
-			this.pnlBottom.Name = "pnlBottom";
-			this.pnlBottom.Size = new System.Drawing.Size(400, 4);
-			this.pnlBottom.TabIndex = 3;
-			// 
-			// pnlLeft
-			// 
-			this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlLeft.Location = new System.Drawing.Point(0, 4);
-			this.pnlLeft.Name = "pnlLeft";
-			this.pnlLeft.Size = new System.Drawing.Size(4, 92);
-			this.pnlLeft.TabIndex = 4;
-			// 
-			// pnlRight
-			// 
-			this.pnlRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlRight.Location = new System.Drawing.Point(396, 4);
-			this.pnlRight.Name = "pnlRight";
-			this.pnlRight.Size = new System.Drawing.Size(4, 92);
-			this.pnlRight.TabIndex = 4;
-			// 
 			// tableLayoutPanel1
 			// 
+			this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
 			this.tableLayoutPanel1.ColumnCount = 3;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+			this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 6);
 			this.tableLayoutPanel1.Controls.Add(this.lblId, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.lblBattery, 2, 0);
 			this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
-			this.tableLayoutPanel1.Controls.Add(this.panel3, 1, 1);
-			this.tableLayoutPanel1.Controls.Add(this.lblLocationScore, 2, 1);
-			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 10);
+			this.tableLayoutPanel1.Controls.Add(this.panel3, 1, 4);
+			this.tableLayoutPanel1.Controls.Add(this.lblLocationScore, 2, 4);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(2, 2);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 2;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(380, 50);
+			this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(4);
+			this.tableLayoutPanel1.RowCount = 10;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(388, 68);
 			this.tableLayoutPanel1.TabIndex = 5;
 			this.tableLayoutPanel1.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
-			// panel2
-			// 
-			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
-			this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel2.Location = new System.Drawing.Point(288, 3);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(19, 19);
-			this.panel2.TabIndex = 2;
-			this.panel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
-			// panel3
-			// 
-			this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
-			this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel3.Location = new System.Drawing.Point(288, 28);
-			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(19, 19);
-			this.panel3.TabIndex = 3;
-			this.panel3.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
-			// lblLocationScore
-			// 
-			this.lblLocationScore.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.lblLocationScore.AutoSize = true;
-			this.lblLocationScore.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblLocationScore.Location = new System.Drawing.Point(313, 30);
-			this.lblLocationScore.Name = "lblLocationScore";
-			this.lblLocationScore.Size = new System.Drawing.Size(49, 15);
-			this.lblLocationScore.TabIndex = 4;
-			this.lblLocationScore.Text = "100 %";
-			this.lblLocationScore.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
-			// 
-			// pnlSecondTop
-			// 
-			this.pnlSecondTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlSecondTop.Location = new System.Drawing.Point(4, 4);
-			this.pnlSecondTop.Name = "pnlSecondTop";
-			this.pnlSecondTop.Size = new System.Drawing.Size(392, 2);
-			this.pnlSecondTop.TabIndex = 7;
-			// 
-			// pnlSecondBottom
-			// 
-			this.pnlSecondBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlSecondBottom.Location = new System.Drawing.Point(4, 94);
-			this.pnlSecondBottom.Name = "pnlSecondBottom";
-			this.pnlSecondBottom.Size = new System.Drawing.Size(392, 2);
-			this.pnlSecondBottom.TabIndex = 8;
-			// 
-			// pnlSecondRight
-			// 
-			this.pnlSecondRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlSecondRight.Location = new System.Drawing.Point(394, 6);
-			this.pnlSecondRight.Name = "pnlSecondRight";
-			this.pnlSecondRight.Size = new System.Drawing.Size(2, 88);
-			this.pnlSecondRight.TabIndex = 8;
-			// 
-			// pnlSecondLeft
-			// 
-			this.pnlSecondLeft.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlSecondLeft.Location = new System.Drawing.Point(4, 6);
-			this.pnlSecondLeft.Name = "pnlSecondLeft";
-			this.pnlSecondLeft.Size = new System.Drawing.Size(2, 88);
-			this.pnlSecondLeft.TabIndex = 8;
-			// 
-			// pnlThirdTop
-			// 
-			this.pnlThirdTop.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnlThirdTop.Location = new System.Drawing.Point(6, 6);
-			this.pnlThirdTop.Name = "pnlThirdTop";
-			this.pnlThirdTop.Size = new System.Drawing.Size(388, 4);
-			this.pnlThirdTop.TabIndex = 9;
-			// 
-			// pnlThirdBottom
-			// 
-			this.pnlThirdBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlThirdBottom.Location = new System.Drawing.Point(6, 90);
-			this.pnlThirdBottom.Name = "pnlThirdBottom";
-			this.pnlThirdBottom.Size = new System.Drawing.Size(388, 4);
-			this.pnlThirdBottom.TabIndex = 10;
-			// 
-			// pnlThirdLeft
-			// 
-			this.pnlThirdLeft.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnlThirdLeft.Location = new System.Drawing.Point(6, 10);
-			this.pnlThirdLeft.Name = "pnlThirdLeft";
-			this.pnlThirdLeft.Size = new System.Drawing.Size(4, 80);
-			this.pnlThirdLeft.TabIndex = 10;
-			// 
-			// pnlThirdRight
-			// 
-			this.pnlThirdRight.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlThirdRight.Location = new System.Drawing.Point(390, 10);
-			this.pnlThirdRight.Name = "pnlThirdRight";
-			this.pnlThirdRight.Size = new System.Drawing.Size(4, 80);
-			this.pnlThirdRight.TabIndex = 10;
-			// 
-			// tableLayoutPanel2
-			// 
-			this.tableLayoutPanel2.ColumnCount = 2;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-			this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(10, 60);
-			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 1;
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(380, 30);
-			this.tableLayoutPanel2.TabIndex = 6;
-			this.tableLayoutPanel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.lblTarget);
 			this.panel1.Controls.Add(this.lblState);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(3, 3);
+			this.panel1.Location = new System.Drawing.Point(7, 43);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(274, 24);
+			this.tableLayoutPanel1.SetRowSpan(this.panel1, 4);
+			this.panel1.Size = new System.Drawing.Size(290, 18);
 			this.panel1.TabIndex = 0;
 			this.panel1.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
 			// 
@@ -264,11 +120,11 @@
 			// 
 			this.lblTarget.AutoSize = true;
 			this.lblTarget.Dock = System.Windows.Forms.DockStyle.Left;
-			this.lblTarget.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblTarget.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblTarget.ForeColor = System.Drawing.Color.LightGray;
-			this.lblTarget.Location = new System.Drawing.Point(55, 0);
+			this.lblTarget.Location = new System.Drawing.Point(45, 0);
 			this.lblTarget.Name = "lblTarget";
-			this.lblTarget.Size = new System.Drawing.Size(69, 24);
+			this.lblTarget.Size = new System.Drawing.Size(56, 20);
 			this.lblTarget.TabIndex = 0;
 			this.lblTarget.Text = "Target";
 			this.lblTarget.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
@@ -277,41 +133,77 @@
 			// 
 			this.lblState.AutoSize = true;
 			this.lblState.Dock = System.Windows.Forms.DockStyle.Left;
-			this.lblState.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblState.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblState.ForeColor = System.Drawing.Color.LightGray;
 			this.lblState.Location = new System.Drawing.Point(0, 0);
 			this.lblState.Name = "lblState";
-			this.lblState.Size = new System.Drawing.Size(55, 24);
+			this.lblState.Size = new System.Drawing.Size(45, 20);
 			this.lblState.TabIndex = 0;
 			this.lblState.Text = "State";
 			this.lblState.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// panel2
+			// 
+			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
+			this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel2.Location = new System.Drawing.Point(303, 7);
+			this.panel2.Name = "panel2";
+			this.tableLayoutPanel1.SetRowSpan(this.panel2, 4);
+			this.panel2.Size = new System.Drawing.Size(18, 18);
+			this.panel2.TabIndex = 2;
+			this.panel2.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// panel3
+			// 
+			this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
+			this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel3.Location = new System.Drawing.Point(303, 31);
+			this.panel3.Name = "panel3";
+			this.tableLayoutPanel1.SetRowSpan(this.panel3, 4);
+			this.panel3.Size = new System.Drawing.Size(18, 18);
+			this.panel3.TabIndex = 3;
+			this.panel3.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// lblLocationScore
+			// 
+			this.lblLocationScore.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.lblLocationScore.AutoSize = true;
+			this.lblLocationScore.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblLocationScore.Location = new System.Drawing.Point(327, 32);
+			this.lblLocationScore.Name = "lblLocationScore";
+			this.tableLayoutPanel1.SetRowSpan(this.lblLocationScore, 4);
+			this.lblLocationScore.Size = new System.Drawing.Size(49, 15);
+			this.lblLocationScore.TabIndex = 4;
+			this.lblLocationScore.Text = "100 %";
+			this.lblLocationScore.DoubleClick += new System.EventHandler(this.Control_DoubleClick);
+			// 
+			// pnlBorder
+			// 
+			this.pnlBorder.BackColor = System.Drawing.Color.White;
+			this.pnlBorder.Controls.Add(this.tableLayoutPanel1);
+			this.pnlBorder.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlBorder.Location = new System.Drawing.Point(4, 4);
+			this.pnlBorder.Name = "pnlBorder";
+			this.pnlBorder.Padding = new System.Windows.Forms.Padding(2);
+			this.pnlBorder.Size = new System.Drawing.Size(392, 72);
+			this.pnlBorder.TabIndex = 2;
 			// 
 			// UcVehicleInfo
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-			this.Controls.Add(this.tableLayoutPanel2);
-			this.Controls.Add(this.tableLayoutPanel1);
-			this.Controls.Add(this.pnlThirdRight);
-			this.Controls.Add(this.pnlThirdLeft);
-			this.Controls.Add(this.pnlThirdBottom);
-			this.Controls.Add(this.pnlThirdTop);
-			this.Controls.Add(this.pnlSecondLeft);
-			this.Controls.Add(this.pnlSecondRight);
-			this.Controls.Add(this.pnlSecondBottom);
-			this.Controls.Add(this.pnlSecondTop);
-			this.Controls.Add(this.pnlRight);
-			this.Controls.Add(this.pnlLeft);
-			this.Controls.Add(this.pnlBottom);
-			this.Controls.Add(this.pnlTop);
+			this.Controls.Add(this.pnlBorder);
 			this.ForeColor = System.Drawing.Color.White;
 			this.Name = "UcVehicleInfo";
-			this.Size = new System.Drawing.Size(400, 100);
+			this.Padding = new System.Windows.Forms.Padding(4);
+			this.Size = new System.Drawing.Size(400, 80);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
-			this.tableLayoutPanel2.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
+			this.pnlBorder.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -320,25 +212,13 @@
 
 		private System.Windows.Forms.Label lblId;
 		private System.Windows.Forms.Label lblBattery;
-		private System.Windows.Forms.Panel pnlTop;
-		private System.Windows.Forms.Panel pnlBottom;
-		private System.Windows.Forms.Panel pnlLeft;
-		private System.Windows.Forms.Panel pnlRight;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.Panel pnlSecondTop;
-		private System.Windows.Forms.Panel pnlSecondBottom;
-		private System.Windows.Forms.Panel pnlSecondRight;
-		private System.Windows.Forms.Panel pnlSecondLeft;
-		private System.Windows.Forms.Panel pnlThirdTop;
-		private System.Windows.Forms.Panel pnlThirdBottom;
-		private System.Windows.Forms.Panel pnlThirdLeft;
-		private System.Windows.Forms.Panel pnlThirdRight;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Label lblTarget;
-		private System.Windows.Forms.Label lblState;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Label lblLocationScore;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Label lblTarget;
+		private System.Windows.Forms.Label lblState;
+		private System.Windows.Forms.Panel pnlBorder;
 	}
 }

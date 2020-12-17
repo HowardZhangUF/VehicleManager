@@ -114,6 +114,7 @@ namespace TrafficControlTest.UserControl
 								switch (tmpObj.mState)
 								{
 									case "Idle":
+									case "ChargeIdle":
 										tmpObj.mBorderColor = Color.Green;
 										break;
 									case "Running":
