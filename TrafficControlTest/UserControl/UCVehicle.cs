@@ -261,7 +261,7 @@ namespace TrafficControlTest.UserControl
 						}
 						if (StateName.Contains("LocationScore"))
 						{
-							dgvVehicleInfo.Rows[rowIndex].Cells["LocationScore"].Value = Item.mBatteryValue.ToString("F2") + " %";
+							dgvVehicleInfo.Rows[rowIndex].Cells["LocationScore"].Value = Item.mLocationScore.ToString("F2") + " %";
 						}
 						if (StateName.Contains("CurrentMapName"))
 						{
