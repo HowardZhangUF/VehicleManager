@@ -541,6 +541,7 @@ namespace TrafficControlTest.Process
             mVehicleControlUpdater.SetConfig("ToleranceOfXOfArrivedTarget", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfXOfArrivedTarget"));
             mVehicleControlUpdater.SetConfig("ToleranceOfYOfArrivedTarget", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfYOfArrivedTarget"));
             mVehicleControlUpdater.SetConfig("ToleranceOfTowardOfArrivedTarget", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfTowardOfArrivedTarget"));
+            mVehicleControlUpdater.SetConfig("AutoDetectNonSystemControl", mConfigurator.GetValue("VehicleControlUpdater/AutoDetectNonSystemControl"));
 			mHostCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("HostCommunicator/LocalPort"));
 			mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
 			mHostMessageAnalyzer.SetConfig("FilterDuplicateMissionWhenReceivedCommand", mConfigurator.GetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand"));
@@ -578,6 +579,7 @@ namespace TrafficControlTest.Process
 			mConfigurator.SetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand", mHostMessageAnalyzer.GetConfig("FilterDuplicateMissionWhenReceivedCommand"));
 			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.GetConfig("TimePeriod"));
 			mConfigurator.SetValue("HostCommunicator/LocalPort", mHostCommunicator.GetConfig("LocalPort"));
+			mConfigurator.SetValue("VehicleControlUpdater/AutoDetectNonSystemControl", mVehicleControlUpdater.GetConfig("AutoDetectNonSystemControl"));
 			mConfigurator.SetValue("VehicleControlUpdater/ToleranceOfTowardOfArrivedTarget", mVehicleControlUpdater.GetConfig("ToleranceOfTowardOfArrivedTarget"));
 			mConfigurator.SetValue("VehicleControlUpdater/ToleranceOfYOfArrivedTarget", mVehicleControlUpdater.GetConfig("ToleranceOfYOfArrivedTarget"));
 			mConfigurator.SetValue("VehicleControlUpdater/ToleranceOfXOfArrivedTarget", mVehicleControlUpdater.GetConfig("ToleranceOfXOfArrivedTarget"));
@@ -1314,7 +1316,10 @@ namespace TrafficControlTest.Process
                 case "VehicleControlUpdater/ToleranceOfTowardOfArrivedTarget":
                     mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfTowardOfArrivedTarget"));
                     break;
-                case "HostCommunicator/LocalPort":
+				case "VehicleControlUpdater/AutoDetectNonSystemControl":
+					mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/AutoDetectNonSystemControl"));
+					break;
+				case "HostCommunicator/LocalPort":
 					mHostCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("HostCommunicator/LocalPort"));
 					break;
 				case "HostCommunicator/TimePeriod":

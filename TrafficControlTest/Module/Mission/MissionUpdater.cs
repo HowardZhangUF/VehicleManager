@@ -100,6 +100,7 @@ namespace TrafficControlTest.Module.Mission
 		{
 			if (VehicleControlManager != null)
 			{
+				VehicleControlManager.ItemAdded += HandleEvent_VehicleControlManagerItemAdded;
 				VehicleControlManager.ItemUpdated += HandleEvent_VehicleControlManagerItemUpdated;
 			}
 		}
@@ -107,47 +108,13 @@ namespace TrafficControlTest.Module.Mission
 		{
 			if (VehicleControlManager != null)
 			{
+				VehicleControlManager.ItemAdded -= HandleEvent_VehicleControlManagerItemAdded;
 				VehicleControlManager.ItemUpdated -= HandleEvent_VehicleControlManagerItemUpdated;
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			// 當車子進入執行任務狀態且上一狀態不是干預狀態
-			if ((Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentTarget")) && Args.Item.mCurrentState == "Running" && !string.IsNullOrEmpty(Args.Item.mCurrentTarget))
-			{
-				IMissionState correspondingMission = rMissionStateManager.GetItems().FirstOrDefault(o => o.mExecutorId == Args.Item.mName && o.mMission.mParametersString == Args.Item.mCurrentTarget);
-				IVehicleControl correspondingControl = rVehicleControlManager.GetItems().FirstOrDefault(o => o.mVehicleId == Args.Item.mName && o.mParametersString == Args.Item.mCurrentTarget);
 
-				if (correspondingMission == null && correspondingControl == null)
-				{
-					// 代表是自走車自行產生的動作
-					if (mAutoDetectNonSystemMission)
-					{
-						IMissionState tmpMissionState = GenerateIMissionState(Args.Item.mName, Args.Item.mCurrentTarget);
-						tmpMissionState.UpdateExecutorId(Args.Item.mName);
-						tmpMissionState.UpdateSourceIpPort($"{Args.Item.mName}Self");
-						tmpMissionState.UpdateExecuteState(ExecuteState.Executing);
-						rMissionStateManager.Add(tmpMissionState.mName, tmpMissionState);
-
-						IVehicleControl tmpControl = GenerateIVehicleControl(Args.Item.mName, Args.Item.mCurrentTarget, tmpMissionState.mName);
-						tmpControl.UpdateSendState(SendState.SendSuccessed);
-						tmpControl.UpdateExecuteState(ExecuteState.Executing);
-						rVehicleControlManager.Add(tmpControl.mName, tmpControl);
-					}
-				}
-				else if (correspondingMission == null && correspondingControl != null)
-				{
-					// 代表是透過 VM 介面產生的動作
-					if (mAutoDetectNonSystemMission)
-					{
-						IMissionState tmpMissionState = GenerateIMissionState(Args.Item.mName, Args.Item.mCurrentTarget);
-						tmpMissionState.UpdateExecutorId(Args.Item.mName);
-						tmpMissionState.UpdateSourceIpPort($"VMManual");
-						tmpMissionState.UpdateExecuteState(ExecuteState.Executing);
-						rMissionStateManager.Add(tmpMissionState.mName, tmpMissionState);
-					}
-				}
-			}
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
@@ -163,10 +130,35 @@ namespace TrafficControlTest.Module.Mission
 				}
 			}
 		}
+		private void HandleEvent_VehicleControlManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleControl> Args)
+		{
+			if (mAutoDetectNonSystemMission)
+			{
+				IVehicleControl newControl = Args.Item;
+				// 從 MissionStateManager 中尋找對應的 MissionState
+				IMissionState correspondingMissionState = FindCorrespondingIMissionState(Args.Item, rMissionStateManager);
+
+				if (correspondingMissionState == null)
+				{
+					// 若該控制的產生原因為自走車本身或是手動透過系統新增的，則新增對應的 MissionState 至系統中
+					if (newControl.mCauseId.Contains("Self") || newControl.mCauseId.Contains("Manual"))
+					{
+						IMissionState newMissionState = GenerateIMissionState(Args.Item);
+						if (newMissionState != null)
+						{
+							newMissionState.UpdateExecutorId(newControl.mVehicleId);
+							newMissionState.UpdateSourceIpPort(newControl.mCauseId);
+							newMissionState.UpdateExecuteState(ExecuteState.Executing);
+							rMissionStateManager.Add(newMissionState.mName, newMissionState);
+						}
+					}
+				}
+			}
+		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
 		{
 			// 當 IVehicleControl 的狀態更新時，將對應的 IMissionState 狀態也更新
-			IMissionState correspondingMissionState = rMissionStateManager.GetItems().FirstOrDefault(o => o.mExecutorId == Args.Item.mVehicleId && o.mMission.mParametersString == Args.Item.mParametersString);
+			IMissionState correspondingMissionState = FindCorrespondingIMissionState(Args.Item, rMissionStateManager);
 			if (correspondingMissionState != null)
 			{
 				if (Args.StatusName.Contains("SendState"))
@@ -194,6 +186,40 @@ namespace TrafficControlTest.Module.Mission
 					correspondingMissionState.UpdateFailedReason(Args.Item.mFailedReason);
 				}
 			}
+		}
+		private static IMissionState FindCorrespondingIMissionState(IVehicleControl VehicleControl, IMissionStateManager MissionStateManager)
+		{
+			IMissionState result = null;
+			if (VehicleControl.mCommand == Command.Charge)
+			{
+				result = MissionStateManager.GetItems().FirstOrDefault(o => o.mExecutorId == VehicleControl.mVehicleId && o.mMission.mMissionType == MissionType.Dock);
+			}
+			else if (VehicleControl.mCommand == Command.Uncharge)
+			{
+				// 目前沒有解除充電的任務，所以一定找不到對應的 MissionState
+			}
+			else if (VehicleControl.mCommand == Command.Goto || VehicleControl.mCommand == Command.GotoPoint || VehicleControl.mCommand == Command.GotoTowardPoint)
+			{
+				result = MissionStateManager.GetItems().FirstOrDefault(o => o.mExecutorId == VehicleControl.mVehicleId && o.mMission.mParametersString == VehicleControl.mParametersString);
+			}
+			return result;
+		}
+		private static IMissionState GenerateIMissionState(IVehicleControl VehicleControl)
+		{
+			IMissionState result = null;
+			if (VehicleControl.mCommand == Command.Charge)
+			{
+				result = Library.Library.GenerateIMissionState(Library.Library.GenerateIMission(MissionType.Dock, string.Empty, 50, VehicleControl.mVehicleId, null));
+			}
+			else if (VehicleControl.mCommand == Command.Uncharge)
+			{
+				// 目前沒有解除充電的任務，所以一定會是 null
+			}
+			else if (VehicleControl.mCommand == Command.Goto || VehicleControl.mCommand == Command.GotoPoint || VehicleControl.mCommand == Command.GotoTowardPoint)
+			{
+				result = GenerateIMissionState(VehicleControl.mVehicleId, VehicleControl.mParametersString);
+			}
+			return result;
 		}
 		private static IMissionState GenerateIMissionState(string VehicleId, string Target)
 		{
@@ -226,30 +252,6 @@ namespace TrafficControlTest.Module.Mission
 			{
 				return null;
 			}
-		}
-		private static IVehicleControl GenerateIVehicleControl(string VehicleId, string Target, string CauseId)
-		{
-			IVehicleControl result = null;
-			if (Target.Contains("(") && Target.Contains(")") && Target.Contains(","))
-			{
-				// Target 為座標
-				string[] tmpSplit = Target.Split(new string[] { "(", ")", "," }, StringSplitOptions.RemoveEmptyEntries);
-				switch (tmpSplit.Length)
-				{
-					case 2:
-						result = Library.Library.GenerateIVehicleControl(VehicleId, Command.GotoPoint, tmpSplit, CauseId, string.Empty);
-						break;
-					case 3:
-						result = Library.Library.GenerateIVehicleControl(VehicleId, Command.GotoTowardPoint, tmpSplit, CauseId, string.Empty);
-						break;
-				}
-			}
-			else
-			{
-				// Target 為站點
-				result = Library.Library.GenerateIVehicleControl(VehicleId, Command.Goto, new string[] { Target }, CauseId, string.Empty);
-			}
-			return result;
 		}
 	}
 }

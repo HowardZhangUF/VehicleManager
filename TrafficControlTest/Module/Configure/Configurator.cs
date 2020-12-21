@@ -290,7 +290,18 @@ namespace TrafficControlTest.Module.Configure
                 "Tolerance of Toward of Checking Control Is Completed or Failed",
                 "判斷控制是否完成的座標 (Toward) 容許誤差",
                 "判断控制是否完成的座标 (Toward) 容许误差"));
-            defaultConfigs.Add(new Configuration(
+			defaultConfigs.Add(new Configuration(
+				"VehicleControlUpdater",
+				"AutoDetectNonSystemControl",
+				ConfigurationType.Bool,
+				ConfigurationLevel.Normal,
+				"True",
+				string.Empty,
+				string.Empty,
+				"Auto Add Control to Collection when Vehicle is Executing a Control that is not from System",
+				"自動偵測自走車所執行的非系統控制並將該控制加入至系統集合中",
+				"自动侦测自走车所执行的非系统控制并将该控制加入至系统集合中"));
+			defaultConfigs.Add(new Configuration(
 				"HostCommunicator",
                 "LocalPort",
 				ConfigurationType.Int,
