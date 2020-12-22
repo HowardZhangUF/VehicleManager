@@ -65,8 +65,12 @@ namespace TrafficControlTest.Module.NewCommunication
                     RaiseEvent_SentData(mRemoteIpPort, Data);
                 }
             }
-        }
-        public override string GetConfig(string ConfigName)
+		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "TimePeriod", "RemoteIpPort" };
+		}
+		public override string GetConfig(string ConfigName)
         {
             switch (ConfigName)
             {

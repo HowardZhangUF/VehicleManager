@@ -11,9 +11,8 @@ namespace TrafficControlTest.Module.Configure
 		/*
 		 * 新增一個 Configuration 時：
 		 * 1. Configurator 要新增其 Default 資訊
-		 * 2. 對應類別的 GetConfig() 與 SetConfig() 方法需要更新
-		 * 3. VehicleManagerProcess 的 LoadConfigFileAndUpdateSystemConfig() 與 LoadSystemConfigAndUpdateConfigFile() 方法需要更新
-		 * 4. VehicleManagerProcess 的 HandleEvent_ConfiguratorConfigurationUpdated() 方法需要更新
+		 * 2. 對應的 ISystemWithConfig 的 GetConfig() 與 SetConfig() 與 GetConfigNameList() 方法要更新
+		 * 3. Process 的 mCollectionOfISystemWithConfig 初始化方法 Constructor() 要更新
 		 */
 
 		public event EventHandler<ConfigFileLoadedEventArgs> ConfigFileLoaded;

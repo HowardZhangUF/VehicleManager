@@ -47,8 +47,12 @@ namespace TrafficControlTest.Module.Mission
             Set(VehicleInfoManager);
             Set(MissionStateManager);
             Set(MissionAnalyzers);
-        }
-        public override string GetConfig(string ConfigName)
+		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "FilterDuplicateMissionWhenReceivedCommand" };
+		}
+		public override string GetConfig(string ConfigName)
         {
             switch (ConfigName)
             {

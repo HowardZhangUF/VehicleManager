@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Account;
@@ -37,20 +38,12 @@ namespace TrafficControlTest.Process
 		{
 			get
 			{
-				return !mImportantEventRecorder.mIsExecuting
-					&& !mVehicleCommunicator.mIsExecuting
-					&& !mCollisionEventDetector.mIsExecuting
-					&& !mVehicleControlHandler.mIsExecuting
-                    && !mVehicleControlUpdater.mIsExecuting
-					&& !mHostCommunicator.mIsExecuting
-					&& !mMissionDispatcher.mIsExecuting
-					&& !mCycleMissionGenerator.mIsExecuting
-					&& !mAutomaticDoorCommunicator.mIsExecuting
-					&& !mAutomaticDoorControlHandler.mIsExecuting
-					&& !mVehiclePassThroughAutomaticDoorEventManagerUpdater.mIsExecuting;
+				return !mCollectionOfISystemWithLoopTask.Any(o => o.mIsExecuting);
 			}
 		}
 
+		private List<ISystemWithConfig> mCollectionOfISystemWithConfig = new List<ISystemWithConfig>();
+		private List<ISystemWithLoopTask> mCollectionOfISystemWithLoopTask = new List<ISystemWithLoopTask>();
 		private IConfigurator mConfigurator = null;
 		private DatabaseAdapter mDatabaseAdapterOfLogRecord = null;
 		private DatabaseAdapter mDatabaseAdapterOfEventRecord = null;
@@ -73,8 +66,8 @@ namespace TrafficControlTest.Process
 		private IVehicleInfoUpdater mVehicleInfoUpdater = null;
 		private IHostCommunicator mHostCommunicator = null;
 		private IHostMessageAnalyzer mHostMessageAnalyzer = null;
-        private IChargeStationInfoManager mChargeStationInfoManager = null;
-        private IMissionDispatcher mMissionDispatcher = null;
+		private IChargeStationInfoManager mChargeStationInfoManager = null;
+		private IMissionDispatcher mMissionDispatcher = null;
 		private IMapFileManager mMapFileManager = null;
 		private IMapManager mMapManager = null;
 		private IMissionStateReporter mMissionStateReporter = null;
@@ -114,12 +107,12 @@ namespace TrafficControlTest.Process
 			mEventRecorder.Start();
 			mAccountManager.Read();
 			mImportantEventRecorder.Start();
-            mVehicleCommunicator.Start();
+			mVehicleCommunicator.Start();
 			mVehicleCommunicator.StartListen();
 			mCollisionEventDetector.Start();
 			mVehicleControlHandler.Start();
-            mVehicleControlUpdater.Start();
-            mHostCommunicator.Start();
+			mVehicleControlUpdater.Start();
+			mHostCommunicator.Start();
 			mHostCommunicator.StartListen();
 			mMissionDispatcher.Start();
 			mCycleMissionGenerator.Start();
@@ -136,12 +129,12 @@ namespace TrafficControlTest.Process
 			mCycleMissionGenerator.Stop();
 			mMissionDispatcher.Stop();
 			mHostCommunicator.StopListen();
-            mHostCommunicator.Stop();
-            mVehicleControlUpdater.Stop();
+			mHostCommunicator.Stop();
+			mVehicleControlUpdater.Stop();
 			mVehicleControlHandler.Stop();
 			mCollisionEventDetector.Stop();
 			mVehicleCommunicator.StopListen();
-            mVehicleCommunicator.Stop();
+			mVehicleCommunicator.Stop();
 			mImportantEventRecorder.Stop();
 			mAccountManager.Save();
 
@@ -197,10 +190,10 @@ namespace TrafficControlTest.Process
 		{
 			return mCollisionEventDetector;
 		}
-        public IVehicleControlManager GetReferenceOfIVehicleControlManager()
-        {
-            return mVehicleControlManager;
-        }
+		public IVehicleControlManager GetReferenceOfIVehicleControlManager()
+		{
+			return mVehicleControlManager;
+		}
 		public IVehicleControlHandler GetReferenceOfIVehicleControlHandler()
 		{
 			return mVehicleControlHandler;
@@ -295,15 +288,15 @@ namespace TrafficControlTest.Process
 			mVehicleInfoManager = GenerateIVehicleInfoManager();
 			SubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
 
-            UnsubscribeEvent_IMapFileManager(mMapFileManager);
-            mMapFileManager = GenerateIMapFileManager();
-            SubscribeEvent_IMapFileManager(mMapFileManager);
+			UnsubscribeEvent_IMapFileManager(mMapFileManager);
+			mMapFileManager = GenerateIMapFileManager();
+			SubscribeEvent_IMapFileManager(mMapFileManager);
 
-            UnsubscribeEvent_IMapManager(mMapManager);
-            mMapManager = GenerateIMapManager(mVehicleCommunicator, mVehicleInfoManager, mMapFileManager);
-            SubscribeEvent_IMapManager(mMapManager);
+			UnsubscribeEvent_IMapManager(mMapManager);
+			mMapManager = GenerateIMapManager(mVehicleCommunicator, mVehicleInfoManager, mMapFileManager);
+			SubscribeEvent_IMapManager(mMapManager);
 
-            UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
+			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
 			mCollisionEventManager = GenerateICollisionEventManager();
 			SubscribeEvent_ICollisionEventManager(mCollisionEventManager);
 
@@ -319,7 +312,7 @@ namespace TrafficControlTest.Process
 			mCollisionEventHandler = GenerateICollisionEventHandler(mCollisionEventManager, mVehicleControlManager, mVehicleInfoManager);
 			SubscribeEvent_ICollisionEventHandler(mCollisionEventHandler);
 
-            UnsubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
+			UnsubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
 			mVehicleControlHandler = GenerateIVehicleControlHandler(mVehicleControlManager, mVehicleInfoManager, mVehicleCommunicator);
 			SubscribeEvent_IVehicleControlHandler(mVehicleControlHandler);
 
@@ -347,11 +340,11 @@ namespace TrafficControlTest.Process
 			mHostMessageAnalyzer = GenerateIHostMessageAnalyzer(mHostCommunicator, mVehicleInfoManager, mMissionStateManager, GetMissionAnalyzers());
 			SubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 
-            UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
-            mChargeStationInfoManager = GenerateIChargeStationInfoManager();
-            SubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+			UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+			mChargeStationInfoManager = GenerateIChargeStationInfoManager();
+			SubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
 
-            UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
+			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 			mMissionDispatcher = GenerateIMissionDispatcher(mMissionStateManager, mVehicleInfoManager, mVehicleControlManager);
 			SubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 
@@ -410,9 +403,43 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
 			mChargeStationInfoManagerUpdater = GenerateIChargeStationInfoManagerUpdater(mChargeStationInfoManager, mMapManager, mVehicleInfoManager);
 			SubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
+
+			mCollectionOfISystemWithConfig.Add(mLogExporter);
+			mCollectionOfISystemWithConfig.Add(mImportantEventRecorder);
+			mCollectionOfISystemWithConfig.Add(mVehicleCommunicator);
+			mCollectionOfISystemWithConfig.Add(mCollisionEventDetector);
+			mCollectionOfISystemWithConfig.Add(mVehicleControlHandler);
+			mCollectionOfISystemWithConfig.Add(mVehicleControlUpdater);
+			mCollectionOfISystemWithConfig.Add(mHostCommunicator);
+			mCollectionOfISystemWithConfig.Add(mHostMessageAnalyzer);
+			mCollectionOfISystemWithConfig.Add(mMissionDispatcher);
+			mCollectionOfISystemWithConfig.Add(mMissionUpdater);
+			mCollectionOfISystemWithConfig.Add(mMapFileManager);
+			mCollectionOfISystemWithConfig.Add(mMapManager);
+			mCollectionOfISystemWithConfig.Add(mCycleMissionGenerator);
+			mCollectionOfISystemWithConfig.Add(mAutomaticDoorCommunicator);
+			mCollectionOfISystemWithConfig.Add(mAutomaticDoorControlHandler);
+			mCollectionOfISystemWithConfig.Add(mVehiclePassThroughAutomaticDoorEventManagerUpdater);
+			mCollectionOfISystemWithConfig.Add(mChargeStationInfoManagerUpdater);
+
+			mCollectionOfISystemWithLoopTask.Add(mImportantEventRecorder);
+			mCollectionOfISystemWithLoopTask.Add(mVehicleCommunicator);
+			mCollectionOfISystemWithLoopTask.Add(mCollisionEventDetector);
+			mCollectionOfISystemWithLoopTask.Add(mVehicleControlHandler);
+			mCollectionOfISystemWithLoopTask.Add(mVehicleControlUpdater);
+			mCollectionOfISystemWithLoopTask.Add(mHostCommunicator);
+			mCollectionOfISystemWithLoopTask.Add(mMissionDispatcher);
+			mCollectionOfISystemWithLoopTask.Add(mCycleMissionGenerator);
+			mCollectionOfISystemWithLoopTask.Add(mAutomaticDoorCommunicator);
+			mCollectionOfISystemWithLoopTask.Add(mAutomaticDoorControlHandler);
+			mCollectionOfISystemWithLoopTask.Add(mVehiclePassThroughAutomaticDoorEventManagerUpdater);
 		}
 		private void Destructor()
 		{
+			mCollectionOfISystemWithLoopTask.Clear();
+
+			mCollectionOfISystemWithConfig.Clear();
+
 			UnsubscribeEvent_IAccessControl(mAccessControl);
 			mAccessControl = null;
 
@@ -422,11 +449,11 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
 			mVehicleInfoManager = null;
 
-            UnsubscribeEvent_IMapFileManager(mMapFileManager);
-            mMapFileManager = null;
+			UnsubscribeEvent_IMapFileManager(mMapFileManager);
+			mMapFileManager = null;
 
-            UnsubscribeEvent_IMapManager(mMapManager);
-            mMapManager = null;
+			UnsubscribeEvent_IMapManager(mMapManager);
+			mMapManager = null;
 
 			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
 			mCollisionEventManager = null;
@@ -458,10 +485,10 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 			mHostMessageAnalyzer = null;
 
-            UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
-            mChargeStationInfoManager = null;
+			UnsubscribeEvent_IChargeStationInfoManager(mChargeStationInfoManager);
+			mChargeStationInfoManager = null;
 
-            UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
+			UnsubscribeEvent_IMissionDispatcher(mMissionDispatcher);
 			mMissionDispatcher = null;
 
 			UnsubscribeEvent_IMissionStateReporter(mMissionStateReporter);
@@ -522,80 +549,37 @@ namespace TrafficControlTest.Process
 			mDatabaseAdapterOfEventRecord = null;
 			mDatabaseAdapterOfLogRecord = null;
 		}
+		private ISystemWithConfig GetCorrespondingObjectOfISystemWithConfig(string ObjectName)
+		{
+			foreach (ISystemWithConfig systemWithConfig in mCollectionOfISystemWithConfig)
+			{
+				if (systemWithConfig.GetType().Name == ObjectName)
+				{
+					return systemWithConfig;
+				}
+			}
+			return null;
+		}
 		private void LoadConfigFileAndUpdateSystemConfig()
 		{
 			mConfigurator.Load();
-			mLogExporter.SetConfig("BaseDirectory", mConfigurator.GetValue("LogExporter/BaseDirectory"));
-			mLogExporter.SetConfig("ExportDirectoryNamePrefix", mConfigurator.GetValue("LogExporter/ExportDirectoryNamePrefix"));
-			mLogExporter.SetConfig("ExportDirectoryNameTimeFormat", mConfigurator.GetValue("LogExporter/ExportDirectoryNameTimeFormat"));
-			mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
-			mVehicleCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("VehicleCommunicator/LocalPort"));
-			mVehicleCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
-			mCollisionEventDetector.SetConfig("TimePeriod", mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
-			mCollisionEventDetector.SetConfig("NeighborPointAmount", mConfigurator.GetValue("CollisionEventDetector/NeighborPointAmount"));
-			mCollisionEventDetector.SetConfig("VehicleLocationScoreThreshold", mConfigurator.GetValue("CollisionEventDetector/VehicleLocationScoreThreshold"));
-			mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
-            mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/TimePeriod"));
-            mVehicleControlUpdater.SetConfig("TimeoutOfSendingVehicleControl", mConfigurator.GetValue("VehicleControlUpdater/TimeoutOfSendingVehicleControl"));
-            mVehicleControlUpdater.SetConfig("TimeoutOfExecutingVehicleControl", mConfigurator.GetValue("VehicleControlUpdater/TimeoutOfExecutingVehicleControl"));
-            mVehicleControlUpdater.SetConfig("ToleranceOfXOfArrivedTarget", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfXOfArrivedTarget"));
-            mVehicleControlUpdater.SetConfig("ToleranceOfYOfArrivedTarget", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfYOfArrivedTarget"));
-            mVehicleControlUpdater.SetConfig("ToleranceOfTowardOfArrivedTarget", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfTowardOfArrivedTarget"));
-            mVehicleControlUpdater.SetConfig("AutoDetectNonSystemControl", mConfigurator.GetValue("VehicleControlUpdater/AutoDetectNonSystemControl"));
-			mHostCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("HostCommunicator/LocalPort"));
-			mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
-			mHostMessageAnalyzer.SetConfig("FilterDuplicateMissionWhenReceivedCommand", mConfigurator.GetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand"));
-            mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
-            mMissionDispatcher.SetConfig("DispatchRule", mConfigurator.GetValue("MissionDispatcher/DispatchRule"));
-			mMissionDispatcher.SetConfig("IdlePeriodThreshold", mConfigurator.GetValue("MissionDispatcher/IdlePeriodThreshold"));
-			mMissionUpdater.SetConfig("AutoDetectNonSystemMission", mConfigurator.GetValue("MissionUpdater/AutoDetectNonSystemMission"));
-			mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
-			mMapManager.SetConfig("AutoLoadMap", mConfigurator.GetValue("MapManager/AutoLoadMap"));
-			mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
-			mAutomaticDoorCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorCommunicator/TimePeriod"));
-			mAutomaticDoorCommunicator.SetConfig("AutoConnect", mConfigurator.GetValue("AutomaticDoorCommunicator/AutoConnect"));
-			mAutomaticDoorControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorControlHandler/TimePeriod"));
-			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod"));
-			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("OpenDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDoorDistance"));
-			mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("CloseDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance"));
-			mChargeStationInfoManagerUpdater.SetConfig("MaximumDistanceBetweenChargeStationAndVehicle", mConfigurator.GetValue("ChargeStationInfoManagerUpdater/MaximumDistanceBetweenChargeStationAndVehicle"));
+			foreach (ISystemWithConfig systemWithConfig in mCollectionOfISystemWithConfig)
+			{
+				foreach (string configName in systemWithConfig.GetConfigNameList())
+				{
+					systemWithConfig.SetConfig(configName, mConfigurator.GetValue($"{systemWithConfig.GetType().Name}/{configName}"));
+				}
+			}
 		}
 		private void LoadSystemConfigAndUpdateConfigFile()
 		{
-			mConfigurator.SetValue("ChargeStationInfoManagerUpdater/MaximumDistanceBetweenChargeStationAndVehicle", mChargeStationInfoManagerUpdater.GetConfig("MaximumDistanceBetweenChargeStationAndVehicle"));
-			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDistanceDoor", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("CloseDistanceDoor"));
-			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDistanceDoor", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("OpenDistanceDoor"));
-			mConfigurator.SetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod", mVehiclePassThroughAutomaticDoorEventManagerUpdater.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("AutomaticDoorControlHandler/TimePeriod", mAutomaticDoorControlHandler.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("AutomaticDoorCommunicator/AutoConnect", mAutomaticDoorCommunicator.GetConfig("AutoConnect"));
-			mConfigurator.SetValue("AutomaticDoorCommunicator/TimePeriod", mAutomaticDoorCommunicator.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("CycleMissionGenerator/TimePeriod", mCycleMissionGenerator.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("MapManager/AutoLoadMap", mMapManager.GetConfig("AutoLoadMap"));
-			mConfigurator.SetValue("MapFileManager/MapFileDirectory", mMapFileManager.GetConfig("MapFileDirectory"));
-			mConfigurator.SetValue("MissionUpdater/AutoDetectNonSystemMission", mMissionUpdater.GetConfig("AutoDetectNonSystemMission"));
-			mConfigurator.SetValue("MissionDispatcher/IdlePeriodThreshold", mMissionDispatcher.GetConfig("IdlePeriodThreshold"));
-			mConfigurator.SetValue("MissionDispatcher/DispatchRule", mMissionDispatcher.GetConfig("DispatchRule"));
-			mConfigurator.SetValue("MissionDispatcher/TimePeriod", mMissionDispatcher.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand", mHostMessageAnalyzer.GetConfig("FilterDuplicateMissionWhenReceivedCommand"));
-			mConfigurator.SetValue("HostCommunicator/TimePeriod", mHostCommunicator.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("HostCommunicator/LocalPort", mHostCommunicator.GetConfig("LocalPort"));
-			mConfigurator.SetValue("VehicleControlUpdater/AutoDetectNonSystemControl", mVehicleControlUpdater.GetConfig("AutoDetectNonSystemControl"));
-			mConfigurator.SetValue("VehicleControlUpdater/ToleranceOfTowardOfArrivedTarget", mVehicleControlUpdater.GetConfig("ToleranceOfTowardOfArrivedTarget"));
-			mConfigurator.SetValue("VehicleControlUpdater/ToleranceOfYOfArrivedTarget", mVehicleControlUpdater.GetConfig("ToleranceOfYOfArrivedTarget"));
-			mConfigurator.SetValue("VehicleControlUpdater/ToleranceOfXOfArrivedTarget", mVehicleControlUpdater.GetConfig("ToleranceOfXOfArrivedTarget"));
-			mConfigurator.SetValue("VehicleControlUpdater/TimeoutOfExecutingVehicleControl", mVehicleControlUpdater.GetConfig("TimeoutOfExecutingVehicleControl"));
-			mConfigurator.SetValue("VehicleControlUpdater/TimeoutOfSendingVehicleControl", mVehicleControlUpdater.GetConfig("TimeoutOfSendingVehicleControl"));
-			mConfigurator.SetValue("VehicleControlUpdater/TimePeriod", mVehicleControlUpdater.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("VehicleControlHandler/TimePeriod", mVehicleControlHandler.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("CollisionEventDetector/VehicleLocationScoreThreshold", mCollisionEventDetector.GetConfig("VehicleLocationScoreThreshold"));
-			mConfigurator.SetValue("CollisionEventDetector/NeighborPointAmount", mCollisionEventDetector.GetConfig("NeighborPointAmount"));
-			mConfigurator.SetValue("CollisionEventDetector/TimePeriod", mCollisionEventDetector.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("VehicleCommunicator/TimePeriod", mVehicleCommunicator.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("VehicleCommunicator/LocalPort", mVehicleCommunicator.GetConfig("LocalPort"));
-			mConfigurator.SetValue("ImportantEventRecorder/TimePeriod", mImportantEventRecorder.GetConfig("TimePeriod"));
-			mConfigurator.SetValue("LogExporter/ExportDirectoryNameTimeFormat", mLogExporter.GetConfig("ExportDirectoryNameTimeFormat"));
-			mConfigurator.SetValue("LogExporter/ExportDirectoryNamePrefix", mLogExporter.GetConfig("ExportDirectoryNamePrefix"));
-			mConfigurator.SetValue("LogExporter/BaseDirectory", mLogExporter.GetConfig("BaseDirectory"));
+			foreach (ISystemWithConfig systemWithConfig in mCollectionOfISystemWithConfig)
+			{
+				foreach (string configName in systemWithConfig.GetConfigNameList())
+				{
+					mConfigurator.SetValue($"{systemWithConfig.GetType().Name}/{configName}", systemWithConfig.GetConfig(configName));
+				}
+			}
 			mConfigurator.Save();
 		}
 		private void SubscribeEvent_Exception()
@@ -716,46 +700,46 @@ namespace TrafficControlTest.Process
 				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
-        }
-        private void SubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
-        {
-            if (MapFileManager != null)
-            {
-                MapFileManager.ConfigUpdated += HandleEvent_MapFileManagerConfigUpdated;
-                MapFileManager.MapFileAdded += HandleEvent_MapFileManagerMapFileAdded;
-                MapFileManager.MapFileRemoved += HandleEvent_MapFileManagerMapFileRemoved;
-            }
-        }
-        private void UnsubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
-        {
-            if (MapFileManager != null)
-            {
-                MapFileManager.ConfigUpdated -= HandleEvent_MapFileManagerConfigUpdated;
-                MapFileManager.MapFileAdded -= HandleEvent_MapFileManagerMapFileAdded;
-                MapFileManager.MapFileRemoved -= HandleEvent_MapFileManagerMapFileRemoved;
-            }
-        }
-        private void SubscribeEvent_IMapManager(IMapManager MapManager)
-        {
-            if (MapManager != null)
-            {
-                MapManager.ConfigUpdated += HandleEvent_MapManagerConfigUpdated;
-                MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
-                MapManager.LoadMapFailed += HandleEvent_MapManagerLoadMapFailed;
-                MapManager.SynchronizeMapStarted += HandleEvent_MapManagerSynchronizeMapStarted;
-            }
-        }
-        private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
-        {
-            if (MapManager != null)
-            {
-                MapManager.ConfigUpdated -= HandleEvent_MapManagerConfigUpdated;
-                MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
-                MapManager.LoadMapFailed -= HandleEvent_MapManagerLoadMapFailed;
-                MapManager.SynchronizeMapStarted -= HandleEvent_MapManagerSynchronizeMapStarted;
-            }
-        }
-        private void SubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
+		}
+		private void SubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
+		{
+			if (MapFileManager != null)
+			{
+				MapFileManager.ConfigUpdated += HandleEvent_MapFileManagerConfigUpdated;
+				MapFileManager.MapFileAdded += HandleEvent_MapFileManagerMapFileAdded;
+				MapFileManager.MapFileRemoved += HandleEvent_MapFileManagerMapFileRemoved;
+			}
+		}
+		private void UnsubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
+		{
+			if (MapFileManager != null)
+			{
+				MapFileManager.ConfigUpdated -= HandleEvent_MapFileManagerConfigUpdated;
+				MapFileManager.MapFileAdded -= HandleEvent_MapFileManagerMapFileAdded;
+				MapFileManager.MapFileRemoved -= HandleEvent_MapFileManagerMapFileRemoved;
+			}
+		}
+		private void SubscribeEvent_IMapManager(IMapManager MapManager)
+		{
+			if (MapManager != null)
+			{
+				MapManager.ConfigUpdated += HandleEvent_MapManagerConfigUpdated;
+				MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.LoadMapFailed += HandleEvent_MapManagerLoadMapFailed;
+				MapManager.SynchronizeMapStarted += HandleEvent_MapManagerSynchronizeMapStarted;
+			}
+		}
+		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
+		{
+			if (MapManager != null)
+			{
+				MapManager.ConfigUpdated -= HandleEvent_MapManagerConfigUpdated;
+				MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.LoadMapFailed -= HandleEvent_MapManagerLoadMapFailed;
+				MapManager.SynchronizeMapStarted -= HandleEvent_MapManagerSynchronizeMapStarted;
+			}
+		}
+		private void SubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
 		{
 			if (CollisionEventManager != null)
 			{
@@ -841,19 +825,19 @@ namespace TrafficControlTest.Process
 		{
 			if (VehicleControlUpdater != null)
 			{
-                VehicleControlUpdater.SystemStatusChanged += HandleEvent_VehicleControlUpdaterSystemStatusChanged;
-                VehicleControlUpdater.ConfigUpdated += HandleEvent_VehicleControlUpdaterConfigUpdated;
-            }
+				VehicleControlUpdater.SystemStatusChanged += HandleEvent_VehicleControlUpdaterSystemStatusChanged;
+				VehicleControlUpdater.ConfigUpdated += HandleEvent_VehicleControlUpdaterConfigUpdated;
+			}
 		}
 		private void UnsubscribeEvent_IVehicleControlUpdater(IVehicleControlUpdater VehicleControlUpdater)
 		{
 			if (VehicleControlUpdater != null)
-            {
-                VehicleControlUpdater.SystemStatusChanged -= HandleEvent_VehicleControlUpdaterSystemStatusChanged;
-                VehicleControlUpdater.ConfigUpdated -= HandleEvent_VehicleControlUpdaterConfigUpdated;
-            }
+			{
+				VehicleControlUpdater.SystemStatusChanged -= HandleEvent_VehicleControlUpdaterSystemStatusChanged;
+				VehicleControlUpdater.ConfigUpdated -= HandleEvent_VehicleControlUpdaterConfigUpdated;
+			}
 		}
-        private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
+		private void SubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
 		{
 			if (MissionStateManager != null)
 			{
@@ -913,35 +897,35 @@ namespace TrafficControlTest.Process
 		{
 			if (HostMessageAnalyzer != null)
 			{
-                HostMessageAnalyzer.ConfigUpdated += HandleEvent_HostMessageAnalyzerConfigUpdated;
+				HostMessageAnalyzer.ConfigUpdated += HandleEvent_HostMessageAnalyzerConfigUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IHostMessageAnalyzer(IHostMessageAnalyzer HostMessageAnalyzer)
 		{
 			if (HostMessageAnalyzer != null)
-            {
-                HostMessageAnalyzer.ConfigUpdated -= HandleEvent_HostMessageAnalyzerConfigUpdated;
-            }
-        }
-        private void SubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
-        {
-            if (ChargeStationInfoManager != null)
-            {
-                ChargeStationInfoManager.ItemAdded += HandleEvent_ChargeStationInfoManagerItemAdded;
-                ChargeStationInfoManager.ItemRemoved += HandleEvent_ChargeStationInfoManagerItemRemoved;
-                ChargeStationInfoManager.ItemUpdated += HandleEvent_ChargeStationInfoManagerItemUpdated;
-            }
-        }
-        private void UnsubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
-        {
-            if (ChargeStationInfoManager != null)
-            {
-                ChargeStationInfoManager.ItemAdded -= HandleEvent_ChargeStationInfoManagerItemAdded;
-                ChargeStationInfoManager.ItemRemoved -= HandleEvent_ChargeStationInfoManagerItemRemoved;
-                ChargeStationInfoManager.ItemUpdated -= HandleEvent_ChargeStationInfoManagerItemUpdated;
-            }
-        }
-        private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
+			{
+				HostMessageAnalyzer.ConfigUpdated -= HandleEvent_HostMessageAnalyzerConfigUpdated;
+			}
+		}
+		private void SubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
+		{
+			if (ChargeStationInfoManager != null)
+			{
+				ChargeStationInfoManager.ItemAdded += HandleEvent_ChargeStationInfoManagerItemAdded;
+				ChargeStationInfoManager.ItemRemoved += HandleEvent_ChargeStationInfoManagerItemRemoved;
+				ChargeStationInfoManager.ItemUpdated += HandleEvent_ChargeStationInfoManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
+		{
+			if (ChargeStationInfoManager != null)
+			{
+				ChargeStationInfoManager.ItemAdded -= HandleEvent_ChargeStationInfoManagerItemAdded;
+				ChargeStationInfoManager.ItemRemoved -= HandleEvent_ChargeStationInfoManagerItemRemoved;
+				ChargeStationInfoManager.ItemUpdated -= HandleEvent_ChargeStationInfoManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
 		{
 			if (MissionDispatcher != null)
 			{
@@ -1266,110 +1250,13 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_ConfiguratorConfigurationUpdated(object Sender, ConfigurationUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "Configurator", "ConfigurationUpdated", $"Name: {Args.ConfigName}, ConfigNewValue: {Args.Configuration.mValue}");
-			switch (Args.ConfigName)
+			string fullConfigName = Args.ConfigName; // Example: LogExporter/BaseDirectory, VehicleControlUpdater/ToleranceOfYOfArrivedTarget, HostCommunicator/TimePeriod
+			string objectName = fullConfigName.Substring(0, fullConfigName.IndexOf('/'));
+			string objectConfigName = fullConfigName.Substring(fullConfigName.IndexOf('/') + 1);
+			ISystemWithConfig systemWithConfig = GetCorrespondingObjectOfISystemWithConfig(objectName);
+			if (systemWithConfig != null)
 			{
-				case "LogExporter/BaseDirectory":
-					mLogExporter.SetConfig("BaseDirectory", mConfigurator.GetValue("LogExporter/BaseDirectory"));
-					break;
-				case "LogExporter/ExportDirectoryNamePrefix":
-					mLogExporter.SetConfig("ExportDirectoryNamePrefix", mConfigurator.GetValue("LogExporter/ExportDirectoryNamePrefix"));
-					break;
-				case "LogExporter/ExportDirectoryNameTimeFormat":
-					mLogExporter.SetConfig("ExportDirectoryNameTimeFormat", mConfigurator.GetValue("LogExporter/ExportDirectoryNameTimeFormat"));
-					break;
-				case "ImportantEventRecorder/TimePeriod":
-					mImportantEventRecorder.SetConfig("TimePeriod", mConfigurator.GetValue("ImportantEventRecorder/TimePeriod"));
-					break;
-				case "VehicleCommunicator/LocalPort":
-					mVehicleCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("VehicleCommunicator/LocalPort"));
-					break;
-				case "VehicleCommunicator/TimePeriod":
-					mVehicleCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleCommunicator/TimePeriod"));
-					break;
-				case "CollisionEventDetector/TimePeriod":
-					mCollisionEventDetector.SetConfig("TimePeriod", mConfigurator.GetValue("CollisionEventDetector/TimePeriod"));
-					break;
-				case "CollisionEventDetector/NeighborPointAmount":
-					mCollisionEventDetector.SetConfig("NeighborPointAmount", mConfigurator.GetValue("CollisionEventDetector/NeighborPointAmount"));
-					break;
-				case "CollisionEventDetector/VehicleLocationScoreThreshold":
-					mCollisionEventDetector.SetConfig("VehicleLocationScoreThreshold", mConfigurator.GetValue("CollisionEventDetector/VehicleLocationScoreThreshold"));
-					break;
-				case "VehicleControlHandler/TimePeriod":
-					mVehicleControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlHandler/TimePeriod"));
-					break;
-                case "VehicleControlUpdater/TimePeriod":
-                    mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/TimePeriod"));
-                    break;
-                case "VehicleControlUpdater/TimeoutOfSendingVehicleControl":
-                    mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/TimeoutOfSendingVehicleControl"));
-                    break;
-                case "VehicleControlUpdater/TimeoutOfExecutingVehicleControl":
-                    mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/TimeoutOfExecutingVehicleControl"));
-                    break;
-                case "VehicleControlUpdater/ToleranceOfXOfArrivedTarget":
-                    mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfXOfArrivedTarget"));
-                    break;
-                case "VehicleControlUpdater/ToleranceOfYOfArrivedTarget":
-                    mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfYOfArrivedTarget"));
-                    break;
-                case "VehicleControlUpdater/ToleranceOfTowardOfArrivedTarget":
-                    mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/ToleranceOfTowardOfArrivedTarget"));
-                    break;
-				case "VehicleControlUpdater/AutoDetectNonSystemControl":
-					mVehicleControlUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehicleControlUpdater/AutoDetectNonSystemControl"));
-					break;
-				case "HostCommunicator/LocalPort":
-					mHostCommunicator.SetConfig("LocalPort", mConfigurator.GetValue("HostCommunicator/LocalPort"));
-					break;
-				case "HostCommunicator/TimePeriod":
-					mHostCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("HostCommunicator/TimePeriod"));
-					break;
-                case "HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand":
-                    mHostMessageAnalyzer.SetConfig("FilterDuplicateMissionWhenReceivedCommand", mConfigurator.GetValue("HostMessageAnalyzer/FilterDuplicateMissionWhenReceivedCommand"));
-                    break;
-                case "MissionDispatcher/TimePeriod":
-					mMissionDispatcher.SetConfig("TimePeriod", mConfigurator.GetValue("MissionDispatcher/TimePeriod"));
-					break;
-				case "MissionDispatcher/DispatchRule":
-					mMissionDispatcher.SetConfig("DispatchRule", mConfigurator.GetValue("MissionDispatcher/DispatchRule"));
-					break;
-				case "MissionDispatcher/IdlePeriodThreshold":
-					mMissionDispatcher.SetConfig("IdlePeriodThreshold", mConfigurator.GetValue("MissionDispatcher/IdlePeriodThreshold"));
-					break;
-				case "MissionUpdater/AutoDetectNonSystemMission":
-					mMissionUpdater.SetConfig("AutoDetectNonSystemMission", mConfigurator.GetValue("MissionUpdater/AutoDetectNonSystemMission"));
-					break;
-				case "MapFileManager/MapFileDirectory":
-					mMapFileManager.SetConfig("MapFileDirectory", mConfigurator.GetValue("MapFileManager/MapFileDirectory"));
-					break;
-				case "MapManager/AutoLoadMap":
-					mMapManager.SetConfig("AutoLoadMap", mConfigurator.GetValue("MapManager/AutoLoadMap"));
-					break;
-				case "CycleMissionGenerator/TimePeriod":
-					mCycleMissionGenerator.SetConfig("TimePeriod", mConfigurator.GetValue("CycleMissionGenerator/TimePeriod"));
-					break;
-				case "AutomaticDoorCommunicator/TimePeriod":
-					mAutomaticDoorCommunicator.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorCommunicator/TimePeriod"));
-					break;
-				case "AutomaticDoorCommunicator/AutoConnect":
-					mAutomaticDoorCommunicator.SetConfig("AutoConnect", mConfigurator.GetValue("AutomaticDoorCommunicator/AutoConnect"));
-					break;
-				case "AutomaticDoorControlHandler/TimePeriod":
-					mAutomaticDoorControlHandler.SetConfig("TimePeriod", mConfigurator.GetValue("AutomaticDoorControlHandler/TimePeriod"));
-					break;
-				case "VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod":
-					mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("TimePeriod", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/TimePeriod"));
-					break;
-				case "VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDoorDistance":
-					mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("OpenDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/OpenDoorDistance"));
-					break;
-				case "VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance":
-					mVehiclePassThroughAutomaticDoorEventManagerUpdater.SetConfig("CloseDoorDistance", mConfigurator.GetValue("VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance"));
-					break;
-				case "ChargeStationInfoManagerUpdater/MaximumDistanceBetweenChargeStationAndVehicle":
-					mChargeStationInfoManagerUpdater.SetConfig("MaximumDistanceBetweenChargeStationAndVehicle", mConfigurator.GetValue("ChargeStationInfoManagerUpdater/MaximumDistanceBetweenChargeStationAndVehicle"));
-					break;
+				systemWithConfig.SetConfig(objectConfigName, mConfigurator.GetValue(fullConfigName));
 			}
 		}
 		private void HandleEvent_LogExporterConfigUpdated(object sender, ConfigUpdatedEventArgs Args)
@@ -1442,36 +1329,36 @@ namespace TrafficControlTest.Process
 			{
 				HandleDebugMessage(Args.OccurTime, "VehicleInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info: {Args.Item.ToString()}");
 			}
-        }
-        private void HandleEvent_MapFileManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "MapFileManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
-        }
-        private void HandleEvent_MapFileManagerMapFileAdded(object Sender, MapFileCountChangedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemAdded", $"MapFileName: {Args.MapFileName}");
-        }
-        private void HandleEvent_MapFileManagerMapFileRemoved(object Sender, MapFileCountChangedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {Args.MapFileName}");
-        }
-        private void HandleEvent_MapManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
-        }
-        private void HandleEvent_MapManagerLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "MapManager", "LoadMapSuccessed", $"MapName: {Args.MapFileName}");
-        }
-        private void HandleEvent_MapManagerLoadMapFailed(object Sender, LoadMapFailedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "MapManager", "LoadMapFailed", $"MapName: {Args.MapFileName}, Reason: {Args.Reason.ToString()}");
-        }
-        private void HandleEvent_MapManagerSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "MapFileManager", "SynchronizeMapStarted", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
-        }
-        private void HandleEvent_CollisionEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
+		}
+		private void HandleEvent_MapFileManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_MapFileManagerMapFileAdded(object Sender, MapFileCountChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemAdded", $"MapFileName: {Args.MapFileName}");
+		}
+		private void HandleEvent_MapFileManagerMapFileRemoved(object Sender, MapFileCountChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {Args.MapFileName}");
+		}
+		private void HandleEvent_MapManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_MapManagerLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapManager", "LoadMapSuccessed", $"MapName: {Args.MapFileName}");
+		}
+		private void HandleEvent_MapManagerLoadMapFailed(object Sender, LoadMapFailedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapManager", "LoadMapFailed", $"MapName: {Args.MapFileName}, Reason: {Args.Reason.ToString()}");
+		}
+		private void HandleEvent_MapManagerSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "SynchronizeMapStarted", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
+		}
+		private void HandleEvent_CollisionEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "CollisionEventManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
 		}
@@ -1510,16 +1397,16 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleControlHandlerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleControlHandler", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
-        }
-        private void HandleEvent_VehicleControlUpdaterSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "VehicleControlUpdater", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
-        }
-        private void HandleEvent_VehicleControlUpdaterConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "VehicleControlUpdater", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
-        }
-        private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
+		}
+		private void HandleEvent_VehicleControlUpdaterSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "VehicleControlUpdater", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
+		}
+		private void HandleEvent_VehicleControlUpdaterConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "VehicleControlUpdater", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {Args.ItemName}, Info: {Args.Item.ToString()}");
 			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Created");
@@ -1573,12 +1460,12 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
 			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {Args.IpPort} ] [ {Args.Data} ]");
-        }
-        private void HandleEvent_HostMessageAnalyzerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
-        {
-            HandleDebugMessage(Args.OccurTime, "HostMessageAnalyzer", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
-        }
-        private void HandleEvent_MissionDispatcherSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		}
+		private void HandleEvent_HostMessageAnalyzerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "HostMessageAnalyzer", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_MissionDispatcherSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MissionDispatcher", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
 		}
@@ -1742,22 +1629,7 @@ namespace TrafficControlTest.Process
 		}
 		private int GetCurrentThreadClosingProgress()
 		{
-			int totalCount = 11;
-			int closedCount = 0;
-
-			if (!mImportantEventRecorder.mIsExecuting) closedCount += 1;
-			if (!mVehicleCommunicator.mIsExecuting) closedCount += 1;
-			if (!mCollisionEventDetector.mIsExecuting) closedCount += 1;
-			if (!mVehicleControlHandler.mIsExecuting) closedCount += 1;
-			if (!mVehicleControlUpdater.mIsExecuting) closedCount += 1;
-			if (!mHostCommunicator.mIsExecuting) closedCount += 1;
-			if (!mMissionDispatcher.mIsExecuting) closedCount += 1;
-			if (!mCycleMissionGenerator.mIsExecuting) closedCount += 1;
-			if (!mAutomaticDoorCommunicator.mIsExecuting) closedCount += 1;
-			if (!mAutomaticDoorControlHandler.mIsExecuting) closedCount += 1;
-			if (!mVehiclePassThroughAutomaticDoorEventManagerUpdater.mIsExecuting) closedCount += 1;
-
-			return closedCount * 100 / totalCount;
+			return mCollectionOfISystemWithLoopTask.Where(o => !o.mIsExecuting).Count() * 100 / mCollectionOfISystemWithLoopTask.Count;
 		}
 	}
 

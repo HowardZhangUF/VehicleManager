@@ -97,6 +97,10 @@ namespace TrafficControlTest.Module.AutomaticDoor
 				mClients[IpPort].SendData(Data);
 			}
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "TimePeriod", "AutoConnect" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

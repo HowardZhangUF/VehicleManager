@@ -57,6 +57,10 @@ namespace TrafficControlTest.Module.InterveneCommand
 			Set(VehicleCommunicator);
 			Set(MapManager);
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "TimePeriod", "TimeoutOfSendingVehicleControl", "TimeoutOfExecutingVehicleControl", "ToleranceOfXOfArrivedTarget", "ToleranceOfYOfArrivedTarget", "ToleranceOfTowardOfArrivedTarget", "AutoDetectNonSystemControl" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

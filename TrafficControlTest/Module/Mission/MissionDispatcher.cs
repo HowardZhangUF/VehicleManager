@@ -47,6 +47,10 @@ namespace TrafficControlTest.Module.Mission
 			Set(VehicleInfoManager);
 			Set(VehicleControlManager);
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "TimePeriod", "DispatchRule", "IdlePeriodThreshold" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

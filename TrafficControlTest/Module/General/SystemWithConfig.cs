@@ -6,6 +6,7 @@ namespace TrafficControlTest.Module.General
 	{
 		public event EventHandler<ConfigUpdatedEventArgs> ConfigUpdated;
 
+		public abstract string[] GetConfigNameList();
 		public abstract string GetConfig(string ConfigName);
 		public abstract void SetConfig(string ConfigName, string NewValue);
 

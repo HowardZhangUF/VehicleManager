@@ -68,6 +68,10 @@ namespace TrafficControlTest.Module.Map
 		{
 			RemoveMapFile(MapFileNameWithoutExtension + ".map");
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "MapFileDirectory" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

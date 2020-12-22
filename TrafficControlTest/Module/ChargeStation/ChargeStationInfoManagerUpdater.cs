@@ -44,6 +44,10 @@ namespace TrafficControlTest.Module.ChargeStation
 			Set(MapManager);
 			Set(VehicleInfoManager);
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "MaximumDistanceBetweenChargeStationAndVehicle" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

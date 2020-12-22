@@ -39,6 +39,10 @@ namespace TrafficControlTest.Module.CollisionEvent
 			Set(VehicleInfoManager);
 			Set(CollisionEventManager);
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "TimePeriod", "NeighborPointAmount", "VehicleLocationScoreThreshold" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

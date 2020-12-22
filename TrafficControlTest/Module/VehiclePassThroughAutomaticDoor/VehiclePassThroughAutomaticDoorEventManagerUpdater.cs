@@ -46,6 +46,10 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 			Set(AutomaticDoorInfoManager);
 			Set(VehiclePassThroughAutomaticDoorEventManager);
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "TimePeriod", "OpenDoorDistance", "CloseDoorDistance" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

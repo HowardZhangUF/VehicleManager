@@ -71,8 +71,12 @@ namespace TrafficControlTest.Module.NewCommunication
             {
                 SendData(ipPort, Data);
             }
-        }
-        public override string GetConfig(string ConfigName)
+		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "TimePeriod", "LocalPort" };
+		}
+		public override string GetConfig(string ConfigName)
         {
             switch (ConfigName)
             {

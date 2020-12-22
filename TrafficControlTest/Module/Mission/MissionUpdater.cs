@@ -45,6 +45,10 @@ namespace TrafficControlTest.Module.Mission
 			Set(MissionStateManager);
 			Set(VehicleControlManager);
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "AutoDetectNonSystemMission" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

@@ -7,33 +7,37 @@ namespace TrafficControlTest.Module.General
 	{
 		public event EventHandler<SystemStatusChangedEventArgs> SystemStatusChanged;
 
-		public bool mIsExecuting 
-        {
-            get
-            {
-                return _IsExecuting;
-            }
-            private set
-            {
-                _IsExecuting = value;
+		public bool mIsExecuting
+		{
+			get
+			{
+				return _IsExecuting;
+			}
+			private set
+			{
+				_IsExecuting = value;
 				RaiseEvent_SystemStatusChanged(_IsExecuting);
-            }
-        }
-        public int mTimePeriod { get; set; } = 500;
+			}
+		}
+		public int mTimePeriod { get; set; } = 500;
 
-        private Thread mThdLoop = null;
-        private bool[] mThdLoopExitFlag = null;
-        private bool _IsExecuting = false;
+		private Thread mThdLoop = null;
+		private bool[] mThdLoopExitFlag = null;
+		private bool _IsExecuting = false;
 
-        public void Start()
-        {
-            InitializeThread();
-        }
-        public void Stop()
-        {
-            DestroyThread();
-        }
-        public abstract void Task();
+		public void Start()
+		{
+			InitializeThread();
+		}
+		public void Stop()
+		{
+			DestroyThread();
+		}
+		public abstract void Task();
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "TimePeriod" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)
@@ -69,39 +73,39 @@ namespace TrafficControlTest.Module.General
 			}
 		}
 
-        private void InitializeThread()
-        {
-            mThdLoopExitFlag = new bool[] { false };
-            mThdLoop = new Thread(() => LoopTask(mThdLoopExitFlag));
-            mThdLoop.IsBackground = true;
-            mThdLoop.Start();
-        }
-        private void DestroyThread()
-        {
-            if (mThdLoop != null)
-            {
-                if (mThdLoop.IsAlive)
-                {
-                    mThdLoopExitFlag[0] = true;
-                }
-                mThdLoop = null;
-            }
-        }
-        private void LoopTask(bool[] ExitFlag)
-        {
-            try
-            {
-                mIsExecuting = true;
-                while (!ExitFlag[0])
-                {
-                    Task();
-                    Thread.Sleep(mTimePeriod);
-                }
-            }
-            finally
-            {
-                mIsExecuting = false;
-            }
-        }
-    }
+		private void InitializeThread()
+		{
+			mThdLoopExitFlag = new bool[] { false };
+			mThdLoop = new Thread(() => LoopTask(mThdLoopExitFlag));
+			mThdLoop.IsBackground = true;
+			mThdLoop.Start();
+		}
+		private void DestroyThread()
+		{
+			if (mThdLoop != null)
+			{
+				if (mThdLoop.IsAlive)
+				{
+					mThdLoopExitFlag[0] = true;
+				}
+				mThdLoop = null;
+			}
+		}
+		private void LoopTask(bool[] ExitFlag)
+		{
+			try
+			{
+				mIsExecuting = true;
+				while (!ExitFlag[0])
+				{
+					Task();
+					Thread.Sleep(mTimePeriod);
+				}
+			}
+			finally
+			{
+				mIsExecuting = false;
+			}
+		}
+	}
 }

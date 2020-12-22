@@ -100,6 +100,10 @@ namespace TrafficControlTest.Module.Log
 				System.Diagnostics.Process.Start(mBaseDirectory);
 			});
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "BaseDirectory", "ExportDirectoryNamePrefix", "ExportDirectoryNameTimeFormat" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)

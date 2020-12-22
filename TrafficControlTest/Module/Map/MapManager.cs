@@ -169,6 +169,10 @@ namespace TrafficControlTest.Module.Map
 		{
 			SynchronizeMapToOnlineVehicles(MapFileNameWithoutExtension + ".map");
 		}
+		public override string[] GetConfigNameList()
+		{
+			return new string[] { "AutoLoadMap" };
+		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)
