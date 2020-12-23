@@ -407,7 +407,11 @@ namespace TrafficControlTest.Library
         {
             return new ChargeStationInfoManagerUpdater(ChargeStationInfoManager, MapManager, VehicleInfoManager);
         }
-        #endregion
+        public static ITimeElapseDetector GenerateITimeElapseDetector()
+		{
+			return new TimeElapseDetector();
+		}
+		#endregion
 
 		#region IPoint2D
 		/// <summary>計算向量 (End - Start) 與 X+ 的夾角。範圍為 -180 ~ 180 ，單位為 degree</summary>

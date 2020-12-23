@@ -16,12 +16,16 @@ namespace TrafficControlTest.UserControl
 	{
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
+		private ITimeElapseDetector rTimeElapseDetector = null;
 		private object mLock = new object();
 		private List<UcVehicleIconView> mControls = new List<UcVehicleIconView>();
+		private ToolTip mToolTipOfDate = new ToolTip();
 
 		public UcSystemOverview()
 		{
 			InitializeComponent();
+			HandleEvent_TimeElapseDetectorDayChanged(null, null);
+			HandleEvent_TimeElapseDetectorMinuteChanged(null, null);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -35,10 +39,17 @@ namespace TrafficControlTest.UserControl
 			rVehicleInfoManager = VehicleInfoManager;
 			SubscribeEvent_VehicleInfoManager(rVehicleInfoManager);
 		}
-		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
+		public void Set(ITimeElapseDetector TimeElapseDetector)
+		{
+			UnsubscribeEvent_TimeElapseDetector(rTimeElapseDetector);
+			rTimeElapseDetector = TimeElapseDetector;
+			SubscribeEvent_TimeElapseDetector(rTimeElapseDetector);
+		}
+		public void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, ITimeElapseDetector TimeElapseDetector)
 		{
 			Set(VehicleCommunicator);
 			Set(VehicleInfoManager);
+			Set(TimeElapseDetector);
 		}
 		public void AddVehicleIconView(string Id, string State, string Target, string Battery, string LocationScore)
 		{
@@ -99,6 +110,7 @@ namespace TrafficControlTest.UserControl
 								switch (tmpObj.mState)
 								{
 									case "Idle":
+									case "ChargeIdle":
 										tmpObj.mBorderColor = Color.Green;
 										break;
 									case "Running":
@@ -162,6 +174,25 @@ namespace TrafficControlTest.UserControl
 				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
+		private void SubscribeEvent_TimeElapseDetector(ITimeElapseDetector TimeElapseDetector)
+		{
+			if (TimeElapseDetector != null)
+			{
+				TimeElapseDetector.HourChanged += HandleEvent_TimeElapseDetectorHourChanged;
+				TimeElapseDetector.MinuteChanged += HandleEvent_TimeElapseDetectorMinuteChanged;
+			}
+		}
+		private void UnsubscribeEvent_TimeElapseDetector(ITimeElapseDetector TimeElapseDetector)
+		{
+			if (TimeElapseDetector != null)
+			{
+				TimeElapseDetector.YearChanged -= HandleEvent_TimeElapseDetectorYearChanged;
+				TimeElapseDetector.MonthChanged -= HandleEvent_TimeElapseDetectorMonthChanged;
+				TimeElapseDetector.DayChanged -= HandleEvent_TimeElapseDetectorDayChanged;
+				TimeElapseDetector.HourChanged -= HandleEvent_TimeElapseDetectorHourChanged;
+				TimeElapseDetector.MinuteChanged -= HandleEvent_TimeElapseDetectorMinuteChanged;
+			}
+		}
 		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
 		{
 			if (Args.IsListened)
@@ -192,6 +223,26 @@ namespace TrafficControlTest.UserControl
 			if (Args.StatusName.Contains("CurrentTarget")) UpdateVehicleIconView(Args.Item.mName, UcVehicleIconView.Property.Target, Args.Item.mCurrentTarget);
 			if (Args.StatusName.Contains("BatteryValue")) UpdateVehicleIconView(Args.Item.mName, UcVehicleIconView.Property.Battery, Args.Item.mBatteryValue.ToString("F2"));
 			if (Args.StatusName.Contains("LocationScore")) UpdateVehicleIconView(Args.Item.mName, UcVehicleIconView.Property.LocationScore, Args.Item.mLocationScore.ToString("F2"));
+		}
+		private void HandleEvent_TimeElapseDetectorYearChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd"));
+		}
+		private void HandleEvent_TimeElapseDetectorMonthChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd"));
+		}
+		private void HandleEvent_TimeElapseDetectorDayChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd"));
+		}
+		private void HandleEvent_TimeElapseDetectorHourChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			UpdateGui_UpdateControlText(lblClock, DateTime.Now.ToString("HH:mm"));
+		}
+		private void HandleEvent_TimeElapseDetectorMinuteChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			UpdateGui_UpdateControlText(lblClock, DateTime.Now.ToString("HH:mm"));
 		}
 		private void UpdateGui_UpdateControlText(Control Control, string Text)
 		{

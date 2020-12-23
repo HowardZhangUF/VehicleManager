@@ -51,6 +51,7 @@ namespace TrafficControlTest.Process
 		private ILogRecorder mLogRecorder = null;
 		private IEventRecorder mEventRecorder = null;
 		private IImportantEventRecorder mImportantEventRecorder = null;
+		private ITimeElapseDetector mTimeElapseDetector = null;
 		private ILogExporter mLogExporter = null;
 		private IAccountManager mAccountManager = null;
 		private IAccessControl mAccessControl = null;
@@ -107,6 +108,7 @@ namespace TrafficControlTest.Process
 			mEventRecorder.Start();
 			mAccountManager.Read();
 			mImportantEventRecorder.Start();
+			mTimeElapseDetector.Start();
 			mVehicleCommunicator.Start();
 			mVehicleCommunicator.StartListen();
 			mCollisionEventDetector.Start();
@@ -135,6 +137,7 @@ namespace TrafficControlTest.Process
 			mCollisionEventDetector.Stop();
 			mVehicleCommunicator.StopListen();
 			mVehicleCommunicator.Stop();
+			mTimeElapseDetector.Stop();
 			mImportantEventRecorder.Stop();
 			mAccountManager.Save();
 
@@ -173,6 +176,10 @@ namespace TrafficControlTest.Process
 		public IImportantEventRecorder GetReferenceOfIImportantEventRecorder()
 		{
 			return mImportantEventRecorder;
+		}
+		public ITimeElapseDetector GetReferenceOfITimeElapseDetector()
+		{
+			return mTimeElapseDetector;
 		}
 		public IVehicleCommunicator GetReferenceOfIVehicleCommunicator()
 		{
@@ -275,6 +282,10 @@ namespace TrafficControlTest.Process
 			mLogExporter.AddDirectoryPaths(new List<string> { ".\\Database", ".\\Map", ".\\Exception", ".\\VMLog" });
 			mLogExporter.AddFilePaths(new List<string> { ".\\Application.config" });
 			SubscribeEvent_ILogExporter(mLogExporter);
+
+			UnsubscribeEvent_ITimeElapseDetecotr(mTimeElapseDetector);
+			mTimeElapseDetector = GenerateITimeElapseDetector();
+			SubscribeEvent_ITimeElapseDetecotr(mTimeElapseDetector);
 
 			UnsubscribeEvent_IAccessControl(mAccessControl);
 			mAccessControl = GenerateIAccessControl(mAccountManager);
@@ -406,6 +417,7 @@ namespace TrafficControlTest.Process
 
 			mCollectionOfISystemWithConfig.Add(mLogExporter);
 			mCollectionOfISystemWithConfig.Add(mImportantEventRecorder);
+			mCollectionOfISystemWithConfig.Add(mTimeElapseDetector);
 			mCollectionOfISystemWithConfig.Add(mVehicleCommunicator);
 			mCollectionOfISystemWithConfig.Add(mCollisionEventDetector);
 			mCollectionOfISystemWithConfig.Add(mVehicleControlHandler);
@@ -423,6 +435,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithConfig.Add(mChargeStationInfoManagerUpdater);
 
 			mCollectionOfISystemWithLoopTask.Add(mImportantEventRecorder);
+			mCollectionOfISystemWithLoopTask.Add(mTimeElapseDetector);
 			mCollectionOfISystemWithLoopTask.Add(mVehicleCommunicator);
 			mCollectionOfISystemWithLoopTask.Add(mCollisionEventDetector);
 			mCollectionOfISystemWithLoopTask.Add(mVehicleControlHandler);
@@ -639,6 +652,32 @@ namespace TrafficControlTest.Process
 				LogExporter.ConfigUpdated -= HandleEvent_LogExporterConfigUpdated;
 				LogExporter.ExportStarted -= HandleEvent_LogExporterExportStarted;
 				LogExporter.ExportCompleted -= HandleEvent_LogExporterExportCompleted;
+			}
+		}
+		private void SubscribeEvent_ITimeElapseDetecotr(ITimeElapseDetector TimeElapseDetector)
+		{
+			if (TimeElapseDetector != null)
+			{
+				TimeElapseDetector.SystemStatusChanged += HandleEvent_TimeElapseDetectorSystemStatusChanged;
+				TimeElapseDetector.ConfigUpdated += HandleEvent_TimeElapseDetectorConfigUpdated;
+				TimeElapseDetector.YearChanged += HandleEvent_TimeElapseDetectorYearChanged;
+				TimeElapseDetector.MonthChanged += HandleEvent_TimeElapseDetectorMonthChanged;
+				TimeElapseDetector.DayChanged += HandleEvent_TimeElapseDetectorDayChanged;
+				TimeElapseDetector.HourChanged += HandleEvent_TimeElapseDetectorHourChanged;
+				TimeElapseDetector.MinuteChanged += HandleEvent_TimeElapseDetectorMinuteChanged;
+			}
+		}
+		private void UnsubscribeEvent_ITimeElapseDetecotr(ITimeElapseDetector TimeElapseDetector)
+		{
+			if (TimeElapseDetector != null)
+			{
+				TimeElapseDetector.SystemStatusChanged -= HandleEvent_TimeElapseDetectorSystemStatusChanged;
+				TimeElapseDetector.ConfigUpdated -= HandleEvent_TimeElapseDetectorConfigUpdated;
+				TimeElapseDetector.YearChanged -= HandleEvent_TimeElapseDetectorYearChanged;
+				TimeElapseDetector.MonthChanged -= HandleEvent_TimeElapseDetectorMonthChanged;
+				TimeElapseDetector.DayChanged -= HandleEvent_TimeElapseDetectorDayChanged;
+				TimeElapseDetector.HourChanged -= HandleEvent_TimeElapseDetectorHourChanged;
+				TimeElapseDetector.MinuteChanged -= HandleEvent_TimeElapseDetectorMinuteChanged;
 			}
 		}
 		private void SubscribeEvent_IAccessControl(IAccessControl AccessControl)
@@ -1270,6 +1309,34 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_LogExporterExportCompleted(object Sender, LogExportedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "LogExporter", "ExportCompleted", $"Directory: {Args.DirectoryPath}, Items: {string.Join(", ", Args.Items)}");
+		}
+		private void HandleEvent_TimeElapseDetectorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "TimeElapseDetector", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
+		}
+		private void HandleEvent_TimeElapseDetectorConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "TimeElapseDetector", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_TimeElapseDetectorYearChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "TimeElapseDetector", "YearChagned", Args.ToString());
+		}
+		private void HandleEvent_TimeElapseDetectorMonthChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "TimeElapseDetector", "MonthChanged", Args.ToString());
+		}
+		private void HandleEvent_TimeElapseDetectorDayChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "TimeElapseDetector", "DayChagned", Args.ToString());
+		}
+		private void HandleEvent_TimeElapseDetectorHourChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "TimeElapseDetector", "HourChagned", Args.ToString());
+		}
+		private void HandleEvent_TimeElapseDetectorMinuteChanged(object Sender, DateTimeChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "TimeElapseDetector", "MinuteChagned", Args.ToString());
 		}
 		private void HandleEvent_AccessControlUserLogChanged(object Sender, UserLogChangedEventArgs Args)
 		{

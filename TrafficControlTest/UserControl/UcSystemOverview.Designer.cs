@@ -34,6 +34,7 @@
 			this.pnlConnectionLeft = new System.Windows.Forms.Panel();
 			this.pnlConnectionBottom = new System.Windows.Forms.Panel();
 			this.pnlConnectionTop = new System.Windows.Forms.Panel();
+			this.lblClock = new System.Windows.Forms.Label();
 			this.pnlConnection.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -45,7 +46,7 @@
 			this.pnlConnection.Controls.Add(this.pnlConnectionBottom);
 			this.pnlConnection.Controls.Add(this.pnlConnectionTop);
 			this.pnlConnection.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlConnection.Location = new System.Drawing.Point(1250, 0);
+			this.pnlConnection.Location = new System.Drawing.Point(1180, 0);
 			this.pnlConnection.Name = "pnlConnection";
 			this.pnlConnection.Size = new System.Drawing.Size(50, 50);
 			this.pnlConnection.TabIndex = 1;
@@ -95,12 +96,25 @@
 			this.pnlConnectionTop.Size = new System.Drawing.Size(50, 5);
 			this.pnlConnectionTop.TabIndex = 1;
 			// 
+			// lblClock
+			// 
+			this.lblClock.Dock = System.Windows.Forms.DockStyle.Right;
+			this.lblClock.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblClock.ForeColor = System.Drawing.Color.White;
+			this.lblClock.Location = new System.Drawing.Point(1230, 0);
+			this.lblClock.Name = "lblClock";
+			this.lblClock.Size = new System.Drawing.Size(70, 50);
+			this.lblClock.TabIndex = 2;
+			this.lblClock.Text = "23:59";
+			this.lblClock.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// UcSystemOverview
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.AutoScroll = true;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
 			this.Controls.Add(this.pnlConnection);
+			this.Controls.Add(this.lblClock);
 			this.Name = "UcSystemOverview";
 			this.Size = new System.Drawing.Size(1300, 50);
 			this.pnlConnection.ResumeLayout(false);
@@ -116,5 +130,6 @@
 		private System.Windows.Forms.Panel pnlConnectionLeft;
 		private System.Windows.Forms.Panel pnlConnectionBottom;
 		private System.Windows.Forms.Panel pnlConnectionTop;
+		private System.Windows.Forms.Label lblClock;
 	}
 }

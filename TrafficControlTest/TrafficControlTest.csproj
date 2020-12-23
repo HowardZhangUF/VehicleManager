@@ -119,10 +119,12 @@
     <Compile Include="Module\Account\Account.cs" />
     <Compile Include="Module\Account\AccountManager.cs" />
     <Compile Include="Module\Configure\Configurator.cs" />
+    <Compile Include="Module\General\ITimeElapseDetector.cs" />
     <Compile Include="Module\General\SystemWithConfig.cs" />
     <Compile Include="Module\General\SystemWithLoopTask.cs" />
     <Compile Include="Module\General\ISystemWithConfig.cs" />
     <Compile Include="Module\General\ISystemWithLoopTask.cs" />
+    <Compile Include="Module\General\TimeElapseDetector.cs" />
     <Compile Include="Module\Log\EventRecorder.cs" />
     <Compile Include="Module\CommunicationHost\HostCommunicator.cs" />
     <Compile Include="Module\Log\ILogExporter.cs" />

@@ -156,6 +156,17 @@ namespace TrafficControlTest.Module.Configure
 				"記錄自走車歷史記錄的時間間隔",
 				"记录自走车历史记录的时间间隔"));
 			defaultConfigs.Add(new Configuration(
+				"TimeElapseDetector",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"700",
+				"100",
+				"10000",
+				"Time Period of Detecting Whether DateTime Changed",
+				"檢測時間是否變化的時間間隔",
+				"检测时间是否变化的时间间隔"));
+			defaultConfigs.Add(new Configuration(
 				"VehicleCommunicator",
 				"LocalPort",
 				ConfigurationType.Int,
