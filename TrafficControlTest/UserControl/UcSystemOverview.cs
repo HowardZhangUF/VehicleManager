@@ -178,6 +178,9 @@ namespace TrafficControlTest.UserControl
 		{
 			if (TimeElapseDetector != null)
 			{
+				TimeElapseDetector.YearChanged += HandleEvent_TimeElapseDetectorYearChanged;
+				TimeElapseDetector.MonthChanged += HandleEvent_TimeElapseDetectorMonthChanged;
+				TimeElapseDetector.DayChanged += HandleEvent_TimeElapseDetectorDayChanged;
 				TimeElapseDetector.HourChanged += HandleEvent_TimeElapseDetectorHourChanged;
 				TimeElapseDetector.MinuteChanged += HandleEvent_TimeElapseDetectorMinuteChanged;
 			}
