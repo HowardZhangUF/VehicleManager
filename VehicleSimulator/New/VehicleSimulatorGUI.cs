@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TrafficControlTest.Process;
 
 namespace VehicleSimulator.New
 {
@@ -18,27 +19,65 @@ namespace VehicleSimulator.New
 
 	public partial class VehicleSimulatorGUI : Form
 	{
-
-
         private Color mColorOfMenuSelected = Color.FromArgb(41, 41, 41);
         private Color mColorOfMenuUnselected = Color.FromArgb(28, 28, 28);
+
+		private SimulatorProcessContainer mCore = new SimulatorProcessContainer();
 
 		public VehicleSimulatorGUI()
 		{
 			InitializeComponent();
 		}
 
+		protected void Constructor()
+		{
+			UnsubscribeEvent_SimulatorProcessContainer(mCore);
+			mCore = new SimulatorProcessContainer();
+			SubscribeEvent_SimulatorProcessContainer(mCore);
+
+			ucContentOfSimulator1.Set(mCore);
+			btnMenuOfSimulator_Click(null, null);
+		}
+		protected void Destructor()
+		{
+			mCore.Clear();
+			UnsubscribeEvent_SimulatorProcessContainer(mCore);
+			mCore = null;
+		}
+
         private void VehicleSimulatorGUI_Load(object sender, EventArgs e)
         {
-            btnMenuOfSimulator_Click(null, null);
-        }
-        private void btnMinimizeProgram_Click(object sender, EventArgs e)
+			Constructor();
+		}
+		private void VehicleSimulatorGUI_FormClosing(object sender, FormClosingEventArgs e)
+		{
+
+		}
+		private void btnMinimizeProgram_Click(object sender, EventArgs e)
 		{
 			WindowState = FormWindowState.Minimized;
 		}
 		private void btnCloseProgram_Click(object sender, EventArgs e)
 		{
-			Close();
+			Destructor();
+			Task.Run(() => 
+			{
+				TrafficControlTest.UserControl.formProgress frm = new TrafficControlTest.UserControl.formProgress();
+				frm.StartPosition = FormStartPosition.CenterParent;
+				frm.SetTitleText("Program Closing ...");
+				frm.Show();
+				Application.DoEvents();
+				int i = 0;
+				while (i <= 20)
+				{
+					frm.SetProgressValue(i * 5);
+					Application.DoEvents();
+					System.Threading.Thread.Sleep(100);
+					i++;
+				}
+				frm.Close();
+				pnlTitle.InvokeIfNecessary(() => { Close(); });
+			});
 		}
         private void btnMenuOfSimulator_Click(object sender, EventArgs e)
         {
@@ -71,6 +110,48 @@ namespace VehicleSimulator.New
             btnMenuOfSetting.BackColor = mColorOfMenuUnselected;
             btnMenuOfAbout.BackColor = mColorOfMenuSelected;
             ucContentOfAbout1.BringToFront();
-        }
-    }
+		}
+		private void SubscribeEvent_SimulatorProcessContainer(SimulatorProcessContainer SimulatorProcessContainer)
+		{
+			if (SimulatorProcessContainer != null)
+			{
+				SimulatorProcessContainer.SimulatorAdded += HandleEvent_SimulatorProcessContainerSimulatorAdded;
+				SimulatorProcessContainer.SimulatorRemoved += HandleEvent_SimulatorProcessContainerSimulatorRemoved;
+			}
+		}
+		private void UnsubscribeEvent_SimulatorProcessContainer(SimulatorProcessContainer SimulatorProcessContainer)
+		{
+			if (SimulatorProcessContainer != null)
+			{
+				SimulatorProcessContainer.SimulatorAdded -= HandleEvent_SimulatorProcessContainerSimulatorAdded;
+				SimulatorProcessContainer.SimulatorRemoved -= HandleEvent_SimulatorProcessContainerSimulatorRemoved;
+			}
+		}
+		private void SubscribeEvent_SimulatorProcess(SimulatorProcess SimulatorProcess)
+		{
+			if (SimulatorProcess != null)
+			{
+				SimulatorProcess.DebugMessage += HandleEvent_SimulatorProcessDebugMessage;
+			}
+		}
+		private void UnsubscribeEvent_SimulatorProcess(SimulatorProcess SimulatorProcess)
+		{
+			if (SimulatorProcess != null)
+			{
+				SimulatorProcess.DebugMessage -= HandleEvent_SimulatorProcessDebugMessage;
+			}
+		}
+		private void HandleEvent_SimulatorProcessContainerSimulatorAdded(object sender, SimulatorAddedEventArgs e)
+		{
+			SubscribeEvent_SimulatorProcess(e.SimulatorProcess);
+		}
+		private void HandleEvent_SimulatorProcessContainerSimulatorRemoved(object sender, SimulatorRemovedEventArgs e)
+		{
+			UnsubscribeEvent_SimulatorProcess(e.SimulatorProcess);
+		}
+		private void HandleEvent_SimulatorProcessDebugMessage(object sender, DebugMessageEventArgs e)
+		{
+			//
+		}
+	}
 }

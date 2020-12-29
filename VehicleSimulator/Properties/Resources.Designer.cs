@@ -153,6 +153,26 @@ namespace VehicleSimulator.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_plus_math_24px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_plus_math_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_plus_math_30px_1 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_plus_math_30px_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_robot_32px_1 {
             get {
                 object obj = ResourceManager.GetObject("icons8_robot_32px_1", resourceCulture);
@@ -166,6 +186,26 @@ namespace VehicleSimulator.Properties {
         internal static System.Drawing.Bitmap icons8_settings_32px {
             get {
                 object obj = ResourceManager.GetObject("icons8_settings_32px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_trash_24px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_trash_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_trash_30px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_trash_30px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -54,6 +54,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="New\ESimulatorStatus.cs" />
+    <Compile Include="New\HostCommunicator.cs" />
+    <Compile Include="New\HostMessageHandler.cs" />
+    <Compile Include="New\IHostCommunicator.cs" />
+    <Compile Include="New\IHostMessageHandler.cs" />
+    <Compile Include="New\ISimulatorControl.cs" />
+    <Compile Include="New\ISimulatorInfo.cs" />
+    <Compile Include="New\ISimulatorInfoReporter.cs" />
+    <Compile Include="New\MoveRequest.cs" />
+    <Compile Include="New\Point.cs" />
+    <Compile Include="New\SimulatorAddedEventArgs.cs" />
+    <Compile Include="New\SimulatorControl.cs" />
+    <Compile Include="New\SimulatorInfo.cs" />
+    <Compile Include="New\SimulatorInfoReporter.cs" />
+    <Compile Include="New\SimulatorProcess.cs" />
+    <Compile Include="New\SimulatorProcessContainer.cs" />
+    <Compile Include="New\SimulatorRemovedEventArgs.cs" />
     <Compile Include="New\UcContentOfAbout.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -239,6 +256,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons8_adjust.ico" />
+    <None Include="Resources\icons8_trash_24px.png" />
+    <None Include="Resources\icons8_plus_math_24px.png" />
+    <None Include="Resources\icons8_trash_30px.png" />
+    <None Include="Resources\icons8_plus_math_30px_1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
