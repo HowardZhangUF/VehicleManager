@@ -174,8 +174,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		{
 			// 情境一：沒有執行任務時，且狀態為閒置，也沒有排程 Normal Control 時
 			// 情境二：有執行任務時，且狀態為閒置，也沒有排程 Normal Control 時，且當前 Control 已暫停時，且沒有在執行 Stay Control
-			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager))
-				|| (!string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && IsVehiclePausedNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
+			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager))
+				|| (!string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && IsVehiclePausedNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
 			{
 				VehicleControl.UpdateSendState(SendState.Sending);
 				rVehicleCommunicator.SendDataOfGoto(VehicleInfo.mIpPort, VehicleControl.mParameters[0]);
@@ -183,8 +183,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void HandleVehicleControlOfGotoPoint(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
-			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager))
-				|| (!string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && IsVehiclePausedNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
+			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager))
+				|| (!string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && IsVehiclePausedNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
 			{
 				VehicleControl.UpdateSendState(SendState.Sending);
 				rVehicleCommunicator.SendDataOfGotoPoint(VehicleInfo.mIpPort, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]));
@@ -192,8 +192,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void HandleVehicleControlOfGotoTowardPoint(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
-			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager))
-				|| (!string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && IsVehiclePausedNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
+			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager))
+				|| (!string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && IsVehiclePausedNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
 			{
 				VehicleControl.UpdateSendState(SendState.Sending);
 				rVehicleCommunicator.SendDataOfGotoTowardPoint(VehicleInfo.mIpPort, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]), int.Parse(VehicleControl.mParameters[2]));
@@ -209,7 +209,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void HandleVehicleControlOfCharge(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
-			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && VehicleInfo.mCurrentState == "Idle" && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
+			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && VehicleInfo.mCurrentState == "Idle" && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
 			{
 				VehicleControl.UpdateSendState(SendState.Sending);
 				rVehicleCommunicator.SendDataOfCharge(VehicleInfo.mIpPort);
@@ -217,7 +217,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void HandleVehicleControlOfUncharge(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
-			if ((VehicleInfo.mCurrentState == "Charge" || VehicleInfo.mCurrentState == "ChargeIdle") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager))
+			if ((VehicleInfo.mCurrentState == "Charge" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager))
 			{
 				VehicleControl.UpdateSendState(SendState.Sending);
 				rVehicleCommunicator.SendDataOfUncharge(VehicleInfo.mIpPort);

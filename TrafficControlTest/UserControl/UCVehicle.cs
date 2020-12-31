@@ -154,14 +154,18 @@ namespace TrafficControlTest.UserControl
 			dgv.Columns[4].Width = 80;
 			dgv.Columns.Add("LocationScore", "LocationScore");
 			dgv.Columns[5].Width = 120;
-			dgv.Columns.Add("MapName", "MapName");
-			dgv.Columns[6].Width = 240;
+            dgv.Columns.Add("MissionID", "MissionID");
+            dgv.Columns[6].Width = 210;
+            dgv.Columns.Add("ErrorMessage", "ErrorMessage");
+            dgv.Columns[7].Width = 140;
+            dgv.Columns.Add("MapName", "MapName");
+			dgv.Columns[8].Width = 240;
 			dgv.Columns.Add("IpPort", "IPPort");
-			dgv.Columns[7].Width = 180;
+			dgv.Columns[9].Width = 180;
 			dgv.Columns.Add("LastUpdate", "LastUpdate");
-			dgv.Columns[8].Width = 190;
+			dgv.Columns[10].Width = 190;
 			dgv.Columns.Add("FillColumn", "");
-			dgv.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+			dgv.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
 			foreach (DataGridViewColumn column in dgv.Columns)
 			{
@@ -178,7 +182,7 @@ namespace TrafficControlTest.UserControl
 				{
 					if (dgvVehicleInfo.RowCount == 0)
 					{
-						dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+						dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
 					}
 					else
 					{
@@ -194,11 +198,11 @@ namespace TrafficControlTest.UserControl
 
 						if (newItemRowIndex != -1)
 						{
-							dgvVehicleInfo.Rows.Insert(newItemRowIndex, new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+							dgvVehicleInfo.Rows.Insert(newItemRowIndex, new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
 						}
 						else
 						{
-							dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+							dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
 						}
 					}
 				}
@@ -263,7 +267,15 @@ namespace TrafficControlTest.UserControl
 						{
 							dgvVehicleInfo.Rows[rowIndex].Cells["LocationScore"].Value = Item.mLocationScore.ToString("F2") + " %";
 						}
-						if (StateName.Contains("CurrentMapName"))
+                        if (StateName.Contains("CurrentMissionId"))
+                        {
+                            dgvVehicleInfo.Rows[rowIndex].Cells["MissionID"].Value = Item.mCurrentMissionId;
+                        }
+                        if (StateName.Contains("ErrorMessage"))
+                        {
+                            dgvVehicleInfo.Rows[rowIndex].Cells["ErrorMessage"].Value = Item.mErrorMessage;
+                        }
+                        if (StateName.Contains("CurrentMapName"))
 						{
 							dgvVehicleInfo.Rows[rowIndex].Cells["MapName"].Value = Item.mCurrentMapName;
 						}

@@ -214,13 +214,13 @@ namespace TrafficControlTest.Module.Mission
 			if (VehicleInfoManager == null || VehicleInfoManager.mCount == 0) return null;
 
 			List<IMissionState> result = null;
-			result = MissionStateManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Unexecute && string.IsNullOrEmpty(o.mExecutorId) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && (VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle" || VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "ChargeIdle") && VehicleInfoManager[o.mMission.mVehicleId].mCurrentStateDuration.TotalMilliseconds > IdlePeriodThreshold && string.IsNullOrEmpty(VehicleInfoManager[o.mMission.mVehicleId].mCurrentMissionId)))).ToList();
+			result = MissionStateManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Unexecute && string.IsNullOrEmpty(o.mExecutorId) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && (VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle" || VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfoManager[o.mMission.mVehicleId].mErrorMessage) || VehicleInfoManager[o.mMission.mVehicleId].mErrorMessage == "Normal") && VehicleInfoManager[o.mMission.mVehicleId].mCurrentStateDuration.TotalMilliseconds > IdlePeriodThreshold && string.IsNullOrEmpty(VehicleInfoManager[o.mMission.mVehicleId].mCurrentMissionId)))).ToList();
 			return result;
 		}
         private static List<IVehicleInfo> ExtractExecutableVehicles(IVehicleInfoManager VehicleInfoManager, IVehicleControlManager VehicleControlManager, int IdlePeriodThreshold)
         {
             IEnumerable<IVehicleControl> schedulingControls = VehicleControlManager.GetItems().Where(o => o.mSendState == SendState.Sending || o.mExecuteState == ExecuteState.Executing || o.mExecuteState == ExecuteState.ExecutePaused);
-            IEnumerable<IVehicleInfo> idleVehicles = VehicleInfoManager.GetItems().Where(o => (o.mCurrentState == "Idle" || o.mCurrentState == "ChargeIdle") && o.mCurrentStateDuration.TotalMilliseconds > IdlePeriodThreshold && string.IsNullOrEmpty(o.mCurrentMissionId));
+            IEnumerable<IVehicleInfo> idleVehicles = VehicleInfoManager.GetItems().Where(o => (o.mCurrentState == "Idle" || o.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(o.mErrorMessage) || o.mErrorMessage == "Normal") && o.mCurrentStateDuration.TotalMilliseconds > IdlePeriodThreshold && string.IsNullOrEmpty(o.mCurrentMissionId));
             List<IVehicleInfo> resultVehicles = new List<IVehicleInfo>();
             if (idleVehicles != null && idleVehicles.Count() > 0)
             {
