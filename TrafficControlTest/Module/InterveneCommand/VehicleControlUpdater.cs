@@ -223,8 +223,8 @@ namespace TrafficControlTest.Module.InterveneCommand
                         if (newControl != null)
                         {
                             newControl.UpdateSendState(SendState.SendSuccessed);
-                            newControl.UpdateExecuteState(ExecuteState.Executing);
                             rVehicleControlManager.Add(newControl.mName, newControl);
+                            newControl.UpdateExecuteState(ExecuteState.Executing);
                         }
 					}
 				}

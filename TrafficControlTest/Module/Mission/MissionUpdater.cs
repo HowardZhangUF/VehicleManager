@@ -152,7 +152,6 @@ namespace TrafficControlTest.Module.Mission
 						{
 							newMissionState.UpdateExecutorId(newControl.mVehicleId);
 							newMissionState.UpdateSourceIpPort(newControl.mCauseId);
-							newMissionState.UpdateExecuteState(ExecuteState.Executing);
 							rMissionStateManager.Add(newMissionState.mName, newMissionState);
 						}
 					}
