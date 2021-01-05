@@ -187,7 +187,6 @@ namespace TrafficControlTest.Module.NewCommunication
                 for (int i = 0; i < events.Count; ++i)
                 {
                     RaiseEvent_ReceivedData(events[i].RemoteInfo.ToString(), Encoding.Default.GetString(events[i].Data));
-                    System.Threading.Thread.Sleep(5);
                 }
             }
         }
