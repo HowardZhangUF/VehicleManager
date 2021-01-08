@@ -20,11 +20,15 @@ namespace TrafficControlTest.Module.Map
 		public event EventHandler<LoadMapFailedEventArgs> LoadMapFailed;
 		public event EventHandler<SynchronizeMapStartedEventArgs> SynchronizeMapStarted;
 
+		public string mCurrentMapFileName { get; private set; } = string.Empty;
+		public string mCurrentMapFileNameWithoutExtension { get { return mCurrentMapFileName.Substring(0, mCurrentMapFileName.LastIndexOf('.')); } }
+		public string mCurrentMapFileHash { get; private set; } = string.Empty;
+		public List<IMapObjectOfTowardPoint> mTowardPointMapObjects { get; private set; } = null;
+		public List<IMapObjectOfRectangle> mRectangleMapObjects { get; private set; } = null;
+
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMapFileManager rMapFileManager = null;
-		private string mCurrentMapName = string.Empty;
-		private string mCurrentMapHash = string.Empty;
 		private bool mAutoLoadMap = false;
 		private bool mIsDownloadingMapFile { get { return (mMapFileNamesOfDownloading.Count > 0); } }
 		private IList<string> mMapFileNamesOfDownloading { get; } = new List<string>();
@@ -57,101 +61,34 @@ namespace TrafficControlTest.Module.Map
 			Set(VehicleInfoManager);
 			Set(MapFileManager);
 		}
+		public List<IMapObjectOfTowardPoint> GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint Type)
+		{
+			return mTowardPointMapObjects.Where(o => o.mType == Type).ToList();
+		}
+		public List<IMapObjectOfRectangle> GetRectangleMapObjects(TypeOfMapObjectOfRectangle Type)
+		{
+			return mRectangleMapObjects.Where(o => o.mType == Type).ToList();
+		}
+		public IMapObjectOfTowardPoint GetTowardPointMapObject(string Name)
+		{
+			return mTowardPointMapObjects.FirstOrDefault(o => o.mName == Name);
+		}
+		public IMapObjectOfRectangle GetRectangleMapObject(string Name)
+		{
+			return mRectangleMapObjects.FirstOrDefault(o => o.mName == Name);
+		}
 		public void LoadMap(string MapFileName)
 		{
 			GLCMD.CMD.LoadMap(rMapFileManager.GetMapFileFullPath(MapFileName), 3);
-			mCurrentMapName = MapFileName;
-			mCurrentMapHash = MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName));
+			mCurrentMapFileName = MapFileName;
+			mCurrentMapFileHash = MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName));
+			mTowardPointMapObjects = GLCMD.CMD.SingleTowerPairInfo.Select(o => ConvertToIMapObjectOfTowardPoint(o)).ToList();
+			mRectangleMapObjects = GLCMD.CMD.SingleAreaInfo.Select(o => ConvertToIMapObjectOfRectangle(o)).ToList();
 			RaiseEvent_LoadMapSuccessed(MapFileName);
 		}
 		public void LoadMap2(string MapFileNameWithoutExtension)
 		{
 			LoadMap(MapFileNameWithoutExtension + ".map");
-		}
-		public string GetCurrentMapFileName()
-		{
-			return mCurrentMapName;
-		}
-		public string GetCurrentMapFileNameWithoutExtension()
-		{
-			return GetCurrentMapFileName().Replace(".map", string.Empty);
-		}
-		public string GetCurrentMapFileHash()
-		{
-			return mCurrentMapHash;
-		}
-		public string[] GetGoalNameList()
-		{
-			if (string.IsNullOrEmpty(mCurrentMapName))
-			{
-				return new string[0];
-			}
-			else
-			{
-				return GLCMD.CMD.SingleTowerPairInfo.Select(o => o.Name).ToArray();
-			}
-        }
-        public string[] GetChargeStationNameList()
-        {
-            if (string.IsNullOrEmpty(mCurrentMapName))
-            {
-                return new string[0];
-            }
-            else
-            {
-                return GLCMD.CMD.SingleTowerPairInfo.Where(o => o.StyleName == "ChargingDocking").Select(o => o.Name).ToArray();
-            }
-        }
-        public string[] GetAutomaticDoorAreaNameList()
-		{
-			if (string.IsNullOrEmpty(mCurrentMapName))
-			{
-				return new string[0];
-			}
-			else
-			{
-				return GLCMD.CMD.SingleAreaInfo.Where(o => o.StyleName == "AutoDoorArea").Select(o => o.Name).ToArray();
-			}
-		}
-		public int[] GetGoalCoordinate(string GoalName)
-		{
-			if (GLCMD.CMD.SingleTowerPairInfo.Any(o => o.Name == GoalName))
-			{
-				var goalData = GLCMD.CMD.SingleTowerPairInfo.First(o => o.Name == GoalName);
-				return new int[] { goalData.X, goalData.Y, (int)goalData.Toward };
-			}
-			else
-			{
-				return new int[] { 0, 0, 0 };
-			}
-        }
-        public int[] GetChargeStationCoordinate(string ChargeStationName)
-        {
-            return GetGoalCoordinate(ChargeStationName);
-        }
-        public string[] GetAutomaticDoorAreaInfo(string AutomaticDoorName)
-		{
-			if (!string.IsNullOrEmpty(AutomaticDoorName) && GLCMD.CMD.SingleAreaInfo.Any(o => o.Name == AutomaticDoorName))
-			{
-				var areaData = GLCMD.CMD.SingleAreaInfo.First(o => o.StyleName == "AutoDoorArea" && o.Name == AutomaticDoorName);
-				if (areaData.Parameters == null || areaData.Parameters.Count == 0)
-				{
-					return null;
-				}
-				else
-				{
-					string ipPort = string.Empty;
-					if (areaData.Parameters.Any(o => o.StartsWith("IPPort=")))
-					{
-						ipPort = areaData.Parameters.First(o => o.StartsWith("IPPort=")).Replace("IPPort=", string.Empty);
-					}
-					return new string[] { areaData.MaxX.ToString(), areaData.MaxY.ToString(), areaData.MinX.ToString(), areaData.MinY.ToString(), ipPort };
-				}
-			}
-			else
-			{
-				return null;
-			}
 		}
 		public void SynchronizeMapToOnlineVehicles(string MapFileName)
 		{
@@ -354,7 +291,7 @@ namespace TrafficControlTest.Module.Map
 					if (rMapFileManager.GetLocalMapFileNameList().Any(o => o == MapFileName))
 					{
 						// 該地圖 Hash 與當前地圖 Hash 不同時
-						if (MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)) != GetCurrentMapFileHash())
+						if (MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)) != mCurrentMapFileHash)
 						{
 							LoadMap(MapFileName);
 							isLoadMapSuccess = true;
@@ -384,6 +321,53 @@ namespace TrafficControlTest.Module.Map
 		private void TryLoadMap2(string MapFileNameWithoutExtension)
 		{
 			TryLoadMap(MapFileNameWithoutExtension + ".map");
+		}
+		private static IMapObjectOfTowardPoint ConvertToIMapObjectOfTowardPoint(ISingleTowardPairInfo Input)
+		{
+			IMapObjectOfTowardPoint result = null;
+			if (Input != null)
+			{
+				TypeOfMapObjectOfTowardPoint type = TypeOfMapObjectOfTowardPoint.Normal;
+				switch (Input.StyleName)
+				{
+					case "ChargingDocking":
+						type = TypeOfMapObjectOfTowardPoint.Charge;
+						break;
+					default:
+						type = TypeOfMapObjectOfTowardPoint.Normal;
+						break;
+				}
+				result = new MapObjectOfTowardPoint(Input.Name, Input.X, Input.Y, Input.Toward, type, Input.Parameters.ToArray());
+			}
+			return result;
+		}
+		private static IMapObjectOfRectangle ConvertToIMapObjectOfRectangle(ISingleAreaInfo Input)
+		{
+			IMapObjectOfRectangle result = null;
+			if (Input != null)
+			{
+				TypeOfMapObjectOfRectangle type = TypeOfMapObjectOfRectangle.None;
+				switch (Input.StyleName)
+				{
+					case "ForbiddenArea":
+						type = TypeOfMapObjectOfRectangle.Foribdden;
+						break;
+					case "OneWayArea":
+						type = TypeOfMapObjectOfRectangle.Oneway;
+						break;
+					case "PathPlanningArea":
+						type = TypeOfMapObjectOfRectangle.PathPlanning;
+						break;
+					case "AutoDoorArea":
+						type = TypeOfMapObjectOfRectangle.AutomaticDoor;
+						break;
+					default:
+						type = TypeOfMapObjectOfRectangle.None;
+						break;
+				}
+				result = new MapObjectOfRectangle(Input.Name, Input.MaxX, Input.MaxY, Input.MinX, Input.MinY, type, Input.Parameters.ToArray());
+			}
+			return result;
 		}
 	}
 }

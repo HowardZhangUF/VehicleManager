@@ -436,9 +436,9 @@ namespace TrafficControlTest.Module.InterveneCommand
 		{
 			if (VehicleControl.mSendState == SendState.Sending)
 			{
-				if (VehicleInfo.mCurrentState == "Running" && rMapManager.GetChargeStationNameList().Contains(VehicleInfo.mCurrentTarget))
+				if (VehicleInfo.mCurrentState == "Running" && rMapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge).Select(o => o.mName).Contains(VehicleInfo.mCurrentTarget))
 				{
-					if (rMapManager.GetChargeStationNameList().Any(o => o == VehicleInfo.mCurrentTarget))
+					if (rMapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge).Select(o => o.mName).Any(o => o == VehicleInfo.mCurrentTarget))
 					{
 						VehicleControl.UpdateSendState(SendState.SendSuccessed);
 						VehicleControl.UpdateExecuteState(ExecuteState.Executing);
@@ -538,8 +538,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, string Target)
 		{
-			int[] targetCoordinate = rMapManager.GetGoalCoordinate(Target);
-			return IsVehicleArrived(VehicleInfo, targetCoordinate[0], targetCoordinate[1], targetCoordinate[2]);
+			IMapObjectOfTowardPoint towardPointMapObject = rMapManager.GetTowardPointMapObject(Target);
+			return IsVehicleArrived(VehicleInfo, towardPointMapObject.mLocation.mX, towardPointMapObject.mLocation.mY, (int)towardPointMapObject.mLocation.mToward);
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, int X, int Y)
 		{
@@ -560,7 +560,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		{
 			IVehicleControl result = null;
 			// 如何當前目標是充電站，代表執行的是充電/解除充電控制
-			if (MapManager.GetChargeStationNameList().Any(o => o == VehicleTarget))
+			if (MapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge).Select(o => o.mName).Any(o => o == VehicleTarget))
 			{
 
                 // 尋找 VehicleControlManager 內是否有對應的充電控制
@@ -592,7 +592,7 @@ namespace TrafficControlTest.Module.InterveneCommand
         private static IVehicleControl GenerateIVehicleControl(string VehicleId, string VehicleTarget, string VehicleCurrentState, string VehiclePreviousState, IVehicleControlManager VehicleControlManager, IMapManager MapManager)
         {
             IVehicleControl result = null;
-            if (MapManager.GetChargeStationNameList().Any(o => o == VehicleTarget))
+            if (MapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge).Select(o => o.mName).Any(o => o == VehicleTarget))
             {
                 if (VehiclePreviousState == "Idle" && VehicleCurrentState == "Running")
                 {

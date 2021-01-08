@@ -120,18 +120,13 @@ namespace TrafficControlTest.Module.ChargeStation
 		private void HandleEvent_MapManagerLoadMapSuccessed(object sender, LoadMapSuccessedEventArgs e)
 		{
 			rChargeStationInfoManager.RemoveAll();
-			string[] chargeStationNames = rMapManager.GetChargeStationNameList();
-			if (chargeStationNames != null && chargeStationNames.Length > 0)
+			List<IMapObjectOfTowardPoint> chargeStationInfos = rMapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge);
+			if (chargeStationInfos != null && chargeStationInfos.Count > 0)
 			{
-				for (int i = 0; i < chargeStationNames.Length; ++i)
+				for (int i = 0; i < chargeStationInfos.Count; ++i)
 				{
-					int[] chargeStationCoordinate = rMapManager.GetChargeStationCoordinate(chargeStationNames[i]);
-					if (chargeStationCoordinate != null && chargeStationCoordinate.Length == 3)
-					{
-						ITowardPoint2D location = Library.Library.GenerateITowardPoint2D(chargeStationCoordinate[0], chargeStationCoordinate[1], chargeStationCoordinate[2]);
-						IChargeStationInfo chargeStationInfo = Library.Library.GenerateIChargeStationInfo(chargeStationNames[i], location);
-						rChargeStationInfoManager.Add(chargeStationInfo.mName, chargeStationInfo);
-					}
+					IChargeStationInfo chargeStationInfo = Library.Library.GenerateIChargeStationInfo(chargeStationInfos[i].mName, chargeStationInfos[i].mLocation);
+					rChargeStationInfoManager.Add(chargeStationInfo.mName, chargeStationInfo);
 				}
 			}
 		}

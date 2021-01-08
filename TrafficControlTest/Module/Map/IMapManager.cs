@@ -31,21 +31,22 @@ namespace TrafficControlTest.Module.Map
 		event EventHandler<LoadMapFailedEventArgs> LoadMapFailed;
 		event EventHandler<SynchronizeMapStartedEventArgs> SynchronizeMapStarted;
 
+		string mCurrentMapFileName { get; }
+		string mCurrentMapFileNameWithoutExtension { get; }
+		string mCurrentMapFileHash { get; }
+		List<IMapObjectOfTowardPoint> mTowardPointMapObjects { get; }
+		List<IMapObjectOfRectangle> mRectangleMapObjects { get; }
+
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IVehicleInfoManager VehicleInfoManager);
 		void Set(IMapFileManager MapFileManager);
 		void Set(IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager, IMapFileManager MapFileManager);
+		List<IMapObjectOfTowardPoint> GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint Type);
+		List<IMapObjectOfRectangle> GetRectangleMapObjects(TypeOfMapObjectOfRectangle Type);
+		IMapObjectOfTowardPoint GetTowardPointMapObject(string Name);
+		IMapObjectOfRectangle GetRectangleMapObject(string Name);
 		void LoadMap(string MapFileName);
 		void LoadMap2(string MapFileNameWithoutExtension);
-		string GetCurrentMapFileName();
-		string GetCurrentMapFileNameWithoutExtension();
-		string GetCurrentMapFileHash();
-		string[] GetGoalNameList();
-        string[] GetChargeStationNameList();
-		string[] GetAutomaticDoorAreaNameList();
-		int[] GetGoalCoordinate(string GoalName);
-        int[] GetChargeStationCoordinate(string ChargeStationName);
-		string[] GetAutomaticDoorAreaInfo(string AutomaticDoorName);
 		void SynchronizeMapToOnlineVehicles(string MapFileName);
 		void SynchronizeMapToOnlineVehicles2(string MapFileNameWithoutExtension);
 	}

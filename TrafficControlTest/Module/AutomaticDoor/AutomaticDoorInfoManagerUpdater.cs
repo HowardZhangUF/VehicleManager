@@ -90,20 +90,18 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		private void HandleEvent_IMapManagerLoadMapSuccessed(object sender, LoadMapSuccessedEventArgs e)
 		{
 			rAutomaticDoorInfoManager.RemoveAll();
-			string[] automaticDoorNames = rMapManager.GetAutomaticDoorAreaNameList();
-			if (automaticDoorNames != null && automaticDoorNames.Length > 0)
+			List<IMapObjectOfRectangle> automaticDoorInfos = rMapManager.GetRectangleMapObjects(TypeOfMapObjectOfRectangle.AutomaticDoor);
+			if (automaticDoorInfos != null && automaticDoorInfos.Count > 0)
 			{
-				for (int i = 0; i < automaticDoorNames.Length; ++i)
+				for (int i = 0; i < automaticDoorInfos.Count; ++i)
 				{
-					string[] automaticDoorInfo = rMapManager.GetAutomaticDoorAreaInfo(automaticDoorNames[i]); // xMax yMax xMin yMin ipport
-					if (automaticDoorInfo != null && automaticDoorInfo.Length >= 5)
+					string ipPort = string.Empty;
+					if (automaticDoorInfos[i].mParameters.Any(o => o.StartsWith("IPPort=")))
 					{
-						IPoint2D maxPoint = new Point2D(int.Parse(automaticDoorInfo[0]), int.Parse(automaticDoorInfo[1]));
-						IPoint2D minPoint = new Point2D(int.Parse(automaticDoorInfo[2]), int.Parse(automaticDoorInfo[3]));
-						IRectangle2D range = new Rectangle2D(maxPoint, minPoint);
-						IAutomaticDoorInfo automaticDoor = new AutomaticDoorInfo(automaticDoorNames[i], range, automaticDoorInfo[4]);
-						rAutomaticDoorInfoManager.Add(automaticDoor.mName, automaticDoor);
+						ipPort = automaticDoorInfos[i].mParameters.First(o => o.StartsWith("IPPort=")).Replace("IPPort=", string.Empty);
 					}
+					IAutomaticDoorInfo automaticDoorInfo = new AutomaticDoorInfo(automaticDoorInfos[i].mName, automaticDoorInfos[i].mRange, ipPort);
+					rAutomaticDoorInfoManager.Add(automaticDoorInfo.mName, automaticDoorInfo);
 				}
 			}
 		}

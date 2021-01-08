@@ -119,6 +119,10 @@
     <Compile Include="Module\Account\Account.cs" />
     <Compile Include="Module\Account\AccountManager.cs" />
     <Compile Include="Module\Configure\Configurator.cs" />
+    <Compile Include="Module\General\IMapObjectOfRectangle.cs" />
+    <Compile Include="Module\General\MapObjectOfRectangle.cs" />
+    <Compile Include="Module\General\MapObjectOfTowardPoint.cs" />
+    <Compile Include="Module\General\IMapObjectOfTowardPoint.cs" />
     <Compile Include="Module\General\ITimeElapseDetector.cs" />
     <Compile Include="Module\General\SystemWithConfig.cs" />
     <Compile Include="Module\General\SystemWithLoopTask.cs" />

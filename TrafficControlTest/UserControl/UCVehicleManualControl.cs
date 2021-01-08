@@ -155,7 +155,7 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_MapManagerLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
 		{
-			UpdateGui_UpdateGoalList(rMapManager.GetGoalNameList());
+			UpdateGui_UpdateGoalList(rMapManager.mTowardPointMapObjects.Select(o => o.mName).ToArray());
 		}
 		private void btnGoto_Click(object sender, EventArgs e)
 		{
