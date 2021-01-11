@@ -350,19 +350,6 @@ namespace TrafficControlTest.UserControl
 				rLogExporter.StartExport();
 			}
 		}
-		private void btnLoadMap_Click(object sender, EventArgs e)
-		{
-			using (var ofd = new OpenFileDialog())
-			{
-				ofd.Title = "Choose iTS Map File";
-				ofd.Filter = "map files (*.map)|*.map";
-				ofd.Multiselect = false;
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					rMapManager.LoadMap(ofd.FileName);
-				}
-			}
-		}
 		private void sbtnVehicleCommunicatorServer_DoubleClick(object sender, EventArgs e)
 		{
 			if (sbtnVehicleCommunicatorServer.SwitchState == SwitchState.On)

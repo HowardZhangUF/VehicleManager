@@ -53,7 +53,6 @@
 			this.sbtnImportantEventRecorder = new TrafficControlTest.UserControl.SwitchButton();
 			this.sbtnCycleMissionGenerator = new TrafficControlTest.UserControl.SwitchButton();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-			this.btnLoadMap = new System.Windows.Forms.Button();
 			this.btnExportLog = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -449,35 +448,21 @@
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.Controls.Add(this.btnLoadMap, 1, 5);
 			this.tableLayoutPanel2.Controls.Add(this.btnLockPanel, 1, 1);
 			this.tableLayoutPanel2.Controls.Add(this.btnExportLog, 1, 3);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(689, 0);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 7;
+			this.tableLayoutPanel2.RowCount = 5;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(140, 579);
 			this.tableLayoutPanel2.TabIndex = 24;
-			// 
-			// btnLoadMap
-			// 
-			this.btnLoadMap.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btnLoadMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnLoadMap.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnLoadMap.Location = new System.Drawing.Point(23, 168);
-			this.btnLoadMap.Name = "btnLoadMap";
-			this.btnLoadMap.Size = new System.Drawing.Size(94, 54);
-			this.btnLoadMap.TabIndex = 24;
-			this.btnLoadMap.Text = "Load Map";
-			this.btnLoadMap.UseVisualStyleBackColor = true;
-			this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
 			// 
 			// btnExportLog
 			// 
@@ -538,6 +523,5 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 		private System.Windows.Forms.Button btnExportLog;
-		private System.Windows.Forms.Button btnLoadMap;
 	}
 }
