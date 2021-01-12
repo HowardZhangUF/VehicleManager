@@ -226,8 +226,10 @@ namespace TrafficControlTest.UserInterface
 						ucVehicleManualControl1.Visible = true;
 						ucVehicleApi1.Visible = true;
 						ucCycleMission1.Visible = true;
+						ucVehicle1.SetVehicleControlVisible(true);
 						ucMission1.EnableManualControl(true);
 						ucAutomaticDoor1.EnableManualControl(true);
+						ucAutomaticDoor1.SetAutomaticDoorControlVisible(true);
 						ucSetting1.Visible = true;
 						ucLog1.Set(true, true, true);
 						ucDashboard1.Visible = true;
@@ -256,8 +258,10 @@ namespace TrafficControlTest.UserInterface
 						ucVehicleManualControl1.Visible = false;
 						ucVehicleApi1.Visible = false;
 						ucCycleMission1.Visible = false;
+						ucVehicle1.SetVehicleControlVisible(false);
 						ucMission1.EnableManualControl(false);
 						ucAutomaticDoor1.EnableManualControl(false);
+						ucAutomaticDoor1.SetAutomaticDoorControlVisible(false);
 						ucSetting1.Visible = false;
 						ucLog1.Set(false, true, true);
 						ucDashboard1.Visible = false;

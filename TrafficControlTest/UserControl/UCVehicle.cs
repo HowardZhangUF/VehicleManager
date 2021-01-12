@@ -50,6 +50,21 @@ namespace TrafficControlTest.UserControl
             Set(VehicleInfoManager);
             Set(VehicleControlManager);
         }
+		public void SetVehicleControlVisible(bool Visible)
+		{
+			if (tableLayoutPanel1.RowCount == 0) return;
+
+			if (Visible)
+			{
+				tableLayoutPanel1.RowStyles[1].Height = 50;
+				tableLayoutPanel1.RowStyles[0].Height = 50;
+			}
+			else
+			{
+				tableLayoutPanel1.RowStyles[1].Height = 0;
+				tableLayoutPanel1.RowStyles[0].Height = 100;
+			}
+		}
 
 		private void SubscribeEvent_VehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
 		{
