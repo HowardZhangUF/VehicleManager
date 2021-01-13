@@ -23,8 +23,8 @@ namespace TrafficControlTest.Module.Map
 		public string mCurrentMapFileName { get; private set; } = string.Empty;
 		public string mCurrentMapFileNameWithoutExtension { get { return mCurrentMapFileName.Substring(0, mCurrentMapFileName.LastIndexOf('.')); } }
 		public string mCurrentMapFileHash { get; private set; } = string.Empty;
-		public List<IMapObjectOfTowardPoint> mTowardPointMapObjects { get; private set; } = null;
-		public List<IMapObjectOfRectangle> mRectangleMapObjects { get; private set; } = null;
+		public List<IMapObjectOfTowardPoint> mTowardPointMapObjects { get; private set; } = new List<IMapObjectOfTowardPoint>();
+		public List<IMapObjectOfRectangle> mRectangleMapObjects { get; private set; } = new List<IMapObjectOfRectangle>();
 
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
@@ -82,8 +82,10 @@ namespace TrafficControlTest.Module.Map
 			GLCMD.CMD.LoadMap(rMapFileManager.GetMapFileFullPath(MapFileName), 3);
 			mCurrentMapFileName = MapFileName;
 			mCurrentMapFileHash = MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName));
-			mTowardPointMapObjects = GLCMD.CMD.SingleTowerPairInfo.Select(o => ConvertToIMapObjectOfTowardPoint(o)).ToList();
-			mRectangleMapObjects = GLCMD.CMD.SingleAreaInfo.Select(o => ConvertToIMapObjectOfRectangle(o)).ToList();
+			mTowardPointMapObjects.Clear();
+			mTowardPointMapObjects.AddRange(GLCMD.CMD.SingleTowerPairInfo.Select(o => ConvertToIMapObjectOfTowardPoint(o)).ToList());
+			mRectangleMapObjects.Clear();
+			mRectangleMapObjects.AddRange(GLCMD.CMD.SingleAreaInfo.Select(o => ConvertToIMapObjectOfRectangle(o)).ToList());
 			RaiseEvent_LoadMapSuccessed(MapFileName);
 		}
 		public void LoadMap2(string MapFileNameWithoutExtension)
