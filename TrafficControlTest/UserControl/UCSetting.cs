@@ -87,7 +87,7 @@ namespace TrafficControlTest.UserControl
 				dgv.DefaultCellStyle.BackColor = TableOddRowBackColor;
 				dgv.DefaultCellStyle.ForeColor = TableRowForeColor;
 				dgv.RowTemplate.Height = 40;
-				
+
 				dgv.Columns.Add("Category", "Category");
 				dgv.Columns[0].Width = 200;
 				dgv.Columns.Add("Name", "Name");
@@ -170,12 +170,19 @@ namespace TrafficControlTest.UserControl
 		}
 		private void dgvSettings_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
-			if (e.ColumnIndex == dgvSettings.Columns["Value"].Index)
+			try
 			{
-				if (!rConfigurator.SetValue(dgvSettings.Rows[e.RowIndex].Cells["Category"].Value.ToString() + "/" + dgvSettings.Rows[e.RowIndex].Cells["Name"].Value.ToString(), dgvSettings.Rows[e.RowIndex].Cells["Value"].Value.ToString()))
+				if (e.ColumnIndex == dgvSettings.Columns["Value"].Index)
 				{
-					dgvSettings.Rows[e.RowIndex].Cells["Value"].Value = rConfigurator.GetValue(dgvSettings.Rows[e.RowIndex].Cells["Category"].Value.ToString() + "/" + dgvSettings.Rows[e.RowIndex].Cells["Name"].Value.ToString()).ToString();
+					if (!rConfigurator.SetValue(dgvSettings.Rows[e.RowIndex].Cells["Category"].Value.ToString() + "/" + dgvSettings.Rows[e.RowIndex].Cells["Name"].Value.ToString(), dgvSettings.Rows[e.RowIndex].Cells["Value"].Value.ToString()))
+					{
+						dgvSettings.Rows[e.RowIndex].Cells["Value"].Value = rConfigurator.GetValue(dgvSettings.Rows[e.RowIndex].Cells["Category"].Value.ToString() + "/" + dgvSettings.Rows[e.RowIndex].Cells["Name"].Value.ToString()).ToString();
+					}
 				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

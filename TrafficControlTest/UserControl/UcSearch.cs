@@ -266,49 +266,84 @@ namespace TrafficControlTest.UserControl
 		}
 		private void txtSearch_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Enter)
+			try
 			{
-				SearchAndDisplayResult();
+				if (e.KeyCode == Keys.Enter)
+				{
+					SearchAndDisplayResult();
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnSearch_Click(object sender, EventArgs e)
 		{
-			SearchAndDisplayResult();
+			try
+			{
+				SearchAndDisplayResult();
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void cbSearchCondition_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			switch (cbSearchCondition.SelectedItem.ToString())
+			try
 			{
-				case "Date":
-					cbHourFilterStart.Visible = false;
-					label1.Visible = false;
-					dtpDateFilterEnd.Visible = false;
-					cbHourFilterEnd.Visible = false;
-					break;
-				case "TimePeriod":
-					cbHourFilterStart.Visible = true;
-					label1.Visible = true;
-					dtpDateFilterEnd.Visible = true;
-					cbHourFilterEnd.Visible = true;
-					break;
-				default:
-					break;
+				switch (cbSearchCondition.SelectedItem.ToString())
+				{
+					case "Date":
+						cbHourFilterStart.Visible = false;
+						label1.Visible = false;
+						dtpDateFilterEnd.Visible = false;
+						cbHourFilterEnd.Visible = false;
+						break;
+					case "TimePeriod":
+						cbHourFilterStart.Visible = true;
+						label1.Visible = true;
+						dtpDateFilterEnd.Visible = true;
+						cbHourFilterEnd.Visible = true;
+						break;
+					default:
+						break;
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void dgvSearchResult_MouseDown(object sender, MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right)
+			try
 			{
-				var hit = dgvSearchResult.HitTest(e.X, e.Y);
-				mDgvSearchResultRightClickRowIndex = hit.RowIndex;
-				mDgvSearchResultRightClickColIndex = hit.ColumnIndex;
+				if (e.Button == MouseButtons.Right)
+				{
+					var hit = dgvSearchResult.HitTest(e.X, e.Y);
+					mDgvSearchResultRightClickRowIndex = hit.RowIndex;
+					mDgvSearchResultRightClickColIndex = hit.ColumnIndex;
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemCopyCellValue_Click(object sender, EventArgs e)
 		{
-			if (mDgvSearchResultRightClickRowIndex >= 0 && mDgvSearchResultRightClickRowIndex < dgvSearchResult.RowCount && mDgvSearchResultRightClickColIndex >= 0 && mDgvSearchResultRightClickColIndex < dgvSearchResult.ColumnCount && !string.IsNullOrEmpty(dgvSearchResult.Rows[mDgvSearchResultRightClickRowIndex].Cells[mDgvSearchResultRightClickColIndex].Value.ToString()))
+			try
 			{
-				Clipboard.SetText(dgvSearchResult.Rows[mDgvSearchResultRightClickRowIndex].Cells[mDgvSearchResultRightClickColIndex].Value.ToString());
+				if (mDgvSearchResultRightClickRowIndex >= 0 && mDgvSearchResultRightClickRowIndex < dgvSearchResult.RowCount && mDgvSearchResultRightClickColIndex >= 0 && mDgvSearchResultRightClickColIndex < dgvSearchResult.ColumnCount && !string.IsNullOrEmpty(dgvSearchResult.Rows[mDgvSearchResultRightClickRowIndex].Cells[mDgvSearchResultRightClickColIndex].Value.ToString()))
+				{
+					Clipboard.SetText(dgvSearchResult.Rows[mDgvSearchResultRightClickRowIndex].Cells[mDgvSearchResultRightClickColIndex].Value.ToString());
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

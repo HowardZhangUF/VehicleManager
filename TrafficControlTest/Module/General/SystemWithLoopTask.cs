@@ -98,9 +98,20 @@ namespace TrafficControlTest.Module.General
 				mIsExecuting = true;
 				while (!ExitFlag[0])
 				{
-					Task();
-					Thread.Sleep(mTimePeriod);
+					try
+					{
+						Task();
+						Thread.Sleep(mTimePeriod);
+					}
+					catch (Exception Ex)
+					{
+						Library.ExceptionHandling.HandleException(Ex);
+					}
 				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 			finally
 			{

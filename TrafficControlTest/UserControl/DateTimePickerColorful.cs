@@ -22,16 +22,23 @@ namespace TrafficControlTest.UserControl
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			using (Brush brush = new SolidBrush(BackgroundColor))
+			try
 			{
-				e.Graphics.FillRectangle(brush, 0, 0, Width, Height);
+				using (Brush brush = new SolidBrush(BackgroundColor))
+				{
+					e.Graphics.FillRectangle(brush, 0, 0, Width, Height);
+				}
+				using (Pen pen = new Pen(BorderColor))
+				{
+					e.Graphics.DrawRectangle(pen, 0, 0, Width - 1, Height - 1);
+				}
+				TextRenderer.DrawText(e.Graphics, Value.ToString("yyyy / MM / dd"), Font, System.Drawing.Rectangle.FromLTRB(0, 0, Width - Height, Height), ForeTextColor);
+				ComboBoxRenderer.DrawDropDownButton(e.Graphics, System.Drawing.Rectangle.FromLTRB(Width - (int)(Height * 1), 0, Width, Height), System.Windows.Forms.VisualStyles.ComboBoxState.Normal);
 			}
-			using (Pen pen = new Pen(BorderColor))
+			catch (Exception Ex)
 			{
-				e.Graphics.DrawRectangle(pen, 0, 0, Width - 1, Height - 1);
+				Library.ExceptionHandling.HandleException(Ex);
 			}
-			TextRenderer.DrawText(e.Graphics, Value.ToString("yyyy / MM / dd"), Font, System.Drawing.Rectangle.FromLTRB(0, 0, Width - Height, Height), ForeTextColor);
-			ComboBoxRenderer.DrawDropDownButton(e.Graphics, System.Drawing.Rectangle.FromLTRB(Width - (int)(Height * 1), 0, Width, Height), System.Windows.Forms.VisualStyles.ComboBoxState.Normal);
 		}
 	}
 }

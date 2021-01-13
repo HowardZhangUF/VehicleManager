@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Library\ExceptionHandling.cs" />
     <Compile Include="Library\FileOperation.cs" />
     <Compile Include="Library\MD5HashCalculator.cs" />
     <Compile Include="Library\ShellCommandExecutor.cs" />

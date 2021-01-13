@@ -28,7 +28,7 @@ namespace TrafficControlTest.UserControl
 
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;
-        private IVehicleControlManager rVehicleControlManager = null;
+		private IVehicleControlManager rVehicleControlManager = null;
 		private IMapFileManager rMapFileManager = null;
 		private IMapManager rMapManager = null;
 
@@ -51,7 +51,7 @@ namespace TrafficControlTest.UserControl
 			btnVehicleGotoPoint.Click += btnVehicleGotoPoint_Click;
 			btnVehicleStop.Click += btnVehicleStop_Click;
 			btnVehicleCharge.Click += btnVehicleCharge_Click;
-            btnVehicleUncharge.Click += btnVehicleUncharge_Click;
+			btnVehicleUncharge.Click += btnVehicleUncharge_Click;
 			btnVehiclePause.Click += btnVehiclePause_Click;
 			btnVehicleResume.Click += btnVehicleResume_Click;
 			btnVehicleRequestMapList.Click += btnVehicleRequestMapList_Click;
@@ -71,12 +71,12 @@ namespace TrafficControlTest.UserControl
 			rVehicleCommunicator = VehicleCommunicator;
 			SubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
 		}
-        public void Set(IVehicleControlManager VehicleControlManager)
-        {
-            UnsubscribeEvent_IVehicleControlManager(rVehicleControlManager);
-            rVehicleControlManager = VehicleControlManager;
-            SubscribeEvent_IVehicleControlManager(rVehicleControlManager);
-        }
+		public void Set(IVehicleControlManager VehicleControlManager)
+		{
+			UnsubscribeEvent_IVehicleControlManager(rVehicleControlManager);
+			rVehicleControlManager = VehicleControlManager;
+			SubscribeEvent_IVehicleControlManager(rVehicleControlManager);
+		}
 		public void Set(IMapFileManager MapFileManager)
 		{
 			UnsubscribeEvent_IMapFileManager(rMapFileManager);
@@ -93,7 +93,7 @@ namespace TrafficControlTest.UserControl
 		{
 			Set(VehicleInfoManager);
 			Set(VehicleCommunicator);
-            Set(VehicleControlManager);
+			Set(VehicleControlManager);
 			Set(MapFileManager);
 			Set(MapManager);
 		}
@@ -211,22 +211,22 @@ namespace TrafficControlTest.UserControl
 			{
 
 			}
-        }
-        private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
-        {
-            if (VehicleControlManager != null)
-            {
+		}
+		private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
 
-            }
-        }
-        private void UnsubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
-        {
-            if (VehicleControlManager != null)
-            {
+			}
+		}
+		private void UnsubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
 
-            }
-        }
-        private void SubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
+			}
+		}
+		private void SubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
 		{
 			if (MapFileManager != null)
 			{
@@ -287,135 +287,247 @@ namespace TrafficControlTest.UserControl
 		}
 		private void btnVehicleGoto_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null && cbGoalNameList.SelectedItem != null)
+			try
 			{
-                IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Goto, new string[] { cbGoalNameList.SelectedItem.ToString() }, "Manual", string.Empty);
-                rVehicleControlManager.Add(control.mName, control);
+				if (cbVehicleNameList.SelectedItem != null && cbGoalNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Goto, new string[] { cbGoalNameList.SelectedItem.ToString() }, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleGotoPoint_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null && !string.IsNullOrEmpty(txtCoordinate1.Text))
+			try
 			{
-				string[] datas = txtCoordinate1.Text.Split(',');
-				if (datas.Length == 2)
-                {
-                    IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.GotoPoint, datas, "Manual", string.Empty);
-                    rVehicleControlManager.Add(control.mName, control);
-                }
-                else if (datas.Length == 3)
+				if (cbVehicleNameList.SelectedItem != null && !string.IsNullOrEmpty(txtCoordinate1.Text))
 				{
-                    IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.GotoTowardPoint, datas, "Manual", string.Empty);
-                    rVehicleControlManager.Add(control.mName, control);
-                }
+					string[] datas = txtCoordinate1.Text.Split(',');
+					if (datas.Length == 2)
+					{
+						IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.GotoPoint, datas, "Manual", string.Empty);
+						rVehicleControlManager.Add(control.mName, control);
+					}
+					else if (datas.Length == 3)
+					{
+						IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.GotoTowardPoint, datas, "Manual", string.Empty);
+						rVehicleControlManager.Add(control.mName, control);
+					}
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleStop_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null)
-            {
-                IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Stop, null, "Manual", string.Empty);
-                rVehicleControlManager.Add(control.mName, control);
-            }
-        }
-        private void btnVehicleCharge_Click(object sender, EventArgs e)
-        {
-            if (cbVehicleNameList.SelectedItem != null)
-            {
-                IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Charge, null, "Manual", string.Empty);
-                rVehicleControlManager.Add(control.mName, control);
-            }
-        }
-        private void btnVehicleUncharge_Click(object sender, EventArgs e)
-        {
-            if (cbVehicleNameList.SelectedItem != null)
-            {
-                IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Uncharge, null, "Manual", string.Empty);
-                rVehicleControlManager.Add(control.mName, control);
-            }
-        }
-        private void btnVehiclePause_Click(object sender, EventArgs e)
-		{
-			if (cbVehicleNameList.SelectedItem != null)
+			try
 			{
-                IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.PauseMoving, null, "Manual", string.Empty);
-                rVehicleControlManager.Add(control.mName, control);
-            }
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Stop, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void btnVehicleCharge_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Charge, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void btnVehicleUncharge_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Uncharge, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void btnVehiclePause_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.PauseMoving, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnVehicleResume_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null)
+			try
 			{
-                IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.ResumeMoving, null, "Manual", string.Empty);
-                rVehicleControlManager.Add(control.mName, control);
-            }
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.ResumeMoving, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnVehicleStay_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null)
+			try
 			{
-				IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Stay, null, "Manual", string.Empty);
-				rVehicleControlManager.Add(control.mName, control);
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Stay, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleUnstay_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null)
+			try
 			{
-				IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Unstay, null, "Manual", string.Empty);
-				rVehicleControlManager.Add(control.mName, control);
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Unstay, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehiclePauseControl_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null)
+			try
 			{
-				IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.PauseControl, null, "Manual", string.Empty);
-				rVehicleControlManager.Add(control.mName, control);
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.PauseControl, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleResumeControl_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null)
+			try
 			{
-				IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.ResumeControl, null, "Manual", string.Empty);
-				rVehicleControlManager.Add(control.mName, control);
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.ResumeControl, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleRequestMapList_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null)
+			try
 			{
-				rVehicleCommunicator.SendDataOfRequestMapList(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				if (cbVehicleNameList.SelectedItem != null)
+				{
+					rVehicleCommunicator.SendDataOfRequestMapList(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleGetMap_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList1.SelectedItem != null)
+			try
 			{
-				rVehicleCommunicator.SendDataOfGetMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList1.SelectedItem.ToString().Replace("*", string.Empty));
+				if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList1.SelectedItem != null)
+				{
+					rVehicleCommunicator.SendDataOfGetMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList1.SelectedItem.ToString().Replace("*", string.Empty));
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleUploadMap_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null && cbLocalMapNameList.SelectedItem != null)
+			try
 			{
-				rVehicleCommunicator.SendDataOfUploadMapToAGV(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, rMapFileManager.GetMapFileFullPath(cbLocalMapNameList.SelectedItem.ToString()));
+				if (cbVehicleNameList.SelectedItem != null && cbLocalMapNameList.SelectedItem != null)
+				{
+					rVehicleCommunicator.SendDataOfUploadMapToAGV(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, rMapFileManager.GetMapFileFullPath(cbLocalMapNameList.SelectedItem.ToString()));
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleChangeMap_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList2.SelectedItem != null)
+			try
 			{
-				rVehicleCommunicator.SendDataOfChangeMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList2.SelectedItem.ToString().Replace("*", string.Empty));
+				if (cbVehicleNameList.SelectedItem != null && cbRemoteMapNameList2.SelectedItem != null)
+				{
+					rVehicleCommunicator.SendDataOfChangeMap(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbRemoteMapNameList2.SelectedItem.ToString().Replace("*", string.Empty));
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cbVehicleNameList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (!string.IsNullOrEmpty(CurrentVehicleName))
+			try
 			{
-				UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
-				UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
+				if (!string.IsNullOrEmpty(CurrentVehicleName))
+				{
+					UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
+					UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

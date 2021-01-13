@@ -263,18 +263,18 @@ namespace TrafficControlTest.UserControl
 				dgv.Columns[4].Width = 130;
 				dgv.Columns.Add("Parameter", "Parameter");
 				dgv.Columns[5].Width = 160;
-                dgv.Columns.Add("SourceIpPort", "SourceIPPort");
-                dgv.Columns[6].Width = 180;
-                dgv.Columns.Add("ExecuteState", "ExecuteState");
+				dgv.Columns.Add("SourceIpPort", "SourceIPPort");
+				dgv.Columns[6].Width = 180;
+				dgv.Columns.Add("ExecuteState", "ExecuteState");
 				dgv.Columns[7].Width = 130;
 				dgv.Columns.Add("Executor", "Executor");
 				dgv.Columns[8].Width = 130;
 				dgv.Columns.Add("ReceivedTime", "ReceivedTime");
 				dgv.Columns[9].Width = 190;
-                dgv.Columns.Add("FillColumn", "");
-                dgv.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+				dgv.Columns.Add("FillColumn", "");
+				dgv.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                foreach (DataGridViewColumn column in dgv.Columns)
+				foreach (DataGridViewColumn column in dgv.Columns)
 				{
 					column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 					column.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -343,26 +343,40 @@ namespace TrafficControlTest.UserControl
 		}
 		private void dgvMission_MouseDown(object sender, MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right)
+			try
 			{
-				var hit = dgvMission.HitTest(e.X, e.Y);
-				mDgvMissionRightClickRowIndex = hit.RowIndex;
-				mDgvMissionRightClickColIndex = hit.ColumnIndex;
+				if (e.Button == MouseButtons.Right)
+				{
+					var hit = dgvMission.HitTest(e.X, e.Y);
+					mDgvMissionRightClickRowIndex = hit.RowIndex;
+					mDgvMissionRightClickColIndex = hit.ColumnIndex;
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemRemoveMission_Click(object sender, EventArgs e)
 		{
-			if (mDgvMissionRightClickRowIndex >= 0 && mDgvMissionRightClickRowIndex < dgvMission.RowCount)
+			try
 			{
-				string tmpId = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["ID"].Value.ToString();
-				string tmpType = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["Type"].Value.ToString();
-				string tmpParameter = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["Parameter"].Value.ToString();
-				string tmpMessage = $"Sure to Remove Mission:\n{tmpId} / {tmpType}{(string.IsNullOrEmpty(tmpParameter) ? string.Empty : " / " + tmpParameter)}";
-				if (CustomMessageBox.ConfirmBox(tmpMessage) == DialogResult.OK)
+				if (mDgvMissionRightClickRowIndex >= 0 && mDgvMissionRightClickRowIndex < dgvMission.RowCount)
 				{
-                    rMissionStateManager.UpdateFailedReason(tmpId, FailedReason.CancelByGUI);
-					rMissionStateManager.UpdateExecuteState(tmpId, ExecuteState.ExecuteFailed);
+					string tmpId = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["ID"].Value.ToString();
+					string tmpType = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["Type"].Value.ToString();
+					string tmpParameter = dgvMission.Rows[mDgvMissionRightClickRowIndex].Cells["Parameter"].Value.ToString();
+					string tmpMessage = $"Sure to Remove Mission:\n{tmpId} / {tmpType}{(string.IsNullOrEmpty(tmpParameter) ? string.Empty : " / " + tmpParameter)}";
+					if (CustomMessageBox.ConfirmBox(tmpMessage) == DialogResult.OK)
+					{
+						rMissionStateManager.UpdateFailedReason(tmpId, FailedReason.CancelByGUI);
+						rMissionStateManager.UpdateExecuteState(tmpId, ExecuteState.ExecuteFailed);
+					}
 				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

@@ -334,57 +334,92 @@ namespace TrafficControlTest.UserControl
 		}
 		private void btnLockPanel_Click(object sender, EventArgs e)
 		{
-			if (btnLockPanel.Text == "Locked")
+			try
 			{
-				UpdateGui_UpdatePanelEnable(true);
+				if (btnLockPanel.Text == "Locked")
+				{
+					UpdateGui_UpdatePanelEnable(true);
+				}
+				else
+				{
+					UpdateGui_UpdatePanelEnable(false);
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				UpdateGui_UpdatePanelEnable(false);
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnExportLog_Click(object sender, EventArgs e)
 		{
-			if (!rLogExporter.mIsExporting)
+			try
 			{
-				rLogExporter.StartExport();
+				if (!rLogExporter.mIsExporting)
+				{
+					rLogExporter.StartExport();
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void sbtnVehicleCommunicatorServer_DoubleClick(object sender, EventArgs e)
 		{
-			if (sbtnVehicleCommunicatorServer.SwitchState == SwitchState.On)
+			try
 			{
-				rVehicleCommunicator.StopListen();
-                rVehicleCommunicator.Stop();
+				if (sbtnVehicleCommunicatorServer.SwitchState == SwitchState.On)
+				{
+					rVehicleCommunicator.StopListen();
+					rVehicleCommunicator.Stop();
+				}
+				else
+				{
+					rVehicleCommunicator.Start();
+					rVehicleCommunicator.StartListen();
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-                rVehicleCommunicator.Start();
-				rVehicleCommunicator.StartListen();
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void sbtnHostCommunicatorServer_DoubleClick(object sender, EventArgs e)
 		{
-			if (sbtnHostCommunicatorServer.SwitchState == SwitchState.On)
+			try
 			{
-				rHostCommunicator.StopListen();
-                rHostCommunicator.Stop();
+				if (sbtnHostCommunicatorServer.SwitchState == SwitchState.On)
+				{
+					rHostCommunicator.StopListen();
+					rHostCommunicator.Stop();
+				}
+				else
+				{
+					rHostCommunicator.Start();
+					rHostCommunicator.StartListen();
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-                rHostCommunicator.Start();
-				rHostCommunicator.StartListen();
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void sbtnImportantEventRecorder_DoubleClick(object sender, EventArgs e)
 		{
-			if (sbtnImportantEventRecorder.SwitchState == SwitchState.On)
+			try
 			{
-				rImportantEventRecorder.Stop();
+				if (sbtnImportantEventRecorder.SwitchState == SwitchState.On)
+				{
+					rImportantEventRecorder.Stop();
+				}
+				else
+				{
+					rImportantEventRecorder.Start();
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				rImportantEventRecorder.Start();
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void sbtnVehicleCommunicator_DoubleClick(object sender, EventArgs e)
@@ -393,24 +428,38 @@ namespace TrafficControlTest.UserControl
 		}
 		private void sbtnCollisionEventDetector_DoubleClick(object sender, EventArgs e)
 		{
-			if (sbtnCollisionEventDetector.SwitchState == SwitchState.On)
+			try
 			{
-				rCollisionEventDetector.Stop();
+				if (sbtnCollisionEventDetector.SwitchState == SwitchState.On)
+				{
+					rCollisionEventDetector.Stop();
+				}
+				else
+				{
+					rCollisionEventDetector.Start();
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				rCollisionEventDetector.Start();
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void sbtnVehicleControlHandler_DoubleClick(object sender, EventArgs e)
 		{
-			if (sbtnVehicleControlHandler.SwitchState == SwitchState.On)
+			try
 			{
-				rVehicleControlHandler.Stop();
+				if (sbtnVehicleControlHandler.SwitchState == SwitchState.On)
+				{
+					rVehicleControlHandler.Stop();
+				}
+				else
+				{
+					rVehicleControlHandler.Start();
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				rVehicleControlHandler.Start();
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void sbtnHostCommunicator_DoubleClick(object sender, EventArgs e)
@@ -419,24 +468,38 @@ namespace TrafficControlTest.UserControl
 		}
 		private void sbtnMissionDispatcher_DoubleClick(object sender, EventArgs e)
 		{
-			if (sbtnMissionDispatcher.SwitchState == SwitchState.On)
+			try
 			{
-				rMissionDispatcher.Stop();
+				if (sbtnMissionDispatcher.SwitchState == SwitchState.On)
+				{
+					rMissionDispatcher.Stop();
+				}
+				else
+				{
+					rMissionDispatcher.Start();
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				rMissionDispatcher.Start();
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void sbtnCycleMissionGenerator_DoubleClick(object sender, EventArgs e)
 		{
-			if (sbtnCycleMissionGenerator.SwitchState == SwitchState.On)
+			try
 			{
-				rCycleMissionGenerator.Stop();
+				if (sbtnCycleMissionGenerator.SwitchState == SwitchState.On)
+				{
+					rCycleMissionGenerator.Stop();
+				}
+				else
+				{
+					rCycleMissionGenerator.Start();
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				rCycleMissionGenerator.Start();
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

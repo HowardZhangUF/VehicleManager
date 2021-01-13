@@ -276,85 +276,113 @@ namespace TrafficControlTest.UserControl
 		}
 		private void cbVehicleStateList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (LastVehicleName == CurrentVehicleName) return;
-			
-			string vehicleId = CurrentVehicleName;
-			if (!string.IsNullOrEmpty(vehicleId))
+			try
 			{
-				if (rCycleMissionGenerator.IsAssigned(vehicleId))
+				if (LastVehicleName == CurrentVehicleName) return;
+
+				string vehicleId = CurrentVehicleName;
+				if (!string.IsNullOrEmpty(vehicleId))
 				{
-					this.InvokeIfNecessary(() =>
+					if (rCycleMissionGenerator.IsAssigned(vehicleId))
 					{
-						txtMissionListString.Enabled = false;
-						txtMissionListString.Text = "(" + string.Join(")(", rCycleMissionGenerator.GetMissionList(vehicleId)) + ")";
-						btnAnalyzeMissionListString.Enabled = false;
-						UpdateGui_DgvMissionList_AddRange(rCycleMissionGenerator.GetMissionList(vehicleId));
-						UpdateGui_DgvMissionList_UpdateSelectedRowIndex(rCycleMissionGenerator.GetCurrentMissionIndex(vehicleId));
-						dgvMissionList.Enabled = false;
-						btnStartCycle.Enabled = false;
-						btnStopCycle.Enabled = true;
-					});
+						this.InvokeIfNecessary(() =>
+						{
+							txtMissionListString.Enabled = false;
+							txtMissionListString.Text = "(" + string.Join(")(", rCycleMissionGenerator.GetMissionList(vehicleId)) + ")";
+							btnAnalyzeMissionListString.Enabled = false;
+							UpdateGui_DgvMissionList_AddRange(rCycleMissionGenerator.GetMissionList(vehicleId));
+							UpdateGui_DgvMissionList_UpdateSelectedRowIndex(rCycleMissionGenerator.GetCurrentMissionIndex(vehicleId));
+							dgvMissionList.Enabled = false;
+							btnStartCycle.Enabled = false;
+							btnStopCycle.Enabled = true;
+						});
+					}
+					else
+					{
+						this.InvokeIfNecessary(() =>
+						{
+							txtMissionListString.Enabled = true;
+							txtMissionListString.Text = string.Empty;
+							btnAnalyzeMissionListString.Enabled = true;
+							dgvMissionList.Rows.Clear();
+							dgvMissionList.Enabled = true;
+							btnStartCycle.Enabled = false;
+							btnStopCycle.Enabled = false;
+						});
+					}
 				}
 				else
 				{
 					this.InvokeIfNecessary(() =>
 					{
-						txtMissionListString.Enabled = true;
+						txtMissionListString.Enabled = false;
 						txtMissionListString.Text = string.Empty;
-						btnAnalyzeMissionListString.Enabled = true;
+						btnAnalyzeMissionListString.Enabled = false;
 						dgvMissionList.Rows.Clear();
-						dgvMissionList.Enabled = true;
+						dgvMissionList.Enabled = false;
 						btnStartCycle.Enabled = false;
 						btnStopCycle.Enabled = false;
 					});
 				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				this.InvokeIfNecessary(() =>
-				{
-					txtMissionListString.Enabled = false;
-					txtMissionListString.Text = string.Empty;
-					btnAnalyzeMissionListString.Enabled = false;
-					dgvMissionList.Rows.Clear();
-					dgvMissionList.Enabled = false;
-					btnStartCycle.Enabled = false;
-					btnStopCycle.Enabled = false;
-				});
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnAnalyzeMissionListString_Click(object sender, EventArgs e)
 		{
-			if (!string.IsNullOrEmpty(txtMissionListString.Text) && txtMissionListString.Text != txtMissionListString.mHintText)
+			try
 			{
-				UpdateGui_DgvMissionList_AddRange(txtMissionListString.Text);
-				btnStartCycle.Enabled = true;
-				btnStopCycle.Enabled = false;
+				if (!string.IsNullOrEmpty(txtMissionListString.Text) && txtMissionListString.Text != txtMissionListString.mHintText)
+				{
+					UpdateGui_DgvMissionList_AddRange(txtMissionListString.Text);
+					btnStartCycle.Enabled = true;
+					btnStopCycle.Enabled = false;
+				}
+				else
+				{
+					UpdateGui_DgvMissinoList_Clear();
+					btnStartCycle.Enabled = false;
+					btnStopCycle.Enabled = false;
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				UpdateGui_DgvMissinoList_Clear();
-				btnStartCycle.Enabled = false;
-				btnStopCycle.Enabled = false;
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnStartCycle_Click(object sender, EventArgs e)
 		{
-			rCycleMissionGenerator.AssignCycleMission(CurrentVehicleName, txtMissionListString.Text.Split(new string[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries), dgvMissionList.CurrentRow.Index == -1 ? 0 : dgvMissionList.CurrentRow.Index);
-			txtMissionListString.Enabled = false;
-			btnAnalyzeMissionListString.Enabled = false;
-			dgvMissionList.Enabled = false;
-			btnStartCycle.Enabled = false;
-			btnStopCycle.Enabled = true;
+			try
+			{
+				rCycleMissionGenerator.AssignCycleMission(CurrentVehicleName, txtMissionListString.Text.Split(new string[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries), dgvMissionList.CurrentRow.Index == -1 ? 0 : dgvMissionList.CurrentRow.Index);
+				txtMissionListString.Enabled = false;
+				btnAnalyzeMissionListString.Enabled = false;
+				dgvMissionList.Enabled = false;
+				btnStartCycle.Enabled = false;
+				btnStopCycle.Enabled = true;
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnStopCycle_Click(object sender, EventArgs e)
 		{
-			rCycleMissionGenerator.UnassignCycleMission(CurrentVehicleName);
-			txtMissionListString.Enabled = true;
-			btnAnalyzeMissionListString.Enabled = true;
-			dgvMissionList.Enabled = true;
-			btnStartCycle.Enabled = true;
-			btnStopCycle.Enabled = false;
+			try
+			{
+				rCycleMissionGenerator.UnassignCycleMission(CurrentVehicleName);
+				txtMissionListString.Enabled = true;
+				btnAnalyzeMissionListString.Enabled = true;
+				dgvMissionList.Enabled = true;
+				btnStartCycle.Enabled = true;
+				btnStopCycle.Enabled = false;
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
 		}
 	}
 }

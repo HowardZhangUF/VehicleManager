@@ -173,10 +173,17 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_ButtonClick(object sender, EventArgs e)
 		{
-			if ((sender as Control).Name.StartsWith(mDefaultNameOfButton))
+			try
 			{
-				string tmpSerial = (sender as Control).Name.Replace(mDefaultNameOfButton, string.Empty);
-				UpdateGui_SearchControl_ChangeButtonBackColorAndDisplayUcSearch(tmpSerial);
+				if ((sender as Control).Name.StartsWith(mDefaultNameOfButton))
+				{
+					string tmpSerial = (sender as Control).Name.Replace(mDefaultNameOfButton, string.Empty);
+					UpdateGui_SearchControl_ChangeButtonBackColorAndDisplayUcSearch(tmpSerial);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void HandleEvent_UcSearchSearchSuccessed(object Sender, DateTime OccurTime, string SearchCondition)

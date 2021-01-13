@@ -115,58 +115,93 @@ namespace TrafficControlTest.UserControl
 		}
 		private void btnLock_Click(object sender, EventArgs e)
 		{
-			if (btnLock.Text == "Locked")
+			try
 			{
-				UpdateGui_UpdateMapOperationButtonEnable(true);
+				if (btnLock.Text == "Locked")
+				{
+					UpdateGui_UpdateMapOperationButtonEnable(true);
+				}
+				else
+				{
+					UpdateGui_UpdateMapOperationButtonEnable(false);
+				}
 			}
-			else
+			catch (Exception Ex)
 			{
-				UpdateGui_UpdateMapOperationButtonEnable(false);
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnLoadMap_Click(object sender, EventArgs e)
 		{
-			using (var ofd = new OpenFileDialog())
+			try
 			{
-				ofd.Title = "Choose iTS Map File";
-				ofd.Filter = "map files (*.map)|*.map";
-				ofd.Multiselect = false;
-				if (ofd.ShowDialog() == DialogResult.OK)
+				using (var ofd = new OpenFileDialog())
 				{
-					rMapManager.LoadMap(ofd.FileName);
+					ofd.Title = "Choose iTS Map File";
+					ofd.Filter = "map files (*.map)|*.map";
+					ofd.Multiselect = false;
+					if (ofd.ShowDialog() == DialogResult.OK)
+					{
+						rMapManager.LoadMap(ofd.FileName);
+					}
 				}
-			}
 
-			UpdateGui_UpdateMapOperationButtonEnable(false);
+				UpdateGui_UpdateMapOperationButtonEnable(false);
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnSynchronizeMap_Click(object sender, EventArgs e)
 		{
-			if (!string.IsNullOrEmpty(rMapManager.mCurrentMapFileName))
+			try
 			{
-				rMapManager.SynchronizeMapToOnlineVehicles(rMapManager.mCurrentMapFileName);
+				if (!string.IsNullOrEmpty(rMapManager.mCurrentMapFileName))
+				{
+					rMapManager.SynchronizeMapToOnlineVehicles(rMapManager.mCurrentMapFileName);
+				}
+				UpdateGui_UpdateMapOperationButtonEnable(false);
 			}
-			UpdateGui_UpdateMapOperationButtonEnable(false);
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void lbGoals_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (lbGoals.SelectedIndex > -1)
+			try
 			{
-				var mapObject = rMapManager.mTowardPointMapObjects.OrderBy(o => o.mName).ToList()[lbGoals.SelectedIndex];
-				lblGoalName.Text = mapObject.mName;
-				lblGoalLocation.Text = $"({mapObject.mLocation.mX},{mapObject.mLocation.mY})";
-				lblGoalType.Text = mapObject.mType.ToString();
-				lblGoalParameters.Text = (mapObject.mParameters == null || mapObject.mParameters.Length == 0 ? string.Empty : string.Join(",", mapObject.mParameters));
+				if (lbGoals.SelectedIndex > -1)
+				{
+					var mapObject = rMapManager.mTowardPointMapObjects.OrderBy(o => o.mName).ToList()[lbGoals.SelectedIndex];
+					lblGoalName.Text = mapObject.mName;
+					lblGoalLocation.Text = $"({mapObject.mLocation.mX},{mapObject.mLocation.mY})";
+					lblGoalType.Text = mapObject.mType.ToString();
+					lblGoalParameters.Text = (mapObject.mParameters == null || mapObject.mParameters.Length == 0 ? string.Empty : string.Join(",", mapObject.mParameters));
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void lbRegions_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (lbRegions.SelectedIndex > -1)
+			try
 			{
-				var mapObject = rMapManager.mRectangleMapObjects.OrderBy(o => o.mName).ToList()[lbRegions.SelectedIndex];
-				lblRegionName.Text = mapObject.mName;
-				lblRegionRange.Text = $"({mapObject.mRange.mMinX},{mapObject.mRange.mMinY})({mapObject.mRange.mMaxX},{mapObject.mRange.mMaxY})";
-				lblRegionType.Text = mapObject.mType.ToString();
-				lblRegionParameters.Text = (mapObject.mParameters == null || mapObject.mParameters.Length == 0 ? string.Empty : string.Join(",", mapObject.mParameters));
+				if (lbRegions.SelectedIndex > -1)
+				{
+					var mapObject = rMapManager.mRectangleMapObjects.OrderBy(o => o.mName).ToList()[lbRegions.SelectedIndex];
+					lblRegionName.Text = mapObject.mName;
+					lblRegionRange.Text = $"({mapObject.mRange.mMinX},{mapObject.mRange.mMinY})({mapObject.mRange.mMaxX},{mapObject.mRange.mMaxY})";
+					lblRegionType.Text = mapObject.mType.ToString();
+					lblRegionParameters.Text = (mapObject.mParameters == null || mapObject.mParameters.Length == 0 ? string.Empty : string.Join(",", mapObject.mParameters));
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

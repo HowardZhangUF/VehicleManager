@@ -65,46 +65,53 @@ namespace TrafficControlTest.UserControl
 		}
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			MinimumSize = new Size(75, 24);
-			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-			// Draw Background
-			Color color = SwitchState == SwitchState.On ? ActiveColor : InactiveColor;
-			using (Brush brush = new SolidBrush(color))
+			try
 			{
-				e.Graphics.FillRectangle(brush, e.ClipRectangle);
-			}
+				MinimumSize = new Size(75, 24);
+				e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-			// Draw Slider
-			using (Brush brush = new SolidBrush(SliderColor))
+				// Draw Background
+				Color color = SwitchState == SwitchState.On ? ActiveColor : InactiveColor;
+				using (Brush brush = new SolidBrush(color))
+				{
+					e.Graphics.FillRectangle(brush, e.ClipRectangle);
+				}
+
+				// Draw Slider
+				using (Brush brush = new SolidBrush(SliderColor))
+				{
+					int margin = 2;
+					if (SwitchState == SwitchState.On)
+					{
+						e.Graphics.FillRectangle(brush, Width / 2 + margin, margin, Width / 2 - margin * 2, Height - margin * 2);
+					}
+					else
+					{
+						e.Graphics.FillRectangle(brush, margin, margin, Width / 2 - margin * 2, Height - margin * 2);
+					}
+				}
+
+				// Draw Text
+				using (Brush brush = new SolidBrush(TextColor))
+				{
+					if (SwitchState == SwitchState.On)
+					{
+						Size tmpTextSize = TextRenderer.MeasureText(ActiveText, Font);
+						e.Graphics.DrawString(ActiveText, Font, brush, new PointF((Width / 2 - tmpTextSize.Width) / 2, (Height - tmpTextSize.Height) / 2));
+					}
+					else
+					{
+						Size tmpTextSize = TextRenderer.MeasureText(InActiveText, Font);
+						e.Graphics.DrawString(InActiveText, Font, brush, new PointF(Width / 2 + (Width / 2 - tmpTextSize.Width) / 2, (Height - tmpTextSize.Height) / 2));
+					}
+				}
+
+				base.OnPaint(e);
+			}
+			catch (Exception Ex)
 			{
-				int margin = 2;
-				if (SwitchState == SwitchState.On)
-				{
-					e.Graphics.FillRectangle(brush, Width / 2 + margin, margin, Width / 2 - margin * 2, Height - margin * 2);
-				}
-				else
-				{
-					e.Graphics.FillRectangle(brush, margin, margin, Width / 2 - margin * 2, Height - margin * 2);
-				}
+				Library.ExceptionHandling.HandleException(Ex);
 			}
-
-			// Draw Text
-			using (Brush brush = new SolidBrush(TextColor))
-			{
-				if (SwitchState == SwitchState.On)
-				{
-					Size tmpTextSize = TextRenderer.MeasureText(ActiveText, Font);
-					e.Graphics.DrawString(ActiveText, Font, brush, new PointF((Width / 2 - tmpTextSize.Width) / 2, (Height - tmpTextSize.Height) / 2));
-				}
-				else
-				{
-					Size tmpTextSize = TextRenderer.MeasureText(InActiveText, Font);
-					e.Graphics.DrawString(InActiveText, Font, brush, new PointF(Width / 2 + (Width / 2 - tmpTextSize.Width) / 2, (Height - tmpTextSize.Height) / 2));
-				}
-			}
-
-			base.OnPaint(e);
 		}
 	}
 }

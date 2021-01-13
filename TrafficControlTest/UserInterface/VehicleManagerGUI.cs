@@ -18,23 +18,30 @@ namespace TrafficControlTest.UserInterface
 
 		public VehicleManagerGUI()
 		{
-			InitializeComponent();
-
 			try
 			{
-
+				InitializeComponent();
 			}
 			catch (Exception Ex)
 			{
-				HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void Constructor()
 		{
 			Constructor_VehicleManagerProcess();
+			Constructor_VehicleManagerGUI();
+		}
+		private void Destructor()
+		{
+			Destructor_VehicleManagerGUI();
+			Destructor_VehicleManagerProcess();
+		}
+		private void Constructor_VehicleManagerGUI()
+		{
 			ucMap1.SetStyleFileName("Style.ini");
 			ucMap1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfICollisionEventManager());
-            ucMapInfo1.Set(mCore.GetReferenceOfIMapManager());
+			ucMapInfo1.Set(mCore.GetReferenceOfIMapManager());
 			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleControlManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucAutomaticDoor1.Set(mCore.GetReferenceOfAutomaticDoorInfoManager(), mCore.GetReferenceOfIAutomaticDoorControlManager());
@@ -52,19 +59,9 @@ namespace TrafficControlTest.UserInterface
 			UpdateGui_PnlTop_UpdateButtonText();
 			UpdateGui_UpdateUsableControlAmount(AccountRank.None);
 		}
-		private void Destructor()
+		private void Destructor_VehicleManagerGUI()
 		{
-			Destructor_VehicleManagerProcess();
-		}
-		private void HandleException(Exception Ex)
-		{
-			string directory = ".\\Exception";
-			string file = $".\\Exception\\Exception{DateTime.Now.ToString("yyyyMMdd")}.txt";
-			string message = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")} - [MainException] - {Ex.ToString()}\r\n";
 
-			if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
-			if (!System.IO.File.Exists(file)) System.IO.File.Create(file).Close();
-			System.IO.File.AppendAllText(file, message);
 		}
 		private void VehicleManagerGUI_Load(object sender, EventArgs e)
 		{
@@ -75,7 +72,7 @@ namespace TrafficControlTest.UserInterface
 			}
 			catch (Exception Ex)
 			{
-				HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void VehicleManagerGUI_FormClosing(object sender, FormClosingEventArgs e)
@@ -86,114 +83,269 @@ namespace TrafficControlTest.UserInterface
 			}
 			catch (Exception Ex)
 			{
-				HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
-
 		private void btnFormMinimize_Click(object sender, EventArgs e)
 		{
-			WindowState = FormWindowState.Minimized;
+			try
+			{
+				WindowState = FormWindowState.Minimized;
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnFormClose_Click(object sender, EventArgs e)
 		{
-			System.Threading.Tasks.Task.Run(() =>
+			try
 			{
-				formClosing = new formProgress();
-				UpdateGui_FormClosing_Show();
-				VehicleManagerProcessStop();
-				Destructor();
-				UpdateGui_FormClosing_Close();
-				formClosing = null;
-				this.InvokeIfNecessary(() => Close());
-			});
+				System.Threading.Tasks.Task.Run(() =>
+				{
+					try
+					{
+						formClosing = new formProgress();
+						UpdateGui_FormClosing_Show();
+						VehicleManagerProcessStop();
+						Destructor();
+						UpdateGui_FormClosing_Close();
+						formClosing = null;
+						this.InvokeIfNecessary(() => Close());
+					}
+					catch (Exception Ex)
+					{
+						ExceptionHandling.HandleException(Ex);
+					}
+
+				});
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
+
 		}
 		private void btnDisplayPnlLeftMain_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlLeftMain_DisplayPnlLeftMain(!pnlLeftMainDisplay);
+			try
+			{
+				UpdateGui_PnlLeftMain_DisplayPnlLeftMain(!pnlLeftMainDisplay);
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayVehicleOverview_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlLeftMain_DisplayVehicleOverview();
+			try
+			{
+				UpdateGui_PnlLeftMain_DisplayVehicleOverview();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayVehicleManualControl_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlLeftMain_DisplayVehicleManualControl();
+			try
+			{
+				UpdateGui_PnlLeftMain_DisplayVehicleManualControl();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayVehicleApi_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlLeftMain_DisplayVehicleApi();
+			try
+			{
+				UpdateGui_PnlLeftMain_DisplayVehicleApi();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayCycleMission_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlLeftMain_DisplayCycleMission();
+			try
+			{
+				UpdateGui_PnlLeftMain_DisplayCycleMission();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayAbout_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlLeftMain_DisplayAbout();
+			try
+			{
+				UpdateGui_PnlLeftMain_DisplayAbout();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayMap_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplayMap();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplayMap();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayMapInfo_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplayMapInfo();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplayMapInfo();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayVehicle_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplayVehicle();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplayVehicle();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayMission_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplayMission();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplayMission();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayAutomaticDoor_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplayAutomaticDoor();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplayAutomaticDoor();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplaySetting_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplaySetting();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplaySetting();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayLog_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplayLog();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplayLog();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayDashboard_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplayDashboard();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplayDashboard();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplaySystemStatus_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlRightMain_DisplaySystemStatus();
+			try
+			{
+				UpdateGui_PnlRightMain_DisplaySystemStatus();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplaySimpleLog_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlBtm_DisplaySimpleLog();
+			try
+			{
+				UpdateGui_PnlBtm_DisplaySimpleLog();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnDisplayConsoleLog_Click(object sender, EventArgs e)
 		{
-			UpdateGui_PnlBtm_DisplayConsoleLog();
+			try
+			{
+				UpdateGui_PnlBtm_DisplayConsoleLog();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void ucVehicleOverview1_DoubleClickOnVehicleInfo(string VehicleName)
 		{
-			UpdateGui_UcMap_MapFocusVehicle(VehicleName);
+			try
+			{
+				UpdateGui_UcMap_MapFocusVehicle(VehicleName);
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
 		}
 		private void btnLogin_Click(object sender, EventArgs e)
 		{
-			if (VehicleManagerProcessIsLoggedIn())
+			try
 			{
-				VehicleManagerProcessLogOut();
-			}
-			else
-			{
-				if (CustomMessageBox.InputBox("Please Enter Password:", out string password, '*') == DialogResult.OK)
+				if (VehicleManagerProcessIsLoggedIn())
 				{
-					if (!VehicleManagerProcessLogIn(password))
+					VehicleManagerProcessLogOut();
+				}
+				else
+				{
+					if (CustomMessageBox.InputBox("Please Enter Password:", out string password, '*') == DialogResult.OK)
 					{
-						CustomMessageBox.OutputBox("Wrong Password!");
+						if (!VehicleManagerProcessLogIn(password))
+						{
+							CustomMessageBox.OutputBox("Wrong Password!");
+						}
 					}
 				}
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 

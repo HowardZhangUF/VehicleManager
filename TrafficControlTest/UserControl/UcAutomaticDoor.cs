@@ -453,29 +453,50 @@ namespace TrafficControlTest.UserControl
 		}
 		private void dgvAutomaticDoorInfo_MouseDown(object sender, MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right)
+			try
 			{
-				var hit = dgvAutomaticDoorInfo.HitTest(e.X, e.Y);
-				mDgvAutomaticDoorInfoRightClickRowIndex = hit.RowIndex;
-				mDgvAutomaticDoorInfoRightClickColIndex = hit.ColumnIndex;
+				if (e.Button == MouseButtons.Right)
+				{
+					var hit = dgvAutomaticDoorInfo.HitTest(e.X, e.Y);
+					mDgvAutomaticDoorInfoRightClickRowIndex = hit.RowIndex;
+					mDgvAutomaticDoorInfoRightClickColIndex = hit.ColumnIndex;
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemOpenAutomaticDoor_Click(object sender, EventArgs e)
 		{
-			if (mDgvAutomaticDoorInfoRightClickRowIndex >= 0 && mDgvAutomaticDoorInfoRightClickRowIndex < dgvAutomaticDoorInfo.RowCount)
+			try
 			{
-				string automaticDoorName = dgvAutomaticDoorInfo.Rows[mDgvAutomaticDoorInfoRightClickRowIndex].Cells["Name"].Value.ToString();
-				IAutomaticDoorControl control = Library.Library.GenerateIAutomaticDoorControl(automaticDoorName, AutomaticDoorControlCommand.Open, "Manual");
-				rAutomaticDoorControlManager.Add(control.mName, control);
+				if (mDgvAutomaticDoorInfoRightClickRowIndex >= 0 && mDgvAutomaticDoorInfoRightClickRowIndex < dgvAutomaticDoorInfo.RowCount)
+				{
+					string automaticDoorName = dgvAutomaticDoorInfo.Rows[mDgvAutomaticDoorInfoRightClickRowIndex].Cells["Name"].Value.ToString();
+					IAutomaticDoorControl control = Library.Library.GenerateIAutomaticDoorControl(automaticDoorName, AutomaticDoorControlCommand.Open, "Manual");
+					rAutomaticDoorControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemCloseAutomaticDoor_Click(object sender, EventArgs e)
 		{
-			if (mDgvAutomaticDoorInfoRightClickRowIndex >= 0 && mDgvAutomaticDoorInfoRightClickRowIndex < dgvAutomaticDoorInfo.RowCount)
+			try
 			{
-				string automaticDoorName = dgvAutomaticDoorInfo.Rows[mDgvAutomaticDoorInfoRightClickRowIndex].Cells["Name"].Value.ToString();
-				IAutomaticDoorControl control = Library.Library.GenerateIAutomaticDoorControl(automaticDoorName, AutomaticDoorControlCommand.Close, "Manual");
-				rAutomaticDoorControlManager.Add(control.mName, control);
+				if (mDgvAutomaticDoorInfoRightClickRowIndex >= 0 && mDgvAutomaticDoorInfoRightClickRowIndex < dgvAutomaticDoorInfo.RowCount)
+				{
+					string automaticDoorName = dgvAutomaticDoorInfo.Rows[mDgvAutomaticDoorInfoRightClickRowIndex].Cells["Name"].Value.ToString();
+					IAutomaticDoorControl control = Library.Library.GenerateIAutomaticDoorControl(automaticDoorName, AutomaticDoorControlCommand.Close, "Manual");
+					rAutomaticDoorControlManager.Add(control.mName, control);
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

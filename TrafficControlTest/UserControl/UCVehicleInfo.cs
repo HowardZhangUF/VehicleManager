@@ -68,7 +68,14 @@ namespace TrafficControlTest.UserControl
 
 		protected virtual void Control_DoubleClick(object Sender, EventArgs E)
 		{
-			DoubleClickOnControl?.Invoke(this, E);
+			try
+			{
+				DoubleClickOnControl?.Invoke(this, E);
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
 		}
 	}
 }
