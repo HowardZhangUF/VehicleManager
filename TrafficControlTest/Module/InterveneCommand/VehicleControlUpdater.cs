@@ -131,6 +131,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 				result += ", ";
 				result += string.Join(", ", sendingVehicleControls.Select(o => $"{o.mName}-{o.mVehicleId}-{o.mCommand.ToString()}"));
 			}
+			result += ", ";
 			result += $"CountOfExecutingVehicleControl: {executingVehicleControls.Count}";
 			if (executingVehicleControls.Count > 0)
 			{

@@ -34,6 +34,7 @@
 			this.tlpSystem = new System.Windows.Forms.TableLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.label1 = new System.Windows.Forms.Label();
+			this.btnReportSystemInfo = new System.Windows.Forms.Button();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tlpSystem.SuspendLayout();
 			this.SuspendLayout();
@@ -54,21 +55,19 @@
 			// tableLayoutPanel2
 			// 
 			this.tableLayoutPanel2.AutoScroll = true;
-			this.tableLayoutPanel2.ColumnCount = 3;
+			this.tableLayoutPanel2.ColumnCount = 4;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel2.Controls.Add(this.btnReportSystemInfo, 0, 0);
 			this.tableLayoutPanel2.Controls.Add(this.btnLockPanel, 0, 0);
-			this.tableLayoutPanel2.Controls.Add(this.btnExportLog, 1, 0);
+			this.tableLayoutPanel2.Controls.Add(this.btnExportLog, 2, 0);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(5, 5);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(819, 50);
 			this.tableLayoutPanel2.TabIndex = 24;
 			// 
@@ -77,7 +76,7 @@
 			this.btnExportLog.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.btnExportLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btnExportLog.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.btnExportLog.Location = new System.Drawing.Point(203, 3);
+			this.btnExportLog.Location = new System.Drawing.Point(403, 3);
 			this.btnExportLog.Name = "btnExportLog";
 			this.btnExportLog.Size = new System.Drawing.Size(194, 44);
 			this.btnExportLog.TabIndex = 23;
@@ -125,6 +124,19 @@
 			this.label1.Text = "System";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
+			// btnReportSystemInfo
+			// 
+			this.btnReportSystemInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnReportSystemInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnReportSystemInfo.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnReportSystemInfo.Location = new System.Drawing.Point(203, 3);
+			this.btnReportSystemInfo.Name = "btnReportSystemInfo";
+			this.btnReportSystemInfo.Size = new System.Drawing.Size(194, 44);
+			this.btnReportSystemInfo.TabIndex = 24;
+			this.btnReportSystemInfo.Text = "Report System Info";
+			this.btnReportSystemInfo.UseVisualStyleBackColor = true;
+			this.btnReportSystemInfo.Click += new System.EventHandler(this.btnReportSystemInfo_Click);
+			// 
 			// UcSystemStatus
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -150,5 +162,6 @@
 		private System.Windows.Forms.TableLayoutPanel tlpSystem;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Button btnReportSystemInfo;
 	}
 }

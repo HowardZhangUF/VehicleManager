@@ -227,6 +227,23 @@ namespace TrafficControlTest.UserControl
 				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
+		private void btnReportSystemInfo_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (rISystemWithLoopTasks != null && rISystemWithLoopTasks.Count > 0)
+				{
+					for (int i = 0; i < rISystemWithLoopTasks.Count; ++i)
+					{
+						rISystemWithLoopTasks[i].ReportSystemInfo();
+					}
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
+		}
 		private void btnExportLog_Click(object sender, EventArgs e)
 		{
 			try

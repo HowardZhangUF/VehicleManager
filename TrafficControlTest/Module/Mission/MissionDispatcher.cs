@@ -97,6 +97,7 @@ namespace TrafficControlTest.Module.Mission
 				result += ", ";
 				result += string.Join(", ", executableVehicles.Select(o => $"{o.mName}-{o.mCurrentState}"));
 			}
+			result += ", ";
 			result += $", CountOfExecuableMission: {executableMissions.Count}";
 			if (executableMissions.Count > 0)
 			{
@@ -230,8 +231,8 @@ namespace TrafficControlTest.Module.Mission
 		}
 		private static List<IMissionState> ExtractExecutableMissions(IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager, int IdlePeriodThreshold)
 		{
-			if (MissionStateManager == null || MissionStateManager.mCount == 0) return null;
-			if (VehicleInfoManager == null || VehicleInfoManager.mCount == 0) return null;
+			if (MissionStateManager == null || MissionStateManager.mCount == 0) return new List<IMissionState>();
+			if (VehicleInfoManager == null || VehicleInfoManager.mCount == 0) return new List<IMissionState>();
 
 			List<IMissionState> result = null;
 			result = MissionStateManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Unexecute && string.IsNullOrEmpty(o.mExecutorId) && ((string.IsNullOrEmpty(o.mMission.mVehicleId)) || (!string.IsNullOrEmpty(o.mMission.mVehicleId) && VehicleInfoManager[o.mMission.mVehicleId] != null && (VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "Idle" || VehicleInfoManager[o.mMission.mVehicleId].mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfoManager[o.mMission.mVehicleId].mErrorMessage) || VehicleInfoManager[o.mMission.mVehicleId].mErrorMessage == "Normal") && VehicleInfoManager[o.mMission.mVehicleId].mCurrentStateDuration.TotalMilliseconds > IdlePeriodThreshold && string.IsNullOrEmpty(VehicleInfoManager[o.mMission.mVehicleId].mCurrentMissionId)))).ToList();
