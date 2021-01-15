@@ -19,7 +19,7 @@ namespace TrafficControlTest.Module.Configure
 		public event EventHandler<ConfigFileSavedEventArgs> ConfigFileSaved;
 		public event EventHandler<ConfigurationUpdatedEventArgs> ConfigurationUpdated;
 
-		public Language mLanguage { get; private set; } = Language.Enus;
+		public Language mLanguage { get; private set; } = Language.Zhtw;
 		public string mFilePath { get; private set; } = string.Empty;
 
 		private readonly Dictionary<string, Configuration> mConfigs = new Dictionary<string, Configuration>();
@@ -272,9 +272,9 @@ namespace TrafficControlTest.Module.Configure
                 "ToleranceOfXOfArrivedTarget",
                 ConfigurationType.Int,
                 ConfigurationLevel.Normal,
-                "500",
+                "50",
                 "1",
-                "10000",
+                "1000",
                 "Tolerance of X of Checking Control Is Completed or Failed",
                 "判斷控制是否完成的座標 (X) 容許誤差",
                 "判断控制是否完成的座标 (X) 容许误差"));
@@ -283,9 +283,9 @@ namespace TrafficControlTest.Module.Configure
                 "ToleranceOfYOfArrivedTarget",
                 ConfigurationType.Int,
                 ConfigurationLevel.Normal,
-                "500",
+                "50",
                 "1",
-                "10000",
+                "1000",
                 "Tolerance of Y of Checking Control Is Completed or Failed",
                 "判斷控制是否完成的座標 (Y) 容許誤差",
                 "判断控制是否完成的座标 (Y) 容许误差"));
@@ -294,7 +294,7 @@ namespace TrafficControlTest.Module.Configure
                 "ToleranceOfTowardOfArrivedTarget",
                 ConfigurationType.Int,
                 ConfigurationLevel.Normal,
-                "5",
+                "3",
                 "1",
                 "360",
                 "Tolerance of Toward of Checking Control Is Completed or Failed",

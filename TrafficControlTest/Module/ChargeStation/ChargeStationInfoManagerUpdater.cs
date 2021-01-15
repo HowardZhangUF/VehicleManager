@@ -140,7 +140,7 @@ namespace TrafficControlTest.Module.ChargeStation
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object sender, ItemUpdatedEventArgs<IVehicleInfo> e)
 		{
-			if (e.StatusName.Contains("CurrentState") && (e.Item.mCurrentState == "Charge" || e.Item.mPreviousState == "Charge"))
+			if (e.StatusName.Contains("CurrentState") && (e.Item.mCurrentState == "Charge" || e.Item.mCurrentState == "ChargeIdle" || e.Item.mPreviousState == "Charge" || e.Item.mPreviousState == "ChargeIdle"))
 			{
 				// 當有車進入充電狀態/離開充電狀態時
 				Subtask_UpdateChargeStationInfoIsBeUsing();
@@ -154,7 +154,7 @@ namespace TrafficControlTest.Module.ChargeStation
 				IVehicleInfo[] vehicles = rVehicleInfoManager.GetItems().ToArray();
 				for (int i = 0; i < chargeStations.Length; ++i)
 				{
-					if (vehicles.Any(o => o.mCurrentState == "Charge" && CalculateDistance(chargeStations[i].mLocation, o.mLocationCoordinate) < mMaximumDistanceBetweenChargeStationAndVehicle))
+					if (vehicles.Any(o => (o.mCurrentState == "Charge" || o.mCurrentState == "ChargeIdle") && CalculateDistance(chargeStations[i].mLocation, o.mLocationCoordinate) < mMaximumDistanceBetweenChargeStationAndVehicle))
 					{
 						if (chargeStations[i].mIsBeUsing != true) chargeStations[i].UpdateIsBeUsing(true);
 					}
