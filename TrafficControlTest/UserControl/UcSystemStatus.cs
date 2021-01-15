@@ -18,61 +18,36 @@ namespace TrafficControlTest.UserControl
 {
 	public partial class UcSystemStatus : System.Windows.Forms.UserControl
 	{
-		private IImportantEventRecorder rImportantEventRecorder = null;
-		private IVehicleCommunicator rVehicleCommunicator = null;
-		private ICollisionEventDetector rCollisionEventDetector = null;
-		private IVehicleControlHandler rVehicleControlHandler = null;
-		private IHostCommunicator rHostCommunicator = null;
-		private IMissionDispatcher rMissionDispatcher = null;
-		private ICycleMissionGenerator rCycleMissionGenerator = null;
+		public Color TableBackColor { get; set; } = Color.FromArgb(53, 53, 53);
+		public Color TableRowBackColor { get; set; } = Color.FromArgb(53, 53, 53);
+		public Color TableRowForeColor { get; set; } = Color.White;
+
+		private List<ISystemWithLoopTask> rISystemWithLoopTasks = new List<ISystemWithLoopTask>();
 		private ILogExporter rLogExporter = null;
-		private IMapManager rMapManager = null;
+		private Dictionary<string, Label> mSystemLabels = new Dictionary<string, Label>();
+		private Dictionary<string, Button> mSystemButtons = new Dictionary<string, Button>();
 
 		public UcSystemStatus()
 		{
 			InitializeComponent();
 		}
-		public void Set(IImportantEventRecorder ImportantEventRecorder)
+		public void Set(List<ISystemWithLoopTask> ISystemWithLoopTasks)
 		{
-			UnsubscribeEvent_IImportantEventRecorder(rImportantEventRecorder);
-			rImportantEventRecorder = ImportantEventRecorder;
-			SubscribeEvent_IImportantEventRecorder(rImportantEventRecorder);
-		}
-		public void Set(IVehicleCommunicator VehicleCommunicator)
-		{
-			UnsubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
-			rVehicleCommunicator = VehicleCommunicator;
-			SubscribeEvent_IVehicleCommunicator(rVehicleCommunicator);
-		}
-		public void Set(ICollisionEventDetector CollisionEventDetector)
-		{
-			UnsubscribeEvent_ICollisionEventDetector(rCollisionEventDetector);
-			rCollisionEventDetector = CollisionEventDetector;
-			SubscribeEvent_ICollisionEventDetector(rCollisionEventDetector);
-		}
-		public void Set(IVehicleControlHandler VehicleControlHandler)
-		{
-			UnsubscribeEvent_IVehicleControlHandler(rVehicleControlHandler);
-			rVehicleControlHandler = VehicleControlHandler;
-			SubscribeEvent_IVehicleControlHandler(rVehicleControlHandler);
-		}
-		public void Set(IHostCommunicator HostCommunicator)
-		{
-			UnsubscribeEvent_IHostCommunicator(rHostCommunicator);
-			rHostCommunicator = HostCommunicator;
-			SubscribeEvent_IHostCommunicator(rHostCommunicator);
-		}
-		public void Set(IMissionDispatcher MissionDispatcher)
-		{
-			UnsubscribeEvent_IMissionDispatcher(rMissionDispatcher);
-			rMissionDispatcher = MissionDispatcher;
-			SubscribeEvent_IMissionDispatcher(rMissionDispatcher);
-		}
-		public void Set(ICycleMissionGenerator CycleMissionGenerator)
-		{
-			UnsubscribeEvent_ICycleMissionGenerator(rCycleMissionGenerator);
-			rCycleMissionGenerator = CycleMissionGenerator;
-			SubscribeEvent_ICycleMissionGenerator(rCycleMissionGenerator);
+			foreach (ISystemWithLoopTask system in rISystemWithLoopTasks)
+			{
+				UnsubscribeEvent_ISystemWithLoopTask(system);
+			}
+			rISystemWithLoopTasks.Clear();
+			UpdateGui_TlpSystem_ClearRows();
+			if (ISystemWithLoopTasks != null && ISystemWithLoopTasks.Count > 0)
+			{
+				rISystemWithLoopTasks.AddRange(ISystemWithLoopTasks);
+				foreach (ISystemWithLoopTask system in rISystemWithLoopTasks)
+				{
+					SubscribeEvent_ISystemWithLoopTask(system);
+				}
+				UpdateGui_TlpSystem_AddRows();
+			}
 		}
 		public void Set(ILogExporter LogExporter)
 		{
@@ -80,130 +55,29 @@ namespace TrafficControlTest.UserControl
 			rLogExporter = LogExporter;
 			SubscribeEvent_ILogExporter(rLogExporter);
 		}
-		public void Set(IMapManager MapManager)
+		public void Set(List<ISystemWithLoopTask> ISystemWithLoopTasks, ILogExporter LogExporter)
 		{
-			UnsubscribeEvent_IMapManager(rMapManager);
-			rMapManager = MapManager;
-			SubscribeEvent_IMapManager(rMapManager);
-		}
-		public void Set(IImportantEventRecorder ImportantEventRecorder, IVehicleCommunicator VehicleCommunicator, ICollisionEventDetector CollisionEventDetector, IVehicleControlHandler VehicleControlHandler, IHostCommunicator HostCommunicator, IMissionDispatcher MissionDispatcher, ICycleMissionGenerator CycleMissionGenerator, ILogExporter LogExporter, IMapManager MapManager)
-		{
-			Set(ImportantEventRecorder);
-			Set(VehicleCommunicator);
-			Set(CollisionEventDetector);
-			Set(VehicleControlHandler);
-			Set(HostCommunicator);
-			Set(MissionDispatcher);
-			Set(CycleMissionGenerator);
+			Set(ISystemWithLoopTasks);
 			Set(LogExporter);
-			Set(MapManager);
 		}
 		public new void BringToFront()
 		{
-			UpdateGui_UpdatePanelEnable(false);
+			UpdateGui_UpdateSystemControlEnable(false);
 			base.BringToFront();
 		}
 
-		private void SubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
+		private void SubscribeEvent_ISystemWithLoopTask(ISystemWithLoopTask ISystemWithLoopTask)
 		{
-			if (ImportantEventRecorder != null)
+			if (ISystemWithLoopTask != null)
 			{
-				ImportantEventRecorder.SystemStatusChanged += HandleEvent_ImportantEventRecorderSystemStatusChanged;
+				ISystemWithLoopTask.SystemStatusChanged += HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
 			}
 		}
-		private void UnsubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
+		private void UnsubscribeEvent_ISystemWithLoopTask(ISystemWithLoopTask ISystemWithLoopTask)
 		{
-			if (ImportantEventRecorder != null)
+			if (ISystemWithLoopTask != null)
 			{
-				ImportantEventRecorder.SystemStatusChanged -= HandleEvent_ImportantEventRecorderSystemStatusChanged;
-			}
-		}
-		private void SubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
-		{
-			if (VehicleCommunicator != null)
-			{
-				VehicleCommunicator.LocalListenStateChanged += HandleEvent_VehicleCommunicatorLocalListenStateChanged;
-				VehicleCommunicator.SystemStatusChanged += HandleEvent_VehicleCommunicatorSystemStatusChanged;
-			}
-		}
-		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
-		{
-			if (VehicleCommunicator != null)
-			{
-				VehicleCommunicator.LocalListenStateChanged -= HandleEvent_VehicleCommunicatorLocalListenStateChanged;
-				VehicleCommunicator.SystemStatusChanged -= HandleEvent_VehicleCommunicatorSystemStatusChanged;
-			}
-		}
-		private void SubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
-		{
-			if (CollisionEventDetector != null)
-			{
-				CollisionEventDetector.SystemStatusChanged += HandleEvent_CollisionEventDetectorSystemStatusChanged;
-			}
-		}
-		private void UnsubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
-		{
-			if (CollisionEventDetector != null)
-			{
-				CollisionEventDetector.SystemStatusChanged -= HandleEvent_CollisionEventDetectorSystemStatusChanged;
-			}
-		}
-		private void SubscribeEvent_IVehicleControlHandler(IVehicleControlHandler VehicleControlHandler)
-		{
-			if (VehicleControlHandler != null)
-			{
-				VehicleControlHandler.SystemStatusChanged += HandleEvent_VehicleControlHandlerSystemStatusChanged;
-			}
-		}
-		private void UnsubscribeEvent_IVehicleControlHandler(IVehicleControlHandler VehicleControlHandler)
-		{
-			if (VehicleControlHandler != null)
-			{
-				VehicleControlHandler.SystemStatusChanged -= HandleEvent_VehicleControlHandlerSystemStatusChanged;
-			}
-		}
-		private void SubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
-		{
-			if (HostCommunicator != null)
-			{
-				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
-				HostCommunicator.SystemStatusChanged += HandleEvent_HostCommunicatorSystemStatusChanged;
-			}
-		}
-		private void UnsubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
-		{
-			if (HostCommunicator != null)
-			{
-				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
-				HostCommunicator.SystemStatusChanged -= HandleEvent_HostCommunicatorSystemStatusChanged;
-			}
-		}
-		private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
-		{
-			if (MissionDispatcher != null)
-			{
-				MissionDispatcher.SystemStatusChanged += HandleEvent_MissionDispatcherSystemStatusChanged;
-			}
-		}
-		private void UnsubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
-		{
-			if (MissionDispatcher != null)
-			{
-				MissionDispatcher.SystemStatusChanged -= HandleEvent_MissionDispatcherSystemStatusChanged;
-			}
-		}
-		private void SubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
-		{
-			if (CycleMissionGenerator != null)
-			{
-				CycleMissionGenerator.SystemStatusChanged += HandleEvent_CycleMissionGeneratorSystemStatusChanged;
-			}
-		}
-		private void UnsubscribeEvent_ICycleMissionGenerator(ICycleMissionGenerator CycleMissionGenerator)
-		{
-			if (CycleMissionGenerator != null)
-			{
-				CycleMissionGenerator.SystemStatusChanged -= HandleEvent_CycleMissionGeneratorSystemStatusChanged;
+				ISystemWithLoopTask.SystemStatusChanged -= HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
 			}
 		}
 		private void SubscribeEvent_ILogExporter(ILogExporter LogExporter)
@@ -222,69 +96,9 @@ namespace TrafficControlTest.UserControl
 				LogExporter.ExportCompleted -= HandleEvent_LogExporterExportCompleted;
 			}
 		}
-		private void SubscribeEvent_IMapManager(IMapManager MapManager)
+		private void HandleEvent_ISystemWithLoopTaskSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
-			if (MapManager != null)
-			{
-				// do nothing
-			}
-		}
-		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
-		{
-			if (MapManager != null)
-			{
-				// do nothing
-			}
-		}
-		private void HandleEvent_ImportantEventRecorderSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnImportantEventRecorder, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
-		}
-		private void HandleEvent_VehicleCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
-		{
-			if (Args.IsListened)
-			{
-				UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicatorServer, SwitchState.On);
-			}
-			else
-			{
-				UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicatorServer, SwitchState.Off);
-			}
-		}
-		private void HandleEvent_VehicleCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleCommunicator, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
-		}
-		private void HandleEvent_CollisionEventDetectorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCollisionEventDetector, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
-		}
-		private void HandleEvent_VehicleControlHandlerSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnVehicleControlHandler, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
-		}
-		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
-		{
-			if (Args.IsListened)
-			{
-				UpdateGui_UpdateSwitchButtonSwitchState(sbtnHostCommunicatorServer, SwitchState.On);
-			}
-			else
-			{
-				UpdateGui_UpdateSwitchButtonSwitchState(sbtnHostCommunicatorServer, SwitchState.Off);
-			}
-		}
-		private void HandleEvent_HostCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnHostCommunicator, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
-		}
-		private void HandleEvent_MissionDispatcherSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnMissionDispatcher, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
-		}
-		private void HandleEvent_CycleMissionGeneratorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
-		{
-			UpdateGui_UpdateSwitchButtonSwitchState(sbtnCycleMissionGenerator, Args.SystemNewStatus ? SwitchState.On : SwitchState.Off);
+			UpdateGui_UpdateSystemButtonState(Sender.GetType().Name, Args.SystemNewStatus);
 		}
 		private void HandleEvent_LogExporterExportStarted(object Sender, LogExportedEventArgs Args)
 		{
@@ -300,7 +114,55 @@ namespace TrafficControlTest.UserControl
 				btnExportLog.Enabled = true;
 			});
 		}
-		private void UpdateGui_UpdatePanelEnable(bool Enable)
+		private void UpdateGui_TlpSystem_AddRows()
+		{
+			if (rISystemWithLoopTasks == null || rISystemWithLoopTasks.Count == 0) return;
+
+			tlpSystem.InvokeIfNecessary(() =>
+			{
+				for (int i = 0; i < rISystemWithLoopTasks.Count; ++i)
+				{
+					tlpSystem.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+				}
+				tlpSystem.Height = 55 + rISystemWithLoopTasks.Count * 40;
+
+				for (int j = 0; j < rISystemWithLoopTasks.Count; ++j)
+				{
+					Label lblSystem = new Label();
+					lblSystem.Font = new Font(lblSystem.Font.FontFamily, 12, FontStyle.Regular);
+					lblSystem.ForeColor = Color.White;
+					lblSystem.Text = rISystemWithLoopTasks[j].GetType().Name;
+					lblSystem.AutoSize = false;
+					lblSystem.Dock = DockStyle.Fill;
+					lblSystem.TextAlign = ContentAlignment.MiddleLeft;
+					lblSystem.Name = $"lbl{rISystemWithLoopTasks[j].GetType().Name}";
+					mSystemLabels.Add(lblSystem.Name, lblSystem);
+					Button btnSystem = new Button();
+					btnSystem.Font = new Font(btnSystem.Font.FontFamily, 12, FontStyle.Regular);
+					btnSystem.FlatStyle = FlatStyle.Flat;
+					btnSystem.BackColor = BackColor;
+					btnSystem.Text = "Off";
+					btnSystem.Dock = DockStyle.Left;
+					btnSystem.Width = 100;
+					btnSystem.Name = $"btn{rISystemWithLoopTasks[j].GetType().Name}";
+					btnSystem.Click += btnSystem_Click;
+					mSystemButtons.Add(btnSystem.Name, btnSystem);
+					tlpSystem.Controls.Add(lblSystem, 0, 2 + j);
+					tlpSystem.Controls.Add(btnSystem, 1, 2 + j);
+				}
+			});
+		}
+		private void UpdateGui_TlpSystem_ClearRows()
+		{
+			tlpSystem.InvokeIfNecessary(() =>
+			{
+				while (tlpSystem.RowStyles.Count > 2)
+				{
+					tlpSystem.RowStyles.RemoveAt(tlpSystem.RowCount - 1);
+				}
+			});
+		}
+		private void UpdateGui_UpdateSystemControlEnable(bool Enable)
 		{
 			btnLockPanel.InvokeIfNecessary(() =>
 			{
@@ -309,27 +171,42 @@ namespace TrafficControlTest.UserControl
 					btnLockPanel.Text = "Unlocked";
 					btnLockPanel.BackColor = Color.FromArgb(52, 170, 70);
 					btnLockPanel.ForeColor = Color.Black;
-					tableLayoutPanel1.Enabled = true;
-					//tableLayoutPanel1.BackColor = Color.FromArgb(53, 53, 53);
-					//tableLayoutPanel2.BackColor = Color.FromArgb(53, 53, 53);
+					tlpSystem.Enabled = true;
 				}
 				else
 				{
 					btnLockPanel.Text = "Locked";
 					btnLockPanel.BackColor = BackColor;
 					btnLockPanel.ForeColor = ForeColor;
-					tableLayoutPanel1.Enabled = false;
-					btnLockPanel.Enabled = true;
-					//tableLayoutPanel1.BackColor = Color.FromArgb(202, 202, 202);
-					//tableLayoutPanel2.BackColor = Color.FromArgb(202, 202, 202);
+					tlpSystem.Enabled = false;
 				}
 			});
 		}
-		private void UpdateGui_UpdateSwitchButtonSwitchState(SwitchButton SwitchButton, SwitchState SwitchState)
+		private void UpdateGui_UpdateSystemButtonState(string SystemName, bool SystemStatus)
 		{
-			SwitchButton.InvokeIfNecessary(() =>
+			int rowIndex = -1;
+			for (int i = 0; i < rISystemWithLoopTasks.Count; ++i)
 			{
-				SwitchButton.SwitchState = SwitchState;
+				if (SystemName == rISystemWithLoopTasks[i].GetType().Name)
+				{
+					rowIndex = i;
+					break;
+				}
+			}
+			if (rowIndex == -1) return;
+
+			mSystemButtons["btn" + SystemName].InvokeIfNecessary(() =>
+			{
+				if (SystemStatus)
+				{
+					mSystemButtons["btn" + SystemName].BackColor = Color.FromArgb(52, 170, 70);
+					mSystemButtons["btn" + SystemName].Text = "On";
+				}
+				else
+				{
+					mSystemButtons["btn" + SystemName].BackColor = BackColor;
+					mSystemButtons["btn" + SystemName].Text = "Off";
+				}
 			});
 		}
 		private void btnLockPanel_Click(object sender, EventArgs e)
@@ -338,11 +215,11 @@ namespace TrafficControlTest.UserControl
 			{
 				if (btnLockPanel.Text == "Locked")
 				{
-					UpdateGui_UpdatePanelEnable(true);
+					UpdateGui_UpdateSystemControlEnable(true);
 				}
 				else
 				{
-					UpdateGui_UpdatePanelEnable(false);
+					UpdateGui_UpdateSystemControlEnable(false);
 				}
 			}
 			catch (Exception Ex)
@@ -364,137 +241,28 @@ namespace TrafficControlTest.UserControl
 				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
-		private void sbtnVehicleCommunicatorServer_DoubleClick(object sender, EventArgs e)
+		private void btnSystem_Click(object sender, EventArgs e)
 		{
 			try
 			{
-				if (sbtnVehicleCommunicatorServer.SwitchState == SwitchState.On)
+				Button btn = sender as Button;
+				int rowIndex = -1;
+				for (int i = 0; i < rISystemWithLoopTasks.Count; ++i)
 				{
-					rVehicleCommunicator.StopListen();
-					rVehicleCommunicator.Stop();
+					if (rISystemWithLoopTasks[i].GetType().Name == btn.Name.Replace("btn", string.Empty))
+					{
+						rowIndex = i;
+					}
 				}
-				else
+				if (rowIndex == -1) return;
+
+				if (btn.Text == "On")
 				{
-					rVehicleCommunicator.Start();
-					rVehicleCommunicator.StartListen();
+					rISystemWithLoopTasks[rowIndex].Stop();
 				}
-			}
-			catch (Exception Ex)
-			{
-				Library.ExceptionHandling.HandleException(Ex);
-			}
-		}
-		private void sbtnHostCommunicatorServer_DoubleClick(object sender, EventArgs e)
-		{
-			try
-			{
-				if (sbtnHostCommunicatorServer.SwitchState == SwitchState.On)
+				else if (btn.Text == "Off")
 				{
-					rHostCommunicator.StopListen();
-					rHostCommunicator.Stop();
-				}
-				else
-				{
-					rHostCommunicator.Start();
-					rHostCommunicator.StartListen();
-				}
-			}
-			catch (Exception Ex)
-			{
-				Library.ExceptionHandling.HandleException(Ex);
-			}
-		}
-		private void sbtnImportantEventRecorder_DoubleClick(object sender, EventArgs e)
-		{
-			try
-			{
-				if (sbtnImportantEventRecorder.SwitchState == SwitchState.On)
-				{
-					rImportantEventRecorder.Stop();
-				}
-				else
-				{
-					rImportantEventRecorder.Start();
-				}
-			}
-			catch (Exception Ex)
-			{
-				Library.ExceptionHandling.HandleException(Ex);
-			}
-		}
-		private void sbtnVehicleCommunicator_DoubleClick(object sender, EventArgs e)
-		{
-			// 停用，此與 VehicleCommunicator 連動
-		}
-		private void sbtnCollisionEventDetector_DoubleClick(object sender, EventArgs e)
-		{
-			try
-			{
-				if (sbtnCollisionEventDetector.SwitchState == SwitchState.On)
-				{
-					rCollisionEventDetector.Stop();
-				}
-				else
-				{
-					rCollisionEventDetector.Start();
-				}
-			}
-			catch (Exception Ex)
-			{
-				Library.ExceptionHandling.HandleException(Ex);
-			}
-		}
-		private void sbtnVehicleControlHandler_DoubleClick(object sender, EventArgs e)
-		{
-			try
-			{
-				if (sbtnVehicleControlHandler.SwitchState == SwitchState.On)
-				{
-					rVehicleControlHandler.Stop();
-				}
-				else
-				{
-					rVehicleControlHandler.Start();
-				}
-			}
-			catch (Exception Ex)
-			{
-				Library.ExceptionHandling.HandleException(Ex);
-			}
-		}
-		private void sbtnHostCommunicator_DoubleClick(object sender, EventArgs e)
-		{
-			// 停用，此與 HostCommunicatorServer 連動
-		}
-		private void sbtnMissionDispatcher_DoubleClick(object sender, EventArgs e)
-		{
-			try
-			{
-				if (sbtnMissionDispatcher.SwitchState == SwitchState.On)
-				{
-					rMissionDispatcher.Stop();
-				}
-				else
-				{
-					rMissionDispatcher.Start();
-				}
-			}
-			catch (Exception Ex)
-			{
-				Library.ExceptionHandling.HandleException(Ex);
-			}
-		}
-		private void sbtnCycleMissionGenerator_DoubleClick(object sender, EventArgs e)
-		{
-			try
-			{
-				if (sbtnCycleMissionGenerator.SwitchState == SwitchState.On)
-				{
-					rCycleMissionGenerator.Stop();
-				}
-				else
-				{
-					rCycleMissionGenerator.Start();
+					rISystemWithLoopTasks[rowIndex].Start();
 				}
 			}
 			catch (Exception Ex)

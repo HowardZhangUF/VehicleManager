@@ -165,6 +165,10 @@ namespace TrafficControlTest.Process
 
 			LoadSystemConfigAndUpdateConfigFile();
 		}
+		public List<ISystemWithLoopTask> GetReferenceOfISystemWithLoopTasks()
+		{
+			return mCollectionOfISystemWithLoopTask;
+		}
 		public IConfigurator GetReferenceOfIConfigurator()
 		{
 			return mConfigurator;
