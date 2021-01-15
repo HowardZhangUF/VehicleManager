@@ -30,6 +30,10 @@ namespace VehicleSimulator.New
 			Set(ISimulatorInfo);
 			Set(IHostCommunicator);
 		}
+		public override string GetSystemInfo()
+		{
+			return $"";
+		}
 		public override void Task()
 		{
 			Subtask_ReportSimualtorInfo();

@@ -41,6 +41,17 @@ namespace TrafficControlTest.Module.AutomaticDoor
 			Set(AutomaticDoorInfoManager);
 			Set(AutomaticDoorCommunicator);
 		}
+		public override string GetSystemInfo()
+		{
+			string result = string.Empty;
+			result += $"CountOfAutomaticDoorControl: {rAutomaticDoorControlManager.mCount}";
+			if (rAutomaticDoorControlManager.mCount > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", rAutomaticDoorControlManager.GetItems().Select(o => $"{o.mAutomaticDoorName}-{o.mCommand.ToString()}-{o.mSendState.ToString()}"));
+			}
+			return result;
+		}
 		public override void Task()
 		{
 			Subtask_HandleAutomaticDoorControls();

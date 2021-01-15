@@ -129,6 +129,17 @@ namespace TrafficControlTest.Module.AutomaticDoor
 					break;
 			}
 		}
+		public override string GetSystemInfo()
+		{
+			string result = string.Empty;
+			result += $"AutoConnect: {mAutoConnect.ToString()}, CountOfClient: {mClients.Count}";
+			if (mClients.Count > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", mClients.Select(o => $"{o.Key}-{(o.Value.mIsConnected ? "Connected" : "Disconnected")}"));
+			}
+			return result;
+		}
 		public override void Task()
 		{
 			Subtask_AutoConnect();

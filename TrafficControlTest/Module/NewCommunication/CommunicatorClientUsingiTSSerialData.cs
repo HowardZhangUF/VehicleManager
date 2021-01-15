@@ -97,8 +97,12 @@ namespace TrafficControlTest.Module.NewCommunication
                 default:
                     break;
             }
-        }
-        public override void Task()
+		}
+		public override string GetSystemInfo()
+		{
+			return $"RemoteIPPort: {mRemoteIpPort}, IsConnected: {mIsConnected.ToString()}, CountOfReceivedSerialData: {mSerialClientReceivedSerialDataEventArgs.Count}";
+		}
+		public override void Task()
         {
             Subtask_HandleSerialClientReceivedSerialDataEvents();
         }

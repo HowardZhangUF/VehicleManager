@@ -81,6 +81,10 @@ namespace VehicleSimulator.New
 			rSimulatorInfo.SetStatus(ESimulatorStatus.Working);
 			mPauseMoveFlag = false;
 		}
+		public override string GetSystemInfo()
+		{
+			return $"CountOfMoveRequest: {mMoveRequests.Count}";
+		}
 		public override void Task()
 		{
 			Subtask_Move();

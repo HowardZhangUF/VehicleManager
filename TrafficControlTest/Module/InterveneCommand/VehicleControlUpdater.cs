@@ -119,6 +119,26 @@ namespace TrafficControlTest.Module.InterveneCommand
 					break;
 			}
 		}
+		public override string GetSystemInfo()
+		{
+			string result = string.Empty;
+			List<IVehicleControl> sendingVehicleControls = rVehicleControlManager.GetItems().Where(o => o.mSendState == SendState.Sending).ToList();
+			List<IVehicleControl> executingVehicleControls = rVehicleControlManager.GetItems().Where(o => o.mExecuteState == ExecuteState.Executing).ToList();
+			result += $"TimeoutOfSendingVehicleControl: {mTimeoutOfSendingVehicleControl}, TimeoutOfExecutingVehicleControl: {mTimeoutOfExecutingVehicleControl}";
+			result += $"CountOfSendingVehicleControl: {sendingVehicleControls.Count}";
+			if (sendingVehicleControls.Count > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", sendingVehicleControls.Select(o => $"{o.mName}-{o.mVehicleId}-{o.mCommand.ToString()}"));
+			}
+			result += $"CountOfExecutingVehicleControl: {executingVehicleControls.Count}";
+			if (executingVehicleControls.Count > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", executingVehicleControls.Select(o => $"{o.mName}-{o.mVehicleId}-{o.mCommand.ToString()}"));
+			}
+			return result;
+		}
 		public override void Task()
 		{
 			Subtask_CheckVehicleControlSendTimeout();

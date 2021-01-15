@@ -6,6 +6,7 @@ namespace TrafficControlTest.Module.General
 	public abstract class SystemWithLoopTask : SystemWithConfig, ISystemWithLoopTask
 	{
 		public event EventHandler<SystemStatusChangedEventArgs> SystemStatusChanged;
+		public event EventHandler<SystemInfoReportedEventArgs> SystemInfoReported;
 
 		public bool mIsExecuting
 		{
@@ -24,6 +25,8 @@ namespace TrafficControlTest.Module.General
 		private Thread mThdLoop = null;
 		private bool[] mThdLoopExitFlag = null;
 		private bool _IsExecuting = false;
+		private bool mReportSystemInfoOfBeforeTaskFlag = false;
+		private bool mReportSystemInfoOfAfterTaskFlag = false;
 
 		public void Start()
 		{
@@ -33,6 +36,11 @@ namespace TrafficControlTest.Module.General
 		{
 			DestroyThread();
 		}
+		public void ReportSystemInfo()
+		{
+			mReportSystemInfoOfBeforeTaskFlag = true;
+		}
+		public abstract string GetSystemInfo();
 		public abstract void Task();
 		public override string[] GetConfigNameList()
 		{
@@ -72,6 +80,17 @@ namespace TrafficControlTest.Module.General
 				System.Threading.Tasks.Task.Run(() => { SystemStatusChanged?.Invoke(this, new SystemStatusChangedEventArgs(DateTime.Now, SystemNewStatus)); });
 			}
 		}
+		protected virtual void RaiseEvent_SystemInfoReported(string SystemInfo, bool Sync = true)
+		{
+			if (Sync)
+			{
+				SystemInfoReported?.Invoke(this, new SystemInfoReportedEventArgs(DateTime.Now, SystemInfo));
+			}
+			else
+			{
+				System.Threading.Tasks.Task.Run(() => { SystemInfoReported?.Invoke(this, new SystemInfoReportedEventArgs(DateTime.Now, SystemInfo)); });
+			}
+		}
 
 		private void InitializeThread()
 		{
@@ -100,13 +119,41 @@ namespace TrafficControlTest.Module.General
 				{
 					try
 					{
-						Task();
-						Thread.Sleep(mTimePeriod);
+						if (mReportSystemInfoOfBeforeTaskFlag)
+						{
+							mReportSystemInfoOfBeforeTaskFlag = false;
+							mReportSystemInfoOfAfterTaskFlag = true;
+							RaiseEvent_SystemInfoReported("BeforeTask: [" + GetSystemInfo() + "]");
+						}
 					}
 					catch (Exception Ex)
 					{
 						Library.ExceptionHandling.HandleException(Ex);
 					}
+
+					try
+					{
+						Task();
+					}
+					catch (Exception Ex)
+					{
+						Library.ExceptionHandling.HandleException(Ex);
+					}
+
+					try
+					{
+						if (mReportSystemInfoOfAfterTaskFlag)
+						{
+							mReportSystemInfoOfAfterTaskFlag = false;
+							RaiseEvent_SystemInfoReported("AfterTask: [" + GetSystemInfo() + "]");
+						}
+					}
+					catch (Exception Ex)
+					{
+						Library.ExceptionHandling.HandleException(Ex);
+					}
+
+					Thread.Sleep(mTimePeriod);
 				}
 			}
 			catch (Exception Ex)

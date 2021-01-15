@@ -61,6 +61,19 @@ namespace TrafficControlTest.Module.CycleMission
 		{
 			return mCollectionOfVehicleId.Contains(VehicleId) ? mCollectionOfCurrentMissionIndex[VehicleId] : -1;
 		}
+		public override string GetSystemInfo()
+		{
+			string result = string.Empty;
+			result += $"CountOfVehicleBeAssignedCycleMission: {mCollectionOfVehicleId.Count}";
+			if (mCollectionOfVehicleId.Count > 0)
+			{
+				foreach (string vehicleId in mCollectionOfVehicleId)
+				{
+					result += $", Vehicle:{vehicleId}-Count:{mCollectionOfMissionList[vehicleId].Length}-Index:{mCollectionOfCurrentMissionIndex[vehicleId]}";
+				}
+			}
+			return result;
+		}
 		public override void Task()
 		{
 			Subtask_GenerateMission();

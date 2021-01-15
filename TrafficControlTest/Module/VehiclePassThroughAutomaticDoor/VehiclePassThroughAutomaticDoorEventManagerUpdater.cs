@@ -84,6 +84,17 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 					break;
 			}
 		}
+		public override string GetSystemInfo()
+		{
+			string result = string.Empty;
+			result += $"OpenDoorDistance: {mOpenDoorDistance}, CloseDoorDistance: {mCloseDoorDistance}, CountOfVehiclePassThroughAutomaticDoorEvent: {rVehiclePassThroughAutomaticDoorEventManager.mCount}";
+			if (rVehiclePassThroughAutomaticDoorEventManager.mCount > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", rVehiclePassThroughAutomaticDoorEventManager.GetItems().Select(o => $"{o.mVehicleName}-{o.mAutomaticDoorName}"));
+			}
+			return result;
+		}
 		public override void Task()
 		{
 			Subtask_IsCurrentEventSolved();

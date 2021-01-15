@@ -50,6 +50,10 @@ namespace TrafficControlTest.Module.Log
 			Set(MissionStateManager);
 			Set(HostCommunicator);
 		}
+		public override string GetSystemInfo()
+		{
+			return $"CountOfVehicle: {rVehicleInfoManager.mCount}";
+		}
 		public override void Task()
 		{
 			Subtask_RecordVehicleInfo();

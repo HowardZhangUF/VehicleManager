@@ -103,8 +103,12 @@ namespace TrafficControlTest.Module.NewCommunication
                 default:
                     break;
             }
-        }
-        public override void Task()
+		}
+		public override string GetSystemInfo()
+		{
+			return $"LocalPort: {mLocalPort}, IsListened: {mIsListened.ToString()}, CountOfReceivedSerialData: {mSerialServerReceivedSerialDataEventArgs.Count}";
+		}
+		public override void Task()
         {
             Subtask_HandleSerialServerReceivedSerialDataEventArgs();
         }

@@ -659,6 +659,7 @@ namespace TrafficControlTest.Process
 			if (TimeElapseDetector != null)
 			{
 				TimeElapseDetector.SystemStatusChanged += HandleEvent_TimeElapseDetectorSystemStatusChanged;
+				TimeElapseDetector.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				TimeElapseDetector.ConfigUpdated += HandleEvent_TimeElapseDetectorConfigUpdated;
 				TimeElapseDetector.YearChanged += HandleEvent_TimeElapseDetectorYearChanged;
 				TimeElapseDetector.MonthChanged += HandleEvent_TimeElapseDetectorMonthChanged;
@@ -672,6 +673,7 @@ namespace TrafficControlTest.Process
 			if (TimeElapseDetector != null)
 			{
 				TimeElapseDetector.SystemStatusChanged -= HandleEvent_TimeElapseDetectorSystemStatusChanged;
+				TimeElapseDetector.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				TimeElapseDetector.ConfigUpdated -= HandleEvent_TimeElapseDetectorConfigUpdated;
 				TimeElapseDetector.YearChanged -= HandleEvent_TimeElapseDetectorYearChanged;
 				TimeElapseDetector.MonthChanged -= HandleEvent_TimeElapseDetectorMonthChanged;
@@ -699,6 +701,7 @@ namespace TrafficControlTest.Process
 			if (VehicleCommunicator != null)
 			{
 				VehicleCommunicator.SystemStatusChanged += HandleEvent_VehicleCommunicatorSystemStatusChanged;
+				VehicleCommunicator.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehicleCommunicator.ConfigUpdated += HandleEvent_VehicleCommunicatorConfigUpdated;
 				VehicleCommunicator.LocalListenStateChanged += HandleEvent_VehicleCommunicatorLocalListenStateChagned;
 				VehicleCommunicator.RemoteConnectStateChanged += HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
@@ -713,6 +716,7 @@ namespace TrafficControlTest.Process
 			if (VehicleCommunicator != null)
 			{
 				VehicleCommunicator.SystemStatusChanged -= HandleEvent_VehicleCommunicatorSystemStatusChanged;
+				VehicleCommunicator.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehicleCommunicator.ConfigUpdated -= HandleEvent_VehicleCommunicatorConfigUpdated;
 				VehicleCommunicator.LocalListenStateChanged -= HandleEvent_VehicleCommunicatorLocalListenStateChagned;
 				VehicleCommunicator.RemoteConnectStateChanged -= HandleEvent_VehicleCommunicatorRemoteConnectStateChagned;
@@ -801,6 +805,7 @@ namespace TrafficControlTest.Process
 			if (CollisionEventDetector != null)
 			{
 				CollisionEventDetector.SystemStatusChanged += HandleEvent_CollisionEventDetectorSystemStatusChanged;
+				CollisionEventDetector.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				CollisionEventDetector.ConfigUpdated += HandleEvent_CollisionEventDetectorConfigUpdated;
 			}
 		}
@@ -809,6 +814,7 @@ namespace TrafficControlTest.Process
 			if (CollisionEventDetector != null)
 			{
 				CollisionEventDetector.SystemStatusChanged -= HandleEvent_CollisionEventDetectorSystemStatusChanged;
+				CollisionEventDetector.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				CollisionEventDetector.ConfigUpdated -= HandleEvent_CollisionEventDetectorConfigUpdated;
 			}
 		}
@@ -849,6 +855,7 @@ namespace TrafficControlTest.Process
 			if (VehicleControlHandler != null)
 			{
 				VehicleControlHandler.SystemStatusChanged += HandleEvent_VehicleControlHandlerSystemStatusChanged;
+				VehicleControlHandler.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehicleControlHandler.ConfigUpdated += HandleEvent_VehicleControlHandlerConfigUpdated;
 			}
 		}
@@ -857,6 +864,7 @@ namespace TrafficControlTest.Process
 			if (VehicleControlHandler != null)
 			{
 				VehicleControlHandler.SystemStatusChanged -= HandleEvent_VehicleControlHandlerSystemStatusChanged;
+				VehicleControlHandler.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehicleControlHandler.ConfigUpdated -= HandleEvent_VehicleControlHandlerConfigUpdated;
 			}
 		}
@@ -865,6 +873,7 @@ namespace TrafficControlTest.Process
 			if (VehicleControlUpdater != null)
 			{
 				VehicleControlUpdater.SystemStatusChanged += HandleEvent_VehicleControlUpdaterSystemStatusChanged;
+				VehicleControlUpdater.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehicleControlUpdater.ConfigUpdated += HandleEvent_VehicleControlUpdaterConfigUpdated;
 			}
 		}
@@ -873,6 +882,7 @@ namespace TrafficControlTest.Process
 			if (VehicleControlUpdater != null)
 			{
 				VehicleControlUpdater.SystemStatusChanged -= HandleEvent_VehicleControlUpdaterSystemStatusChanged;
+				VehicleControlUpdater.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehicleControlUpdater.ConfigUpdated -= HandleEvent_VehicleControlUpdaterConfigUpdated;
 			}
 		}
@@ -913,6 +923,7 @@ namespace TrafficControlTest.Process
 			if (HostCommunicator != null)
 			{
 				HostCommunicator.SystemStatusChanged += HandleEvent_HostCommunicatorSystemStatusChanged;
+				HostCommunicator.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				HostCommunicator.ConfigUpdated += HandleEvent_HostCommunicatorConfigUpdated;
 				HostCommunicator.LocalListenStateChanged += HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged += HandleEvent_HostCommunicatorRemoteConnectStateChanged;
@@ -925,6 +936,7 @@ namespace TrafficControlTest.Process
 			if (HostCommunicator != null)
 			{
 				HostCommunicator.SystemStatusChanged -= HandleEvent_HostCommunicatorSystemStatusChanged;
+				HostCommunicator.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				HostCommunicator.ConfigUpdated -= HandleEvent_HostCommunicatorConfigUpdated;
 				HostCommunicator.LocalListenStateChanged -= HandleEvent_HostCommunicatorLocalListenStateChanged;
 				HostCommunicator.RemoteConnectStateChanged -= HandleEvent_HostCommunicatorRemoteConnectStateChanged;
@@ -969,6 +981,7 @@ namespace TrafficControlTest.Process
 			if (MissionDispatcher != null)
 			{
 				MissionDispatcher.SystemStatusChanged += HandleEvent_MissionDispatcherSystemStatusChanged;
+				MissionDispatcher.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				MissionDispatcher.ConfigUpdated += HandleEvent_MissionDispatcherConfigUpdated;
 				MissionDispatcher.MissionDispatched += HandleEvent_MissionDispatcherMissionDispatched;
 			}
@@ -978,6 +991,7 @@ namespace TrafficControlTest.Process
 			if (MissionDispatcher != null)
 			{
 				MissionDispatcher.SystemStatusChanged -= HandleEvent_MissionDispatcherSystemStatusChanged;
+				MissionDispatcher.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				MissionDispatcher.ConfigUpdated -= HandleEvent_MissionDispatcherConfigUpdated;
 				MissionDispatcher.MissionDispatched -= HandleEvent_MissionDispatcherMissionDispatched;
 			}
@@ -1015,6 +1029,7 @@ namespace TrafficControlTest.Process
 			if (CycleMissionGenerator != null)
 			{
 				CycleMissionGenerator.SystemStatusChanged += HandleEvent_CycleMissionGeneratorSystemStatusChanged;
+				CycleMissionGenerator.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				CycleMissionGenerator.ConfigUpdated += HandleEvent_CycleMissionGeneratorConfigUpdated;
 				CycleMissionGenerator.CycleMissionAssigned += HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
 				CycleMissionGenerator.CycleMissionUnassigned += HandleEvent_CycleMissionGeneratorCycleMissionUnassigned;
@@ -1026,6 +1041,7 @@ namespace TrafficControlTest.Process
 			if (CycleMissionGenerator != null)
 			{
 				CycleMissionGenerator.SystemStatusChanged -= HandleEvent_CycleMissionGeneratorSystemStatusChanged;
+				CycleMissionGenerator.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				CycleMissionGenerator.ConfigUpdated -= HandleEvent_CycleMissionGeneratorConfigUpdated;
 				CycleMissionGenerator.CycleMissionAssigned -= HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
 				CycleMissionGenerator.CycleMissionUnassigned -= HandleEvent_CycleMissionGeneratorCycleMissionUnassigned;
@@ -1037,6 +1053,7 @@ namespace TrafficControlTest.Process
 			if (ImportantEventRecorder != null)
 			{
 				ImportantEventRecorder.SystemStatusChanged += HandleEvent_ImportantEventRecorderSystemStatusChanged;
+				ImportantEventRecorder.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				ImportantEventRecorder.ConfigUpdated += HandleEvent_ImportantEventRecorderConfigUpdated;
 			}
 		}
@@ -1045,6 +1062,7 @@ namespace TrafficControlTest.Process
 			if (ImportantEventRecorder != null)
 			{
 				ImportantEventRecorder.SystemStatusChanged -= HandleEvent_ImportantEventRecorderSystemStatusChanged;
+				ImportantEventRecorder.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				ImportantEventRecorder.ConfigUpdated -= HandleEvent_ImportantEventRecorderConfigUpdated;
 			}
 		}
@@ -1071,6 +1089,7 @@ namespace TrafficControlTest.Process
 			if (AutomaticDoorCommunicator != null)
 			{
 				AutomaticDoorCommunicator.SystemStatusChanged += HandleEvent_AutomaticDoorCommunicatorSystemStatusChanged;
+				AutomaticDoorCommunicator.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				AutomaticDoorCommunicator.ConfigUpdated += HandleEvent_AutomaticDoorCommunicatorConfigUpdated;
 				AutomaticDoorCommunicator.ClientAdded += HandleEvent_AutomaticDoorCommunicatorClientAdded;
 				AutomaticDoorCommunicator.ClientRemoved += HandleEvent_AutomaticDoorCommunicatorClientRemoved;
@@ -1084,6 +1103,7 @@ namespace TrafficControlTest.Process
 			if (AutomaticDoorCommunicator != null)
 			{
 				AutomaticDoorCommunicator.SystemStatusChanged -= HandleEvent_AutomaticDoorCommunicatorSystemStatusChanged;
+				AutomaticDoorCommunicator.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				AutomaticDoorCommunicator.ConfigUpdated -= HandleEvent_AutomaticDoorCommunicatorConfigUpdated;
 				AutomaticDoorCommunicator.ClientAdded -= HandleEvent_AutomaticDoorCommunicatorClientAdded;
 				AutomaticDoorCommunicator.ClientRemoved -= HandleEvent_AutomaticDoorCommunicatorClientRemoved;
@@ -1157,6 +1177,7 @@ namespace TrafficControlTest.Process
 			if (AutomaticDoorControlHandler != null)
 			{
 				AutomaticDoorControlHandler.SystemStatusChanged += HandleEvent_AutomaticDoorControlHandlerSystemStatusChanged;
+				AutomaticDoorControlHandler.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				AutomaticDoorControlHandler.ConfigUpdated += HandleEvent_AutomaticDoorControlHandlerConfigUpdated;
 			}
 		}
@@ -1165,6 +1186,7 @@ namespace TrafficControlTest.Process
 			if (AutomaticDoorControlHandler != null)
 			{
 				AutomaticDoorControlHandler.SystemStatusChanged -= HandleEvent_AutomaticDoorControlHandlerSystemStatusChanged;
+				AutomaticDoorControlHandler.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				AutomaticDoorControlHandler.ConfigUpdated -= HandleEvent_AutomaticDoorControlHandlerConfigUpdated;
 			}
 		}
@@ -1191,6 +1213,7 @@ namespace TrafficControlTest.Process
 			if (VehiclePassThroughAutomaticDoorEventManagerUpdater != null)
 			{
 				VehiclePassThroughAutomaticDoorEventManagerUpdater.SystemStatusChanged += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterSystemStatusChanged;
+				VehiclePassThroughAutomaticDoorEventManagerUpdater.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehiclePassThroughAutomaticDoorEventManagerUpdater.ConfigUpdated += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterConfigUpdated;
 			}
 		}
@@ -1199,6 +1222,7 @@ namespace TrafficControlTest.Process
 			if (VehiclePassThroughAutomaticDoorEventManagerUpdater != null)
 			{
 				VehiclePassThroughAutomaticDoorEventManagerUpdater.SystemStatusChanged -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterSystemStatusChanged;
+				VehiclePassThroughAutomaticDoorEventManagerUpdater.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehiclePassThroughAutomaticDoorEventManagerUpdater.ConfigUpdated -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerUpdaterConfigUpdated;
 			}
 		}
@@ -1277,6 +1301,10 @@ namespace TrafficControlTest.Process
 			{
 				Task.Run(() => { DestructProgressChanged?.Invoke(this, new DestructProgressChangedEventArgs(DateTime.Now, ProgressValue)); });
 			}
+		}
+		private void HandleEvent_ISystemWithLoopTaskSystemInfoReported(object Sender, SystemInfoReportedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, Sender.GetType().Name, "SystemInfoReported", $"SystemInfo: {Args.SystemInfo}");
 		}
 		private void HandleEvent_ConfiguratorConfigFileLoaded(object Sender, ConfigFileLoadedEventArgs Args)
 		{

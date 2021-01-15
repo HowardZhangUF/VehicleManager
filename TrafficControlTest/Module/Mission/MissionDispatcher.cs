@@ -85,6 +85,26 @@ namespace TrafficControlTest.Module.Mission
 					break;
 			}
 		}
+		public override string GetSystemInfo()
+		{
+			string result = string.Empty;
+			List<IVehicleInfo> executableVehicles = ExtractExecutableVehicles(rVehicleInfoManager, rVehicleControlManager, mIdlePeriodThreshold);
+			List<IMissionState> executableMissions = ExtractExecutableMissions(rMissionStateManager, rVehicleInfoManager, mIdlePeriodThreshold);
+			result += $"DispatchRule: {mDispatchRule}, IdlePeriodThreshold: {mIdlePeriodThreshold}";
+			result += $", CountOfExecutableVehicle: {executableVehicles.Count}";
+			if (executableVehicles.Count > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", executableVehicles.Select(o => $"{o.mName}-{o.mCurrentState}"));
+			}
+			result += $", CountOfExecuableMission: {executableMissions.Count}";
+			if (executableMissions.Count > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", executableMissions.Select(o => $"{o.mName}-{o.mMission.mMissionType.ToString()}-{o.mExecuteState.ToString()}"));
+			}
+			return result;
+		}
 		public override void Task()
 		{
 			switch (mDispatchRule)

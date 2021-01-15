@@ -77,6 +77,17 @@ namespace TrafficControlTest.Module.CollisionEvent
 					break;
 			}
 		}
+		public override string GetSystemInfo()
+		{
+			string result = string.Empty;
+			result += $"CountOfVehicle: {rVehicleInfoManager.mCount}";
+			if (rVehicleInfoManager.mCount > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", rVehicleInfoManager.GetItems().Select(o => $"{o.mName}-{o.mCurrentState}"));
+			}
+			return result;
+		}
 		public override void Task()
 		{
 			Subtask_DetectCollisionEvent();

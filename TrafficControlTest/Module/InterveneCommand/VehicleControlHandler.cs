@@ -47,6 +47,17 @@ namespace TrafficControlTest.Module.InterveneCommand
 			Set(VehicleInfoManager);
 			Set(VehicleCommunicator);
 		}
+		public override string GetSystemInfo()
+		{
+			string result = string.Empty;
+			result += $"CountOfVehicleControl: {rVehicleControlManager.mCount}";
+			if (rVehicleControlManager.mCount > 0)
+			{
+				result += ", ";
+				result += string.Join(", ", rVehicleControlManager.GetItems().Select(o => $"{o.mName}-{o.mVehicleId}-{o.mCommand.ToString()}-{o.mSendState.ToString()}-{o.mExecuteState.ToString()}"));
+			}
+			return result;
+		}
 		public override void Task()
 		{
 			Subtask_HandleVehicleControls();

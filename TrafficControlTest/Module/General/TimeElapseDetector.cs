@@ -17,6 +17,10 @@ namespace TrafficControlTest.Module.General
 		private DateTime mLastTimestamp { get; set; } = DateTime.Now;
 		private DateTime mCurrentTimestamp { get; set; } = DateTime.Now;
 
+		public override string GetSystemInfo()
+		{
+			return $"LastTimestamp: {mLastTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff")}, CurrentTimestamp: {mCurrentTimestamp.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
+		}
 		public override void Task()
 		{
 			mCurrentTimestamp = DateTime.Now;
