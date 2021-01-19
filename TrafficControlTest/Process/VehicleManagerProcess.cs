@@ -347,10 +347,6 @@ namespace TrafficControlTest.Process
 			mHostCommunicator = GenerateIHostCommunicator();
 			SubscribeEvent_IHostCommunicator(mHostCommunicator);
 
-			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
-			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mVehicleInfoManager, mMissionStateManager, mHostCommunicator);
-			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
-
 			UnsubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
 			mHostMessageAnalyzer = GenerateIHostMessageAnalyzer(mHostCommunicator, mVehicleInfoManager, mMissionStateManager, GetMissionAnalyzers());
 			SubscribeEvent_IHostMessageAnalyzer(mHostMessageAnalyzer);
@@ -418,6 +414,10 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
 			mChargeStationInfoManagerUpdater = GenerateIChargeStationInfoManagerUpdater(mChargeStationInfoManager, mMapManager, mVehicleInfoManager);
 			SubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
+
+			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
+			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mVehicleInfoManager, mMissionStateManager, mVehicleControlManager, mAutomaticDoorControlManager, mHostCommunicator);
+			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 
 			mCollectionOfISystemWithConfig.Add(mLogExporter);
 			mCollectionOfISystemWithConfig.Add(mImportantEventRecorder);

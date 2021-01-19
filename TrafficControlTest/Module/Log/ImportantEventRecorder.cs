@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
+using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
@@ -15,11 +17,13 @@ namespace TrafficControlTest.Module.Log
 		private IEventRecorder rEventRecorder = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private IMissionStateManager rMissionStateManager = null;
+		private IVehicleControlManager rVehicleControlManager = null;
+		private IAutomaticDoorControlManager rAutomaticDoorControlManager = null;
 		private IHostCommunicator rHostCommunicator = null;
 
-		public ImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
+		public ImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager, IAutomaticDoorControlManager AutomaticDoorControlManager, IHostCommunicator HostCommunicator)
 		{
-			Set(EventRecorder, VehicleInfoManager, MissionStateManager, HostCommunicator);
+			Set(EventRecorder, VehicleInfoManager, MissionStateManager, VehicleControlManager, AutomaticDoorControlManager, HostCommunicator);
 		}
 		public void Set(IEventRecorder EventRecorder)
 		{
@@ -37,17 +41,31 @@ namespace TrafficControlTest.Module.Log
 			rMissionStateManager = MissionStateManager;
 			SubscribeEvent_IMissionStateManager(rMissionStateManager);
 		}
+		public void Set(IVehicleControlManager VehicleControlManager)
+		{
+			UnsubscribeEvent_IVehicleControlManager(rVehicleControlManager);
+			rVehicleControlManager = VehicleControlManager;
+			SubscribeEvent_IVehicleControlManager(rVehicleControlManager);
+		}
+		public void Set(IAutomaticDoorControlManager AutomaticDoorControlManager)
+		{
+			UnsubscribeEvent_IAutomaticDoorControlManager(rAutomaticDoorControlManager);
+			rAutomaticDoorControlManager = AutomaticDoorControlManager;
+			SubscribeEvent_IAutomaticDoorControlManager(rAutomaticDoorControlManager);
+		}
 		public void Set(IHostCommunicator HostCommunicator)
 		{
 			UnsubscribeEvent_IHostCommunicator(rHostCommunicator);
 			rHostCommunicator = HostCommunicator;
 			SubscribeEvent_IHostCommunicator(rHostCommunicator);
 		}
-		public void Set(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
+		public void Set(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager, IAutomaticDoorControlManager AutomaticDoorControlManager, IHostCommunicator HostCommunicator)
 		{
 			Set(EventRecorder);
 			Set(VehicleInfoManager);
 			Set(MissionStateManager);
+			Set(VehicleControlManager);
+			Set(AutomaticDoorControlManager);
 			Set(HostCommunicator);
 		}
 		public override string GetSystemInfo()
@@ -93,6 +111,38 @@ namespace TrafficControlTest.Module.Log
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
 			}
 		}
+		private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
+				VehicleControlManager.ItemAdded += HandleEvent_VehicleControlManagerItemAdded;
+				VehicleControlManager.ItemUpdated += HandleEvent_VehicleControlManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
+				VehicleControlManager.ItemAdded -= HandleEvent_VehicleControlManagerItemAdded;
+				VehicleControlManager.ItemUpdated -= HandleEvent_VehicleControlManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_IAutomaticDoorControlManager(IAutomaticDoorControlManager AutomaticDoorControlManager)
+		{
+			if (AutomaticDoorControlManager != null)
+			{
+				AutomaticDoorControlManager.ItemAdded += HandleEvent_AutomaticDoorControlManagerItemAdded;
+				AutomaticDoorControlManager.ItemUpdated += HandleEvent_AutomaticDoorControlManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IAutomaticDoorControlManager(IAutomaticDoorControlManager AutomaticDoorControlManager)
+		{
+			if (AutomaticDoorControlManager != null)
+			{
+				AutomaticDoorControlManager.ItemAdded -= HandleEvent_AutomaticDoorControlManagerItemAdded;
+				AutomaticDoorControlManager.ItemUpdated -= HandleEvent_AutomaticDoorControlManagerItemUpdated;
+			}
+		}
 		private void SubscribeEvent_IHostCommunicator(IHostCommunicator HostCommunicator)
 		{
 			if (HostCommunicator != null)
@@ -133,6 +183,22 @@ namespace TrafficControlTest.Module.Log
 		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
 			rEventRecorder.RecordMissionState(DatabaseDataOperation.Update, Args.Item);
+		}
+		private void HandleEvent_VehicleControlManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleControl> Args)
+		{
+			rEventRecorder.RecordVehicleControl(DatabaseDataOperation.Add, Args.Item);
+		}
+		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
+		{
+			rEventRecorder.RecordVehicleControl(DatabaseDataOperation.Update, Args.Item);
+		}
+		private void HandleEvent_AutomaticDoorControlManagerItemAdded(object Sender, ItemCountChangedEventArgs<IAutomaticDoorControl> Args)
+		{
+			rEventRecorder.RecordAutomaticDoorControl(DatabaseDataOperation.Add, Args.Item);
+		}
+		private void HandleEvent_AutomaticDoorControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IAutomaticDoorControl> Args)
+		{
+			rEventRecorder.RecordAutomaticDoorControl(DatabaseDataOperation.Update, Args.Item);
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
 		{

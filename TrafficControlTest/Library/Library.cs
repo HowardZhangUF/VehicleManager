@@ -315,9 +315,9 @@ namespace TrafficControlTest.Library
 		{
 			return new EventRecorder(DatabaseAdapter);
 		}
-		public static IImportantEventRecorder GenerateIImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IHostCommunicator HostCommunicator)
+		public static IImportantEventRecorder GenerateIImportantEventRecorder(IEventRecorder EventRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager, IAutomaticDoorControlManager AutomaticDoorControlManager, IHostCommunicator HostCommunicator)
 		{
-			return new ImportantEventRecorder(EventRecorder, VehicleInfoManager, MissionStateManager, HostCommunicator);
+			return new ImportantEventRecorder(EventRecorder, VehicleInfoManager, MissionStateManager, VehicleControlManager, AutomaticDoorControlManager, HostCommunicator);
 		}
 		public static IConfigurator GenerateIConfigurator(string FileName)
 		{

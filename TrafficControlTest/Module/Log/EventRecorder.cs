@@ -1,5 +1,7 @@
 ﻿using System;
 using TrafficControlTest.Library;
+using TrafficControlTest.Module.AutomaticDoor;
+using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.Vehicle;
 
@@ -13,6 +15,8 @@ namespace TrafficControlTest.Module.Log
 		private string mTableNameOfVehicleState = "CurrentVehicleState";
 		private string mTableNamePrefixOfHistoryVehicleInfo = "HistoryVehicleInfoOf";
 		private string mTableNameOfMissionState = "MissionState";
+		private string mTableNameOfVehicleControl = "VehicleControl";
+		private string mTableNameOfAutomaticDoorControl = "AutomaticDoorControl";
 		private string mTableNameOfHistoryHostCommunication = "HistoryHostCommunication";
 
 		public EventRecorder(DatabaseAdapter DatabaseAdapter)
@@ -103,6 +107,36 @@ namespace TrafficControlTest.Module.Log
 					break;
 			}
 		}
+		public void RecordVehicleControl(DatabaseDataOperation Action, IVehicleControl VehicleControl)
+		{
+			switch (Action)
+			{
+				case DatabaseDataOperation.Add:
+					VehicleControlDataAdd(VehicleControl);
+					break;
+				case DatabaseDataOperation.Remove:
+					// do nothing
+					break;
+				case DatabaseDataOperation.Update:
+					VehicleControlDataUpdate(VehicleControl);
+					break;
+			}
+		}
+		public void RecordAutomaticDoorControl(DatabaseDataOperation Action, IAutomaticDoorControl AutomaticDoorControl)
+		{
+			switch (Action)
+			{
+				case DatabaseDataOperation.Add:
+					AutomaticDoorControlDataAdd(AutomaticDoorControl);
+					break;
+				case DatabaseDataOperation.Remove:
+					// do nothing
+					break;
+				case DatabaseDataOperation.Update:
+					AutomaticDoorControlDataUpdate(AutomaticDoorControl);
+					break;
+			}
+		}
 		public void RecordHistoryHostCommunication(DatabaseDataOperation Action, DateTime Timestamp, string Event, string IpPort, string Data)
 		{
 			switch (Action)
@@ -123,6 +157,8 @@ namespace TrafficControlTest.Module.Log
 		{
 			CreateTableOfCurrentVehicleState();
 			CreateTableOfAllMissionState();
+			CreateTableOfVehicleControl();
+			CreateTableOfAutomaticDoorControl();
 			CreateTableOfHistoryHostCommunication();
 		}
 		private void CreateTableOfCurrentVehicleState()
@@ -161,9 +197,40 @@ namespace TrafficControlTest.Module.Log
 			tmp += "ExecutorID TEXT, ";
 			tmp += "ExecuteState TEXT, ";
 			tmp += "FailedReason TEXT, ";
-            tmp += "ReceiveTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+			tmp += "ReceiveTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ExecutionStartTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ExecutionStopTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
+			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+		}
+		private void CreateTableOfVehicleControl()
+		{
+			string tmp = string.Empty;
+			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNameOfVehicleControl} (";
+			tmp += "ID TEXT PRIMARY KEY, ";
+			tmp += "VehicleID Text,";
+			tmp += "Command TEXT, ";
+			tmp += "Parameters TEXT, ";
+			tmp += "CauseID TEXT, ";
+			tmp += "CauseDetail TEXT, ";
+			tmp += "SendState TEXT, ";
+			tmp += "ExecuteState TEXT, ";
+			tmp += "FailedReason TEXT, ";
+			tmp += "ReceiveTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+			tmp += "ExecutionStartTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+			tmp += "ExecutionStopTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
+			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+		}
+		private  void CreateTableOfAutomaticDoorControl()
+		{
+			string tmp = string.Empty;
+			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNameOfAutomaticDoorControl} (";
+			tmp += "ID TEXT PRIMARY KEY, ";
+			tmp += "AutomaticDoorName Text, ";
+			tmp += "Command TEXT, ";
+			tmp += "Cause TEXT, ";
+			tmp += "SendState TEXT, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
 			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
 		}
@@ -265,7 +332,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"'{MissionState.mExecutorId}', ";
 			tmp += $"'{MissionState.mExecuteState.ToString()}', ";
 			tmp += $"'{MissionState.mFailedReason.ToString()}', ";
-            tmp += $"'{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"'{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{MissionState.mExecutionStartTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{MissionState.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{MissionState.mLastUpdate.ToString(Library.Library.TIME_FORMAT)}')";
@@ -279,11 +346,63 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"ExecutorID = '{MissionState.mExecutorId}', ";
 			tmp += $"ExecuteState = '{MissionState.mExecuteState.ToString()}', ";
 			tmp += $"FailedReason = '{MissionState.mFailedReason.ToString()}', ";
-            tmp += $"ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"ExecutionStartTimestamp = '{MissionState.mExecutionStartTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"ExecutionStopTimestamp = '{MissionState.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"LastUpdateTimestamp = '{MissionState.mLastUpdate.ToString(Library.Library.TIME_FORMAT)}' ";
 			tmp += $"WHERE ID = '{MissionState.mName}' AND ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}'";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void VehicleControlDataAdd(IVehicleControl VehicleControl)
+		{
+			string tmp = string.Empty;
+			tmp += $"INSERT INTO {mTableNameOfVehicleControl} VALUES (";
+			tmp += $"'{VehicleControl.mName}', ";
+			tmp += $"'{VehicleControl.mVehicleId}', ";
+			tmp += $"'{VehicleControl.mCommand.ToString()}', ";
+			tmp += $"'{VehicleControl.mParametersString}', ";
+			tmp += $"'{VehicleControl.mCauseId}', ";
+			tmp += $"'{VehicleControl.mCauseDetail}', ";
+			tmp += $"'{VehicleControl.mSendState.ToString()}', ";
+			tmp += $"'{VehicleControl.mExecuteState.ToString()}', ";
+			tmp += $"'{VehicleControl.mFailedReason.ToString()}', ";
+			tmp += $"'{VehicleControl.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"'{VehicleControl.mExecutionStartTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"'{VehicleControl.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"'{VehicleControl.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}')";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void VehicleControlDataUpdate(IVehicleControl VehicleControl)
+		{
+			string tmp = string.Empty;
+			tmp += $"UPDATE {mTableNameOfVehicleControl} SET ";
+			tmp += $"SendState = '{VehicleControl.mSendState.ToString()}', ";
+			tmp += $"ExecuteState = '{VehicleControl.mExecuteState.ToString()}', ";
+			tmp += $"ExecutionStartTimestamp = '{VehicleControl.mExecutionStartTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"ExecutionStopTimestamp = '{VehicleControl.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
+			tmp += $"LastUpdateTimestamp = '{VehicleControl.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}' ";
+			tmp += $"WHERE ID = '{VehicleControl.mName}' AND ReceiveTimestamp = '{VehicleControl.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}'";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void AutomaticDoorControlDataAdd(IAutomaticDoorControl AutomaticDoorControl)
+		{
+			string tmp = string.Empty;
+			tmp += $"INSERT INTO {mTableNameOfAutomaticDoorControl} VALUES (";
+			tmp += $"'{AutomaticDoorControl.mName}', ";
+			tmp += $"'{AutomaticDoorControl.mAutomaticDoorName}', ";
+			tmp += $"'{AutomaticDoorControl.mCommand.ToString()}', ";
+			tmp += $"'{AutomaticDoorControl.mCause}', ";
+			tmp += $"'{AutomaticDoorControl.mSendState.ToString()}', ";
+			tmp += $"'{AutomaticDoorControl.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}')";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void AutomaticDoorControlDataUpdate(IAutomaticDoorControl AutomaticDoorControl)
+		{
+			string tmp = string.Empty;
+			tmp += $"UPDATE {mTableNameOfAutomaticDoorControl} SET ";
+			tmp += $"SendState = '{AutomaticDoorControl.mSendState.ToString()}', ";
+			tmp += $"LastUpdateTimestamp = '{AutomaticDoorControl.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}' ";
+			tmp += $"WHERE ID = '{AutomaticDoorControl.mName}'";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void HistoryHostCommunicationAdd(DateTime Timestamp, string Event, string IpPort, string Data)

@@ -24,7 +24,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		}
 		public void Set(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause)
 		{
-			mName = $"ControlFor{AutomaticDoorName}With{Command.ToString()}";
+			mName = $"AutomaticDoorControl{DateTime.Now.ToString("yyyyMMddHHmmssfff")}";
 			mAutomaticDoorName = AutomaticDoorName;
 			mCommand = Command;
 			mCause = Cause;

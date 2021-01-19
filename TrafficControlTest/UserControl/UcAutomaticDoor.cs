@@ -328,7 +328,7 @@ namespace TrafficControlTest.UserControl
 				dgv.RowTemplate.Height = 40;
 
 				dgv.Columns.Add("Name", "Name");
-				dgv.Columns[0].Width = 200;
+				dgv.Columns[0].Width = 300;
 				dgv.Columns.Add("AutomaticDoorName", "AutomaticDoorName");
 				dgv.Columns[1].Width = 200;
 				dgv.Columns.Add("Command", "Command");
