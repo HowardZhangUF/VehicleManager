@@ -222,7 +222,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
 			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
 		}
-		private  void CreateTableOfAutomaticDoorControl()
+		private void CreateTableOfAutomaticDoorControl()
 		{
 			string tmp = string.Empty;
 			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNameOfAutomaticDoorControl} (";
@@ -231,6 +231,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += "Command TEXT, ";
 			tmp += "Cause TEXT, ";
 			tmp += "SendState TEXT, ";
+			tmp += "ReceiveTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
 			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
 		}
@@ -393,6 +394,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"'{AutomaticDoorControl.mCommand.ToString()}', ";
 			tmp += $"'{AutomaticDoorControl.mCause}', ";
 			tmp += $"'{AutomaticDoorControl.mSendState.ToString()}', ";
+			tmp += $"'{AutomaticDoorControl.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{AutomaticDoorControl.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}')";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
@@ -402,7 +404,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"UPDATE {mTableNameOfAutomaticDoorControl} SET ";
 			tmp += $"SendState = '{AutomaticDoorControl.mSendState.ToString()}', ";
 			tmp += $"LastUpdateTimestamp = '{AutomaticDoorControl.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}' ";
-			tmp += $"WHERE ID = '{AutomaticDoorControl.mName}'";
+			tmp += $"WHERE ID = '{AutomaticDoorControl.mName}' AND ReceiveTimestamp = '{AutomaticDoorControl.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}'";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void HistoryHostCommunicationAdd(DateTime Timestamp, string Event, string IpPort, string Data)

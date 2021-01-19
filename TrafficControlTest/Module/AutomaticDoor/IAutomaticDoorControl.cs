@@ -36,6 +36,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		AutomaticDoorControlCommand mCommand { get; }
 		string mCause { get; }
 		AutomaticDoorControlCommandSendState mSendState { get; }
+		DateTime mReceivedTimestamp { get; }
 		DateTime mLastUpdated { get; }
 
 		void Set(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause);

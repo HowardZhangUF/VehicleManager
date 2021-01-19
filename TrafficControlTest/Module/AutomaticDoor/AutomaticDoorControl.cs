@@ -16,6 +16,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		public AutomaticDoorControlCommand mCommand { get; private set; } = AutomaticDoorControlCommand.None;
 		public string mCause { get; private set; } = string.Empty;
 		public AutomaticDoorControlCommandSendState mSendState { get; private set; } = AutomaticDoorControlCommandSendState.Unsend;
+		public DateTime mReceivedTimestamp { get; private set; }
 		public DateTime mLastUpdated { get; private set; } = DateTime.Now;
 
 		public AutomaticDoorControl(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause)
@@ -24,11 +25,14 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		}
 		public void Set(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause)
 		{
-			mName = $"AutomaticDoorControl{DateTime.Now.ToString("yyyyMMddHHmmssfff")}";
+			DateTime tmp = DateTime.Now;
+			mName = $"AutomaticDoorControl{tmp.ToString("yyyyMMddHHmmssfff")}";
 			mAutomaticDoorName = AutomaticDoorName;
 			mCommand = Command;
 			mCause = Cause;
-			mLastUpdated = DateTime.Now;
+			mSendState = AutomaticDoorControlCommandSendState.Unsend;
+			mReceivedTimestamp = tmp;
+			mLastUpdated = tmp;
 			RaiseEvent_StatusUpdated("Name,AutomaticDoorName,Command,Cause");
 		}
 		public void UpdateSendState(AutomaticDoorControlCommandSendState SendState)
