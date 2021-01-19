@@ -329,6 +329,12 @@
     <Compile Include="UserControl\UcSearch.Designer.cs">
       <DependentUpon>UcSearch.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UcSearchAutomaticDoorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcSearchAutomaticDoorControl.Designer.cs">
+      <DependentUpon>UcSearchAutomaticDoorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UcSearchGeneralLog.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -337,6 +343,12 @@
     </Compile>
     <Compile Include="UserControl\UcSearchMissionState.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcSearchVehicleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcSearchVehicleControl.Designer.cs">
+      <DependentUpon>UcSearchVehicleControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\UcSystemStatus.cs">
       <SubType>UserControl</SubType>

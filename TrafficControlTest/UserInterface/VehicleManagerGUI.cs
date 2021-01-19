@@ -383,7 +383,7 @@ namespace TrafficControlTest.UserInterface
 						ucAutomaticDoor1.EnableManualControl(true);
 						ucAutomaticDoor1.SetAutomaticDoorControlVisible(true);
 						ucSetting1.Visible = true;
-						ucLog1.Set(true, true, true);
+						ucLog1.Set(true, true, true, true, true);
 						ucDashboard1.Visible = true;
 						ucSystemStatus1.Visible = true;
 						ucConsoleLog1.Visible = true;
@@ -415,7 +415,7 @@ namespace TrafficControlTest.UserInterface
 						ucAutomaticDoor1.EnableManualControl(false);
 						ucAutomaticDoor1.SetAutomaticDoorControlVisible(false);
 						ucSetting1.Visible = false;
-						ucLog1.Set(false, true, true);
+						ucLog1.Set(false, false, false, true, true);
 						ucDashboard1.Visible = false;
 						ucSystemStatus1.Visible = false;
 						ucConsoleLog1.Visible = false;

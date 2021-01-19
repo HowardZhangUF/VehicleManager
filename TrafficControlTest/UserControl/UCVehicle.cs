@@ -336,11 +336,11 @@ namespace TrafficControlTest.UserControl
 
             dgv.Columns.Add("Name", "Name");
             dgv.Columns[0].Width = 210;
-            dgv.Columns.Add("Command", "Command");
-            dgv.Columns[1].Width = 140;
             dgv.Columns.Add("VehicleId", "VehicleID");
-            dgv.Columns[2].Width = 180;
-            dgv.Columns.Add("Parameter", "Parameter");
+            dgv.Columns[1].Width = 180;
+			dgv.Columns.Add("Command", "Command");
+			dgv.Columns[2].Width = 140;
+			dgv.Columns.Add("Parameter", "Parameter");
             dgv.Columns[3].Width = 170;
             dgv.Columns.Add("CauseId", "CauseID");
             dgv.Columns[4].Width = 210;
@@ -368,7 +368,7 @@ namespace TrafficControlTest.UserControl
             {
                 lock (mLockOfDgvVehicleControl)
                 {
-                    dgvVehicleControl.Rows.Add(new string[] { Item.mName, Item.mCommand.ToString(), Item.mVehicleId, Item.mParametersString, Item.mCauseId, Item.mSendState.ToString(), Item.mExecuteState.ToString(), Item.mFailedReason.ToString(), Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+                    dgvVehicleControl.Rows.Add(new string[] { Item.mName, Item.mVehicleId, Item.mCommand.ToString(), Item.mParametersString, Item.mCauseId, Item.mSendState.ToString(), Item.mExecuteState.ToString(), Item.mFailedReason.ToString(), Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
 					if (dgvVehicleControl.Rows[dgvVehicleControl.RowCount - 1].Cells["ExecuteState"].Value.ToString() == ExecuteState.Executing.ToString()) dgvVehicleControl.Rows[dgvVehicleControl.RowCount - 1].DefaultCellStyle.BackColor = TableRowExecutingBackColor;
 				}
 			});

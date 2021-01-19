@@ -21,6 +21,8 @@ namespace TrafficControlTest.UserControl
 		private enum TagType
 		{
 			GeneralLog,
+			AutomaticDoorControl,
+			VehicleControl,
 			MissionState,
 			HostCommunication
 		}
@@ -52,6 +54,14 @@ namespace TrafficControlTest.UserControl
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.GeneralLog, "GeneralLog1"));
 			panel2.Controls.Add(GenerateUcSearchGeneralLog(GetSerial(), TagType.GeneralLog, rDatabaseAdapterOfLogRecord));
 			UpdateSerial();
+			// 加入 AutomaticDoorControl
+			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.AutomaticDoorControl, "AutomaticDoorControl"));
+			panel2.Controls.Add(GenerateUcSearchAutomaticDoorControl(GetSerial(), TagType.AutomaticDoorControl, rDatabaseAdapterOfEventRecord));
+			UpdateSerial();
+			// 加入 VehicleControl
+			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.VehicleControl, "VehicleControl"));
+			panel2.Controls.Add(GenerateUcSearchVehicleControl(GetSerial(), TagType.VehicleControl, rDatabaseAdapterOfEventRecord));
+			UpdateSerial();
 			// 加入 MissionState
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.MissionState, "MissionState"));
 			panel2.Controls.Add(GenerateUcSearchMissionState(GetSerial(), TagType.MissionState, rDatabaseAdapterOfEventRecord));
@@ -61,7 +71,7 @@ namespace TrafficControlTest.UserControl
 			panel2.Controls.Add(GenerateUcSearchHostCommunication(GetSerial(), TagType.HostCommunication, rDatabaseAdapterOfEventRecord));
 			UpdateSerial();
 		}
-		public void Set(bool SearchControlOfGeneralLogDisplay, bool SearchControlOfMissionStateDisplay, bool SearchControlOfHostCommunicationDisplay)
+		public void Set(bool SearchControlOfGeneralLogDisplay, bool SearchControlOfAutomaticDoorControlDisplay, bool SearchControlOfVehicleControlDisplay, bool SearchControlOfMissionStateDisplay, bool SearchControlOfHostCommunicationDisplay)
 		{
 			foreach (Control control in panel1.Controls)
 			{
@@ -69,6 +79,12 @@ namespace TrafficControlTest.UserControl
 				{
 					case "GeneralLog":
 						control.Visible = SearchControlOfGeneralLogDisplay;
+						break;
+					case "AutomaticDoorControl":
+						control.Visible = SearchControlOfAutomaticDoorControlDisplay;
+						break;
+					case "VehicleControl":
+						control.Visible = SearchControlOfVehicleControlDisplay;
 						break;
 					case "MissionState":
 						control.Visible = SearchControlOfMissionStateDisplay;
@@ -109,7 +125,7 @@ namespace TrafficControlTest.UserControl
 			result.Tag = TagType;
 			result.Dock = DockStyle.Left;
 			result.Font = new Font("新細明體", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 136);
-			result.MinimumSize = new Size(200, 50);
+			result.MinimumSize = new Size(TextRenderer.MeasureText(result.Text, result.Font).Width + 20, 50);
 			result.AutoSize = true;
 			result.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 			result.Click += HandleEvent_ButtonClick;
@@ -128,6 +144,26 @@ namespace TrafficControlTest.UserControl
 		private UcSearch GenerateUcSearchMissionState(string Serial, TagType TagType, DatabaseAdapter DatabaseAdapter)
 		{
 			UcSearch result = new UcSearchMissionState();
+			result.Dock = DockStyle.Fill;
+			result.Name = $"{mDefaultNameOfUcSearch}{Serial}";
+			result.Tag = TagType;
+			result.SearchSuccessed += HandleEvent_UcSearchSearchSuccessed;
+			result.Set(DatabaseAdapter);
+			return result;
+		}
+		private UcSearch GenerateUcSearchVehicleControl(string Serial, TagType TagType, DatabaseAdapter DatabaseAdapter)
+		{
+			UcSearch result = new UcSearchVehicleControl();
+			result.Dock = DockStyle.Fill;
+			result.Name = $"{mDefaultNameOfUcSearch}{Serial}";
+			result.Tag = TagType;
+			result.SearchSuccessed += HandleEvent_UcSearchSearchSuccessed;
+			result.Set(DatabaseAdapter);
+			return result;
+		}
+		private UcSearch GenerateUcSearchAutomaticDoorControl(string Serial, TagType TagType, DatabaseAdapter DatabaseAdapter)
+		{
+			UcSearch result = new UcSearchAutomaticDoorControl();
 			result.Dock = DockStyle.Fill;
 			result.Name = $"{mDefaultNameOfUcSearch}{Serial}";
 			result.Tag = TagType;
