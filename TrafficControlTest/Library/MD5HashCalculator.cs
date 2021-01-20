@@ -10,20 +10,25 @@ namespace TrafficControlTest.Library
 {
 	public class MD5HashCalculator
 	{
+		private static object mLock = new object();
+
 		public static string CalculateFileHash(string FilePath)
 		{
-			using (MD5 md5 = MD5.Create())
+			lock (mLock)
 			{
-				using (FileStream fs = new FileStream(FilePath, FileMode.Open))
+				using (MD5 md5 = MD5.Create())
 				{
-					var hash = md5.ComputeHash(fs);
-
-					StringBuilder sb = new StringBuilder();
-					for (int i = 0; i < hash.Length; ++i)
+					using (FileStream fs = new FileStream(FilePath, FileMode.Open))
 					{
-						sb.Append(hash[i].ToString("X2"));
+						var hash = md5.ComputeHash(fs);
+
+						StringBuilder sb = new StringBuilder();
+						for (int i = 0; i < hash.Length; ++i)
+						{
+							sb.Append(hash[i].ToString("X2"));
+						}
+						return sb.ToString();
 					}
-					return sb.ToString();
 				}
 			}
 		}
