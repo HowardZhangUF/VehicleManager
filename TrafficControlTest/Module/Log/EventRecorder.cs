@@ -379,6 +379,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"UPDATE {mTableNameOfVehicleControl} SET ";
 			tmp += $"SendState = '{VehicleControl.mSendState.ToString()}', ";
 			tmp += $"ExecuteState = '{VehicleControl.mExecuteState.ToString()}', ";
+			tmp += $"FailedReason = '{VehicleControl.mFailedReason.ToString()}', ";
 			tmp += $"ExecutionStartTimestamp = '{VehicleControl.mExecutionStartTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"ExecutionStopTimestamp = '{VehicleControl.mExecutionStopTimestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"LastUpdateTimestamp = '{VehicleControl.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}' ";

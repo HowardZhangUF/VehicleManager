@@ -143,6 +143,7 @@ namespace TrafficControlTest.Module.Map
 		{
 			if (VehicleCommunicator != null)
 			{
+				VehicleCommunicator.SentDataFailed += HandleEvent_VehicleCommunicatorSentDataFailed;
 				VehicleCommunicator.ReceivedData += HandleEvent_VehicleCommunicatorReceivedData;
 			}
 		}
@@ -150,6 +151,7 @@ namespace TrafficControlTest.Module.Map
 		{
 			if (VehicleCommunicator != null)
 			{
+				VehicleCommunicator.SentDataFailed -= HandleEvent_VehicleCommunicatorSentDataFailed;
 				VehicleCommunicator.ReceivedData -= HandleEvent_VehicleCommunicatorReceivedData;
 			}
 		}
@@ -216,6 +218,19 @@ namespace TrafficControlTest.Module.Map
 			else
 			{
 				Task.Run(() => { SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames)); });
+			}
+		}
+		private void HandleEvent_VehicleCommunicatorSentDataFailed(object Sender, SentDataEventArgs Args)
+		{
+			if (Args.Data is Serializable)
+			{
+				// 當傳送 GetMap 後卻沒有收到回應時，代表 GetMap 失敗。則將 mMapFileNamesOfDownloading 裡的相應資料移除
+				if (Args.Data is GetMap)
+				{
+					GetMap tmpData = Args.Data as GetMap;
+					string mapFileName = tmpData.Require + ".map";
+					if (mMapFileNamesOfDownloading.Contains(mapFileName)) mMapFileNamesOfDownloading.Remove(mapFileName);
+				}
 			}
 		}
 		private void HandleEvent_VehicleCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)

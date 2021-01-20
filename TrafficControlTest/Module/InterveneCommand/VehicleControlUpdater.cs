@@ -229,7 +229,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 				{
 					string vehicleId = Args.Item.mName;
 					string vehicleTarget = Args.Item.mCurrentTarget;
-                    string vehicleCurrentState = Args.Item.mCurrentState;
+					string vehicleCurrentState = Args.Item.mCurrentState;
 					string vehiclePreviousState = Args.Item.mPreviousState;
 
 					// 透過車子與當前 Target 去尋找 VehicleControlManager 是否有對應的物件
@@ -241,12 +241,12 @@ namespace TrafficControlTest.Module.InterveneCommand
 					if (correspondingControl == null)
 					{
 						IVehicleControl newControl = GenerateIVehicleControl(vehicleId, vehicleTarget, vehicleCurrentState, vehiclePreviousState, rVehicleControlManager, rMapManager);
-                        if (newControl != null)
-                        {
-                            newControl.UpdateSendState(SendState.SendSuccessed);
-                            rVehicleControlManager.Add(newControl.mName, newControl);
-                            newControl.UpdateExecuteState(ExecuteState.Executing);
-                        }
+						if (newControl != null)
+						{
+							newControl.UpdateSendState(SendState.SendSuccessed);
+							rVehicleControlManager.Add(newControl.mName, newControl);
+							newControl.UpdateExecuteState(ExecuteState.Executing);
+						}
 					}
 				}
 			}
@@ -560,6 +560,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, string Target)
 		{
 			IMapObjectOfTowardPoint towardPointMapObject = rMapManager.GetTowardPointMapObject(Target);
+			// 如果地圖中找不到相應的站點，則恆回傳 false 。通常發生在多台車同時連線但多台車卻使用不同張地圖的情況下
+			if (towardPointMapObject == null) return false;
 			return IsVehicleArrived(VehicleInfo, towardPointMapObject.mLocation.mX, towardPointMapObject.mLocation.mY, (int)towardPointMapObject.mLocation.mToward);
 		}
 		private bool IsVehicleArrived(IVehicleInfo VehicleInfo, int X, int Y)
@@ -584,20 +586,20 @@ namespace TrafficControlTest.Module.InterveneCommand
 			if (MapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge).Select(o => o.mName).Any(o => o == VehicleTarget))
 			{
 
-                // 尋找 VehicleControlManager 內是否有對應的充電控制
-                // 充電控制時的狀態變化： Idle -> Running -> Charge
-                // 充電控制：
-                // 1. Command=Goto Parameter=充電站
-                // 2. Command=Charge Parameter=null
-                if (VehiclePreviousState == "Idle" && VehicleCurrentState == "Running")
+				// 尋找 VehicleControlManager 內是否有對應的充電控制
+				// 充電控制時的狀態變化： Idle -> Running -> Charge
+				// 充電控制：
+				// 1. Command=Goto Parameter=充電站
+				// 2. Command=Charge Parameter=null
+				if (VehiclePreviousState == "Idle" && VehicleCurrentState == "Running")
 				{
 					result = VehicleControlManager.GetItems().FirstOrDefault(o => o.mExecuteState == ExecuteState.Executing && o.mVehicleId == VehicleId && ((o.mCommand == Command.Goto && o.mParametersString == VehicleTarget) || (o.mCommand == Command.Charge && o.mParameters == null)));
 				}
-                // 尋找 VehicleControlManager 內是否有對應的解除充電控制
-                // 解除充電控制時的狀態變化： Charge/ChargeIdle -> Running -> Idle
-                // 解除充電控制：
-                // 1. Command=Uncharge Parameter=null
-                else if ((VehiclePreviousState == "Charge" || VehiclePreviousState == "ChargeIdle") && VehicleCurrentState == "Running")
+				// 尋找 VehicleControlManager 內是否有對應的解除充電控制
+				// 解除充電控制時的狀態變化： Charge/ChargeIdle -> Running -> Idle
+				// 解除充電控制：
+				// 1. Command=Uncharge Parameter=null
+				else if ((VehiclePreviousState == "Charge" || VehiclePreviousState == "ChargeIdle") && VehicleCurrentState == "Running")
 				{
 					result = VehicleControlManager.GetItems().FirstOrDefault(o => o.mExecuteState == ExecuteState.Executing && o.mVehicleId == VehicleId && o.mCommand == Command.Uncharge);
 				}
@@ -610,29 +612,29 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			return result;
 		}
-        private static IVehicleControl GenerateIVehicleControl(string VehicleId, string VehicleTarget, string VehicleCurrentState, string VehiclePreviousState, IVehicleControlManager VehicleControlManager, IMapManager MapManager)
-        {
-            IVehicleControl result = null;
-            if (MapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge).Select(o => o.mName).Any(o => o == VehicleTarget))
-            {
-                if (VehiclePreviousState == "Idle" && VehicleCurrentState == "Running")
-                {
-                    // 充電控制
-                    result = Library.Library.GenerateIVehicleControl(VehicleId, Command.Charge, null, $"{VehicleId}Self", string.Empty);
-                }
-                else if ((VehiclePreviousState == "Charge" || VehiclePreviousState == "ChargeIdle") && VehicleCurrentState == "Running")
-                {
-                    // 解除充電控制
-                    result = Library.Library.GenerateIVehicleControl(VehicleId, Command.Uncharge, null, $"{VehicleId}Self", string.Empty);
-                }
-            }
-            else
-            {
-                // 移動控制
-                result = GenerateIVehicleControl(VehicleId, VehicleTarget, $"{VehicleId}Self");
-            }
-            return result;
-        }
+		private static IVehicleControl GenerateIVehicleControl(string VehicleId, string VehicleTarget, string VehicleCurrentState, string VehiclePreviousState, IVehicleControlManager VehicleControlManager, IMapManager MapManager)
+		{
+			IVehicleControl result = null;
+			if (MapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge).Select(o => o.mName).Any(o => o == VehicleTarget))
+			{
+				if (VehiclePreviousState == "Idle" && VehicleCurrentState == "Running")
+				{
+					// 充電控制
+					result = Library.Library.GenerateIVehicleControl(VehicleId, Command.Charge, null, $"{VehicleId}Self", string.Empty);
+				}
+				else if ((VehiclePreviousState == "Charge" || VehiclePreviousState == "ChargeIdle") && VehicleCurrentState == "Running")
+				{
+					// 解除充電控制
+					result = Library.Library.GenerateIVehicleControl(VehicleId, Command.Uncharge, null, $"{VehicleId}Self", string.Empty);
+				}
+			}
+			else
+			{
+				// 移動控制
+				result = GenerateIVehicleControl(VehicleId, VehicleTarget, $"{VehicleId}Self");
+			}
+			return result;
+		}
 		private static IVehicleControl GenerateIVehicleControl(string VehicleId, string Target, string CauseId)
 		{
 			IVehicleControl result = null;
@@ -657,5 +659,5 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			return result;
 		}
-    }
+	}
 }
