@@ -4,7 +4,7 @@ using TrafficControlTest.Module.General;
 namespace TrafficControlTest.Module.Map
 {
 	/// <summary>
-	/// - 提供設定地圖檔資料夾路徑的功能。範例： .\\Map\\
+	/// - 提供設定/取得「儲存地圖檔的資料夾」的路徑的功能。範例： .\\Map\\
 	/// - 提供取得本地地圖檔清單的功能
 	/// - 提供取得地圖檔完整路徑的功能
 	/// - 提供新增、移除地圖檔的功能
