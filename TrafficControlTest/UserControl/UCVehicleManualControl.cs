@@ -135,14 +135,14 @@ namespace TrafficControlTest.UserControl
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.MapChanged += HandleEvent_MapManagerMapChanged;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.MapChanged += HandleEvent_MapManagerMapChanged;
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
@@ -153,7 +153,7 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateGui_UpdateVehicleNameList(rVehicleInfoManager.GetItemNames().ToArray());
 		}
-		private void HandleEvent_MapManagerLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
+		private void HandleEvent_MapManagerMapChanged(object Sender, MapChangedEventArgs Args)
 		{
 			UpdateGui_UpdateGoalList(rMapManager.mTowardPointMapObjects.Select(o => o.mName).ToArray());
 		}

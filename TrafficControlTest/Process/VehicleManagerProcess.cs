@@ -71,6 +71,8 @@ namespace TrafficControlTest.Process
 		private IMissionDispatcher mMissionDispatcher = null;
 		private IMapFileManager mMapFileManager = null;
 		private IMapManager mMapManager = null;
+		private IMapFileManagerUpdater mMapFileManagerUpdater = null;
+		private IMapManagerUpdater mMapManagerUpdater = null;
 		private IMissionStateReporter mMissionStateReporter = null;
 		private IMissionUpdater mMissionUpdater = null;
 		private ICycleMissionGenerator mCycleMissionGenerator = null;
@@ -233,6 +235,10 @@ namespace TrafficControlTest.Process
 		{
 			return mMapManager;
 		}
+		public IMapManagerUpdater GetReferenceOfIMapManagerUpdater()
+		{
+			return mMapManagerUpdater;
+		}
 		public ICycleMissionGenerator GetReferenceOfCycleMissionGenerator()
 		{
 			return mCycleMissionGenerator;
@@ -308,8 +314,16 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IMapFileManager(mMapFileManager);
 
 			UnsubscribeEvent_IMapManager(mMapManager);
-			mMapManager = GenerateIMapManager(mVehicleCommunicator, mVehicleInfoManager, mMapFileManager);
+			mMapManager = GenerateIMapManager();
 			SubscribeEvent_IMapManager(mMapManager);
+
+			UnsubscribeEvent_IMapFileManagerUpdater(mMapFileManagerUpdater);
+			mMapFileManagerUpdater = GenerateIMapFileManagerUpdater(mMapFileManager, mVehicleCommunicator, mVehicleInfoManager);
+			SubscribeEvent_IMapFileManagerUpdater(mMapFileManagerUpdater);
+
+			UnsubscribeEvent_IMapManagerUpdater(mMapManagerUpdater);
+			mMapManagerUpdater = GenerateIMapManagerUpdater(mMapManager, mMapFileManager, mMapFileManagerUpdater, mVehicleCommunicator, mVehicleInfoManager);
+			SubscribeEvent_IMapManagerUpdater(mMapManagerUpdater);
 
 			UnsubscribeEvent_ICollisionEventManager(mCollisionEventManager);
 			mCollisionEventManager = GenerateICollisionEventManager();
@@ -431,7 +445,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithConfig.Add(mMissionDispatcher);
 			mCollectionOfISystemWithConfig.Add(mMissionUpdater);
 			mCollectionOfISystemWithConfig.Add(mMapFileManager);
-			mCollectionOfISystemWithConfig.Add(mMapManager);
+			mCollectionOfISystemWithConfig.Add(mMapManagerUpdater);
 			mCollectionOfISystemWithConfig.Add(mCycleMissionGenerator);
 			mCollectionOfISystemWithConfig.Add(mAutomaticDoorCommunicator);
 			mCollectionOfISystemWithConfig.Add(mAutomaticDoorControlHandler);
@@ -770,20 +784,48 @@ namespace TrafficControlTest.Process
 		{
 			if (MapManager != null)
 			{
-				MapManager.ConfigUpdated += HandleEvent_MapManagerConfigUpdated;
-				MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
-				MapManager.LoadMapFailed += HandleEvent_MapManagerLoadMapFailed;
-				MapManager.SynchronizeMapStarted += HandleEvent_MapManagerSynchronizeMapStarted;
+				MapManager.MapChanged += HandleEvent_MapManagerMapChanged;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
 		{
 			if (MapManager != null)
 			{
-				MapManager.ConfigUpdated -= HandleEvent_MapManagerConfigUpdated;
-				MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
-				MapManager.LoadMapFailed -= HandleEvent_MapManagerLoadMapFailed;
-				MapManager.SynchronizeMapStarted -= HandleEvent_MapManagerSynchronizeMapStarted;
+				MapManager.MapChanged -= HandleEvent_MapManagerMapChanged;
+			}
+		}
+		private void SubscribeEvent_IMapFileManagerUpdater(IMapFileManagerUpdater MapFileManagerUpdater)
+		{
+			if (MapFileManagerUpdater != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IMapFileManagerUpdater(IMapFileManagerUpdater MapFileManagerUpdater)
+		{
+			if (MapFileManagerUpdater != null)
+			{
+				// do nothing
+			}
+		}
+		private void SubscribeEvent_IMapManagerUpdater(IMapManagerUpdater MapManagerUpdater)
+		{
+			if (MapManagerUpdater != null)
+			{
+				MapManagerUpdater.ConfigUpdated += HandleEvnet_MapManagerUpdaterConfigUpdated;
+				MapManagerUpdater.LoadMapSuccessed += HandleEvent_MapManagerUpdaterLoadMapSuccessed;
+				MapManagerUpdater.LoadMapFailed += HandleEvent_MapManagerUpdaterLoadMapFailed;
+				MapManagerUpdater.SynchronizeMapStarted += HandleEvent_MapManagerUpdaterSynchronizeMapStarted;
+			}
+		}
+		private void UnsubscribeEvent_IMapManagerUpdater(IMapManagerUpdater MapManagerUpdater)
+		{
+			if (MapManagerUpdater != null)
+			{
+				MapManagerUpdater.ConfigUpdated -= HandleEvnet_MapManagerUpdaterConfigUpdated;
+				MapManagerUpdater.LoadMapSuccessed -= HandleEvent_MapManagerUpdaterLoadMapSuccessed;
+				MapManagerUpdater.LoadMapFailed -= HandleEvent_MapManagerUpdaterLoadMapFailed;
+				MapManagerUpdater.SynchronizeMapStarted -= HandleEvent_MapManagerUpdaterSynchronizeMapStarted;
 			}
 		}
 		private void SubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
@@ -1441,21 +1483,25 @@ namespace TrafficControlTest.Process
 		{
 			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {Args.MapFileName}");
 		}
-		private void HandleEvent_MapManagerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		private void HandleEvent_MapManagerMapChanged(object Sender, MapChangedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapManager", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+			HandleDebugMessage(Args.OccurTime, "MapManager", "MapChanged", $"MapName: {Args.MapFileName}, MapHash: {Args.MapFileHash}");
 		}
-		private void HandleEvent_MapManagerLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
+		private void HandleEvnet_MapManagerUpdaterConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapManager", "LoadMapSuccessed", $"MapName: {Args.MapFileName}");
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpdater", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
-		private void HandleEvent_MapManagerLoadMapFailed(object Sender, LoadMapFailedEventArgs Args)
+		private void HandleEvent_MapManagerUpdaterLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapManager", "LoadMapFailed", $"MapName: {Args.MapFileName}, Reason: {Args.Reason.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "LoadMapSuccessed", $"MapName: {Args.MapFileName}");
 		}
-		private void HandleEvent_MapManagerSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
+		private void HandleEvent_MapManagerUpdaterLoadMapFailed(object Sender, LoadMapFailedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapFileManager", "SynchronizeMapStarted", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "LoadMapFailed", $"MapName: {Args.MapFileName}, Reason: {Args.Reason.ToString()}");
+		}
+		private void HandleEvent_MapManagerUpdaterSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "SynchronizeMapStarted", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
 		}
 		private void HandleEvent_CollisionEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{

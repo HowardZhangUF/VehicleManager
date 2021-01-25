@@ -89,14 +89,14 @@ namespace TrafficControlTest.Module.ChargeStation
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.MapChanged += HandleEvent_MapManagerMapChanged;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.MapChanged -= HandleEvent_MapManagerMapChanged;
 			}
 		}
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -117,7 +117,7 @@ namespace TrafficControlTest.Module.ChargeStation
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		private void HandleEvent_MapManagerLoadMapSuccessed(object sender, LoadMapSuccessedEventArgs e)
+		private void HandleEvent_MapManagerMapChanged(object sender, MapChangedEventArgs e)
 		{
 			rChargeStationInfoManager.RemoveAll();
 			List<IMapObjectOfTowardPoint> chargeStationInfos = rMapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge);

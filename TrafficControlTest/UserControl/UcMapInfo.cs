@@ -15,6 +15,7 @@ namespace TrafficControlTest.UserControl
 	public partial class UcMapInfo : System.Windows.Forms.UserControl
 	{
 		private IMapManager rMapManager = null;
+		private IMapManagerUpdater rMapManagerUpdater = null;
 
 		public UcMapInfo()
 		{
@@ -26,6 +27,17 @@ namespace TrafficControlTest.UserControl
 			rMapManager = MapManager;
 			SubscribeEvent_IMapManager(rMapManager);
 		}
+		public void Set(IMapManagerUpdater MapManagerUpdater)
+		{
+			UnsubscribeEvent_IMapManagerUpdater(rMapManagerUpdater);
+			rMapManagerUpdater = MapManagerUpdater;
+			SubscribeEvent_IMapManagerUpdater(rMapManagerUpdater);
+		}
+		public void Set(IMapManager MapManager, IMapManagerUpdater MapManagerUpdater)
+		{
+			Set(MapManager);
+			Set(MapManagerUpdater);
+		}
 		public new void BringToFront()
 		{
 			UpdateGui_UpdateMapOperationButtonEnable(false);
@@ -36,17 +48,31 @@ namespace TrafficControlTest.UserControl
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.MapChanged += HandleEvent_MapManagerMapChanged;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.MapChanged -= HandleEvent_MapManagerMapChanged;
 			}
 		}
-		private void HandleEvent_MapManagerLoadMapSuccessed(object sender, LoadMapSuccessedEventArgs e)
+		private void SubscribeEvent_IMapManagerUpdater(IMapManagerUpdater MapManagerUpdater)
+		{
+			if (MapManagerUpdater != null)
+			{
+				// do nothing ...
+			}
+		}
+		private void UnsubscribeEvent_IMapManagerUpdater(IMapManagerUpdater MapManagerUpdater)
+		{
+			if (MapManagerUpdater != null)
+			{
+				// do nothing ...
+			}
+		}
+		private void HandleEvent_MapManagerMapChanged(object sender, MapChangedEventArgs e)
 		{
 			lblMapFileName.InvokeIfNecessary(() =>
 			{
@@ -142,7 +168,7 @@ namespace TrafficControlTest.UserControl
 					ofd.Multiselect = false;
 					if (ofd.ShowDialog() == DialogResult.OK)
 					{
-						rMapManager.LoadMap(ofd.FileName);
+						rMapManagerUpdater.LoadMap(ofd.FileName);
 					}
 				}
 
@@ -159,7 +185,7 @@ namespace TrafficControlTest.UserControl
 			{
 				if (!string.IsNullOrEmpty(rMapManager.mCurrentMapFileName))
 				{
-					rMapManager.SynchronizeMapToOnlineVehicles(rMapManager.mCurrentMapFileName);
+					rMapManagerUpdater.SynchronizeMapToOnlineVehicles(rMapManager.mCurrentMapFileName);
 				}
 				UpdateGui_UpdateMapOperationButtonEnable(false);
 			}

@@ -136,7 +136,10 @@
     <Compile Include="Module\Log\ImportantEventRecorder.cs" />
     <Compile Include="Module\Log\LogExporter.cs" />
     <Compile Include="Module\Log\LogRecorder.cs" />
+    <Compile Include="Module\Map\IMapFileManagerUpdater.cs" />
+    <Compile Include="Module\Map\IMapManagerUpdater.cs" />
     <Compile Include="Module\Map\MapFileManager.cs" />
+    <Compile Include="Module\Map\MapFileManagerUpdater.cs" />
     <Compile Include="Module\Map\MapManager.cs" />
     <Compile Include="Module\Account\IAccessControl.cs" />
     <Compile Include="Module\Account\IAccount.cs" />
@@ -160,6 +163,7 @@
     <Compile Include="Module\InterveneCommand\IVehicleControlHandler.cs" />
     <Compile Include="Module\InterveneCommand\IVehicleControlManager.cs" />
     <Compile Include="Module\InterveneCommand\IVehicleControlUpdater.cs" />
+    <Compile Include="Module\Map\MapManagerUpdater.cs" />
     <Compile Include="Module\Mission\DockMissionAnalyzer.cs" />
     <Compile Include="Module\Mission\GotoMissionAnalyzer.cs" />
     <Compile Include="Module\Mission\GotoPointMissionAnalyzer.cs" />

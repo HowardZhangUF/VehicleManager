@@ -61,14 +61,14 @@ namespace TrafficControlTest.Module.AutomaticDoor
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed += HandleEvent_IMapManagerLoadMapSuccessed;
+				MapManager.MapChanged += HandleEvent_IMapManagerMapChanged;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed -= HandleEvent_IMapManagerLoadMapSuccessed;
+				MapManager.MapChanged -= HandleEvent_IMapManagerMapChanged;
 			}
 		}
 		private void SubscribeEvent_IAutomaticDoorCommunicator(IAutomaticDoorCommunicator AutomaticDoorCommunicator)
@@ -87,7 +87,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 				AutomaticDoorCommunicator.SentData -= HandleEvent_IAutomaticDoorCommunicatorSentData;
 			}
 		}
-		private void HandleEvent_IMapManagerLoadMapSuccessed(object sender, LoadMapSuccessedEventArgs e)
+		private void HandleEvent_IMapManagerMapChanged(object sender, MapChangedEventArgs e)
 		{
 			rAutomaticDoorInfoManager.RemoveAll();
 			List<IMapObjectOfRectangle> automaticDoorInfos = rMapManager.GetRectangleMapObjects(TypeOfMapObjectOfRectangle.AutomaticDoor);

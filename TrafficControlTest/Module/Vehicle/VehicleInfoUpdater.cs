@@ -1,9 +1,7 @@
 ﻿using SerialData;
 using Serialization;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
@@ -83,6 +81,7 @@ namespace TrafficControlTest.Module.Vehicle
 		{
 			if (VehicleInfoManager != null)
 			{
+				VehicleInfoManager.ItemAdded += HandleEvent_VehicleInfoManagerItemAdded;
 				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
@@ -90,6 +89,7 @@ namespace TrafficControlTest.Module.Vehicle
 		{
 			if (VehicleInfoManager != null)
 			{
+				VehicleInfoManager.ItemAdded -= HandleEvent_VehicleInfoManagerItemAdded;
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
@@ -121,6 +121,21 @@ namespace TrafficControlTest.Module.Vehicle
 					else if (Args.Data is RequestMapList && (Args.Data as RequestMapList).Response != null)
 					{
 						UpdateIVehicleInfo(Args.IpPort, (Args.Data as RequestMapList).Response);
+					}
+					// 當收到「上傳地圖檔」的回覆，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
+					else if (Args.Data is UploadMapToAGV)
+					{
+						rVehicleCommunicator.SendDataOfRequestMapList(Args.IpPort);
+					}
+					// 當收到「改變當前地圖」的回覆，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
+					else if (Args.Data is ChangeMap)
+					{
+						rVehicleCommunicator.SendDataOfRequestMapList(Args.IpPort);
+					}
+					// 當收到「讀取地圖」的事件，向其發送「取得當前地圖清單」的請求，以取得最新的該車地圖資訊
+					else if (Args.Data is LoadMap)
+					{
+						rVehicleCommunicator.SendDataOfRequestMapList(Args.IpPort);
 					}
 				}
 			}
@@ -157,6 +172,11 @@ namespace TrafficControlTest.Module.Vehicle
 						break;
 				}
 			}
+		}
+		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
+		{
+			// 當有車連線時，向其發送「取得當前地圖清單」的請求
+			rVehicleCommunicator.SendDataOfRequestMapList(Args.Item.mIpPort);
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{

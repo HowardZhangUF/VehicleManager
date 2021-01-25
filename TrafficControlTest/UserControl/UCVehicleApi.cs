@@ -244,14 +244,14 @@ namespace TrafficControlTest.UserControl
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed += HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.MapChanged += HandleEvent_MapManagerMapChanged;
 			}
 		}
 		private void UnsubscribeEvent_IMapManager(IMapManager MapManager)
 		{
 			if (MapManager != null)
 			{
-				MapManager.LoadMapSuccessed -= HandleEvent_MapManagerLoadMapSuccessed;
+				MapManager.MapChanged -= HandleEvent_MapManagerMapChanged;
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
@@ -274,15 +274,22 @@ namespace TrafficControlTest.UserControl
 		{
 			UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
 		}
-		private void HandleEvent_MapManagerLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
+		private void HandleEvent_MapManagerMapChanged(object Sender, MapChangedEventArgs Args)
 		{
 			UpdateGoalNameList(rMapManager.mTowardPointMapObjects.Select(o => o.mName).ToArray());
 		}
 		private void btn_Click(object sender, EventArgs e)
 		{
-			if (cbVehicleNameList.SelectedItem == null)
+			try
 			{
-				CustomMessageBox.OutputBox("You Have to Choose \"Vehicle\" First!");
+				if (cbVehicleNameList.SelectedItem == null)
+				{
+					CustomMessageBox.OutputBox("You Have to Choose \"Vehicle\" First!");
+				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleGoto_Click(object sender, EventArgs e)

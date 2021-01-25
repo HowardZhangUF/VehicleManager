@@ -41,7 +41,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			ucMap1.SetStyleFileName("Style.ini");
 			ucMap1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfICollisionEventManager());
-			ucMapInfo1.Set(mCore.GetReferenceOfIMapManager());
+			ucMapInfo1.Set(mCore.GetReferenceOfIMapManager(), mCore.GetReferenceOfIMapManagerUpdater());
 			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleControlManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucAutomaticDoor1.Set(mCore.GetReferenceOfAutomaticDoorInfoManager(), mCore.GetReferenceOfIAutomaticDoorControlManager());

@@ -400,7 +400,7 @@ namespace TrafficControlTest.Module.Configure
 				"儲存地圖檔案的資料夾路徑",
 				"储存地图档案的资料夹路径"));
 			defaultConfigs.Add(new Configuration(
-				"MapManager",
+				"MapManagerUpdater",
 				"AutoLoadMap",
 				ConfigurationType.Bool,
 				ConfigurationLevel.Normal,
