@@ -61,6 +61,7 @@
 			this.pnlTitle.Name = "pnlTitle";
 			this.pnlTitle.Size = new System.Drawing.Size(800, 40);
 			this.pnlTitle.TabIndex = 0;
+			this.pnlTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ctrlTitle_MouseDown);
 			// 
 			// label2
 			// 
@@ -73,6 +74,7 @@
 			this.label2.TabIndex = 3;
 			this.label2.Text = "Vehicle Simulator";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ctrlTitle_MouseDown);
 			// 
 			// lblIcon
 			// 
@@ -85,6 +87,7 @@
 			this.lblIcon.Size = new System.Drawing.Size(40, 40);
 			this.lblIcon.TabIndex = 2;
 			this.lblIcon.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.lblIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ctrlTitle_MouseDown);
 			// 
 			// btnMinimizeProgram
 			// 

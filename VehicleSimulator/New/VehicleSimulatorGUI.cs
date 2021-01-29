@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,6 +30,11 @@ namespace VehicleSimulator.New
 			InitializeComponent();
 		}
 
+		[DllImport("user32.dll")]
+		public static extern int SendMessage(IntPtr a, int msg, int wParam, int lParam);
+		[DllImport("user32.dll")]
+		public static extern bool ReleaseCapture();
+
 		protected void Constructor()
 		{
 			UnsubscribeEvent_SimulatorProcessContainer(mCore);
@@ -52,6 +58,15 @@ namespace VehicleSimulator.New
 		private void VehicleSimulatorGUI_FormClosing(object sender, FormClosingEventArgs e)
 		{
 
+		}
+		private void ctrlTitle_MouseDown(object sender, MouseEventArgs e)
+		{
+			bool flag = e.Button == MouseButtons.Left;
+			if (flag)
+			{
+				ReleaseCapture();
+				SendMessage(Handle, 0x112, 0xf012, 0);
+			}
 		}
 		private void btnMinimizeProgram_Click(object sender, EventArgs e)
 		{
