@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="New\ESimulatorStatus.cs" />
+    <Compile Include="New\ForbiddenRectangle.cs" />
     <Compile Include="New\HostCommunicator.cs" />
     <Compile Include="New\HostMessageHandler.cs" />
     <Compile Include="New\IHostCommunicator.cs" />
@@ -62,8 +63,12 @@
     <Compile Include="New\ISimulatorControl.cs" />
     <Compile Include="New\ISimulatorInfo.cs" />
     <Compile Include="New\ISimulatorInfoReporter.cs" />
+    <Compile Include="New\MapData.cs" />
     <Compile Include="New\MoveRequest.cs" />
+    <Compile Include="New\ObstaclePoint.cs" />
+    <Compile Include="New\OneWayRectangle.cs" />
     <Compile Include="New\Point.cs" />
+    <Compile Include="New\Rectangle.cs" />
     <Compile Include="New\SimulatorAddedEventArgs.cs" />
     <Compile Include="New\SimulatorControl.cs" />
     <Compile Include="New\SimulatorInfo.cs" />
