@@ -19,7 +19,6 @@ using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 using static TrafficControlTest.Library.Library;
 
 namespace TrafficControlTest.Process
@@ -30,7 +29,6 @@ namespace TrafficControlTest.Process
 		public event EventHandler<DestructProgressChangedEventArgs> DestructProgressChanged;
 
 		public bool mIsAnyUserLoggedIn { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser)); } }
-		public string mCurrentLoggedInUserName { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser) ? mAccessControl.mCurrentUser : string.Empty); } }
 
 		private bool mIsAllSystemStopped
 		{
@@ -183,10 +181,6 @@ namespace TrafficControlTest.Process
 		{
 			return mLogExporter;
 		}
-		public IImportantEventRecorder GetReferenceOfIImportantEventRecorder()
-		{
-			return mImportantEventRecorder;
-		}
 		public IDebugMessageHandler GetReferenceOfIDebugMessageHandler()
 		{
 			return mDebugMessageHandler;
@@ -211,33 +205,13 @@ namespace TrafficControlTest.Process
 		{
 			return mCollisionEventManager;
 		}
-		public ICollisionEventDetector GetReferenceOfICollisionEventDetector()
-		{
-			return mCollisionEventDetector;
-		}
 		public IVehicleControlManager GetReferenceOfIVehicleControlManager()
 		{
 			return mVehicleControlManager;
 		}
-		public IVehicleControlHandler GetReferenceOfIVehicleControlHandler()
-		{
-			return mVehicleControlHandler;
-		}
 		public IMissionStateManager GetReferenceOfIMissionStateManager()
 		{
 			return mMissionStateManager;
-		}
-		public IHostCommunicator GetReferenceOfIHostCommunicator()
-		{
-			return mHostCommunicator;
-		}
-		public IMissionDispatcher GetReferenceOfIMissionDispatcher()
-		{
-			return mMissionDispatcher;
-		}
-		public IMissionUpdater GetReferenceOfIMissionUpdater()
-		{
-			return mMissionUpdater;
 		}
 		public IMapFileManager GetReferenceOfIMapFileManager()
 		{
@@ -278,10 +252,6 @@ namespace TrafficControlTest.Process
 		public bool AccessControlLogOut()
 		{
 			return mAccessControl.LogOut();
-		}
-		public int GetCountOfOnlineVehicle()
-		{
-			return mVehicleInfoManager.mCount;
 		}
 
 		private void Constructor()
