@@ -156,6 +156,28 @@ namespace TrafficControlTest.Module.Configure
 				"記錄自走車歷史記錄的時間間隔",
 				"记录自走车历史记录的时间间隔"));
 			defaultConfigs.Add(new Configuration(
+				"DebugMessageHandler",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"300",
+				"100",
+				"10000",
+				"Time Period of Raise Event of Debug Message",
+				"拋出偵錯訊息事件的時間間隔",
+				"抛出侦错讯息事件的时间间隔"));
+			defaultConfigs.Add(new Configuration(
+				"SignificantMessageHandler",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"300",
+				"100",
+				"10000",
+				"Time Period of Raise Event of Significant Message",
+				"拋出重要訊息事件(供使用者監看)的時間間隔",
+				"抛出重要讯息事件(供使用者监看)的时间间隔"));
+			defaultConfigs.Add(new Configuration(
 				"TimeElapseDetector",
 				"TimePeriod",
 				ConfigurationType.Int,

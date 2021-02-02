@@ -53,8 +53,8 @@ namespace TrafficControlTest.UserInterface
 			ucVehicleManualControl1.Set(mCore.GetReferenceOfIVehicleControlManager(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMapManager());
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleControlManager(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());
 			ucCycleMission1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfCycleMissionGenerator());
-			ucSimpleLog1.Set(mCore);
-			ucConsoleLog1.Set(mCore);
+			ucSimpleLog1.Set(mCore.GetReferenceOfISignificantMessageHandler());
+			ucConsoleLog1.Set(mCore.GetReferenceOfIDebugMessageHandler());
 			ucSystemOverview1.Set(mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfITimeElapseDetector());
 			UpdateGui_PnlTop_UpdateButtonText();
 			UpdateGui_UpdateUsableControlAmount(AccountRank.None);

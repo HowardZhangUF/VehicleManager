@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Process;
+using TrafficControlTest.Module.Log;
 
 namespace TrafficControlTest.UserControl
 {
@@ -25,7 +26,7 @@ namespace TrafficControlTest.UserControl
 		public Color TableExceptionRowBackColor { get; set; } = Color.FromArgb(178, 34, 34);
 		public Color TableRowForeColor { get; set; } = Color.White;
 
-		private VehicleManagerProcess rVehicleManagerProcess = null;
+		private IDebugMessageHandler rDebugMessageHandler = null;
 		private object mLockOfDgvConsoleLog = new object();
 
 		public UcConsoleLog()
@@ -33,28 +34,25 @@ namespace TrafficControlTest.UserControl
 			InitializeComponent();
 			UpdateGui_InitializeDgvConsoleLog();
 		}
-		public void Set(VehicleManagerProcess VehicleManagerProcess)
+		public void Set(IDebugMessageHandler DebugMessageHandler)
 		{
-			UnsubscribeEvent_VehicleManagerProcess(rVehicleManagerProcess);
-			rVehicleManagerProcess = VehicleManagerProcess;
-			SubscribeEvent_VehicleManagerProcess(rVehicleManagerProcess);
+			UnsubscribeEvent_DebugMessageHandler(rDebugMessageHandler);
+			rDebugMessageHandler = DebugMessageHandler;
+			SubscribeEvent_DebugMessageHandler(rDebugMessageHandler);
 		}
 		public void AddLog(string Date, string Category, string SubCategory, string Message)
 		{
-			lock (mLockOfDgvConsoleLog)
+			if (OrderAscending)
 			{
-				if (OrderAscending)
-				{
-					UpdateGui_InsertRow(dgvConsoleLog.RowCount, Date, Category, SubCategory, Message);
-					UpdateGui_RefreshDgvConsoleLogRowBackColor(dgvConsoleLog.RowCount - 1);
-				}
-				else
-				{
-					UpdateGui_InsertRow(0, Date, Category, SubCategory, Message);
-					UpdateGui_RefreshDgvConsoleLogRowBackColor(0);
-				}
-				UpdateGui_AdjustRowCount(Maximum);
+				UpdateGui_InsertRow(dgvConsoleLog.RowCount, Date, Category, SubCategory, Message);
+				UpdateGui_RefreshDgvConsoleLogRowBackColor(dgvConsoleLog.RowCount - 1);
 			}
+			else
+			{
+				UpdateGui_InsertRow(0, Date, Category, SubCategory, Message);
+				UpdateGui_RefreshDgvConsoleLogRowBackColor(0);
+			}
+			UpdateGui_AdjustRowCount(Maximum);
 		}
 		public void ClearLog()
 		{
@@ -64,21 +62,21 @@ namespace TrafficControlTest.UserControl
 			}
 		}
 
-		private void SubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
+		private void SubscribeEvent_DebugMessageHandler(IDebugMessageHandler DebugMessageHandler)
 		{
-			if (VehicleManagerProcess != null)
+			if (DebugMessageHandler != null)
 			{
-				VehicleManagerProcess.DebugMessage += HandleEvent_VehicleManagerProcessDebugMessage;
+				DebugMessageHandler.DebugMessage += HandleEvent_DebugMessageHandlerDebugMessage;
 			}
 		}
-		private void UnsubscribeEvent_VehicleManagerProcess(VehicleManagerProcess VehicleManagerProcess)
+		private void UnsubscribeEvent_DebugMessageHandler(IDebugMessageHandler DebugMessageHandler)
 		{
-			if (VehicleManagerProcess != null)
+			if (DebugMessageHandler != null)
 			{
-				VehicleManagerProcess.DebugMessage -= HandleEvent_VehicleManagerProcessDebugMessage;
+				DebugMessageHandler.DebugMessage -= HandleEvent_DebugMessageHandlerDebugMessage;
 			}
 		}
-		private void HandleEvent_VehicleManagerProcessDebugMessage(object Sender, DebugMessageEventArgs Args)
+		private void HandleEvent_DebugMessageHandlerDebugMessage(object Sender, DebugMessageEventArgs Args)
 		{
 			AddLog(Args.OccurTime, Args.Category, Args.SubCategory, Args.Message);
 		}

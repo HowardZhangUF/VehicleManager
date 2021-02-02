@@ -130,12 +130,16 @@
     <Compile Include="Module\General\ISystemWithConfig.cs" />
     <Compile Include="Module\General\ISystemWithLoopTask.cs" />
     <Compile Include="Module\General\TimeElapseDetector.cs" />
+    <Compile Include="Module\Log\DebugMessageHandler.cs" />
     <Compile Include="Module\Log\EventRecorder.cs" />
     <Compile Include="Module\CommunicationHost\HostCommunicator.cs" />
+    <Compile Include="Module\Log\IDebugMessageHandler.cs" />
     <Compile Include="Module\Log\ILogExporter.cs" />
     <Compile Include="Module\Log\ImportantEventRecorder.cs" />
+    <Compile Include="Module\Log\ISignificantMessageHandler.cs" />
     <Compile Include="Module\Log\LogExporter.cs" />
     <Compile Include="Module\Log\LogRecorder.cs" />
+    <Compile Include="Module\Log\SignificantMessageHandler.cs" />
     <Compile Include="Module\Map\IMapFileManagerUpdater.cs" />
     <Compile Include="Module\Map\IMapManagerUpdater.cs" />
     <Compile Include="Module\Map\MapFileManager.cs" />

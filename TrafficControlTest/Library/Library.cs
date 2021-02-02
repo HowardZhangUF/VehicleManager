@@ -419,6 +419,14 @@ namespace TrafficControlTest.Library
 		{
 			return new TimeElapseDetector();
 		}
+		public static IDebugMessageHandler GenerateIDebugMessageHandler()
+		{
+			return new DebugMessageHandler();
+		}
+		public static ISignificantMessageHandler GenerateISignificantMessageHandler()
+		{
+			return new SignificantMessageHandler();
+		}
 		#endregion
 
 		#region IPoint2D

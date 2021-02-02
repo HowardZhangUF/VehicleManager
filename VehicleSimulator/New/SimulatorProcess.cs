@@ -3,7 +3,6 @@ using System;
 using System.Threading.Tasks;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.NewCommunication;
-using TrafficControlTest.Process;
 
 namespace VehicleSimulator.New
 {
@@ -254,6 +253,22 @@ namespace VehicleSimulator.New
 		{
 			Console.WriteLine($"{OccurTime} [{Category}] [{SubCategory}] - {Message}");
 			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
+		}
+	}
+
+	public class DebugMessageEventArgs : EventArgs
+	{
+		public string OccurTime { get; private set; }
+		public string Category { get; private set; }
+		public string SubCategory { get; private set; }
+		public string Message { get; private set; }
+
+		public DebugMessageEventArgs(string OccurTime, string Category, string SubCategory, string Message) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.Category = Category;
+			this.SubCategory = SubCategory;
+			this.Message = Message;
 		}
 	}
 }

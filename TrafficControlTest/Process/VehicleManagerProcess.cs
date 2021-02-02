@@ -26,8 +26,6 @@ namespace TrafficControlTest.Process
 {
 	public class VehicleManagerProcess
 	{
-		public event EventHandler<DebugMessageEventArgs> DebugMessage;
-		public event EventHandler<SignificantEventEventArgs> SignificantEvent;
 		public event EventHandler<UserLogChangedEventArgs> AccessControlUserLogChanged;
 		public event EventHandler<DestructProgressChangedEventArgs> DestructProgressChanged;
 
@@ -51,6 +49,8 @@ namespace TrafficControlTest.Process
 		private ILogRecorder mLogRecorder = null;
 		private IEventRecorder mEventRecorder = null;
 		private IImportantEventRecorder mImportantEventRecorder = null;
+		private IDebugMessageHandler mDebugMessageHandler = null;
+		private ISignificantMessageHandler mSignificantMessageHandler = null;
 		private ITimeElapseDetector mTimeElapseDetector = null;
 		private ILogExporter mLogExporter = null;
 		private IAccountManager mAccountManager = null;
@@ -110,6 +110,8 @@ namespace TrafficControlTest.Process
 			mEventRecorder.Start();
 			mAccountManager.Read();
 			mImportantEventRecorder.Start();
+			mDebugMessageHandler.Start();
+			mSignificantMessageHandler.Start();
 			mTimeElapseDetector.Start();
 			mVehicleCommunicator.Start();
 			mVehicleCommunicator.StartListen();
@@ -140,6 +142,8 @@ namespace TrafficControlTest.Process
 			mVehicleCommunicator.StopListen();
 			mVehicleCommunicator.Stop();
 			mTimeElapseDetector.Stop();
+			mSignificantMessageHandler.Stop();
+			mDebugMessageHandler.Stop();
 			mImportantEventRecorder.Stop();
 			mAccountManager.Save();
 
@@ -182,6 +186,14 @@ namespace TrafficControlTest.Process
 		public IImportantEventRecorder GetReferenceOfIImportantEventRecorder()
 		{
 			return mImportantEventRecorder;
+		}
+		public IDebugMessageHandler GetReferenceOfIDebugMessageHandler()
+		{
+			return mDebugMessageHandler;
+		}
+		public ISignificantMessageHandler GetReferenceOfISignificantMessageHandler()
+		{
+			return mSignificantMessageHandler;
 		}
 		public ITimeElapseDetector GetReferenceOfITimeElapseDetector()
 		{
@@ -292,6 +304,14 @@ namespace TrafficControlTest.Process
 			mLogExporter.AddDirectoryPaths(new List<string> { ".\\Database", ".\\Map", ".\\Exception", ".\\VMLog" });
 			mLogExporter.AddFilePaths(new List<string> { ".\\Application.config" });
 			SubscribeEvent_ILogExporter(mLogExporter);
+
+			UnsubscribeEvent_IDebugMessageHandler(mDebugMessageHandler);
+			mDebugMessageHandler = GenerateIDebugMessageHandler();
+			SubscribeEvent_IDebugMessageHandler(mDebugMessageHandler);
+
+			UnsubscribeEvent_ISignificantMessageHandler(mSignificantMessageHandler);
+			mSignificantMessageHandler = GenerateISignificantMessageHandler();
+			SubscribeEvent_ISignificantMessageHandler(mSignificantMessageHandler);
 
 			UnsubscribeEvent_ITimeElapseDetecotr(mTimeElapseDetector);
 			mTimeElapseDetector = GenerateITimeElapseDetector();
@@ -435,6 +455,8 @@ namespace TrafficControlTest.Process
 
 			mCollectionOfISystemWithConfig.Add(mLogExporter);
 			mCollectionOfISystemWithConfig.Add(mImportantEventRecorder);
+			mCollectionOfISystemWithConfig.Add(mDebugMessageHandler);
+			mCollectionOfISystemWithConfig.Add(mSignificantMessageHandler);
 			mCollectionOfISystemWithConfig.Add(mTimeElapseDetector);
 			mCollectionOfISystemWithConfig.Add(mVehicleCommunicator);
 			mCollectionOfISystemWithConfig.Add(mCollisionEventDetector);
@@ -453,6 +475,8 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithConfig.Add(mChargeStationInfoManagerUpdater);
 
 			mCollectionOfISystemWithLoopTask.Add(mImportantEventRecorder);
+			mCollectionOfISystemWithLoopTask.Add(mDebugMessageHandler);
+			mCollectionOfISystemWithLoopTask.Add(mSignificantMessageHandler);
 			mCollectionOfISystemWithLoopTask.Add(mTimeElapseDetector);
 			mCollectionOfISystemWithLoopTask.Add(mVehicleCommunicator);
 			mCollectionOfISystemWithLoopTask.Add(mCollisionEventDetector);
@@ -567,6 +591,12 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
 
+			UnsubscribeEvent_ISignificantMessageHandler(mSignificantMessageHandler);
+			mSignificantMessageHandler = null;
+
+			UnsubscribeEvent_IDebugMessageHandler(mDebugMessageHandler);
+			mDebugMessageHandler = null;
+
 			UnsubscribeEvent_ILogExporter(mLogExporter);
 			mLogExporter = null;
 
@@ -670,6 +700,42 @@ namespace TrafficControlTest.Process
 				LogExporter.ConfigUpdated -= HandleEvent_LogExporterConfigUpdated;
 				LogExporter.ExportStarted -= HandleEvent_LogExporterExportStarted;
 				LogExporter.ExportCompleted -= HandleEvent_LogExporterExportCompleted;
+			}
+		}
+		private void SubscribeEvent_IDebugMessageHandler(IDebugMessageHandler DebugMessageHandler)
+		{
+			if (DebugMessageHandler != null)
+			{
+				DebugMessageHandler.SystemStatusChanged += HandleEvent_DebugMessageHandlerSystemStatusChanged;
+				DebugMessageHandler.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				DebugMessageHandler.ConfigUpdated += HandleEvent_DebugMessageHandlerConfigUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IDebugMessageHandler(IDebugMessageHandler DebugMessageHandler)
+		{
+			if (DebugMessageHandler != null)
+			{
+				DebugMessageHandler.SystemStatusChanged -= HandleEvent_DebugMessageHandlerSystemStatusChanged;
+				DebugMessageHandler.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				DebugMessageHandler.ConfigUpdated -= HandleEvent_DebugMessageHandlerConfigUpdated;
+			}
+		}
+		private void SubscribeEvent_ISignificantMessageHandler(ISignificantMessageHandler SignificantMessageHandler)
+		{
+			if (SignificantMessageHandler != null)
+			{
+				SignificantMessageHandler.SystemStatusChanged += HandleEvent_SignificantMessageHandlerSystemStatusChanged;
+				SignificantMessageHandler.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				SignificantMessageHandler.ConfigUpdated += HandleEvent_SignificantMessageHandlerConfigUpdated;
+			}
+		}
+		private void UnsubscribeEvent_ISignificantMessageHandler(ISignificantMessageHandler SignificantMessageHandler)
+		{
+			if (SignificantMessageHandler != null)
+			{
+				SignificantMessageHandler.SystemStatusChanged -= HandleEvent_SignificantMessageHandlerSystemStatusChanged;
+				SignificantMessageHandler.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				SignificantMessageHandler.ConfigUpdated -= HandleEvent_SignificantMessageHandlerConfigUpdated;
 			}
 		}
 		private void SubscribeEvent_ITimeElapseDetecotr(ITimeElapseDetector TimeElapseDetector)
@@ -1300,32 +1366,6 @@ namespace TrafficControlTest.Process
 				ChargeStationInfoManagerUpdater.ConfigUpdated -= HandleEvent_ChargeStationInfoManagerUpdaterConfigUpdated;
 			}
 		}
-		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
-		{
-			if (Sync)
-			{
-				DebugMessage?.Invoke(this, new DebugMessageEventArgs(OccurTime, Category, SubCategory, Message));
-			}
-			else
-			{
-				Task.Run(() => { DebugMessage?.Invoke(this, new DebugMessageEventArgs(OccurTime, Category, SubCategory, Message)); });
-			}
-		}
-		protected virtual void RaiseEvent_SignificantEvent(DateTime OccurTime, SignificantEventCategory Category, string Info, bool Sync = true)
-		{
-			RaiseEvent_SignificantEvent(OccurTime.ToString(TIME_FORMAT), Category.ToString(), Info, Sync);
-		}
-		protected virtual void RaiseEvent_SignificantEvent(string OccurTime, string Category, string Info, bool Sync = true)
-		{
-			if (Sync)
-			{
-				SignificantEvent?.Invoke(this, new SignificantEventEventArgs(OccurTime, Category, Info));
-			}
-			else
-			{
-				Task.Run(() => { SignificantEvent?.Invoke(this, new SignificantEventEventArgs(OccurTime, Category, Info)); });
-			}
-		}
 		protected virtual void RaiseEvent_AccessControlUserLogChanged(DateTime OccurTime, string UserName, AccountRank UserRank, bool IsLogin, bool Sync = true)
 		{
 			if (Sync)
@@ -1383,6 +1423,22 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_LogExporterExportCompleted(object Sender, LogExportedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "LogExporter", "ExportCompleted", $"Directory: {Args.DirectoryPath}, Items: {string.Join(", ", Args.Items)}");
+		}
+		private void HandleEvent_DebugMessageHandlerSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "DebugMessageHandler", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
+		}
+		private void HandleEvent_DebugMessageHandlerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "DebugMessageHandler", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+		}
+		private void HandleEvent_SignificantMessageHandlerSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "SignificantMessageHandler", "SystemStatusChanged", $"SystemStatus: {Args.SystemNewStatus.ToString()}");
+		}
+		private void HandleEvent_SignificantMessageHandlerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "SignificantMessageHandler", "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 		}
 		private void HandleEvent_TimeElapseDetectorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
 		{
@@ -1456,12 +1512,12 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleInfoManager", "ItemAdded", $"Name: {Args.ItemName}, Info: {Args.Item.ToString()}");
-			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Args.ItemName} ] Connected");
+			HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Args.ItemName} ] Connected");
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehicleInfoManager", "ItemRemoved", $"Name: {Args.ItemName}, Info: {Args.Item.ToString()}");
-			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Args.ItemName} ] Disconnected");
+			HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.VehicleSystem, $"Vehicle [ {Args.ItemName} ] Disconnected");
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
@@ -1554,7 +1610,7 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MissionStateManager", "ItemAdded", $"MissionID: {Args.ItemName}, Info: {Args.Item.ToString()}");
-			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Created");
+			HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Created");
 		}
 		private void HandleEvent_MissionStateManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
@@ -1565,11 +1621,11 @@ namespace TrafficControlTest.Process
 			HandleDebugMessage(Args.OccurTime, "MissionStateManager", "ItemUpdated", $"MissionID: {Args.ItemName}, StatusName:{Args.StatusName}, Info: {Args.Item.ToString()}");
 			if (Args.StatusName.Contains("ExecutionStartTimestamp"))
 			{
-				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Started by Vehicle [ {Args.Item.mExecutorId} ]");
+				HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Started by Vehicle [ {Args.Item.mExecutorId} ]");
 			}
 			else if (Args.StatusName.Contains("ExecutionStopTimestamp"))
 			{
-				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Completed [ {Args.Item.mExecuteState.ToString().Replace("Execute", string.Empty)} ] by Vehicle [ {Args.Item.mExecutorId} ]");
+				HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.MissionSystem, $"Mission [ {Args.Item.GetMissionId()} ] Completed [ {Args.Item.mExecuteState.ToString().Replace("Execute", string.Empty)} ] by Vehicle [ {Args.Item.mExecutorId} ]");
 			}
 		}
 		private void HandleEvent_HostCommunicatorSystemStatusChanged(object Sender, SystemStatusChangedEventArgs Args)
@@ -1589,22 +1645,22 @@ namespace TrafficControlTest.Process
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, IsConnected: {Args.IsConnected}");
 			if (Args.IsConnected)
 			{
-				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Connected");
+				HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Connected");
 			}
 			else
 			{
-				RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Disconnected");
+				HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.HostSystem, $"Host [ {Args.IpPort} ] Disconnected");
 			}
 		}
 		private void HandleEvent_HostCommunicatorSentData(object Sender, SentDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "SentData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
-			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {Args.IpPort} ] [ {Args.Data} ]");
+			HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.HostSystem, $"Sent Message [ {Args.IpPort} ] [ {Args.Data} ]");
 		}
 		private void HandleEvent_HostCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "HostCommunicator", "ReceivedData", $"IPPort: {Args.IpPort}, Data: {Args.Data}");
-			RaiseEvent_SignificantEvent(Args.OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {Args.IpPort} ] [ {Args.Data} ]");
+			HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.HostSystem, $"Received Message [ {Args.IpPort} ] [ {Args.Data} ]");
 		}
 		private void HandleEvent_HostMessageAnalyzerConfigUpdated(object Sender, ConfigUpdatedEventArgs Args)
 		{
@@ -1770,7 +1826,15 @@ namespace TrafficControlTest.Process
 		{
 			Console.WriteLine($"{OccurTime} [{Category}] [{SubCategory}] - {Message}");
 			mLogRecorder.RecordGeneralLog(OccurTime, Category, SubCategory, Message);
-			RaiseEvent_DebugMessage(OccurTime, Category, SubCategory, Message);
+			mDebugMessageHandler.AddDebugMessage(OccurTime, Category, SubCategory, Message);
+		}
+		private void HandleSignificantMessage(DateTime OccurTime, SignificantEventCategory Category, string Message)
+		{
+			HandleSignificantMessage(OccurTime.ToString(TIME_FORMAT), Category.ToString(), Message);
+		}
+		private void HandleSignificantMessage(string OccurTime, string Category, string Message)
+		{
+			mSignificantMessageHandler.AddSignificantMessage(OccurTime, Category, Message);
 		}
 		private int GetCurrentThreadClosingProgress()
 		{
@@ -1778,34 +1842,6 @@ namespace TrafficControlTest.Process
 		}
 	}
 
-	public class DebugMessageEventArgs : EventArgs
-	{
-		public string OccurTime { get; private set; }
-		public string Category { get; private set; }
-		public string SubCategory { get; private set; }
-		public string Message { get; private set; }
-
-		public DebugMessageEventArgs(string OccurTime, string Category, string SubCategory, string Message) : base()
-		{
-			this.OccurTime = OccurTime;
-			this.Category = Category;
-			this.SubCategory = SubCategory;
-			this.Message = Message;
-		}
-	}
-	public class SignificantEventEventArgs : EventArgs
-	{
-		public string OccurTime { get; private set; }
-		public string Category { get; private set; }
-		public string Info { get; private set; }
-
-		public SignificantEventEventArgs(string OccurTime, string Category, string Info) : base()
-		{
-			this.OccurTime = OccurTime;
-			this.Category = Category;
-			this.Info = Info;
-		}
-	}
 	public class DestructProgressChangedEventArgs : EventArgs
 	{
 		public DateTime OccurTime { get; private set; }
