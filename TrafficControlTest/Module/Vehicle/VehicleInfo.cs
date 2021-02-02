@@ -129,7 +129,7 @@ namespace TrafficControlTest.Module.Vehicle
 			Set(Name);
 			BeginUpdate();
 			UpdateTranslationVelocityMaximum(700.0f);
-			UpdateRotationVelocityMaximum(50.0f);
+			UpdateRotationVelocityMaximum(20.0f);
 			UpdateSafetyFrameWidth(700);
 			UpdateSafetyFrameHeight(700);
 			UpdateBufferFrameWidth(100);
@@ -458,14 +458,22 @@ namespace TrafficControlTest.Module.Vehicle
 				}
 			}
 
-			if (mRecordOfLocationCoordinate.Count > 1)
-			{
-				var curr = mRecordOfLocationCoordinate[mRecordOfLocationCoordinate.Count - 1];
-				var prev = mRecordOfLocationCoordinate[mRecordOfLocationCoordinate.Count - 2];
-				var translationVelocity = CalculateTranslationVelocity(curr, prev);
-				// 當「當前速度」大於「最高速的十分之一」時，判斷為正在移動。反之為靜止
-				UpdateIsTranslating(translationVelocity > mThresholdOfTranslating ? true : false);
-			}
+			// 在解析自走車資料時，齊資料都是從 Queue 中拿出收到的資料並更新此 VehicleInfo ，
+			// 但是更新的時間點並非是實際收到資料的時間點，所以在使用時間來計算速度/速率時，基本上都會有誤差
+			// 加上，自走車不動時，定位仍會有些許飄動，導致座標飄動，而也有可能因此誤判自走車開始移動/旋轉，所以暫時將 IsTranslating/IsRotating 的功能關閉。
+			//if (mRecordOfLocationCoordinate.Count > 1)
+			//{
+			//	var curr = mRecordOfLocationCoordinate[mRecordOfLocationCoordinate.Count - 1];
+			//	var prev = mRecordOfLocationCoordinate[mRecordOfLocationCoordinate.Count - 2];
+
+			//	// 時間差異必須大於 90 ms
+			//	if (curr.mTimestamp.Subtract(prev.mTimestamp).TotalMilliseconds > 90.0f)
+			//	{
+			//		var translationVelocity = CalculateTranslationVelocity(curr, prev);
+			//		// 當「當前速度」大於「最高速的十分之一」時，判斷為正在移動。反之為靜止
+			//		UpdateIsTranslating(translationVelocity > mThresholdOfTranslating ? true : false);
+			//	}
+			//}
 		}
 		public void UpdateLocationToward(double LocationToward)
 		{
@@ -482,14 +490,22 @@ namespace TrafficControlTest.Module.Vehicle
 				}
 			}
 
-			if (mRecordOfLocationToward.Count > 1)
-			{
-				var curr = mRecordOfLocationToward[mRecordOfLocationToward.Count - 1];
-				var prev = mRecordOfLocationToward[mRecordOfLocationToward.Count - 2];
-				var rotationVelocity = CalculateRotationVelocity(curr, prev);
-				// 當「當前速度」大於「最高速的十分之一」時，判斷為正在移動。反之為靜止
-				UpdateIsRotating(rotationVelocity > mThresholdOfRotating ? true : false);
-			}
+			// 在解析自走車資料時，齊資料都是從 Queue 中拿出收到的資料並更新此 VehicleInfo ，
+			// 但是更新的時間點並非是實際收到資料的時間點，所以在使用時間來計算速度/速率時，基本上都會有誤差
+			// 加上，自走車不動時，定位仍會有些許飄動，導致座標飄動，而也有可能因此誤判自走車開始移動/旋轉，所以暫時將 IsTranslating/IsRotating 的功能關閉。
+			//if (mRecordOfLocationToward.Count > 1)
+			//{
+			//	var curr = mRecordOfLocationToward[mRecordOfLocationToward.Count - 1];
+			//	var prev = mRecordOfLocationToward[mRecordOfLocationToward.Count - 2];
+
+			//	// 時間差異必須大於 90 ms
+			//	if (curr.mTimestamp.Subtract(prev.mTimestamp).TotalMilliseconds > 90.0f)
+			//	{
+			//		var rotationVelocity = CalculateRotationVelocity(curr, prev);
+			//		// 當「當前速度」大於「最高速的十分之一」時，判斷為正在移動。反之為靜止
+			//		UpdateIsRotating(rotationVelocity > mThresholdOfRotating ? true : false);
+			//	}
+			//}
 		}
 		public void UpdateCurrentTarget(string CurrentTarget)
 		{

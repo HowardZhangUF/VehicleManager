@@ -26,10 +26,10 @@ namespace VehicleSimulator.New
 		}
 		public void Start()
 		{
-			mSimulatorControl.SetConfig("TimePeriod", "200");
+			mSimulatorControl.SetConfig("TimePeriod", "50");
 			mHostCommunicator.SetConfig("TimePeriod", "100");
 			mHostCommunicator.SetConfig("RemoteIpPort", "127.0.0.1:8000");
-			mSimulatorInfoReporter.SetConfig("TimePeriod", "500");
+			mSimulatorInfoReporter.SetConfig("TimePeriod", "100");
 
 			mHostCommunicator.Start();
 			mHostCommunicator.Connect();
