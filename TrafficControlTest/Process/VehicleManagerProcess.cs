@@ -573,6 +573,8 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IConfigurator(mConfigurator);
 			mConfigurator = null;
 
+			UnsubscribeEvent_Exception();
+
 			mAccountManager = null;
 			mEventRecorder = null;
 			mLogRecorder = null;
@@ -615,26 +617,13 @@ namespace TrafficControlTest.Process
 		}
 		private void SubscribeEvent_Exception()
 		{
-			System.Windows.Forms.Application.ThreadException += (sender, e) =>
-			{
-				string directory = ".\\Exception";
-				string file = $".\\Exception\\ExceptionThread{DateTime.Now.ToString("yyyyMMdd")}.txt";
-				string message = $"{DateTime.Now.ToString(TIME_FORMAT)} - [ThreadException] - {e.Exception.ToString()}\r\n";
-
-				if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
-				if (!System.IO.File.Exists(file)) System.IO.File.Create(file).Close();
-				System.IO.File.AppendAllText(file, message);
-			};
-			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-			{
-				string directory = ".\\Exception";
-				string file = $".\\Exception\\ExceptionUnhandled{DateTime.Now.ToString("yyyyMMdd")}.txt";
-				string message = $"{DateTime.Now.ToString(TIME_FORMAT)} - [UnhandledException] - {e.ExceptionObject.ToString()}\r\n";
-
-				if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
-				if (!System.IO.File.Exists(file)) System.IO.File.Create(file).Close();
-				System.IO.File.AppendAllText(file, message);
-			};
+			System.Windows.Forms.Application.ThreadException += ExceptionHandling.HandleThreadException;
+			AppDomain.CurrentDomain.UnhandledException += ExceptionHandling.HandleUnhandledException;
+		}
+		private void UnsubscribeEvent_Exception()
+		{
+			System.Windows.Forms.Application.ThreadException -= ExceptionHandling.HandleThreadException;
+			AppDomain.CurrentDomain.UnhandledException -= ExceptionHandling.HandleUnhandledException;
 		}
 		private void SubscribeEvent_IConfigurator(IConfigurator Configurator)
 		{
