@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Vehicle;
@@ -127,7 +128,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 		}
 		private void RemoveRelatedVehicleControl(ICollisionPair CollisionPair)
 		{
-			if (rVehicleControlManager.IsExistByCauseId(CollisionPair.mName))
+			while (rVehicleControlManager.IsExistByCauseId(CollisionPair.mName))
 			{
 				string controlName = rVehicleControlManager.GetItemByCauseId(CollisionPair.mName).mName;
 				if (rVehicleControlManager.GetItem(controlName).mSendState == SendState.Unsend)
@@ -213,7 +214,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 		}
 		private bool IsIVehicleControlAlreadyExistedInManager(IVehicleControl VehicleControl)
 		{
-			return rVehicleControlManager.IsExist(VehicleControl.mName);
+			return rVehicleControlManager.GetItems().Any(o => o.mCommand == VehicleControl.mCommand && o.mParametersString == VehicleControl.mParametersString && o.mCauseId == VehicleControl.mCauseId);
 		}
 	}
 }
