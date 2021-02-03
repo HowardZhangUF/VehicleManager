@@ -258,6 +258,17 @@ namespace TrafficControlTest.UserControl
 				Library.ExceptionHandling.HandleException(Ex);
 			}
 		}
+		private void btnOpenSystemFolder_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				System.Diagnostics.Process.Start(Application.StartupPath);
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
+		}
 		private void btnSystem_Click(object sender, EventArgs e)
 		{
 			try
