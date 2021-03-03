@@ -47,7 +47,8 @@ namespace TrafficControlTest.Library
 	{
 		Goto,
 		GotoPoint,
-		Dock
+		Dock,
+		Abort
 	}
 
 	public enum SignificantEventCategory
@@ -266,6 +267,9 @@ namespace TrafficControlTest.Library
 				case MissionType.Dock:
 					result = DockMissionAnalyzer.mInstance;
 					break;
+				case MissionType.Abort:
+					result = AbortMissionAnalyzer.mInstance;
+					break;
 				default:
 					break;
 			}
@@ -273,7 +277,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IMissionAnalyzer[] GetMissionAnalyzers()
 		{
-			return new IMissionAnalyzer[] { DockMissionAnalyzer.mInstance, GotoPointMissionAnalyzer.mInstance, GotoMissionAnalyzer.mInstance };
+			return new IMissionAnalyzer[] { DockMissionAnalyzer.mInstance, GotoPointMissionAnalyzer.mInstance, GotoMissionAnalyzer.mInstance, AbortMissionAnalyzer.mInstance };
 		}
 		public static IHostCommunicator GenerateIHostCommunicator()
 		{

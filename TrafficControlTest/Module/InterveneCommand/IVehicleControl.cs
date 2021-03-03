@@ -46,7 +46,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		Stay,               // System 讓自走車保持當前狀態，並不要執行其他 Control (不會對自走車下指令，而是讓系統知道不要下 Control 給該車) (執行中會保持 Executing 的狀態，直到收到 Unstay 的 Control 則會變成 ExecuteSuccessed)
 		Unstay,				// System 讓自走車恢復成可工作狀態 (不會對自走車下指令，而是讓系統知道不要下 Control 給該車) (執行完就會變成 ExecuteSuccessed)
 		PauseControl,		// System 讓該自走車當前 Control 暫停 (本身不是對自走車下指令，而是讓系統對該車當前的 Control 調整成 ExecutePaused)
-		ResumeControl		// System 讓該自走車當前 Control 恢復 (本身不是對自走車下指令，而是讓系統 ExecutePasued 的 Control 調整成 Executing ，並且重新傳送動作指令給自走車)
+		ResumeControl,      // System 讓該自走車當前 Control 恢復 (本身不是對自走車下指令，而是讓系統 ExecutePasued 的 Control 調整成 Executing ，並且重新傳送動作指令給自走車)
+		Abort               // System + Immediately 中止指定自走車的所有 Command 並下達 Stop 給自走車
 	}
 
 	public enum FailedReason
@@ -61,7 +62,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		ExectutedTimeout,
 		SentTimeout,
 		CancelByGUI,
-		CancelByHostCommand
+		CancelByHostCommand,
+		ObjectNotExist
 	}
 
 	/// <summary>

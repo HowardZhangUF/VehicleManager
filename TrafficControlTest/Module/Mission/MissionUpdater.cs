@@ -195,7 +195,7 @@ namespace TrafficControlTest.Module.Mission
 			IMissionState result = null;
 			if (VehicleControl.mCommand == Command.Charge)
 			{
-				result = MissionStateManager.GetItems().FirstOrDefault(o => o.mExecutorId == VehicleControl.mVehicleId && o.mMission.mMissionType == MissionType.Dock);
+				result = MissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.Dock && o.mExecutorId == VehicleControl.mVehicleId);
 			}
 			else if (VehicleControl.mCommand == Command.Uncharge)
 			{
@@ -203,7 +203,11 @@ namespace TrafficControlTest.Module.Mission
 			}
 			else if (VehicleControl.mCommand == Command.Goto || VehicleControl.mCommand == Command.GotoPoint || VehicleControl.mCommand == Command.GotoTowardPoint)
 			{
-				result = MissionStateManager.GetItems().FirstOrDefault(o => o.mExecutorId == VehicleControl.mVehicleId && o.mMission.mParametersString == VehicleControl.mParametersString);
+				result = MissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mExecutorId == VehicleControl.mVehicleId && o.mMission.mParametersString == VehicleControl.mParametersString);
+			}
+			else if (VehicleControl.mCommand == Command.Abort)
+			{
+				result = MissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.Abort && o.mName == VehicleControl.mCauseId);
 			}
 			return result;
 		}

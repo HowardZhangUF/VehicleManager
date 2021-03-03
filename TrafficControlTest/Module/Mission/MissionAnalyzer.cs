@@ -11,10 +11,11 @@ namespace TrafficControlTest.Module.Mission
 		public virtual string mKeyword { get { return mMissionType.ToString(); } }
 		public virtual string mKeyItem { get; } = "Mission";
 		public static int mPriorityDefault = 50;
+		public static int mPriorityMax = 99;
+		public static int mPriorityMin = 1;
+
 		protected abstract string[] mNecessaryItem { get; }
 		protected abstract string[] mOptionalItem { get; }
-		protected static int mPriorityMax = 99;
-		protected static int mPriorityMin = 1;
 
 		protected readonly Dictionary<string, string> mItemCollection = new Dictionary<string, string>();
 

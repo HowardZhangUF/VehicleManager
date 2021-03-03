@@ -398,5 +398,44 @@ namespace TrafficControlTest.Library.Tests
 			if (mission8 != null) Assert.Fail();
 			if (detail8 != "DataSyntaxError") Assert.Fail();
 		}
+
+		[TestMethod()]
+		public void ClassAbortMissionAnalyzer()
+		{
+			IMissionAnalyzer missionAnalyzer = Library.GetMissionAnalyzer(MissionType.Abort);
+			string tmp1 = "Mission=Abort AbortMissionID=Miss001";
+			string tmp2 = "Mission=Abort AbortMissionID=Miss001 MissionID=AbortMiss001";
+			string tmp3 = "AbortMissionID=Miss001"; // 缺少 Mission
+			string tmp4 = "AbortMissionID=Miss001 MissionID=AbortMiss001"; // 缺少 Mission
+			string tmp5 = "Mission=Abort MissionID=AbortMiss001"; // 缺少 AbortMissionID
+
+			if (missionAnalyzer.TryParse(tmp1, out IMission mission1, out string detail1) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission1.mMissionType != MissionType.Abort) Assert.Fail();
+			if (mission1.mParameters.Length != 1 || mission1.mParameters[0] != "Miss001") Assert.Fail();
+			if (mission1.mMissionId != string.Empty) Assert.Fail();
+			if (mission1.mVehicleId != string.Empty) Assert.Fail();
+			if (mission1.mPriority != MissionAnalyzer.mPriorityMin) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail1)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp2, out IMission mission2, out string detail2) != MissionAnalyzeResult.Successed) Assert.Fail();
+			if (mission2.mMissionType != MissionType.Abort) Assert.Fail();
+			if (mission2.mParameters.Length != 1 || mission1.mParameters[0] != "Miss001") Assert.Fail();
+			if (mission2.mMissionId != "AbortMiss001") Assert.Fail();
+			if (mission2.mVehicleId != string.Empty) Assert.Fail();
+			if (mission2.mPriority != MissionAnalyzer.mPriorityMin) Assert.Fail();
+			if (!string.IsNullOrEmpty(detail1)) Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp3, out IMission mission3, out string detail3) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission3 != null) Assert.Fail();
+			if (detail3 != "UnknownMissionType") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp4, out IMission mission4, out string detail4) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission4 != null) Assert.Fail();
+			if (detail4 != "UnknownMissionType") Assert.Fail();
+
+			if (missionAnalyzer.TryParse(tmp5, out IMission mission5, out string detail5) != MissionAnalyzeResult.Failed) Assert.Fail();
+			if (mission5 != null) Assert.Fail();
+			if (detail5 != "LackOf\"AbortMissionID\"Parameter") Assert.Fail();
+		}
 	}
 }

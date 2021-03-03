@@ -162,6 +162,9 @@ namespace TrafficControlTest.Module.InterveneCommand
 					case Command.ResumeControl:
 						HandleVehicleControlOfResumeControl(VehicleControl, vehicleInfo);
 						break;
+					case Command.Abort:
+						HandleVehicleControlOfAbortControl(VehicleControl, vehicleInfo);
+						break;
 				}
 			}
 		}
@@ -183,7 +186,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void HandleVehicleControlOfGoto(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
-			// 情境一：沒有執行任務時，且狀態為閒置，也沒有排程 Normal Control 時
+			// 情境一：沒有執行任務時，且狀態為閒置，也沒有排程 Normal Control 時，且沒有在執行 Stay Control
 			// 情境二：有執行任務時，且狀態為閒置，也沒有排程 Normal Control 時，且當前 Control 已暫停時，且沒有在執行 Stay Control
 			if ((string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager))
 				|| (!string.IsNullOrEmpty(VehicleInfo.mCurrentMissionId) && (VehicleInfo.mCurrentState == "Idle" || VehicleInfo.mCurrentState == "ChargeIdle") && (string.IsNullOrEmpty(VehicleInfo.mErrorMessage) || VehicleInfo.mErrorMessage == "Normal") && !IsVehicleExecutingNormalControl(VehicleInfo, rVehicleControlManager) && IsVehiclePausedNormalControl(VehicleInfo, rVehicleControlManager) && !IsVehicleExecutingStayControl(VehicleInfo, rVehicleControlManager)))
@@ -270,6 +273,27 @@ namespace TrafficControlTest.Module.InterveneCommand
 				VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
 			}
 		}
+		private void HandleVehicleControlOfAbortControl(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
+		{
+			VehicleControl.UpdateExecuteState(ExecuteState.Executing);
+			// 將佇列中所有符合條件的 Control 中斷
+			List<IVehicleControl> controls = rVehicleControlManager.GetItems().ToList();
+			for (int i = 0; i < controls.Count; ++i)
+			{
+				if (controls[i].mName != VehicleControl.mName) // 不是自身 Control
+				{
+					if (controls[i].mVehicleId == VehicleControl.mVehicleId) // Control 的 VehicleId 為欲中斷的自走車
+					{
+						controls[i].UpdateExecuteFailedReason(FailedReason.CancelByHostCommand);
+						controls[i].UpdateExecuteState(ExecuteState.ExecuteFailed);
+					}
+				}
+			}
+			// 傳送 Stop 指令給指定車
+			rVehicleCommunicator.SendDataOfStop(VehicleInfo.mIpPort);
+			VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+		}
+
 		private static bool IsVehicleExecutingNormalControl(IVehicleInfo VehicleInfo, IVehicleControlManager VehicleControlManager)
 		{
 			return IsVehicleExecutingNormalControl(VehicleInfo.mName, VehicleControlManager);
