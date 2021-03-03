@@ -369,8 +369,17 @@ namespace TrafficControlTest.UserControl
 					string tmpMessage = $"Sure to Remove Mission:\n{tmpId} / {tmpType}{(string.IsNullOrEmpty(tmpParameter) ? string.Empty : " / " + tmpParameter)}";
 					if (CustomMessageBox.ConfirmBox(tmpMessage) == DialogResult.OK)
 					{
-						rMissionStateManager.UpdateFailedReason(tmpId, FailedReason.CancelByGUI);
-						rMissionStateManager.UpdateExecuteState(tmpId, ExecuteState.ExecuteFailed);
+						if (rMissionStateManager.GetItem(tmpId).mMission.mMissionType == MissionType.Abort)
+						{
+							rMissionStateManager.UpdateFailedReason(tmpId, FailedReason.CancelByGUI);
+							rMissionStateManager.UpdateExecuteState(tmpId, ExecuteState.ExecuteFailed);
+						}
+						else
+						{
+							IMission tmpMission = Library.Library.GenerateIMission(MissionType.Abort, string.Empty, MissionAnalyzer.mPriorityMin, string.Empty, new string[] { tmpId });
+							IMissionState tmpMissionState = Library.Library.GenerateIMissionState(tmpMission);
+							rMissionStateManager.Add(tmpMissionState.mName, tmpMissionState);
+						}
 					}
 				}
 			}
