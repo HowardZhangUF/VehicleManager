@@ -203,7 +203,7 @@ namespace TrafficControlTest.Module.Mission
 			}
 			else if (VehicleControl.mCommand == Command.Goto || VehicleControl.mCommand == Command.GotoPoint || VehicleControl.mCommand == Command.GotoTowardPoint)
 			{
-				result = MissionStateManager.GetItems().FirstOrDefault(o => o.mMission.mMissionType == MissionType.GotoPoint && o.mExecutorId == VehicleControl.mVehicleId && o.mMission.mParametersString == VehicleControl.mParametersString);
+				result = MissionStateManager.GetItems().FirstOrDefault(o => (o.mMission.mMissionType == MissionType.Goto || o.mMission.mMissionType == MissionType.GotoPoint) && o.mExecutorId == VehicleControl.mVehicleId && o.mMission.mParametersString == VehicleControl.mParametersString);
 			}
 			else if (VehicleControl.mCommand == Command.Abort)
 			{
