@@ -110,7 +110,8 @@ namespace VehicleSimulator.New
 		{
 			if (!rSimulatorControl.mIsExecuting)
 			{
-				rSimulatorControl.StartMove(GoTo.Require, 7777, 8888);
+				Random random = new Random();
+				rSimulatorControl.StartMove(GoTo.Require, random.Next(-10000,10000), random.Next(-10000, 10000));
 			}
 		}
 		private void HandleSerializableData_GoToPoint(GoToPoint GoToPoint)
