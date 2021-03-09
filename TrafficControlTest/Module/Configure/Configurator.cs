@@ -324,6 +324,17 @@ namespace TrafficControlTest.Module.Configure
                 "判断控制是否完成的座标 (Toward) 容许误差"));
 			defaultConfigs.Add(new Configuration(
 				"VehicleControlUpdater",
+				"CheckCoordinateAccuracyAfterArrived",
+				ConfigurationType.Bool,
+				ConfigurationLevel.Normal,
+				"False",
+				string.Empty,
+				string.Empty,
+				"Check Coordinate Accuracy or Not when Vehicle Finish Control",
+				"自走車完成控制後是否檢查座標誤差",
+				"自走车完成控制后是否检查座标误差"));
+			defaultConfigs.Add(new Configuration(
+				"VehicleControlUpdater",
 				"AutoDetectNonSystemControl",
 				ConfigurationType.Bool,
 				ConfigurationLevel.Normal,

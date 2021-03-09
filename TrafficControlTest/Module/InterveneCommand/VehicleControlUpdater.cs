@@ -17,6 +17,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		public int mToleranceOfXOfArrivedTarget { get; private set; } = 500;
 		public int mToleranceOfYOfArrivedTarget { get; private set; } = 500;
 		public int mToleranceOfTowardOfArrivedTarget { get; private set; } = 5;
+		public bool mCheckCoordinateAccuracyAfterArrived { get; private set; } = false;
 		public bool mAutoDetectNonSystemControl { get; private set; } = true;
 
 		private IVehicleControlManager rVehicleControlManager = null;
@@ -59,7 +60,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		public override string[] GetConfigNameList()
 		{
-			return new string[] { "TimePeriod", "TimeoutOfSendingVehicleControl", "TimeoutOfExecutingVehicleControl", "ToleranceOfXOfArrivedTarget", "ToleranceOfYOfArrivedTarget", "ToleranceOfTowardOfArrivedTarget", "AutoDetectNonSystemControl" };
+			return new string[] { "TimePeriod", "TimeoutOfSendingVehicleControl", "TimeoutOfExecutingVehicleControl", "ToleranceOfXOfArrivedTarget", "ToleranceOfYOfArrivedTarget", "ToleranceOfTowardOfArrivedTarget", "CheckCoordinateAccuracyAfterArrived", "AutoDetectNonSystemControl" };
 		}
 		public override string GetConfig(string ConfigName)
 		{
@@ -77,6 +78,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 					return mToleranceOfYOfArrivedTarget.ToString();
 				case "ToleranceOfTowardOfArrivedTarget":
 					return mToleranceOfTowardOfArrivedTarget.ToString();
+				case "CheckCoordinateAccuracyAfterArrived":
+					return mCheckCoordinateAccuracyAfterArrived.ToString();
 				case "AutoDetectNonSystemControl":
 					return mAutoDetectNonSystemControl.ToString();
 				default:
@@ -109,6 +112,10 @@ namespace TrafficControlTest.Module.InterveneCommand
 					break;
 				case "ToleranceOfTowardOfArrivedTarget":
 					mToleranceOfTowardOfArrivedTarget = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "CheckCoordinateAccuracyAfterArrived":
+					mCheckCoordinateAccuracyAfterArrived = bool.Parse(NewValue);
 					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
 					break;
 				case "AutoDetectNonSystemControl":
@@ -358,14 +365,31 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 				else if (VehicleInfo.mCurrentState == "Idle")
 				{
-					if (IsVehicleArrived(VehicleInfo, VehicleControl.mParameters[0]))
+					if (mCheckCoordinateAccuracyAfterArrived)
 					{
-						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						// 檢查自走車的 Current Target 與座標
+						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, VehicleControl.mParameters[0]))
+						{
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						}
+						else
+						{
+							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						}
 					}
 					else
 					{
-						VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						// 檢查自走車的 Current Target
+						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
+						{
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						}
+						else
+						{
+							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						}
 					}
 				}
 			}
@@ -394,15 +418,34 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 				else if (VehicleInfo.mCurrentState == "Idle")
 				{
-					if (IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1])))
+					if (mCheckCoordinateAccuracyAfterArrived)
 					{
-						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						// 檢查自走車的 Current Target 與座標
+						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1])))
+						{
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						}
+						else
+						{
+							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						}
 					}
 					else
 					{
-						VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						// 檢查自走車的 Current Target
+						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
+						{
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						}
+						else
+						{
+							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						}
 					}
+
+
 				}
 			}
 		}
@@ -430,14 +473,31 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 				else if (VehicleInfo.mCurrentState == "Idle")
 				{
-					if (IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]), int.Parse(VehicleControl.mParameters[2])))
+					if (mCheckCoordinateAccuracyAfterArrived)
 					{
-						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						// 檢查自走車的 Current Target 與座標
+						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]), int.Parse(VehicleControl.mParameters[2])))
+						{
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						}
+						else
+						{
+							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						}
 					}
 					else
 					{
-						VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						// 檢查自走車的 Current Target
+						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
+						{
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+						}
+						else
+						{
+							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+						}
 					}
 				}
 			}
