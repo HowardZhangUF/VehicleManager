@@ -46,6 +46,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Hasp">
+      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\Hasp.dll</HintPath>
+    </Reference>
     <Reference Include="KdTreeLib, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\KdTree.1.4.1\lib\net461\KdTreeLib.dll</HintPath>
       <Private>True</Private>

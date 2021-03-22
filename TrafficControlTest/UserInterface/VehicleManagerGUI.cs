@@ -5,26 +5,56 @@ using TrafficControlTest.Process;
 using TrafficControlTest.Library;
 using TrafficControlTest.UserControl;
 using TrafficControlTest.Module.Account;
+using Hasp;
 
 namespace TrafficControlTest.UserInterface
 {
 	public partial class VehicleManagerGUI : Form
 	{
+		private bool EnableCheckDongle = true;
 		private bool pnlLeftMainDisplay = true;
 		private bool pnlBtmDisplay = true;
 		private int pnlLeftMainDefaultWidth = 400;
 		private int pnlBtmDefaultHeight = 250;
 		private formProgress formClosing = null;
+		private CtHasp mHasp = new CtHasp();
 
 		public VehicleManagerGUI()
 		{
 			try
 			{
 				InitializeComponent();
+				UpdateSettingUsingCommandLineArgs();
 			}
 			catch (Exception Ex)
 			{
 				ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void UpdateSettingUsingCommandLineArgs()
+		{
+			string[] para = Environment.GetCommandLineArgs();
+			for (int i = 0; i < para.Length; i++)
+			{
+				switch (para[i].ToLower())
+				{
+					case "passdongle":
+						EnableCheckDongle = false;
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		private void CheckDongle()
+		{
+			if (EnableCheckDongle)
+			{
+				if (!mHasp.IsDongleCorrect())
+				{
+					MessageBox.Show("Please insert dongle and restart program.\nProgram closing ...", "Check dongle failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					Close();
+				}
 			}
 		}
 		private void Constructor()
@@ -67,6 +97,7 @@ namespace TrafficControlTest.UserInterface
 		{
 			try
 			{
+				CheckDongle();
 				Constructor();
 				VehicleManagerProcessStart();
 			}
