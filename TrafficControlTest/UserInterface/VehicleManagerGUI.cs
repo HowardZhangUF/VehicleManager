@@ -57,6 +57,23 @@ namespace TrafficControlTest.UserInterface
 				}
 			}
 		}
+		private bool ConfirmBeforeCloseProgram()
+		{
+			bool result = false;
+			DialogResult dialogResult = MessageBox.Show("Are you sure to close program?", "Close program confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+			switch (dialogResult)
+			{
+
+				case DialogResult.OK:
+				case DialogResult.Yes:
+					result = true;
+					break;
+				default:
+					result = false;
+					break;
+			}
+			return result;
+		}
 		private void Constructor()
 		{
 			Constructor_VehicleManagerProcess();
@@ -132,6 +149,11 @@ namespace TrafficControlTest.UserInterface
 		{
 			try
 			{
+				if (ConfirmBeforeCloseProgram() == false)
+				{
+					return;
+				}
+
 				System.Threading.Tasks.Task.Run(() =>
 				{
 					try
