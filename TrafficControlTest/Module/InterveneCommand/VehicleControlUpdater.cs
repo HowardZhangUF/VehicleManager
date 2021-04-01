@@ -353,7 +353,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
@@ -406,7 +406,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
@@ -461,7 +461,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
@@ -533,7 +533,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
@@ -562,7 +562,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
