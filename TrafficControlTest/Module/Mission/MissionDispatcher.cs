@@ -159,6 +159,7 @@ namespace TrafficControlTest.Module.Mission
 					{
 						IVehicleControl tmpControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Uncharge, null, MissionState.mName, string.Empty);
 						rVehicleControlManager.Add(tmpControl.mName, tmpControl);
+						System.Threading.Thread.Sleep(100);
 					}
 					MissionState.UpdateExecutorId(VehicleId);
 					IVehicleControl tmpGotoControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Goto, MissionState.mMission.mParameters, MissionState.mName, string.Empty);
@@ -170,6 +171,7 @@ namespace TrafficControlTest.Module.Mission
 					{
 						IVehicleControl tmpControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Uncharge, null, MissionState.mName, string.Empty);
 						rVehicleControlManager.Add(tmpControl.mName, tmpControl);
+						System.Threading.Thread.Sleep(100);
 					}
 					MissionState.UpdateExecutorId(VehicleId);
 					if (MissionState.mMission.mParameters.Length == 2)
@@ -189,6 +191,7 @@ namespace TrafficControlTest.Module.Mission
 					{
 						IVehicleControl tmpControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Uncharge, null, MissionState.mName, string.Empty);
 						rVehicleControlManager.Add(tmpControl.mName, tmpControl);
+						System.Threading.Thread.Sleep(100);
 					}
 					MissionState.UpdateExecutorId(VehicleId);
 					IVehicleControl tmpChargeControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Charge, MissionState.mMission.mParameters, MissionState.mName, string.Empty);
