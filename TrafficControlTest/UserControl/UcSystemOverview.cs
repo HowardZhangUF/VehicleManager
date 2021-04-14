@@ -229,15 +229,15 @@ namespace TrafficControlTest.UserControl
 		}
 		private void HandleEvent_TimeElapseDetectorYearChanged(object Sender, DateTimeChangedEventArgs Args)
 		{
-			mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd"));
+			lblClock.InvokeIfNecessary(() => { mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd")); });
 		}
 		private void HandleEvent_TimeElapseDetectorMonthChanged(object Sender, DateTimeChangedEventArgs Args)
 		{
-			mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd"));
+			lblClock.InvokeIfNecessary(() => { mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd")); });
 		}
 		private void HandleEvent_TimeElapseDetectorDayChanged(object Sender, DateTimeChangedEventArgs Args)
 		{
-			mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd"));
+			lblClock.InvokeIfNecessary(() => { mToolTipOfDate.SetToolTip(lblClock, DateTime.Now.ToString("yyyy/MM/dd")); });
 		}
 		private void HandleEvent_TimeElapseDetectorHourChanged(object Sender, DateTimeChangedEventArgs Args)
 		{
