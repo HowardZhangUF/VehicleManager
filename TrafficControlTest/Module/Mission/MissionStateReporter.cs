@@ -64,7 +64,7 @@ namespace TrafficControlTest.Module.Mission
 		}
 		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			rHostCommunicator.SendData($"Event=MissionCreated MissionID={Args.Item.GetMissionId()}");
+			rHostCommunicator.SendData($"Event=MissionCreated MissionID={Args.Item.GetMissionId()} Mission={Args.Item.mMission.mMissionType.ToString()} Parameter={Args.Item.mMission.mParametersString}");
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
@@ -74,7 +74,7 @@ namespace TrafficControlTest.Module.Mission
 				switch (Args.Item.mExecuteState)
 				{
 					case ExecuteState.Executing:
-						msg = $"Event=MissionStarted MissionID={Args.Item.GetMissionId()}";
+						msg = $"Event=MissionStarted MissionID={Args.Item.GetMissionId()} ExecutorID={Args.Item.mExecutorId}";
 						break;
 					case ExecuteState.ExecuteSuccessed:
 						msg = $"Event=MissionCompleted Result=Successed MissionID={Args.Item.GetMissionId()}";

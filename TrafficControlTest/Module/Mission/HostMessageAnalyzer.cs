@@ -238,6 +238,7 @@ namespace TrafficControlTest.Module.Mission
             {
                 result += $" VehicleID{AppendIndex}={vehicleInfo.mName}";
                 result += $" State{AppendIndex}={vehicleInfo.mCurrentState}";
+				result += $" Target{AppendIndex}={vehicleInfo.mCurrentTarget}";
                 result += $" X{AppendIndex}={vehicleInfo.mLocationCoordinate.mX}";
                 result += $" Y{AppendIndex}={vehicleInfo.mLocationCoordinate.mY}";
                 result += $" Head{AppendIndex}={(int)vehicleInfo.mLocationToward}";
@@ -280,6 +281,7 @@ namespace TrafficControlTest.Module.Mission
                 result += $" MissionID{AppendIndex}={missionState.GetMissionId()}";
                 result += $" Mission{AppendIndex}={missionState.mMission.mMissionType.ToString()}";
                 result += $" Parameter{AppendIndex}={missionState.mMission.mParametersString}";
+				result += $" ExecutorID{AppendIndex}={missionState.mExecutorId}";
                 result += $" ExecuteState{AppendIndex}={missionState.mExecuteState.ToString()}";
             }
             return result;
