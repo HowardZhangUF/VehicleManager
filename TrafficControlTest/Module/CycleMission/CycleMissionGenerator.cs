@@ -116,6 +116,7 @@ namespace TrafficControlTest.Module.CycleMission
 		{
 			for (int i = 0; i < mCollectionOfVehicleId.Count; ++i)
 			{
+				// 如果自走車閒置，且大於 1 秒，且任務集合中還沒有任務是派給該車的(從 MissionID 去判斷)
 				if (rVehicleInfoManager.GetItem(mCollectionOfVehicleId[i]).mCurrentState == "Idle" && rVehicleInfoManager.GetItem(mCollectionOfVehicleId[i]).mCurrentStateDuration.TotalSeconds > 1 && !rMissionStateManager.IsExistByHostMissionId(GenerateHostMissionId(mCollectionOfVehicleId[i])))
 				{
 					mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] = mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] == mCollectionOfMissionList[mCollectionOfVehicleId[i]].Length - 1 ? 0 : mCollectionOfCurrentMissionIndex[mCollectionOfVehicleId[i]] + 1;

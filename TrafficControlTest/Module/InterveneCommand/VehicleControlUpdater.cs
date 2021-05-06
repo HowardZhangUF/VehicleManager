@@ -185,16 +185,14 @@ namespace TrafficControlTest.Module.InterveneCommand
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.SentDataSuccessed += HandleEvent_VehicleCommunicatorSentDataSuccessed;
-				VehicleCommunicator.SentDataFailed += HandleEvent_VehicleCommunicatorSentDataFailed;
+				// do nothing
 			}
 		}
 		private void UnsubscribeEvent_IVehicleCommunicator(IVehicleCommunicator VehicleCommunicator)
 		{
 			if (VehicleCommunicator != null)
 			{
-				VehicleCommunicator.SentDataSuccessed -= HandleEvent_VehicleCommunicatorSentDataSuccessed;
-				VehicleCommunicator.SentDataFailed -= HandleEvent_VehicleCommunicatorSentDataFailed;
+				// do nothing
 			}
 		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
@@ -257,28 +255,6 @@ namespace TrafficControlTest.Module.InterveneCommand
 					}
 				}
 			}
-		}
-		private void HandleEvent_VehicleCommunicatorSentDataSuccessed(object Sender, SentDataEventArgs Args)
-		{
-			//if (Args.Data is Serializable)
-			//{
-			//	string vehicleId = rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName;
-			//	if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
-			//	{
-			//		rVehicleControlManager.GetItems().First(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending).UpdateSendState(SendState.SendSuccessed);
-			//	}
-			//}
-		}
-		private void HandleEvent_VehicleCommunicatorSentDataFailed(object Sender, SentDataEventArgs Args)
-		{
-			//if (Args.Data is Serializable && rVehicleInfoManager.IsExistByIpPort(Args.IpPort))
-			//{
-			//	string vehicleId = rVehicleInfoManager.GetItemByIpPort(Args.IpPort).mName;
-			//	if (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending))
-			//	{
-			//		rVehicleControlManager.GetItems().First(o => o.mVehicleId == vehicleId && o.mSendState == SendState.Sending).UpdateSendState(SendState.SendFailed);
-			//	}
-			//}
 		}
 		private void UpdateVehicleControl(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
@@ -353,7 +329,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
@@ -365,31 +341,26 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 				else if (VehicleInfo.mCurrentState == "Idle")
 				{
+					bool arrived = false;
 					if (mCheckCoordinateAccuracyAfterArrived)
 					{
 						// 檢查自走車的 Current Target 與座標
-						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, VehicleControl.mParameters[0]))
-						{
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-						}
-						else
-						{
-							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
-						}
+						arrived = VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, VehicleControl.mParameters[0]);
 					}
 					else
 					{
 						// 檢查自走車的 Current Target
-						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
-						{
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-						}
-						else
-						{
-							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
-						}
+						arrived = VehicleInfo.mCurrentTarget == VehicleControl.mParametersString;
+					}
+
+					if (arrived)
+					{
+						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+					}
+					else
+					{
+						VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
 					}
 				}
 			}
@@ -406,7 +377,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
@@ -418,34 +389,27 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 				else if (VehicleInfo.mCurrentState == "Idle")
 				{
+					bool arrived = false;
 					if (mCheckCoordinateAccuracyAfterArrived)
 					{
 						// 檢查自走車的 Current Target 與座標
-						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1])))
-						{
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-						}
-						else
-						{
-							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
-						}
+						arrived = VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]));
 					}
 					else
 					{
 						// 檢查自走車的 Current Target
-						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
-						{
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-						}
-						else
-						{
-							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
-						}
+						arrived = VehicleInfo.mCurrentTarget == VehicleControl.mParametersString;
 					}
 
-
+					if (arrived)
+					{
+						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+					}
+					else
+					{
+						VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
+					}
 				}
 			}
 		}
@@ -461,7 +425,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
@@ -473,31 +437,26 @@ namespace TrafficControlTest.Module.InterveneCommand
 				}
 				else if (VehicleInfo.mCurrentState == "Idle")
 				{
+					bool arrived = false;
 					if (mCheckCoordinateAccuracyAfterArrived)
 					{
 						// 檢查自走車的 Current Target 與座標
-						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]), int.Parse(VehicleControl.mParameters[2])))
-						{
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-						}
-						else
-						{
-							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
-						}
+						arrived = VehicleInfo.mCurrentTarget == VehicleControl.mParametersString && IsVehicleArrived(VehicleInfo, int.Parse(VehicleControl.mParameters[0]), int.Parse(VehicleControl.mParameters[1]), int.Parse(VehicleControl.mParameters[2]));
 					}
 					else
 					{
 						// 檢查自走車的 Current Target
-						if (VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
-						{
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
-						}
-						else
-						{
-							VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
-							VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
-						}
+						arrived = VehicleInfo.mCurrentTarget == VehicleControl.mParametersString;
+					}
+
+					if (arrived)
+					{
+						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteSuccessed);
+					}
+					else
+					{
+						VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleIdleButNotArrived);
+						VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
 					}
 				}
 			}
@@ -533,7 +492,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);
@@ -562,7 +521,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 			}
 			else if (VehicleControl.mExecuteState == ExecuteState.Executing)
 			{
-				if (VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "BumperTrigger" || VehicleInfo.mCurrentState == "Alarm")
+				if (VehicleInfo.mCurrentState == "Alarm")
 				{
 					VehicleControl.UpdateExecuteFailedReason(FailedReason.VehicleOccurError);
 					VehicleControl.UpdateExecuteState(ExecuteState.ExecuteFailed);

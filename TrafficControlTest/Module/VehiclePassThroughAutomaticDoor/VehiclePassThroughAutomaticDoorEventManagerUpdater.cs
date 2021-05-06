@@ -183,7 +183,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 		private void Subtask_DetectEvent()
 		{
 			// 使用移動中的 IVehicleInfo 與所有的 IAutomaticDoorInfo 計算是否有 Event 發生，若有，則將其新增/更新至 IVehiclePassThroughAutomaticDoorEventManager 中
-			List<IVehicleInfo> vehicleInfos = rVehicleInfoManager.GetItems().Where(o => o.mCurrentState == "Running" || o.mCurrentState == "Pause").ToList();
+			List<IVehicleInfo> vehicleInfos = rVehicleInfoManager.GetItems().Where(o => o.mCurrentState == "Running" || o.mCurrentState == "Operating" || o.mCurrentState == "Pause").ToList();
 			List<IAutomaticDoorInfo> automaticDoorInfos = rAutomaticDoorInfoManager.GetItems().ToList();
 			if (vehicleInfos != null && vehicleInfos.Count > 0)
 			{

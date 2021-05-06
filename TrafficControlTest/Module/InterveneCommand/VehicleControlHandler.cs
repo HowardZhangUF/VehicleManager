@@ -215,7 +215,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void HandleVehicleControlOfStop(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
-			if (true/*VehicleInfo.mCurrentState == "Running" || VehicleInfo.mCurrentState == "RouteNotFind" || VehicleInfo.mCurrentState == "ObstacleExists" || VehicleInfo.mCurrentState == "BumperTrigger"*/)
+			if (true)
 			{
 				VehicleControl.UpdateSendState(SendState.Sending);
 				rVehicleCommunicator.SendDataOfStop(VehicleInfo.mIpPort);
