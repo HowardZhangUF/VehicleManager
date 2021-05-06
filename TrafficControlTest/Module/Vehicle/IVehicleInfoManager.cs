@@ -16,7 +16,7 @@ namespace TrafficControlTest.Module.Vehicle
 		/// <summary>取得指定 Vehicle 的資訊(透過 Vehicle IP:Port)</summary>
 		IVehicleInfo GetItemByIpPort(string IpPort);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
-		void UpdateItem(string Name, string NewState, IPoint2D NewLocationCoordinate, double NewLocationToward, string NewTarget, double NewVelocity, double NewLocationScore, double NewBatteryValue, string NewAlarmMessage);
+		void UpdateItem(string Name, string NewState, string NewOriState, IPoint2D NewLocationCoordinate, double NewLocationToward, string NewTarget, double NewVelocity, double NewLocationScore, double NewBatteryValue, string NewAlarmMessage);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void UpdateItem(string Name, IEnumerable<IPoint2D> Path);
 		/// <summary>更新指定 Vehicle 的資訊</summary>

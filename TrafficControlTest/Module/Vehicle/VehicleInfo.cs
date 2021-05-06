@@ -38,6 +38,9 @@ namespace TrafficControlTest.Module.Vehicle
 		public string mCurrentState { get; private set; } = string.Empty;
 		public string mPreviousState { get; private set; } = string.Empty;
 		public TimeSpan mCurrentStateDuration { get { return DateTime.Now.Subtract(mStateStartTimestamp); } }
+		public string mCurrentOriState { get; private set; } = string.Empty;
+		public string mPreviousOriState { get; private set; } = string.Empty;
+		public TimeSpan mCurrentOriStateDuration { get { return DateTime.Now.Subtract(mOriStateStartTimestamp); } }
 		public IPoint2D mLocationCoordinate { get; private set; } = Library.Library.GenerateIPoint2D(0, 0);
 		public double mLocationToward { get; private set; } = 0.0f;
 		public string mCurrentTarget { get; private set; } = string.Empty;
@@ -102,6 +105,7 @@ namespace TrafficControlTest.Module.Vehicle
 		public DateTime mLastUpdated { get; private set; } = default(DateTime);
 
 		private DateTime mStateStartTimestamp = DateTime.Now;
+		private DateTime mOriStateStartTimestamp = DateTime.Now;
 		private List<RecordOfLocationCoordinate> mRecordOfLocationCoordinate = new List<RecordOfLocationCoordinate>();
 		private List<RecordOfLocationToward> mRecordOfLocationToward = new List<RecordOfLocationToward>();
 		private List<double> mRecordOfLocationScore = new List<double>();
@@ -443,6 +447,21 @@ namespace TrafficControlTest.Module.Vehicle
 				}
 			}
 		}
+		public void UpdateCurrentOriState(string CurrentOriState)
+		{
+			if (TryUpdateCurrentOriState(CurrentOriState))
+			{
+				if (mIsUpdating)
+				{
+					mUpdatedItems.Add("CurrentOriState");
+				}
+				else
+				{
+					mLastUpdated = DateTime.Now;
+					RaiseEvent_StatusUpdated("CurrentOriState");
+				}
+			}
+		}
 		public void UpdateLocationCoordinate(IPoint2D LocationCoordinate)
 		{
 			if (TryUpdateLocationCoordinate(LocationCoordinate))
@@ -708,6 +727,7 @@ namespace TrafficControlTest.Module.Vehicle
 			string result = string.Empty;
 			result += $"{mName}/";
 			result += $"{mCurrentState}/";
+			result += $"{mCurrentOriState}/";
 			result += $"{(mLocationCoordinate != null ? $"({mLocationCoordinate.mX},{mLocationCoordinate.mY},{mLocationToward.ToString("F2")})" : string.Empty)}/";
 			result += $"{mCurrentTarget}/";
 			result += $"{mLocationScore.ToString("F2")}(%)/";
@@ -954,6 +974,18 @@ namespace TrafficControlTest.Module.Vehicle
 				mPreviousState = mCurrentState;
 				mCurrentState = CurrentState;
 				mStateStartTimestamp = DateTime.Now;
+				result = true;
+			}
+			return result;
+		}
+		private bool TryUpdateCurrentOriState(string CurrentOriState)
+		{
+			bool result = false;
+			if (!string.IsNullOrEmpty(CurrentOriState) && mCurrentOriState != CurrentOriState)
+			{
+				mPreviousOriState = mCurrentOriState;
+				mCurrentOriState = CurrentOriState;
+				mOriStateStartTimestamp = DateTime.Now;
 				result = true;
 			}
 			return result;

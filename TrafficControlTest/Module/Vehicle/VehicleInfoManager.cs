@@ -21,12 +21,13 @@ namespace TrafficControlTest.Module.Vehicle
 		{
 			return (IsExistByIpPort(IpPort) ? mItems.Values.First((o) => o.mIpPort == IpPort) : null);
 		}
-		public void UpdateItem(string Name, string NewState, IPoint2D NewLocationCoordinate, double NewLocationToward, string NewTarget, double NewVelocity, double NewLocationScore, double NewBatteryValue, string NewAlarmMessage)
+		public void UpdateItem(string Name, string NewState, string NewOriState, IPoint2D NewLocationCoordinate, double NewLocationToward, string NewTarget, double NewVelocity, double NewLocationScore, double NewBatteryValue, string NewAlarmMessage)
 		{
 			if (IsExist(Name))
 			{
 				mItems[Name].BeginUpdate();
 				mItems[Name].UpdateCurrentState(NewState);
+				mItems[Name].UpdateCurrentOriState(NewOriState);
 				mItems[Name].UpdateLocationCoordinate(NewLocationCoordinate);
 				mItems[Name].UpdateLocationToward(NewLocationToward);
 				mItems[Name].UpdateCurrentTarget(NewTarget);

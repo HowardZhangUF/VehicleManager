@@ -81,6 +81,12 @@ namespace TrafficControlTest.Module.Vehicle
 		string mPreviousState { get; }
 		/// <summary>狀態持續時間</summary>
 		TimeSpan mCurrentStateDuration { get; }
+		/// <summary>當前自走車定義狀態</summary>
+		string mCurrentOriState { get; }
+		/// <summary>上一個自走車定義狀態</summary>
+		string mPreviousOriState { get; }
+		/// <summary>自走車定義狀態持續時間</summary>
+		TimeSpan mCurrentOriStateDuration { get; }
 		/// <summary>位置 (mm)</summary>
 		IPoint2D mLocationCoordinate { get; }
 		/// <summary>面向 (degree) 範圍為 0 ~ 360</summary>
@@ -178,6 +184,7 @@ namespace TrafficControlTest.Module.Vehicle
 		void UpdateIpPort(string IpPort);
 
 		void UpdateCurrentState(string CurrentState);
+		void UpdateCurrentOriState(string CurrentOriState);
 		void UpdateLocationCoordinate(IPoint2D LocationCoordinate);
 		void UpdateLocationToward(double LocationToward);
 		void UpdateCurrentTarget(string Target);
