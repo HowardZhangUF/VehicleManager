@@ -46,6 +46,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += "RecordTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ID TEXT, ";
 			tmp += "State TEXT, ";
+			tmp += "OriState TEXT, ";
 			tmp += "X INTEGER, ";
 			tmp += "Y INTEGER, ";
 			tmp += "Toward INTEGER, ";
@@ -167,6 +168,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNameOfVehicleState} (";
 			tmp += "ID TEXT UNIQUE, ";
 			tmp += "State TEXT, ";
+			tmp += "OriState TEXT, ";
 			tmp += "X INTEGER, ";
 			tmp += "Y INTEGER, ";
 			tmp += "Toward INTEGER, ";
@@ -252,6 +254,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"INSERT INTO {mTableNameOfVehicleState} VALUES (";
 			tmp += $"'{VehicleInfo.mName}', ";
 			tmp += $"'{VehicleInfo.mCurrentState}', ";
+			tmp += $"'{VehicleInfo.mCurrentOriState}', ";
 			tmp += $"{VehicleInfo.mLocationCoordinate.mX.ToString()}, ";
 			tmp += $"{VehicleInfo.mLocationCoordinate.mY.ToString()}, ";
 			tmp += $"{((int)VehicleInfo.mLocationToward).ToString()}, ";
@@ -279,6 +282,7 @@ namespace TrafficControlTest.Module.Log
 			string tmp = string.Empty;
 			tmp += $"UPDATE {mTableNameOfVehicleState} SET ";
 			tmp += $"State = '{VehicleInfo.mCurrentState}', ";
+			tmp += $"OriState = '{VehicleInfo.mCurrentOriState}', ";
 			tmp += $"X = {VehicleInfo.mLocationCoordinate.mX.ToString()}, ";
 			tmp += $"Y = {VehicleInfo.mLocationCoordinate.mY.ToString()}, ";
 			tmp += $"Toward = {((int)VehicleInfo.mLocationToward).ToString()}, ";
@@ -303,6 +307,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"'{Timestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{VehicleInfo.mName}', ";
 			tmp += $"'{VehicleInfo.mCurrentState}', ";
+			tmp += $"'{VehicleInfo.mCurrentOriState}', ";
 			tmp += $"{VehicleInfo.mLocationCoordinate.mX.ToString()}, ";
 			tmp += $"{VehicleInfo.mLocationCoordinate.mY.ToString()}, ";
 			tmp += $"{((int)VehicleInfo.mLocationToward).ToString()}, ";
