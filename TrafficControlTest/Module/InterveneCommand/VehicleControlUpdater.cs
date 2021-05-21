@@ -319,6 +319,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void UpdateVehicleControlOfGoto(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
+			// 目前傳送 Goto 給自走車 (iTS) 時，狀態會變成 Idle -> Running ，到達點後 Running -> (Operating) -> Idle ，若有 After Goal 的動作才會有 Operating 的變化
 			if (VehicleControl.mSendState == SendState.Sending)
 			{
 				if (VehicleInfo.mCurrentState == "Running" && VehicleInfo.mCurrentTarget == VehicleControl.mParametersString)
@@ -474,6 +475,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void UpdateVehicleControlOfCharge(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
+			// 目前傳送 Charge 給自走車 (iTS) 時，狀態會變成 Idle -> Running ，到充電站前準備開始後退時，狀態會變成 Running -> Operating ，進到充電站開始充電時，狀態會變成 Operating -> Charge/ChargeIdle
 			if (VehicleControl.mSendState == SendState.Sending)
 			{
 				if (VehicleInfo.mCurrentState == "Running" && rMapManager.GetTowardPointMapObjects(TypeOfMapObjectOfTowardPoint.Charge).Select(o => o.mName).Contains(VehicleInfo.mCurrentTarget))
@@ -510,10 +512,10 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		private void UpdateVehicleControlOfUncharge(IVehicleControl VehicleControl, IVehicleInfo VehicleInfo)
 		{
+			// 目前傳送 Uncharge 給自走車 (iTS) 時，狀態會變成 Charge/ChargeIdle -> Operating ，等到退出充電站完成後， Operating -> Idle
 			if (VehicleControl.mSendState == SendState.Sending)
 			{
-				// 目前傳送 Uncharge 給自走車 (iTS) 時，狀態會變成 Charge -> Running ，等到退出充電站完成後， Running -> Idle
-				if (VehicleInfo.mCurrentState == "Running")
+				if (VehicleInfo.mCurrentState == "Operating")
 				{
 					VehicleControl.UpdateSendState(SendState.SendSuccessed);
 					VehicleControl.UpdateExecuteState(ExecuteState.Executing);

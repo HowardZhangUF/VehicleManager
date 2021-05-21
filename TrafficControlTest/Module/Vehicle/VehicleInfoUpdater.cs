@@ -217,7 +217,8 @@ namespace TrafficControlTest.Module.Vehicle
 			switch (Description)
 			{
 				case EDescription.Idle:
-					return "Idle";
+                case EDescription.Arrived:
+                    return "Idle";
 				case EDescription.Charge:
 					return "Charge";
 				case EDescription.Running:
@@ -236,7 +237,6 @@ namespace TrafficControlTest.Module.Vehicle
 					return "Operating";
 				case EDescription.ChargeIdle:
 					return "ChargeIdle";
-				case EDescription.Arrived:
 				case EDescription.MapUpdate:
 				case EDescription.Map:
 				case EDescription.ChargeFail:
