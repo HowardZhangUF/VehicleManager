@@ -43,7 +43,8 @@ namespace TrafficControlTest.Module.Log
 		{
 			string tmp = string.Empty;
 			tmp += $"CREATE TABLE IF NOT EXISTS {mTableNamePrefixOfHistoryVehicleInfo}{VehicleName.Replace("-", "Dash")} (";
-			tmp += "RecordTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
+            tmp += "No INTEGER PRIMARY KEY AUTOINCREMENT, ";
+            tmp += "RecordTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ID TEXT, ";
 			tmp += "State TEXT, ";
 			tmp += "OriState TEXT, ";
@@ -303,7 +304,7 @@ namespace TrafficControlTest.Module.Log
 		private void HistoryVehicleInfoDataAdd(DateTime Timestamp, IVehicleInfo VehicleInfo)
 		{
 			string tmp = string.Empty;
-			tmp += $"INSERT INTO {mTableNamePrefixOfHistoryVehicleInfo}{VehicleInfo.mName.Replace("-", "Dash")} VALUES (";
+			tmp += $"INSERT INTO {mTableNamePrefixOfHistoryVehicleInfo}{VehicleInfo.mName.Replace("-", "Dash")} (RecordTimestamp, ID, State, OriState, X, Y, Toward, Target, Velocity, LocationScore, BatteryValue, AlarmMessage, Path, IPPort, MissionID, InterveneCommand, MapName, LastUpdateTimestamp) VALUES (";
 			tmp += $"'{Timestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{VehicleInfo.mName}', ";
 			tmp += $"'{VehicleInfo.mCurrentState}', ";

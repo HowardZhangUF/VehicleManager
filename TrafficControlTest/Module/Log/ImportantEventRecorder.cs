@@ -175,6 +175,10 @@ namespace TrafficControlTest.Module.Log
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
 			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Update, Args.Item);
+            if (Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentOriState") || Args.StatusName.Contains("CurrentTarget"))
+            {
+                rEventRecorder.RecordHistoryVehicleInfo(DatabaseDataOperation.Add, Args.OccurTime, Args.Item);
+            }
 		}
 		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
@@ -222,7 +226,7 @@ namespace TrafficControlTest.Module.Log
 			DateTime tmpTimestamp = DateTime.Now;
 			for (int i = 0; i < tmpDatas.Count; ++i)
 			{
-				rEventRecorder.RecordHistoryVehicleInfo(DatabaseDataOperation.Add, tmpTimestamp.AddMilliseconds(i), tmpDatas[i]);
+				rEventRecorder.RecordHistoryVehicleInfo(DatabaseDataOperation.Add, tmpTimestamp, tmpDatas[i]);
 			}
 		}
 	}
