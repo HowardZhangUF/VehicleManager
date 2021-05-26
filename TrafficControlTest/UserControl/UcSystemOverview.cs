@@ -114,6 +114,7 @@ namespace TrafficControlTest.UserControl
 										tmpObj.mBorderColor = Color.Green;
 										break;
 									case "Running":
+									case "Operating":
 									case "Pause":
 										tmpObj.mBorderColor = Color.Yellow;
 										break;
