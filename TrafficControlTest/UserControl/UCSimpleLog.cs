@@ -207,5 +207,12 @@ namespace TrafficControlTest.UserControl
 				}
 			});
 		}
+		private void cmenuItemClear_Click(object sender, EventArgs e)
+		{
+			lock (mLockOfDgvSimpleLog)
+			{
+				UpdateGui_ClearRow();
+			}
+		}
 	}
 }

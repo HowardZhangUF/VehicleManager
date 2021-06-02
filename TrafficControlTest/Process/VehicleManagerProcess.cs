@@ -1580,6 +1580,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_AutomaticDoorInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IAutomaticDoorInfo> Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "AutomaticDoorInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
+			if (Args.StatusName.Contains("State"))
+			{
+				HandleSignificantMessage(Args.OccurTime, SignificantEventCategory.AutomaticDoorSystem, $"AutomaticDoor [ {Args.ItemName} ] {Args.Item.mState}.");
+			}
 		}
 		private void HandleEvent_AutomaticDoorCommunicatorClientAdded(object Sender, ClientAddedEventArgs Args)
 		{

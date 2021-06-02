@@ -425,6 +425,19 @@ namespace TrafficControlTest.UserControl
 				}
 			});
 		}
+		private void UpdateGui_DgvAutomaticDoorControl_RemoveAll()
+		{
+			dgvAutomaticDoorControl.InvokeIfNecessary(() =>
+			{
+				lock (mLockOfDgvAutomaticDoorControl)
+				{
+					if (dgvAutomaticDoorControl.RowCount > 0)
+					{
+						dgvAutomaticDoorControl.Rows.Clear();
+					}
+				}
+			});
+		}
 		private Color GetAutomaticDoorInfoRowForeColor(bool IsConnected)
 		{
 			switch (IsConnected)
@@ -493,6 +506,17 @@ namespace TrafficControlTest.UserControl
 					IAutomaticDoorControl control = Library.Library.GenerateIAutomaticDoorControl(automaticDoorName, AutomaticDoorControlCommand.Close, "Manual");
 					rAutomaticDoorControlManager.Add(control.mName, control);
 				}
+			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void cmenuItemClear_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				UpdateGui_DgvAutomaticDoorControl_RemoveAll();
 			}
 			catch (Exception Ex)
 			{

@@ -33,10 +33,13 @@
 			this.cmenuDgvAutomaticDoorInfo = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.cmenuItemOpenAutomaticDoor = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmenuItemCloseAutomaticDoor = new System.Windows.Forms.ToolStripMenuItem();
+			this.cmenuDgvAutomaticDoorControl = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.cmenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvAutomaticDoorControl)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgvAutomaticDoorInfo)).BeginInit();
 			this.cmenuDgvAutomaticDoorInfo.SuspendLayout();
+			this.cmenuDgvAutomaticDoorControl.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -60,6 +63,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgvAutomaticDoorControl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvAutomaticDoorControl.ContextMenuStrip = this.cmenuDgvAutomaticDoorControl;
 			this.dgvAutomaticDoorControl.Location = new System.Drawing.Point(3, 303);
 			this.dgvAutomaticDoorControl.Name = "dgvAutomaticDoorControl";
 			this.dgvAutomaticDoorControl.RowTemplate.Height = 27;
@@ -93,7 +97,7 @@
 			this.cmenuItemOpenAutomaticDoor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.cmenuItemOpenAutomaticDoor.ForeColor = System.Drawing.Color.White;
 			this.cmenuItemOpenAutomaticDoor.Name = "cmenuItemOpenAutomaticDoor";
-			this.cmenuItemOpenAutomaticDoor.Size = new System.Drawing.Size(210, 24);
+			this.cmenuItemOpenAutomaticDoor.Size = new System.Drawing.Size(116, 24);
 			this.cmenuItemOpenAutomaticDoor.Text = "Open";
 			this.cmenuItemOpenAutomaticDoor.Click += new System.EventHandler(this.cmenuItemOpenAutomaticDoor_Click);
 			// 
@@ -102,9 +106,26 @@
 			this.cmenuItemCloseAutomaticDoor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.cmenuItemCloseAutomaticDoor.ForeColor = System.Drawing.Color.White;
 			this.cmenuItemCloseAutomaticDoor.Name = "cmenuItemCloseAutomaticDoor";
-			this.cmenuItemCloseAutomaticDoor.Size = new System.Drawing.Size(210, 24);
+			this.cmenuItemCloseAutomaticDoor.Size = new System.Drawing.Size(116, 24);
 			this.cmenuItemCloseAutomaticDoor.Text = "Close";
 			this.cmenuItemCloseAutomaticDoor.Click += new System.EventHandler(this.cmenuItemCloseAutomaticDoor_Click);
+			// 
+			// cmenuDgvAutomaticDoorControl
+			// 
+			this.cmenuDgvAutomaticDoorControl.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.cmenuDgvAutomaticDoorControl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmenuItemClear});
+			this.cmenuDgvAutomaticDoorControl.Name = "cmenuDgvAutomaticDoorControl";
+			this.cmenuDgvAutomaticDoorControl.Size = new System.Drawing.Size(115, 28);
+			// 
+			// cmenuItemClear
+			// 
+			this.cmenuItemClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.cmenuItemClear.ForeColor = System.Drawing.Color.White;
+			this.cmenuItemClear.Name = "cmenuItemClear";
+			this.cmenuItemClear.Size = new System.Drawing.Size(114, 24);
+			this.cmenuItemClear.Text = "Clear";
+			this.cmenuItemClear.Click += new System.EventHandler(this.cmenuItemClear_Click);
 			// 
 			// UcAutomaticDoor
 			// 
@@ -119,6 +140,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgvAutomaticDoorControl)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgvAutomaticDoorInfo)).EndInit();
 			this.cmenuDgvAutomaticDoorInfo.ResumeLayout(false);
+			this.cmenuDgvAutomaticDoorControl.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -131,5 +153,7 @@
 		private System.Windows.Forms.ContextMenuStrip cmenuDgvAutomaticDoorInfo;
 		private System.Windows.Forms.ToolStripMenuItem cmenuItemOpenAutomaticDoor;
 		private System.Windows.Forms.ToolStripMenuItem cmenuItemCloseAutomaticDoor;
+		private System.Windows.Forms.ContextMenuStrip cmenuDgvAutomaticDoorControl;
+		private System.Windows.Forms.ToolStripMenuItem cmenuItemClear;
 	}
 }

@@ -55,7 +55,8 @@ namespace TrafficControlTest.Library
 	{
 		VehicleSystem,
 		MissionSystem,
-		HostSystem
+		HostSystem,
+		AutomaticDoorSystem
 	}
 
 	public enum AccountRank
