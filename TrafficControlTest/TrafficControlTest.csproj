@@ -79,7 +79,6 @@
   <ItemGroup>
     <Compile Include="Library\ExceptionHandling.cs" />
     <Compile Include="Library\FileOperation.cs" />
-    <Compile Include="Library\MD5HashCalculator.cs" />
     <Compile Include="Library\ShellCommandExecutor.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicator.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicatorUpdater.cs" />
@@ -553,6 +552,10 @@
     <ProjectReference Include="..\..\iTSLibrary\GLUI\GLUI.csproj">
       <Project>{390dc0bb-01d8-48b3-a7c3-84c5b3355dee}</Project>
       <Name>GLUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\iTSLibrary\MD5Hash\MD5Hash.csproj">
+      <Project>{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}</Project>
+      <Name>MD5Hash</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\iTSLibrary\SerialData\SerialData.csproj">
       <Project>{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}</Project>

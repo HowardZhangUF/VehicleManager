@@ -1,4 +1,5 @@
 ﻿using GLCore;
+using MD5Hash;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +70,7 @@ namespace TrafficControlTest.Module.Map
 		public void LoadMap(string MapFileName)
 		{
 			GLCMD.CMD.LoadMap(rMapFileManager.GetMapFileFullPath(MapFileName), 3);
-			rMapManager.SetMapData(MapFileName, MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)), GLCMD.CMD.SingleTowerPairInfo.Select(o => ConvertToIMapObjectOfTowardPoint(o)).ToList(), GLCMD.CMD.SingleAreaInfo.Select(o => ConvertToIMapObjectOfRectangle(o)).ToList());
+			rMapManager.SetMapData(MapFileName, MD5.GetFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)), GLCMD.CMD.SingleTowerPairInfo.Select(o => ConvertToIMapObjectOfTowardPoint(o)).ToList(), GLCMD.CMD.SingleAreaInfo.Select(o => ConvertToIMapObjectOfRectangle(o)).ToList());
 			RaiseEvent_LoadMapSuccessed(MapFileName);
 		}
 		public void LoadMap2(string MapFileNameWithoutExtension)
@@ -254,7 +255,7 @@ namespace TrafficControlTest.Module.Map
 					if (rMapFileManager.GetLocalMapFileNameList().Any(o => o == MapFileName))
 					{
 						// 該地圖 Hash 與當前地圖 Hash 不同時
-						if (MD5HashCalculator.CalculateFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)) != rMapManager.mCurrentMapFileHash)
+						if (MD5.GetFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)) != rMapManager.mCurrentMapFileHash)
 						{
 							LoadMap(MapFileName);
 							isLoadMapSuccess = true;
