@@ -119,7 +119,7 @@ namespace TrafficControlTest.Module.Configure
 				".\\LogExport",
 				string.Empty,
 				string.Empty,
-				"Base Directory of Saving Exported Log",
+				"Base directory of saving exported log",
 				"儲存輸出日誌的資料夾",
 				"储存输出日志的资料夹"));
 			defaultConfigs.Add(new Configuration(
@@ -130,7 +130,7 @@ namespace TrafficControlTest.Module.Configure
 				"CASTEC_Log_VM_",
 				string.Empty,
 				string.Empty,
-				"Prefix of Exported Log Name",
+				"Prefix of exported log name",
 				"輸出日誌名稱的前綴文字",
 				"输出日志名称的前缀文字"));
 			defaultConfigs.Add(new Configuration(
@@ -141,7 +141,7 @@ namespace TrafficControlTest.Module.Configure
 				"yyyyMMdd",
 				string.Empty,
 				string.Empty,
-				"Time Format in Exported Log Name",
+				"Time format in exported log name",
 				"輸出日誌名稱的日期文字的格式",
 				"输出日志名称的日期文字的格式"));
 			defaultConfigs.Add(new Configuration(
@@ -150,11 +150,11 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"3000",
-				"500",
-				"10000",
-				"Time Period of Recording Vehicle History",
-				"記錄自走車歷史記錄的時間間隔",
-				"记录自走车历史记录的时间间隔"));
+				"100",
+				"60000",
+				"Time period in millisecond of recording vehicle history",
+				"記錄自走車歷史記錄的時間間隔 (ms)",
+				"记录自走车历史记录的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"DebugMessageHandler",
 				"TimePeriod",
@@ -162,10 +162,10 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"300",
 				"100",
-				"10000",
-				"Time Period of Raise Event of Debug Message",
-				"拋出偵錯訊息事件的時間間隔",
-				"抛出侦错讯息事件的时间间隔"));
+				"60000",
+				"Time period in millisecond of raising debug message event",
+				"拋出偵錯訊息事件的時間間隔 (ms)",
+				"抛出侦错讯息事件的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"SignificantMessageHandler",
 				"TimePeriod",
@@ -173,10 +173,10 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"300",
 				"100",
-				"10000",
-				"Time Period of Raise Event of Significant Message",
-				"拋出重要訊息事件(供使用者監看)的時間間隔",
-				"抛出重要讯息事件(供使用者监看)的时间间隔"));
+				"60000",
+				"Time period in millisecond of raising significant message event",
+				"拋出重要訊息事件(供使用者監看)的時間間隔 (ms)",
+				"抛出重要讯息事件(供使用者监看)的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"TimeElapseDetector",
 				"TimePeriod",
@@ -184,19 +184,19 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"700",
 				"100",
-				"10000",
-				"Time Period of Detecting Whether DateTime Changed",
-				"檢測時間是否變化的時間間隔",
-				"检测时间是否变化的时间间隔"));
+				"60000",
+				"Time period in millisecond of detecting whether date time changed",
+				"檢測時間是否變化的時間間隔 (ms)",
+				"检测时间是否变化的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"VehicleCommunicator",
 				"LocalPort",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"8000",
-				"1025",
+				"1",
 				"65535",
-				"Port for Vehicle Connection",
+				"Port for vehicle connection",
 				"給自走車連線的連接埠",
 				"给自走车连线的连接埠"));
 			defaultConfigs.Add(new Configuration(
@@ -206,21 +206,21 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"100",
 				"50",
-				"1000",
-				"Time Period of Checking Queue and Handling Socket Send/Receive Message with Vehicle",
-				"確認佇列並處理與自走車傳送/接受訊息的時間間隔",
-				"确认伫列并处理与自走车传送/接受讯息的时间间隔"));
+				"60000",
+				"Time period in millisecond of checking queue and handling socket send/receive message with vehicle",
+				"確認佇列並處理與自走車傳送/接受訊息的時間間隔 (ms)",
+				"确认伫列并处理与自走车传送/接受讯息的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"CollisionEventDetector",
 				"TimePeriod",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"750",
-				"300",
-				"1000",
-				"Time Period of Detecting Collision Event",
-				"偵測碰撞事件的時間間隔",
-				"侦测碰撞事件的时间间隔"));
+				"100",
+				"60000",
+				"Time period in millisecond of detecting collision event",
+				"偵測碰撞事件的時間間隔 (ms)",
+				"侦测碰撞事件的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"CollisionEventDetector",
 				"NeighborPointAmount",
@@ -228,8 +228,8 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"10",
 				"3",
-				"100",
-				"Using Neighbor Point Amount when Detecting Collision Event",
+				"1000",
+				"Using neighbor point amount when detecting collision event",
 				"偵測會車事件時使用的鄰近點數量",
 				"侦测会车事件时使用的邻近点数量"
 				));
@@ -241,9 +241,9 @@ namespace TrafficControlTest.Module.Configure
 				"30",
 				"0",
 				"100",
-				"Detecting Collision Event when Vehicle's Location Score Greater than this Threshold",
-				"當自走車的定位分數高於此閾值時才會對其偵測會車事件",
-				"当自走车的定位分数高于此阈值时才会对其侦测会车事件"
+				"Detecting collision event when vehicle's location score in percentage is greater than or equal to this threshold",
+				"當自走車的定位分數 (%) 高於等於此閾值時才會對其偵測會車事件",
+				"当自走车的定位分数 (%) 高于等于此阈值时才会对其侦测会车事件"
 				));
 			defaultConfigs.Add(new Configuration(
 				"VehicleControlHandler",
@@ -252,10 +252,10 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"300",
 				"100",
-				"1000",
-				"Time Period of Checking Queue and Sending Control Command to Vehicle",
-				"確認佇列並傳送控制指令給自走車的時間間隔",
-				"确认伫列并传送控制指令给自走车的时间间隔"));
+				"60000",
+				"Time period in millisecond of checking queue and sending control command to vehicle",
+				"確認佇列並傳送控制指令給自走車的時間間隔 (ms)",
+				"确认伫列并传送控制指令给自走车的时间间隔 (ms)"));
             defaultConfigs.Add(new Configuration(
                 "VehicleControlUpdater",
                 "TimePeriod",
@@ -263,10 +263,10 @@ namespace TrafficControlTest.Module.Configure
                 ConfigurationLevel.Normal,
                 "800",
                 "100",
-                "2000",
-                "Time Period of Checking Control Command Send/Execute Timeout Or Not",
-                "確認控制指令是否傳送/執行逾時",
-                "确认控制指令是否传送/执行逾时"));
+                "60000",
+                "Time period in millisecond of checking control command send/execute timeout or not",
+                "確認控制指令是否傳送/執行逾時的時間間隔 (ms)",
+				"确认控制指令是否传送/执行逾时的时间间隔 (ms)"));
             defaultConfigs.Add(new Configuration(
                 "VehicleControlUpdater",
                 "TimeoutOfSendingVehicleControl",
@@ -275,9 +275,9 @@ namespace TrafficControlTest.Module.Configure
                 "5",
                 "1",
                 "60",
-                "Timeout of Checking Sending Control Successed or Failed",
-                "傳送控制後若過了此秒數仍未偵測到車子相應的變化，則判斷控制傳送失敗",
-                "传送控制后若过了此秒数仍未侦测到车子相应的变化，则判断控制传送失败"));
+                "Time in second of checking sending control successed or failed",
+                "傳送控制後若過了此時間 (second) 仍未偵測到車子相應的變化，則判斷控制傳送失敗",
+				"传送控制后若过了此时间 (second) 仍未侦测到车子相应的变化，则判断控制传送失败"));
             defaultConfigs.Add(new Configuration(
                 "VehicleControlUpdater",
                 "TimeoutOfExecutingVehicleControl",
@@ -286,9 +286,9 @@ namespace TrafficControlTest.Module.Configure
                 "600",
                 "10",
                 "6000",
-                "Timeout of Checking Executing Control Successed or Failed",
-                "執行控制後若過了此秒數任務仍未完成，則判斷控制執行失敗",
-                "执行控制后若过了此秒数任务仍未完成，则判断控制执行失败"));
+                "Time in second of checking executing control successed or failed",
+                "執行控制後若過了此時間 (second) 任務仍未完成，則判斷控制執行失敗",
+				"执行控制后若过了此时间 (second) 任务仍未完成，则判断控制执行失败"));
             defaultConfigs.Add(new Configuration(
                 "VehicleControlUpdater",
                 "ToleranceOfXOfArrivedTarget",
@@ -296,10 +296,10 @@ namespace TrafficControlTest.Module.Configure
                 ConfigurationLevel.Normal,
                 "100",
                 "1",
-                "1000",
-                "Tolerance of X of Checking Control Is Completed or Failed",
-                "判斷控制是否完成的座標 (X) 容許誤差",
-                "判断控制是否完成的座标 (X) 容许误差"));
+                "10000",
+                "Tolerance in millimeter of X of checking control is completed or failed",
+                "判斷控制是否完成的座標 (X) 容許誤差 (mm)",
+                "判断控制是否完成的座标 (X) 容许误差 (mm)"));
             defaultConfigs.Add(new Configuration(
                 "VehicleControlUpdater",
                 "ToleranceOfYOfArrivedTarget",
@@ -307,10 +307,10 @@ namespace TrafficControlTest.Module.Configure
                 ConfigurationLevel.Normal,
                 "100",
                 "1",
-                "1000",
-                "Tolerance of Y of Checking Control Is Completed or Failed",
-                "判斷控制是否完成的座標 (Y) 容許誤差",
-                "判断控制是否完成的座标 (Y) 容许误差"));
+                "10000",
+                "Tolerance in millimeter of Y of checking control is completed or failed",
+                "判斷控制是否完成的座標 (Y) 容許誤差 (mm)",
+                "判断控制是否完成的座标 (Y) 容许误差 (mm)"));
             defaultConfigs.Add(new Configuration(
                 "VehicleControlUpdater",
                 "ToleranceOfTowardOfArrivedTarget",
@@ -319,9 +319,9 @@ namespace TrafficControlTest.Module.Configure
                 "5",
                 "1",
                 "360",
-                "Tolerance of Toward of Checking Control Is Completed or Failed",
-                "判斷控制是否完成的座標 (Toward) 容許誤差",
-                "判断控制是否完成的座标 (Toward) 容许误差"));
+                "Tolerance in degree of toward of checking control is completed or failed",
+                "判斷控制是否完成的座標 (Toward) 容許誤差 (degree)",
+                "判断控制是否完成的座标 (Toward) 容许误差 (degree)"));
 			defaultConfigs.Add(new Configuration(
 				"VehicleControlUpdater",
 				"CheckCoordinateAccuracyAfterArrived",
@@ -330,7 +330,7 @@ namespace TrafficControlTest.Module.Configure
 				"False",
 				string.Empty,
 				string.Empty,
-				"Check Coordinate Accuracy or Not when Vehicle Finish Control",
+				"Check coordinate accuracy or not when vehicle finish control",
 				"自走車完成控制後是否檢查座標誤差",
 				"自走车完成控制后是否检查座标误差"));
 			defaultConfigs.Add(new Configuration(
@@ -341,7 +341,7 @@ namespace TrafficControlTest.Module.Configure
 				"True",
 				string.Empty,
 				string.Empty,
-				"Auto Add Control to Collection when Vehicle is Executing a Control that is not from System",
+				"Auto add control to collection when vehicle is executing a control that is not from system",
 				"自動偵測自走車所執行的非系統控制並將該控制加入至系統集合中",
 				"自动侦测自走车所执行的非系统控制并将该控制加入至系统集合中"));
 			defaultConfigs.Add(new Configuration(
@@ -350,9 +350,9 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"9000",
-				"1025",
+				"1",
 				"65535",
-				"Port for Host Connection",
+				"Port for host connection",
 				"給上位系統連線的連接埠",
 				"给上位系统连线的连接埠"));
 			defaultConfigs.Add(new Configuration(
@@ -362,10 +362,10 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"100",
 				"50",
-				"1000",
-				"Time Period of Checking Queue and Handling Received Message with Host",
-				"確認佇列並處理與上位系統傳送/接受訊息的時間間隔",
-				"确认伫列并处理与上位系统传送/接受讯息的时间间隔"));
+				"60000",
+				"Time period in millisecond of checking queue and handling received message with host",
+				"確認佇列並處理與上位系統傳送/接受訊息的時間間隔 (ms)",
+				"确认伫列并处理与上位系统传送/接受讯息的时间间隔 (ms)"));
             defaultConfigs.Add(new Configuration(
                 "HostMessageAnalyzer",
                 "FilterDuplicateMissionWhenReceivedCommand",
@@ -374,7 +374,7 @@ namespace TrafficControlTest.Module.Configure
                 "True",
                 string.Empty,
                 string.Empty,
-                "When Received Command, If There is Already a Mission with Same Content in Mission Collection, Then the New Mission Will Not Be Added.",
+                "When received command, if there already exists a mission with same content in mission collection, then the new mission will not be added.",
                 "解析訊息時，若任務集合中已有相同內容的任務，則不將該新任務加入",
                 "解析讯息时，若任务集合中已有相同内容的任务，则不将该新任务加入"));
             defaultConfigs.Add(new Configuration(
@@ -383,11 +383,11 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"1000",
-				"300",
-				"5000",
-				"Time Period of Checking Queue and Dispatching Mission to Vehicle",
-				"確認佇列並分配任務給自走車的時間間隔",
-				"确认伫列并分配任务给自走车的时间间隔"));
+				"100",
+				"60000",
+				"Time period in millisecond of checking queue and dispatching mission to vehicle",
+				"確認佇列並分配任務給自走車的時間間隔 (ms)",
+				"确认伫列并分配任务给自走车的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"MissionDispatcher",
 				"DispatchRule",
@@ -396,7 +396,7 @@ namespace TrafficControlTest.Module.Configure
 				"0",
 				"0",
 				"1",
-				"Dispatch Mission Order. 0 -> Priority > ReceivedTime. 1 -> SpecifyVehicle > Priority > ReceivedTime. (for Thinflex Project)",
+				"Dispatch mission rule. 0 -> Priority > ReceivedTime. 1 -> SpecifyVehicle > Priority > ReceivedTime. (for Thinflex project)",
 				"任務派送順序。 0 為先看優先度再看接收時間點。 1 為先看是否有指定車再看優先度再看接收時間點(新陽專案使用)",
 				"任务派送顺序。 0 为先看优先度再看接收时间点。 1 为先看是否有指定车再看优先度再看接收时间点(新阳专案使用)"));
 			defaultConfigs.Add(new Configuration(
@@ -405,11 +405,11 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"1000",
-				"300",
-				"5000",
-				"System Will Dispatch Mission to Vehicle If Its Idle Time More Than This Threshold (in ms)",
-				"系統會派任務給閒置時間超過此閾值 (ms) 的自走車",
-				"系统会派任务给闲置时间超过此阈值 (ms) 的自走车"));
+				"100",
+				"60000",
+				"System will dispatch mission to vehicle if its idle time is more than this threshold (in millisecond)",
+				"系統會派任務給閒置時間 (ms) 超過此閾值的自走車",
+				"系统会派任务给闲置时间 (ms) 超过此阈值的自走车"));
 			defaultConfigs.Add(new Configuration(
 				"MissionUpdater",
 				"AutoDetectNonSystemMission",
@@ -418,7 +418,7 @@ namespace TrafficControlTest.Module.Configure
 				"True",
 				string.Empty,
 				string.Empty,
-				"Auto Add Mission to Queue when Vehicle is Executing a Mission that is not from System",
+				"Auto add mission to queue when vehicle is executing a mission that is not from system",
 				"自動偵測自走車所執行的非系統任務並將該任務加入至系統佇列中",
 				"自动侦测自走车所执行的非系统任务并将该任务加入至系统伫列中"));
 			defaultConfigs.Add(new Configuration(
@@ -429,7 +429,7 @@ namespace TrafficControlTest.Module.Configure
 				".\\Map\\",
 				string.Empty,
 				string.Empty,
-				"Directory Path of Saving Maps",
+				"Directory path of saving maps",
 				"儲存地圖檔案的資料夾路徑",
 				"储存地图档案的资料夹路径"));
 			defaultConfigs.Add(new Configuration(
@@ -440,7 +440,7 @@ namespace TrafficControlTest.Module.Configure
 				"True",
 				string.Empty,
 				string.Empty,
-				"Auto Load Map when Vehicle's Current Map Changed",
+				"Auto load map when vehicle's current map was changed",
 				"當自走車當前使用地圖改變時，自身重新讀取地圖",
 				"当自走车当前使用地图改变时，自身重新读取地图"));
 			defaultConfigs.Add(new Configuration(
@@ -449,22 +449,22 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"1500",
-				"500",
-				"5000",
-				"Time Period of Checking Vehicle State and Generating Next Mission",
-				"確認自走車狀態並產生下一個任務的時間間隔",
-				"确认自走车状态并产生下一个任务的时间间隔"));
+				"100",
+				"60000",
+				"Time period in millisecond of checking vehicle state and generating next mission",
+				"確認自走車狀態並產生下一個任務的時間間隔 (ms)",
+				"确认自走车状态并产生下一个任务的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"AutomaticDoorCommunicator",
 				"TimePeriod",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"5000",
-				"1000",
-				"10000",
-				"Time Period of Connect to Automatic Door",
-				"嘗試連線至自動門的時間間隔",
-				"尝试连线至自动门的时间间隔"));
+				"100",
+				"60000",
+				"Time period in millisecond of connecting to automatic door",
+				"嘗試連線至自動門的時間間隔 (ms)",
+				"尝试连线至自动门的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"AutomaticDoorCommunicator",
 				"AutoConnect",
@@ -473,7 +473,7 @@ namespace TrafficControlTest.Module.Configure
 				"True",
 				string.Empty,
 				string.Empty,
-				"Auto Connect to Automatic Door",
+				"Auto connect to automatic door",
 				"是否自動連線至自動門",
 				"是否自动连线至自动门"));
 			defaultConfigs.Add(new Configuration(
@@ -483,21 +483,21 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"500",
 				"100",
-				"2000",
-				"Time Period of Handle Automatic Door Control",
-				"處理自動門控制的時間間隔",
-				"处理自动门控制的时间间隔"));
+				"60000",
+				"Time period in millisecond of handling automatic door control",
+				"處理自動門控制的時間間隔 (ms)",
+				"处理自动门控制的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"VehiclePassThroughAutomaticDoorEventManagerUpdater",
 				"TimePeriod",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
 				"1000",
-				"500",
-				"5000",
-				"Time Period of Detecting Vehicle Pass Through Automatic Door Event",
-				"偵測車子通過自動門事件的時間間隔",
-				"侦测车子通过自动门事件的时间间隔"));
+				"100",
+				"60000",
+				"Time period in millisecond of detecting vehicle pass through automatic door event",
+				"偵測車子通過自動門事件的時間間隔 (ms)",
+				"侦测车子通过自动门事件的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"VehiclePassThroughAutomaticDoorEventManagerUpdater",
 				"OpenDoorDistance",
@@ -505,10 +505,10 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"2500",
 				"100",
-				"5000",
-				"Distance Threshold of Open Automatic Door",
-				"當車子與自動門的距離小於此數值時開啟自動門",
-				"当车子与自动门的距离小于此数值时开启自动门"));
+				"100000",
+				"Distance threshold in millimeter of opening automatic door",
+				"當車子與自動門的距離 (mm) 小於此數值時開啟自動門",
+				"当车子与自动门的距离 (mm) 小于此数值时开启自动门"));
 			defaultConfigs.Add(new Configuration(
 				"VehiclePassThroughAutomaticDoorEventManagerUpdater",
 				"CloseDoorDistance",
@@ -516,10 +516,10 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"2500",
 				"100",
-				"5000",
-				"Distance Threshold of Close Automatic Door",
-				"當車子與自動門的距離大於此數值時關閉自動門",
-				"当车子与自动门的距离大于此数值时关闭自动门"));
+				"100000",
+				"Distance threshold in millimeter of closing automatic door",
+				"當車子與自動門的距離 (mm) 大於此數值時關閉自動門",
+				"当车子与自动门的距离 (mm) 大于此数值时关闭自动门"));
 			defaultConfigs.Add(new Configuration(
 				"ChargeStationInfoManagerUpdater",
 				"MaximumDistanceBetweenChargeStationAndVehicle",
@@ -527,10 +527,10 @@ namespace TrafficControlTest.Module.Configure
 				ConfigurationLevel.Normal,
 				"1500",
 				"100",
-				"5000",
-				"Maximum Distance Between Vehicle and Charge Station when Vehicle is Charging",
-				"車子充電時與充電站的距離最大值",
-				"车子充电时与充电站的距离最大值"));
+				"100000",
+				"Maximum distance in millimeter between vehicle and charge station when vehicle is charging",
+				"車子充電時與充電站的距離 (mm) 最大值",
+				"车子充电时与充电站的距离 (mm) 最大值"));
 
 			mConfigs.Clear();
 			for (int i = 0; i < defaultConfigs.Count; ++i)
