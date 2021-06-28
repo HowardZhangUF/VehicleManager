@@ -13,8 +13,7 @@ namespace TrafficControlTest.UserControl
 		private static int DEFAULT_XBORDER = 30; // 控制項與邊界的距離
 		private static int DEFAULT_YBORDER = 30; // 控制項與邊界的距離
 		private static int DEFAULT_MARGIN = 15; // 每個控制項之間的距離
-		private static int DEFAULT_TEXT_FONT_SIZE = 12;
-		private static FontFamily DEFAULT_TEXT_FONT_FAMILY = new FontFamily("新細明體");
+		private static Font DEFAULT_FONT = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 		private static Color DEFAULT_FORM_BACKCOLOR = Color.FromArgb(5, 25, 30);
 		private static Color DEFAULT_FORM_FORECOLOR = Color.White;
 		private static Color DEFAULT_FORM_BORDERCOLOR = Color.Red;
@@ -35,13 +34,13 @@ namespace TrafficControlTest.UserControl
 
 			lblText.Text = text;
 			lblText.AutoSize = true;
-			lblText.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			lblText.Font = DEFAULT_FONT;
 			lblText.Size = TextRenderer.MeasureText(lblText.Text, lblText.Font);
 			lblText.Location = new Point(DEFAULT_XBORDER, DEFAULT_YBORDER);
 
 			txtResult.BackColor = form.BackColor;
 			txtResult.ForeColor = form.ForeColor;
-			txtResult.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			txtResult.Font = DEFAULT_FONT;
 			txtResult.Width = Math.Max(lblText.Width, DEFAULT_BUTTON_SIZE.Width * 2 + DEFAULT_MARGIN);
 			txtResult.Location = new Point(DEFAULT_XBORDER, lblText.Bottom + DEFAULT_MARGIN);
 			if (passwordChar != '\0') txtResult.PasswordChar = passwordChar;
@@ -49,14 +48,14 @@ namespace TrafficControlTest.UserControl
 			btnOk.Text = "Confirm";
 			btnOk.DialogResult = DialogResult.OK;
 			btnOk.FlatStyle = FlatStyle.Flat;
-			btnOk.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			btnOk.Font = DEFAULT_FONT;
 			btnOk.Size = new Size(100, 30);
 			btnOk.Location = new Point(DEFAULT_XBORDER + (txtResult.Width - (DEFAULT_BUTTON_SIZE.Width * 2 + DEFAULT_MARGIN)), txtResult.Bottom + DEFAULT_MARGIN);
 
 			btnCancel.Text = "Cancel";
 			btnCancel.DialogResult = DialogResult.Cancel;
 			btnCancel.FlatStyle = FlatStyle.Flat;
-			btnCancel.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			btnCancel.Font = DEFAULT_FONT;
 			btnCancel.Size = btnOk.Size;
 			btnCancel.Location = new Point(btnOk.Right + DEFAULT_MARGIN, btnOk.Location.Y);
 
@@ -86,14 +85,14 @@ namespace TrafficControlTest.UserControl
 
 			lblText.Text = text;
 			lblText.AutoSize = true;
-			lblText.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			lblText.Font = DEFAULT_FONT;
 			lblText.Size = TextRenderer.MeasureText(lblText.Text, lblText.Font);
 			lblText.Location = new Point(DEFAULT_XBORDER, DEFAULT_YBORDER);
 
 			btnOk.Text = "OK";
 			btnOk.DialogResult = DialogResult.OK;
 			btnOk.FlatStyle = FlatStyle.Flat;
-			btnOk.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			btnOk.Font = DEFAULT_FONT;
 			btnOk.Size = new Size(100, 30);
 			btnOk.Location = lblText.Width > btnOk.Width ? new Point(DEFAULT_XBORDER + (lblText.Width - btnOk.Width) / 2, lblText.Bottom + DEFAULT_MARGIN) : new Point(DEFAULT_XBORDER, lblText.Bottom + DEFAULT_MARGIN);
 
@@ -122,21 +121,21 @@ namespace TrafficControlTest.UserControl
 
 			lblText.Text = text;
 			lblText.AutoSize = true;
-			lblText.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			lblText.Font = DEFAULT_FONT;
 			lblText.Size = TextRenderer.MeasureText(lblText.Text, lblText.Font);
 			lblText.Location = new Point(DEFAULT_XBORDER, DEFAULT_YBORDER);
 
 			btnOk.Text = "Confirm";
 			btnOk.DialogResult = DialogResult.OK;
 			btnOk.FlatStyle = FlatStyle.Flat;
-			btnOk.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			btnOk.Font = DEFAULT_FONT;
 			btnOk.Size = new Size(100, 30);
 			btnOk.Location = new Point(DEFAULT_XBORDER + (lblText.Width - (DEFAULT_BUTTON_SIZE.Width * 2 + DEFAULT_MARGIN)), lblText.Bottom + DEFAULT_MARGIN);
 
 			btnCancel.Text = "Cancel";
 			btnCancel.DialogResult = DialogResult.Cancel;
 			btnCancel.FlatStyle = FlatStyle.Flat;
-			btnCancel.Font = new Font(DEFAULT_TEXT_FONT_FAMILY, DEFAULT_TEXT_FONT_SIZE, FontStyle.Regular);
+			btnCancel.Font = DEFAULT_FONT;
 			btnCancel.Size = btnOk.Size;
 			btnCancel.Location = new Point(btnOk.Right + DEFAULT_MARGIN, btnOk.Location.Y);
 
