@@ -4,6 +4,12 @@ using TrafficControlTest.Library;
 
 namespace TrafficControlTest.Module.Configure
 {
+	/// <remarks>
+	/// - 一般的 Config
+	///		- 從介面改值 -> 更新 Configurator 類別並儲存檔案 -> 更新相應的類別
+	///	- 地圖管理的 Config
+	///		- 從介面改值 或 從地圖類別改值 -> 更新 Configurator 類別並儲存檔案 -> 更新地圖類別的值 與 介面的值
+	/// </remarks>
 	public interface IConfigurator
 	{
 		event EventHandler<ConfigFileLoadedEventArgs> ConfigFileLoaded;

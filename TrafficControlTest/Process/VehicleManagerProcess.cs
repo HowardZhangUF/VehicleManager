@@ -1358,12 +1358,10 @@ namespace TrafficControlTest.Process
 			HandleDebugMessage(Args.OccurTime, sender.GetType().Name, "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
 
 			// IMapFileManager 與 IMapManagerUpdater 皆有 MapManagementSetting 設定，需同步
-			if (sender.GetType().Name == "MapFileManager" || sender.GetType().Name == "MapManagerUpdater")
+			if ((sender.GetType().Name == "MapFileManager" || sender.GetType().Name == "MapManagerUpdater") && Args.ConfigName == "MapManagementSetting")
 			{
-				if (Args.ConfigName == "MapManagementSetting")
-				{
-					SynchronizeMapManagementSetting(Args.ConfigNewValue);
-				}
+				mConfigurator.SetValue("MapFileManager/MapManagementSetting", Args.ConfigNewValue);
+				mConfigurator.SetValue("MapManagerUpdater/MapManagementSetting", Args.ConfigNewValue);
 			}
 		}
 		private void HandleEvent_ConfiguratorConfigFileLoaded(object Sender, ConfigFileLoadedEventArgs Args)
@@ -1384,12 +1382,6 @@ namespace TrafficControlTest.Process
 			if (systemWithConfig != null)
 			{
 				systemWithConfig.SetConfig(objectConfigName, mConfigurator.GetValue(fullConfigName));
-			}
-
-			// IMapFileManager 與 IMapManagerUpdater 皆有 MapManagementSetting 設定，需同步
-			if (Args.ConfigName.Contains("MapManagementSetting"))
-			{
-				SynchronizeMapManagementSetting(Args.Configuration.mValue);
 			}
 		}
 		private void HandleEvent_LogExporterExportStarted(object Sender, LogExportedEventArgs Args)
@@ -1683,17 +1675,6 @@ namespace TrafficControlTest.Process
 		private int GetCurrentThreadClosingProgress()
 		{
 			return mCollectionOfISystemWithLoopTask.Where(o => !o.mIsExecuting).Count() * 100 / mCollectionOfISystemWithLoopTask.Count;
-		}
-		private void SynchronizeMapManagementSetting(string ConfigValue)
-		{
-			if (mMapFileManager.GetConfig("MapManagementSetting") != ConfigValue)
-			{
-				mMapFileManager.SetConfig("MapManagementSetting", ConfigValue);
-			}
-			if (mMapManagerUpdater.GetConfig("MapManagementSetting") != ConfigValue)
-			{
-				mMapManagerUpdater.SetConfig("MapManagementSetting", ConfigValue);
-			}
 		}
 	}
 
