@@ -793,7 +793,6 @@ namespace TrafficControlTest.Process
 			{
 				MapFileManager.ConfigUpdated += HandleEvent_ISystemWithConfigConfigUpdated;
 				MapFileManager.MapFileAdded += HandleEvent_MapFileManagerMapFileAdded;
-				MapFileManager.MapFileRemoved += HandleEvent_MapFileManagerMapFileRemoved;
 			}
 		}
 		private void UnsubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
@@ -802,7 +801,6 @@ namespace TrafficControlTest.Process
 			{
 				MapFileManager.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
 				MapFileManager.MapFileAdded -= HandleEvent_MapFileManagerMapFileAdded;
-				MapFileManager.MapFileRemoved -= HandleEvent_MapFileManagerMapFileRemoved;
 			}
 		}
 		private void SubscribeEvent_IMapManager(IMapManager MapManager)
@@ -1358,6 +1356,15 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_ISystemWithConfigConfigUpdated(object sender, ConfigUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, sender.GetType().Name, "ConfigUpdated", $"ConfigName: {Args.ConfigName}, ConfigNewValue: {Args.ConfigNewValue}");
+
+			// IMapFileManager 與 IMapManagerUpdater 皆有 MapManagementSetting 設定，需同步
+			if (sender.GetType().Name == "MapFileManager" || sender.GetType().Name == "MapManagerUpdater")
+			{
+				if (Args.ConfigName == "MapManagementSetting")
+				{
+					SynchronizeMapManagementSetting(Args.ConfigNewValue);
+				}
+			}
 		}
 		private void HandleEvent_ConfiguratorConfigFileLoaded(object Sender, ConfigFileLoadedEventArgs Args)
 		{
@@ -1370,13 +1377,19 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_ConfiguratorConfigurationUpdated(object Sender, ConfigurationUpdatedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "Configurator", "ConfigurationUpdated", $"Name: {Args.ConfigName}, ConfigNewValue: {Args.Configuration.mValue}");
-			string fullConfigName = Args.ConfigName; // Example: LogExporter/BaseDirectory, VehicleControlUpdater/ToleranceOfYOfArrivedTarget, HostCommunicator/TimePeriod
+			string fullConfigName = Args.ConfigName; // 此處的名稱會是類別 + 名稱， Example: LogExporter/BaseDirectory, VehicleControlUpdater/ToleranceOfYOfArrivedTarget, HostCommunicator/TimePeriod
 			string objectName = fullConfigName.Substring(0, fullConfigName.IndexOf('/'));
 			string objectConfigName = fullConfigName.Substring(fullConfigName.IndexOf('/') + 1);
 			ISystemWithConfig systemWithConfig = GetCorrespondingObjectOfISystemWithConfig(objectName);
 			if (systemWithConfig != null)
 			{
 				systemWithConfig.SetConfig(objectConfigName, mConfigurator.GetValue(fullConfigName));
+			}
+
+			// IMapFileManager 與 IMapManagerUpdater 皆有 MapManagementSetting 設定，需同步
+			if (Args.ConfigName.Contains("MapManagementSetting"))
+			{
+				SynchronizeMapManagementSetting(Args.Configuration.mValue);
 			}
 		}
 		private void HandleEvent_LogExporterExportStarted(object Sender, LogExportedEventArgs Args)
@@ -1460,11 +1473,7 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_MapFileManagerMapFileAdded(object Sender, MapFileCountChangedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemAdded", $"MapFileName: {Args.MapFileName}");
-		}
-		private void HandleEvent_MapFileManagerMapFileRemoved(object Sender, MapFileCountChangedEventArgs Args)
-		{
-			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemRemoved", $"MapFileName: {Args.MapFileName}");
+			HandleDebugMessage(Args.OccurTime, "MapFileManager", "ItemAdded", $"MapFileFullPath: {Args.MapFileFullPath}");
 		}
 		private void HandleEvent_MapManagerMapChanged(object Sender, MapChangedEventArgs Args)
 		{
@@ -1472,15 +1481,15 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_MapManagerUpdaterLoadMapSuccessed(object Sender, LoadMapSuccessedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "LoadMapSuccessed", $"MapName: {Args.MapFileName}");
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "LoadMapSuccessed", $"MapFileFullPath: {Args.MapFileFullPath}");
 		}
 		private void HandleEvent_MapManagerUpdaterLoadMapFailed(object Sender, LoadMapFailedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "LoadMapFailed", $"MapName: {Args.MapFileName}, Reason: {Args.Reason.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "LoadMapFailed", $"MapFileFullPath: {Args.MapFileFullPath}, Reason: {Args.Reason.ToString()}");
 		}
 		private void HandleEvent_MapManagerUpdaterSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "SynchronizeMapStarted", $"MapFileName: {Args.MapFileName}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "SynchronizeMapStarted", $"MapFileFullPath: {Args.MapFileFullPath}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
 		}
 		private void HandleEvent_CollisionEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
@@ -1674,6 +1683,17 @@ namespace TrafficControlTest.Process
 		private int GetCurrentThreadClosingProgress()
 		{
 			return mCollectionOfISystemWithLoopTask.Where(o => !o.mIsExecuting).Count() * 100 / mCollectionOfISystemWithLoopTask.Count;
+		}
+		private void SynchronizeMapManagementSetting(string ConfigValue)
+		{
+			if (mMapFileManager.GetConfig("MapManagementSetting") != ConfigValue)
+			{
+				mMapFileManager.SetConfig("MapManagementSetting", ConfigValue);
+			}
+			if (mMapManagerUpdater.GetConfig("MapManagementSetting") != ConfigValue)
+			{
+				mMapManagerUpdater.SetConfig("MapManagementSetting", ConfigValue);
+			}
 		}
 	}
 

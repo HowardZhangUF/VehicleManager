@@ -9,75 +9,46 @@ namespace TrafficControlTest.Module.Map
 	public class MapFileManager : SystemWithConfig, IMapFileManager
 	{
 		public event EventHandler<MapFileCountChangedEventArgs> MapFileAdded;
-		public event EventHandler<MapFileCountChangedEventArgs> MapFileRemoved;
 
-		private string mMapFileDirectory { get; set; } = string.Empty;
+		private MapManagementSetting mMapManagementSetting { get; set; } = null;
 
 		public MapFileManager()
 		{
 		}
-		public string[] GetLocalMapFileNameList()
+		public string[] GetLocalMapFileFullPathList()
 		{
 			string[] result = null;
-			if (Directory.Exists(mMapFileDirectory))
+			if (Directory.Exists(mMapManagementSetting.mMapFileDirectory))
 			{
-				result = Directory.GetFiles(mMapFileDirectory, "*.map", SearchOption.TopDirectoryOnly);
-				result = result.Select(o => new System.IO.FileInfo(o).Name).ToArray();
+				result = Directory.GetFiles(mMapManagementSetting.mMapFileDirectory);
 			}
 			return result;
 		}
-		public string[] GetLocalMapFileNameWithoutExtensionList()
+		public void AddMapFile(string SrcVehicleName, string MapFileName, byte[] MapData)
 		{
-			return GetLocalMapFileNameList().Select(o => o.Replace(".map", string.Empty)).ToArray();
-		}
-		public string GetMapFileFullPath(string MapFileName)
-		{
-			string result = string.Empty;
-			if (File.Exists(Path.Combine(mMapFileDirectory, MapFileName)))
-			{
-				result = Path.Combine(mMapFileDirectory, MapFileName);
-			}
-			return result;
-		}
-		public string GetMapFileFullPath2(string MapFileNameWithoutExtension)
-		{
-			return GetMapFileFullPath(MapFileNameWithoutExtension + ".map");
-		}
-		public void AddMapFile(string MapFileName, byte[] MapData)
-		{
-			if (!string.IsNullOrEmpty(MapFileName) && MapData != null)
-			{
-				if (!Directory.Exists(mMapFileDirectory)) Directory.CreateDirectory(mMapFileDirectory);
-				File.WriteAllBytes(Path.Combine(mMapFileDirectory, MapFileName), MapData);
-				RaiseEvent_MapFileAdded(MapFileName);
-			}
-		}
-		public void AddMapFile2(string MapFileNameWithoutExtension, byte[] MapData)
-		{
-			AddMapFile(MapFileNameWithoutExtension + ".map", MapData);
-		}
-		public void RemoveMapFile(string MapFileName)
-		{
-			if (File.Exists(Path.Combine(mMapFileDirectory, MapFileName)))
-			{
-				File.Delete(Path.Combine(mMapFileDirectory, MapFileName));
-				RaiseEvent_MapFileRemoved(MapFileName);
-			}
-		}
-		public void RemoveMapFile2(string MapFileNameWithoutExtension)
-		{
-			RemoveMapFile(MapFileNameWithoutExtension + ".map");
+			// 每當下載地圖時，更新地圖管理設定(會下載地圖，代表有自走車連線，或是有自走車更新地圖)
+			// 更新後通知其他類別一起將 MapManageSetting 更新???
+			int regionId = mMapManagementSetting.GetCorrespondingMapRegionId(SrcVehicleName);
+			mMapManagementSetting.mRegionSettings[regionId].SetCurrentMap(MapFileName, string.Empty);
+			RaiseEvent_ConfigUpdated("MapManagementSetting", mMapManagementSetting.ToJsonString());
+
+			// 儲存地圖
+			string mapDirectory = mMapManagementSetting.GetMapDirectoryPath(regionId);
+			if (!Directory.Exists(mapDirectory)) Directory.CreateDirectory(mapDirectory);
+			string mapFullPath = Path.Combine(mapDirectory, MapFileName);
+			File.WriteAllBytes(mapFullPath, MapData);
+			RaiseEvent_MapFileAdded(mapFullPath);
 		}
 		public override string[] GetConfigNameList()
 		{
-			return new string[] { "MapFileDirectory" };
+			return new string[] { "MapManagementSetting" };
 		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)
 			{
-				case "MapFileDirectory":
-					return mMapFileDirectory;
+				case "MapManagementSetting":
+					return mMapManagementSetting == null ? string.Empty : mMapManagementSetting.ToJsonString();
 				default:
 					return null;
 			}
@@ -86,8 +57,8 @@ namespace TrafficControlTest.Module.Map
 		{
 			switch (ConfigName)
 			{
-				case "MapFileDirectory":
-					mMapFileDirectory = NewValue;
+				case "MapManagementSetting":
+					mMapManagementSetting = MapManagementSetting.FromJsonString(NewValue);
 					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
 					break;
 				default:
@@ -104,17 +75,6 @@ namespace TrafficControlTest.Module.Map
 			else
 			{
 				Task.Run(() => { MapFileAdded?.Invoke(this, new MapFileCountChangedEventArgs(DateTime.Now, MapFileName)); });
-			}
-		}
-		protected virtual void RaiseEvent_MapFileRemoved(string MapFileName, bool Sync = true)
-		{
-			if (Sync)
-			{
-				MapFileRemoved?.Invoke(this, new MapFileCountChangedEventArgs(DateTime.Now, MapFileName));
-			}
-			else
-			{
-				Task.Run(() => { MapFileRemoved?.Invoke(this, new MapFileCountChangedEventArgs(DateTime.Now, MapFileName)); });
 			}
 		}
 	}

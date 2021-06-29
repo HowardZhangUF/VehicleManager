@@ -1,4 +1,5 @@
 ﻿using GLCore;
+using MapReader;
 using MD5Hash;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,10 @@ namespace TrafficControlTest.Module.Map
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private bool mAutoLoadMap = false;
+		private string mIntegratedMapFileName { get; set; } = "Integrated.map";
+		private MapManagementSetting mMapManagementSetting { get; set; } = null;
+		private object mLockOfLoadingMap = new object();
+		private object mLockOfMergingMaps = new object();
 
 		public MapManagerUpdater(IMapManager MapManager, IMapFileManager MapFileManager, IMapFileManagerUpdater MapFileManagerUpdater, IVehicleCommunicator VehicleCommunicator, IVehicleInfoManager VehicleInfoManager)
 		{
@@ -67,39 +72,22 @@ namespace TrafficControlTest.Module.Map
 			Set(VehicleCommunicator);
 			Set(VehicleInfoManager);
 		}
-		public void LoadMap(string MapFileName)
+		public void LoadMap(string MapFileFullPath)
 		{
-			GLCMD.CMD.LoadMap(rMapFileManager.GetMapFileFullPath(MapFileName), 3);
-			rMapManager.SetMapData(MapFileName, MD5.GetFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)), GLCMD.CMD.SingleTowerPairInfo.Select(o => ConvertToIMapObjectOfTowardPoint(o)).ToList(), GLCMD.CMD.SingleAreaInfo.Select(o => ConvertToIMapObjectOfRectangle(o)).ToList());
-			RaiseEvent_LoadMapSuccessed(MapFileName);
-		}
-		public void LoadMap2(string MapFileNameWithoutExtension)
-		{
-			LoadMap(MapFileNameWithoutExtension + ".map");
+			lock (mLockOfLoadingMap)
+			{
+				GLCMD.CMD.LoadMap(MapFileFullPath, 3);
+				rMapManager.SetMapData(MapFileFullPath, MD5.GetFileHash(MapFileFullPath), GLCMD.CMD.SingleTowerPairInfo.Select(o => ConvertToIMapObjectOfTowardPoint(o)).ToList(), GLCMD.CMD.SingleAreaInfo.Select(o => ConvertToIMapObjectOfRectangle(o)).ToList());
+				RaiseEvent_LoadMapSuccessed(MapFileFullPath);
+			}
 		}
 		public void SynchronizeMapToOnlineVehicles(string MapFileName)
 		{
-			IEnumerable<string> vehicleNames = rVehicleInfoManager.GetItemNames();
-			if (vehicleNames != null && vehicleNames.Count() > 0)
-			{
-				foreach (string vehicleName in vehicleNames)
-				{
-					rVehicleCommunicator.SendDataOfUploadMapToAGV(rVehicleInfoManager.GetItem(vehicleName).mIpPort, MapFileName);
-				}
-				foreach (string vehicleName in vehicleNames)
-				{
-					rVehicleCommunicator.SendDataOfChangeMap(rVehicleInfoManager.GetItem(vehicleName).mIpPort, MapFileName);
-				}
-				RaiseEvent_SynchronizeMapStarted(MapFileName, vehicleNames);
-			}
-		}
-		public void SynchronizeMapToOnlineVehicles2(string MapFileNameWithoutExtension)
-		{
-			SynchronizeMapToOnlineVehicles(MapFileNameWithoutExtension + ".map");
+			throw new NotImplementedException();
 		}
 		public override string[] GetConfigNameList()
 		{
-			return new string[] { "AutoLoadMap" };
+			return new string[] { "AutoLoadMap", "IntegratedMapFileName", "MapManagementSetting" };
 		}
 		public override string GetConfig(string ConfigName)
 		{
@@ -107,6 +95,10 @@ namespace TrafficControlTest.Module.Map
 			{
 				case "AutoLoadMap":
 					return mAutoLoadMap.ToString();
+				case "IntegratedMapFileName":
+					return mIntegratedMapFileName;
+				case "MapManagementSetting":
+					return mMapManagementSetting == null ? string.Empty : mMapManagementSetting.ToJsonString();
 				default:
 					return null;
 			}
@@ -117,6 +109,14 @@ namespace TrafficControlTest.Module.Map
 			{
 				case "AutoLoadMap":
 					mAutoLoadMap = bool.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "IntegratedMapFileName":
+					mIntegratedMapFileName = NewValue;
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "MapManagementSetting":
+					mMapManagementSetting = MapManagementSetting.FromJsonString(NewValue);
 					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
 					break;
 				default:
@@ -194,37 +194,37 @@ namespace TrafficControlTest.Module.Map
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
-		protected virtual void RaiseEvent_LoadMapSuccessed(string MapFileName, bool Sync = true)
+		protected virtual void RaiseEvent_LoadMapSuccessed(string MapFileFullPath, bool Sync = true)
 		{
 			if (Sync)
 			{
-				LoadMapSuccessed?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName));
+				LoadMapSuccessed?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileFullPath));
 			}
 			else
 			{
-				Task.Run(() => { LoadMapSuccessed?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileName)); });
+				Task.Run(() => { LoadMapSuccessed?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileFullPath)); });
 			}
 		}
-		protected virtual void RaiseEvent_LoadMapFailed(string MapFileName, ReasonOfLoadMapFail Reason, bool Sync = true)
+		protected virtual void RaiseEvent_LoadMapFailed(string MapFileFullPath, ReasonOfLoadMapFail Reason, bool Sync = true)
 		{
 			if (Sync)
 			{
-				LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileName, Reason));
+				LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileFullPath, Reason));
 			}
 			else
 			{
-				Task.Run(() => { LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileName, Reason)); });
+				Task.Run(() => { LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileFullPath, Reason)); });
 			}
 		}
-		protected virtual void RaiseEvent_SynchronizeMapStarted(string MapFileName, IEnumerable<string> VehicleNames, bool Sync = true)
+		protected virtual void RaiseEvent_SynchronizeMapStarted(string MapFileFullPath, IEnumerable<string> VehicleNames, bool Sync = true)
 		{
 			if (Sync)
 			{
-				SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames));
+				SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileFullPath, VehicleNames));
 			}
 			else
 			{
-				Task.Run(() => { SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileName, VehicleNames)); });
+				Task.Run(() => { SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileFullPath, VehicleNames)); });
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
@@ -236,51 +236,78 @@ namespace TrafficControlTest.Module.Map
 				if (mAutoLoadMap && !string.IsNullOrEmpty(Args.Item.mCurrentMapName))
 				{
 					DateTime tmpTimestamp = DateTime.Now;
-					Task.Run(() => TryLoadMap(Args.Item.mCurrentMapName));
+					Task.Run(() => TryMergeAndLoadMap());
 				}
 			}
 		}
-		private void TryLoadMap(string MapFileName)
+		private void TryMergeAndLoadMap()
 		{
-			bool isLoadMapSuccess = false;
-			ReasonOfLoadMapFail reason = ReasonOfLoadMapFail.None;
-
-			DateTime tmpTimestamp = DateTime.Now;
-			while (DateTime.Now.Subtract(tmpTimestamp).TotalMilliseconds < 5000)
+			try
 			{
-				// 當下載地圖完成時
-				if (!rMapFileManagerUpdater.mIsDownloadingMap)
+				bool isLoadMapSuccess = false;
+				ReasonOfLoadMapFail reason = ReasonOfLoadMapFail.None;
+				DateTime tmpTimestamp = DateTime.Now;
+				string integratedMapFileFullPath = System.IO.Path.Combine(mMapManagementSetting.mMapFileDirectory, mIntegratedMapFileName);
+
+				while (DateTime.Now.Subtract(tmpTimestamp).TotalMilliseconds < 5000)
 				{
-					// 若有該地圖存在
-					if (rMapFileManager.GetLocalMapFileNameList().Any(o => o == MapFileName))
+					// 當下載地圖完成時
+					if (!rMapFileManagerUpdater.mIsDownloadingMap)
 					{
-						// 該地圖 Hash 與當前地圖 Hash 不同時
-						if (MD5.GetFileHash(rMapFileManager.GetMapFileFullPath(MapFileName)) != rMapManager.mCurrentMapFileHash)
+						// 組合地圖
+						MergeMaps(mMapManagementSetting.GetCurrentMapNames(), integratedMapFileFullPath);
+
+						// 若有該地圖存在
+						if (rMapFileManager.GetLocalMapFileFullPathList().Any(o => o == integratedMapFileFullPath))
 						{
-							LoadMap(MapFileName);
-							isLoadMapSuccess = true;
-							break;
+							// 該地圖 Hash 與當前地圖 Hash 不同時
+							if (MD5.GetFileHash(integratedMapFileFullPath) != rMapManager.mCurrentMapFileHash)
+							{
+								LoadMap(integratedMapFileFullPath);
+								isLoadMapSuccess = true;
+								break;
+							}
+							else
+							{
+								reason = ReasonOfLoadMapFail.MapFileHashIsEqualToOldMap;
+								break;
+							}
 						}
 						else
 						{
-							reason = ReasonOfLoadMapFail.MapFileHashIsEqualToOldMap;
+							reason = ReasonOfLoadMapFail.MapFileIsNotExist;
 							break;
 						}
 					}
-					else
-					{
-						reason = ReasonOfLoadMapFail.MapFileIsNotExist;
-						break;
-					}
+					Thread.Sleep(600);
 				}
-				Thread.Sleep(600);
-			}
 
-			if (!isLoadMapSuccess)
-			{
-				if (reason == ReasonOfLoadMapFail.None) reason = ReasonOfLoadMapFail.IsDownloadingMapFile;
-				RaiseEvent_LoadMapFailed(MapFileName, reason);
+				if (!isLoadMapSuccess)
+				{
+					if (reason == ReasonOfLoadMapFail.None) reason = ReasonOfLoadMapFail.IsDownloadingMapFile;
+					RaiseEvent_LoadMapFailed(integratedMapFileFullPath, reason);
+				}
 			}
+			catch (Exception Ex)
+			{
+				Library.ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void MergeMaps(string[] MapFileFullPaths, string ItegratedMapFileFullPath)
+		{
+			if (MapFileFullPaths == null || MapFileFullPaths.Length == 0) return;
+
+			BaseMapReader result = null;
+			lock (mLockOfMergingMaps)
+			{
+				result = new Reader(MapFileFullPaths[0]);
+				for (int i = 1; i < MapFileFullPaths.Length; ++i)
+				{
+					BaseMapReader tmpMap = new Reader(MapFileFullPaths[i]);
+					result = result + tmpMap;
+				}
+			}
+			result.Save(ItegratedMapFileFullPath);
 		}
 
 		private static IMapObjectOfTowardPoint ConvertToIMapObjectOfTowardPoint(ISingleTowardPairInfo Input)

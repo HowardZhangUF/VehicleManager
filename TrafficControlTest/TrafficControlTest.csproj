@@ -53,6 +53,9 @@
       <HintPath>..\packages\KdTree.1.4.1\lib\net461\KdTreeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -146,6 +149,7 @@
     <Compile Include="Module\Map\IMapManagerUpdater.cs" />
     <Compile Include="Module\Map\MapFileManager.cs" />
     <Compile Include="Module\Map\MapFileManagerUpdater.cs" />
+    <Compile Include="Module\Map\MapManagementSetting.cs" />
     <Compile Include="Module\Map\MapManager.cs" />
     <Compile Include="Module\Account\IAccessControl.cs" />
     <Compile Include="Module\Account\IAccount.cs" />
@@ -170,6 +174,7 @@
     <Compile Include="Module\InterveneCommand\IVehicleControlManager.cs" />
     <Compile Include="Module\InterveneCommand\IVehicleControlUpdater.cs" />
     <Compile Include="Module\Map\MapManagerUpdater.cs" />
+    <Compile Include="Module\Map\MapRegionSetting.cs" />
     <Compile Include="Module\Mission\AbortMissionAnalyzer.cs" />
     <Compile Include="Module\Mission\DockMissionAnalyzer.cs" />
     <Compile Include="Module\Mission\GotoMissionAnalyzer.cs" />
@@ -552,6 +557,10 @@
     <ProjectReference Include="..\..\iTSLibrary\GLUI\GLUI.csproj">
       <Project>{390dc0bb-01d8-48b3-a7c3-84c5b3355dee}</Project>
       <Name>GLUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\iTSLibrary\MapReader\MapReader.csproj">
+      <Project>{86FBB304-7B4F-4C7D-891C-2A3309A275F4}</Project>
+      <Name>MapReader</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\iTSLibrary\MD5Hash\MD5Hash.csproj">
       <Project>{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}</Project>

@@ -4,49 +4,35 @@ using TrafficControlTest.Module.General;
 namespace TrafficControlTest.Module.Map
 {
 	/// <summary>
-	/// - 提供設定/取得「儲存地圖檔的資料夾」的路徑的功能。範例： .\\Map\\
+	/// - 提供設定/取得「地圖管理設定檔」的資訊的功能
 	/// - 提供取得本地地圖檔清單的功能
-	/// - 提供取得地圖檔完整路徑的功能
-	/// - 提供新增、移除地圖檔的功能
-	/// - 當新增、移除地圖檔時會拋出事件
+	/// - 提供新增地圖檔的功能
+	/// - 當新增地圖檔時會拋出事件
 	/// </summary>
 	/// <remarks>
 	/// =========================================================
-	/// File Example (D:\\Map\\aaa.map)
-	///		- FileName						: aaa.map
-	///		- FileNamewithoutExtension		: aaa
-	///		- FileExtension					: .map
-	///		- FileFullPath / FileFullName	: D:\\Map\\aaa.map
-	/// =========================================================
-	/// Directory Example (D:\\Map)
-	///		- DirectoryName								: Map
-	///		- DirectoryFullPath / DirectoryFullName		: D:\\Map
+	/// File Example (D:\\Map\\000\\aaa.map)
+	///		- FileName		: aaa.map
+	///		- FileFullPath	: D:\\Map\000\\aaa.map
 	/// =========================================================
 	/// </remarks>
 	public interface IMapFileManager : ISystemWithConfig
 	{
 		event EventHandler<MapFileCountChangedEventArgs> MapFileAdded;
-		event EventHandler<MapFileCountChangedEventArgs> MapFileRemoved;
 
-		string[] GetLocalMapFileNameList();
-		string[] GetLocalMapFileNameWithoutExtensionList();
-		string GetMapFileFullPath(string MapFileName);
-		string GetMapFileFullPath2(string MapFileNameWithoutExtension);
-		void AddMapFile(string MapFileName, byte[] MapData);
-		void AddMapFile2(string MapFileNameWithoutExtension, byte[] MapData);
-		void RemoveMapFile(string MapFileName);
-		void RemoveMapFile2(string MapFileNameWithoutExtension);
+		string[] GetLocalMapFileFullPathList();
+		void AddMapFile(string SrcVehicleName, string MapFileName, byte[] MapData);
 	}
 
 	public class MapFileCountChangedEventArgs : EventArgs
 	{
 		public DateTime OccurTime { get; private set; }
-		public string MapFileName { get; private set; }
+		public string MapFileFullPath { get; private set; }
 
-		public MapFileCountChangedEventArgs(DateTime OccurTime, string MapFileName) : base()
+		public MapFileCountChangedEventArgs(DateTime OccurTime, string MapFileFullPath) : base()
 		{
 			this.OccurTime = OccurTime;
-			this.MapFileName = MapFileName;
+			this.MapFileFullPath = MapFileFullPath;
 		}
 	}
 }

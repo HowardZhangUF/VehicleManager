@@ -267,12 +267,12 @@ namespace TrafficControlTest.UserControl
 			if (!string.IsNullOrEmpty(CurrentVehicleName) && Args.StatusName.Contains("CurrentMapNameList"))
 			{
 				UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
-				UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
+				UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileFullPathList());
 			}
 		}
 		private void HandleEvent_MapFileManagerMapFileAdded(object Sender, MapFileCountChangedEventArgs Args)
 		{
-			UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
+			UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileFullPathList());
 		}
 		private void HandleEvent_MapManagerMapChanged(object Sender, MapChangedEventArgs Args)
 		{
@@ -500,7 +500,7 @@ namespace TrafficControlTest.UserControl
 			{
 				if (cbVehicleNameList.SelectedItem != null && cbLocalMapNameList.SelectedItem != null)
 				{
-					rVehicleCommunicator.SendDataOfUploadMapToAGV(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, rMapFileManager.GetMapFileFullPath(cbLocalMapNameList.SelectedItem.ToString()));
+					rVehicleCommunicator.SendDataOfUploadMapToAGV(rVehicleInfoManager.GetItem(CurrentVehicleName).mIpPort, cbLocalMapNameList.SelectedItem.ToString());
 				}
 			}
 			catch (Exception Ex)
@@ -529,7 +529,7 @@ namespace TrafficControlTest.UserControl
 				if (!string.IsNullOrEmpty(CurrentVehicleName))
 				{
 					UpdateRemoteMapNameList(rVehicleInfoManager.GetItem(CurrentVehicleName).mCurrentMapNameList.ToArray());
-					UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileNameList());
+					UpdateLocalMapNameList(rMapFileManager.GetLocalMapFileFullPathList());
 				}
 			}
 			catch (Exception Ex)

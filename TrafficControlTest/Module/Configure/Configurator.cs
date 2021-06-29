@@ -423,15 +423,15 @@ namespace TrafficControlTest.Module.Configure
 				"自动侦测自走车所执行的非系统任务并将该任务加入至系统伫列中"));
 			defaultConfigs.Add(new Configuration(
 				"MapFileManager",
-				"MapFileDirectory",
+				"MapManagementSetting",
 				ConfigurationType.String,
 				ConfigurationLevel.Normal,
-				".\\Map\\",
+				"{\"mRegionSettings\":{\"0\":{\"mRegionId\":0,\"mRegionName\":\"Region000\",\"mRegionMember\":\"\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"}},\"mMapFileDirectory\":\".//Map//\"}",
 				string.Empty,
 				string.Empty,
-				"Directory path of saving maps",
-				"儲存地圖檔案的資料夾路徑",
-				"储存地图档案的资料夹路径"));
+				"Setting of multi map management (is json string)",
+				"多地圖管理的設定(為 json 字串)",
+				"多地图管理的设定(为 json 字串)"));
 			defaultConfigs.Add(new Configuration(
 				"MapManagerUpdater",
 				"AutoLoadMap",
@@ -443,6 +443,28 @@ namespace TrafficControlTest.Module.Configure
 				"Auto load map when vehicle's current map was changed",
 				"當自走車當前使用地圖改變時，自身重新讀取地圖",
 				"当自走车当前使用地图改变时，自身重新读取地图"));
+			defaultConfigs.Add(new Configuration(
+				"MapManagerUpdater",
+				"IntegratedMapFileName",
+				ConfigurationType.String,
+				ConfigurationLevel.Normal,
+				"Integrated.map",
+				string.Empty,
+				string.Empty,
+				"Map File Name of combine all maps",
+				"組合後的地圖的檔案名稱",
+				"组合后的地图的档案名称"));
+			defaultConfigs.Add(new Configuration(
+				"MapManagerUpdater",
+				"MapManagementSetting",
+				ConfigurationType.String,
+				ConfigurationLevel.Normal,
+				"{\"mRegionSettings\":{\"0\":{\"mRegionId\":0,\"mRegionName\":\"Region000\",\"mRegionMember\":\"\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"}},\"mMapFileDirectory\":\".//Map//\"}",
+				string.Empty,
+				string.Empty,
+				"Setting of multi map management (is json string)",
+				"多地圖管理的設定(為 json 字串)",
+				"多地图管理的设定(为 json 字串)"));
 			defaultConfigs.Add(new Configuration(
 				"CycleMissionGenerator",
 				"TimePeriod",

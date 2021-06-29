@@ -103,7 +103,10 @@ namespace TrafficControlTest.Module.Map
 				if (Args.Data is GetMap)
 				{
 					string mapFileName = (Args.Data as GetMap).Require + ".map";
-					if (mMapFileNamesOfDownloading.Contains(mapFileName)) mMapFileNamesOfDownloading.Remove(mapFileName);
+					if (mMapFileNamesOfDownloading.Contains(mapFileName))
+					{
+						mMapFileNamesOfDownloading.Remove(mapFileName);
+					}
 				}
 			}
 		}
@@ -115,8 +118,13 @@ namespace TrafficControlTest.Module.Map
 				if (Args.Data is GetMap)
 				{
 					GetMap tmpData = Args.Data as GetMap;
-					rMapFileManager.AddMapFile(tmpData.Response.Name, tmpData.Response.Data);
-					if (mMapFileNamesOfDownloading.Contains(tmpData.Response.Name)) mMapFileNamesOfDownloading.Remove(tmpData.Response.Name);
+					IVehicleInfo vehicleInfo = rVehicleInfoManager.GetItemByIpPort(Args.IpPort);
+					string vehicleName = vehicleInfo == null ? string.Empty : vehicleInfo.mName;
+					rMapFileManager.AddMapFile(vehicleName, tmpData.Response.Name, tmpData.Response.Data);
+					if (mMapFileNamesOfDownloading.Contains(tmpData.Response.Name))
+					{
+						mMapFileNamesOfDownloading.Remove(tmpData.Response.Name);
+					}
 				}
 			}
 		}
