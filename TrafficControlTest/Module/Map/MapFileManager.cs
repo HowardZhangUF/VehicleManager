@@ -20,7 +20,7 @@ namespace TrafficControlTest.Module.Map
 			string[] result = null;
 			if (Directory.Exists(mMapManagementSetting.mMapFileDirectory))
 			{
-				result = Directory.GetFiles(mMapManagementSetting.mMapFileDirectory);
+				result = Directory.GetFiles(mMapManagementSetting.mMapFileDirectory, "*.map", SearchOption.AllDirectories);
 			}
 			return result;
 		}
