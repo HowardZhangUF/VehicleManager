@@ -198,9 +198,8 @@ namespace TrafficControlTest.Module.Mission
 					rVehicleControlManager.Add(tmpChargeControl.mName, tmpChargeControl);
 					break;
 				case MissionType.Abort:
-					// Abort 所帶的任務識別碼參數，可能會是客戶自訂的任務識別碼或是系統自動產生的任務識別碼
-					// 所以在找欲中斷的任務時，會使用到 IMissionState.GetMissionId() 方法
-					IMissionState abortMissionState = rMissionStateManager.GetItems().FirstOrDefault(o => o.GetMissionId() == MissionState.mMission.mParameters.First());
+					// Abort 所帶的任務識別碼參數，可能會是「客戶自訂的任務識別碼」或是「系統自動產生的任務識別碼」
+					IMissionState abortMissionState = rMissionStateManager.GetItems().FirstOrDefault(o => o.mName == MissionState.mMission.mParameters.First() || o.mMission.mMissionId == MissionState.mMission.mParameters.First());
 					// 如果欲終止的任務存在
 					if (abortMissionState != null)
 					{
