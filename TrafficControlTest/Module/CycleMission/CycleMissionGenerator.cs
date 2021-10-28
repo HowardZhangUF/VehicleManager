@@ -24,7 +24,9 @@ namespace TrafficControlTest.Module.CycleMission
 		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
+			UnsubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
+			SubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 		}
 		public void Set(IMissionStateManager MissionStateManager)
 		{
@@ -79,6 +81,27 @@ namespace TrafficControlTest.Module.CycleMission
 			Subtask_GenerateMission();
 		}
 
+		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
+		{
+			if (VehicleInfoManager != null)
+			{
+				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
+			}
+		}
+		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
+		{
+			if (VehicleInfoManager != null)
+			{
+				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
+			}
+		}
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object sender, ItemCountChangedEventArgs<IVehicleInfo> e)
+		{
+			if (IsAssigned(e.ItemName))
+			{
+				UnassignCycleMission(e.ItemName);
+			}
+		}
 		protected virtual void RaiseEvent_CycleMissionAssigned(string VehicleId, string[] Missions, bool Sync = true)
 		{
 			if (Sync)
