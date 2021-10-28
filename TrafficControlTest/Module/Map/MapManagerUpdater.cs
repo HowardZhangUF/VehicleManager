@@ -306,8 +306,8 @@ namespace TrafficControlTest.Module.Map
 					BaseMapReader tmpMap = new Reader(MapFileFullPaths[i]);
 					result = result + tmpMap;
 				}
+				result.Save(ItegratedMapFileFullPath);
 			}
-			result.Save(ItegratedMapFileFullPath);
 		}
 
 		private static IMapObjectOfTowardPoint ConvertToIMapObjectOfTowardPoint(ISingleTowardPairInfo Input)
