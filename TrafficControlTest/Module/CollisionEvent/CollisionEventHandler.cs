@@ -133,6 +133,8 @@ namespace TrafficControlTest.Module.CollisionEvent
 				string controlName = rVehicleControlManager.GetItemByCauseId(CollisionPair.mName).mName;
 				if (rVehicleControlManager.GetItem(controlName).mSendState == SendState.Unsend)
 				{
+					rVehicleControlManager.UpdateExecuteFailedReason(controlName, FailedReason.CollisionRemoved);
+					rVehicleControlManager.UpdateExecuteState(controlName, ExecuteState.ExecuteFailed);
 					rVehicleControlManager.Remove(controlName);
 				}
 			}
@@ -170,7 +172,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 					if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
 					{
 						// 若較晚進入 Collision Region 的 Vehicle 即將進入 Collision Region
-						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart).TotalMilliseconds > -2000.0f)
+						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart).TotalMilliseconds > -3500.0f)
 						{
 							result = true;
 						}
@@ -178,7 +180,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 					else
 					{
 						// 若較晚進入 Collision Region 的 Vehicle 即將進入 Collision Region
-						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart).TotalMilliseconds > -2000.0f)
+						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart).TotalMilliseconds > -3500.0f)
 						{
 							result = true;
 						}

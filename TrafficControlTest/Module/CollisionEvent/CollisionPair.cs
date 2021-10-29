@@ -30,7 +30,8 @@ namespace TrafficControlTest.Module.CollisionEvent
 
 		public void Set(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)
 		{
-			mName = "CollisionOf" + Vehicle1.mName + "&" + Vehicle2.mName;
+			DateTime timestamp = DateTime.Now;
+			mName = "Collision" + timestamp.ToString("yyyyMMddHHmmssfff");
 			mVehicle1 = Vehicle1;
 			mVehicle2 = Vehicle2;
 			mCollisionRegion = CollisionRegion;
@@ -39,8 +40,8 @@ namespace TrafficControlTest.Module.CollisionEvent
             mPassPeriodOfVehicle2WithCurrentVelocity = PassPeriodOfVehicle2WithCurrentVelocity;
             mPassPeriodOfVehicle1WithMaximumVeloctiy = PassPeriodOfVehicle1WithMaximumVeloctiy;
             mPassPeriodOfVehicle2WithMaximumVeloctiy = PassPeriodOfVehicle2WithMaximumVeloctiy;
-            mStartTimestamp = DateTime.Now;
-			mLastUpdated = DateTime.Now;
+            mStartTimestamp = timestamp;
+			mLastUpdated = timestamp;
 			RaiseEvent_StatusUpdated("Name");
 		}
 		public void Update(IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)

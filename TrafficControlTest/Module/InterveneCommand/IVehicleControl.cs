@@ -63,7 +63,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		SentTimeout,
 		CancelByGUI,
 		CancelByHostCommand,
-		ObjectNotExist
+		ObjectNotExist,
+		CollisionRemoved
 	}
 
 	/// <summary>

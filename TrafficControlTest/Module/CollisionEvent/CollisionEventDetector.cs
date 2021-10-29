@@ -131,9 +131,9 @@ namespace TrafficControlTest.Module.CollisionEvent
 					{
 						foreach (ICollisionPair collisionPair in collisionPairs)
 						{
-							if (rCollisionEventManager.IsExist(collisionPair.mName))
+							if (rCollisionEventManager.IsExist(collisionPair.mVehicle1.mName, collisionPair.mVehicle2.mName))
 							{
-								rCollisionEventManager.Update(collisionPair.mName, collisionPair.mCollisionRegion, collisionPair.mPeriod, collisionPair.mPassPeriodOfVehicle1WithCurrentVelocity, collisionPair.mPassPeriodOfVehicle2WithCurrentVelocity, collisionPair.mPassPeriodOfVehicle1WithMaximumVeloctiy, collisionPair.mPassPeriodOfVehicle2WithMaximumVeloctiy);
+								rCollisionEventManager.Update(collisionPair.mVehicle1.mName, collisionPair.mVehicle2.mName, collisionPair.mCollisionRegion, collisionPair.mPeriod, collisionPair.mPassPeriodOfVehicle1WithCurrentVelocity, collisionPair.mPassPeriodOfVehicle2WithCurrentVelocity, collisionPair.mPassPeriodOfVehicle1WithMaximumVeloctiy, collisionPair.mPassPeriodOfVehicle2WithMaximumVeloctiy);
 							}
 							else
 							{
@@ -164,7 +164,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 			if (CollisionPairCollection == null) return result;
 			for (int i = 0; i < CollisionPairCollection.Count(); ++i)
 			{
-				if (CollisionPairCollection.ElementAt(i).mName == SrcCollisionPair.mName)
+				if (CollisionPairCollection.ElementAt(i).mVehicle1.mName == SrcCollisionPair.mVehicle1.mName && CollisionPairCollection.ElementAt(i).mVehicle2.mName == SrcCollisionPair.mVehicle2.mName)
 				{
 					result = true;
 					break;
