@@ -13,6 +13,7 @@ using TrafficControlTest.Module.Configure;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
+using TrafficControlTest.Module.LimitVehicleCountZone;
 using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
@@ -85,6 +86,8 @@ namespace TrafficControlTest.Process
 		private IVehiclePassThroughAutomaticDoorEventManagerUpdater mVehiclePassThroughAutomaticDoorEventManagerUpdater = null;
 		private IVehiclePassThroughAutomaticDoorEventHandler mVehiclePassThroughAutomaticDoorEventHandler = null;
 		private IChargeStationInfoManagerUpdater mChargeStationInfoManagerUpdater = null;
+		private ILimitVehicleCountZoneInfoManager mLimitVehicleCountZoneInfoManager = null;
+		private ILimitVehicleCountZoneInfoManagerUpdater mLimitVehicleCountZoneInfoManagerUpdater = null;
 
 		public VehicleManagerProcess()
 		{
@@ -123,10 +126,12 @@ namespace TrafficControlTest.Process
 			mAutomaticDoorCommunicator.Start();
 			mAutomaticDoorControlHandler.Start();
 			mVehiclePassThroughAutomaticDoorEventManagerUpdater.Start();
+			mLimitVehicleCountZoneInfoManagerUpdater.Start();
 		}
 		public void Stop()
 		{
 			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
+			mLimitVehicleCountZoneInfoManagerUpdater.Stop();
 			mVehiclePassThroughAutomaticDoorEventManagerUpdater.Stop();
 			mAutomaticDoorControlHandler.Stop();
 			mAutomaticDoorCommunicator.Stop();
@@ -419,6 +424,14 @@ namespace TrafficControlTest.Process
 			mChargeStationInfoManagerUpdater = GenerateIChargeStationInfoManagerUpdater(mChargeStationInfoManager, mMapManager, mVehicleInfoManager);
 			SubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
 
+			UnsubscribeEvent_ILimitVehicleCountZoneInfoManager(mLimitVehicleCountZoneInfoManager);
+			mLimitVehicleCountZoneInfoManager = GenerateILimitVehicleCountZoneInfoManager();
+			SubscribeEvent_ILimitVehicleCountZoneInfoManager(mLimitVehicleCountZoneInfoManager);
+
+			UnsubscribeEvent_ILimitVehicleCountZoneInfoManagerUpdater(mLimitVehicleCountZoneInfoManagerUpdater);
+			mLimitVehicleCountZoneInfoManagerUpdater = GenerateILimitVehicleCountZoneInfoManagerUpdater(mLimitVehicleCountZoneInfoManager, mMapManager, mVehicleInfoManager);
+			SubscribeEvent_ILimitVehicleCountZoneInfoManagerUpdater(mLimitVehicleCountZoneInfoManagerUpdater);
+
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mVehicleInfoManager, mMissionStateManager, mVehicleControlManager, mAutomaticDoorControlManager, mHostCommunicator);
 			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
@@ -443,6 +456,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithConfig.Add(mAutomaticDoorControlHandler);
 			mCollectionOfISystemWithConfig.Add(mVehiclePassThroughAutomaticDoorEventManagerUpdater);
 			mCollectionOfISystemWithConfig.Add(mChargeStationInfoManagerUpdater);
+			mCollectionOfISystemWithConfig.Add(mLimitVehicleCountZoneInfoManagerUpdater);
 
 			mCollectionOfISystemWithLoopTask.Add(mImportantEventRecorder);
 			mCollectionOfISystemWithLoopTask.Add(mDebugMessageHandler);
@@ -458,6 +472,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithLoopTask.Add(mAutomaticDoorCommunicator);
 			mCollectionOfISystemWithLoopTask.Add(mAutomaticDoorControlHandler);
 			mCollectionOfISystemWithLoopTask.Add(mVehiclePassThroughAutomaticDoorEventManagerUpdater);
+			mCollectionOfISystemWithLoopTask.Add(mLimitVehicleCountZoneInfoManagerUpdater);
 		}
 		private void Destructor()
 		{
@@ -557,6 +572,12 @@ namespace TrafficControlTest.Process
 
 			UnsubscribeEvent_IChargeStationInfoManagerUpdater(mChargeStationInfoManagerUpdater);
 			mChargeStationInfoManagerUpdater = null;
+
+			UnsubscribeEvent_ILimitVehicleCountZoneInfoManager(mLimitVehicleCountZoneInfoManager);
+			mLimitVehicleCountZoneInfoManager = null;
+
+			UnsubscribeEvent_ILimitVehicleCountZoneInfoManagerUpdater(mLimitVehicleCountZoneInfoManagerUpdater);
+			mLimitVehicleCountZoneInfoManagerUpdater = null;
 
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 			mImportantEventRecorder = null;
@@ -1323,6 +1344,42 @@ namespace TrafficControlTest.Process
 				ChargeStationInfoManagerUpdater.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
 			}
 		}
+		private void SubscribeEvent_ILimitVehicleCountZoneInfoManager(ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager)
+		{
+			if (LimitVehicleCountZoneInfoManager != null)
+			{
+				LimitVehicleCountZoneInfoManager.ItemAdded += HandleEvent_LimitVehicleCountZoneInfoManagerItemAdded;
+				LimitVehicleCountZoneInfoManager.ItemRemoved += HandleEvent_LimitVehicleCountZoneInfoManagerItemRemoved;
+				LimitVehicleCountZoneInfoManager.ItemUpdated += HandleEvent_LimitVehicleCountZoneInfoManagerItemUpdated;
+			}
+		}
+		private void UnsubscribeEvent_ILimitVehicleCountZoneInfoManager(ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager)
+		{
+			if (LimitVehicleCountZoneInfoManager != null)
+			{
+				LimitVehicleCountZoneInfoManager.ItemAdded -= HandleEvent_LimitVehicleCountZoneInfoManagerItemAdded;
+				LimitVehicleCountZoneInfoManager.ItemRemoved -= HandleEvent_LimitVehicleCountZoneInfoManagerItemRemoved;
+				LimitVehicleCountZoneInfoManager.ItemUpdated -= HandleEvent_LimitVehicleCountZoneInfoManagerItemUpdated;
+			}
+		}
+		private void SubscribeEvent_ILimitVehicleCountZoneInfoManagerUpdater(ILimitVehicleCountZoneInfoManagerUpdater LimitVehicleCountZoneInfoManagerUpdater)
+		{
+			if (LimitVehicleCountZoneInfoManagerUpdater != null)
+			{
+				LimitVehicleCountZoneInfoManagerUpdater.SystemStatusChanged += HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
+				LimitVehicleCountZoneInfoManagerUpdater.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				LimitVehicleCountZoneInfoManagerUpdater.ConfigUpdated += HandleEvent_ISystemWithConfigConfigUpdated;
+			}
+		}
+		private void UnsubscribeEvent_ILimitVehicleCountZoneInfoManagerUpdater(ILimitVehicleCountZoneInfoManagerUpdater LimitVehicleCountZoneInfoManagerUpdater)
+		{
+			if (LimitVehicleCountZoneInfoManagerUpdater != null)
+			{
+				LimitVehicleCountZoneInfoManagerUpdater.SystemStatusChanged -= HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
+				LimitVehicleCountZoneInfoManagerUpdater.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				LimitVehicleCountZoneInfoManagerUpdater.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
+			}
+		}
 		protected virtual void RaiseEvent_AccessControlUserLogChanged(DateTime OccurTime, string UserName, AccountRank UserRank, bool IsLogin, bool Sync = true)
 		{
 			if (Sync)
@@ -1641,6 +1698,18 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_ChargeStationInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IChargeStationInfo> Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "ChargeStationInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_LimitVehicleCountZoneInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<ILimitVehicleCountZoneInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "LimitVehicleCountZoneInfoManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_LimitVehicleCountZoneInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<ILimitVehicleCountZoneInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "LimitVehicleCountZoneInfoManager", "ItemRemoved", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_LimitVehicleCountZoneInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<ILimitVehicleCountZoneInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "LimitVehicleCountZoneInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
 		}
 		private void HandleDebugMessage(string Message)
 		{

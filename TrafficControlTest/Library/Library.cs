@@ -15,6 +15,7 @@ using TrafficControlTest.Module.Configure;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
+using TrafficControlTest.Module.LimitVehicleCountZone;
 using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
@@ -420,7 +421,19 @@ namespace TrafficControlTest.Library
         {
             return new ChargeStationInfoManagerUpdater(ChargeStationInfoManager, MapManager, VehicleInfoManager);
         }
-        public static ITimeElapseDetector GenerateITimeElapseDetector()
+        public static ILimitVehicleCountZoneInfo GenerateILimitVehicleCountZoneInfo(string Name, IRectangle2D Range, int MaxVehicleCount)
+		{
+			return new LimitVehicleCountZoneInfo(Name, Range, MaxVehicleCount);
+		}
+		public static ILimitVehicleCountZoneInfoManager GenerateILimitVehicleCountZoneInfoManager()
+		{
+			return new LimitVehicleCountZoneInfoManager();
+		}
+		public static ILimitVehicleCountZoneInfoManagerUpdater GenerateILimitVehicleCountZoneInfoManagerUpdater(ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager, IMapManager MapManager, IVehicleInfoManager VehicleInfoManager)
+		{
+			return new LimitVehicleCountZoneInfoManagerUpdater(LimitVehicleCountZoneInfoManager, MapManager, VehicleInfoManager);
+		}
+		public static ITimeElapseDetector GenerateITimeElapseDetector()
 		{
 			return new TimeElapseDetector();
 		}

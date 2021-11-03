@@ -135,6 +135,12 @@
     <Compile Include="Module\General\ISystemWithConfig.cs" />
     <Compile Include="Module\General\ISystemWithLoopTask.cs" />
     <Compile Include="Module\General\TimeElapseDetector.cs" />
+    <Compile Include="Module\LimitVehicleCountZone\ILimitVehicleCountZoneInfo.cs" />
+    <Compile Include="Module\LimitVehicleCountZone\ILimitVehicleCountZoneInfoManager.cs" />
+    <Compile Include="Module\LimitVehicleCountZone\ILimitVehicleCountZoneInfoManagerUpdater.cs" />
+    <Compile Include="Module\LimitVehicleCountZone\LimitVehicleCountZoneInfo.cs" />
+    <Compile Include="Module\LimitVehicleCountZone\LimitVehicleCountZoneInfoManager.cs" />
+    <Compile Include="Module\LimitVehicleCountZone\LimitVehicleCountZoneInfoManagerUpdater.cs" />
     <Compile Include="Module\Log\DebugMessageHandler.cs" />
     <Compile Include="Module\Log\EventRecorder.cs" />
     <Compile Include="Module\CommunicationHost\HostCommunicator.cs" />

@@ -553,6 +553,17 @@ namespace TrafficControlTest.Module.Configure
 				"Maximum distance in millimeter between vehicle and charge station when vehicle is charging",
 				"車子充電時與充電站的距離 (mm) 最大值",
 				"车子充电时与充电站的距离 (mm) 最大值"));
+			defaultConfigs.Add(new Configuration(
+				"LimitVehicleCountZoneInfoManagerUpdater",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1000",
+				"100",
+				"60000",
+				"Time period in millisecond of calculating vehicle count of limit vehicle count zone",
+				"計算區域的自走車數量的時間間隔 (ms)",
+				"计算区域的自走车数量的时间间隔 (ms)"));
 
 			mConfigs.Clear();
 			for (int i = 0; i < defaultConfigs.Count; ++i)

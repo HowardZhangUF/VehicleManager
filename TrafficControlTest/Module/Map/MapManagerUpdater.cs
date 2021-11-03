@@ -343,6 +343,9 @@ namespace TrafficControlTest.Module.Map
 					case "OneWayArea":
 						type = TypeOfMapObjectOfRectangle.Oneway;
 						break;
+					case "SingleVehicleArea":
+						type = TypeOfMapObjectOfRectangle.SingleVehicle;
+						break;
 					case "PathPlanningArea":
 						type = TypeOfMapObjectOfRectangle.PathPlanning;
 						break;

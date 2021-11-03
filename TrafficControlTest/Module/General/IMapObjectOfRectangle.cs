@@ -23,6 +23,7 @@ namespace TrafficControlTest.Module.General
 		None,
 		Foribdden,
 		Oneway,
+		SingleVehicle,
 		PathPlanning,
 		AutomaticDoor
 	}
