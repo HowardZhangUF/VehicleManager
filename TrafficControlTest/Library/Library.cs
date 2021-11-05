@@ -21,6 +21,7 @@ using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
+using TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone;
 
 namespace TrafficControlTest.Library
 {
@@ -433,6 +434,23 @@ namespace TrafficControlTest.Library
 		{
 			return new LimitVehicleCountZoneInfoManagerUpdater(LimitVehicleCountZoneInfoManager, MapManager, VehicleInfoManager);
 		}
+		public static IVehiclePassThroughLimitVehicleCountZoneEvent GenerateIVehiclePassThroughLimitVehicleCountZoneEvent(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo, int Distance)
+		{
+			return new VehiclePassThroughLimitVehicleCountZoneEvent(VehicleInfo, LimitVehicleCountZoneInfo, Distance);
+		}
+		public static IVehiclePassThroughLimitVehicleCountZoneEventManager GenerateIVehiclePassThroughLimitVehicleCountZoneEventManager()
+		{
+			return new VehiclePassThroughLimitVehicleCountZoneEventManager();
+		}
+		public static IVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater GenerateIVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater(IVehiclePassThroughLimitVehicleCountZoneEventManager VehiclePassThroughLimitVehicleCountZoneEventManager, IVehicleInfoManager VehicleInfoManager, ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager)
+		{
+			return new VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater(VehiclePassThroughLimitVehicleCountZoneEventManager, VehicleInfoManager, LimitVehicleCountZoneInfoManager);
+		}
+		public static IVehiclePassThroughLimitVehicleCountZoneEventHandler GenerateIVehiclePassThroughLimitVehicleCountZoneEventHandler(IVehiclePassThroughLimitVehicleCountZoneEventManager VehiclePassThroughLimitVehicleCountZoneEventManager, IVehicleControlManager VehicleControlManager)
+		{
+			return new VehiclePassThroughLimitVehicleCountZoneEventHandler(VehiclePassThroughLimitVehicleCountZoneEventManager, VehicleControlManager);
+		}
+
 		public static ITimeElapseDetector GenerateITimeElapseDetector()
 		{
 			return new TimeElapseDetector();

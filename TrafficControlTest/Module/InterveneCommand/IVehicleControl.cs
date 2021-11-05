@@ -64,7 +64,8 @@ namespace TrafficControlTest.Module.InterveneCommand
 		CancelByGUI,
 		CancelByHostCommand,
 		ObjectNotExist,
-		CollisionRemoved
+		CollisionRemoved,
+		PassThroughLimitVehicleCountZoneEventRemoved
 	}
 
 	/// <summary>

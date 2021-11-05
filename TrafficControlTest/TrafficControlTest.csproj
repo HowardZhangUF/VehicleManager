@@ -220,6 +220,14 @@
     <Compile Include="Module\VehiclePassThroughAutomaticDoor\VehiclePassThroughAutomaticDoorEventHandler.cs" />
     <Compile Include="Module\VehiclePassThroughAutomaticDoor\VehiclePassThroughAutomaticDoorEventManager.cs" />
     <Compile Include="Module\VehiclePassThroughAutomaticDoor\VehiclePassThroughAutomaticDoorEventManagerUpdater.cs" />
+    <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\IVehiclePassThroughLimitVehicleCountZoneEvent.cs" />
+    <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\IVehiclePassThroughLimitVehicleCountZoneEventHandler.cs" />
+    <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\IVehiclePassThroughLimitVehicleCountZoneEventManager.cs" />
+    <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\IVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.cs" />
+    <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\VehiclePassThroughLimitVehicleCountZoneEvent.cs" />
+    <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\VehiclePassThroughLimitVehicleCountZoneEventHandler.cs" />
+    <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\VehiclePassThroughLimitVehicleCountZoneEventManager.cs" />
+    <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.cs" />
     <Compile Include="Process\VehicleManagerProcess.cs" />
     <Compile Include="Library\Extension.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventDetector.cs" />

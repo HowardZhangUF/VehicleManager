@@ -564,6 +564,28 @@ namespace TrafficControlTest.Module.Configure
 				"Time period in millisecond of calculating vehicle count of limit vehicle count zone",
 				"計算區域的自走車數量的時間間隔 (ms)",
 				"计算区域的自走车数量的时间间隔 (ms)"));
+			defaultConfigs.Add(new Configuration(
+				"VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1000",
+				"100",
+				"60000",
+				"Time period in millisecond of detecting vehicle pass through limit vehicle count zone event",
+				"偵測車子通過限車區事件的時間間隔 (ms)",
+				"侦测车子通过限车区事件的时间间隔 (ms)"));
+			defaultConfigs.Add(new Configuration(
+				"VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater",
+				"DistanceThreshold",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"2500",
+				"100",
+				"100000",
+				"Distance threshold in millimeter of intervening vehicle",
+				"當自走車與限車區的距離 (mm) 小於此數值時才進行干預",
+				"当自走车与限车区的距离 (mm) 小于此数值时才进行干预"));
 
 			mConfigs.Clear();
 			for (int i = 0; i < defaultConfigs.Count; ++i)
