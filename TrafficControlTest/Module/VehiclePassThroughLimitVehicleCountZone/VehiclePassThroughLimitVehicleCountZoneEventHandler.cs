@@ -95,7 +95,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		}
 		private bool IsIVehicleControlAlreadyExistedInManager(IVehicleControl VehicleControl)
 		{
-			return rVehicleControlManager.GetItems().Any(o => o.mCommand == VehicleControl.mCommand && o.mParametersString == VehicleControl.mParametersString && o.mCauseId == VehicleControl.mCauseId);
+			return rVehicleControlManager.GetItems().Any(o => o.mVehicleId == VehicleControl.mVehicleId && o.mCommand == VehicleControl.mCommand && o.mParametersString == VehicleControl.mParametersString && o.mCauseId == VehicleControl.mCauseId);
 		}
 		private void RemoveRelatedVehicleControl(IVehiclePassThroughLimitVehicleCountZoneEvent VehiclePassThroughLimitVehicleCountZoneEvent)
 		{
@@ -116,11 +116,19 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		}
 		private void UninterveneVehicle(IVehicleInfo VehicleInfo, string CauseId, string CauseDetail)
 		{
-			if (VehicleInfo != null && !string.IsNullOrEmpty(VehicleInfo.mCurrentInterveneCommand))
+			if (VehicleInfo != null)
 			{
-				IVehicleControl vehicleControl = Library.Library.GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, CauseId, CauseDetail);
-				rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+				// 如果「自走車已經被干預」或「有干預正在送給該自走車」
+				if (IsVehicleBeenIntervened(VehicleInfo) || rVehicleControlManager.GetItems().Any(o => o.mVehicleId == VehicleInfo.mName && o.mCommand == Command.PauseMoving && o.mCauseId == CauseId && o.mSendState == SendState.Sending))
+				{
+					IVehicleControl vehicleControl = Library.Library.GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, CauseId, CauseDetail);
+					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+				}
 			}
+		}
+		private bool IsVehicleBeenIntervened(IVehicleInfo VehicleInfo) // 判斷自走車是否已經被干預
+		{
+			return (VehicleInfo.mCurrentState == "Pause" || !string.IsNullOrEmpty(VehicleInfo.mCurrentInterveneCommand));
 		}
 	}
 }
