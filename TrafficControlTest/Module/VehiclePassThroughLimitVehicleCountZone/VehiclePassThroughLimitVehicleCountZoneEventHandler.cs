@@ -101,13 +101,14 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		{
 			while (rVehicleControlManager.IsExistByCauseId(VehiclePassThroughLimitVehicleCountZoneEvent.mName))
 			{
-				string controlName = rVehicleControlManager.GetItemByCauseId(VehiclePassThroughLimitVehicleCountZoneEvent.mName).mName;
-				if (rVehicleControlManager.GetItem(controlName).mSendState == SendState.Unsend)
+				IVehicleControl control = rVehicleControlManager.GetItemByCauseId(VehiclePassThroughLimitVehicleCountZoneEvent.mName);
+				if (control != null && control.mSendState == SendState.Unsend)
 				{
-					rVehicleControlManager.UpdateExecuteFailedReason(controlName, FailedReason.PassThroughLimitVehicleCountZoneEventRemoved);
-					rVehicleControlManager.UpdateExecuteState(controlName, ExecuteState.ExecuteFailed);
-					rVehicleControlManager.Remove(controlName);
+					rVehicleControlManager.UpdateExecuteFailedReason(control.mName, FailedReason.PassThroughLimitVehicleCountZoneEventRemoved);
+					rVehicleControlManager.UpdateExecuteState(control.mName, ExecuteState.ExecuteFailed);
+					rVehicleControlManager.Remove(control.mName);
 				}
+				System.Threading.Thread.Sleep(200);
 			}
 		}
 		private void UninterveneRelatedVehicle(IVehiclePassThroughLimitVehicleCountZoneEvent VehiclePassThroughLimitVehicleCountZoneEvent)

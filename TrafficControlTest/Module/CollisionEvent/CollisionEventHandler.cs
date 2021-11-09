@@ -130,13 +130,14 @@ namespace TrafficControlTest.Module.CollisionEvent
 		{
 			while (rVehicleControlManager.IsExistByCauseId(CollisionPair.mName))
 			{
-				string controlName = rVehicleControlManager.GetItemByCauseId(CollisionPair.mName).mName;
-				if (rVehicleControlManager.GetItem(controlName).mSendState == SendState.Unsend)
+				IVehicleControl control = rVehicleControlManager.GetItemByCauseId(CollisionPair.mName);
+				if (control != null && control.mSendState == SendState.Unsend)
 				{
-					rVehicleControlManager.UpdateExecuteFailedReason(controlName, FailedReason.CollisionRemoved);
-					rVehicleControlManager.UpdateExecuteState(controlName, ExecuteState.ExecuteFailed);
-					rVehicleControlManager.Remove(controlName);
+					rVehicleControlManager.UpdateExecuteFailedReason(control.mName, FailedReason.CollisionRemoved);
+					rVehicleControlManager.UpdateExecuteState(control.mName, ExecuteState.ExecuteFailed);
+					rVehicleControlManager.Remove(control.mName);
 				}
+				System.Threading.Thread.Sleep(200);
 			}
 		}
 		private void UninterveneRelatedVehicle(ICollisionPair CollisionPair)

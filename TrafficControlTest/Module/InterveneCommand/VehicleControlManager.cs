@@ -15,7 +15,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		public IVehicleControl GetItemByCauseId(string CauseId)
 		{
-			return (IsExistByCauseId(CauseId) ? mItems.Values.First((o) => o.mCauseId == CauseId) : null);
+			return (IsExistByCauseId(CauseId) ? mItems.Values.FirstOrDefault((o) => o.mCauseId == CauseId) : null);
 		}
 		public void UpdateSendState(string Name, SendState SendState)
 		{
