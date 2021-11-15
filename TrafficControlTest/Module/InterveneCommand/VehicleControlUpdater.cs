@@ -171,6 +171,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		{
 			if (VehicleInfoManager != null)
 			{
+				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
@@ -178,6 +179,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		{
 			if (VehicleInfoManager != null)
 			{
+				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
 			}
 		}
@@ -193,6 +195,19 @@ namespace TrafficControlTest.Module.InterveneCommand
 			if (VehicleCommunicator != null)
 			{
 				// do nothing
+			}
+		}
+		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
+		{
+			while (rVehicleControlManager.GetItems().Any(o => o.mVehicleId == Args.ItemName))
+			{
+				IVehicleControl control = rVehicleControlManager.GetItems().FirstOrDefault(o => o.mVehicleId == Args.ItemName);
+				if (control != null)
+				{
+					rVehicleControlManager.UpdateExecuteFailedReason(control.mName, FailedReason.VehicleDisconnected);
+					rVehicleControlManager.UpdateExecuteState(control.mName, ExecuteState.ExecuteFailed);
+				}
+				System.Threading.Thread.Sleep(200);
 			}
 		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
