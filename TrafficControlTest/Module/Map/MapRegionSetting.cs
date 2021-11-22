@@ -7,6 +7,7 @@ using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Map
 {
+	/// <summary>區域的設定/資訊</summary>
 	public class MapRegionSetting
 	{
 		/// <summary>區域識別碼。自動產生，不可重複</summary>

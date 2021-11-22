@@ -276,6 +276,7 @@ namespace TrafficControlTest.UserControl
 				for (int i = 0; i < rowDatas.Count; ++i)
 				{
 					dgvMapManagementSetting.Rows.Add(rowDatas[i]);
+					if (rowDatas[i][0] == "0") dgvMapManagementSetting.Rows[i].ReadOnly = true; // 第 0 個區域固定存在，沒有被分區的自走車，皆會歸屬於第 0 個區域，所以此區域不開放編輯
 				}
 			});
 		}
