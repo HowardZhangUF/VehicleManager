@@ -158,7 +158,9 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 							{
 								int distance = GetDistanceBetweenVehicleAndLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]);
 								// 車子不是限車區裡面的車，且即將通過限車區
-								if (!IsVehicleInLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]) && distance < mDistanceThreshold)
+								// 加上距離大於 0 的條件是為了避免運算溢位的錯誤
+								// 距離等於 0 代表車子在限車區內部
+								if (!IsVehicleInLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]) && distance >= 0 && distance < mDistanceThreshold)
 								{
 									IVehiclePassThroughLimitVehicleCountZoneEvent tmp = Library.Library.GenerateIVehiclePassThroughLimitVehicleCountZoneEvent(vehicleInfos[i], limitVehicleCountZoneInfos[j], distance);
 									currentEvents.Add(tmp);

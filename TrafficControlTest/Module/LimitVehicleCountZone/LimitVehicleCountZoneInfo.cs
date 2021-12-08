@@ -34,12 +34,32 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		}
 		public void UpdateCurrentVehicleNameList(List<string> CurrentVehicleNameList)
 		{
-			if (CurrentVehicleNameList != null && string.Join(",", CurrentVehicleNameList.ToArray()) != string.Join(",", mCurrentVehicleNameList.ToArray()))
+			if (CurrentVehicleNameList != null && string.Join(",", CurrentVehicleNameList.OrderBy(o => o).ToArray()) != string.Join(",", mCurrentVehicleNameList.OrderBy(o => o).ToArray()))
 			{
 				mLastVehicleNameList.Clear();
 				mLastVehicleNameList.AddRange(mCurrentVehicleNameList);
-				mCurrentVehicleNameList.Clear();
-				mCurrentVehicleNameList.AddRange(CurrentVehicleNameList);
+				// 調整 mCurrentVehicleNameList 的內容但要保留順序
+				for (int i = 0; i < CurrentVehicleNameList.Count; ++i)
+				{
+					if (!mCurrentVehicleNameList.Contains(CurrentVehicleNameList[i]))
+					{
+						mCurrentVehicleNameList.Add(CurrentVehicleNameList[i]);
+					}
+				}
+				int tmpIndex = 0;
+				while (true)
+				{
+					if (tmpIndex >= mCurrentVehicleNameList.Count) break;
+
+					if (!CurrentVehicleNameList.Contains(mCurrentVehicleNameList[tmpIndex]))
+					{
+						mCurrentVehicleNameList.RemoveAt(tmpIndex);
+					}
+					else
+					{
+						tmpIndex++;
+					}
+				}
 				mTimestampOfStatusChanged = DateTime.Now;
 				mLastUpdated = DateTime.Now;
 				RaiseEvent_StatusUpdated("CurrentVehicleNameList,LastVehicleNameList,CurrentStatusDuration");
@@ -47,7 +67,7 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		}
 		public override string ToString()
 		{
-			return $"{mName}/{mRange.ToString()}/{mMaxVehicleCount}/{string.Join(",", mCurrentVehicleNameList.ToArray())}/{string.Join(",", mLastVehicleNameList.ToArray())}/{mCurrentStatusDuration.TotalMilliseconds}(ms)/{mLastUpdated.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
+			return $"{mName}/{mRange.ToString()}/Max:{mMaxVehicleCount}/Current:{string.Join(",", mCurrentVehicleNameList.ToArray())}/Last:{string.Join(",", mLastVehicleNameList.ToArray())}/Duration:{mCurrentStatusDuration.TotalMilliseconds}(ms)/{mLastUpdated.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
 		}
 
 		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
