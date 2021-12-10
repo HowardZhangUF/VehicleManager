@@ -156,7 +156,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 							// 該限車區為滿的
 							if (IsILimitVehicleCountZoneFull(limitVehicleCountZoneInfos[j]))
 							{
-								int distance = GetDistanceBetweenVehicleAndLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]);
+								int distance = GetDistanceBetweenVehicleAndLimitVehicleCountZoneAlongPathLine(vehicleInfos[i], limitVehicleCountZoneInfos[j]);
 								// 車子不是限車區裡面的車，且即將通過限車區
 								// 加上距離大於 0 的條件是為了避免運算溢位的錯誤
 								// 距離等於 0 代表車子在限車區內部
@@ -220,6 +220,33 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		private int GetDistanceBetweenVehicleAndLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
 			return Library.Library.GetDistanceBetweenPointAndRectangleEdge(VehicleInfo.mLocationCoordinate, LimitVehicleCountZoneInfo.mRange);
+		}
+		private int GetDistanceBetweenVehicleAndLimitVehicleCountZoneAlongPathLine(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
+		{
+			int result = 0;
+			if (!LimitVehicleCountZoneInfo.mRange.IsIncludePoint(VehicleInfo.mLocationCoordinate))
+			{
+				if (VehicleInfo.mPathDetail != null && VehicleInfo.mPathDetail.Count > 0)
+				{
+					List<IPoint2D> fullPath = new List<IPoint2D>();
+					fullPath.Add(VehicleInfo.mLocationCoordinate);
+					fullPath.AddRange(VehicleInfo.mPathDetail);
+
+					for (int i = 0; i < fullPath.Count - 1; ++i)
+					{
+						List<IPoint2D> intersectionPoint = Library.Library.GetIntersectionPoint(LimitVehicleCountZoneInfo.mRange, fullPath[i], fullPath[i + 1]).ToList();
+						if (intersectionPoint != null && intersectionPoint.Count > 0)
+						{
+							// 找到交點
+							List<IPoint2D> points = fullPath.Take(i + 1).ToList();
+							points.Add(intersectionPoint.ElementAt(0));
+							result = (int)Library.Library.GetDistance(points);
+							break;
+						}
+					}
+				}
+			}
+			return result;
 		}
 	}
 }
