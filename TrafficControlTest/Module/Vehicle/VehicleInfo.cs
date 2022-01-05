@@ -49,8 +49,8 @@ namespace TrafficControlTest.Module.Vehicle
 		public double mBatteryValue { get; private set; } = 0.0f;
 		public double mTranslationVelocity { get; private set; } = 0.0f;
 		public double mRotationVelocity { get; private set; } = 0.0f;
-		public double mAverageTranslationVelocity { get { return mRecordOfTranslationVelocity.Sum() / mRecordOfTranslationVelocity.Count; } }
-		public double mAverageRotationVelocity { get { return mRecordOfRotationVelocity.Sum() / mRecordOfRotationVelocity.Count; } }
+		public double mAverageTranslationVelocity { get { return mRecordOfTranslationVelocity.ToList().Sum() / mRecordOfTranslationVelocity.ToList().Count; } }
+		public double mAverageRotationVelocity { get { return mRecordOfRotationVelocity.ToList().Sum() / mRecordOfRotationVelocity.ToList().Count; } }
 		public string mErrorMessage { get; private set; } = string.Empty;
 		public IList<IPoint2D> mPath { get; private set; } = new List<IPoint2D>();
 		public IList<IPoint2D> mPathDetail
