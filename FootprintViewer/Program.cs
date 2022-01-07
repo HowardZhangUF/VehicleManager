@@ -16,7 +16,7 @@ namespace FootprintViewer
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new FootprintViewer());
+			Application.Run(new Form1());
 		}
 	}
 }
