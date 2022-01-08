@@ -132,7 +132,7 @@ namespace FootprintViewer
 
 				mCurrentTimestamp = mStartTimestamp.AddSeconds(mEndTimestamp.Subtract(mStartTimestamp).TotalSeconds / (tbTimestamp.Maximum - tbTimestamp.Minimum) * tbTimestamp.Value);
 				lblCurrentTimestamp.Text = mCurrentTimestamp.ToString("yyyy/MM/dd HH:mm:ss");
-				RefreshMap();
+				RefreshGui();
 			}
 			catch (Exception ex)
 			{
@@ -182,24 +182,24 @@ namespace FootprintViewer
 			}
 			mHistoryVehicleInfos.Clear();
 
-			LoadMap(MapFilePath);
-			ReadData(LogFilePath, StartTimestamp, EndTimestamp);
+			ReadMapData(MapFilePath);
+			ReadLogData(LogFilePath, StartTimestamp, EndTimestamp);
 			
 			foreach (var pair in mHistoryVehicleInfos)
 			{
 				RegisterVehicleIconId(pair.Key);
 			}
 
-			RefreshMap();
+			RefreshGui();
 		}
-		private void LoadMap(string mapFilePath)
+		private void ReadMapData(string MapFilePath)
 		{
 			// 地圖介面讀取地圖
-			gluiCtrl1.LoadMap(mapFilePath);
+			gluiCtrl1.LoadMap(MapFilePath);
 			gluiCtrl1.AdjustZoom();
 			gluiCtrl1.Focus(GLCMD.CMD.MapCenter.X, GLCMD.CMD.MapCenter.Y);
 		}
-		private void ReadData(string LogFilePath, DateTime StartTimestamp, DateTime EndTimestamp)
+		private void ReadLogData(string LogFilePath, DateTime StartTimestamp, DateTime EndTimestamp)
 		{
 			if (!File.Exists(LogFilePath)) return;
 
@@ -218,13 +218,13 @@ namespace FootprintViewer
 				{
 					string sqlCmd2 = $"SELECT RecordTimestamp,ID,State,X,Y,Toward,Target,BatteryValue,LocationScore,Path FROM {vehicleTableNames[i]} WHERE RecordTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
 					string[] historyVehicleInfoStrings = GetHistoryVehicleInfoStrings(mDatabaseAdapter.ExecuteQueryCommand(sqlCmd2));
-					List<HistoryVehicleInfo> historyVehicleInfos = historyVehicleInfoStrings.Select(o => GetHistoryVehicleInfo(o)).ToList();
+					List<HistoryVehicleInfo> historyVehicleInfos = historyVehicleInfoStrings.Select(o => HistoryVehicleInfo.FromString(o, new string[] { "#" })).ToList();
 					string vehicleName = GetVehicleName(vehicleTableNames[i]);
 					mHistoryVehicleInfos.Add(vehicleName, historyVehicleInfos);
 				}
 			}
 		}
-		private void RefreshMap()
+		private void RefreshGui()
 		{
 			// 根據 CurrentTimestamp 更新地圖上的自走車位置
 			lblCurrentTimestamp.Text = mCurrentTimestamp.ToString("yyyy/MM/dd HH:mm:ss");
@@ -241,7 +241,7 @@ namespace FootprintViewer
 				}
 			}
 		}
-		public void RegisterVehicleIconId(string VehicleName)
+		private void RegisterVehicleIconId(string VehicleName)
 		{
 			// 註冊圖像 ID
 			if (!string.IsNullOrEmpty(VehicleName) && !mIconIdsOfVehicle.ContainsKey(VehicleName))
@@ -255,7 +255,7 @@ namespace FootprintViewer
 				mIconIdsOfVehicleLaser.Add(VehicleName, VehiclePathPointsIconId);
 			}
 		}
-		public void PrintVehicleIcon(string VehicleName, HistoryVehicleInfo HistoryVehicleInfo)
+		private void PrintVehicleIcon(string VehicleName, HistoryVehicleInfo HistoryVehicleInfo)
 		{
 			// 把圖像加入至地圖
 			if (!string.IsNullOrEmpty(VehicleName) && mIconIdsOfVehicle.ContainsKey(VehicleName))
@@ -278,7 +278,7 @@ namespace FootprintViewer
 				}
 			}
 		}
-		public void EraseVehicleIcon(string VehicleName)
+		private void EraseVehicleIcon(string VehicleName)
 		{
 			// 把圖像從地圖中移除
 			if (!string.IsNullOrEmpty(VehicleName) && mIconIdsOfVehicle.ContainsKey(VehicleName))
@@ -339,11 +339,6 @@ namespace FootprintViewer
 			}
 			return result.ToArray();
 		}
-		private static HistoryVehicleInfo GetHistoryVehicleInfo(string HistoryVehicleInfoString)
-		{
-			string[] data = HistoryVehicleInfoString.Split(new string[] { "#" }, StringSplitOptions.None);
-			return new HistoryVehicleInfo(DateTime.Parse(data[0]), data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), (int)double.Parse(data[5]), data[6], (int)double.Parse(data[7]), (int)double.Parse(data[8]), data[9], string.Empty);
-		}
 	}
 
 	public class HistoryVehicleInfo
@@ -398,6 +393,11 @@ namespace FootprintViewer
 		public override string ToString()
 		{
 			return $"{Name}/{State}/{Target}";
+		}
+		public static HistoryVehicleInfo FromString(string String, string[] Seperator)
+		{
+			string[] data = String.Split(Seperator, StringSplitOptions.None);
+			return new HistoryVehicleInfo(DateTime.Parse(data[0]), data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), (int)double.Parse(data[5]), data[6], (int)double.Parse(data[7]), (int)double.Parse(data[8]), data[9], string.Empty);
 		}
 	}
 }
