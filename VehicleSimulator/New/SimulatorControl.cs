@@ -248,7 +248,12 @@ namespace VehicleSimulator.New
 		}
 		private static int CalculateDistance(int X1, int Y1, int X2, int Y2)
 		{
-			return (int)Math.Sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1));
+			float tmpX1 = X1 / 1000.0f;
+			float tmpY1 = Y1 / 1000.0f;
+			float tmpX2 = X2 / 1000.0f;
+			float tmpY2 = Y2 / 1000.0f;
+			int distance = (int)(Math.Sqrt((tmpX2 - tmpX1) * (tmpX2 - tmpX1) + (tmpY2 - tmpY1) * (tmpY2 - tmpY1)) * 1000);
+			return distance;
 		}
 		private static int CalculateVectorAngleInDegree(int SrcX, int SrcY, int DstX, int DstY)
 		{
