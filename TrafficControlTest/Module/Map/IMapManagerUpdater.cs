@@ -17,6 +17,7 @@ namespace TrafficControlTest.Module.Map
 		event EventHandler<LoadMapSuccessedEventArgs> LoadMapSuccessed;
 		event EventHandler<LoadMapFailedEventArgs> LoadMapFailed;
 		event EventHandler<SynchronizeMapStartedEventArgs> SynchronizeMapStarted;
+		event EventHandler<MapMergedEventArgs> MapMerged;
 
 		void Set(IMapManager MapManager);
 		void Set(IMapFileManager MapFileManager);
@@ -73,6 +74,20 @@ namespace TrafficControlTest.Module.Map
 			this.OccurTime = OccurTime;
 			this.MapFileFullPath = MapFileFullPath;
 			this.VehicleNames = VehicleNames;
+		}
+	}
+
+	public class MapMergedEventArgs : EventArgs
+	{
+		public DateTime OccurTime { get; private set; }
+		public IEnumerable<string> SrcMapFileFullPaths { get; private set; }
+		public string ResultMapFileFullPath { get; private set; }
+
+		public MapMergedEventArgs(DateTime OccurTime, IEnumerable<string> SrcMapFileFullPaths, string ResultMapFileFullPath)
+		{
+			this.OccurTime = OccurTime;
+			this.SrcMapFileFullPaths = SrcMapFileFullPaths;
+			this.ResultMapFileFullPath = ResultMapFileFullPath;
 		}
 	}
 }

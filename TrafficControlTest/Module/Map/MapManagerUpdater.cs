@@ -18,6 +18,7 @@ namespace TrafficControlTest.Module.Map
 		public event EventHandler<LoadMapSuccessedEventArgs> LoadMapSuccessed;
 		public event EventHandler<LoadMapFailedEventArgs> LoadMapFailed;
 		public event EventHandler<SynchronizeMapStartedEventArgs> SynchronizeMapStarted;
+		public event EventHandler<MapMergedEventArgs> MapMerged;
 
 		private IMapManager rMapManager = null;
 		private IMapFileManager rMapFileManager = null;
@@ -227,6 +228,17 @@ namespace TrafficControlTest.Module.Map
 				Task.Run(() => { SynchronizeMapStarted?.Invoke(this, new SynchronizeMapStartedEventArgs(DateTime.Now, MapFileFullPath, VehicleNames)); });
 			}
 		}
+		protected virtual void RaiseEvent_MapMerged(IEnumerable<string> SrcMapFileFullPaths, string ResultMapFileFullPath, bool Sync = true)
+		{
+			if (Sync)
+			{
+				MapMerged?.Invoke(this, new MapMergedEventArgs(DateTime.Now, SrcMapFileFullPaths, ResultMapFileFullPath));
+			}
+			else
+			{
+				Task.Run(() => { MapMerged?.Invoke(this, new MapMergedEventArgs(DateTime.Now, SrcMapFileFullPaths, ResultMapFileFullPath)); });
+			}
+		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
 			// 當車的「當前使用地圖」屬性改變時 (僅使用 Contains 判斷有可能抓到 "CurrentMapName" 與 "CurrentMapNameList" 兩種結果，所以需要做更細節的字串判斷)
@@ -308,6 +320,7 @@ namespace TrafficControlTest.Module.Map
 				}
 				result.Save(ItegratedMapFileFullPath);
 			}
+			RaiseEvent_MapMerged(MapFileFullPaths, ItegratedMapFileFullPath);
 		}
 
 		private static IMapObjectOfTowardPoint ConvertToIMapObjectOfTowardPoint(ISingleTowardPairInfo Input)

@@ -889,6 +889,7 @@ namespace TrafficControlTest.Process
 				MapManagerUpdater.LoadMapSuccessed += HandleEvent_MapManagerUpdaterLoadMapSuccessed;
 				MapManagerUpdater.LoadMapFailed += HandleEvent_MapManagerUpdaterLoadMapFailed;
 				MapManagerUpdater.SynchronizeMapStarted += HandleEvent_MapManagerUpdaterSynchronizeMapStarted;
+				MapManagerUpdater.MapMerged += HandleEvent_MapManagerUpdaterMapMerged;
 			}
 		}
 		private void UnsubscribeEvent_IMapManagerUpdater(IMapManagerUpdater MapManagerUpdater)
@@ -899,6 +900,7 @@ namespace TrafficControlTest.Process
 				MapManagerUpdater.LoadMapSuccessed -= HandleEvent_MapManagerUpdaterLoadMapSuccessed;
 				MapManagerUpdater.LoadMapFailed -= HandleEvent_MapManagerUpdaterLoadMapFailed;
 				MapManagerUpdater.SynchronizeMapStarted -= HandleEvent_MapManagerUpdaterSynchronizeMapStarted;
+				MapManagerUpdater.MapMerged -= HandleEvent_MapManagerUpdaterMapMerged;
 			}
 		}
 		private void SubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
@@ -1618,6 +1620,10 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_MapManagerUpdaterSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "SynchronizeMapStarted", $"MapFileFullPath: {Args.MapFileFullPath}, VehicleNames: {string.Join(",", Args.VehicleNames)}");
+		}
+		private void HandleEvent_MapManagerUpdaterMapMerged(object sender, MapMergedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "MapMerged", $"SrcMapFileFullPaths: {string.Join(",", Args.SrcMapFileFullPaths)}, ResultMapFileFullPath: {Args.ResultMapFileFullPath}");
 		}
 		private void HandleEvent_CollisionEventManagerItemAdded(object Sender, ItemCountChangedEventArgs<ICollisionPair> Args)
 		{
