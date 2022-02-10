@@ -16,7 +16,6 @@ namespace TrafficControlTest.UserControl
 		private ICollisionEventManager rCollisionEventManager = null;
 		private Dictionary<string, int> mIconIdsOfVehicle = new Dictionary<string, int>();
 		private Dictionary<string, int> mIconIdsOfVehiclePath = new Dictionary<string, int>();
-		private Dictionary<string, int> mIconIdsOfVehiclePathPoints = new Dictionary<string, int>();
 		private Dictionary<string, int> mIconIdsOfCollisionRegion = new Dictionary<string, int>();
 
 		public UcMap()
@@ -51,11 +50,9 @@ namespace TrafficControlTest.UserControl
 			{
 				int VehicleIconId = GLCMD.CMD.SerialNumber.Next();
 				int VehiclePathIconId = GLCMD.CMD.AddMultiStripLine("Path", null);
-				int VehiclePathPointsIconId = GLCMD.CMD.AddMultiPair("PathPoint", null);
 
 				mIconIdsOfVehicle.Add(VehicleInfo.mName, VehicleIconId);
 				mIconIdsOfVehiclePath.Add(VehicleInfo.mName, VehiclePathIconId);
-				mIconIdsOfVehiclePathPoints.Add(VehicleInfo.mName, VehiclePathPointsIconId);
 			}
 		}
 		/// <summary>把圖像加入至地圖</summary>
@@ -74,11 +71,6 @@ namespace TrafficControlTest.UserControl
 						line.Clear();
 						line.AddRangeIfNotNull(GetPath(VehicleInfo));
 					});
-					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mIconIdsOfVehiclePathPoints[VehicleInfo.mName], true, (line) =>
-					{
-						line.Clear();
-						line.AddRangeIfNotNull(GetPathDetail(VehicleInfo));
-					});
 				}
 			}
 		}
@@ -89,11 +81,9 @@ namespace TrafficControlTest.UserControl
 			{
 				GLCMD.CMD.DeleteAGV(mIconIdsOfVehicle[VehicleInfo.mName]);
 				GLCMD.CMD.DeleteMulti(mIconIdsOfVehiclePath[VehicleInfo.mName]);
-				GLCMD.CMD.DeleteMulti(mIconIdsOfVehiclePathPoints[VehicleInfo.mName]);
 
 				mIconIdsOfVehicle.Remove(VehicleInfo.mName);
 				mIconIdsOfVehiclePath.Remove(VehicleInfo.mName);
-				mIconIdsOfVehiclePathPoints.Remove(VehicleInfo.mName);
 			}
 		}
 		public void RegisterIconId(ICollisionPair CollisionPair)
