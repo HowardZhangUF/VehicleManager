@@ -315,11 +315,10 @@ namespace TrafficControlTest.Module.CollisionEvent
 			{
 				if (TryToBuildTreeOfPoints(PointsB, out KdTree.KdTree<int, string> treeOfPointsB))
 				{
-					int frameRadiusSquare = FrameRadius * FrameRadius;
 					for (int i = 0; i < PointsA.Count(); ++i)
 					{
 						var neighbourPoints = treeOfPointsB.GetNearestNeighbours(new int[] { PointsA.ElementAt(i).mX, PointsA.ElementAt(i).mY }, NeighbourAmount);
-						if (neighbourPoints.Any((o) => GetDistanceSquare(PointsA.ElementAt(i), GenerateIPoint2D(o.Point[0], o.Point[1])) < frameRadiusSquare))
+						if (neighbourPoints.Any((o) => GetDistance(PointsA.ElementAt(i), GenerateIPoint2D(o.Point[0], o.Point[1])) < FrameRadius))
 						{
 							IRectangle2D overlapRegion = GetRectangle(PointsA.ElementAt(i).mX, PointsA.ElementAt(i).mY, FrameRadius);
 							if (tmpOverlapRegions == null)

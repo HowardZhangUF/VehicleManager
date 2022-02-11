@@ -68,8 +68,6 @@ namespace TrafficControlTest.Library.Tests
 
 			if (Library.GetDistance(new List<IPoint2D>() { point1, point2, point3}).ToString("F2") != "82.61") Assert.Fail();
 
-			if (Library.GetDistanceSquare(point3, point4) != 5000) Assert.Fail();
-
 			IEnumerable<IPoint2D> intersectionPoints1 = Library.GetIntersectionPoint(Library.GenerateIRectangle2D(point1, point3), point0, point5);
 			if (intersectionPoints1.Count() != 1 || intersectionPoints1.Where((o) => o.ToString() == Library.GenerateIPoint2D(10, 0).ToString()).Count() != 1) Assert.Fail();
 			IEnumerable<IPoint2D> intersectionPoints2 = Library.GetIntersectionPoint(Library.GenerateIRectangle2D(point1, point3), point5, point6);

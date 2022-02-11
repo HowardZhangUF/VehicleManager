@@ -58,7 +58,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 		public override string ToString()
 		{
 			string result = string.Empty;
-			result += $"{mName}/{mCollisionRegion.ToString()}/{mPeriod.ToString()}/{mPassPeriodOfVehicle1WithCurrentVelocity.ToString()}/{mPassPeriodOfVehicle2WithCurrentVelocity.ToString()}";
+			result += $"{mName}/{mCollisionRegion.ToString()}/{mPeriod.ToString()}/{mVehicle1.mName}-{mPassPeriodOfVehicle1WithCurrentVelocity.ToString()}/{mVehicle2.mName}-{mPassPeriodOfVehicle2WithCurrentVelocity.ToString()}";
 			return result;
 		}
 

@@ -473,7 +473,7 @@ namespace TrafficControlTest.Library
 		}
 		public static double GetDistance(IPoint2D Point1, IPoint2D Point2)
 		{
-			return Math.Sqrt(GetDistanceSquare(Point1, Point2));
+			return Math.Sqrt(((Point2.mX - Point1.mX) / 1000.0f) * ((Point2.mX - Point1.mX) / 1000.0f) + ((Point2.mY - Point1.mY) / 1000.0f) * ((Point2.mY - Point1.mY) / 1000.0f)) * 1000.0f;
 		}
 		/// <summary>計算點集合依序連起來的線段的長度總和</summary>
 		public static double GetDistance(IEnumerable<IPoint2D> Points)
@@ -487,10 +487,6 @@ namespace TrafficControlTest.Library
 				}
 			}
 			return result;
-		}
-		public static int GetDistanceSquare(IPoint2D Point1, IPoint2D Point2)
-		{
-			return (int)(Math.Pow(Point2.mX - Point1.mX, 2) + Math.Pow(Point2.mY - Point1.mY, 2));
 		}
 		/// <summary>計算指定矩形與指定線段(由兩點組成)的交點。最多有可能會有兩個交點</summary>
 		public static IEnumerable<IPoint2D> GetIntersectionPoint(IRectangle2D Rectangle, IPoint2D Point1, IPoint2D Point2)
