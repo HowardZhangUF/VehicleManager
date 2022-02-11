@@ -10,12 +10,18 @@ namespace VehicleSimulator.New
 {
 	public class HostMessageHandler : IHostMessageHandler
 	{
+		private ISimulatorInfo rSimulatorInfo = null;
 		private IHostCommunicator rHostCommunicator = null;
 		private ISimulatorControl rSimulatorControl = null;
+		private IMoveRequestCalculator rMoveRequestCalculator = null;
 
-		public HostMessageHandler(IHostCommunicator IHostCommunicator, ISimulatorControl ISimulatorControl)
+		public HostMessageHandler(ISimulatorInfo ISimulatorInfo, IHostCommunicator IHostCommunicator, ISimulatorControl ISimulatorControl, IMoveRequestCalculator IMoveRequestCalculator)
 		{
-			Set(IHostCommunicator, ISimulatorControl);
+			Set(ISimulatorInfo, IHostCommunicator, ISimulatorControl, IMoveRequestCalculator);
+		}
+		public void Set(ISimulatorInfo ISimulatorInfo)
+		{
+			rSimulatorInfo = ISimulatorInfo;
 		}
 		public void Set(IHostCommunicator IHostCommunicator)
 		{
@@ -27,10 +33,16 @@ namespace VehicleSimulator.New
 		{
 			rSimulatorControl = ISimulatorControl;
 		}
-		public void Set(IHostCommunicator IHostCommunicator, ISimulatorControl ISimulatorControl)
+		public void Set(IMoveRequestCalculator IMoveRequestCalculator)
 		{
+			rMoveRequestCalculator = IMoveRequestCalculator;
+		}
+		public void Set(ISimulatorInfo ISimulatorInfo, IHostCommunicator IHostCommunicator, ISimulatorControl ISimulatorControl, IMoveRequestCalculator IMoveRequestCalculator)
+		{
+			Set(ISimulatorInfo);
 			Set(IHostCommunicator);
 			Set(ISimulatorControl);
+			Set(IMoveRequestCalculator);
 		}
 
 		private void SubscribeEvent_IHostCommunicator(IHostCommunicator IHostCommunicator)
@@ -110,14 +122,15 @@ namespace VehicleSimulator.New
 		{
 			if (!rSimulatorControl.mIsExecuting)
 			{
-				Random random = new Random();
-				rSimulatorControl.StartMove(GoTo.Require, random.Next(-10000,10000), random.Next(-10000, 10000));
+				var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), GoTo.Require);
+				rSimulatorControl.StartMove(GoTo.Require, moveRequests);
 			}
 		}
 		private void HandleSerializableData_GoToPoint(GoToPoint GoToPoint)
 		{
 			if (!rSimulatorControl.mIsExecuting)
 			{
+				var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), new Point(GoToPoint.Require[0], GoToPoint.Require[1]));
 				rSimulatorControl.StartMove(GoToPoint.Require[0], GoToPoint.Require[1]);
 			}
 		}
@@ -125,6 +138,7 @@ namespace VehicleSimulator.New
 		{
 			if (!rSimulatorControl.mIsExecuting)
 			{
+				var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), new Point(GoToTowardPoint.Require[0], GoToTowardPoint.Require[1]), GoToTowardPoint.Require[2]);
 				rSimulatorControl.StartMove(GoToTowardPoint.Require[0], GoToTowardPoint.Require[1], GoToTowardPoint.Require[2]);
 			}
 		}

@@ -8,8 +8,10 @@ namespace VehicleSimulator.New
 {
 	public interface IHostMessageHandler
 	{
+		void Set(ISimulatorInfo ISimulatorInfo);
 		void Set(IHostCommunicator IHostCommunicator);
 		void Set(ISimulatorControl ISimulatorControl);
-		void Set(IHostCommunicator IHostCommunicator, ISimulatorControl ISimulatorControl);
+		void Set(IMoveRequestCalculator IMoveRequestCalculator);
+		void Set(ISimulatorInfo ISimulatorInfo, IHostCommunicator IHostCommunicator, ISimulatorControl ISimulatorControl, IMoveRequestCalculator IMoveRequestCalculator);
 	}
 }

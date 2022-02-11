@@ -42,6 +42,7 @@ namespace VehicleSimulator.New
 			SubscribeEvent_SimulatorProcessContainer(mCore);
 
 			ucContentOfSimulator1.Set(mCore);
+			ucContentOfSetting1.Set(mCore);
 			btnMenuOfSimulator_Click(null, null);
 		}
 		protected void Destructor()

@@ -13,6 +13,7 @@ namespace VehicleSimulator.New
 		private ISimulatorInfo mSimulatorInfo = null;
 		private ISimulatorControl mSimulatorControl = null;
 		private IHostCommunicator mHostCommunicator = null;
+		private IMoveRequestCalculator mMoveRequestCalculator = null;
 		private IHostMessageHandler mHostMessageHandler = null;
 		private ISimulatorInfoReporter mSimulatorInfoReporter = null;
 
@@ -53,6 +54,10 @@ namespace VehicleSimulator.New
 		{
 			return mHostCommunicator;
 		}
+		public IMoveRequestCalculator GetReferenceOfIMoveRequestCalculator()
+		{
+			return mMoveRequestCalculator;
+		}
 
 		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)
 		{
@@ -84,8 +89,12 @@ namespace VehicleSimulator.New
 			mHostCommunicator = new HostCommunicator();
 			SubscribeEvent(mHostCommunicator);
 
+			UnsubscribeEvent(mMoveRequestCalculator);
+			mMoveRequestCalculator = new MoveRequestCalculator();
+			SubscribeEvent(mMoveRequestCalculator);
+
 			UnsubscribeEvent(mHostMessageHandler);
-			mHostMessageHandler = new HostMessageHandler(mHostCommunicator, mSimulatorControl);
+			mHostMessageHandler = new HostMessageHandler(mSimulatorInfo, mHostCommunicator, mSimulatorControl, mMoveRequestCalculator);
 			SubscribeEvent(mHostMessageHandler);
 
 			UnsubscribeEvent(mSimulatorInfoReporter);
@@ -159,6 +168,20 @@ namespace VehicleSimulator.New
 				IHostCommunicator.ConnectStateChanged -= HandleEvent_IHostCommunicatorConnectStateChanged;
 				IHostCommunicator.SentData -= HandleEvent_IHostCommunicatorSentData;
 				IHostCommunicator.ReceivedData -= HandleEvent_IHostCommunicatorReceivedData;
+			}
+		}
+		private void SubscribeEvent(IMoveRequestCalculator IMoveRequestCalculator)
+		{
+			if (IMoveRequestCalculator != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent(IMoveRequestCalculator IMoveRequestCalculator)
+		{
+			if (IMoveRequestCalculator != null)
+			{
+				// do nothing
 			}
 		}
 		private void SubscribeEvent(IHostMessageHandler IHostMessageHandler)

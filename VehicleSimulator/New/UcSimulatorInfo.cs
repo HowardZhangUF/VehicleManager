@@ -37,27 +37,28 @@ namespace VehicleSimulator.New
 			SubscribeEvent_SimulatorProcess(rSimulatorProcess);
 			UpdateGui_UpdateSimulatorInfo();
 		}
-		public void Set(ISimulatorInfo SimulatorInfo)
+		public string GetCurrentSimulatorName()
+		{
+			return lblSimulatorName.Text;
+		}
+
+		protected void Set(ISimulatorInfo SimulatorInfo)
 		{
 			UnsubscribeEvent_ISimulatorInfo(rSimulatorInfo);
 			rSimulatorInfo = SimulatorInfo;
 			SubscribeEvent_ISimulatorInfo(rSimulatorInfo);
 		}
-		public void Set(ISimulatorControl SimulatorControl)
+		protected void Set(ISimulatorControl SimulatorControl)
 		{
 			UnsubscribeEvent_ISimulatorControl(rSimulatorControl);
 			rSimulatorControl = SimulatorControl;
 			SubscribeEvent_ISimulatorControl(rSimulatorControl);
 		}
-		public void Set(IHostCommunicator HostCommunicator)
+		protected void Set(IHostCommunicator HostCommunicator)
 		{
 			UnsubscribeEvent_IHostCommunicator(rHostCommunicator);
 			rHostCommunicator = HostCommunicator;
 			SubscribeEvent_IHostCommunicator(rHostCommunicator);
-		}
-		public string GetCurrentSimulatorName()
-		{
-			return lblSimulatorName.Text;
 		}
 
 		private void btnSimulatorConnect_Click(object sender, EventArgs e)

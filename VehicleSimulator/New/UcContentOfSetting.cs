@@ -12,14 +12,23 @@ using System.IO;
 namespace VehicleSimulator.New
 {
     public partial class UcContentOfSetting : UserControl
-    {
-        public UcContentOfSetting()
+	{
+		private SimulatorProcessContainer rCore = null;
+
+		public UcContentOfSetting()
         {
             InitializeComponent();
             UpdateGui_InitializeDgvMapFileList();
-        }
+		}
+		public void Set(SimulatorProcessContainer SimulatorProcessContainer)
+		{
+			if (SimulatorProcessContainer != null)
+			{
+				rCore = SimulatorProcessContainer;
+			}
+		}
 
-        private void UpdateGui_InitializeDgvMapFileList()
+		private void UpdateGui_InitializeDgvMapFileList()
         {
             dgvMapFileList.InvokeIfNecessary(() =>
             {
@@ -116,6 +125,7 @@ namespace VehicleSimulator.New
 			{
 				string mapFilePath = $"{lblMapFileFolderDirectory.Text}\\{dgvMapFileList.CurrentRow.Cells[0].Value.ToString()}";
 				UpdateGui_PbMapPreview_UpdatePicture(mapFilePath);
+				rCore.SetMap(mapFilePath);
 			}
 			else
 			{

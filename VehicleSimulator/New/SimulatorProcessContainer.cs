@@ -60,6 +60,13 @@ namespace VehicleSimulator.New
 		{
 			return mSimulatorProcessCollection.ContainsKey(SimulatorName);
 		}
+		public void SetMap(string FilePath)
+		{
+			foreach (SimulatorProcess process in mSimulatorProcessCollection.Values)
+			{
+				process.GetReferenceOfIMoveRequestCalculator().SetMap(FilePath);
+			}
+		}
 
 		protected virtual void RaiseEvent_SimulatorAdded(string SimulatorName, SimulatorProcess SimulatorProcess, bool Sync = true)
 		{
