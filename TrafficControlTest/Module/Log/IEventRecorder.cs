@@ -16,6 +16,7 @@ namespace TrafficControlTest.Module.Log
 		void Start();
 		void Stop();
 		void CreateTableOfHistoryVehicleInfo(string VehicleName);
+		void CreateIndexOfHistoryVehicleInfo(string VehicleName);
 		void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo);
 		void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo);
 		void RecordMissionState(DatabaseDataOperation Action, IMissionState MissionState);

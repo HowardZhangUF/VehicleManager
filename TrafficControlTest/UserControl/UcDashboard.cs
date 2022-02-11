@@ -35,7 +35,6 @@ namespace TrafficControlTest.UserControl
 		public void Set(DatabaseAdapter DatabaseAdapter)
 		{
 			rDatabaseAdapter = DatabaseAdapter;
-			UpdateDashboard(EndDate.Yesterday);
 		}
 
 		private void UpdateDashboard(EndDate EndDate)

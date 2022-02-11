@@ -167,6 +167,7 @@ namespace TrafficControlTest.Module.Log
 		{
 			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Add, Args.Item);
 			rEventRecorder.CreateTableOfHistoryVehicleInfo(Args.ItemName);
+			rEventRecorder.CreateIndexOfHistoryVehicleInfo(Args.ItemName);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{

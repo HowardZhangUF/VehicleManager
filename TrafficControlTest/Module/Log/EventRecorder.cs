@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.InterveneCommand;
@@ -62,7 +64,11 @@ namespace TrafficControlTest.Module.Log
 			tmp += "InterveneCommand TEXT, ";
 			tmp += "MapName TEXT, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
-			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		public void CreateIndexOfHistoryVehicleInfo(string VehicleName)
+		{
+			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNamePrefixOfHistoryVehicleInfo}{VehicleName.Replace("-", "Dash")} ON {mTableNamePrefixOfHistoryVehicleInfo}{VehicleName.Replace("-", "Dash")} (RecordTimestamp)");
 		}
 		public void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo)
 		{
@@ -162,6 +168,12 @@ namespace TrafficControlTest.Module.Log
 			CreateTableOfVehicleControl();
 			CreateTableOfAutomaticDoorControl();
 			CreateTableOfHistoryHostCommunication();
+
+			CreateIndexOfAllMissionState();
+			CreateIndexOfVehicleControl();
+			CreateIndexOfAutomaticDoorControl();
+			CreateIndexOfHistoryHostCommunication();
+			CreateIndexOfOtherTable();
 		}
 		private void CreateTableOfCurrentVehicleState()
 		{
@@ -184,7 +196,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += "InterveneCommand TEXT, ";
 			tmp += "MapName TEXT, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
-			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void CreateTableOfAllMissionState()
 		{
@@ -204,7 +216,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += "ExecutionStartTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ExecutionStopTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
-			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void CreateTableOfVehicleControl()
 		{
@@ -223,7 +235,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += "ExecutionStartTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "ExecutionStopTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
-			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void CreateTableOfAutomaticDoorControl()
 		{
@@ -236,7 +248,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += "SendState TEXT, ";
 			tmp += "ReceiveTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
-			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void CreateTableOfHistoryHostCommunication()
 		{
@@ -247,7 +259,49 @@ namespace TrafficControlTest.Module.Log
 			tmp += "Event TEXT, ";
 			tmp += "IPPort TEXT, ";
 			tmp += "Data TEXT)";
-			rDatabaseAdapter.ExecuteNonQueryCommand(tmp);
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void CreateIndexOfAllMissionState()
+		{
+			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfMissionState} ON {mTableNameOfMissionState} (ReceiveTimestamp)");
+		}
+		private void CreateIndexOfVehicleControl()
+		{
+			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfVehicleControl} ON {mTableNameOfVehicleControl} (ReceiveTimestamp)");
+		}
+		private void CreateIndexOfAutomaticDoorControl()
+		{
+			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfAutomaticDoorControl} ON {mTableNameOfAutomaticDoorControl} (ReceiveTimestamp)");
+		}
+		private void CreateIndexOfHistoryHostCommunication()
+		{
+			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfHistoryHostCommunication} ON {mTableNameOfHistoryHostCommunication} (Timestamp)");
+		}
+		private void CreateIndexOfOtherTable()
+		{
+			List<string> tableNameList = new List<string>();
+
+			string sqlCmd = "SELECT name FROM sqlite_master WHERE type='table';";
+			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
+			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
+
+			DataTable searchResult = searchData?.Tables[0];
+			if (searchResult != null && searchResult.Rows != null && searchResult.Rows.Count > 0)
+			{
+				for (int i = 0; i < searchResult.Rows.Count; ++i)
+				{
+					tableNameList.Add(searchResult.Rows[i].ItemArray[0].ToString());
+				}
+			}
+
+			for (int i = 0; i < tableNameList.Count; ++i)
+			{
+				if (tableNameList[i].StartsWith(mTableNamePrefixOfHistoryVehicleInfo))
+				{
+					rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{tableNameList[i]} ON {tableNameList[i]} (RecordTimestamp)");
+
+				}
+			}
 		}
 		private void VehicleInfoDataAdd(IVehicleInfo VehicleInfo)
 		{
