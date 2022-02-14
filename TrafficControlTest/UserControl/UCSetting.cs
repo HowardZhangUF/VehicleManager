@@ -17,6 +17,7 @@ namespace TrafficControlTest.UserControl
 		public Color TableHeaderForeColor { get; set; } = Color.White;
 		public Color TableOddRowBackColor { get; set; } = Color.FromArgb(31, 31, 31);
 		public Color TableEvenRowBackColor { get; set; } = Color.FromArgb(42, 42, 42);
+		public Color TableValueChagnedCellBackColor { get; set; } = Color.FromArgb(0, 0, 128);
 		public Color TableRowForeColor { get; set; } = Color.White;
 
 		private IConfigurator rConfigurator = null;
@@ -204,6 +205,11 @@ namespace TrafficControlTest.UserControl
 				{
 					if (dgvSettings.Rows[RowIndex].DefaultCellStyle.BackColor != TableOddRowBackColor) dgvSettings.Rows[RowIndex].DefaultCellStyle.BackColor = TableOddRowBackColor;
 				}
+
+				if (dgvSettings.Rows[RowIndex].Cells["Value"].Value.ToString() != dgvSettings.Rows[RowIndex].Cells["Default"].Value.ToString())
+				{
+					dgvSettings.Rows[RowIndex].DefaultCellStyle.BackColor = TableValueChagnedCellBackColor;
+				}
 			});
 		}
 		private void UpdateGui_DgvSettings_ClearSelection()
@@ -351,7 +357,13 @@ namespace TrafficControlTest.UserControl
 				{
 					if (!rConfigurator.SetValue(dgvSettings.Rows[e.RowIndex].Cells["Category"].Value.ToString() + "/" + dgvSettings.Rows[e.RowIndex].Cells["Name"].Value.ToString(), dgvSettings.Rows[e.RowIndex].Cells["Value"].Value.ToString()))
 					{
+						// 如果設定失敗(通常是因為設定值不正確或超出範圍)，要把 Cell 的值修改回原本的值
 						dgvSettings.Rows[e.RowIndex].Cells["Value"].Value = rConfigurator.GetValue(dgvSettings.Rows[e.RowIndex].Cells["Category"].Value.ToString() + "/" + dgvSettings.Rows[e.RowIndex].Cells["Name"].Value.ToString()).ToString();
+					}
+					else
+					{
+						// 如果設定成功，更新 Row Back Color
+						UpdateGui_DgvSettings_UpdateRowBackColor(e.RowIndex);
 					}
 				}
 			}

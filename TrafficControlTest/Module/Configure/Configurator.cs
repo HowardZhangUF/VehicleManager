@@ -74,6 +74,10 @@ namespace TrafficControlTest.Module.Configure
 				{
 					result.Add(config.ToString());
 				}
+
+				string directoryPath = Path.GetDirectoryName(mFilePath);
+				if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+
 				File.WriteAllLines(mFilePath, result);
 				RaiseEvent_ConfigFileSaved();
 			}
