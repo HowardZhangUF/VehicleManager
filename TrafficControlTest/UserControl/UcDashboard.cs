@@ -80,7 +80,7 @@ namespace TrafficControlTest.UserControl
 		private void UpdateDashboardViaDatabase_DailyMissionCount()
 		{
 			// Command:
-			//		SELECT ExecuteState, Count(*) FROM MissionState WHERE (ExecuteState == 'ExecuteSuccessed' OR ExecuteState == 'ExecuteFailed') AND (ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days')) GROUP BY ExecuteState
+			//		SELECT ExecuteState, Count(*) FROM HistoryMissionInfo WHERE (ExecuteState == 'ExecuteSuccessed' OR ExecuteState == 'ExecuteFailed') AND (ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days')) GROUP BY ExecuteState
 			// Result:
 			//		ExecuteSuccessed 30342
 			// Commnet:
@@ -89,7 +89,7 @@ namespace TrafficControlTest.UserControl
 			DailyMissionCount dataFromDatabase = new DailyMissionCount(mEndDate, 0, 0);
 			string startTimestamp = $"{dataFromDatabase.mDate.ToString("yyyy-MM-dd")} 00:00:00.000";
 			string endTimestamp = $"{dataFromDatabase.mDate.ToString("yyyy-MM-dd")} 23:59:59.999";
-			string sqlCmd = $"SELECT ExecuteState, Count(*) FROM MissionState WHERE(ExecuteState == 'ExecuteSuccessed' OR ExecuteState == 'ExecuteFailed') AND (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecuteState";
+			string sqlCmd = $"SELECT ExecuteState, Count(*) FROM HistoryMissionInfo WHERE(ExecuteState == 'ExecuteSuccessed' OR ExecuteState == 'ExecuteFailed') AND (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecuteState";
 			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
 			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
 
@@ -130,7 +130,7 @@ namespace TrafficControlTest.UserControl
 		private void UpdateDashboardViaDatabase_DailyMissionAverageCost()
 		{
 			// Command:
-			//		SELECT COUNT(*), CAST(SUM(JULIANDAY(ExecutionStopTimestamp) - JULIANDAY(ExecutionStartTimestamp)) / COUNT(*) * 24 * 60 * 60 * 1000 AS INTEGER) AS ExeAvgCostInMs FROM MissionState WHERE ExecuteState == 'ExecuteSuccessed' AND (ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days'))
+			//		SELECT COUNT(*), CAST(SUM(JULIANDAY(ExecutionStopTimestamp) - JULIANDAY(ExecutionStartTimestamp)) / COUNT(*) * 24 * 60 * 60 * 1000 AS INTEGER) AS ExeAvgCostInMs FROM HistoryMissionInfo WHERE ExecuteState == 'ExecuteSuccessed' AND (ReceiveTimestamp BETWEEN DATE('now', '-1 days') AND DATE('now', '-0 days'))
 			// Result:
 			//		1 27815
 			// Result:
@@ -140,7 +140,7 @@ namespace TrafficControlTest.UserControl
 			DailyMissionAverageCost dataFromDatabase = new DailyMissionAverageCost(mEndDate, 0, 0.0f);
 			string startTimestamp = $"{dataFromDatabase.mDate.ToString("yyyy-MM-dd")} 00:00:00.000";
 			string endTimestamp = $"{dataFromDatabase.mDate.ToString("yyyy-MM-dd")} 23:59:59.999";
-			string sqlCmd = $"SELECT COUNT(*), CAST(SUM(JULIANDAY(ExecutionStopTimestamp) - JULIANDAY(ExecutionStartTimestamp)) / COUNT(*) * 24 * 60 * 60 * 1000 AS INTEGER) AS ExeAvgCostInMs FROM MissionState WHERE ExecuteState == 'ExecuteSuccessed' AND (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}')";
+			string sqlCmd = $"SELECT COUNT(*), CAST(SUM(JULIANDAY(ExecutionStopTimestamp) - JULIANDAY(ExecutionStartTimestamp)) / COUNT(*) * 24 * 60 * 60 * 1000 AS INTEGER) AS ExeAvgCostInMs FROM HistoryMissionInfo WHERE ExecuteState == 'ExecuteSuccessed' AND (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}')";
 			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
 			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
 
@@ -280,7 +280,7 @@ namespace TrafficControlTest.UserControl
 			//		2020-04-14 10:21:21.360 96.83
 			//		2020-04-14 10:21:24.360 98.04
 			Dictionary<string, DailyVehicleBatteryState> dataFromDatabase = new Dictionary<string, DailyVehicleBatteryState>();
-			string sqlCmd = "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'HistoryVehicleInfoOf%' ORDER BY UPPER(name)";
+			string sqlCmd = "SELECT DISTINCT ID FROM HistoryVehicleInfo Order By ID ASC";
 			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
 			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
 			DataTable searchResult = searchData?.Tables[0];
@@ -289,11 +289,10 @@ namespace TrafficControlTest.UserControl
 				List<string> vehicleIds = new List<string>();
 				for (int i = 0; i < searchResult.Rows.Count; ++i)
 				{
-					string tableName = searchResult.Rows[i].ItemArray[0].ToString();
-					string vehicleId = tableName.Replace("HistoryVehicleInfoOf", string.Empty).Replace("Dash", "-");
+					string vehicleId = searchResult.Rows[i].ItemArray[0].ToString();
 					string startTimestamp = $"{mEndDate.ToString("yyyy-MM-dd")} 00:00:00.000";
 					string endTimestamp = $"{mEndDate.ToString("yyyy-MM-dd")} 23:59:59.999";
-					string sqlCmdTmp = $"SELECT RecordTimestamp, BatteryValue FROM {tableName} WHERE RecordTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
+					string sqlCmdTmp = $"SELECT RecordTimestamp, BatteryValue FROM HistoryVehicleInfo WHERE RecordTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
 					DataSet searchDataTmp = rDatabaseAdapter.ExecuteQueryCommand(sqlCmdTmp);
 					if (searchDataTmp == null || searchDataTmp.Tables == null || searchDataTmp.Tables.Count == 0) return;
 
@@ -483,7 +482,7 @@ namespace TrafficControlTest.UserControl
 		private void UpdateDashboardViaDatabase_WeeklyMissionCount()
 		{
 			// Command:
-			//		SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)
+			//		SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM HistoryMissionInfo WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)
 			// Result:
 			//		iTS-100    2020-04-14 ExecuteSuccessed 1
 			//		Vehicle031 2020-04-08 ExecuteFailed    4
@@ -514,7 +513,7 @@ namespace TrafficControlTest.UserControl
 			Dictionary<string, MultiDayVehicleMissionCount> dataFromDatabase = new Dictionary<string, MultiDayVehicleMissionCount>();
 			string startTimestamp = $"{mEndDate.AddDays(-6).ToString("yyyy-MM-dd")} 00:00:00.000";
 			string endTimestamp = $"{mEndDate.ToString("yyyy-MM-dd")} 23:59:59.999";
-			string sqlCmd = $"SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
+			string sqlCmd = $"SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM HistoryMissionInfo WHERE (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
 			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
 			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
 			DataTable searchResult = searchData?.Tables[0];
@@ -682,7 +681,7 @@ namespace TrafficControlTest.UserControl
 		private void UpdateDashboardViaDatabase_WeeklyVehicleUsage()
 		{
 			// Command:
-			//		SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)
+			//		SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM HistoryMissionInfo WHERE (ReceiveTimestamp BETWEEN DATE('now', '-7 days') AND DATE('now', '-0 days')) GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)
 			// Result:
 			//		iTS-100    2020-04-14 ExecuteSuccessed 1
 			//		Vehicle031 2020-04-08 ExecuteFailed    4
@@ -713,7 +712,7 @@ namespace TrafficControlTest.UserControl
 			Dictionary<string, MultiDayVehicleMissionCount> dataFromDatabase = new Dictionary<string, MultiDayVehicleMissionCount>();
 			string startTimestamp = $"{mEndDate.AddDays(-6).ToString("yyyy-MM-dd")} 00:00:00.000";
 			string endTimestamp = $"{mEndDate.ToString("yyyy-MM-dd")} 23:59:59.999";
-			string sqlCmd = $"SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM MissionState WHERE (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
+			string sqlCmd = $"SELECT ExecutorID, DATE(ReceiveTimestamp), ExecuteState, COUNT(*) AS 'COUNT' FROM HistoryMissionInfo WHERE (ReceiveTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}') GROUP BY ExecutorID, DATE(ReceiveTimestamp), ExecuteState ORDER BY UPPER(ExecutorID)";
 			DataSet searchData = rDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
 			if (searchData == null || searchData.Tables == null || searchData.Tables.Count == 0) return;
 			DataTable searchResult = searchData?.Tables[0];

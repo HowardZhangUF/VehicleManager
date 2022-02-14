@@ -15,13 +15,11 @@ namespace TrafficControlTest.Module.Log
 		void Set(DatabaseAdapter DatabaseAdapter);
 		void Start();
 		void Stop();
-		void CreateTableOfHistoryVehicleInfo(string VehicleName);
-		void CreateIndexOfHistoryVehicleInfo(string VehicleName);
-		void RecordVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo);
+		void RecordCurrentVehicleInfo(DatabaseDataOperation Action, IVehicleInfo VehicleInfo);
 		void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo);
-		void RecordMissionState(DatabaseDataOperation Action, IMissionState MissionState);
-		void RecordVehicleControl(DatabaseDataOperation Action, IVehicleControl VehicleControl);
-		void RecordAutomaticDoorControl(DatabaseDataOperation Action, IAutomaticDoorControl AutomaticDoorControl);
-		void RecordHistoryHostCommunication(DatabaseDataOperation Action, DateTime Timestamp, string Event, string IpPort, string Data);
+		void RecordHistoryMissionInfo(DatabaseDataOperation Action, IMissionState MissionState);
+		void RecordHistoryVehicleControlInfo(DatabaseDataOperation Action, IVehicleControl VehicleControl);
+		void RecordHistoryAutomaticDoorControlInfo(DatabaseDataOperation Action, IAutomaticDoorControl AutomaticDoorControl);
+		void RecordHistoryHostCommunicationInfo(DatabaseDataOperation Action, DateTime Timestamp, string Event, string IpPort, string Data);
 	}
 }

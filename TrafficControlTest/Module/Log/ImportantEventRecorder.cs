@@ -165,17 +165,15 @@ namespace TrafficControlTest.Module.Log
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Add, Args.Item);
-			rEventRecorder.CreateTableOfHistoryVehicleInfo(Args.ItemName);
-			rEventRecorder.CreateIndexOfHistoryVehicleInfo(Args.ItemName);
+			rEventRecorder.RecordCurrentVehicleInfo(DatabaseDataOperation.Add, Args.Item);
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
-			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Remove, Args.Item);
+			rEventRecorder.RecordCurrentVehicleInfo(DatabaseDataOperation.Remove, Args.Item);
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleInfo> Args)
 		{
-			rEventRecorder.RecordVehicleInfo(DatabaseDataOperation.Update, Args.Item);
+			rEventRecorder.RecordCurrentVehicleInfo(DatabaseDataOperation.Update, Args.Item);
             if (Args.StatusName.Contains("CurrentState") || Args.StatusName.Contains("CurrentOriState") || Args.StatusName.Contains("CurrentTarget"))
             {
                 rEventRecorder.RecordHistoryVehicleInfo(DatabaseDataOperation.Add, Args.OccurTime, Args.Item);
@@ -183,43 +181,43 @@ namespace TrafficControlTest.Module.Log
 		}
 		private void HandleEvent_MissionStateManagerItemAdded(object Sender, ItemCountChangedEventArgs<IMissionState> Args)
 		{
-			rEventRecorder.RecordMissionState(DatabaseDataOperation.Add, Args.Item);
+			rEventRecorder.RecordHistoryMissionInfo(DatabaseDataOperation.Add, Args.Item);
 		}
 		private void HandleEvent_MissionStateManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IMissionState> Args)
 		{
-			rEventRecorder.RecordMissionState(DatabaseDataOperation.Update, Args.Item);
+			rEventRecorder.RecordHistoryMissionInfo(DatabaseDataOperation.Update, Args.Item);
 		}
 		private void HandleEvent_VehicleControlManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleControl> Args)
 		{
-			rEventRecorder.RecordVehicleControl(DatabaseDataOperation.Add, Args.Item);
+			rEventRecorder.RecordHistoryVehicleControlInfo(DatabaseDataOperation.Add, Args.Item);
 		}
 		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
 		{
-			rEventRecorder.RecordVehicleControl(DatabaseDataOperation.Update, Args.Item);
+			rEventRecorder.RecordHistoryVehicleControlInfo(DatabaseDataOperation.Update, Args.Item);
 		}
 		private void HandleEvent_AutomaticDoorControlManagerItemAdded(object Sender, ItemCountChangedEventArgs<IAutomaticDoorControl> Args)
 		{
-			rEventRecorder.RecordAutomaticDoorControl(DatabaseDataOperation.Add, Args.Item);
+			rEventRecorder.RecordHistoryAutomaticDoorControlInfo(DatabaseDataOperation.Add, Args.Item);
 		}
 		private void HandleEvent_AutomaticDoorControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IAutomaticDoorControl> Args)
 		{
-			rEventRecorder.RecordAutomaticDoorControl(DatabaseDataOperation.Update, Args.Item);
+			rEventRecorder.RecordHistoryAutomaticDoorControlInfo(DatabaseDataOperation.Update, Args.Item);
 		}
 		private void HandleEvent_HostCommunicatorLocalListenStateChanged(object Sender, ListenStateChangedEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "LocalListenStateChanged", Args.Port.ToString(), $"IsListened: {Args.IsListened.ToString()}");
+			rEventRecorder.RecordHistoryHostCommunicationInfo(DatabaseDataOperation.Add, Args.OccurTime, "LocalListenStateChanged", Args.Port.ToString(), $"IsListened: {Args.IsListened.ToString()}");
 		}
 		private void HandleEvent_HostCommunicatorRemoteConnectStateChanged(object Sender, ConnectStateChangedEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "RemoteConnectStateChanged", Args.IpPort, $"IsConnected: {Args.IsConnected.ToString()}");
+			rEventRecorder.RecordHistoryHostCommunicationInfo(DatabaseDataOperation.Add, Args.OccurTime, "RemoteConnectStateChanged", Args.IpPort, $"IsConnected: {Args.IsConnected.ToString()}");
 		}
 		private void HandleEvent_HostCommunicatorSentData(object Sender, SentDataEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "SentData", Args.IpPort, $"Data: {Args.Data}");
+			rEventRecorder.RecordHistoryHostCommunicationInfo(DatabaseDataOperation.Add, Args.OccurTime, "SentData", Args.IpPort, $"Data: {Args.Data}");
 		}
 		private void HandleEvent_HostCommunicatorReceivedData(object Sender, ReceivedDataEventArgs Args)
 		{
-			rEventRecorder.RecordHistoryHostCommunication(DatabaseDataOperation.Add, Args.OccurTime, "RecievedData", Args.IpPort, $"Data: {Args.Data}");
+			rEventRecorder.RecordHistoryHostCommunicationInfo(DatabaseDataOperation.Add, Args.OccurTime, "RecievedData", Args.IpPort, $"Data: {Args.Data}");
 		}
 		private void Subtask_RecordVehicleInfo()
 		{
