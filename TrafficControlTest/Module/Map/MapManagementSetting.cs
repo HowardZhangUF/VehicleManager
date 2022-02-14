@@ -14,7 +14,7 @@ namespace TrafficControlTest.Module.Map
 	/// </remarks>
 	public class MapManagementSetting
 	{
-		public string mMapFileDirectory { get; set; } = ".//Map//";
+		public string mMapFileDirectory { get; set; } = ".\\..\\VehicleManagerData\\Map";
 		public Dictionary<int, MapRegionSetting> mRegionSettings = new Dictionary<int, MapRegionSetting>();
 
 		public MapManagementSetting()
@@ -44,11 +44,11 @@ namespace TrafficControlTest.Module.Map
 			// RegionId 轉換成路徑時，固定為長度為三的字串，預設 Id 範圍為 000 ~ 999
 			if (RegionId < 0)
 			{
-				return $"{mMapFileDirectory}000//";
+				return $"{mMapFileDirectory}\\000\\";
 			}
 			else
 			{
-				return $"{mMapFileDirectory}{RegionId.ToString().PadLeft(3, '0')}//";
+				return $"{mMapFileDirectory}\\{RegionId.ToString().PadLeft(3, '0')}\\";
 			}
 		}
 		/// <summary>取得指定自走車所在的區域的編號</summary>

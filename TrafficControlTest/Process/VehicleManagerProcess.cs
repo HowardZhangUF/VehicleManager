@@ -277,13 +277,13 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_Exception();
 
 			UnsubscribeEvent_IConfigurator(mConfigurator);
-			mConfigurator = GenerateIConfigurator("Application.config");
+			mConfigurator = GenerateIConfigurator(".\\..\\VehicleManagerData\\Application.config");
 			SubscribeEvent_IConfigurator(mConfigurator);
 
 			UnsubscribeEvent_ILogExporter(mLogExporter);
 			mLogExporter = GenerateILogExporter();
-			mLogExporter.AddDirectoryPaths(new List<string> { ".\\Database", ".\\Map", ".\\Exception", ".\\VMLog" });
-			mLogExporter.AddFilePaths(new List<string> { ".\\Application.config" });
+			mLogExporter.AddDirectoryPaths(new List<string> { DatabaseAdapter.mDirectoryNameOfFiles, ".\\..\\VehicleManagerData\\Map", ".\\..\\VehicleManagerData\\Exception", ".\\VMLog" });
+			mLogExporter.AddFilePaths(new List<string> { ".\\..\\VehicleManagerData\\Application.config" });
 			SubscribeEvent_ILogExporter(mLogExporter);
 
 			UnsubscribeEvent_IDebugMessageHandler(mDebugMessageHandler);

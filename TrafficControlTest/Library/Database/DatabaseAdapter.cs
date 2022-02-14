@@ -54,7 +54,7 @@ namespace TrafficControlTest.Library
 		}
 
 		/// <summary>儲存檔案的資料夾名稱</summary>
-		public static string mDirectoryNameOfFiles = ".\\Database";
+		public static string mDirectoryNameOfFiles = ".\\..\\VehicleManagerData\\Database";
 		/// <summary>儲存未執行非查詢類 Sql 指令的檔案名稱</summary>
 		public static string mFileNameOfNonQueryCmds = "RemainingNonQueryCommands.txt";
 		/// <summary>儲存未執行查詢類 Sql 指令的檔案名稱</summary>
@@ -452,8 +452,8 @@ namespace TrafficControlTest.Library
 		/// <summary>例外處理</summary>
 		protected virtual void HandleException(Exception Ex, string Cmd = "")
 		{
-			string directory = ".\\Exception";
-			string file = $".\\Exception\\ExceptionDatabaseAdapter{DateTime.Now.ToString("yyyyMMdd")}.txt";
+			string directory = ".\\..\\VehicleManagerData\\Exception";
+			string file = $"{directory}\\ExceptionDatabaseAdapter{DateTime.Now.ToString("yyyyMMdd")}.txt";
 			string message = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")} - [DatabaseAdapterException] - {Ex.ToString()}\r\n";
 			if (!string.IsNullOrEmpty(Cmd)) message += $"- [Cmd] - {Cmd}\r\n";
 

@@ -15,7 +15,7 @@ namespace TrafficControlTest.Module.Log
 
 		private List<string> mDirectoryPaths { get; set; } = new List<string>();
 		private List<string> mFilePaths { get; set; } = new List<string>();
-		private string mBaseDirectory { get; set; } = ".\\LogExport";
+		private string mBaseDirectory { get; set; } = ".\\..\\VehicleManagerData\\LogExport";
 		private string mExportDirectoryNamePrefix { get; set; } = "CASTEC_Log_VM_";
 		private string mExportDirectoryNameTimeFormat { get; set; } = "yyyyMMdd";
 		private string mExportDirectoryFullPath { get { return $"{mBaseDirectory}\\{mExportDirectoryNamePrefix}{DateTime.Now.ToString(mExportDirectoryNameTimeFormat)}"; } }

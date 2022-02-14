@@ -28,8 +28,8 @@ namespace TrafficControlTest.Library
 		{
 			lock (mLock)
 			{
-				string directoryPath = ".\\Exception";
-				string filePath = $".\\Exception\\{ExceptionPrefix}{DateTime.Now.ToString("yyyyMMdd")}.txt";
+				string directoryPath = ".\\..\\VehicleManagerData\\Exception";
+				string filePath = $"{directoryPath}\\{ExceptionPrefix}{DateTime.Now.ToString("yyyyMMdd")}.txt";
 				string message = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")} - [{ExceptionPrefix}] - {ExceptionString}\r\n";
 
 				if (!System.IO.Directory.Exists(directoryPath)) System.IO.Directory.CreateDirectory(directoryPath);
