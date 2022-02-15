@@ -37,16 +37,10 @@ namespace TrafficControlTest.Module.Log
 		private void InitializeDatabaseTable()
 		{
 			CreateTableOfGeneralLog();
-
-			CreateIndexOfGeneralLog();
 		}
 		private void CreateTableOfGeneralLog()
 		{
 			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE TABLE IF NOT EXISTS {mTableNameOfGeneralLog} (No INTEGER PRIMARY KEY AUTOINCREMENT, Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, Category TEXT, SubCategory TEXT, Message TEXT);");
-		}
-		private void CreateIndexOfGeneralLog()
-		{
-			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfGeneralLog} ON {mTableNameOfGeneralLog} (Timestamp)");
 		}
 	}
 }

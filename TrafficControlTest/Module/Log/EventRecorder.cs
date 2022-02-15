@@ -140,12 +140,6 @@ namespace TrafficControlTest.Module.Log
 			CreateTableOfHistoryVehicleControlInfo();
 			CreateTableOfHistoryAutomaticDoorControlInfo();
 			CreateTableOfHistoryHostCommunicationInfo();
-
-			CreateIndexOfHistoryVehicleInfo();
-			CreateIndexOfHistoryMissionInfo();
-			CreateIndexOfHistoryVehicleControlInfo();
-			CreateIndexOfHistoryAutomaticDoorControlInfo();
-			CreateIndexOfHistoryHostCommunicationInfo();
 		}
 		private void CreateTableOfCurrentVehicleInfo()
 		{
@@ -257,27 +251,6 @@ namespace TrafficControlTest.Module.Log
 			tmp += "IPPort TEXT, ";
 			tmp += "Data TEXT)";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
-		}
-		private void CreateIndexOfHistoryVehicleInfo()
-		{
-			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfHistoryVehicleInfo}1 ON {mTableNameOfHistoryVehicleInfo} (RecordTimestamp)");
-			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfHistoryVehicleInfo}2 ON {mTableNameOfHistoryVehicleInfo} (ID)");
-		}
-		private void CreateIndexOfHistoryMissionInfo()
-		{
-			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfHistoryMissionInfo} ON {mTableNameOfHistoryMissionInfo} (ReceiveTimestamp)");
-		}
-		private void CreateIndexOfHistoryVehicleControlInfo()
-		{
-			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfHistoryVehicleControlInfo} ON {mTableNameOfHistoryVehicleControlInfo} (ReceiveTimestamp)");
-		}
-		private void CreateIndexOfHistoryAutomaticDoorControlInfo()
-		{
-			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfHistoryAutomaticDoorControlInfo} ON {mTableNameOfHistoryAutomaticDoorControlInfo} (ReceiveTimestamp)");
-		}
-		private void CreateIndexOfHistoryHostCommunicationInfo()
-		{
-			rDatabaseAdapter.EnqueueNonQueryCommand($"CREATE INDEX IF NOT EXISTS index{mTableNameOfHistoryHostCommunicationInfo} ON {mTableNameOfHistoryHostCommunicationInfo} (ReceiveTimestamp)");
 		}
 		private void CurrentVehicleInfoDataAdd(IVehicleInfo VehicleInfo)
 		{
