@@ -165,6 +165,7 @@ namespace TrafficControlTest.UserControl
 				{
 					ofd.Title = "Choose iTS Map File";
 					ofd.Filter = "map files (*.map)|*.map";
+					ofd.InitialDirectory = Application.StartupPath;
 					ofd.Multiselect = false;
 					if (ofd.ShowDialog() == DialogResult.OK)
 					{
