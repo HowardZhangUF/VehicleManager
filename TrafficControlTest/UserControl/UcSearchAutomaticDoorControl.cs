@@ -25,11 +25,11 @@ namespace TrafficControlTest.UserControl
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword))
 			{
-				result = $"SELECT * FROM (SELECT * FROM AutomaticDoorControl WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryAutomaticDoorControlInfo WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT * FROM (SELECT * FROM AutomaticDoorControl WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) WHERE (ID LIKE '%{Keyword}%' OR AutomaticDoorName LIKE '%{Keyword}%' OR Command LIKE '%{Keyword}%' OR Cause LIKE '%{Keyword}%' OR SendState LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryAutomaticDoorControlInfo WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) WHERE (ID LIKE '%{Keyword}%' OR AutomaticDoorName LIKE '%{Keyword}%' OR Command LIKE '%{Keyword}%' OR Cause LIKE '%{Keyword}%' OR SendState LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}
@@ -38,11 +38,11 @@ namespace TrafficControlTest.UserControl
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword))
 			{
-				result = $"SELECT * FROM (SELECT * FROM AutomaticDoorControl WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryAutomaticDoorControlInfo WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT * FROM (SELECT * FROM AutomaticDoorControl WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) WHERE (ID LIKE '%{Keyword}%' OR AutomaticDoorName LIKE '%{Keyword}%' OR Command LIKE '%{Keyword}%' OR Cause LIKE '%{Keyword}%' OR SendState LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryAutomaticDoorControlInfo WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) WHERE (ID LIKE '%{Keyword}%' OR AutomaticDoorName LIKE '%{Keyword}%' OR Command LIKE '%{Keyword}%' OR Cause LIKE '%{Keyword}%' OR SendState LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}

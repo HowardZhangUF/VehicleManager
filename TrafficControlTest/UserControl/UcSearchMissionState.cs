@@ -20,11 +20,11 @@ namespace TrafficControlTest.UserControl
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword))
 			{
-				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryMissionInfo WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) WHERE (ID LIKE '%{Keyword}%' OR HostMissionID LIKE '%{Keyword}%' OR Type LIKE '%{Keyword}%' OR VehicleID LIKE '%{Keyword}%' OR Parameters LIKE '%{Keyword}%' OR SourceIPPort LIKE '%{Keyword}%' OR ExecutorID LIKE '%{Keyword}%' OR ExecuteState LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryMissionInfo WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) WHERE (ID LIKE '%{Keyword}%' OR HostMissionID LIKE '%{Keyword}%' OR Type LIKE '%{Keyword}%' OR VehicleID LIKE '%{Keyword}%' OR Parameters LIKE '%{Keyword}%' OR SourceIPPort LIKE '%{Keyword}%' OR ExecutorID LIKE '%{Keyword}%' OR ExecuteState LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}
@@ -33,11 +33,11 @@ namespace TrafficControlTest.UserControl
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword))
 			{
-				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryMissionInfo WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT * FROM (SELECT * FROM MissionState WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) WHERE (ID LIKE '%{Keyword}%' OR HostMissionID LIKE '%{Keyword}%' OR Type LIKE '%{Keyword}%' OR VehicleID LIKE '%{Keyword}%' OR Parameters LIKE '%{Keyword}%' OR SourceIPPort LIKE '%{Keyword}%' OR ExecutorID LIKE '%{Keyword}%' OR ExecuteState LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryMissionInfo WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) WHERE (ID LIKE '%{Keyword}%' OR HostMissionID LIKE '%{Keyword}%' OR Type LIKE '%{Keyword}%' OR VehicleID LIKE '%{Keyword}%' OR Parameters LIKE '%{Keyword}%' OR SourceIPPort LIKE '%{Keyword}%' OR ExecutorID LIKE '%{Keyword}%' OR ExecuteState LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}

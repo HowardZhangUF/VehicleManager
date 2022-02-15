@@ -252,10 +252,6 @@ namespace TrafficControlTest.Process
 		{
 			return mDatabaseAdapterOfLogRecord;
 		}
-		public DatabaseAdapter GetReferenceOfDatabaseAdapterOfEventRecord()
-		{
-			return mDatabaseAdapterOfEventRecord;
-		}
 		public bool AccessControlLogIn(string Password)
 		{
 			return mAccessControl.LogIn(Password);
@@ -451,7 +447,7 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventHandler(mVehiclePassThroughLimitVehicleCountZoneEventHandler);
 
 			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
-			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mVehicleInfoManager, mMissionStateManager, mVehicleControlManager, mAutomaticDoorControlManager, mHostCommunicator);
+			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mLogRecorder, mVehicleInfoManager, mMissionStateManager, mVehicleControlManager, mAutomaticDoorControlManager, mHostCommunicator);
 			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
 
 			mCollectionOfISystemWithConfig.Add(mLogExporter);

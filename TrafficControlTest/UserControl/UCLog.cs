@@ -27,8 +27,7 @@ namespace TrafficControlTest.UserControl
 			HostCommunication
 		}
 
-		private DatabaseAdapter rDatabaseAdapterOfLogRecord = null;
-		private DatabaseAdapter rDatabaseAdapterOfEventRecord = null;
+		private DatabaseAdapter rDatabaseAdapter = null;
 		private string mDefaultNameOfButton = "button";
 		private string mDefaultNameOfUcSearch = "ucSearch";
 		private int mSerial = 0;
@@ -37,38 +36,37 @@ namespace TrafficControlTest.UserControl
 		{
 			InitializeComponent();
 		}
-		public void Set(DatabaseAdapter DatabaseAdapterOfLogRecord, DatabaseAdapter DatabaseAdapterOfEventRecord)
+		public void Set(DatabaseAdapter DatabaseAdapter)
 		{
-			rDatabaseAdapterOfLogRecord = DatabaseAdapterOfLogRecord;
-			rDatabaseAdapterOfEventRecord = DatabaseAdapterOfEventRecord;
+			rDatabaseAdapter = DatabaseAdapter;
 
 			// 加入 General Log 3
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.GeneralLog, "GeneralLog3"));
-			panel2.Controls.Add(GenerateUcSearchGeneralLog(GetSerial(), TagType.GeneralLog, rDatabaseAdapterOfLogRecord));
+			panel2.Controls.Add(GenerateUcSearchGeneralLog(GetSerial(), TagType.GeneralLog, rDatabaseAdapter));
 			UpdateSerial();
 			// 加入 General Log 2
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.GeneralLog, "GeneralLog2"));
-			panel2.Controls.Add(GenerateUcSearchGeneralLog(GetSerial(), TagType.GeneralLog, rDatabaseAdapterOfLogRecord));
+			panel2.Controls.Add(GenerateUcSearchGeneralLog(GetSerial(), TagType.GeneralLog, rDatabaseAdapter));
 			UpdateSerial();
 			// 加入 General Log 1
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.GeneralLog, "GeneralLog1"));
-			panel2.Controls.Add(GenerateUcSearchGeneralLog(GetSerial(), TagType.GeneralLog, rDatabaseAdapterOfLogRecord));
+			panel2.Controls.Add(GenerateUcSearchGeneralLog(GetSerial(), TagType.GeneralLog, rDatabaseAdapter));
 			UpdateSerial();
 			// 加入 AutomaticDoorControl
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.AutomaticDoorControl, "AutomaticDoorControl"));
-			panel2.Controls.Add(GenerateUcSearchAutomaticDoorControl(GetSerial(), TagType.AutomaticDoorControl, rDatabaseAdapterOfEventRecord));
+			panel2.Controls.Add(GenerateUcSearchAutomaticDoorControl(GetSerial(), TagType.AutomaticDoorControl, rDatabaseAdapter));
 			UpdateSerial();
 			// 加入 VehicleControl
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.VehicleControl, "VehicleControl"));
-			panel2.Controls.Add(GenerateUcSearchVehicleControl(GetSerial(), TagType.VehicleControl, rDatabaseAdapterOfEventRecord));
+			panel2.Controls.Add(GenerateUcSearchVehicleControl(GetSerial(), TagType.VehicleControl, rDatabaseAdapter));
 			UpdateSerial();
 			// 加入 MissionState
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.MissionState, "MissionState"));
-			panel2.Controls.Add(GenerateUcSearchMissionState(GetSerial(), TagType.MissionState, rDatabaseAdapterOfEventRecord));
+			panel2.Controls.Add(GenerateUcSearchMissionState(GetSerial(), TagType.MissionState, rDatabaseAdapter));
 			UpdateSerial();
 			// 加入 HostCommunication
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.HostCommunication, "HostCommunication"));
-			panel2.Controls.Add(GenerateUcSearchHostCommunication(GetSerial(), TagType.HostCommunication, rDatabaseAdapterOfEventRecord));
+			panel2.Controls.Add(GenerateUcSearchHostCommunication(GetSerial(), TagType.HostCommunication, rDatabaseAdapter));
 			UpdateSerial();
 		}
 		public void Set(bool SearchControlOfGeneralLogDisplay, bool SearchControlOfAutomaticDoorControlDisplay, bool SearchControlOfVehicleControlDisplay, bool SearchControlOfMissionStateDisplay, bool SearchControlOfHostCommunicationDisplay)

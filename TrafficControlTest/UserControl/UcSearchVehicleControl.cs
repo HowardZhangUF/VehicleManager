@@ -25,11 +25,11 @@ namespace TrafficControlTest.UserControl
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword))
 			{
-				result = $"SELECT * FROM (SELECT * FROM VehicleControl WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryVehicleControlInfo WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT * FROM (SELECT * FROM VehicleControl WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) WHERE (ID LIKE '%{Keyword}%' OR VehicleID LIKE '%{Keyword}%' OR Command LIKE '%{Keyword}%' OR Parameters LIKE '%{Keyword}%' OR CauseID LIKE '%{Keyword}%' OR SendState LIKE '%{Keyword}%' OR ExecuteState LIKE '%{Keyword}%' OR FailedReason LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryVehicleControlInfo WHERE {ConvertDateToSqlCommand("ReceiveTimestamp", Date)}) WHERE (ID LIKE '%{Keyword}%' OR VehicleID LIKE '%{Keyword}%' OR Command LIKE '%{Keyword}%' OR Parameters LIKE '%{Keyword}%' OR CauseID LIKE '%{Keyword}%' OR SendState LIKE '%{Keyword}%' OR ExecuteState LIKE '%{Keyword}%' OR FailedReason LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}
@@ -38,11 +38,11 @@ namespace TrafficControlTest.UserControl
 			string result = string.Empty;
 			if (string.IsNullOrEmpty(Keyword))
 			{
-				result = $"SELECT * FROM (SELECT * FROM VehicleControl WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryVehicleControlInfo WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			else
 			{
-				result = $"SELECT * FROM (SELECT * FROM VehicleControl WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) WHERE (ID LIKE '%{Keyword}%' OR VehicleID LIKE '%{Keyword}%' OR Command LIKE '%{Keyword}%' OR Parameters LIKE '%{Keyword}%' OR CauseID LIKE '%{Keyword}%' OR SendState LIKE '%{Keyword}%' OR ExecuteState LIKE '%{Keyword}%' OR FailedReason LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
+				result = $"SELECT * FROM (SELECT * FROM HistoryVehicleControlInfo WHERE {ConvertTimePeriodToSqlCommand("ReceiveTimestamp", DateStart, DateEnd)}) WHERE (ID LIKE '%{Keyword}%' OR VehicleID LIKE '%{Keyword}%' OR Command LIKE '%{Keyword}%' OR Parameters LIKE '%{Keyword}%' OR CauseID LIKE '%{Keyword}%' OR SendState LIKE '%{Keyword}%' OR ExecuteState LIKE '%{Keyword}%' OR FailedReason LIKE '%{Keyword}%') ORDER BY ReceiveTimestamp DESC LIMIT {Limit.ToString()}";
 			}
 			return result;
 		}

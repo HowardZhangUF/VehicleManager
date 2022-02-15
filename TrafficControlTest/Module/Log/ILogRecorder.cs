@@ -1,4 +1,9 @@
-﻿using TrafficControlTest.Library;
+﻿using System;
+using TrafficControlTest.Library;
+using TrafficControlTest.Module.AutomaticDoor;
+using TrafficControlTest.Module.InterveneCommand;
+using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Log
 {
@@ -9,7 +14,7 @@ namespace TrafficControlTest.Module.Log
 		Update
 	}
 
-	/// <summary>提供記錄 General Log 至資料庫的功能</summary>
+	/// <summary>提供記錄 GeneralLog, HistoryVehicleInfo, HistoryMissionInfo, HistoryVehicleControlInfo, HistoryAutomaticDoorContolInfo, HistoryHostCommunicationInfo 至資料庫的功能</summary>
 	public interface ILogRecorder
 	{
 		bool mIsExecuting { get; }
@@ -18,5 +23,10 @@ namespace TrafficControlTest.Module.Log
 		void Start();
 		void Stop();
 		void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message);
+		void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo);
+		void RecordHistoryMissionInfo(DatabaseDataOperation Action, IMissionState MissionState);
+		void RecordHistoryVehicleControlInfo(DatabaseDataOperation Action, IVehicleControl VehicleControl);
+		void RecordHistoryAutomaticDoorControlInfo(DatabaseDataOperation Action, IAutomaticDoorControl AutomaticDoorControl);
+		void RecordHistoryHostCommunicationInfo(DatabaseDataOperation Action, DateTime Timestamp, string Event, string IpPort, string Data);
 	}
 }
