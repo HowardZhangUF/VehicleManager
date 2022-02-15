@@ -149,7 +149,7 @@ namespace TrafficControlTest.Module.Configure
 				"輸出日誌名稱的日期文字的格式",
 				"输出日志名称的日期文字的格式"));
 			defaultConfigs.Add(new Configuration(
-				"ImportantEventRecorder",
+				"LogRecorder",
 				"TimePeriod",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,

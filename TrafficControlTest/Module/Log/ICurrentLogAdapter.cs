@@ -4,7 +4,7 @@ using TrafficControlTest.Module.Vehicle;
 namespace TrafficControlTest.Module.Log
 {
 	/// <summary>提供記錄 CurrentVehicleInfo 至資料庫的功能</summary>
-	public interface IEventRecorder
+	public interface ICurrentLogAdapter
 	{
 		bool mIsExecuting { get; }
 

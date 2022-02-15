@@ -3,14 +3,14 @@ using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Log
 {
-	public class EventRecorder : IEventRecorder
+	public class CurrentLogAdapter : ICurrentLogAdapter
 	{
 		public bool mIsExecuting { get { return rDatabaseAdapter != null ? rDatabaseAdapter.mIsExecuting : false; } }
 
 		private DatabaseAdapter rDatabaseAdapter = null;
 		private string mTableNameOfCurrentVehicleInfo = "CurrentVehicleInfo";
 
-		public EventRecorder(DatabaseAdapter DatabaseAdapter)
+		public CurrentLogAdapter(DatabaseAdapter DatabaseAdapter)
 		{
 			Set(DatabaseAdapter);
 		}

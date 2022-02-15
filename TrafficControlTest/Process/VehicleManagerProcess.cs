@@ -43,12 +43,12 @@ namespace TrafficControlTest.Process
 		private List<ISystemWithConfig> mCollectionOfISystemWithConfig = new List<ISystemWithConfig>();
 		private List<ISystemWithLoopTask> mCollectionOfISystemWithLoopTask = new List<ISystemWithLoopTask>();
 		private IConfigurator mConfigurator = null;
-		private DatabaseAdapter mDatabaseAdapterOfLogRecord = null;
-		private DatabaseAdapter mDatabaseAdapterOfEventRecord = null;
+		private DatabaseAdapter mDatabaseAdapterOfHistoryLog = null;
+		private DatabaseAdapter mDatabaseAdapterOfCurrentLog = null;
 		private DatabaseAdapter mDatabaseAdapterOfSystemData = null;
+		private IHistoryLogAdapter mHistoryLogAdapter = null;
+		private ICurrentLogAdapter mCurrentLogAdapter = null;
 		private ILogRecorder mLogRecorder = null;
-		private IEventRecorder mEventRecorder = null;
-		private IImportantEventRecorder mImportantEventRecorder = null;
 		private IDebugMessageHandler mDebugMessageHandler = null;
 		private ISignificantMessageHandler mSignificantMessageHandler = null;
 		private ITimeElapseDetector mTimeElapseDetector = null;
@@ -111,10 +111,10 @@ namespace TrafficControlTest.Process
 		{
 			LoadConfigFileAndUpdateSystemConfig();
 
-			mLogRecorder.Start();
-			mEventRecorder.Start();
+			mHistoryLogAdapter.Start();
+			mCurrentLogAdapter.Start();
 			mAccountManager.Read();
-			mImportantEventRecorder.Start();
+			mLogRecorder.Start();
 			mDebugMessageHandler.Start();
 			mSignificantMessageHandler.Start();
 			mTimeElapseDetector.Start();
@@ -153,7 +153,7 @@ namespace TrafficControlTest.Process
 			mTimeElapseDetector.Stop();
 			mSignificantMessageHandler.Stop();
 			mDebugMessageHandler.Stop();
-			mImportantEventRecorder.Stop();
+			mLogRecorder.Stop();
 			mAccountManager.Save();
 
 			RaiseEvent_DestructProgressChanged(0);
@@ -166,10 +166,10 @@ namespace TrafficControlTest.Process
 				System.Threading.Thread.Sleep(100);
 			}
 
-			mEventRecorder.Stop();
-			mLogRecorder.Stop();
+			mCurrentLogAdapter.Stop();
+			mHistoryLogAdapter.Stop();
 			tmp = DateTime.Now;
-			while (mEventRecorder.mIsExecuting || mLogRecorder.mIsExecuting)
+			while (mCurrentLogAdapter.mIsExecuting || mHistoryLogAdapter.mIsExecuting)
 			{
 				if (DateTime.Now.Subtract(tmp).TotalSeconds > 5) break;
 				RaiseEvent_DestructProgressChanged(GetCurrentThreadClosingProgress());
@@ -248,9 +248,9 @@ namespace TrafficControlTest.Process
 		{
 			return mAutomaticDoorControlManager;
 		}
-		public DatabaseAdapter GetReferenceOfDatabaseAdapterOfLogRecord()
+		public DatabaseAdapter GetReferenceOfDatabaseAdapterOfHistoryLog()
 		{
-			return mDatabaseAdapterOfLogRecord;
+			return mDatabaseAdapterOfHistoryLog;
 		}
 		public bool AccessControlLogIn(string Password)
 		{
@@ -263,11 +263,11 @@ namespace TrafficControlTest.Process
 
 		private void Constructor()
 		{
-			mDatabaseAdapterOfLogRecord = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Log.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
-			mDatabaseAdapterOfEventRecord = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Event.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
+			mDatabaseAdapterOfHistoryLog = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\HistoryLog.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
+			mDatabaseAdapterOfCurrentLog = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\CurrentLog.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mDatabaseAdapterOfSystemData = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\SystemData.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
-			mLogRecorder = GenerateILogRecorder(mDatabaseAdapterOfLogRecord);
-			mEventRecorder = GenerateIEventRecorder(mDatabaseAdapterOfEventRecord);
+			mHistoryLogAdapter = GenerateIHistoryLogAdapter(mDatabaseAdapterOfHistoryLog);
+			mCurrentLogAdapter = GenerateICurrentLogAdapter(mDatabaseAdapterOfCurrentLog);
 			mAccountManager = GenerateIAccountManager(mDatabaseAdapterOfSystemData);
 
 			SubscribeEvent_Exception();
@@ -446,12 +446,12 @@ namespace TrafficControlTest.Process
 			mVehiclePassThroughLimitVehicleCountZoneEventHandler = GenerateIVehiclePassThroughLimitVehicleCountZoneEventHandler(mVehiclePassThroughLimitVehicleCountZoneEventManager, mVehicleControlManager);
 			SubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventHandler(mVehiclePassThroughLimitVehicleCountZoneEventHandler);
 
-			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
-			mImportantEventRecorder = GenerateIImportantEventRecorder(mEventRecorder, mLogRecorder, mVehicleInfoManager, mMissionStateManager, mVehicleControlManager, mAutomaticDoorControlManager, mHostCommunicator);
-			SubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
+			UnsubscribeEvent_ILogRecorder(mLogRecorder);
+			mLogRecorder = GenerateILogRecorder(mCurrentLogAdapter, mHistoryLogAdapter, mVehicleInfoManager, mMissionStateManager, mVehicleControlManager, mAutomaticDoorControlManager, mHostCommunicator);
+			SubscribeEvent_ILogRecorder(mLogRecorder);
 
 			mCollectionOfISystemWithConfig.Add(mLogExporter);
-			mCollectionOfISystemWithConfig.Add(mImportantEventRecorder);
+			mCollectionOfISystemWithConfig.Add(mLogRecorder);
 			mCollectionOfISystemWithConfig.Add(mDebugMessageHandler);
 			mCollectionOfISystemWithConfig.Add(mSignificantMessageHandler);
 			mCollectionOfISystemWithConfig.Add(mTimeElapseDetector);
@@ -473,7 +473,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithConfig.Add(mLimitVehicleCountZoneInfoManagerUpdater);
 			mCollectionOfISystemWithConfig.Add(mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater);
 
-			mCollectionOfISystemWithLoopTask.Add(mImportantEventRecorder);
+			mCollectionOfISystemWithLoopTask.Add(mLogRecorder);
 			mCollectionOfISystemWithLoopTask.Add(mDebugMessageHandler);
 			mCollectionOfISystemWithLoopTask.Add(mSignificantMessageHandler);
 			mCollectionOfISystemWithLoopTask.Add(mTimeElapseDetector);
@@ -604,8 +604,8 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventHandler(mVehiclePassThroughLimitVehicleCountZoneEventHandler);
 			mVehiclePassThroughLimitVehicleCountZoneEventHandler = null;
 
-			UnsubscribeEvent_IImportantEventRecorder(mImportantEventRecorder);
-			mImportantEventRecorder = null;
+			UnsubscribeEvent_ILogRecorder(mLogRecorder);
+			mLogRecorder = null;
 
 			UnsubscribeEvent_ISignificantMessageHandler(mSignificantMessageHandler);
 			mSignificantMessageHandler = null;
@@ -622,11 +622,11 @@ namespace TrafficControlTest.Process
 			UnsubscribeEvent_Exception();
 
 			mAccountManager = null;
-			mEventRecorder = null;
-			mLogRecorder = null;
+			mCurrentLogAdapter = null;
+			mHistoryLogAdapter = null;
 			mDatabaseAdapterOfSystemData = null;
-			mDatabaseAdapterOfEventRecord = null;
-			mDatabaseAdapterOfLogRecord = null;
+			mDatabaseAdapterOfCurrentLog = null;
+			mDatabaseAdapterOfHistoryLog = null;
 		}
 		private ISystemWithConfig GetCorrespondingObjectOfISystemWithConfig(string ObjectName)
 		{
@@ -1165,22 +1165,22 @@ namespace TrafficControlTest.Process
 				CycleMissionGenerator.CycleMissionExecutedIndexChanged -= HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged;
 			}
 		}
-		private void SubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
+		private void SubscribeEvent_ILogRecorder(ILogRecorder LogRecorder)
 		{
-			if (ImportantEventRecorder != null)
+			if (LogRecorder != null)
 			{
-				ImportantEventRecorder.SystemStatusChanged += HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
-				ImportantEventRecorder.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
-				ImportantEventRecorder.ConfigUpdated += HandleEvent_ISystemWithConfigConfigUpdated;
+				LogRecorder.SystemStatusChanged += HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
+				LogRecorder.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				LogRecorder.ConfigUpdated += HandleEvent_ISystemWithConfigConfigUpdated;
 			}
 		}
-		private void UnsubscribeEvent_IImportantEventRecorder(IImportantEventRecorder ImportantEventRecorder)
+		private void UnsubscribeEvent_ILogRecorder(ILogRecorder LogRecorder)
 		{
-			if (ImportantEventRecorder != null)
+			if (LogRecorder != null)
 			{
-				ImportantEventRecorder.SystemStatusChanged -= HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
-				ImportantEventRecorder.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
-				ImportantEventRecorder.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
+				LogRecorder.SystemStatusChanged -= HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
+				LogRecorder.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				LogRecorder.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
 			}
 		}
 		private void SubscribeEvent_IAutomaticDoorInfoManager(IAutomaticDoorInfoManager AutomaticDoorInfoManager)
@@ -1823,7 +1823,7 @@ namespace TrafficControlTest.Process
 		private void HandleDebugMessage(string OccurTime, string Category, string SubCategory, string Message)
 		{
 			Console.WriteLine($"{OccurTime} [{Category}] [{SubCategory}] - {Message}");
-			mLogRecorder.RecordGeneralLog(OccurTime, Category, SubCategory, Message);
+			mHistoryLogAdapter.RecordGeneralLog(OccurTime, Category, SubCategory, Message);
 			mDebugMessageHandler.AddDebugMessage(OccurTime, Category, SubCategory, Message);
 		}
 		private void HandleSignificantMessage(DateTime OccurTime, SignificantEventCategory Category, string Message)

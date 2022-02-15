@@ -322,17 +322,17 @@ namespace TrafficControlTest.Library
 		{
 			return new SqliteDatabaseAdapter(DatabaseServerAddressIp, DatabaseServerAddressPort, UserAccount, UserPassword, InitialDatabase, PingBeforeBuildConnection);
 		}
-		public static ILogRecorder GenerateILogRecorder(DatabaseAdapter DatabaseAdapter)
+		public static IHistoryLogAdapter GenerateIHistoryLogAdapter(DatabaseAdapter DatabaseAdapter)
 		{
-			return new LogRecorder(DatabaseAdapter);
+			return new HistoryLogAdapter(DatabaseAdapter);
 		}
-		public static IEventRecorder GenerateIEventRecorder(DatabaseAdapter DatabaseAdapter)
+		public static ICurrentLogAdapter GenerateICurrentLogAdapter(DatabaseAdapter DatabaseAdapter)
 		{
-			return new EventRecorder(DatabaseAdapter);
+			return new CurrentLogAdapter(DatabaseAdapter);
 		}
-		public static IImportantEventRecorder GenerateIImportantEventRecorder(IEventRecorder EventRecorder, ILogRecorder LogRecorder, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager, IAutomaticDoorControlManager AutomaticDoorControlManager, IHostCommunicator HostCommunicator)
+		public static ILogRecorder GenerateILogRecorder(ICurrentLogAdapter CurrentLogAdapter, IHistoryLogAdapter HistoryLogAdapter, IVehicleInfoManager VehicleInfoManager, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager, IAutomaticDoorControlManager AutomaticDoorControlManager, IHostCommunicator HostCommunicator)
 		{
-			return new ImportantEventRecorder(EventRecorder, LogRecorder, VehicleInfoManager, MissionStateManager, VehicleControlManager, AutomaticDoorControlManager, HostCommunicator);
+			return new LogRecorder(CurrentLogAdapter, HistoryLogAdapter, VehicleInfoManager, MissionStateManager, VehicleControlManager, AutomaticDoorControlManager, HostCommunicator);
 		}
 		public static IConfigurator GenerateIConfigurator(string FileName)
 		{
