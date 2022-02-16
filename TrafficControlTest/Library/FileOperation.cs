@@ -41,6 +41,11 @@ namespace TrafficControlTest.Library
 		}
 		public static void CopyFileViaCommandPrompt(string SrcFilePath, string DstDirectoryPath)
 		{
+			// [參考資料](https://ss64.com/nt/copy.html)
+			// 假設輸入參數為 srcFileName 與 dst :
+			// + 如果 dst 是一個已存在的資料夾，則會將 srcFileName 複製至該資料夾下
+			// + 如果 dst 是一個已存在的檔案，則會將 srcFileName 複製並取代該檔案
+			// + 如果 dst 是不存在的檔案/資料夾，則會將 srcFileName 檔案複製並重新命名為 dst
 			if (File.Exists(SrcFilePath) && Directory.Exists(DstDirectoryPath))
 			{
 				string fullCmd = $"COPY \"{SrcFilePath}\" \"{DstDirectoryPath}\"";
