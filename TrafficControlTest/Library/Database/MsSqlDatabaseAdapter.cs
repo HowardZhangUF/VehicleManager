@@ -215,5 +215,10 @@ namespace TrafficControlTest.Library
 			}
 			return result.ToArray();
 		}
+		public override void BackupToFile(string FilePath)
+		{
+			string cmd = $"BACKUP DATABASE {mInitialDatabase} TO DISK = '{FilePath}';";
+			EnqueueNonQueryCommand(cmd);
+		}
 	}
 }

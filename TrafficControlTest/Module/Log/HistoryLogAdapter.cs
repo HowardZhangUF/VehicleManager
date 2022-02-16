@@ -41,7 +41,7 @@ namespace TrafficControlTest.Module.Log
 		}
 		public void RecordGeneralLog(string Timestamp, string Category, string SubCategory, string Message)
 		{
-			rDatabaseAdapter.EnqueueNonQueryCommand($"INSERT INTO {mTableNameOfGeneralLog} (Timestamp, Category, SubCategory, Message) VALUES ('{Timestamp}', '{Category}', '{SubCategory}', '{Message}')");
+			HistoryGeneralLogDataAdd(Timestamp, Category, SubCategory, Message);
 		}
 		public void RecordHistoryVehicleInfo(DatabaseDataOperation Action, DateTime Timestamp, IVehicleInfo VehicleInfo)
 		{
@@ -117,6 +117,31 @@ namespace TrafficControlTest.Module.Log
 					// do nothing
 					break;
 			}
+		}
+		public bool BackupHistoryLogToFile(string FileName)
+		{
+			string FilePath = $"{DatabaseAdapter.mDirectoryNameOfFiles}\\{FileName}";
+			// 為了不重複備份，若備份檔案已存在，就不再進行備份
+			if (!System.IO.File.Exists(FilePath))
+			{
+				System.Threading.Tasks.Task.Run(() => { rDatabaseAdapter.BackupToFile(FilePath); });
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		public bool DeleteHistoryLogBefore(DateTime DateTime)
+		{
+			HistoryGeneralLogDataDeleteBefore(DateTime);
+			HistoryVehicleInfoDataDeleteBefore(DateTime);
+			HistoryMissionInfoDataDeleteBefore(DateTime);
+			HistoryVehicleControlInfoDataDeleteBefore(DateTime);
+			HistoryAutomaticDoorControlInfoDataDeleteBefore(DateTime);
+			HistoryHostCommunicationInfoDataDeleteBefore(DateTime);
+
+			return true;
 		}
 
 		private void InitializeDatabaseTable()
@@ -220,6 +245,16 @@ namespace TrafficControlTest.Module.Log
 			tmp += "Data TEXT)";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
+		private void HistoryGeneralLogDataAdd(string Timestamp, string Category, string SubCategory, string Message)
+		{
+			string tmp = $"INSERT INTO {mTableNameOfGeneralLog} (Timestamp, Category, SubCategory, Message) VALUES ('{Timestamp}', '{Category}', '{SubCategory}', '{Message}')";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void HistoryGeneralLogDataDeleteBefore(DateTime DateTime)
+		{
+			string tmp = $"DELETE FROM {mTableNameOfGeneralLog} WHERE Timestamp < '{DateTime.ToString(Library.Library.TIME_FORMAT)}'";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
 		private void HistoryVehicleInfoDataAdd(DateTime Timestamp, IVehicleInfo VehicleInfo)
 		{
 			string tmp = string.Empty;
@@ -242,6 +277,11 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"'{VehicleInfo.mCurrentInterveneCommand}', ";
 			tmp += $"'{VehicleInfo.mCurrentMapName}', ";
 			tmp += $"'{VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}')";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void HistoryVehicleInfoDataDeleteBefore(DateTime DateTime)
+		{
+			string tmp = $"DELETE FROM {mTableNameOfHistoryVehicleInfo} WHERE RecordTimestamp < '{DateTime.ToString(Library.Library.TIME_FORMAT)}'";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void HistoryMissionInfoDataAdd(IMissionState MissionState)
@@ -279,6 +319,11 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"WHERE ID = '{MissionState.mName}' AND ReceiveTimestamp = '{MissionState.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}'";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
+		private void HistoryMissionInfoDataDeleteBefore(DateTime DateTime)
+		{
+			string tmp = $"DELETE FROM {mTableNameOfHistoryMissionInfo} WHERE ReceiveTimestamp < '{DateTime.ToString(Library.Library.TIME_FORMAT)}'";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
 		private void HistoryVehicleControlInfoDataAdd(IVehicleControl VehicleControl)
 		{
 			string tmp = string.Empty;
@@ -311,6 +356,11 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"WHERE ID = '{VehicleControl.mName}' AND ReceiveTimestamp = '{VehicleControl.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}'";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
+		private void HistoryVehicleControlInfoDataDeleteBefore(DateTime DateTime)
+		{
+			string tmp = $"DELETE FROM {mTableNameOfHistoryVehicleControlInfo} WHERE ReceiveTimestamp < '{DateTime.ToString(Library.Library.TIME_FORMAT)}'";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
 		private void HistoryAutomaticDoorControlInfoDataAdd(IAutomaticDoorControl AutomaticDoorControl)
 		{
 			string tmp = string.Empty;
@@ -333,6 +383,11 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"WHERE ID = '{AutomaticDoorControl.mName}' AND ReceiveTimestamp = '{AutomaticDoorControl.mReceivedTimestamp.ToString(Library.Library.TIME_FORMAT)}'";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
+		private void HistoryAutomaticDoorControlInfoDataDeleteBefore(DateTime DateTime)
+		{
+			string tmp = $"DELETE FROM {mTableNameOfHistoryAutomaticDoorControlInfo} WHERE ReceiveTimestamp < '{DateTime.ToString(Library.Library.TIME_FORMAT)}'";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
 		private void HistoryHostCommunicationInfoDataAdd(DateTime ReceiveTimestamp, string Event, string IpPort, string Data)
 		{
 			string tmp = string.Empty;
@@ -341,6 +396,11 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"'{Event}', ";
 			tmp += $"'{IpPort}', ";
 			tmp += $"'{Data}')";
+			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
+		}
+		private void HistoryHostCommunicationInfoDataDeleteBefore(DateTime DateTime)
+		{
+			string tmp = $"DELETE FROM {mTableNameOfHistoryHostCommunicationInfo} WHERE ReceiveTimestamp < '{DateTime.ToString(Library.Library.TIME_FORMAT)}'";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 	}

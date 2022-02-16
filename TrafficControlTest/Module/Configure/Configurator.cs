@@ -160,6 +160,28 @@ namespace TrafficControlTest.Module.Configure
 				"記錄自走車歷史記錄的時間間隔 (ms)",
 				"记录自走车历史记录的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
+				"LogMaintainHandler",
+				"DayOfMonthOfBackupCurrentLog",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"5",
+				"1",
+				"31",
+				"Day of month of backing up current log",
+				"備份當前 Log 的日期",
+				"备份当前 Log 的日期"));
+			defaultConfigs.Add(new Configuration(
+				"LogMaintainHandler",
+				"DayOfMonthOfDeleteOldLog",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"15",
+				"1",
+				"31",
+				"Day of month of deleting back log.",
+				"刪除舊 Log 的日期",
+				"删除旧 Log 的日期"));
+			defaultConfigs.Add(new Configuration(
 				"DebugMessageHandler",
 				"TimePeriod",
 				ConfigurationType.Int,

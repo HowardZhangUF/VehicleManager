@@ -190,5 +190,14 @@ namespace TrafficControlTest.Library
 
 			return result.ToArray();
 		}
+		public override void BackupToFile(string FilePath)
+		{
+			CopyFile(mDatabaseServerAddressIp, FilePath);
+		}
+
+		private void CopyFile(string SrcFileName, string Dst)
+		{
+			FileOperation.CopyFileViaCommandPrompt(SrcFileName, Dst);
+		}
 	}
 }

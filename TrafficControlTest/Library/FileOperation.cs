@@ -46,7 +46,7 @@ namespace TrafficControlTest.Library
 			// + 如果 dst 是一個已存在的資料夾，則會將 srcFileName 複製至該資料夾下
 			// + 如果 dst 是一個已存在的檔案，則會將 srcFileName 複製並取代該檔案
 			// + 如果 dst 是不存在的檔案/資料夾，則會將 srcFileName 檔案複製並重新命名為 dst
-			if (File.Exists(SrcFilePath) && Directory.Exists(DstDirectoryPath))
+			if (File.Exists(SrcFilePath))
 			{
 				string fullCmd = $"COPY \"{SrcFilePath}\" \"{DstDirectoryPath}\"";
 				ShellCommandExecutor.ExecuteInCommadPrompt(fullCmd);

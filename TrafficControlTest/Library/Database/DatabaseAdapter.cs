@@ -223,6 +223,8 @@ namespace TrafficControlTest.Library
 		public abstract DataSet ExecuteQueryCommand(string QueryCmd);
 		/// <summary>執行查詢類 Sql 指令(複數)，並回傳查詢結果(複數)。通常會使用 Transaction 加快執行速度</summary>
 		public abstract DataSet[] ExecuteQueryCommands(IEnumerable<string> QueryCmds);
+		/// <summary>執行備份當前資料庫至指定檔案的功能</summary>
+		public abstract void BackupToFile(string FilePath);
 
 		/// <summary>初始化執行緒</summary>
 		protected virtual void InitializeThread()

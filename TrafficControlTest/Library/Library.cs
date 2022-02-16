@@ -334,6 +334,10 @@ namespace TrafficControlTest.Library
 		{
 			return new LogRecorder(CurrentLogAdapter, HistoryLogAdapter, VehicleInfoManager, MissionStateManager, VehicleControlManager, AutomaticDoorControlManager, HostCommunicator);
 		}
+		public static ILogMaintainHandler GenerateILogMaintainHandler(IHistoryLogAdapter HistoryLogAdapter, ITimeElapseDetector TimeElapseDetector)
+		{
+			return new LogMaintainHandler(HistoryLogAdapter, TimeElapseDetector);
+		}
 		public static IConfigurator GenerateIConfigurator(string FileName)
 		{
 			return new Configurator(FileName);

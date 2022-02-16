@@ -49,6 +49,7 @@ namespace TrafficControlTest.Process
 		private IHistoryLogAdapter mHistoryLogAdapter = null;
 		private ICurrentLogAdapter mCurrentLogAdapter = null;
 		private ILogRecorder mLogRecorder = null;
+		private ILogMaintainHandler mLogMaintainHandler = null;
 		private IDebugMessageHandler mDebugMessageHandler = null;
 		private ISignificantMessageHandler mSignificantMessageHandler = null;
 		private ITimeElapseDetector mTimeElapseDetector = null;
@@ -110,6 +111,9 @@ namespace TrafficControlTest.Process
 		public void Start()
 		{
 			LoadConfigFileAndUpdateSystemConfig();
+
+			mLogMaintainHandler.BackupCurrentLog();
+			mLogMaintainHandler.DeleteOldLog();
 
 			mHistoryLogAdapter.Start();
 			mCurrentLogAdapter.Start();
@@ -450,8 +454,13 @@ namespace TrafficControlTest.Process
 			mLogRecorder = GenerateILogRecorder(mCurrentLogAdapter, mHistoryLogAdapter, mVehicleInfoManager, mMissionStateManager, mVehicleControlManager, mAutomaticDoorControlManager, mHostCommunicator);
 			SubscribeEvent_ILogRecorder(mLogRecorder);
 
+			UnsubscribeEvent_ILogMaintainHandler(mLogMaintainHandler);
+			mLogMaintainHandler = GenerateILogMaintainHandler(mHistoryLogAdapter, mTimeElapseDetector);
+			SubscribeEvent_ILogMaintainHandler(mLogMaintainHandler);
+
 			mCollectionOfISystemWithConfig.Add(mLogExporter);
 			mCollectionOfISystemWithConfig.Add(mLogRecorder);
+			mCollectionOfISystemWithConfig.Add(mLogMaintainHandler);
 			mCollectionOfISystemWithConfig.Add(mDebugMessageHandler);
 			mCollectionOfISystemWithConfig.Add(mSignificantMessageHandler);
 			mCollectionOfISystemWithConfig.Add(mTimeElapseDetector);
@@ -606,6 +615,9 @@ namespace TrafficControlTest.Process
 
 			UnsubscribeEvent_ILogRecorder(mLogRecorder);
 			mLogRecorder = null;
+
+			UnsubscribeEvent_ILogMaintainHandler(mLogMaintainHandler);
+			mLogMaintainHandler = null;
 
 			UnsubscribeEvent_ISignificantMessageHandler(mSignificantMessageHandler);
 			mSignificantMessageHandler = null;
@@ -1183,6 +1195,24 @@ namespace TrafficControlTest.Process
 				LogRecorder.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
 			}
 		}
+		private void SubscribeEvent_ILogMaintainHandler(ILogMaintainHandler LogMaintainHandler)
+		{
+			if (LogMaintainHandler != null)
+			{
+				LogMaintainHandler.ConfigUpdated += HandleEvent_ISystemWithConfigConfigUpdated;
+				LogMaintainHandler.BackupCurrentLogExecuted += HandleEvent_LogMaintainHandlerBackupCurrentLogExecuted;
+				LogMaintainHandler.DeleteOldLogExecuted += HandleEvent_LogMaintainHandlerDeleteOldLogExecuted;
+			}
+		}
+		private void UnsubscribeEvent_ILogMaintainHandler(ILogMaintainHandler LogMaintainHandler)
+		{
+			if (LogMaintainHandler != null)
+			{
+				LogMaintainHandler.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
+				LogMaintainHandler.BackupCurrentLogExecuted += HandleEvent_LogMaintainHandlerBackupCurrentLogExecuted;
+				LogMaintainHandler.DeleteOldLogExecuted += HandleEvent_LogMaintainHandlerDeleteOldLogExecuted;
+			}
+		}
 		private void SubscribeEvent_IAutomaticDoorInfoManager(IAutomaticDoorInfoManager AutomaticDoorInfoManager)
 		{
 			if (AutomaticDoorInfoManager != null)
@@ -1707,6 +1737,14 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged(object Sender, CycleMissionExecutedIndexChangedEventArgs Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "CycleMissionGenerator", "CycleMissionExecutedIndexChanged", $"VehicleID: {Args.VehicleId}, Index: {Args.Index.ToString()}");
+		}
+		private void HandleEvent_LogMaintainHandlerBackupCurrentLogExecuted(object Sender, BackupCurrentLogExecutedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "LogMaintainHandler", "BackupCurrentLogExecuted", string.Empty);
+		}
+		private void HandleEvent_LogMaintainHandlerDeleteOldLogExecuted(object Sender, DeleteOldLogExecutedEventArgs Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "LogMaintainHandler", "DeleteOldLogExecuted", string.Empty);
 		}
 		private void HandleEvent_AutomaticDoorInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IAutomaticDoorInfo> Args)
 		{

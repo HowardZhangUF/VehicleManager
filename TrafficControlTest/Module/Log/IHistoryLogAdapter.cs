@@ -28,5 +28,7 @@ namespace TrafficControlTest.Module.Log
 		void RecordHistoryVehicleControlInfo(DatabaseDataOperation Action, IVehicleControl VehicleControl);
 		void RecordHistoryAutomaticDoorControlInfo(DatabaseDataOperation Action, IAutomaticDoorControl AutomaticDoorControl);
 		void RecordHistoryHostCommunicationInfo(DatabaseDataOperation Action, DateTime Timestamp, string Event, string IpPort, string Data);
+		bool BackupHistoryLogToFile(string FileName);
+		bool DeleteHistoryLogBefore(DateTime DateTime);
 	}
 }
