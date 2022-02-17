@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SQLite;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.NetworkInformation;
 
-namespace TrafficControlTest.Library
+namespace Library
 {
-	public class SqliteDatabaseAdapter : DatabaseAdapter
+	public class MsSqlDatabaseAdapter : DatabaseAdapter
 	{
-		/// <summary>輸入參數範例： ($"{DatabaseAdapter.mDirectoryNameOfFiles}\\Test.db", string.Empty, string.Empty, string.Empty, string.Empty, false)</summary>
-		public SqliteDatabaseAdapter(string DatabaseServerAddressIp, string DatabaseServerAddressPort, string UserAccount, string UserPassword, string InitialDatabase, bool PingBeforeBuildConnection) : base(DatabaseServerAddressIp, DatabaseServerAddressPort, UserAccount, UserPassword, InitialDatabase, PingBeforeBuildConnection)
+		/// <summary>輸入參數範例 ("127.0.0.1", "1433", "Castec", "27635744", "AgvState", false)</summary>
+		public MsSqlDatabaseAdapter(string DatabaseServerAddressIp, string DatabaseServerAddressPort, string UserAccount, string UserPassword, string InitialDatabase, bool PingBeforeBuildConnection) : base(DatabaseServerAddressIp, DatabaseServerAddressPort, UserAccount, UserPassword, InitialDatabase, PingBeforeBuildConnection)
 		{
 			try
 			{
@@ -24,23 +24,49 @@ namespace TrafficControlTest.Library
 		}
 		public override void SetDatabaseParameters(string DatabaseServerAddressIp, string DatabaseServerAddressPort, string UserAccount, string UserPassword, string InitialDatabase)
 		{
-			base.SetDatabaseParameters(DatabaseServerAddressIp, DatabaseServerAddressPort, UserAccount, UserPassword, InitialDatabase);
-			mConnectionString = $"data source={mDatabaseServerAddressIp};journal mode=Truncate";
-			mIsConnected = false;
+			try
+			{
+				base.SetDatabaseParameters(DatabaseServerAddressIp, DatabaseServerAddressPort, UserAccount, UserPassword, InitialDatabase);
+				mConnectionString = $"Data Source={mDatabaseServerAddressIp},{mDatabaseServerAddressPort};Initial Catalog={mInitialDatabase};User Id={mUserAccount};Password={mUserPassword};";
+				mIsConnected = false;
+			}
+			catch (SqlException ex)
+			{
+				HandleDbException(ex);
+			}
+			catch (Exception ex)
+			{
+				HandleException(ex);
+			}
 		}
 		public override bool Connect()
 		{
 			bool result = false;
 			try
 			{
-				if (!string.IsNullOrEmpty(mConnectionString) && !string.IsNullOrEmpty(mDatabaseServerAddressIp))
+				if (mConnectionString != string.Empty)
 				{
-					if (!System.IO.File.Exists(mDatabaseServerAddressIp)) SQLiteConnection.CreateFile(mDatabaseServerAddressIp);
-					mIsConnected = true;
-					result = true;
+					if (mPingBeforeBuildConnection)
+					{
+						if (GetPingStatus(mDatabaseServerAddressIp) != IPStatus.Success)
+						{
+							return result;
+						}
+					}
+
+					lock (mLockOfSqlConnection)
+					{
+						using (SqlConnection sql = new SqlConnection(mConnectionString))
+						{
+							sql.Open();
+							sql.Close();
+							mIsConnected = true;
+							result = true;
+						}
+					}
 				}
 			}
-			catch (SQLiteException ex)
+			catch (SqlException ex)
 			{
 				HandleDbException(ex);
 			}
@@ -59,10 +85,10 @@ namespace TrafficControlTest.Library
 				{
 					lock (mLockOfSqlConnection)
 					{
-						using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+						using (SqlConnection sql = new SqlConnection(mConnectionString))
 						{
 							if (sql.State == ConnectionState.Closed) sql.Open();
-							using (SQLiteCommand sqlc = new SQLiteCommand(NonQueryCmd, sql))
+							using (SqlCommand sqlc = new SqlCommand(NonQueryCmd, sql))
 							{
 								result = sqlc.ExecuteNonQuery();
 							}
@@ -70,7 +96,7 @@ namespace TrafficControlTest.Library
 					}
 				}
 			}
-			catch (SQLiteException ex)
+			catch (SqlException ex)
 			{
 				HandleDbException(ex, NonQueryCmd);
 			}
@@ -87,14 +113,14 @@ namespace TrafficControlTest.Library
 			{
 				lock (mLockOfSqlConnection)
 				{
-					using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+					using (SqlConnection sql = new SqlConnection(mConnectionString))
 					{
 						if (sql.State == ConnectionState.Closed) sql.Open();
-						using (SQLiteTransaction sqlTrans = sql.BeginTransaction())
+						using (SqlTransaction sqlTrans = sql.BeginTransaction())
 						{
 							for (int i = 0; i < NonQueryCmds.Count(); ++i)
 							{
-								using (SQLiteCommand sqlc = new SQLiteCommand(NonQueryCmds.ElementAt(i), sql))
+								using (SqlCommand sqlc = new SqlCommand(NonQueryCmds.ElementAt(i), sql))
 								{
 									result.Add(sqlc.ExecuteNonQuery());
 								}
@@ -104,7 +130,7 @@ namespace TrafficControlTest.Library
 					}
 				}
 			}
-			catch (SQLiteException ex)
+			catch (SqlException ex)
 			{
 				HandleDbException(ex, NonQueryCmds);
 			}
@@ -123,12 +149,12 @@ namespace TrafficControlTest.Library
 				{
 					lock (mLockOfSqlConnection)
 					{
-						using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+						using (SqlConnection sql = new SqlConnection(mConnectionString))
 						{
 							if (sql.State == ConnectionState.Closed) sql.Open();
-							using (SQLiteCommand sqlc = new SQLiteCommand(QueryCmd, sql))
+							using (SqlCommand sqlc = new SqlCommand(QueryCmd, sql))
 							{
-								using (SQLiteDataAdapter sqlda = new SQLiteDataAdapter(sqlc))
+								using (SqlDataAdapter sqlda = new SqlDataAdapter(sqlc))
 								{
 									result = new DataSet();
 									result.Clear();
@@ -139,7 +165,7 @@ namespace TrafficControlTest.Library
 					}
 				}
 			}
-			catch (SQLiteException ex)
+			catch (SqlException ex)
 			{
 				HandleDbException(ex, QueryCmd);
 			}
@@ -156,16 +182,16 @@ namespace TrafficControlTest.Library
 			{
 				lock (mLockOfSqlConnection)
 				{
-					using (SQLiteConnection sql = new SQLiteConnection(mConnectionString))
+					using (SqlConnection sql = new SqlConnection(mConnectionString))
 					{
 						if (sql.State == ConnectionState.Closed) sql.Open();
-						using (SQLiteTransaction sqlTrans = sql.BeginTransaction())
+						using (SqlTransaction sqlTrans = sql.BeginTransaction())
 						{
 							for (int i = 0; i < QueryCmds.Count(); ++i)
 							{
-								using (SQLiteCommand sqlc = new SQLiteCommand(QueryCmds.ElementAt(i), sql))
+								using (SqlCommand sqlc = new SqlCommand(QueryCmds.ElementAt(i), sql))
 								{
-									using (SQLiteDataAdapter sqlda = new SQLiteDataAdapter(sqlc))
+									using (SqlDataAdapter sqlda = new SqlDataAdapter(sqlc))
 									{
 										DataSet tmpResult = new DataSet();
 										tmpResult.Clear();
@@ -179,7 +205,7 @@ namespace TrafficControlTest.Library
 					}
 				}
 			}
-			catch (SQLiteException ex)
+			catch (SqlException ex)
 			{
 				HandleDbException(ex, QueryCmds);
 			}
@@ -187,17 +213,12 @@ namespace TrafficControlTest.Library
 			{
 				HandleException(ex);
 			}
-
 			return result.ToArray();
 		}
 		public override void BackupToFile(string FilePath)
 		{
-			CopyFile(mDatabaseServerAddressIp, FilePath);
-		}
-
-		private void CopyFile(string SrcFileName, string Dst)
-		{
-			FileOperation.CopyFileViaCommandPrompt(SrcFileName, Dst);
+			string cmd = $"BACKUP DATABASE {mInitialDatabase} TO DISK = '{FilePath}';";
+			EnqueueNonQueryCommand(cmd);
 		}
 	}
 }

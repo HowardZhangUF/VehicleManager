@@ -81,8 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Library\ExceptionHandling.cs" />
-    <Compile Include="Library\FileOperation.cs" />
-    <Compile Include="Library\ShellCommandExecutor.cs" />
+    <Compile Include="Library\ExtensionComboBox.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicator.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicatorUpdater.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorControl.cs" />
@@ -117,9 +116,6 @@
     <Compile Include="Module\Dashboard\DailyVehicleState.cs" />
     <Compile Include="Module\Dashboard\MultiDayVehicleMissionCount.cs" />
     <Compile Include="Module\Dashboard\VehicleBatteryState.cs" />
-    <Compile Include="Library\Database\DatabaseAdapter.cs" />
-    <Compile Include="Library\Database\MsSqlDatabaseAdapter.cs" />
-    <Compile Include="Library\Database\SqliteDatabaseAdapter.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventHandler.cs" />
     <Compile Include="Module\Account\AccessControl.cs" />
     <Compile Include="Module\Account\Account.cs" />
@@ -589,6 +585,10 @@
     <ProjectReference Include="..\..\iTSLibrary\Serialization\Serialization.csproj">
       <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
       <Name>Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}</Project>
+      <Name>Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

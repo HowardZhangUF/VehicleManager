@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
 
-namespace TrafficControlTest.Library
+namespace Library
 {
 	public abstract class DatabaseAdapter
 	{
