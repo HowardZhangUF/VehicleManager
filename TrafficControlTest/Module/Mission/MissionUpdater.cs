@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;

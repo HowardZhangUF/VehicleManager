@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrafficControlTest.Module.AutomaticDoor;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Library;
 using LibraryForVM;
 

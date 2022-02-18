@@ -5,7 +5,6 @@ using System.Linq;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CommunicationVehicle;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Vehicle;
 

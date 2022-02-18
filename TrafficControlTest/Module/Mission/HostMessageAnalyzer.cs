@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Module.CommunicationHost;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 

@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.Vehicle;
-using TrafficControlTest.Module.General;
 using LibraryForVM;
 
 namespace TrafficControlTest.UserControl

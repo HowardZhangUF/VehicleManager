@@ -1,7 +1,6 @@
 ﻿using LibraryForVM;
 using System;
 using System.Threading.Tasks;
-using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.InterveneCommand
 {

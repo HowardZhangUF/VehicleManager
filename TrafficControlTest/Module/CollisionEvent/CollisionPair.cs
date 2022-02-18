@@ -1,7 +1,6 @@
 ﻿using LibraryForVM;
 using System;
 using System.Threading.Tasks;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.CollisionEvent

@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using static TrafficControlTest.UserControl.UcVehicleInfo;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Vehicle;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Mission;
 using LibraryForVM;
 

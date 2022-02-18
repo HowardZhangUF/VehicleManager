@@ -13,7 +13,6 @@ using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Configure;
 using TrafficControlTest.Module.CycleMission;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.LimitVehicleCountZone;
 using TrafficControlTest.Module.Log;

@@ -1,5 +1,4 @@
 ﻿using LibraryForVM;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 
 namespace TrafficControlTest.Module.Mission

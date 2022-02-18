@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using TrafficControlTest.Module.CommunicationVehicle;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Map

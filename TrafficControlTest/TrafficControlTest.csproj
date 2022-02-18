@@ -121,12 +121,10 @@
     <Compile Include="Module\Account\Account.cs" />
     <Compile Include="Module\Account\AccountManager.cs" />
     <Compile Include="Module\Configure\Configurator.cs" />
-    <Compile Include="Module\General\IMapObjectOfRectangle.cs" />
-    <Compile Include="Module\General\MapObjectOfRectangle.cs" />
-    <Compile Include="Module\General\MapObjectOfTowardPoint.cs" />
-    <Compile Include="Module\General\IMapObjectOfTowardPoint.cs" />
-    <Compile Include="Module\General\ITimeElapseDetector.cs" />
-    <Compile Include="Module\General\TimeElapseDetector.cs" />
+    <Compile Include="Module\Map\IMapObjectOfRectangle.cs" />
+    <Compile Include="Module\Map\MapObjectOfRectangle.cs" />
+    <Compile Include="Module\Map\MapObjectOfTowardPoint.cs" />
+    <Compile Include="Module\Map\IMapObjectOfTowardPoint.cs" />
     <Compile Include="Module\LimitVehicleCountZone\ILimitVehicleCountZoneInfo.cs" />
     <Compile Include="Module\LimitVehicleCountZone\ILimitVehicleCountZoneInfoManager.cs" />
     <Compile Include="Module\LimitVehicleCountZone\ILimitVehicleCountZoneInfoManagerUpdater.cs" />
@@ -220,14 +218,14 @@
     <Compile Include="Process\VehicleManagerProcess.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventDetector.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventManager.cs" />
-    <Compile Include="Module\General\TimePeriod.cs" />
+    <Compile Include="Module\CollisionEvent\TimePeriod.cs" />
     <Compile Include="Module\CommunicationVehicle\VehicleCommunicator.cs" />
     <Compile Include="Module\Vehicle\VehicleInfo.cs" />
     <Compile Include="Module\Vehicle\VehicleInfoManager.cs" />
     <Compile Include="Module\Vehicle\VehicleInfoUpdater.cs" />
     <Compile Include="Module\CollisionEvent\ICollisionEventDetector.cs" />
     <Compile Include="Module\CollisionEvent\ICollisionEventManager.cs" />
-    <Compile Include="Module\General\ITimePeriod.cs" />
+    <Compile Include="Module\CollisionEvent\ITimePeriod.cs" />
     <Compile Include="Module\Vehicle\IVehicleInfoUpdater.cs" />
     <Compile Include="Library\IntMath.cs" />
     <Compile Include="Module\CollisionEvent\CollisionPair.cs" />
@@ -571,7 +569,9 @@
       <Name>LibraryForVM</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Module\General\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="icons8_traffic_jam_4.ico" />
   </ItemGroup>

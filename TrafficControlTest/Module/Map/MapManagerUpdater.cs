@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.CommunicationVehicle;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Map

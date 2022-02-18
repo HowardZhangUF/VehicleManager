@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Vehicle;
 

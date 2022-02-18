@@ -1,6 +1,5 @@
 ﻿using LibraryForVM;
 using TrafficControlTest.Module.CommunicationHost;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Mission

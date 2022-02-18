@@ -70,6 +70,8 @@
     <Compile Include="CommonClass\System\ISystemWithLoopTask.cs" />
     <Compile Include="CommonClass\System\SystemWithConfig.cs" />
     <Compile Include="CommonClass\System\SystemWithLoopTask.cs" />
+    <Compile Include="CommonClass\Time\ITimeElapseDetector.cs" />
+    <Compile Include="CommonClass\Time\TimeElapseDetector.cs" />
     <Compile Include="Database\DatabaseAdapter.cs" />
     <Compile Include="Database\MsSqlDatabaseAdapter.cs" />
     <Compile Include="Database\SqliteDatabaseAdapter.cs" />

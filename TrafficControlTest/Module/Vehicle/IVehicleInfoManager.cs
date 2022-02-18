@@ -1,6 +1,5 @@
 ﻿using LibraryForVM;
 using System.Collections.Generic;
-using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Vehicle
 {

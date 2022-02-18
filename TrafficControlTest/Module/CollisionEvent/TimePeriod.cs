@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrafficControlTest.Module.General
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	public class TimePeriod : ITimePeriod
 	{

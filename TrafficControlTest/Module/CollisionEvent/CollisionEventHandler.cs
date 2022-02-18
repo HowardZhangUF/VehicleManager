@@ -1,7 +1,6 @@
 ﻿using LibraryForVM;
 using System;
 using System.Linq;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Vehicle;
 using static TrafficControlTest.Library.Library;

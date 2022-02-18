@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Module.AutomaticDoor;
-using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 {

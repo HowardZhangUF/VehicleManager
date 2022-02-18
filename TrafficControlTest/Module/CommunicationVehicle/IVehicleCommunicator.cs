@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.NewCommunication;
 
 namespace TrafficControlTest.Module.CommunicationVehicle

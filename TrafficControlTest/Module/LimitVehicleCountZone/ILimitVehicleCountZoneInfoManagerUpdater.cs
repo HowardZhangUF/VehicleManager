@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Vehicle;
 

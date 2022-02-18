@@ -1,6 +1,5 @@
 ﻿using LibraryForVM;
 using TrafficControlTest.Module.CommunicationVehicle;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.InterveneCommand

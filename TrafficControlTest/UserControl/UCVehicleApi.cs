@@ -6,7 +6,6 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Vehicle;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using LibraryForVM;
 

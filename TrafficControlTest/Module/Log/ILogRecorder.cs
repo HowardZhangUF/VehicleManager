@@ -1,7 +1,6 @@
 ﻿using LibraryForVM;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.CommunicationHost;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.Vehicle;

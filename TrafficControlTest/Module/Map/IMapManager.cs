@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Map
 {

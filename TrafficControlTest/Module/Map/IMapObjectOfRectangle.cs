@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrafficControlTest.Module.General
+namespace TrafficControlTest.Module.Map
 {
 	public interface IMapObjectOfRectangle
 	{

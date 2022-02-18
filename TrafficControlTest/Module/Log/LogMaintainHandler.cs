@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Log
 {

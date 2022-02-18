@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.CommunicationVehicle;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.NewCommunication;
 using LibraryForVM;
 

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General;
 
 namespace TrafficControlTest.Module.Log
 {

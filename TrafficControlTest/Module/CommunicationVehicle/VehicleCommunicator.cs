@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TrafficControlTest.Library;
-using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.NewCommunication;
 
 namespace TrafficControlTest.Module.CommunicationVehicle
