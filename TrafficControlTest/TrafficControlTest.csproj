@@ -227,7 +227,7 @@
     <Compile Include="Module\CollisionEvent\ICollisionEventManager.cs" />
     <Compile Include="Module\CollisionEvent\ITimePeriod.cs" />
     <Compile Include="Module\Vehicle\IVehicleInfoUpdater.cs" />
-    <Compile Include="Library\IntMath.cs" />
+    <Compile Include="Module\CollisionEvent\IntMath.cs" />
     <Compile Include="Module\CollisionEvent\CollisionPair.cs" />
     <Compile Include="Module\CollisionEvent\ICollisionPair.cs" />
     <Compile Include="Module\CollisionEvent\IPathOverlapPair.cs" />

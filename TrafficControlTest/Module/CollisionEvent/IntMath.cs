@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrafficControlTest.Library
+namespace TrafficControlTest.Module.CollisionEvent
 {
 	[Serializable]
 	public class IntMath : TypeMath<int>
