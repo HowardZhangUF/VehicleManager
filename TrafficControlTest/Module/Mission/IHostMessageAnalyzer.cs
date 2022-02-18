@@ -1,4 +1,5 @@
-﻿using TrafficControlTest.Module.CommunicationHost;
+﻿using LibraryForVM;
+using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 

@@ -1,4 +1,5 @@
 ﻿using AsyncSocket;
+using LibraryForVM;
 using Serialization;
 using System;
 using System.Collections.Generic;

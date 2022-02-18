@@ -2,7 +2,7 @@
 using System;
 using System.Threading;
 
-namespace TrafficControlTest.Module.General
+namespace LibraryForVM
 {
 	public abstract class SystemWithLoopTask : SystemWithConfig, ISystemWithLoopTask
 	{

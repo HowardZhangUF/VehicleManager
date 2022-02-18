@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrafficControlTest.Module.General
+namespace LibraryForVM
 {
 	public interface ISystemWithConfig
 	{

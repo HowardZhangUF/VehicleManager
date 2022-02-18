@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryForVM;
+using System;
 using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;

@@ -1,4 +1,5 @@
-﻿using SerialData;
+﻿using LibraryForVM;
+using SerialData;
 using System;
 using System.Threading.Tasks;
 using TrafficControlTest.Module.General;

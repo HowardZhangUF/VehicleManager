@@ -1,4 +1,5 @@
-﻿using TrafficControlTest.Module.CommunicationVehicle;
+﻿using LibraryForVM;
+using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Map;

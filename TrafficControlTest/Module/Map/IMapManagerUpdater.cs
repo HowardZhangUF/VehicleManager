@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryForVM;
+using System;
 using System.Collections.Generic;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
