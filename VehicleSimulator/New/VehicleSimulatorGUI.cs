@@ -1,19 +1,13 @@
 ﻿using LibraryForVM;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TrafficControlTest.Process;
 
 namespace VehicleSimulator.New
 {
-    public enum Language
+	public enum Language
     {
         EnUs,
         ZhTw
