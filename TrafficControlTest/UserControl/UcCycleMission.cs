@@ -7,7 +7,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.General;
-using Library;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserControl
 {

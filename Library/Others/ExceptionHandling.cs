@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Library
+namespace LibraryForVM
 {
 	public static class ExceptionHandling
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library
+namespace LibraryForVM
 {
 	[Serializable]
 	public class Rectangle2D : IRectangle2D

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library
+namespace LibraryForVM
 {
 	public class Vector2D : IVector2D
 	{

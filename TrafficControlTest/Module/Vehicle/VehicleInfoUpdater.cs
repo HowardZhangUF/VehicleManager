@@ -1,4 +1,4 @@
-﻿using Library;
+﻿using LibraryForVM;
 using SerialData;
 using Serialization;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.NewCommunication;
-using Point2D = Library.Point2D;
+using Point2D = LibraryForVM.Point2D;
 
 namespace TrafficControlTest.Module.Vehicle
 {

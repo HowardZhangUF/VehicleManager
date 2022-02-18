@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library
+namespace LibraryForVM
 {
 	[Serializable]
 	public class Point2D : IPoint2D

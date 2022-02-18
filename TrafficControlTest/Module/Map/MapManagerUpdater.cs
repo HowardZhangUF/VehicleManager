@@ -1,5 +1,5 @@
 ﻿using GLCore;
-using Library;
+using LibraryForVM;
 using MapReader;
 using MD5Hash;
 using System;

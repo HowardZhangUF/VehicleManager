@@ -8,8 +8,8 @@
     <ProjectGuid>{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Library</RootNamespace>
-    <AssemblyName>Library</AssemblyName>
+    <RootNamespace>LibraryForVM</RootNamespace>
+    <AssemblyName>LibraryForVM</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

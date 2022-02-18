@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Process;
 using TrafficControlTest.Module.Log;
-using Library;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserControl
 {

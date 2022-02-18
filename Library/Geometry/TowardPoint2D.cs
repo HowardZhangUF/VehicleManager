@@ -1,4 +1,4 @@
-﻿namespace Library
+﻿namespace LibraryForVM
 {
 	public class TowardPoint2D : ITowardPoint2D
 	{

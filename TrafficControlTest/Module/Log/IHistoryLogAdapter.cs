@@ -1,4 +1,4 @@
-﻿using Library;
+﻿using LibraryForVM;
 using System;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.AutomaticDoor;

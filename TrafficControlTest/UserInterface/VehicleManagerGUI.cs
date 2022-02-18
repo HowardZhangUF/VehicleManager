@@ -6,7 +6,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.UserControl;
 using TrafficControlTest.Module.Account;
 using Hasp;
-using Library;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserInterface
 {

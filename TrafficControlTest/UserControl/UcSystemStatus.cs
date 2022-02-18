@@ -13,7 +13,7 @@ using TrafficControlTest.Module.General;
 using System.Windows.Forms;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.NewCommunication;
-using Library;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserControl
 {

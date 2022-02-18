@@ -12,7 +12,7 @@ using TrafficControlTest.Module.Dashboard;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.InterveneCommand;
-using Library;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserControl
 {

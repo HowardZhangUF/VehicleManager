@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net.NetworkInformation;
 
-namespace Library
+namespace LibraryForVM
 {
 	public class MsSqlDatabaseAdapter : DatabaseAdapter
 	{

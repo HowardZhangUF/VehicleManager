@@ -1,5 +1,5 @@
 ﻿
-namespace Library
+namespace LibraryForVM
 {
 	public interface IRectangle2D
 	{

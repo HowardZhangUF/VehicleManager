@@ -1,5 +1,5 @@
 ﻿
-using Library;
+using LibraryForVM;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 

@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
 
-namespace Library
+namespace LibraryForVM
 {
 	public abstract class DatabaseAdapter
 	{

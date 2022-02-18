@@ -1,7 +1,7 @@
 ﻿using Geometry;
 using GLCore;
 using GLStyle;
-using Library;
+using LibraryForVM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

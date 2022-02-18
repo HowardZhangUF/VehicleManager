@@ -8,7 +8,7 @@ using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
-using Library;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserControl
 {

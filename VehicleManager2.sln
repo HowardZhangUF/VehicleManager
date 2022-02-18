@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleSimulator", "Vehicle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficControlTestTests", "TrafficControlTestTests\TrafficControlTestTests.csproj", "{52D7D760-2A5A-4C7A-81F2-FA303D3EF313}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryForVM", "Library\LibraryForVM.csproj", "{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

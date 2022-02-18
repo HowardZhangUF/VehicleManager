@@ -1,5 +1,5 @@
 ﻿
-namespace Library
+namespace LibraryForVM
 {
 	public interface IVector2D
 	{

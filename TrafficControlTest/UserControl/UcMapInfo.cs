@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Library;
-using Library;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserControl
 {

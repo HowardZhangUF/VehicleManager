@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Library;
-using Library;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserControl
 {

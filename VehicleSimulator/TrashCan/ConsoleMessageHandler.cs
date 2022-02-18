@@ -1,11 +1,11 @@
-﻿using Library;
+﻿using LibraryForVM;
 using SerialData;
 using System;
 using System.Collections.Generic;
 using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.General;
 using VehicleSimulator.Interface;
-using Point2D = Library.Point2D;
+using Point2D = LibraryForVM.Point2D;
 
 namespace VehicleSimulator.Implement
 {
