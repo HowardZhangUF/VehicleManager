@@ -8,6 +8,7 @@ using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
+using Library;
 
 namespace TrafficControlTest.UserControl
 {
@@ -289,7 +290,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleGoto_Click(object sender, EventArgs e)
@@ -304,7 +305,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleGotoPoint_Click(object sender, EventArgs e)
@@ -328,7 +329,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleStop_Click(object sender, EventArgs e)
@@ -343,7 +344,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleCharge_Click(object sender, EventArgs e)
@@ -358,7 +359,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleUncharge_Click(object sender, EventArgs e)
@@ -373,7 +374,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehiclePause_Click(object sender, EventArgs e)
@@ -388,7 +389,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleResume_Click(object sender, EventArgs e)
@@ -403,7 +404,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleStay_Click(object sender, EventArgs e)
@@ -418,7 +419,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleUnstay_Click(object sender, EventArgs e)
@@ -433,7 +434,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehiclePauseControl_Click(object sender, EventArgs e)
@@ -448,7 +449,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleResumeControl_Click(object sender, EventArgs e)
@@ -463,7 +464,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleRequestMapList_Click(object sender, EventArgs e)
@@ -477,7 +478,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleGetMap_Click(object sender, EventArgs e)
@@ -491,7 +492,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleUploadMap_Click(object sender, EventArgs e)
@@ -505,7 +506,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnVehicleChangeMap_Click(object sender, EventArgs e)
@@ -519,7 +520,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cbVehicleNameList_SelectedIndexChanged(object sender, EventArgs e)
@@ -534,7 +535,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

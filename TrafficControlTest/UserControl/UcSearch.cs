@@ -276,7 +276,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnSearch_Click(object sender, EventArgs e)
@@ -287,7 +287,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cbSearchCondition_SelectedIndexChanged(object sender, EventArgs e)
@@ -314,7 +314,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void dgvSearchResult_MouseDown(object sender, MouseEventArgs e)
@@ -330,7 +330,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemCopyCellValue_Click(object sender, EventArgs e)
@@ -344,7 +344,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

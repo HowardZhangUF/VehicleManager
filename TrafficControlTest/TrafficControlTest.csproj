@@ -80,8 +80,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\ExceptionHandling.cs" />
-    <Compile Include="Library\ExtensionComboBox.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicator.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicatorUpdater.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorControl.cs" />
@@ -227,7 +225,6 @@
     <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\VehiclePassThroughLimitVehicleCountZoneEventManager.cs" />
     <Compile Include="Module\VehiclePassThroughLimitVehicleCountZone\VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.cs" />
     <Compile Include="Process\VehicleManagerProcess.cs" />
-    <Compile Include="Library\Extension.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventDetector.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventManager.cs" />
     <Compile Include="Module\Communication\CommunicatorClient.cs" />

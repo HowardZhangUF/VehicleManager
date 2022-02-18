@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Data;
 using System.Linq;
 using TrafficControlTest.Library;
@@ -169,7 +170,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnStop_Click(object sender, EventArgs e)
@@ -184,7 +185,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

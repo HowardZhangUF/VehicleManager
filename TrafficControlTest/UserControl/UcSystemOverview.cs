@@ -9,6 +9,7 @@ using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.NewCommunication;
+using Library;
 
 namespace TrafficControlTest.UserControl
 {

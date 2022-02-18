@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Library;
 
 namespace TrafficControlTest.UserControl
 {
@@ -74,7 +75,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

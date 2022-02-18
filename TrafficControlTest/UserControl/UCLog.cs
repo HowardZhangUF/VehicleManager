@@ -218,7 +218,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void HandleEvent_UcSearchSearchSuccessed(object Sender, DateTime OccurTime, string SearchCondition)

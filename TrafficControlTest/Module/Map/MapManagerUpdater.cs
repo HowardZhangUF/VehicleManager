@@ -1,4 +1,5 @@
 ﻿using GLCore;
+using Library;
 using MapReader;
 using MD5Hash;
 using System;
@@ -302,7 +303,7 @@ namespace TrafficControlTest.Module.Map
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void MergeMaps(string[] MapFileFullPaths, string ItegratedMapFileFullPath)

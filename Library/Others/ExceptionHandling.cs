@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TrafficControlTest.Library
+namespace Library
 {
 	public static class ExceptionHandling
 	{

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Threading;
 
 namespace TrafficControlTest.Module.General
@@ -128,7 +129,7 @@ namespace TrafficControlTest.Module.General
 					}
 					catch (Exception Ex)
 					{
-						Library.ExceptionHandling.HandleException(Ex);
+						ExceptionHandling.HandleException(Ex);
 					}
 
 					try
@@ -137,7 +138,7 @@ namespace TrafficControlTest.Module.General
 					}
 					catch (Exception Ex)
 					{
-						Library.ExceptionHandling.HandleException(Ex);
+						ExceptionHandling.HandleException(Ex);
 					}
 
 					try
@@ -150,7 +151,7 @@ namespace TrafficControlTest.Module.General
 					}
 					catch (Exception Ex)
 					{
-						Library.ExceptionHandling.HandleException(Ex);
+						ExceptionHandling.HandleException(Ex);
 					}
 
 					Thread.Sleep(mTimePeriod);
@@ -158,7 +159,7 @@ namespace TrafficControlTest.Module.General
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 			finally
 			{

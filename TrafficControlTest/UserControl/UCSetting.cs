@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -369,7 +370,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void dgvMapManagementSetting_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -398,7 +399,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemAddRegion_Click(object sender, EventArgs e)
@@ -412,7 +413,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private static List<MapRegionSetting> ConvertDataGridViewRowsToMapRegionSettings(DataGridView Dgv)

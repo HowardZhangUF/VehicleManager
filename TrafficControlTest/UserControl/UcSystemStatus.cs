@@ -13,6 +13,7 @@ using TrafficControlTest.Module.General;
 using System.Windows.Forms;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.NewCommunication;
+using Library;
 
 namespace TrafficControlTest.UserControl
 {
@@ -224,7 +225,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnReportSystemInfo_Click(object sender, EventArgs e)
@@ -241,7 +242,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnExportLog_Click(object sender, EventArgs e)
@@ -255,7 +256,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnOpenSystemFolder_Click(object sender, EventArgs e)
@@ -266,7 +267,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnSystem_Click(object sender, EventArgs e)
@@ -295,7 +296,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

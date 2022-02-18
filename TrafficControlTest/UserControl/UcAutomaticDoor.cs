@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Library;
+using Library;
 
 namespace TrafficControlTest.UserControl
 {
@@ -477,7 +478,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemOpenAutomaticDoor_Click(object sender, EventArgs e)
@@ -493,7 +494,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemCloseAutomaticDoor_Click(object sender, EventArgs e)
@@ -509,7 +510,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void cmenuItemClear_Click(object sender, EventArgs e)
@@ -520,7 +521,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}

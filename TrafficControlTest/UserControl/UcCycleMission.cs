@@ -7,6 +7,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.General;
+using Library;
 
 namespace TrafficControlTest.UserControl
 {
@@ -327,7 +328,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnAnalyzeMissionListString_Click(object sender, EventArgs e)
@@ -349,7 +350,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnStartCycle_Click(object sender, EventArgs e)
@@ -365,7 +366,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 		private void btnStopCycle_Click(object sender, EventArgs e)
@@ -381,7 +382,7 @@ namespace TrafficControlTest.UserControl
 			}
 			catch (Exception Ex)
 			{
-				Library.ExceptionHandling.HandleException(Ex);
+				ExceptionHandling.HandleException(Ex);
 			}
 		}
 	}
