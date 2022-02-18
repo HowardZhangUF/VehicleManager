@@ -236,12 +236,6 @@
     <Compile Include="UserControl\DateTimePickerColorful.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UserControl\formProgress.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UserControl\formProgress.Designer.cs">
-      <DependentUpon>formProgress.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserControl\SwitchButton.cs" />
     <Compile Include="UserControl\TextBoxWithHint.cs">
       <SubType>Component</SubType>
@@ -421,9 +415,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControl\formProgress.resx">
-      <DependentUpon>formProgress.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcAbout.resx">
       <DependentUpon>UcAbout.cs</DependentUpon>
     </EmbeddedResource>

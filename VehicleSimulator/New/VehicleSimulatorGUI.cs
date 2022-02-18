@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryForVM;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -78,7 +79,7 @@ namespace VehicleSimulator.New
 			Destructor();
 			Task.Run(() => 
 			{
-				TrafficControlTest.UserControl.formProgress frm = new TrafficControlTest.UserControl.formProgress();
+				formProgress frm = new formProgress();
 				frm.StartPosition = FormStartPosition.CenterParent;
 				frm.SetTitleText("Program Closing ...");
 				frm.Show();

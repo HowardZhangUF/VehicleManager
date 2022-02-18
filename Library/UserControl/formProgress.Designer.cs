@@ -1,4 +1,4 @@
-﻿namespace TrafficControlTest.UserControl
+﻿namespace LibraryForVM
 {
 	partial class formProgress
 	{

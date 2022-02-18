@@ -1,7 +1,7 @@
 ﻿using LibraryForVM;
 using System.Windows.Forms;
 
-namespace TrafficControlTest.UserControl
+namespace LibraryForVM
 {
 	public partial class formProgress : Form
 	{
