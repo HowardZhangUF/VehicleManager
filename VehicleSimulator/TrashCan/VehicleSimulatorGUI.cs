@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -60,7 +61,7 @@ namespace VehicleSimulator.UserInterface
 				foreach (string point in points)
 				{
 					string[] coordinate = point.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-					tmpPoints.Add(TrafficControlTest.Library.Library.GenerateIPoint2D(int.Parse(coordinate[0]), int.Parse(coordinate[1])));
+					tmpPoints.Add(new Point2D(int.Parse(coordinate[0]), int.Parse(coordinate[1])));
 				}
 				Path = tmpPoints;
 				result = true;

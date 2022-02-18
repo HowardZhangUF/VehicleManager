@@ -1,4 +1,4 @@
-﻿namespace TrafficControlTest.Module.General
+﻿namespace Library
 {
 	public class TowardPoint2D : ITowardPoint2D
 	{
@@ -10,9 +10,17 @@
 		{
 			Set(X, Y, Toward);
 		}
+		public TowardPoint2D(IPoint2D Point, double Toward)
+		{
+			Set(Point, Toward);
+		}
 		public void Set(int X, int Y)
 		{
 			Set(X, Y, 0);
+		}
+		public void Set(IPoint2D Point, double Toward)
+		{
+			Set(Point.mX, Point.mY, Toward);
 		}
 		public void Set(int X, int Y, double Toward)
 		{

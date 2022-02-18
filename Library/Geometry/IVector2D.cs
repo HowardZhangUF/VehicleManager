@@ -1,5 +1,5 @@
 ﻿
-namespace TrafficControlTest.Module.General
+namespace Library
 {
 	public interface IVector2D
 	{

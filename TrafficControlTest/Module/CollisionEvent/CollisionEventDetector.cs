@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Library;
@@ -229,9 +230,9 @@ namespace TrafficControlTest.Module.CollisionEvent
 			 * 若有重疊，代表兩車「有機會」發生路徑線重疊，
 			 * 反之，代表兩車「不會」發生路徑線重疊。
 			 */
-			if (IsRectangleOverlap(Vehicle1.mPathRegion, Vehicle2.mPathRegion))
+			if (GeometryAlgorithm.IsRectangleOverlap(Vehicle1.mPathRegion, Vehicle2.mPathRegion))
 			{
-				PathRegionOverlapPair = GenerateIPathRegionOverlapPair(Vehicle1, Vehicle2, GetIntersectionRectangle(Vehicle1.mPathRegion, Vehicle2.mPathRegion));
+				PathRegionOverlapPair = GenerateIPathRegionOverlapPair(Vehicle1, Vehicle2, GeometryAlgorithm.GetIntersectionRectangle(Vehicle1.mPathRegion, Vehicle2.mPathRegion));
 				return true;
 			}
 			else
@@ -282,8 +283,8 @@ namespace TrafficControlTest.Module.CollisionEvent
 			PathOverlapPair = null;
 
 			IRectangle2D pathRegionOverlapRegion = PathRegionOverlapPair.mOverlapRegionOfPathRegions;
-			IEnumerable<IPoint2D> filteredPathPointsOfVehicle1 = PathRegionOverlapPair.mVehicle1.mPathDetail.Where((o) => IsPointInside(o, pathRegionOverlapRegion));
-			IEnumerable<IPoint2D> filteredPathPointsOfVehicle2 = PathRegionOverlapPair.mVehicle2.mPathDetail.Where((o) => IsPointInside(o, pathRegionOverlapRegion));
+			IEnumerable<IPoint2D> filteredPathPointsOfVehicle1 = PathRegionOverlapPair.mVehicle1.mPathDetail.Where((o) => GeometryAlgorithm.IsPointInside(o, pathRegionOverlapRegion));
+			IEnumerable<IPoint2D> filteredPathPointsOfVehicle2 = PathRegionOverlapPair.mVehicle2.mPathDetail.Where((o) => GeometryAlgorithm.IsPointInside(o, pathRegionOverlapRegion));
 			int frameRadiusOfVehicle1 = PathRegionOverlapPair.mVehicle1.mTotalFrameRadius;
 			int frameRadiusOfVehicle2 = PathRegionOverlapPair.mVehicle2.mTotalFrameRadius;
 
@@ -297,7 +298,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 				List<IRectangle2D> overlapRegions = new List<IRectangle2D>();
 				if (overlapRegionsOfVehicle1OnVehiclePath2 != null && overlapRegionsOfVehicle1OnVehiclePath2.Count() > 0) overlapRegions.AddRange(overlapRegionsOfVehicle1OnVehiclePath2);
 				if (overlapRegionsOfVehicle2OnVehiclePath1 != null && overlapRegionsOfVehicle2OnVehiclePath1.Count() > 0) overlapRegions.AddRange(overlapRegionsOfVehicle2OnVehiclePath1);
-				overlapRegions = MergeRectangle(overlapRegions).ToList();
+				overlapRegions = GeometryAlgorithm.MergeRectangle(overlapRegions).ToList();
 				PathOverlapPair = GenerateIPathOverlapPair(PathRegionOverlapPair.mVehicle1, PathRegionOverlapPair.mVehicle2, overlapRegions);
 			}
 
@@ -318,9 +319,9 @@ namespace TrafficControlTest.Module.CollisionEvent
 					for (int i = 0; i < PointsA.Count(); ++i)
 					{
 						var neighbourPoints = treeOfPointsB.GetNearestNeighbours(new int[] { PointsA.ElementAt(i).mX, PointsA.ElementAt(i).mY }, NeighbourAmount);
-						if (neighbourPoints.Any((o) => GetDistance(PointsA.ElementAt(i), GenerateIPoint2D(o.Point[0], o.Point[1])) < FrameRadius))
+						if (neighbourPoints.Any((o) => GeometryAlgorithm.GetDistance(PointsA.ElementAt(i), new Point2D(o.Point[0], o.Point[1])) < FrameRadius))
 						{
-							IRectangle2D overlapRegion = GetRectangle(PointsA.ElementAt(i).mX, PointsA.ElementAt(i).mY, FrameRadius);
+							IRectangle2D overlapRegion = GeometryAlgorithm.GetRectangle(PointsA.ElementAt(i).mX, PointsA.ElementAt(i).mY, FrameRadius);
 							if (tmpOverlapRegions == null)
 							{
 								tmpOverlapRegions = new List<IRectangle2D>();
@@ -328,9 +329,9 @@ namespace TrafficControlTest.Module.CollisionEvent
 							}
 							else
 							{
-								if (IsRectangleOverlap(tmpOverlapRegions.Last(), overlapRegion))
+								if (GeometryAlgorithm.IsRectangleOverlap(tmpOverlapRegions.Last(), overlapRegion))
 								{
-									tmpOverlapRegions[tmpOverlapRegions.Count - 1] = GetCoverRectangle(tmpOverlapRegions.Last(), overlapRegion);
+									tmpOverlapRegions[tmpOverlapRegions.Count - 1] = GeometryAlgorithm.GetCoverRectangle(tmpOverlapRegions.Last(), overlapRegion);
 								}
 								else
 								{
@@ -342,7 +343,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 
 					if (tmpOverlapRegions != null && tmpOverlapRegions.Count > 0)
 					{
-						OverlapRegions = MergeRectangle(tmpOverlapRegions).ToList();
+						OverlapRegions = GeometryAlgorithm.MergeRectangle(tmpOverlapRegions).ToList();
 					}
 				}
 			}
@@ -459,17 +460,17 @@ namespace TrafficControlTest.Module.CollisionEvent
 				tmpPath.Insert(0, Vehicle.mLocationCoordinate);
 				for (int i = 1; i < tmpPath.Count(); ++i)
 				{
-					IEnumerable<IPoint2D> intersectionPoints = GetIntersectionPoint(Region, tmpPath[i - 1], tmpPath[i]);
+					IEnumerable<IPoint2D> intersectionPoints = GeometryAlgorithm.GetIntersectionPoint(Region, tmpPath[i - 1], tmpPath[i]);
 					switch (intersectionPoints.Count())
 					{
 						case 1:
 							// 第一個點在矩形外，第二個點在矩形內
-							if (!IsPointInside(tmpPath[i - 1], Region) && IsPointInside(tmpPath[i], Region))
+							if (!GeometryAlgorithm.IsPointInside(tmpPath[i - 1], Region) && GeometryAlgorithm.IsPointInside(tmpPath[i], Region))
 							{
 								if (EnterPoint == null)
 								{
-									EnterPoint = GenerateITowardPoint2D(intersectionPoints.First(), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									EnterDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.First());
+									EnterPoint = new TowardPoint2D(intersectionPoints.First(), GeometryAlgorithm.GetAngle(tmpPath[i - 1], tmpPath[i]));
+									EnterDistance = GeometryAlgorithm.GetDistance(tmpPath.Take(i)) + GeometryAlgorithm.GetDistance(tmpPath[i - 1], intersectionPoints.First());
 								}
 							}
 							// 第一個點在矩形內，第二個點在矩形外
@@ -477,38 +478,38 @@ namespace TrafficControlTest.Module.CollisionEvent
 							{
 								if (ExitPoint == null)
 								{
-									ExitPoint = GenerateITowardPoint2D(intersectionPoints.First(), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									ExitDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.First());
+									ExitPoint = new TowardPoint2D(intersectionPoints.First(), GeometryAlgorithm.GetAngle(tmpPath[i - 1], tmpPath[i]));
+									ExitDistance = GeometryAlgorithm.GetDistance(tmpPath.Take(i)) + GeometryAlgorithm.GetDistance(tmpPath[i - 1], intersectionPoints.First());
 								}
 							}
 							break;
 						case 2:
-							double distance1 = GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0)); // 距離較小的點為進入點，距離較大的點為離開點
-							double distance2 = GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
+							double distance1 = GeometryAlgorithm.GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0)); // 距離較小的點為進入點，距離較大的點為離開點
+							double distance2 = GeometryAlgorithm.GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
 							if (distance1 < distance2)
 							{
 								if (EnterPoint == null)
 								{
-									EnterPoint = GenerateITowardPoint2D(intersectionPoints.ElementAt(0), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									EnterDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
+									EnterPoint = new TowardPoint2D(intersectionPoints.ElementAt(0), GeometryAlgorithm.GetAngle(tmpPath[i - 1], tmpPath[i]));
+									EnterDistance = GeometryAlgorithm.GetDistance(tmpPath.Take(i)) + GeometryAlgorithm.GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
 								}
 								if (ExitPoint == null)
 								{
-									ExitPoint = GenerateITowardPoint2D(intersectionPoints.ElementAt(1), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									ExitDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
+									ExitPoint = new TowardPoint2D(intersectionPoints.ElementAt(1), GeometryAlgorithm.GetAngle(tmpPath[i - 1], tmpPath[i]));
+									ExitDistance = GeometryAlgorithm.GetDistance(tmpPath.Take(i)) + GeometryAlgorithm.GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
 								}
 							}
 							else
 							{
 								if (EnterPoint == null)
 								{
-									EnterPoint = GenerateITowardPoint2D(intersectionPoints.ElementAt(1), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									EnterDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
+									EnterPoint = new TowardPoint2D(intersectionPoints.ElementAt(1), GeometryAlgorithm.GetAngle(tmpPath[i - 1], tmpPath[i]));
+									EnterDistance = GeometryAlgorithm.GetDistance(tmpPath.Take(i)) + GeometryAlgorithm.GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(1));
 								}
 								if (ExitPoint == null)
 								{
-									ExitPoint = GenerateITowardPoint2D(intersectionPoints.ElementAt(0), GetAngle(tmpPath[i - 1], tmpPath[i]));
-									ExitDistance = GetDistance(tmpPath.Take(i)) + GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
+									ExitPoint = new TowardPoint2D(intersectionPoints.ElementAt(0), GeometryAlgorithm.GetAngle(tmpPath[i - 1], tmpPath[i]));
+									ExitDistance = GeometryAlgorithm.GetDistance(tmpPath.Take(i)) + GeometryAlgorithm.GetDistance(tmpPath[i - 1], intersectionPoints.ElementAt(0));
 								}
 							}
 							break;

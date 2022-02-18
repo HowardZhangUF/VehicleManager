@@ -1,4 +1,5 @@
-﻿using SerialData;
+﻿using Library;
+using SerialData;
 using Serialization;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.NewCommunication;
+using Point2D = Library.Point2D;
 
 namespace TrafficControlTest.Module.Vehicle
 {
@@ -210,7 +212,7 @@ namespace TrafficControlTest.Module.Vehicle
 			}
 
 			rVehicleInfoManager.UpdateItem(AgvStatus.Name, IpPort);
-			rVehicleInfoManager.UpdateItem(AgvStatus.Name, ConvertEDescriptionToStateString(AgvStatus.Description), AgvStatus.Description.ToString(), Library.Library.GenerateIPoint2D(double.IsNaN(AgvStatus.X) ? 0 : (int)AgvStatus.X, double.IsNaN(AgvStatus.Y) ? 0 : (int)AgvStatus.Y), double.IsNaN(AgvStatus.Toward) ? 0 : AgvStatus.Toward, AgvStatus.GoalName, double.IsNaN(AgvStatus.Velocity) ? 0 : AgvStatus.Velocity, double.IsNaN(AgvStatus.MapMatch) ? 0 : AgvStatus.MapMatch * 100, double.IsNaN(AgvStatus.Battery) ? 0 : AgvStatus.Battery, AgvStatus.AlarmMessage);
+			rVehicleInfoManager.UpdateItem(AgvStatus.Name, ConvertEDescriptionToStateString(AgvStatus.Description), AgvStatus.Description.ToString(), new Point2D(double.IsNaN(AgvStatus.X) ? 0 : (int)AgvStatus.X, double.IsNaN(AgvStatus.Y) ? 0 : (int)AgvStatus.Y), double.IsNaN(AgvStatus.Toward) ? 0 : AgvStatus.Toward, AgvStatus.GoalName, double.IsNaN(AgvStatus.Velocity) ? 0 : AgvStatus.Velocity, double.IsNaN(AgvStatus.MapMatch) ? 0 : AgvStatus.MapMatch * 100, double.IsNaN(AgvStatus.Battery) ? 0 : AgvStatus.Battery, AgvStatus.AlarmMessage);
 		}
 		private string ConvertEDescriptionToStateString(EDescription Description)
 		{
@@ -262,7 +264,7 @@ namespace TrafficControlTest.Module.Vehicle
 			List<IPoint2D> result = new List<IPoint2D>();
 			for (int i = 0; i < X.Count && i < Y.Count; ++i)
 			{
-				result.Add(Library.Library.GenerateIPoint2D((int)X[i], (int)Y[i]));
+				result.Add(new Point2D((int)X[i], (int)Y[i]));
 			}
 			return result;
 		}

@@ -1,4 +1,5 @@
-﻿using TrafficControlTest.Module.General;
+﻿using Library;
+using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.CollisionEvent

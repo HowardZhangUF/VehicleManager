@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,7 +63,7 @@ namespace TrafficControlTest.Module.Map
 			if (!string.IsNullOrEmpty(mCurrentMapRange) && mCurrentMapRange.Contains(",") && mCurrentMapRange.Contains("(") && mCurrentMapRange.Contains(")"))
 			{
 				string[] tmpData = mCurrentMapRange.Split(new string[] { ",", "(", ")" }, StringSplitOptions.RemoveEmptyEntries);
-				return Library.Library.GenerateIRectangle2D(Library.Library.GenerateIPoint2D(int.Parse(tmpData[0]), int.Parse(tmpData[1])), Library.Library.GenerateIPoint2D(int.Parse(tmpData[2]), int.Parse(tmpData[3])));
+				return new Rectangle2D(new Point2D(int.Parse(tmpData[0]), int.Parse(tmpData[1])), new Point2D(int.Parse(tmpData[2]), int.Parse(tmpData[3])));
 			}
 			else
 			{

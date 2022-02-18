@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,7 @@ namespace TrafficControlTest.Module.General
 		}
 		public void Set(string Name, int X, int Y, double Toward, TypeOfMapObjectOfTowardPoint Type, string[] Parameters)
 		{
-			Set(Name, Library.Library.GenerateITowardPoint2D(X, Y, Toward), Type, Parameters);
+			Set(Name, new TowardPoint2D(X, Y, Toward), Type, Parameters);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -42,7 +43,7 @@ namespace VehicleSimulator.Implement
 		{
 			mName = Name;
 			mState = "Idling";
-			mPosition = GenerateIPoint2D(0, 0);
+			mPosition = new Point2D(0, 0);
 			mBattery = 73.7f;
 			mSafetyFrameRadius = 500;
 			mIsInterveneAvailable = true;
@@ -192,7 +193,7 @@ namespace VehicleSimulator.Implement
 			if (mIsBeingIntervened) ClearInterveneCommand();
 			mTranslationVelocity = MAX_TRANSLATION_VELOCITY;
 			mRotationVelocity = MAX_ROTATION_VELOCITY;
-			mBufferTarget = GenerateIPoint2D(x, y);
+			mBufferTarget = new Point2D(x, y);
 			mIsBeingIntervened = true;
 			mInterveneCommand = $"InsertMovingBuffer:({mBufferTarget.mX},{mBufferTarget.mY})";
 			mState = "Running";
@@ -273,7 +274,7 @@ namespace VehicleSimulator.Implement
 
 				GetNextMove(mPosition.mX, mPosition.mY, mToward, targetPoint.mX, targetPoint.mY, targetToward, mTranslationVelocity, mRotationVelocity, Time, out int NextX, out int NextY, out double NextToward);
 
-				mPosition = GenerateIPoint2D(NextX, NextY);
+				mPosition = new Point2D(NextX, NextY);
 				mToward = NextToward;
 
 				if (IsApproximatelyEqual(mPosition.mX, mPosition.mY, mToward, targetPoint.mX, targetPoint.mY, targetToward))

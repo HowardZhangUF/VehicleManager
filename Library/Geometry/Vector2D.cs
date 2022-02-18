@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TrafficControlTest.Module.General
+namespace Library
 {
-	class Vector2D : IVector2D
+	public class Vector2D : IVector2D
 	{
 		public double mXComponent { get; set; }
 		public double mYComponent { get; set; }

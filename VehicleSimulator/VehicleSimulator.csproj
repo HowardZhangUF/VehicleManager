@@ -224,6 +224,10 @@
       <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
       <Name>Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TrafficControlTest\TrafficControlTest.csproj">
       <Project>{46BE9935-F474-4C10-8E8C-7341AAC51640}</Project>
       <Name>TrafficControlTest</Name>

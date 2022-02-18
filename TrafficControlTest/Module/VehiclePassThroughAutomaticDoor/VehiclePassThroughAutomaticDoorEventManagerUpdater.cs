@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -221,7 +222,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 			List<IPoint2D> fullPath = new List<IPoint2D>();
 			fullPath.Add(VehicleInfo.mLocationCoordinate);
 			fullPath.AddRange(VehicleInfo.mPath);
-			return Library.Library.IsLinePassThroughRectangle(fullPath, AutomaticDoorInfo.mRange);
+			return GeometryAlgorithm.IsLinePassThroughRectangle(fullPath, AutomaticDoorInfo.mRange);
 		}
 		private bool IsVehicleInAutomaticDoor(IVehicleInfo VehicleInfo, IAutomaticDoorInfo AutomaticDoorInfo)
 		{
@@ -229,7 +230,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 		}
 		private int GetDistanceBetweenVehicleAndAutomaticDoor(IVehicleInfo VehicleInfo, IAutomaticDoorInfo AutomaticDoorInfo)
 		{
-			return Library.Library.GetDistanceBetweenPointAndRectangleEdge(VehicleInfo.mLocationCoordinate, AutomaticDoorInfo.mRange);
+			return GeometryAlgorithm.GetDistanceBetweenPointAndRectangleEdge(VehicleInfo.mLocationCoordinate, AutomaticDoorInfo.mRange);
 		}
 	}
 }

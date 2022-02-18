@@ -1,9 +1,11 @@
-﻿using SerialData;
+﻿using Library;
+using SerialData;
 using System;
 using System.Collections.Generic;
 using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.General;
 using VehicleSimulator.Interface;
+using Point2D = Library.Point2D;
 
 namespace VehicleSimulator.Implement
 {
@@ -176,7 +178,7 @@ namespace VehicleSimulator.Implement
 				if (!string.IsNullOrEmpty(Data.Require))
 				{
 					Data.Response = true;
-					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(mRandom.Next(-10000, 10000), mRandom.Next(-10000, 10000)) }, Data.Require);
+					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { new Point2D(mRandom.Next(-10000, 10000), mRandom.Next(-10000, 10000)) }, Data.Require);
 				}
 			}
 		}
@@ -187,7 +189,7 @@ namespace VehicleSimulator.Implement
 				if (Data.Require != null && Data.Require.Count == 2)
 				{
 					Data.Response = true;
-					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(Data.Require[0], Data.Require[1]) });
+					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { new Point2D(Data.Require[0], Data.Require[1]) });
 				}
 			}
 		}
@@ -198,7 +200,7 @@ namespace VehicleSimulator.Implement
 				if (Data.Require != null && Data.Require.Count == 3)
 				{
 					Data.Response = true;
-					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { TrafficControlTest.Library.Library.GenerateIPoint2D(Data.Require[0], Data.Require[1]) });
+					rVehicleSimulatorInfo.StartMove(new List<IPoint2D> { new Point2D(Data.Require[0], Data.Require[1]) });
 				}
 			}
         }

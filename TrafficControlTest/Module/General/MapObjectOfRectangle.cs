@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,11 +35,11 @@ namespace TrafficControlTest.Module.General
 		}
 		public void Set(string Name, IPoint2D MaxPoint, IPoint2D MinPoint, TypeOfMapObjectOfRectangle Type, string[] Parameters)
 		{
-			Set(Name, Library.Library.GenerateIRectangle2D(MaxPoint, MinPoint), Type, Parameters);
+			Set(Name, new Rectangle2D(MaxPoint, MinPoint), Type, Parameters);
 		}
 		public void Set(string Name, int MaxX, int MaxY, int MinX, int MinY, TypeOfMapObjectOfRectangle Type, string[] Parameters)
 		{
-			Set(Name, Library.Library.GenerateIPoint2D(MaxX, MaxY), Library.Library.GenerateIPoint2D(MinX, MinY), Type, Parameters);
+			Set(Name, new Point2D(MaxX, MaxY), new Point2D(MinX, MinY), Type, Parameters);
 		}
 	}
 }

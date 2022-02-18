@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -201,7 +202,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 			List<IPoint2D> fullPath = new List<IPoint2D>();
 			fullPath.Add(VehicleInfo.mLocationCoordinate);
 			fullPath.AddRange(VehicleInfo.mPath);
-			return Library.Library.IsLinePassThroughRectangle(fullPath, LimitVehicleCountZoneInfo.mRange);
+			return GeometryAlgorithm.IsLinePassThroughRectangle(fullPath, LimitVehicleCountZoneInfo.mRange);
 		}
 		private bool IsILimitVehicleCountZoneFull(ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
@@ -219,7 +220,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		}
 		private int GetDistanceBetweenVehicleAndLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
-			return Library.Library.GetDistanceBetweenPointAndRectangleEdge(VehicleInfo.mLocationCoordinate, LimitVehicleCountZoneInfo.mRange);
+			return GeometryAlgorithm.GetDistanceBetweenPointAndRectangleEdge(VehicleInfo.mLocationCoordinate, LimitVehicleCountZoneInfo.mRange);
 		}
 		private int GetDistanceBetweenVehicleAndLimitVehicleCountZoneAlongPathLine(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
@@ -234,13 +235,13 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 
 					for (int i = 0; i < fullPath.Count - 1; ++i)
 					{
-						List<IPoint2D> intersectionPoint = Library.Library.GetIntersectionPoint(LimitVehicleCountZoneInfo.mRange, fullPath[i], fullPath[i + 1]).ToList();
+						List<IPoint2D> intersectionPoint = GeometryAlgorithm.GetIntersectionPoint(LimitVehicleCountZoneInfo.mRange, fullPath[i], fullPath[i + 1]).ToList();
 						if (intersectionPoint != null && intersectionPoint.Count > 0)
 						{
 							// 找到交點
 							List<IPoint2D> points = fullPath.Take(i + 1).ToList();
 							points.Add(intersectionPoint.ElementAt(0));
-							result = (int)Library.Library.GetDistance(points);
+							result = (int)GeometryAlgorithm.GetDistance(points);
 							break;
 						}
 					}

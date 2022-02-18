@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace TrafficControlTest.Module.Vehicle
 		public string mCurrentOriState { get; private set; } = string.Empty;
 		public string mPreviousOriState { get; private set; } = string.Empty;
 		public TimeSpan mCurrentOriStateDuration { get { return DateTime.Now.Subtract(mOriStateStartTimestamp); } }
-		public IPoint2D mLocationCoordinate { get; private set; } = Library.Library.GenerateIPoint2D(0, 0);
+		public IPoint2D mLocationCoordinate { get; private set; } = new Point2D(0, 0);
 		public double mLocationToward { get; private set; } = 0.0f;
 		public string mCurrentTarget { get; private set; } = string.Empty;
 		public string mPreviousTarget { get; private set; } = string.Empty;
@@ -761,7 +762,7 @@ namespace TrafficControlTest.Module.Vehicle
 				result.Add(tmpPath[0]);
 				for (int i = 1; i < tmpPath.Count; ++i)
 				{
-					result.AddRange(Library.Library.ConvertLineToPoints(tmpPath[i - 1], tmpPath[i], Interval));
+					result.AddRange(GeometryAlgorithm.ConvertLineToPoints(tmpPath[i - 1], tmpPath[i], Interval));
 					result.Add(tmpPath[i]);
 				}
 				result.Reverse(); // 計算路徑詳細點完成時，再將其順序反轉，以符合起點是車子當前位置以及終點是路徑點末點的順序
@@ -776,8 +777,8 @@ namespace TrafficControlTest.Module.Vehicle
 			if (Path != null && Path.Count() > 0) tmpPath.AddRange(Path);
 			if (tmpPath.Count > 0)
 			{
-				result = Library.Library.GetCoverRectangle(tmpPath);
-				result = Library.Library.GetAmplifyRectangle(result, Amplify, Amplify);
+				result = GeometryAlgorithm.GetCoverRectangle(tmpPath);
+				result = GeometryAlgorithm.GetAmplifyRectangle(result, Amplify, Amplify);
 			}
 			return result;
 		}
@@ -1207,7 +1208,7 @@ namespace TrafficControlTest.Module.Vehicle
 		public RecordOfLocationCoordinate(DateTime Timestamp, int X, int Y)
 		{
 			mTimestamp = Timestamp;
-			mCoordinate = Library.Library.GenerateIPoint2D(X, Y);
+			mCoordinate = new Point2D(X, Y);
 		}
 	}
 	public class RecordOfLocationToward
