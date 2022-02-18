@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrafficControlTest.Module.NewCommunication
+namespace LibraryForVM
 {
     public class ListenStateChangedEventArgs : EventArgs
     {

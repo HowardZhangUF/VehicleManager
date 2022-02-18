@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TrafficControlTest.Module.NewCommunication
+namespace LibraryForVM
 {
-    public interface ICommunicator
+	public interface ICommunicator
     {
         event EventHandler<SentDataEventArgs> SentData;
         event EventHandler<ReceivedDataEventArgs> ReceivedData;

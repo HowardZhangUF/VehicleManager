@@ -1,10 +1,5 @@
-﻿using SerialData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrafficControlTest.Module.NewCommunication;
+﻿using LibraryForVM;
+using SerialData;
 
 namespace VehicleSimulator.New
 {

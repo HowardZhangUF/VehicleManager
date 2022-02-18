@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TrafficControlTest.Module.NewCommunication
+namespace LibraryForVM
 {
-    public class ConnectStateChangedEventArgs : EventArgs
+	public class ConnectStateChangedEventArgs : EventArgs
     {
         public DateTime OccurTime { get; private set; }
         public string IpPort { get; private set; }

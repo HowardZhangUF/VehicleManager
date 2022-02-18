@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TrafficControlTest.Library;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
-using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Log

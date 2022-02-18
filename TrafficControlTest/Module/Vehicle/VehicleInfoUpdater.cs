@@ -6,7 +6,6 @@ using System.Linq;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
-using TrafficControlTest.Module.NewCommunication;
 using Point2D = LibraryForVM.Point2D;
 
 namespace TrafficControlTest.Module.Vehicle

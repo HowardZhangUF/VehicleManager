@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using TrafficControlTest.Library;
-using TrafficControlTest.Module.NewCommunication;
+﻿using LibraryForVM;
+using System;
 
 namespace TrafficControlTest.Module.CommunicationVehicle
 {
-    public interface IVehicleCommunicator : ICommunicatorServer
+	public interface IVehicleCommunicator : ICommunicatorServer
     {
         event EventHandler<SentDataEventArgs> SentDataSuccessed;
         event EventHandler<SentDataEventArgs> SentDataFailed;

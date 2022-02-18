@@ -1,14 +1,12 @@
 ﻿using AsyncSocket;
-using LibraryForVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace TrafficControlTest.Module.NewCommunication
+namespace LibraryForVM
 {
-    public class CommunicatorServerUsingString : SystemWithLoopTask, ICommunicatorServer
+	public class CommunicatorServerUsingString : SystemWithLoopTask, ICommunicatorServer
     {
         public event EventHandler<ListenStateChangedEventArgs> LocalListenStateChanged;
         public event EventHandler<ConnectStateChangedEventArgs> RemoteConnectStateChanged;

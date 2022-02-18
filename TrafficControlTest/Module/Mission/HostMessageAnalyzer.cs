@@ -1,17 +1,15 @@
 ﻿using LibraryForVM;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrafficControlTest.Module.CommunicationHost;
-using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Mission
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class HostMessageAnalyzer : SystemWithConfig, IHostMessageAnalyzer
+	/// <summary>
+	/// 
+	/// </summary>
+	public class HostMessageAnalyzer : SystemWithConfig, IHostMessageAnalyzer
     {
         private IHostCommunicator rHostCommunicator = null;
         private IVehicleInfoManager rVehicleInfoManager = null;

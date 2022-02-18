@@ -1,16 +1,13 @@
-﻿using AsyncSocket;
+﻿using LibraryForVM;
 using SerialData;
 using Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using TrafficControlTest.Library;
-using TrafficControlTest.Module.NewCommunication;
 
 namespace TrafficControlTest.Module.CommunicationVehicle
 {
-    public class VehicleCommunicator : CommunicatorServerUsingiTSSerialData, IVehicleCommunicator
+	public class VehicleCommunicator : CommunicatorServerUsingiTSSerialData, IVehicleCommunicator
     {
         public event EventHandler<SentDataEventArgs> SentDataSuccessed;
         public event EventHandler<SentDataEventArgs> SentDataFailed;

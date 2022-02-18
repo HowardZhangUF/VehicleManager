@@ -18,7 +18,6 @@ using TrafficControlTest.Module.LimitVehicleCountZone;
 using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
-using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
 using TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone;

@@ -2,7 +2,6 @@
 using SerialData;
 using System;
 using System.Threading.Tasks;
-using TrafficControlTest.Module.NewCommunication;
 
 namespace VehicleSimulator.New
 {

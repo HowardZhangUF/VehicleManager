@@ -1,14 +1,8 @@
-﻿using AsyncSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using TrafficControlTest.Library;
+﻿using LibraryForVM;
 
 namespace TrafficControlTest.Module.CommunicationHost
 {
-    public class HostCommunicator : NewCommunication.CommunicatorServerUsingString, IHostCommunicator
+	public class HostCommunicator : CommunicatorServerUsingString, IHostCommunicator
     {
 
     }
