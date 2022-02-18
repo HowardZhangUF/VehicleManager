@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryForVM;
+using System;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.InterveneCommand;

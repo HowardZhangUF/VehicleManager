@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrafficControlTest.Module.General
+namespace LibraryForVM
 {
 	/// <summary>
 	/// - 儲存物件的識別碼

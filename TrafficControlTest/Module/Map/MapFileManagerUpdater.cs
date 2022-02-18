@@ -1,4 +1,5 @@
-﻿using SerialData;
+﻿using LibraryForVM;
+using SerialData;
 using Serialization;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TrafficControlTest.Module.General
+namespace LibraryForVM
 {
 	/// <summary>
 	/// - 儲存所有的 IItem

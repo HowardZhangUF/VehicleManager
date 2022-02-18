@@ -63,6 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="CommonClass\Item\IItem.cs" />
+    <Compile Include="CommonClass\Item\IItemManager.cs" />
+    <Compile Include="CommonClass\Item\ItemManager.cs" />
     <Compile Include="CommonClass\System\ISystemWithConfig.cs" />
     <Compile Include="CommonClass\System\ISystemWithLoopTask.cs" />
     <Compile Include="CommonClass\System\SystemWithConfig.cs" />

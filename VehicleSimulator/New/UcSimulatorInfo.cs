@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.NewCommunication;
+using LibraryForVM;
 
 namespace VehicleSimulator.New
 {

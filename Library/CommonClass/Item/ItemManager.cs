@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TrafficControlTest.Module.General
+namespace LibraryForVM
 {
 	public abstract class ItemManager<T> : IItemManager<T> where T : IItem
 	{

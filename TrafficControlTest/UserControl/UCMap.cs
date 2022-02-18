@@ -7,6 +7,7 @@ using GLStyle;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.CollisionEvent;
 using TrafficControlTest.Module.General;
+using LibraryForVM;
 
 namespace TrafficControlTest.UserControl
 {

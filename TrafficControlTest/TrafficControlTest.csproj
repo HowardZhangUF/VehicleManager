@@ -156,9 +156,6 @@
     <Compile Include="Module\Configure\IConfigurator.cs" />
     <Compile Include="Module\Log\ICurrentLogAdapter.cs" />
     <Compile Include="Module\Log\ILogRecorder.cs" />
-    <Compile Include="Module\General\IItemManager.cs" />
-    <Compile Include="Module\General\ItemManager.cs" />
-    <Compile Include="Module\General\IItem.cs" />
     <Compile Include="Module\Log\IHistoryLogAdapter.cs" />
     <Compile Include="Module\Map\IMapFileManager.cs" />
     <Compile Include="Module\Map\IMapManager.cs" />
