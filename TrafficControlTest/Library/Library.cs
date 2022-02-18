@@ -9,7 +9,6 @@ using TrafficControlTest.Module.Account;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.CollisionEvent;
-using TrafficControlTest.Module.Communication;
 using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Configure;
@@ -20,6 +19,7 @@ using TrafficControlTest.Module.LimitVehicleCountZone;
 using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.NewCommunication;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
 using TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone;
@@ -192,10 +192,6 @@ namespace TrafficControlTest.Library
 		public static IVehicleCommunicator GenerateIVehicleCommunicator()
 		{
 			return new VehicleCommunicator();
-		}
-		public static ICommunicatorClient GenerateICommunicatorClient()
-		{
-			return new CommunicatorClient();
 		}
 		public static IVehicleInfoManager GenerateIVehicleInfoManager()
 		{
@@ -457,16 +453,5 @@ namespace TrafficControlTest.Library
 			return new SignificantMessageHandler();
 		}
 		#endregion
-	}
-
-	public static class EventHandlerLibrary
-	{
-		public delegate void EventHandlerDateTime(DateTime OccurTime);
-		public delegate void EventHandlerRemoteConnectState(DateTime OccurTime, string IpPort, ConnectState NewState);
-		public delegate void EventHandlerLocalListenState(DateTime OccurTime, ListenState NewState, int Port);
-		public delegate void EventHandlerSentSerializableData(DateTime OccurTime, string IpPort, object Data);
-		public delegate void EventHandlerReceivedSerializableData(DateTime OccurTime, string IpPort, object Data);
-		public delegate void EventHandlerSentString(DateTime OccurTime, string IpPort, string Data);
-		public delegate void EventHandlerReceivedString(DateTime OccurTime, string IpPort, string Data);
 	}
 }

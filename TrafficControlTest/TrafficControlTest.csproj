@@ -104,6 +104,8 @@
     <Compile Include="Module\ChargeStation\IChargeStationInfo.cs" />
     <Compile Include="Module\ChargeStation\IChargeStationInfoManager.cs" />
     <Compile Include="Module\ChargeStation\IChargeStationInfoManagerUpdater.cs" />
+    <Compile Include="Module\CommunicationHost\HostCommunicator.cs" />
+    <Compile Include="Module\CommunicationHost\IHostCommunicator.cs" />
     <Compile Include="Module\Configure\Configuration.cs" />
     <Compile Include="Module\CycleMission\CycleMissionGenerator.cs" />
     <Compile Include="Module\CycleMission\ICycleMissionGenerator.cs" />
@@ -137,7 +139,6 @@
     <Compile Include="Module\LimitVehicleCountZone\LimitVehicleCountZoneInfoManagerUpdater.cs" />
     <Compile Include="Module\Log\DebugMessageHandler.cs" />
     <Compile Include="Module\Log\CurrentLogAdapter.cs" />
-    <Compile Include="Module\CommunicationHost\HostCommunicator.cs" />
     <Compile Include="Module\Log\IDebugMessageHandler.cs" />
     <Compile Include="Module\Log\ILogMaintainHandler.cs" />
     <Compile Include="Module\Log\ILogExporter.cs" />
@@ -161,7 +162,6 @@
     <Compile Include="Module\Log\ILogRecorder.cs" />
     <Compile Include="Module\General\IItemManager.cs" />
     <Compile Include="Module\General\ItemManager.cs" />
-    <Compile Include="Module\CommunicationHost\IHostCommunicator.cs" />
     <Compile Include="Module\General\IItem.cs" />
     <Compile Include="Module\Log\IHistoryLogAdapter.cs" />
     <Compile Include="Module\Map\IMapFileManager.cs" />
@@ -227,7 +227,6 @@
     <Compile Include="Process\VehicleManagerProcess.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventDetector.cs" />
     <Compile Include="Module\CollisionEvent\CollisionEventManager.cs" />
-    <Compile Include="Module\Communication\CommunicatorClient.cs" />
     <Compile Include="Module\General\TimePeriod.cs" />
     <Compile Include="Module\CommunicationVehicle\VehicleCommunicator.cs" />
     <Compile Include="Module\Vehicle\VehicleInfo.cs" />
@@ -235,7 +234,6 @@
     <Compile Include="Module\Vehicle\VehicleInfoUpdater.cs" />
     <Compile Include="Module\CollisionEvent\ICollisionEventDetector.cs" />
     <Compile Include="Module\CollisionEvent\ICollisionEventManager.cs" />
-    <Compile Include="Module\Communication\ICommunicatorClient.cs" />
     <Compile Include="Module\General\ITimePeriod.cs" />
     <Compile Include="Module\Vehicle\IVehicleInfoUpdater.cs" />
     <Compile Include="Library\IntMath.cs" />

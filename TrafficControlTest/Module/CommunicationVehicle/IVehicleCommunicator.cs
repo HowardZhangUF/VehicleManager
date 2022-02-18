@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.NewCommunication;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.CommunicationVehicle
 {

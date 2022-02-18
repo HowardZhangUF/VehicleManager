@@ -1,5 +1,4 @@
 ﻿using System;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.General
 {

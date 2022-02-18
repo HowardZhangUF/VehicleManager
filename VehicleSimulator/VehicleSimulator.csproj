@@ -130,21 +130,7 @@
     <Compile Include="New\VehicleSimulatorGUI.Designer.cs">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="TrashCan\ConsoleMessageHandler.cs" />
-    <Compile Include="TrashCan\VehicleSimulatorProcess.cs" />
     <Compile Include="Library\Extension.cs" />
-    <Compile Include="TrashCan\VehicleSimulatorInfo.cs" />
-    <Compile Include="TrashCan\VehicleStateReporter.cs" />
-    <Compile Include="TrashCan\IConsoleMessageHandler.cs" />
-    <Compile Include="TrashCan\IVehicleSimulatorInfo.cs" />
-    <Compile Include="TrashCan\IVehicleStateReporter.cs" />
-    <Compile Include="TrashCan\Library.cs" />
-    <Compile Include="TrashCan\VehicleSimulatorGUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TrashCan\VehicleSimulatorGUI.Designer.cs">
-      <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="New\UcContentOfAbout.resx">
@@ -178,9 +164,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="TrashCan\VehicleSimulatorGUI.resx">
-      <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

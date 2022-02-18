@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.CollisionEvent
 {

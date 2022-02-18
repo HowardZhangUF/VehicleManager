@@ -2,7 +2,6 @@
 using TrafficControlTest.Module.General;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.Vehicle;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.CycleMission
 {

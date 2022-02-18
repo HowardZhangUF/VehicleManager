@@ -8,7 +8,6 @@ using TrafficControlTest.Module.CollisionEvent;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 using TrafficControlTest.Module.CommunicationVehicle;
-using TrafficControlTest.Module.CommunicationHost;
 using TrafficControlTest.Module.General;
 using System.Windows.Forms;
 using TrafficControlTest.Module.Map;

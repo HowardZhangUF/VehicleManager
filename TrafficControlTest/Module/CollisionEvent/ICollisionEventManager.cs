@@ -1,7 +1,6 @@
 ﻿using LibraryForVM;
 using System.Collections.Generic;
 using TrafficControlTest.Module.General;
-using static TrafficControlTest.Library.EventHandlerLibrary;
 
 namespace TrafficControlTest.Module.CollisionEvent
 {
