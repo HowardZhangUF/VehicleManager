@@ -544,6 +544,10 @@
       <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
       <Name>Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LibraryForVM.Communication\LibraryForVM.Communication.csproj">
+      <Project>{aebe9fec-31e4-4bd8-a8d1-07be4c57cb0d}</Project>
+      <Name>LibraryForVM.Communication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LibraryForVM.Database\LibraryForVM.Database.csproj">
       <Project>{fc6881c5-0399-4bfb-856d-c18f82544e1f}</Project>
       <Name>LibraryForVM.Database</Name>

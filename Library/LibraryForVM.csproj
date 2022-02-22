@@ -47,17 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="CommonClass\Communication\CommunicatorClientUsingiTSSerialData.cs" />
-    <Compile Include="CommonClass\Communication\CommunicatorClientUsingString.cs" />
-    <Compile Include="CommonClass\Communication\CommunicatorServerUsingiTSSerialData.cs" />
-    <Compile Include="CommonClass\Communication\CommunicatorServerUsingString.cs" />
-    <Compile Include="CommonClass\Communication\ConnectStateChangedEventArgs.cs" />
-    <Compile Include="CommonClass\Communication\ICommunicator.cs" />
-    <Compile Include="CommonClass\Communication\ICommunicatorClient.cs" />
-    <Compile Include="CommonClass\Communication\ICommunicatorServer.cs" />
-    <Compile Include="CommonClass\Communication\ListenStateChangedEventArgs.cs" />
-    <Compile Include="CommonClass\Communication\ReceivedDataEventArgs.cs" />
-    <Compile Include="CommonClass\Communication\SentDataEventArgs.cs" />
     <Compile Include="CommonClass\Item\IItem.cs" />
     <Compile Include="CommonClass\Item\IItemManager.cs" />
     <Compile Include="CommonClass\Item\ItemManager.cs" />
@@ -91,16 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\iTSLibrary\AsyncSocket\AsyncSocket.csproj">
-      <Project>{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE}</Project>
-      <Name>AsyncSocket</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\Serialization\Serialization.csproj">
-      <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
-      <Name>Serialization</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UserControl\formProgress.resx">
