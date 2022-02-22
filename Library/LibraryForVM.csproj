@@ -47,15 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="CommonClass\Item\IItem.cs" />
-    <Compile Include="CommonClass\Item\IItemManager.cs" />
-    <Compile Include="CommonClass\Item\ItemManager.cs" />
-    <Compile Include="CommonClass\System\ISystemWithConfig.cs" />
-    <Compile Include="CommonClass\System\ISystemWithLoopTask.cs" />
-    <Compile Include="CommonClass\System\SystemWithConfig.cs" />
-    <Compile Include="CommonClass\System\SystemWithLoopTask.cs" />
-    <Compile Include="CommonClass\Time\ITimeElapseDetector.cs" />
-    <Compile Include="CommonClass\Time\TimeElapseDetector.cs" />
+    <Compile Include="Item\IItem.cs" />
+    <Compile Include="Item\IItemManager.cs" />
+    <Compile Include="Item\ItemManager.cs" />
+    <Compile Include="System\ISystemWithConfig.cs" />
+    <Compile Include="System\ISystemWithLoopTask.cs" />
+    <Compile Include="System\SystemWithConfig.cs" />
+    <Compile Include="System\SystemWithLoopTask.cs" />
+    <Compile Include="Time\ITimeElapseDetector.cs" />
+    <Compile Include="Time\TimeElapseDetector.cs" />
     <Compile Include="Geometry\GeometryAlgorithm.cs" />
     <Compile Include="Geometry\IPoint2D.cs" />
     <Compile Include="Geometry\IRectangle2D.cs" />
