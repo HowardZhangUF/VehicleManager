@@ -551,8 +551,8 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x64" "$(ProjectDir)bin\Debug\x64"  /I /S /E
-XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x86" "$(ProjectDir)bin\Debug\x86"  /I /S /E
+    <PostBuildEvent>IF NOT EXIST "$(ProjectDir)bin\Debug\x64" XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x64" "$(ProjectDir)bin\Debug\x64"  /I /S /E
+IF NOT EXIST "$(ProjectDir)bin\Debug\x86" XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x86" "$(ProjectDir)bin\Debug\x86"  /I /S /E
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
