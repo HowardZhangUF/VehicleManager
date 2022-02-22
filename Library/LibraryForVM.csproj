@@ -65,6 +65,7 @@
     <Compile Include="Geometry\Rectangle2D.cs" />
     <Compile Include="Geometry\TowardPoint2D.cs" />
     <Compile Include="Geometry\Vector2D.cs" />
+    <Compile Include="Others\Cryptography.cs" />
     <Compile Include="Others\ExceptionHandling.cs" />
     <Compile Include="Others\Extension.cs" />
     <Compile Include="Others\ExtensionComboBox.cs" />

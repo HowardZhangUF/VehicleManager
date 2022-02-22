@@ -92,9 +92,9 @@ namespace TrafficControlTest.Module.Account
 		private void InsertDefaultAccountsToDatabaseTable()
 		{
 			List<string> tmp = new List<string>();
-			tmp.Add($"INSERT OR IGNORE INTO {mTableNameOfAccount} VALUES ('CastecSoftware', '{EncryptString("castecsw")}', {(int)AccountRank.Software})");
-			tmp.Add($"INSERT OR IGNORE INTO {mTableNameOfAccount} VALUES ('CastecService', '{EncryptString("castec0")}', {(int)AccountRank.Service})");
-			tmp.Add($"INSERT OR IGNORE INTO {mTableNameOfAccount} VALUES ('Customer', '{EncryptString("customer")}', {(int)AccountRank.Customer})");
+			tmp.Add($"INSERT OR IGNORE INTO {mTableNameOfAccount} VALUES ('CastecSoftware', '{Cryptography.EncryptString("castecsw")}', {(int)AccountRank.Software})");
+			tmp.Add($"INSERT OR IGNORE INTO {mTableNameOfAccount} VALUES ('CastecService', '{Cryptography.EncryptString("castec0")}', {(int)AccountRank.Service})");
+			tmp.Add($"INSERT OR IGNORE INTO {mTableNameOfAccount} VALUES ('Customer', '{Cryptography.EncryptString("customer")}', {(int)AccountRank.Customer})");
 			rDatabaseAdapter.ExecuteNonQueryCommands(tmp);
 		}
 		private void ClearDatabaseTableData(string TableName)
@@ -117,7 +117,7 @@ namespace TrafficControlTest.Module.Account
 		private string GenerateInsertAccountDataSqlCommand(IAccount Account)
 		{
 			// 產生將 Account 資料寫入資料庫的 Sql 語句
-			return $"INSERT INTO {mTableNameOfAccount} VALUES ('{Account.mName}', '{EncryptString(Account.mPassword)}', {(int)Account.mRank})";
+			return $"INSERT INTO {mTableNameOfAccount} VALUES ('{Account.mName}', '{Cryptography.EncryptString(Account.mPassword)}', {(int)Account.mRank})";
 		}
 		private List<IAccount> SelectIAccountFromDatabaseTable()
 		{
@@ -129,7 +129,7 @@ namespace TrafficControlTest.Module.Account
 				List<IAccount> result = new List<IAccount>();
 				for (int i = 0; i < selectResult.Rows.Count; ++i)
 				{
-					result.Add(GenerateIAccount(selectResult.Rows[i].ItemArray[0].ToString(), DecryptString(selectResult.Rows[i].ItemArray[1].ToString()), (AccountRank)int.Parse(selectResult.Rows[i].ItemArray[2].ToString())));
+					result.Add(GenerateIAccount(selectResult.Rows[i].ItemArray[0].ToString(), Cryptography.DecryptString(selectResult.Rows[i].ItemArray[1].ToString()), (AccountRank)int.Parse(selectResult.Rows[i].ItemArray[2].ToString())));
 				}
 				return result;
 			}

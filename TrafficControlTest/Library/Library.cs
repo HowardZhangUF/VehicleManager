@@ -72,8 +72,6 @@ namespace TrafficControlTest.Library
 	{
 		public const string TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
 
-		private static byte[] mKey = Encoding.ASCII.GetBytes("castec27");
-		private static byte[] mIv = Encoding.ASCII.GetBytes("27635744");
 		public static bool ConvertToDictionary(string Source, out Dictionary<string, string> ResultDictionary, string SeperateSymbol = " ", string EqualSymbol = "=")
 		{
 			ResultDictionary = null;
@@ -109,64 +107,8 @@ namespace TrafficControlTest.Library
 			}
 			return (ResultDictionary == null || ResultDictionary.Count == 0) ? false : true;
 		}
-		public static string EncryptString(string Src)
-		{
-			string result = string.Empty;
-			using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
-			{
-				using (MemoryStream ms = new MemoryStream())
-				{
-					using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(mKey, mIv), CryptoStreamMode.Write))
-					{
-						byte[] srcByte = Encoding.ASCII.GetBytes(Src);
-						cs.Write(srcByte, 0, srcByte.Length);
-						cs.FlushFinalBlock();
-						result = Convert.ToBase64String(ms.ToArray());
-					}
-				}
-			}
-			return result;
-		}
-		public static string DecryptString(string Src)
-		{
-			string result = string.Empty;
-			using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
-			{
-				using (MemoryStream ms = new MemoryStream())
-				{
-					using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(mKey, mIv), CryptoStreamMode.Write))
-					{
-						byte[] srcByte = Convert.FromBase64String(Src);
-						cs.Write(srcByte, 0, srcByte.Length);
-						cs.FlushFinalBlock();
-						result = Encoding.ASCII.GetString(ms.ToArray());
-					}
-				}
-			}
-			return result;
-		}
 
 		#region Factory
-		//public static IPoint2D GenerateIPoint2D(int X, int Y)
-		//{
-		//	return new Point2D(X, Y);
-		//}
-		//public static ITowardPoint2D GenerateITowardPoint2D(int X, int Y, double Toward)
-		//{
-		//	return new TowardPoint2D(X, Y, Toward);
-		//}
-		//public static ITowardPoint2D GenerateITowardPoint2D(IPoint2D Point, double Toward)
-		//{
-		//	return new TowardPoint2D(Point.mX, Point.mY, Toward);
-		//}
-		//public static IVector2D GenerateIVector2D(double XComponent, double YComponent)
-		//{
-		//	return new Vector2D(XComponent, YComponent);
-		//}
-		//public static IRectangle2D GenerateIRectangle2D(IPoint2D MaxPoint, IPoint2D MinPoint)
-		//{
-		//	return new Rectangle2D(MaxPoint, MinPoint);
-		//}
 		public static IPathRegionOverlapPair GenerateIPathRegionOverlapPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D OverlapRegionOfPathRegions)
 		{
 			return new PathRegionOverlapPair(Vehicle1, Vehicle2, OverlapRegionOfPathRegions);
