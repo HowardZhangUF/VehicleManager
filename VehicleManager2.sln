@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficControlTestTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryForVM", "Library\LibraryForVM.csproj", "{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryForVM.Database", "LibraryForVM.Database\LibraryForVM.Database.csproj", "{FC6881C5-0399-4BFB-856D-C18F82544E1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC6881C5-0399-4BFB-856D-C18F82544E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC6881C5-0399-4BFB-856D-C18F82544E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC6881C5-0399-4BFB-856D-C18F82544E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC6881C5-0399-4BFB-856D-C18F82544E1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
