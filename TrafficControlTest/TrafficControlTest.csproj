@@ -557,10 +557,7 @@
       <Name>LibraryForVM</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Module\General\" />
-    <Folder Include="Module\NewCommunication\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="icons8_traffic_jam_4.ico" />
   </ItemGroup>

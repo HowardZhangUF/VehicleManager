@@ -130,7 +130,6 @@
     <Compile Include="New\VehicleSimulatorGUI.Designer.cs">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Library\Extension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="New\UcContentOfAbout.resx">
@@ -216,12 +215,7 @@
       <Name>LibraryForVM</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Implement\" />
-    <Folder Include="Interface\" />
-    <Folder Include="Process\" />
-    <Folder Include="UserInterface\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\icons8_close_window_32px.png" />
   </ItemGroup>

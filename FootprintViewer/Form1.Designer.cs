@@ -50,19 +50,19 @@
 			this.btnSelectMapFile = new System.Windows.Forms.Button();
 			this.btnLoadSetting = new System.Windows.Forms.Button();
 			this.tpFootprint = new System.Windows.Forms.TabPage();
-			this.gluiCtrl1 = new GLUI.GLUICtrl();
-			this.lblCurrentTimestamp = new System.Windows.Forms.Label();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel2 = new System.Windows.Forms.Panel();
 			this.panel3 = new System.Windows.Forms.Panel();
+			this.gluiCtrl1 = new GLUI.GLUICtrl();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.lblCurrentTimestamp = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.tbTimestamp)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tpSetting.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tpFootprint.SuspendLayout();
-			this.panel1.SuspendLayout();
 			this.panel3.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tbTimestamp
@@ -278,7 +278,7 @@
 			this.cbStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbStart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbStart.FormattingEnabled = true;
-			this.cbStart.Location = new System.Drawing.Point(113, 160);
+			this.cbStart.Location = new System.Drawing.Point(113, 165);
 			this.cbStart.Name = "cbStart";
 			this.cbStart.Size = new System.Drawing.Size(428, 29);
 			this.cbStart.TabIndex = 10;
@@ -288,7 +288,7 @@
 			this.cbEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbEnd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbEnd.FormattingEnabled = true;
-			this.cbEnd.Location = new System.Drawing.Point(113, 260);
+			this.cbEnd.Location = new System.Drawing.Point(113, 265);
 			this.cbEnd.Name = "cbEnd";
 			this.cbEnd.Size = new System.Drawing.Size(428, 29);
 			this.cbEnd.TabIndex = 11;
@@ -329,6 +329,15 @@
 			this.tpFootprint.Text = "Footprint";
 			this.tpFootprint.UseVisualStyleBackColor = true;
 			// 
+			// panel3
+			// 
+			this.panel3.Controls.Add(this.gluiCtrl1);
+			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel3.Location = new System.Drawing.Point(3, 3);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(870, 345);
+			this.panel3.TabIndex = 5;
+			// 
 			// gluiCtrl1
 			// 
 			this.gluiCtrl1.AllowObjectMenu = true;
@@ -344,15 +353,13 @@
 			this.gluiCtrl1.TabIndex = 2;
 			this.gluiCtrl1.Zoom = 10D;
 			// 
-			// lblCurrentTimestamp
+			// panel2
 			// 
-			this.lblCurrentTimestamp.AutoSize = true;
-			this.lblCurrentTimestamp.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblCurrentTimestamp.Location = new System.Drawing.Point(5, 48);
-			this.lblCurrentTimestamp.Name = "lblCurrentTimestamp";
-			this.lblCurrentTimestamp.Size = new System.Drawing.Size(155, 21);
-			this.lblCurrentTimestamp.TabIndex = 1;
-			this.lblCurrentTimestamp.Text = "1911/1/1 00:00:00";
+			this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.panel2.Location = new System.Drawing.Point(3, 348);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(870, 100);
+			this.panel2.TabIndex = 4;
 			// 
 			// panel1
 			// 
@@ -364,22 +371,15 @@
 			this.panel1.Size = new System.Drawing.Size(870, 70);
 			this.panel1.TabIndex = 3;
 			// 
-			// panel2
+			// lblCurrentTimestamp
 			// 
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel2.Location = new System.Drawing.Point(3, 348);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(870, 100);
-			this.panel2.TabIndex = 4;
-			// 
-			// panel3
-			// 
-			this.panel3.Controls.Add(this.gluiCtrl1);
-			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel3.Location = new System.Drawing.Point(3, 3);
-			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(870, 345);
-			this.panel3.TabIndex = 5;
+			this.lblCurrentTimestamp.AutoSize = true;
+			this.lblCurrentTimestamp.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblCurrentTimestamp.Location = new System.Drawing.Point(5, 48);
+			this.lblCurrentTimestamp.Name = "lblCurrentTimestamp";
+			this.lblCurrentTimestamp.Size = new System.Drawing.Size(155, 21);
+			this.lblCurrentTimestamp.TabIndex = 1;
+			this.lblCurrentTimestamp.Text = "1911/1/1 00:00:00";
 			// 
 			// Form1
 			// 
@@ -397,9 +397,9 @@
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
 			this.tpFootprint.ResumeLayout(false);
+			this.panel3.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
-			this.panel3.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
