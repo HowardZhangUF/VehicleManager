@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsyncSocket, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\AsyncSocket.dll</HintPath>
+    </Reference>
+    <Reference Include="Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,18 +63,16 @@
     <Compile Include="SentDataEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\iTSLibrary\AsyncSocket\AsyncSocket.csproj">
-      <Project>{96aebce3-fc5e-4f3f-b8f9-b4ba0bbac2be}</Project>
-      <Name>AsyncSocket</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\Serialization\Serialization.csproj">
-      <Project>{3719d19b-9168-4d0d-a761-92c583a6d07f}</Project>
-      <Name>Serialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LibraryForVM\LibraryForVM.csproj">
       <Project>{dbad48db-3cc1-40f7-a390-f64ad3b43162}</Project>
       <Name>LibraryForVM</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Include\iTSLibrary\AsyncSocket.dll" />
+    <Content Include="Include\iTSLibrary\AsyncSocket.pdb" />
+    <Content Include="Include\iTSLibrary\Serialization.dll" />
+    <Content Include="Include\iTSLibrary\Serialization.pdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

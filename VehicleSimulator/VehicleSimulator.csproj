@@ -47,6 +47,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Include\Pathfinding\Module.Pathfinding.dll</HintPath>
     </Reference>
+    <Reference Include="SerialData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SerialData.dll</HintPath>
+    </Reference>
+    <Reference Include="Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -173,14 +181,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\iTSLibrary\SerialData\SerialData.csproj">
-      <Project>{3cd8a484-f2d7-4659-9ab2-ed7ba11c78c6}</Project>
-      <Name>SerialData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\Serialization\Serialization.csproj">
-      <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
-      <Name>Serialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LibraryForVM.Communication\LibraryForVM.Communication.csproj">
       <Project>{aebe9fec-31e4-4bd8-a8d1-07be4c57cb0d}</Project>
       <Name>LibraryForVM.Communication</Name>
@@ -229,6 +229,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons8_adjust.ico" />
+    <Content Include="Include\iTSLibrary\SerialData.dll" />
+    <Content Include="Include\iTSLibrary\SerialData.pdb" />
     <Content Include="Include\Pathfinding\Module.Map.dll" />
     <Content Include="Include\Pathfinding\Module.Map.pdb" />
     <Content Include="Include\Pathfinding\Module.Pathfinding.dll" />

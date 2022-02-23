@@ -39,15 +39,83 @@
     <ApplicationIcon>icons8_traffic_jam_4.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsyncSocket, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\AsyncSocket.dll</HintPath>
+    </Reference>
+    <Reference Include="Geometry, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\Geometry.dll</HintPath>
+    </Reference>
+    <Reference Include="GLCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\GLCore.dll</HintPath>
+    </Reference>
+    <Reference Include="GLStyle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\GLStyle.dll</HintPath>
+    </Reference>
+    <Reference Include="GLUI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\GLUI.dll</HintPath>
+    </Reference>
     <Reference Include="Hasp">
       <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\Hasp.dll</HintPath>
+    </Reference>
+    <Reference Include="hasp_net_windows, Version=7.4.1.55825, Culture=neutral, PublicKeyToken=56120be447701319, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\hasp_net_windows.dll</HintPath>
+    </Reference>
+    <Reference Include="IniFiles, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\IniFiles.dll</HintPath>
+    </Reference>
+    <Reference Include="iTSLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\iTSLibrary.dll</HintPath>
     </Reference>
     <Reference Include="KdTreeLib, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\KdTree.1.4.1\lib\net461\KdTreeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LogManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\LogManager.dll</HintPath>
+    </Reference>
+    <Reference Include="MapReader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\MapReader.dll</HintPath>
+    </Reference>
+    <Reference Include="MD5Hash, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\MD5Hash.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SerialData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SerialData.dll</HintPath>
+    </Reference>
+    <Reference Include="Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SharpGL.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.SceneGraph, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SharpGL.SceneGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.Serialization, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SharpGL.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.WinForms, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SharpGL.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -62,6 +130,14 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ThreadSafety, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\ThreadSafety.dll</HintPath>
+    </Reference>
+    <Reference Include="WaitTask, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\WaitTask.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicator.cs" />
@@ -473,6 +549,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
+    <None Include="Include\iTSLibrary\Style.ini" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -492,42 +569,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\iTSLibrary\AsyncSocket\AsyncSocket.csproj">
-      <Project>{96AEBCE3-FC5E-4F3F-B8F9-B4BA0BBAC2BE}</Project>
-      <Name>AsyncSocket</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\Geometry\Geometry.csproj">
-      <Project>{a617d647-1075-4bbb-9b9c-17971d56fe1e}</Project>
-      <Name>Geometry</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\GLCore\GLCore.csproj">
-      <Project>{8dd11590-79e3-4d93-83db-8b2dd19cd3f4}</Project>
-      <Name>GLCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\GLStyle\GLStyle.csproj">
-      <Project>{67ede669-ff71-41ec-ba78-0d167fb5d989}</Project>
-      <Name>GLStyle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\GLUI\GLUI.csproj">
-      <Project>{390dc0bb-01d8-48b3-a7c3-84c5b3355dee}</Project>
-      <Name>GLUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\MapReader\MapReader.csproj">
-      <Project>{86FBB304-7B4F-4C7D-891C-2A3309A275F4}</Project>
-      <Name>MapReader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\MD5Hash\MD5Hash.csproj">
-      <Project>{1610EB3A-CCCB-451D-81D3-F4E174D90D0D}</Project>
-      <Name>MD5Hash</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\SerialData\SerialData.csproj">
-      <Project>{3CD8A484-F2D7-4659-9AB2-ED7BA11C78C6}</Project>
-      <Name>SerialData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\iTSLibrary\Serialization\Serialization.csproj">
-      <Project>{3719D19B-9168-4D0D-A761-92C583A6D07F}</Project>
-      <Name>Serialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LibraryForVM.Communication\LibraryForVM.Communication.csproj">
       <Project>{aebe9fec-31e4-4bd8-a8d1-07be4c57cb0d}</Project>
       <Name>LibraryForVM.Communication</Name>
@@ -544,6 +585,64 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="icons8_traffic_jam_4.ico" />
+    <Content Include="Include\iTSLibrary\AsyncSocket.dll" />
+    <Content Include="Include\iTSLibrary\AsyncSocket.pdb" />
+    <Content Include="Include\iTSLibrary\Geometry.dll" />
+    <Content Include="Include\iTSLibrary\Geometry.pdb" />
+    <Content Include="Include\iTSLibrary\GLCore.dll" />
+    <Content Include="Include\iTSLibrary\GLCore.pdb" />
+    <Content Include="Include\iTSLibrary\GLStyle.dll" />
+    <Content Include="Include\iTSLibrary\GLStyle.pdb" />
+    <Content Include="Include\iTSLibrary\GLUI.dll" />
+    <Content Include="Include\iTSLibrary\GLUI.pdb" />
+    <Content Include="Include\iTSLibrary\Hasp.dll" />
+    <Content Include="Include\iTSLibrary\Hasp.pdb" />
+    <Content Include="Include\iTSLibrary\hasp_net_windows.dll" />
+    <Content Include="Include\iTSLibrary\Image\AGV.png" />
+    <Content Include="Include\iTSLibrary\Image\black.png" />
+    <Content Include="Include\iTSLibrary\Image\ChargingDocking.png" />
+    <Content Include="Include\iTSLibrary\Image\ConveyorDocking.png" />
+    <Content Include="Include\iTSLibrary\Image\General.png" />
+    <Content Include="Include\iTSLibrary\Image\MagneticTracking.png" />
+    <Content Include="Include\iTSLibrary\Image\Narrow.png" />
+    <Content Include="Include\iTSLibrary\Image\Park.png" />
+    <Content Include="Include\iTSLibrary\Image\Pin.png" />
+    <Content Include="Include\iTSLibrary\Image\Position.png" />
+    <Content Include="Include\iTSLibrary\Image\PullDown.png" />
+    <Content Include="Include\iTSLibrary\Image\PullUp.png" />
+    <Content Include="Include\iTSLibrary\Image\RearMagneticTracking.png" />
+    <Content Include="Include\iTSLibrary\Image\wf10.png" />
+    <Content Include="Include\iTSLibrary\Image\wf20.png" />
+    <Content Include="Include\iTSLibrary\Image\wf30.png" />
+    <Content Include="Include\iTSLibrary\Image\wf40.png" />
+    <Content Include="Include\iTSLibrary\Image\wf50.png" />
+    <Content Include="Include\iTSLibrary\Image\wf60.png" />
+    <Content Include="Include\iTSLibrary\Image\wf70.png" />
+    <Content Include="Include\iTSLibrary\Image\wf80.png" />
+    <Content Include="Include\iTSLibrary\Image\wf90.png" />
+    <Content Include="Include\iTSLibrary\IniFiles.dll" />
+    <Content Include="Include\iTSLibrary\IniFiles.pdb" />
+    <Content Include="Include\iTSLibrary\iTSLibrary.dll" />
+    <Content Include="Include\iTSLibrary\iTSLibrary.pdb" />
+    <Content Include="Include\iTSLibrary\LogManager.dll" />
+    <Content Include="Include\iTSLibrary\LogManager.pdb" />
+    <Content Include="Include\iTSLibrary\MapReader.dll" />
+    <Content Include="Include\iTSLibrary\MapReader.pdb" />
+    <Content Include="Include\iTSLibrary\MD5Hash.dll" />
+    <Content Include="Include\iTSLibrary\MD5Hash.pdb" />
+    <Content Include="Include\iTSLibrary\SerialData.dll" />
+    <Content Include="Include\iTSLibrary\SerialData.pdb" />
+    <Content Include="Include\iTSLibrary\Serialization.dll" />
+    <Content Include="Include\iTSLibrary\Serialization.pdb" />
+    <Content Include="Include\iTSLibrary\SharpGL.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.SceneGraph.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.Serialization.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.WinForms.dll" />
+    <Content Include="Include\iTSLibrary\ThreadSafety.dll" />
+    <Content Include="Include\iTSLibrary\ThreadSafety.pdb" />
+    <Content Include="Include\iTSLibrary\WaitTask.dll" />
+    <Content Include="Include\iTSLibrary\WaitTask.pdb" />
+    <Content Include="Include\iTSLibrary\zh-TW\GLUI.resources.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
