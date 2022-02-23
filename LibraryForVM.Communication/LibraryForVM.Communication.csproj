@@ -63,7 +63,7 @@
       <Project>{3719d19b-9168-4d0d-a761-92c583a6d07f}</Project>
       <Name>Serialization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Library\LibraryForVM.csproj">
+    <ProjectReference Include="..\LibraryForVM\LibraryForVM.csproj">
       <Project>{dbad48db-3cc1-40f7-a390-f64ad3b43162}</Project>
       <Name>LibraryForVM</Name>
     </ProjectReference>

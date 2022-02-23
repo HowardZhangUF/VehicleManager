@@ -536,8 +536,8 @@
       <Project>{fc6881c5-0399-4bfb-856d-c18f82544e1f}</Project>
       <Name>LibraryForVM.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Library\LibraryForVM.csproj">
-      <Project>{DBAD48DB-3CC1-40F7-A390-F64AD3B43162}</Project>
+    <ProjectReference Include="..\LibraryForVM\LibraryForVM.csproj">
+      <Project>{dbad48db-3cc1-40f7-a390-f64ad3b43162}</Project>
       <Name>LibraryForVM</Name>
     </ProjectReference>
   </ItemGroup>
