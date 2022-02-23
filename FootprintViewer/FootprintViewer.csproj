@@ -55,6 +55,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Include\iTSLibrary\GLUI.dll</HintPath>
     </Reference>
+    <Reference Include="IniFiles, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\IniFiles.dll</HintPath>
+    </Reference>
     <Reference Include="SharpGL">
       <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.dll</HintPath>
     </Reference>
@@ -79,6 +83,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ThreadSafety, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\ThreadSafety.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Form1.cs">
@@ -157,6 +165,10 @@
     <Content Include="Include\iTSLibrary\Image\wf70.png" />
     <Content Include="Include\iTSLibrary\Image\wf80.png" />
     <Content Include="Include\iTSLibrary\Image\wf90.png" />
+    <Content Include="Include\iTSLibrary\IniFiles.dll" />
+    <Content Include="Include\iTSLibrary\IniFiles.pdb" />
+    <Content Include="Include\iTSLibrary\ThreadSafety.dll" />
+    <Content Include="Include\iTSLibrary\ThreadSafety.pdb" />
     <Content Include="Include\iTSLibrary\zh-TW\GLUI.resources.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -165,8 +177,15 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>IF NOT EXIST "$(ProjectDir)bin\Debug\x64" XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x64" "$(ProjectDir)bin\Debug\x64"  /I /S /E
-IF NOT EXIST "$(ProjectDir)bin\Debug\x86" XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x86" "$(ProjectDir)bin\Debug\x86"  /I /S /E
+    <PostBuildEvent>IF EXIST "$(ProjectDir)bin\Debug\Image" RD /Q /S "$(ProjectDir)bin\Debug\Image"
+IF EXIST "$(ProjectDir)bin\Debug\Style.ini" DEL "$(ProjectDir)bin\Debug\Style.ini"
+IF EXIST "$(ProjectDir)bin\Debug\x64" RD /Q /S "$(ProjectDir)bin\Debug\x64"
+IF EXIST "$(ProjectDir)bin\Debug\x86" RD /Q /S "$(ProjectDir)bin\Debug\x86"
+
+XCOPY "$(ProjectDir)Include\iTSLibrary\Image" "$(ProjectDir)bin\Debug\Image" /I /S /E
+XCOPY "$(ProjectDir)Include\iTSLibrary\Style.ini" "$(ProjectDir)bin\Debug\Style.ini"*
+XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x64" "$(ProjectDir)bin\Debug\x64"  /I /S /E
+XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x86" "$(ProjectDir)bin\Debug\x86"  /I /S /E
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

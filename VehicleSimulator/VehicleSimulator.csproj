@@ -39,6 +39,10 @@
     <ApplicationIcon>icons8_adjust.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LogManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\LogManager.dll</HintPath>
+    </Reference>
     <Reference Include="Module.Map, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Include\Pathfinding\Module.Map.dll</HintPath>
@@ -66,6 +70,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WaitTask, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\WaitTask.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="New\ESimulatorStatus.cs" />
@@ -229,8 +237,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons8_adjust.ico" />
+    <Content Include="Include\iTSLibrary\LogManager.dll" />
+    <Content Include="Include\iTSLibrary\LogManager.pdb" />
     <Content Include="Include\iTSLibrary\SerialData.dll" />
     <Content Include="Include\iTSLibrary\SerialData.pdb" />
+    <Content Include="Include\iTSLibrary\Serialization.dll" />
+    <Content Include="Include\iTSLibrary\Serialization.pdb" />
+    <Content Include="Include\iTSLibrary\WaitTask.dll" />
+    <Content Include="Include\iTSLibrary\WaitTask.pdb" />
     <Content Include="Include\Pathfinding\Module.Map.dll" />
     <Content Include="Include\Pathfinding\Module.Map.pdb" />
     <Content Include="Include\Pathfinding\Module.Pathfinding.dll" />
