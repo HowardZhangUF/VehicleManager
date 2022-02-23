@@ -111,6 +111,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Include\iTSLibrary\Style.ini" />
+    <None Include="Include\UpdateiTSLibrary.bat" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -530,6 +530,7 @@
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="Include\iTSLibrary\Style.ini" />
+    <None Include="Include\UpdateiTSLibrary.bat" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

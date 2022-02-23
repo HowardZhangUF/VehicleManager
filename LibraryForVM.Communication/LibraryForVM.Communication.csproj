@@ -92,5 +92,8 @@
     <Content Include="Include\iTSLibrary\WaitTask.dll" />
     <Content Include="Include\iTSLibrary\WaitTask.pdb" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Include\UpdateiTSLibrary.bat" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
