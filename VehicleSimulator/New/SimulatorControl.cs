@@ -13,8 +13,6 @@ namespace VehicleSimulator.New
 		private string mTarget = string.Empty;
 		private List<MoveRequest> mMoveRequests = new List<MoveRequest>();
 		private bool mPauseMoveFlag = false;
-		private int mTranslationVelocity = 800; // mm/sec
-		private int mRotationVelocity = 30; // degree/sec
 
 		public SimulatorControl(ISimulatorInfo ISimulatorInfo)
 		{
@@ -104,7 +102,7 @@ namespace VehicleSimulator.New
 					}
 					else
 					{
-						GetNextMove(rSimulatorInfo.mX, rSimulatorInfo.mY, rSimulatorInfo.mToward, currentMoveRequest.mX, currentMoveRequest.mY, AdjustTowardValue(currentMoveRequest.mToward), mTranslationVelocity, mRotationVelocity, (double)mTimePeriod / 1000.0f, currentMoveRequest.mIsMoveBackward, currentMoveRequest.mIsRequestToward, out int NextX, out int NextY, out int NextToward);
+						GetNextMove(rSimulatorInfo.mX, rSimulatorInfo.mY, rSimulatorInfo.mToward, currentMoveRequest.mX, currentMoveRequest.mY, AdjustTowardValue(currentMoveRequest.mToward), rSimulatorInfo.mTranslateVelocity, rSimulatorInfo.mRotateVelocity, (double)mTimePeriod / 1000.0f, currentMoveRequest.mIsMoveBackward, currentMoveRequest.mIsRequestToward, out int NextX, out int NextY, out int NextToward);
 						rSimulatorInfo.SetLocation(NextX, NextY, NextToward);
 					}
 				}

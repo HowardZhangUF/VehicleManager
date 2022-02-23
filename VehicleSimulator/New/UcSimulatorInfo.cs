@@ -148,6 +148,17 @@ namespace VehicleSimulator.New
 					dgvSimulatorInfo.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = rSimulatorInfo.mToward;
 				}
 			}
+			else if (e.RowIndex == 4 && e.ColumnIndex == 1) // Translate Velocity
+			{
+				if (int.TryParse(cellValue, out int newTranslateVelocity))
+				{
+					rSimulatorInfo.SetTranslateVelocity(newTranslateVelocity);
+				}
+				else
+				{
+					dgvSimulatorInfo.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = rSimulatorInfo.mTranslateVelocity;
+				}
+			}
 			else if (e.RowIndex == 2 && e.ColumnIndex == 3) // Score
 			{
 				if (double.TryParse(cellValue, out double newScore))
@@ -168,6 +179,17 @@ namespace VehicleSimulator.New
 				else
 				{
 					dgvSimulatorInfo.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = rSimulatorInfo.mBattery.ToString("F2");
+				}
+			}
+			else if (e.RowIndex == 4 && e.ColumnIndex == 3) // Rotate Velocity
+			{
+				if (int.TryParse(cellValue, out int newRotateVelocity))
+				{
+					rSimulatorInfo.SetRotateVelocity(newRotateVelocity);
+				}
+				else
+				{
+					dgvSimulatorInfo.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = rSimulatorInfo.mRotateVelocity;
 				}
 			}
 		}
@@ -251,6 +273,14 @@ namespace VehicleSimulator.New
 			{
 				UpdateGui_SetSimulatorBattery(rSimulatorInfo.mBattery);
 			}
+			else if (e.StatusName.Contains("TranslateVelocity"))
+			{
+				UpdateGui_SetSimulatorTranslateVelocity(rSimulatorInfo.mTranslateVelocity);
+			}
+			else if (e.StatusName.Contains("RotateVelocity"))
+			{
+				UpdateGui_SetSimulatorRotationVelocity(rSimulatorInfo.mRotateVelocity);
+			}
 		}
 		private void HandleEvent_HostCommunicatorConnectStateChanged(object sender, ConnectStateChangedEventArgs e)
 		{
@@ -327,8 +357,8 @@ namespace VehicleSimulator.New
 				UpdateGui_SetSimulatorTarget(rSimulatorInfo.mTarget);
 				UpdateGui_SetSimulatorScore(rSimulatorInfo.mScore);
 				UpdateGui_SetSimulatorBattery(rSimulatorInfo.mBattery);
-				//UpdateGui_SetSimulatorTranslateVelocity();
-				//UpdateGui_SetSimulatorRotationVelocity();
+				UpdateGui_SetSimulatorTranslateVelocity(rSimulatorInfo.mTranslateVelocity);
+				UpdateGui_SetSimulatorRotationVelocity(rSimulatorInfo.mRotateVelocity);
 				UpdateGui_SetSimulatorIsConnect(rHostCommunicator.mIsConnected);
 				UpdateGui_SetSimulatorHostIpPort(rHostCommunicator.GetConfig("RemoteIpPort"));
 			}

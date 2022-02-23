@@ -20,6 +20,8 @@ namespace VehicleSimulator.New
 		public List<Point> mPath { get; private set; } = new List<Point>();
 		public double mScore { get; private set; } = default(double);
 		public double mBattery { get; private set; } = default(double);
+		public int mTranslateVelocity { get; private set; } = 800;
+		public int mRotateVelocity { get; private set; } = 30;
 
 		public SimulatorInfo(string Name)
 		{
@@ -90,6 +92,22 @@ namespace VehicleSimulator.New
 			{
 				mBattery = Battery;
 				RaiseEvent_StatusUpdated("Battery");
+			}
+		}
+		public void SetTranslateVelocity(int TranslateVelocity)
+		{
+			if (mTranslateVelocity != TranslateVelocity)
+			{
+				mTranslateVelocity = TranslateVelocity;
+				RaiseEvent_StatusUpdated("TranslateVelocity");
+			}
+		}
+		public void SetRotateVelocity(int RotateVelocity)
+		{
+			if (mRotateVelocity != RotateVelocity)
+			{
+				mRotateVelocity = RotateVelocity;
+				RaiseEvent_StatusUpdated("RotateVelocity");
 			}
 		}
 

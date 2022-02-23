@@ -17,6 +17,8 @@ namespace VehicleSimulator.New
 		List<Point> mPath { get; }
 		double mScore { get; }
 		double mBattery { get; }
+		int mTranslateVelocity { get; }
+		int mRotateVelocity { get; }
 
 		void SetName(string Name);
 		void SetStatus(ESimulatorStatus Status);
@@ -25,5 +27,7 @@ namespace VehicleSimulator.New
 		void SetPath(List<Point> Points);
 		void SetScore(double Score);
 		void SetBattery(double Battery);
+		void SetTranslateVelocity(int TranslateVelocity);
+		void SetRotateVelocity(int RotateVelocity);
 	}
 }
