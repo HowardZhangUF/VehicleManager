@@ -60,16 +60,16 @@
       <HintPath>Include\iTSLibrary\IniFiles.dll</HintPath>
     </Reference>
     <Reference Include="SharpGL">
-      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.dll</HintPath>
+      <HintPath>Include\iTSLibrary\SharpGL.dll</HintPath>
     </Reference>
     <Reference Include="SharpGL.SceneGraph">
-      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.SceneGraph.dll</HintPath>
+      <HintPath>Include\iTSLibrary\SharpGL.SceneGraph.dll</HintPath>
     </Reference>
     <Reference Include="SharpGL.Serialization">
-      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.Serialization.dll</HintPath>
+      <HintPath>Include\iTSLibrary\SharpGL.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="SharpGL.WinForms">
-      <HintPath>..\..\iTSLibrary\iTSLibrary\bin\Debug\SharpGL.WinForms.dll</HintPath>
+      <HintPath>Include\iTSLibrary\SharpGL.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -168,6 +168,10 @@
     <Content Include="Include\iTSLibrary\Image\wf90.png" />
     <Content Include="Include\iTSLibrary\IniFiles.dll" />
     <Content Include="Include\iTSLibrary\IniFiles.pdb" />
+    <Content Include="Include\iTSLibrary\SharpGL.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.SceneGraph.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.Serialization.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.WinForms.dll" />
     <Content Include="Include\iTSLibrary\ThreadSafety.dll" />
     <Content Include="Include\iTSLibrary\ThreadSafety.pdb" />
     <Content Include="Include\iTSLibrary\zh-TW\GLUI.resources.dll" />

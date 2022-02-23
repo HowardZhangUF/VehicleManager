@@ -2,7 +2,7 @@ SET SrcDir="..\..\..\iTSLibrary\iTSLibrary\bin\Debug\"
 SET DstDir=".\iTSLibrary\"
 
 SET DirList="Image" "zh-TW"
-SET FileList=Geometry.dll Geometry.pdb GLCore.dll GLCore.pdb GLStyle.dll GLStyle.pdb GLUI.dll GLUI.pdb IniFiles.dll IniFiles.pdb Style.ini ThreadSafety.dll ThreadSafety.pdb
+SET FileList=Geometry.dll Geometry.pdb GLCore.dll GLCore.pdb GLStyle.dll GLStyle.pdb GLUI.dll GLUI.pdb IniFiles.dll IniFiles.pdb SharpGL.dll SharpGL.SceneGraph.dll SharpGL.Serialization.dll SharpGL.WinForms.dll Style.ini ThreadSafety.dll ThreadSafety.pdb
 
 FOR %%i IN (%DirList%) DO (
 	IF EXIST "%DstDir%%%i" RD /Q /S "%DstDir%%%i"

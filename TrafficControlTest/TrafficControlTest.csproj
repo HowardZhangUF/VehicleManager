@@ -97,6 +97,22 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Include\iTSLibrary\Serialization.dll</HintPath>
     </Reference>
+    <Reference Include="SharpGL, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SharpGL.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.SceneGraph, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SharpGL.SceneGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.Serialization, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SharpGL.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.WinForms, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\SharpGL.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -613,6 +629,10 @@
     <Content Include="Include\iTSLibrary\SerialData.pdb" />
     <Content Include="Include\iTSLibrary\Serialization.dll" />
     <Content Include="Include\iTSLibrary\Serialization.pdb" />
+    <Content Include="Include\iTSLibrary\SharpGL.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.SceneGraph.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.Serialization.dll" />
+    <Content Include="Include\iTSLibrary\SharpGL.WinForms.dll" />
     <Content Include="Include\iTSLibrary\ThreadSafety.dll" />
     <Content Include="Include\iTSLibrary\ThreadSafety.pdb" />
     <Content Include="Include\iTSLibrary\WaitTask.dll" />
