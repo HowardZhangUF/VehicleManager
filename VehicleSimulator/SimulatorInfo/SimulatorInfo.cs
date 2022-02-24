@@ -22,6 +22,7 @@ namespace VehicleSimulator
 		public double mBattery { get; private set; } = default(double);
 		public int mTranslateVelocity { get; private set; } = 800;
 		public int mRotateVelocity { get; private set; } = 30;
+		public string mMapFilePath { get; private set; } = string.Empty;
 
 		public SimulatorInfo(string Name)
 		{
@@ -108,6 +109,14 @@ namespace VehicleSimulator
 			{
 				mRotateVelocity = RotateVelocity;
 				RaiseEvent_StatusUpdated("RotateVelocity");
+			}
+		}
+		public void SetMapFilePath(string MapFilePath)
+		{
+			if (mMapFilePath != MapFilePath)
+			{
+				mMapFilePath = MapFilePath;
+				RaiseEvent_StatusUpdated("MapFilePath");
 			}
 		}
 

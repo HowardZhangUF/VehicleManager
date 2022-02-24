@@ -64,7 +64,7 @@ namespace VehicleSimulator
 		{
 			foreach (SimulatorProcess process in mSimulatorProcessCollection.Values)
 			{
-				process.GetReferenceOfIMoveRequestCalculator().SetMap(FilePath);
+				process.SetMap(FilePath);
 			}
 		}
 

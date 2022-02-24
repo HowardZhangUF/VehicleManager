@@ -41,6 +41,11 @@ namespace VehicleSimulator
 			mHostCommunicator.Stop();
 			if (mHostCommunicator.mIsConnected) mHostCommunicator.Disconnect();
 		}
+		public void SetMap(string MapFilePath)
+		{
+			mMoveRequestCalculator.SetMap(MapFilePath);
+			mSimulatorInfo.SetMapFilePath(MapFilePath);
+		}
 		public ISimulatorInfo GetReferenceOfISimulatorInfo()
 		{
 			return mSimulatorInfo;
@@ -52,10 +57,6 @@ namespace VehicleSimulator
 		public IHostCommunicator GetReferenceOfIHostCommunicator()
 		{
 			return mHostCommunicator;
-		}
-		public IMoveRequestCalculator GetReferenceOfIMoveRequestCalculator()
-		{
-			return mMoveRequestCalculator;
 		}
 
 		protected virtual void RaiseEvent_DebugMessage(string OccurTime, string Category, string SubCategory, string Message, bool Sync = true)

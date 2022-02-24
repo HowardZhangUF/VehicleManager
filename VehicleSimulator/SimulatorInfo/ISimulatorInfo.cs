@@ -19,6 +19,7 @@ namespace VehicleSimulator
 		double mBattery { get; }
 		int mTranslateVelocity { get; }
 		int mRotateVelocity { get; }
+		string mMapFilePath { get; }
 
 		void SetName(string Name);
 		void SetStatus(ESimulatorStatus Status);
@@ -29,5 +30,6 @@ namespace VehicleSimulator
 		void SetBattery(double Battery);
 		void SetTranslateVelocity(int TranslateVelocity);
 		void SetRotateVelocity(int RotateVelocity);
+		void SetMapFilePath(string MapFilePath);
 	}
 }

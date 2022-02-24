@@ -19,7 +19,9 @@ namespace VehicleSimulator
 		}
 		public void Set(ISimulatorInfo ISimulatorInfo)
 		{
+			UnsubscribeEvent_ISimulatorInfo(ISimulatorInfo);
 			rSimulatorInfo = ISimulatorInfo;
+			SubscribeEvent_ISimualtorInfo(ISimulatorInfo);
 		}
 		public void Set(IHostCommunicator IHostCommunicator)
 		{
@@ -112,6 +114,31 @@ namespace VehicleSimulator
 			}
 		}
 
+		private void SubscribeEvent_ISimualtorInfo(ISimulatorInfo ISimulatorInfo)
+		{
+			if (ISimulatorInfo != null)
+			{
+				ISimulatorInfo.StatusUpdated += HandleEvent_ISimulatorInfoStatusUpdated;
+			}
+		}
+		private void UnsubscribeEvent_ISimulatorInfo(ISimulatorInfo ISimulatorInfo)
+		{
+			if (ISimulatorInfo != null)
+			{
+				ISimulatorInfo.StatusUpdated -= HandleEvent_ISimulatorInfoStatusUpdated;
+			}
+		}
+		private void HandleEvent_ISimulatorInfoStatusUpdated(object sender, StatusUpdatedEventArgs e)
+		{
+			if (e.StatusName.Contains("MapFilePath"))
+			{
+				if (!string.IsNullOrEmpty(rSimulatorInfo.mMapFilePath))
+				{
+					LoadMap tmpLoadMap = new LoadMap(new List<string> { "Simulator", "127.0.0.1:65535", System.IO.Path.GetFileName(rSimulatorInfo.mMapFilePath) });
+					rHostCommunicator.SendData(tmpLoadMap);
+				}
+			}
+		}
 		private void Subtask_ReportSimualtorInfo()
 		{
 			if (rSimulatorInfo != null && rHostCommunicator != null && rHostCommunicator.mIsConnected)

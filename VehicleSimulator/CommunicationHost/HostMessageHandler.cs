@@ -98,6 +98,28 @@ namespace VehicleSimulator
 				HandleSerializableData_Stop(msg);
 				rHostCommunicator.SendData(msg);
 			}
+			else if (e.Data is RequestMapList)
+			{
+				RequestMapList msg = e.Data as RequestMapList;
+				if (!string.IsNullOrEmpty(rSimulatorInfo.mMapFilePath))
+				{
+					msg.Response = new System.Collections.Generic.List<string>() { System.IO.Path.GetFileNameWithoutExtension(rSimulatorInfo.mMapFilePath) + "*" };
+				}
+				else
+				{
+					msg.Response = new System.Collections.Generic.List<string>();
+				}
+				rHostCommunicator.SendData(msg);
+			}
+			else if (e.Data is GetMap)
+			{
+				GetMap msg = e.Data as GetMap;
+				if (!string.IsNullOrEmpty(rSimulatorInfo.mMapFilePath))
+				{
+					msg.Response = new FileInfo(rSimulatorInfo.mMapFilePath);
+				}
+				rHostCommunicator.SendData(msg);
+			}
 		}
 		private void HandleSerializableData_PauseMoving(PauseMoving PauseMoving)
 		{
