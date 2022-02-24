@@ -68,93 +68,93 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="New\ESimulatorStatus.cs" />
-    <Compile Include="New\ForbiddenRectangle.cs" />
-    <Compile Include="New\HostCommunicator.cs" />
-    <Compile Include="New\HostMessageHandler.cs" />
-    <Compile Include="New\IHostCommunicator.cs" />
-    <Compile Include="New\IHostMessageHandler.cs" />
-    <Compile Include="New\IMoveRequestCalculator.cs" />
-    <Compile Include="New\ISimulatorControl.cs" />
-    <Compile Include="New\ISimulatorInfo.cs" />
-    <Compile Include="New\ISimulatorInfoReporter.cs" />
-    <Compile Include="New\MapData.cs" />
-    <Compile Include="New\MoveRequest.cs" />
-    <Compile Include="New\MoveRequestCalculator.cs" />
-    <Compile Include="New\ObstaclePoint.cs" />
-    <Compile Include="New\OneWayRectangle.cs" />
-    <Compile Include="New\Point.cs" />
-    <Compile Include="New\Rectangle.cs" />
-    <Compile Include="New\SimulatorAddedEventArgs.cs" />
-    <Compile Include="New\SimulatorControl.cs" />
-    <Compile Include="New\SimulatorInfo.cs" />
-    <Compile Include="New\SimulatorInfoReporter.cs" />
-    <Compile Include="New\SimulatorProcess.cs" />
-    <Compile Include="New\SimulatorProcessContainer.cs" />
-    <Compile Include="New\SimulatorRemovedEventArgs.cs" />
-    <Compile Include="New\UcContentOfAbout.cs">
+    <Compile Include="SimulatorInfo\ESimulatorStatus.cs" />
+    <Compile Include="Library\ForbiddenRectangle.cs" />
+    <Compile Include="CommunicationHost\HostCommunicator.cs" />
+    <Compile Include="CommunicationHost\HostMessageHandler.cs" />
+    <Compile Include="CommunicationHost\IHostCommunicator.cs" />
+    <Compile Include="CommunicationHost\IHostMessageHandler.cs" />
+    <Compile Include="SimulatorControl\IMoveRequestCalculator.cs" />
+    <Compile Include="SimulatorControl\ISimulatorControl.cs" />
+    <Compile Include="SimulatorInfo\ISimulatorInfo.cs" />
+    <Compile Include="SimulatorInfo\ISimulatorInfoReporter.cs" />
+    <Compile Include="Library\MapData.cs" />
+    <Compile Include="SimulatorControl\MoveRequest.cs" />
+    <Compile Include="SimulatorControl\MoveRequestCalculator.cs" />
+    <Compile Include="Library\ObstaclePoint.cs" />
+    <Compile Include="Library\OneWayRectangle.cs" />
+    <Compile Include="Library\Point.cs" />
+    <Compile Include="Library\Rectangle.cs" />
+    <Compile Include="Process\SimulatorAddedEventArgs.cs" />
+    <Compile Include="SimulatorControl\SimulatorControl.cs" />
+    <Compile Include="SimulatorInfo\SimulatorInfo.cs" />
+    <Compile Include="SimulatorInfo\SimulatorInfoReporter.cs" />
+    <Compile Include="Process\SimulatorProcess.cs" />
+    <Compile Include="Process\SimulatorProcessContainer.cs" />
+    <Compile Include="Process\SimulatorRemovedEventArgs.cs" />
+    <Compile Include="CustomUserControl\UcContentOfAbout.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\UcContentOfAbout.Designer.cs">
+    <Compile Include="CustomUserControl\UcContentOfAbout.Designer.cs">
       <DependentUpon>UcContentOfAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\UcContentOfConsole.cs">
+    <Compile Include="CustomUserControl\UcContentOfConsole.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\UcContentOfConsole.Designer.cs">
+    <Compile Include="CustomUserControl\UcContentOfConsole.Designer.cs">
       <DependentUpon>UcContentOfConsole.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\UcContentOfSetting.cs">
+    <Compile Include="CustomUserControl\UcContentOfSetting.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\UcContentOfSetting.Designer.cs">
+    <Compile Include="CustomUserControl\UcContentOfSetting.Designer.cs">
       <DependentUpon>UcContentOfSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\UcContentOfSimulator.cs">
+    <Compile Include="CustomUserControl\UcContentOfSimulator.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\UcContentOfSimulator.Designer.cs">
+    <Compile Include="CustomUserControl\UcContentOfSimulator.Designer.cs">
       <DependentUpon>UcContentOfSimulator.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\UcSimulatorInfo.cs">
+    <Compile Include="CustomUserControl\UcSimulatorInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\UcSimulatorInfo.Designer.cs">
+    <Compile Include="CustomUserControl\UcSimulatorInfo.Designer.cs">
       <DependentUpon>UcSimulatorInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\UcSimulatorShortcut.cs">
+    <Compile Include="CustomUserControl\UcSimulatorShortcut.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\UcSimulatorShortcut.Designer.cs">
+    <Compile Include="CustomUserControl\UcSimulatorShortcut.Designer.cs">
       <DependentUpon>UcSimulatorShortcut.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\VehicleSimulatorGUI.cs">
+    <Compile Include="CustomUserInterface\VehicleSimulatorGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="New\VehicleSimulatorGUI.Designer.cs">
+    <Compile Include="CustomUserInterface\VehicleSimulatorGUI.Designer.cs">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="New\UcContentOfAbout.resx">
+    <EmbeddedResource Include="CustomUserControl\UcContentOfAbout.resx">
       <DependentUpon>UcContentOfAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\UcContentOfConsole.resx">
+    <EmbeddedResource Include="CustomUserControl\UcContentOfConsole.resx">
       <DependentUpon>UcContentOfConsole.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\UcContentOfSetting.resx">
+    <EmbeddedResource Include="CustomUserControl\UcContentOfSetting.resx">
       <DependentUpon>UcContentOfSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\UcContentOfSimulator.resx">
+    <EmbeddedResource Include="CustomUserControl\UcContentOfSimulator.resx">
       <DependentUpon>UcContentOfSimulator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\UcSimulatorInfo.resx">
+    <EmbeddedResource Include="CustomUserControl\UcSimulatorInfo.resx">
       <DependentUpon>UcSimulatorInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\UcSimulatorShortcut.resx">
+    <EmbeddedResource Include="CustomUserControl\UcSimulatorShortcut.resx">
       <DependentUpon>UcSimulatorShortcut.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\VehicleSimulatorGUI.resx">
+    <EmbeddedResource Include="CustomUserInterface\VehicleSimulatorGUI.resx">
       <DependentUpon>VehicleSimulatorGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
