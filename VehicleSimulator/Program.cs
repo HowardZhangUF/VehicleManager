@@ -16,7 +16,7 @@ namespace VehicleSimulator
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new New.VehicleSimulatorGUI());
+			Application.Run(new VehicleSimulatorGUI());
 		}
 	}
 }

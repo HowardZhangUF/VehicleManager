@@ -3,7 +3,7 @@ using SerialData;
 using System;
 using System.Threading.Tasks;
 
-namespace VehicleSimulator.New
+namespace VehicleSimulator
 {
 	public class SimulatorProcess
 	{

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using LibraryForVM;
 
-namespace VehicleSimulator.New
+namespace VehicleSimulator
 {
 	public partial class UcSimulatorInfo : UserControl
 	{

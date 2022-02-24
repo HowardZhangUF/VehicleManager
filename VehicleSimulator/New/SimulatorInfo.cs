@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VehicleSimulator.New
+namespace VehicleSimulator
 {
 	public class SimulatorInfo : ISimulatorInfo
 	{

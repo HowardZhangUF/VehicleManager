@@ -1,6 +1,6 @@
 ﻿using LibraryForVM;
 
-namespace VehicleSimulator.New
+namespace VehicleSimulator
 {
 	public class HostCommunicator : CommunicatorClientUsingiTSSerialData, IHostCommunicator
 	{

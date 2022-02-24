@@ -1,4 +1,4 @@
-﻿namespace VehicleSimulator.New
+﻿namespace VehicleSimulator
 {
 	partial class UcContentOfSimulator
 	{

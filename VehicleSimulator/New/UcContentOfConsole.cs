@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace VehicleSimulator.New
+namespace VehicleSimulator
 {
 	public partial class UcContentOfConsole : UserControl
 	{

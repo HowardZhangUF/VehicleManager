@@ -1,4 +1,4 @@
-﻿namespace VehicleSimulator.New
+﻿namespace VehicleSimulator
 {
 	partial class VehicleSimulatorGUI
 	{
@@ -38,10 +38,10 @@
 			this.btnMenuOfConsole = new System.Windows.Forms.Button();
 			this.btnMenuOfSimulator = new System.Windows.Forms.Button();
 			this.pnlContent = new System.Windows.Forms.Panel();
-			this.ucContentOfAbout1 = new VehicleSimulator.New.UcContentOfAbout();
-			this.ucContentOfSetting1 = new VehicleSimulator.New.UcContentOfSetting();
-			this.ucContentOfConsole1 = new VehicleSimulator.New.UcContentOfConsole();
-			this.ucContentOfSimulator1 = new VehicleSimulator.New.UcContentOfSimulator();
+			this.ucContentOfAbout1 = new VehicleSimulator.UcContentOfAbout();
+			this.ucContentOfSetting1 = new VehicleSimulator.UcContentOfSetting();
+			this.ucContentOfConsole1 = new VehicleSimulator.UcContentOfConsole();
+			this.ucContentOfSimulator1 = new VehicleSimulator.UcContentOfSimulator();
 			this.pnlPaddingLeft = new System.Windows.Forms.Panel();
 			this.pnlPaddingRight = new System.Windows.Forms.Panel();
 			this.pnlPaddingTop = new System.Windows.Forms.Panel();

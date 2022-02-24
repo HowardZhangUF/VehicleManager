@@ -1,7 +1,7 @@
 ﻿using LibraryForVM;
 using SerialData;
 
-namespace VehicleSimulator.New
+namespace VehicleSimulator
 {
 	public class HostMessageHandler : IHostMessageHandler
 	{

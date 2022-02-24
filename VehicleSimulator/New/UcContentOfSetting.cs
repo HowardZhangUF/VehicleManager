@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using LibraryForVM;
 
-namespace VehicleSimulator.New
+namespace VehicleSimulator
 {
     public partial class UcContentOfSetting : UserControl
 	{

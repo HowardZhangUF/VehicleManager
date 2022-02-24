@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using LibraryForVM;
 
-namespace VehicleSimulator.New
+namespace VehicleSimulator
 {
 	public partial class UcSimulatorShortcut : UserControl
 	{
@@ -159,13 +159,13 @@ namespace VehicleSimulator.New
 				Color color = Color.Red;
 				switch (rSimulatorInfo.mStatus)
 				{
-					case New.ESimulatorStatus.Idle:
-					case New.ESimulatorStatus.ChargingButFree:
+					case ESimulatorStatus.Idle:
+					case ESimulatorStatus.ChargingButFree:
 						color = Color.FromArgb(0, 128, 0);
 						break;
-					case New.ESimulatorStatus.Working:
-					case New.ESimulatorStatus.Paused:
-					case New.ESimulatorStatus.Charging:
+					case ESimulatorStatus.Working:
+					case ESimulatorStatus.Paused:
+					case ESimulatorStatus.Charging:
 						color = Color.FromArgb(128, 128, 0);
 						break;
 					default:
