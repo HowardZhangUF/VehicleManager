@@ -74,14 +74,26 @@ namespace VehicleSimulator
 		{
 			if (rSimulatorControl != null)
 			{
-				string[] tmpStrings = txtMoveTarget.Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-				if (tmpStrings.Length == 2)
+				if (cbMoveTarget.SelectedItem != null)
 				{
-					rSimulatorControl.StartMove(int.Parse(tmpStrings[0]), int.Parse(tmpStrings[1]));
+					string targetString = cbMoveTarget.Text;
+					int firstBracketsIndex = targetString.LastIndexOf('(');
+					int lastBracketsIndex = targetString.LastIndexOf(')');
+					string locationString = targetString.Substring(firstBracketsIndex + 1, lastBracketsIndex - firstBracketsIndex - 1);
+					string[] locationSplitString = locationString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+					rSimulatorControl.StartMove(int.Parse(locationSplitString[0]), int.Parse(locationSplitString[1]), int.Parse(locationSplitString[2]));
 				}
-				else if (tmpStrings.Length == 3)
+				else
 				{
-					rSimulatorControl.StartMove(int.Parse(tmpStrings[0]), int.Parse(tmpStrings[1]), int.Parse(tmpStrings[2]));
+					string[] tmpStrings = cbMoveTarget.Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+					if (tmpStrings.Length == 2)
+					{
+						rSimulatorControl.StartMove(int.Parse(tmpStrings[0]), int.Parse(tmpStrings[1]));
+					}
+					else if (tmpStrings.Length == 3)
+					{
+						rSimulatorControl.StartMove(int.Parse(tmpStrings[0]), int.Parse(tmpStrings[1]), int.Parse(tmpStrings[2]));
+					}
 				}
 			}
 		}
@@ -450,6 +462,12 @@ namespace VehicleSimulator
 		{
 			if (MapData != null)
 			{
+				cbMoveTarget.InvokeIfNecessary(() =>
+				{
+					cbMoveTarget.SelectedIndex = -1;
+					cbMoveTarget.SelectedItem = null;
+					cbMoveTarget.Items.Clear();
+				});
 				cbGoalList.InvokeIfNecessary(() =>
 				{
 					cbGoalList.SelectedIndex = -1;
@@ -458,7 +476,8 @@ namespace VehicleSimulator
 				});
 				if (MapData.mGoals != null && MapData.mGoals.Count > 0)
 				{
-					string[] goalStrings = MapData.mGoals.Select(o => $"{o.mName} ({o.mX},{o.mY},{o.mToward})").ToArray();
+					string[] goalStrings = MapData.mGoals.OrderBy(o => o.mName).Select(o => $"{o.mName} ({o.mX},{o.mY},{o.mToward})").ToArray();
+					cbMoveTarget.InvokeIfNecessary(() => { cbMoveTarget.Items.AddRange(goalStrings); });
 					cbGoalList.InvokeIfNecessary(() => { cbGoalList.Items.AddRange(goalStrings); });
 				}
 			}

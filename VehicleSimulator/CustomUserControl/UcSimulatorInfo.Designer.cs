@@ -34,11 +34,11 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.btnSimulatorStop = new System.Windows.Forms.Button();
 			this.btnSimulatorMove = new System.Windows.Forms.Button();
-			this.txtMoveTarget = new System.Windows.Forms.TextBox();
 			this.btnSimulatorConnect = new System.Windows.Forms.Button();
 			this.lblSimulatorName = new System.Windows.Forms.Label();
 			this.txtHostIpPort = new System.Windows.Forms.TextBox();
 			this.cbGoalList = new System.Windows.Forms.ComboBox();
+			this.cbMoveTarget = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.dgvSimulatorInfo)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
@@ -73,11 +73,11 @@
 			this.tableLayoutPanel1.Controls.Add(this.label2, 0, 9);
 			this.tableLayoutPanel1.Controls.Add(this.btnSimulatorStop, 0, 6);
 			this.tableLayoutPanel1.Controls.Add(this.btnSimulatorMove, 0, 5);
-			this.tableLayoutPanel1.Controls.Add(this.txtMoveTarget, 1, 5);
 			this.tableLayoutPanel1.Controls.Add(this.btnSimulatorConnect, 0, 4);
 			this.tableLayoutPanel1.Controls.Add(this.lblSimulatorName, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.txtHostIpPort, 1, 4);
 			this.tableLayoutPanel1.Controls.Add(this.cbGoalList, 1, 7);
+			this.tableLayoutPanel1.Controls.Add(this.cbMoveTarget, 1, 5);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 8);
 			this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
@@ -190,18 +190,6 @@
 			this.btnSimulatorMove.UseVisualStyleBackColor = true;
 			this.btnSimulatorMove.Click += new System.EventHandler(this.btnSimulatorMove_Click);
 			// 
-			// txtMoveTarget
-			// 
-			this.txtMoveTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtMoveTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(67)))));
-			this.txtMoveTarget.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.txtMoveTarget.ForeColor = System.Drawing.Color.White;
-			this.txtMoveTarget.Location = new System.Drawing.Point(114, 96);
-			this.txtMoveTarget.Margin = new System.Windows.Forms.Padding(2);
-			this.txtMoveTarget.Name = "txtMoveTarget";
-			this.txtMoveTarget.Size = new System.Drawing.Size(220, 24);
-			this.txtMoveTarget.TabIndex = 6;
-			// 
 			// btnSimulatorConnect
 			// 
 			this.btnSimulatorConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -257,6 +245,19 @@
 			this.cbGoalList.Size = new System.Drawing.Size(218, 24);
 			this.cbGoalList.TabIndex = 11;
 			// 
+			// cbMoveTarget
+			// 
+			this.cbMoveTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbMoveTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(67)))));
+			this.cbMoveTarget.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.cbMoveTarget.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.cbMoveTarget.ForeColor = System.Drawing.Color.White;
+			this.cbMoveTarget.FormattingEnabled = true;
+			this.cbMoveTarget.Location = new System.Drawing.Point(115, 98);
+			this.cbMoveTarget.Name = "cbMoveTarget";
+			this.cbMoveTarget.Size = new System.Drawing.Size(218, 24);
+			this.cbMoveTarget.TabIndex = 12;
+			// 
 			// UcSimulatorInfo
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -284,11 +285,11 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button btnSimulatorStop;
 		private System.Windows.Forms.Button btnSimulatorMove;
-		private System.Windows.Forms.TextBox txtMoveTarget;
 		private System.Windows.Forms.Button btnSimulatorConnect;
 		private System.Windows.Forms.Label lblSimulatorName;
 		private System.Windows.Forms.TextBox txtHostIpPort;
 		private System.Windows.Forms.Button btnSimulatorSetLocation;
 		private System.Windows.Forms.ComboBox cbGoalList;
+		private System.Windows.Forms.ComboBox cbMoveTarget;
 	}
 }
