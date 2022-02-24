@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using LibraryForVM;
 
@@ -89,6 +90,19 @@ namespace VehicleSimulator
 			if (rSimulatorControl != null)
 			{
 				rSimulatorControl.StopMove();
+			}
+		}
+		private void btnSimulatorSetLocation_Click(object sender, EventArgs e)
+		{
+			if (cbGoalList.Items.Count > 0 && cbGoalList.SelectedItem != null)
+			{
+				// GoalName (X,Y,Toward)
+				string selectedItemString = cbGoalList.SelectedItem.ToString();
+				int firstBracketsIndex = selectedItemString.LastIndexOf('(');
+				int lastBracketsIndex = selectedItemString.LastIndexOf(')');
+				string locationString = selectedItemString.Substring(firstBracketsIndex + 1, lastBracketsIndex - firstBracketsIndex - 1);
+				string[] locationSplitString = locationString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+				rSimulatorInfo.SetLocation(int.Parse(locationSplitString[0]), int.Parse(locationSplitString[1]), int.Parse(locationSplitString[2]));
 			}
 		}
 		private void dgvSimulatorInfo_SelectionChanged(object sender, EventArgs e)
@@ -281,6 +295,10 @@ namespace VehicleSimulator
 			{
 				UpdateGui_SetSimulatorRotationVelocity(rSimulatorInfo.mRotateVelocity);
 			}
+			else if (e.StatusName.Contains("MapData"))
+			{
+				UpdateGui_SetSimulatorGoalList(rSimulatorInfo.mMapData);
+			}
 		}
 		private void HandleEvent_HostCommunicatorConnectStateChanged(object sender, ConnectStateChangedEventArgs e)
 		{
@@ -361,6 +379,7 @@ namespace VehicleSimulator
 				UpdateGui_SetSimulatorRotationVelocity(rSimulatorInfo.mRotateVelocity);
 				UpdateGui_SetSimulatorIsConnect(rHostCommunicator.mIsConnected);
 				UpdateGui_SetSimulatorHostIpPort(rHostCommunicator.GetConfig("RemoteIpPort"));
+				UpdateGui_SetSimulatorGoalList(rSimulatorInfo.mMapData);
 			}
 			else
 			{
@@ -374,6 +393,7 @@ namespace VehicleSimulator
 				UpdateGui_SetSimulatorRotationVelocity(default(int));
 				UpdateGui_SetSimulatorIsConnect(default(bool));
 				UpdateGui_SetSimulatorHostIpPort(string.Empty);
+				UpdateGui_SetSimulatorGoalList(null);
 			}
 		}
 		private void UpdateGui_SetSimulatorName(string Value)
@@ -425,6 +445,23 @@ namespace VehicleSimulator
 		private void UpdateGui_SetSimulatorHostIpPort(string Value)
 		{
 			txtHostIpPort.InvokeIfNecessary(() => { txtHostIpPort.Text = Value; });
+		}
+		private void UpdateGui_SetSimulatorGoalList(MapData MapData)
+		{
+			if (MapData != null)
+			{
+				cbGoalList.InvokeIfNecessary(() =>
+				{
+					cbGoalList.SelectedIndex = -1;
+					cbGoalList.SelectedItem = null;
+					cbGoalList.Items.Clear();
+				});
+				if (MapData.mGoals != null && MapData.mGoals.Count > 0)
+				{
+					string[] goalStrings = MapData.mGoals.Select(o => $"{o.mName} ({o.mX},{o.mY},{o.mToward})").ToArray();
+					cbGoalList.InvokeIfNecessary(() => { cbGoalList.Items.AddRange(goalStrings); });
+				}
+			}
 		}
 	}
 }

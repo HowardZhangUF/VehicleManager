@@ -14,6 +14,7 @@ namespace VehicleSimulator
 		public List<ForbiddenRectangle> mForbiddenRectangles { get; private set; } = new List<ForbiddenRectangle>();
 		public List<OneWayRectangle> mOneWayRectangles { get; private set; } = new List<OneWayRectangle>();
 		public List<ObstaclePoint> mObstaclePoints { get; private set; } = new List<ObstaclePoint>();
+		public List<Goal> mGoals { get; private set; } = new List<Goal>();
 
 		public MapData()
 		{
@@ -55,6 +56,14 @@ namespace VehicleSimulator
 			if (ObstaclePoints != null && ObstaclePoints.Count > 0)
 			{
 				mObstaclePoints.AddRange(ObstaclePoints);
+			}
+		}
+		public void SetGoals(List<Goal> Goals)
+		{
+			mGoals.Clear();
+			if (Goals != null && Goals.Count > 0)
+			{
+				mGoals.AddRange(Goals);
 			}
 		}
 	}

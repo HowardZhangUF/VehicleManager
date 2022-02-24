@@ -60,11 +60,11 @@ namespace VehicleSimulator
 		{
 			return mSimulatorProcessCollection.ContainsKey(SimulatorName);
 		}
-		public void SetMap(string FilePath)
+		public void SetMap(string FilePath, MapData MapData)
 		{
 			foreach (SimulatorProcess process in mSimulatorProcessCollection.Values)
 			{
-				process.SetMap(FilePath);
+				process.SetMap(FilePath, MapData);
 			}
 		}
 

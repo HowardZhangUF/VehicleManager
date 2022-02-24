@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Library\Goal.cs" />
     <Compile Include="SimulatorInfo\ESimulatorStatus.cs" />
     <Compile Include="Library\ForbiddenRectangle.cs" />
     <Compile Include="CommunicationHost\HostCommunicator.cs" />

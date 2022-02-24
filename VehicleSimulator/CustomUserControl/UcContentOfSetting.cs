@@ -15,6 +15,7 @@ namespace VehicleSimulator
     public partial class UcContentOfSetting : UserControl
 	{
 		private SimulatorProcessContainer rCore = null;
+		private MapData mMapData = null;
 
 		public UcContentOfSetting()
         {
@@ -85,13 +86,10 @@ namespace VehicleSimulator
 			pbMapPreview.Image = GenerateLoadingImage(pbMapPreview.Width, pbMapPreview.Height);
 			Application.DoEvents();
 
-			Task.Run(() =>
+			if (GetMapDataFromMapFile(MapFilePath, out mMapData))
 			{
-				if (GetMapDataFromMapFile(MapFilePath, out MapData mapData))
-				{
-					pbMapPreview.Image = GenerateMapImage(pbMapPreview.Width, pbMapPreview.Height, mapData);
-				}
-			});
+				pbMapPreview.Image = GenerateMapImage(pbMapPreview.Width, pbMapPreview.Height, mMapData);
+			}
 		}
 		private void lblMapFileFolderDirectory_TextChanged(object sender, EventArgs e)
 		{
@@ -126,7 +124,7 @@ namespace VehicleSimulator
 			{
 				string mapFilePath = $"{lblMapFileFolderDirectory.Text}\\{dgvMapFileList.CurrentRow.Cells[0].Value.ToString()}";
 				UpdateGui_PbMapPreview_UpdatePicture(mapFilePath);
-				rCore.SetMap(mapFilePath);
+				rCore.SetMap(mapFilePath, mMapData);
 			}
 			else
 			{
@@ -161,18 +159,36 @@ namespace VehicleSimulator
 				MapData.SetMapFilePath(MapFilePath);
 				MapData.SetRange(tmpRange);
 
+				// Analyze Goal
+				//		=> Goal List \r\n Name,1234,5221,180,General,E84...
+				string[] goalStrings = mapFileLines.SkipWhile(o => o != "Goal List").Skip(1).TakeWhile(o => o.Contains(",")).ToArray();
+				List<Goal> tmpGoals = new List<Goal>();
+				for (int i = 0; i < goalStrings.Length; ++i)
+				{
+					if (!string.IsNullOrEmpty(goalStrings[i]))
+					{
+						string[] goalSplitStrings = goalStrings[i].Split(separator, StringSplitOptions.None);
+						if (goalSplitStrings.Length >= 4)
+						{
+							Goal tmpGoal = new Goal(int.Parse(goalSplitStrings[1]), int.Parse(goalSplitStrings[2]), (int)double.Parse(goalSplitStrings[3]), goalSplitStrings[0]);
+							tmpGoals.Add(tmpGoal);
+						}
+					}
+				}
+				MapData.SetGoals(tmpGoals);
+
 				// Analyze ForbiddenRectangle
 				//		=> Forbidden Area \r\n ,27498,-34500,32799,-13110
-				string[] forbiddenRectangleStrings = mapFileLines.SkipWhile(o => o != "Forbidden Area").Skip(1).TakeWhile(o => o != "Obstacle Points").ToArray();
+				string[] forbiddenRectangleStrings = mapFileLines.SkipWhile(o => o != "Forbidden Area").Skip(1).TakeWhile(o => o.Contains(",")).ToArray();
 				List<ForbiddenRectangle> tmpForbiddenRectangles = new List<ForbiddenRectangle>();
 				for (int i = 0; i < forbiddenRectangleStrings.Length; ++i)
 				{
 					if (!string.IsNullOrEmpty(forbiddenRectangleStrings[i]))
 					{
-						string[] forbiddenRectangleSplitStrings = forbiddenRectangleStrings[i].Split(separator, StringSplitOptions.RemoveEmptyEntries);
-						if (forbiddenRectangleSplitStrings.Length >= 4)
+						string[] forbiddenRectangleSplitStrings = forbiddenRectangleStrings[i].Split(separator, StringSplitOptions.None);
+						if (forbiddenRectangleSplitStrings.Length >= 5)
 						{
-							ForbiddenRectangle tmpRectangle = new ForbiddenRectangle(int.Parse(forbiddenRectangleSplitStrings[0]), int.Parse(forbiddenRectangleSplitStrings[1]), int.Parse(forbiddenRectangleSplitStrings[2]), int.Parse(forbiddenRectangleSplitStrings[3]));
+							ForbiddenRectangle tmpRectangle = new ForbiddenRectangle(int.Parse(forbiddenRectangleSplitStrings[1]), int.Parse(forbiddenRectangleSplitStrings[2]), int.Parse(forbiddenRectangleSplitStrings[3]), int.Parse(forbiddenRectangleSplitStrings[4]));
 							tmpForbiddenRectangles.Add(tmpRectangle);
 						}
 					}

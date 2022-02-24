@@ -41,10 +41,11 @@ namespace VehicleSimulator
 			mHostCommunicator.Stop();
 			if (mHostCommunicator.mIsConnected) mHostCommunicator.Disconnect();
 		}
-		public void SetMap(string MapFilePath)
+		public void SetMap(string MapFilePath, MapData MapData)
 		{
 			mMoveRequestCalculator.SetMap(MapFilePath);
 			mSimulatorInfo.SetMapFilePath(MapFilePath);
+			mSimulatorInfo.SetMapData(MapData);
 		}
 		public ISimulatorInfo GetReferenceOfISimulatorInfo()
 		{

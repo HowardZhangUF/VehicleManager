@@ -23,6 +23,7 @@ namespace VehicleSimulator
 		public int mTranslateVelocity { get; private set; } = 800;
 		public int mRotateVelocity { get; private set; } = 30;
 		public string mMapFilePath { get; private set; } = string.Empty;
+		public MapData mMapData { get; private set; } = null;
 
 		public SimulatorInfo(string Name)
 		{
@@ -118,6 +119,11 @@ namespace VehicleSimulator
 				mMapFilePath = MapFilePath;
 				RaiseEvent_StatusUpdated("MapFilePath");
 			}
+		}
+		public void SetMapData(MapData MapData)
+		{
+			mMapData = MapData;
+			RaiseEvent_StatusUpdated("MapData");
 		}
 
 		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
