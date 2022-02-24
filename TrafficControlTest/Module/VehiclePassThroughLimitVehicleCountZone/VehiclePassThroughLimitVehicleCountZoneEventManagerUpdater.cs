@@ -139,7 +139,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		}
 		private void Subtask_DetectVehiclePassThroughLimitVehicleCountZoneEvent()
 		{
-			List<IVehicleInfo> vehicleInfos = rVehicleInfoManager.GetItems().Where(o => o.mCurrentState == "Running" || o.mCurrentState == "Operating" || o.mCurrentState == "Pause").ToList();
+			List<IVehicleInfo> vehicleInfos = rVehicleInfoManager.GetItems().ToList();
 			List<ILimitVehicleCountZoneInfo> limitVehicleCountZoneInfos = rLimitVehicleCountZoneInfoManager.GetItems().ToList();
 			List<IVehiclePassThroughLimitVehicleCountZoneEvent> currentEvents = new List<IVehiclePassThroughLimitVehicleCountZoneEvent>();
 			List<IVehiclePassThroughLimitVehicleCountZoneEvent> lastEvents = rVehiclePassThroughLimitVehicleCountZoneEventManager.GetItems().ToList();
