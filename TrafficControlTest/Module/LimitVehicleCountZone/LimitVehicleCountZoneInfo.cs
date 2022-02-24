@@ -14,8 +14,8 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		public string mName { get; private set; } = string.Empty;
 		public IRectangle2D mRange { get; private set; } = null;
 		public int mMaxVehicleCount { get; private set; } = 0;
-		public List<string> mCurrentVehicleNameList { get; private set; } = new List<string>();
-		public List<string> mLastVehicleNameList { get; private set; } = new List<string>();
+		public List<Tuple<string, DateTime>> mCurrentVehicleNameList { get; private set; } = new List<Tuple<string, DateTime>>();
+		public List<Tuple<string, DateTime>> mLastVehicleNameList { get; private set; } = new List<Tuple<string, DateTime>>();
 		public TimeSpan mCurrentStatusDuration { get { return DateTime.Now.Subtract(mTimestampOfStatusChanged); } }
 		public DateTime mLastUpdated { get; private set; } = DateTime.Now;
 
@@ -34,24 +34,29 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		}
 		public void UpdateCurrentVehicleNameList(List<string> CurrentVehicleNameList)
 		{
-			if (CurrentVehicleNameList != null && string.Join(",", CurrentVehicleNameList.OrderBy(o => o).ToArray()) != string.Join(",", mCurrentVehicleNameList.OrderBy(o => o).ToArray()))
+			// 輸入參數 CurrentVehicleNameList 為新名單，類別屬性 mCurrentVehicleNameList 為目前名單
+
+			// 新名單不為 null ，且新名單的內容與目前名單的內容不一樣時
+			if (CurrentVehicleNameList != null && string.Join(",", CurrentVehicleNameList.OrderBy(o => o).ToArray()) != string.Join(",", mCurrentVehicleNameList.Select(o => o.Item1).OrderBy(o => o).ToArray()))
 			{
 				mLastVehicleNameList.Clear();
 				mLastVehicleNameList.AddRange(mCurrentVehicleNameList);
-				// 調整 mCurrentVehicleNameList 的內容但要保留順序
+				
+				// 若新名單的車不在目前名單裡面，代表有車進入，則加入該車至目前名單
 				for (int i = 0; i < CurrentVehicleNameList.Count; ++i)
 				{
-					if (!mCurrentVehicleNameList.Contains(CurrentVehicleNameList[i]))
+					if (!mCurrentVehicleNameList.Any(o => o.Item1 == CurrentVehicleNameList[i]))
 					{
-						mCurrentVehicleNameList.Add(CurrentVehicleNameList[i]);
+						mCurrentVehicleNameList.Add(new Tuple<string, DateTime>(CurrentVehicleNameList[i], DateTime.Now));
 					}
 				}
+				// 若目前名單的車不在新名單裡面，代表有車離開，則從目前名單移除該車
 				int tmpIndex = 0;
 				while (true)
 				{
 					if (tmpIndex >= mCurrentVehicleNameList.Count) break;
 
-					if (!CurrentVehicleNameList.Contains(mCurrentVehicleNameList[tmpIndex]))
+					if (!CurrentVehicleNameList.Contains(mCurrentVehicleNameList[tmpIndex].Item1))
 					{
 						mCurrentVehicleNameList.RemoveAt(tmpIndex);
 					}
@@ -60,6 +65,10 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 						tmpIndex++;
 					}
 				}
+
+				// 將目前名單按照進入時間排序
+				mCurrentVehicleNameList = mCurrentVehicleNameList.OrderBy(o => o.Item2).ToList();
+
 				mTimestampOfStatusChanged = DateTime.Now;
 				mLastUpdated = DateTime.Now;
 				RaiseEvent_StatusUpdated("CurrentVehicleNameList,LastVehicleNameList,CurrentStatusDuration");
@@ -67,7 +76,7 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		}
 		public override string ToString()
 		{
-			return $"{mName}/{mRange.ToString()}/Max:{mMaxVehicleCount}/Current:{string.Join(",", mCurrentVehicleNameList.ToArray())}/Last:{string.Join(",", mLastVehicleNameList.ToArray())}/Duration:{mCurrentStatusDuration.TotalMilliseconds}(ms)/{mLastUpdated.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
+			return $"{mName}/{mRange.ToString()}/Max:{mMaxVehicleCount}/Current:{string.Join(",", mCurrentVehicleNameList.Select(o => o.Item1).ToArray())}/Last:{string.Join(",", mLastVehicleNameList.Select(o => o.Item1).ToArray())}/Duration:{mCurrentStatusDuration.TotalMilliseconds}(ms)/{mLastUpdated.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
 		}
 
 		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)

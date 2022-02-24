@@ -11,8 +11,8 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 	{
 		IRectangle2D mRange { get; }
 		int mMaxVehicleCount { get; }
-		List<string> mCurrentVehicleNameList { get; }
-		List<string> mLastVehicleNameList { get; }
+		List<Tuple<string, DateTime>> mCurrentVehicleNameList { get; }
+		List<Tuple<string, DateTime>> mLastVehicleNameList { get; }
 		TimeSpan mCurrentStatusDuration { get; }
 		DateTime mLastUpdated { get; }
 

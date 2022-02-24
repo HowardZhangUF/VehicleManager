@@ -215,7 +215,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		private bool IsVehicleInLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
 			// LimitVehicleCountZoneInfo 的上限是 n 台車，當區域內的車數量大於 n 時，只有先進來的前 n 台車可以動，反之，會被干預
-			return LimitVehicleCountZoneInfo.mCurrentVehicleNameList.Take(LimitVehicleCountZoneInfo.mMaxVehicleCount).Contains(VehicleInfo.mName);
+			return LimitVehicleCountZoneInfo.mCurrentVehicleNameList.Select(o => o.Item1).Take(LimitVehicleCountZoneInfo.mMaxVehicleCount).Contains(VehicleInfo.mName);
 		}
 		private int GetDistanceBetweenVehicleAndLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
