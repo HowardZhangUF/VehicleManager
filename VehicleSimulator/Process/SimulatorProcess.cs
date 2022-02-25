@@ -55,6 +55,10 @@ namespace VehicleSimulator
 		{
 			return mSimulatorControl;
 		}
+		public IMoveRequestCalculator GetReferenceOfIMoveRequestCalculator()
+		{
+			return mMoveRequestCalculator;
+		}
 		public IHostCommunicator GetReferenceOfIHostCommunicator()
 		{
 			return mHostCommunicator;

@@ -11,6 +11,7 @@ namespace VehicleSimulator
 		private SimulatorProcess rSimulatorProcess = null;
 		private ISimulatorInfo rSimulatorInfo = null;
 		private ISimulatorControl rSimulatorControl = null;
+		private IMoveRequestCalculator rMoveRequestCalculator = null;
 		private IHostCommunicator rHostCommunicator = null;
 
 		public UcSimulatorInfo()
@@ -48,6 +49,12 @@ namespace VehicleSimulator
 			rSimulatorControl = SimulatorControl;
 			SubscribeEvent_ISimulatorControl(rSimulatorControl);
 		}
+		protected void Set(IMoveRequestCalculator MoveRequestCalculator)
+		{
+			UnsubscribeEvent_IMoveRequestCalculator(rMoveRequestCalculator);
+			rMoveRequestCalculator = MoveRequestCalculator;
+			SubscribeEvent_IMoveRequestCalculator(rMoveRequestCalculator);
+		}
 		protected void Set(IHostCommunicator HostCommunicator)
 		{
 			UnsubscribeEvent_IHostCommunicator(rHostCommunicator);
@@ -79,20 +86,24 @@ namespace VehicleSimulator
 					string targetString = cbMoveTarget.Text;
 					int firstBracketsIndex = targetString.LastIndexOf('(');
 					int lastBracketsIndex = targetString.LastIndexOf(')');
+					string targetName = targetString.Substring(0, firstBracketsIndex - 1);
 					string locationString = targetString.Substring(firstBracketsIndex + 1, lastBracketsIndex - firstBracketsIndex - 1);
 					string[] locationSplitString = locationString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-					rSimulatorControl.StartMove(int.Parse(locationSplitString[0]), int.Parse(locationSplitString[1]), int.Parse(locationSplitString[2]));
+					var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), new Point(int.Parse(locationSplitString[0]), int.Parse(locationSplitString[1])), int.Parse(locationSplitString[2]));
+					rSimulatorControl.StartMove(targetName, moveRequests);
 				}
 				else
 				{
 					string[] tmpStrings = cbMoveTarget.Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 					if (tmpStrings.Length == 2)
 					{
-						rSimulatorControl.StartMove(int.Parse(tmpStrings[0]), int.Parse(tmpStrings[1]));
+						var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), new Point(int.Parse(tmpStrings[0]), int.Parse(tmpStrings[1])));
+						rSimulatorControl.StartMove(cbMoveTarget.Text, moveRequests);
 					}
 					else if (tmpStrings.Length == 3)
 					{
-						rSimulatorControl.StartMove(int.Parse(tmpStrings[0]), int.Parse(tmpStrings[1]), int.Parse(tmpStrings[2]));
+						var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), new Point(int.Parse(tmpStrings[0]), int.Parse(tmpStrings[1])), int.Parse(tmpStrings[2]));
+						rSimulatorControl.StartMove(cbMoveTarget.Text, moveRequests);
 					}
 				}
 			}
@@ -225,6 +236,7 @@ namespace VehicleSimulator
 			{
 				Set(rSimulatorProcess.GetReferenceOfISimulatorInfo());
 				Set(rSimulatorProcess.GetReferenceOfISimulatorControl());
+				Set(rSimulatorProcess.GetReferenceOfIMoveRequestCalculator());
 				Set(rSimulatorProcess.GetReferenceOfIHostCommunicator());
 			}
 		}
@@ -259,6 +271,20 @@ namespace VehicleSimulator
 		private void UnsubscribeEvent_ISimulatorControl(ISimulatorControl SimulatorControl)
 		{
 			if (SimulatorControl != null)
+			{
+				// do nothing
+			}
+		}
+		private void SubscribeEvent_IMoveRequestCalculator(IMoveRequestCalculator MoveRequestCalculator)
+		{
+			if (MoveRequestCalculator != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IMoveRequestCalculator(IMoveRequestCalculator MoveRequestCalculator)
+		{
+			if (MoveRequestCalculator != null)
 			{
 				// do nothing
 			}
