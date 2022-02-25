@@ -102,11 +102,20 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 			List<IMapObjectOfRectangle> singleVehicleInfos = rMapManager.GetRectangleMapObjects(TypeOfMapObjectOfRectangle.SingleVehicle);
 			if (singleVehicleInfos != null && singleVehicleInfos.Count > 0)
 			{
+				Dictionary<int, int> unionCollection = CalculateUnionCollection(singleVehicleInfos);
 				for (int i = 0; i < singleVehicleInfos.Count; ++i)
 				{
 					// SingleVehicle 區塊沒有額外命名，所以名字採用流水號，允需車數量固定為 1
-					ILimitVehicleCountZoneInfo tmp = new LimitVehicleCountZoneInfo(i.ToString().PadLeft(3, '0'), singleVehicleInfos[i].mRange, 1);
-					rLimitVehicleCountZoneInfoManager.Add(tmp.mName, tmp);
+					if (unionCollection.ContainsKey(i))
+					{
+						ILimitVehicleCountZoneInfo tmp = new LimitVehicleCountZoneInfo(i.ToString().PadLeft(3, '0'), singleVehicleInfos[i].mRange, 1, true, unionCollection[i]);
+						rLimitVehicleCountZoneInfoManager.Add(tmp.mName, tmp);
+					}
+					else
+					{
+						ILimitVehicleCountZoneInfo tmp = new LimitVehicleCountZoneInfo(i.ToString().PadLeft(3, '0'), singleVehicleInfos[i].mRange, 1, false, 0);
+						rLimitVehicleCountZoneInfoManager.Add(tmp.mName, tmp);
+					}
 				}
 			}
 		}
@@ -123,6 +132,51 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 					rLimitVehicleCountZoneInfoManager.UpdateCurrentVehicleNameList(tmpLimitVehicleCountZoneInfos[i].mName, tmpVehicleNames);
 				}
 			}
+		}
+
+		private static Dictionary<int, int> CalculateUnionCollection(List<IMapObjectOfRectangle> Rectangles)
+		{
+			Dictionary<int, int> result = new Dictionary<int, int>(); // key = 區塊編號, value = union id
+			int currentUnionId = 65536; // union id 從 65536 開始
+
+			for (int i = 0; i < Rectangles.Count; ++i)
+			{
+				for (int j = i + 1; j < Rectangles.Count; ++j)
+				{
+					if (GeometryAlgorithm.IsRectangleOverlap(Rectangles[i].mRange, Rectangles[j].mRange))
+					{
+						if (result.ContainsKey(i) && result.ContainsKey(j))
+						{
+							// do nothing
+						}
+						else if (result.ContainsKey(i) && !result.ContainsKey(j)) // 如果 i 已經跟別人 Union 了，則填入同樣的 Union Id
+						{
+							result.Add(j, result[i]);
+						}
+						else if (!result.ContainsKey(i) && result.ContainsKey(j)) // 如果 j 已經跟別人 Union 了，則填入同樣的 Union Id
+						{
+							result.Add(i, result[j]);
+						}
+						else if (!result.ContainsKey(i) && !result.ContainsKey(j))
+						{
+							result.Add(i, currentUnionId);
+							result.Add(j, currentUnionId);
+							currentUnionId += 1;
+						}
+					}
+				}
+			}
+
+			// 範例輸出：
+			// key value
+			// 1   65536
+			// 3   65536
+			// 4   65537
+			// 5   65537
+			// 7   65536
+			// 其中 1, 3, 7 是 Union ， 4, 5 是 Union
+
+			return result;
 		}
 	}
 }

@@ -68,7 +68,7 @@ namespace TrafficControlTest.Library
 		None
 	}
 
-	public static class Library
+	internal static class Library
 	{
 		public const string TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
 
@@ -351,9 +351,9 @@ namespace TrafficControlTest.Library
         {
             return new ChargeStationInfoManagerUpdater(ChargeStationInfoManager, MapManager, VehicleInfoManager);
         }
-        public static ILimitVehicleCountZoneInfo GenerateILimitVehicleCountZoneInfo(string Name, IRectangle2D Range, int MaxVehicleCount)
+        public static ILimitVehicleCountZoneInfo GenerateILimitVehicleCountZoneInfo(string Name, IRectangle2D Range, int MaxVehicleCount, bool IsUnioned, int UnionId)
 		{
-			return new LimitVehicleCountZoneInfo(Name, Range, MaxVehicleCount);
+			return new LimitVehicleCountZoneInfo(Name, Range, MaxVehicleCount, IsUnioned, UnionId);
 		}
 		public static ILimitVehicleCountZoneInfoManager GenerateILimitVehicleCountZoneInfoManager()
 		{

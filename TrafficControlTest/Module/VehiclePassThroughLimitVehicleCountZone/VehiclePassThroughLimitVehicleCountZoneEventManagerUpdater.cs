@@ -206,7 +206,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		private bool IsILimitVehicleCountZoneFull(ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
 			bool result = false;
-			if (LimitVehicleCountZoneInfo.mCurrentVehicleNameList.Count >= LimitVehicleCountZoneInfo.mMaxVehicleCount)
+			if (GetCurrentVehicleCount(LimitVehicleCountZoneInfo, rLimitVehicleCountZoneInfoManager) >= LimitVehicleCountZoneInfo.mMaxVehicleCount)
 			{
 				result = true;
 			}
@@ -215,7 +215,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		private bool IsVehicleInLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
 			// LimitVehicleCountZoneInfo 的上限是 n 台車，當區域內的車數量大於 n 時，只有先進來的前 n 台車可以動，反之，會被干預
-			return LimitVehicleCountZoneInfo.mCurrentVehicleNameList.Select(o => o.Item1).Take(LimitVehicleCountZoneInfo.mMaxVehicleCount).Contains(VehicleInfo.mName);
+			return GetCurrentVehicleNameList(LimitVehicleCountZoneInfo, rLimitVehicleCountZoneInfoManager).Take(LimitVehicleCountZoneInfo.mMaxVehicleCount).Contains(VehicleInfo.mName);
 		}
 		private int GetDistanceBetweenVehicleAndLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
@@ -247,6 +247,49 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 				}
 			}
 			return result;
+		}
+
+		private static List<Tuple<string, DateTime>> GetCurrentVehicleList(ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo, ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager)
+		{
+			if (LimitVehicleCountZoneInfo.mIsUnioned)
+			{
+				int unionId = LimitVehicleCountZoneInfo.mUnionId;
+				List<ILimitVehicleCountZoneInfo> zoneInfos = LimitVehicleCountZoneInfoManager.GetItems().Where(o => o.mUnionId == unionId).ToList();
+
+				Dictionary<string, Tuple<string, DateTime>> result = new Dictionary<string, Tuple<string, DateTime>>();
+				for (int i = 0; i < zoneInfos.Count; ++i)
+				{
+					for (int j = 0; j < zoneInfos[i].mCurrentVehicleNameList.Count; ++j)
+					{
+						string vehicleName = zoneInfos[i].mCurrentVehicleNameList[j].Item1;
+						DateTime enterTimestamp = zoneInfos[i].mCurrentVehicleNameList[j].Item2;
+						if (result.ContainsKey(vehicleName)) // 如果項目重複
+						{
+							if (enterTimestamp < result[vehicleName].Item2) // 進入時間點使用最小值
+							{
+								result[vehicleName] = zoneInfos[i].mCurrentVehicleNameList[j];
+							}
+						}
+						else
+						{
+							result.Add(vehicleName, zoneInfos[i].mCurrentVehicleNameList[j]);
+						}
+					}
+				}
+				return result.Values.OrderBy(o => o.Item2).ToList();
+			}
+			else
+			{
+				return LimitVehicleCountZoneInfo.mCurrentVehicleNameList.OrderBy(o => o.Item2).ToList();
+			}
+		}
+		private static List<string> GetCurrentVehicleNameList(ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo, ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager)
+		{
+			return GetCurrentVehicleList(LimitVehicleCountZoneInfo, LimitVehicleCountZoneInfoManager).Select(o => o.Item1).ToList();
+		}
+		private static int GetCurrentVehicleCount(ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo, ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager)
+		{
+			return GetCurrentVehicleList(LimitVehicleCountZoneInfo, LimitVehicleCountZoneInfoManager).Count();
 		}
 	}
 }

@@ -14,6 +14,8 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		public string mName { get; private set; } = string.Empty;
 		public IRectangle2D mRange { get; private set; } = null;
 		public int mMaxVehicleCount { get; private set; } = 0;
+		public bool mIsUnioned { get; private set; } = false;
+		public int mUnionId { get; private set; } = 0;
 		public List<Tuple<string, DateTime>> mCurrentVehicleNameList { get; private set; } = new List<Tuple<string, DateTime>>();
 		public List<Tuple<string, DateTime>> mLastVehicleNameList { get; private set; } = new List<Tuple<string, DateTime>>();
 		public TimeSpan mCurrentStatusDuration { get { return DateTime.Now.Subtract(mTimestampOfStatusChanged); } }
@@ -21,15 +23,17 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 
 		private DateTime mTimestampOfStatusChanged = DateTime.Now;
 
-		public LimitVehicleCountZoneInfo(string Name, IRectangle2D Range, int MaxVehicleCount)
+		public LimitVehicleCountZoneInfo(string Name, IRectangle2D Range, int MaxVehicleCount, bool IsUnioned, int UnionId)
 		{
-			Set(Name, Range, MaxVehicleCount);
+			Set(Name, Range, MaxVehicleCount, IsUnioned, UnionId);
 		}
-		public void Set(string Name, IRectangle2D Range, int MaxVehicleCount)
+		public void Set(string Name, IRectangle2D Range, int MaxVehicleCount, bool IsUnioned, int UnionId)
 		{
 			mName = Name;
 			mRange = Range;
 			mMaxVehicleCount = MaxVehicleCount;
+			mIsUnioned = IsUnioned;
+			mUnionId = UnionId;
 			mLastUpdated = DateTime.Now;
 		}
 		public void UpdateCurrentVehicleNameList(List<string> CurrentVehicleNameList)
@@ -76,7 +80,7 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		}
 		public override string ToString()
 		{
-			return $"{mName}/{mRange.ToString()}/Max:{mMaxVehicleCount}/Current:{string.Join(",", mCurrentVehicleNameList.Select(o => o.Item1).ToArray())}/Last:{string.Join(",", mLastVehicleNameList.Select(o => o.Item1).ToArray())}/Duration:{mCurrentStatusDuration.TotalMilliseconds}(ms)/{mLastUpdated.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
+			return $"{mName}/{mRange.ToString()}/Max:{mMaxVehicleCount}/IsUnioned:{mIsUnioned}/UnionId:{mUnionId}/Current:{string.Join(",", mCurrentVehicleNameList.Select(o => o.Item1).ToArray())}/Last:{string.Join(",", mLastVehicleNameList.Select(o => o.Item1).ToArray())}/Duration:{mCurrentStatusDuration.TotalMilliseconds}(ms)/{mLastUpdated.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
 		}
 
 		protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)
