@@ -833,6 +833,8 @@ namespace TrafficControlTest.Process
 				VehicleInfoManager.ItemAdded += HandleEvent_VehicleInfoManagerItemAdded;
 				VehicleInfoManager.ItemRemoved += HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated += HandleEvent_VehicleInfoManagerItemUpdated;
+				VehicleInfoManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				VehicleInfoManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -842,6 +844,8 @@ namespace TrafficControlTest.Process
 				VehicleInfoManager.ItemAdded -= HandleEvent_VehicleInfoManagerItemAdded;
 				VehicleInfoManager.ItemRemoved -= HandleEvent_VehicleInfoManagerItemRemoved;
 				VehicleInfoManager.ItemUpdated -= HandleEvent_VehicleInfoManagerItemUpdated;
+				VehicleInfoManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				VehicleInfoManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_IMapFileManager(IMapFileManager MapFileManager)
@@ -917,6 +921,8 @@ namespace TrafficControlTest.Process
 				CollisionEventManager.ItemAdded += HandleEvent_CollisionEventManagerItemAdded;
 				CollisionEventManager.ItemRemoved += HandleEvent_CollisionEventManagerItemRemoved;
 				CollisionEventManager.ItemUpdated += HandleEvent_CollisionEventManagerItemUpdated;
+				CollisionEventManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				CollisionEventManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_ICollisionEventManager(ICollisionEventManager CollisionEventManager)
@@ -926,6 +932,8 @@ namespace TrafficControlTest.Process
 				CollisionEventManager.ItemAdded -= HandleEvent_CollisionEventManagerItemAdded;
 				CollisionEventManager.ItemRemoved -= HandleEvent_CollisionEventManagerItemRemoved;
 				CollisionEventManager.ItemUpdated -= HandleEvent_CollisionEventManagerItemUpdated;
+				CollisionEventManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				CollisionEventManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_ICollisionEventDetector(ICollisionEventDetector CollisionEventDetector)
@@ -953,6 +961,8 @@ namespace TrafficControlTest.Process
 				VehicleControlManager.ItemAdded += HandleEvent_VehicleControlManagerItemAdded;
 				VehicleControlManager.ItemRemoved += HandleEvent_VehicleControlManagerItemRemoved;
 				VehicleControlManager.ItemUpdated += HandleEvent_VehicleControlManagerItemUpdated;
+				VehicleControlManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				VehicleControlManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
@@ -962,6 +972,8 @@ namespace TrafficControlTest.Process
 				VehicleControlManager.ItemAdded -= HandleEvent_VehicleControlManagerItemAdded;
 				VehicleControlManager.ItemRemoved -= HandleEvent_VehicleControlManagerItemRemoved;
 				VehicleControlManager.ItemUpdated -= HandleEvent_VehicleControlManagerItemUpdated;
+				VehicleControlManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				VehicleControlManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_ICollisionEventHandler(ICollisionEventHandler CollisionEventHandler)
@@ -1021,6 +1033,8 @@ namespace TrafficControlTest.Process
 				MissionStateManager.ItemAdded += HandleEvent_MissionStateManagerItemAdded;
 				MissionStateManager.ItemRemoved += HandleEvent_MissionStateManagerItemRemoved;
 				MissionStateManager.ItemUpdated += HandleEvent_MissionStateManagerItemUpdated;
+				MissionStateManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				MissionStateManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_IMissionStateManager(IMissionStateManager MissionStateManager)
@@ -1030,6 +1044,8 @@ namespace TrafficControlTest.Process
 				MissionStateManager.ItemAdded -= HandleEvent_MissionStateManagerItemAdded;
 				MissionStateManager.ItemRemoved -= HandleEvent_MissionStateManagerItemRemoved;
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
+				MissionStateManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				MissionStateManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_IVehicleInfoUpdater(IVehicleInfoUpdater VehicleInfoUpdater)
@@ -1093,6 +1109,8 @@ namespace TrafficControlTest.Process
 				ChargeStationInfoManager.ItemAdded += HandleEvent_ChargeStationInfoManagerItemAdded;
 				ChargeStationInfoManager.ItemRemoved += HandleEvent_ChargeStationInfoManagerItemRemoved;
 				ChargeStationInfoManager.ItemUpdated += HandleEvent_ChargeStationInfoManagerItemUpdated;
+				ChargeStationInfoManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				ChargeStationInfoManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_IChargeStationInfoManager(IChargeStationInfoManager ChargeStationInfoManager)
@@ -1102,6 +1120,8 @@ namespace TrafficControlTest.Process
 				ChargeStationInfoManager.ItemAdded -= HandleEvent_ChargeStationInfoManagerItemAdded;
 				ChargeStationInfoManager.ItemRemoved -= HandleEvent_ChargeStationInfoManagerItemRemoved;
 				ChargeStationInfoManager.ItemUpdated -= HandleEvent_ChargeStationInfoManagerItemUpdated;
+				ChargeStationInfoManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				ChargeStationInfoManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_IMissionDispatcher(IMissionDispatcher MissionDispatcher)
@@ -1219,6 +1239,8 @@ namespace TrafficControlTest.Process
 				AutomaticDoorInfoManager.ItemAdded += HandleEvent_AutomaticDoorInfoManagerItemAdded;
 				AutomaticDoorInfoManager.ItemRemoved += HandleEvent_AutomaticDoorInfoManagerItemRemoved;
 				AutomaticDoorInfoManager.ItemUpdated += HandleEvent_AutomaticDoorInfoManagerItemUpdated;
+				AutomaticDoorInfoManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				AutomaticDoorInfoManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_IAutomaticDoorInfoManager(IAutomaticDoorInfoManager AutomaticDoorInfoManager)
@@ -1228,6 +1250,8 @@ namespace TrafficControlTest.Process
 				AutomaticDoorInfoManager.ItemAdded -= HandleEvent_AutomaticDoorInfoManagerItemAdded;
 				AutomaticDoorInfoManager.ItemRemoved -= HandleEvent_AutomaticDoorInfoManagerItemRemoved;
 				AutomaticDoorInfoManager.ItemUpdated -= HandleEvent_AutomaticDoorInfoManagerItemUpdated;
+				AutomaticDoorInfoManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				AutomaticDoorInfoManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_IAutomaticDoorCommunicator(IAutomaticDoorCommunicator AutomaticDoorCommunicator)
@@ -1293,6 +1317,8 @@ namespace TrafficControlTest.Process
 				AutomaticDoorControlManager.ItemAdded += HandleEvent_AutomaticDoorControlManagerItemAdded;
 				AutomaticDoorControlManager.ItemRemoved += HandleEvent_AutomaticDoorControlManagerItemRemoved;
 				AutomaticDoorControlManager.ItemUpdated += HandleEvent_AutomaticDoorControlManagerItemUpdated;
+				AutomaticDoorControlManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				AutomaticDoorControlManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_IAutomaticDoorControlManager(IAutomaticDoorControlManager AutomaticDoorControlManager)
@@ -1302,6 +1328,8 @@ namespace TrafficControlTest.Process
 				AutomaticDoorControlManager.ItemAdded -= HandleEvent_AutomaticDoorControlManagerItemAdded;
 				AutomaticDoorControlManager.ItemRemoved -= HandleEvent_AutomaticDoorControlManagerItemRemoved;
 				AutomaticDoorControlManager.ItemUpdated -= HandleEvent_AutomaticDoorControlManagerItemUpdated;
+				AutomaticDoorControlManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				AutomaticDoorControlManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_IAutomaticDoorControlManagerUpdater(IAutomaticDoorControlManagerUpdater AutomaticDoorControlManagerUpdater)
@@ -1343,6 +1371,8 @@ namespace TrafficControlTest.Process
 				VehiclePassThroughAutomaticDoorEventManager.ItemAdded += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemAdded;
 				VehiclePassThroughAutomaticDoorEventManager.ItemRemoved += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemRemoved;
 				VehiclePassThroughAutomaticDoorEventManager.ItemUpdated += HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemUpdated;
+				VehiclePassThroughAutomaticDoorEventManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				VehiclePassThroughAutomaticDoorEventManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_IVehiclePassThroughAutomaticDoorEventManager(IVehiclePassThroughAutomaticDoorEventManager VehiclePassThroughAutomaticDoorEventManager)
@@ -1352,6 +1382,8 @@ namespace TrafficControlTest.Process
 				VehiclePassThroughAutomaticDoorEventManager.ItemAdded -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemAdded;
 				VehiclePassThroughAutomaticDoorEventManager.ItemRemoved -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemRemoved;
 				VehiclePassThroughAutomaticDoorEventManager.ItemUpdated -= HandleEvent_VehiclePassThroughAutomaticDoorEventManagerItemUpdated;
+				VehiclePassThroughAutomaticDoorEventManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				VehiclePassThroughAutomaticDoorEventManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_IVehiclePassThroughAutomaticDoorEventManagerUpdater(IVehiclePassThroughAutomaticDoorEventManagerUpdater VehiclePassThroughAutomaticDoorEventManagerUpdater)
@@ -1407,6 +1439,8 @@ namespace TrafficControlTest.Process
 				LimitVehicleCountZoneInfoManager.ItemAdded += HandleEvent_LimitVehicleCountZoneInfoManagerItemAdded;
 				LimitVehicleCountZoneInfoManager.ItemRemoved += HandleEvent_LimitVehicleCountZoneInfoManagerItemRemoved;
 				LimitVehicleCountZoneInfoManager.ItemUpdated += HandleEvent_LimitVehicleCountZoneInfoManagerItemUpdated;
+				LimitVehicleCountZoneInfoManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				LimitVehicleCountZoneInfoManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_ILimitVehicleCountZoneInfoManager(ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager)
@@ -1416,6 +1450,8 @@ namespace TrafficControlTest.Process
 				LimitVehicleCountZoneInfoManager.ItemAdded -= HandleEvent_LimitVehicleCountZoneInfoManagerItemAdded;
 				LimitVehicleCountZoneInfoManager.ItemRemoved -= HandleEvent_LimitVehicleCountZoneInfoManagerItemRemoved;
 				LimitVehicleCountZoneInfoManager.ItemUpdated -= HandleEvent_LimitVehicleCountZoneInfoManagerItemUpdated;
+				LimitVehicleCountZoneInfoManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				LimitVehicleCountZoneInfoManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_ILimitVehicleCountZoneInfoManagerUpdater(ILimitVehicleCountZoneInfoManagerUpdater LimitVehicleCountZoneInfoManagerUpdater)
@@ -1443,6 +1479,8 @@ namespace TrafficControlTest.Process
 				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemAdded += HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemAdded;
 				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemRemoved += HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemRemoved;
 				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemUpdated += HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemUpdated;
+				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void UnsubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventManager(IVehiclePassThroughLimitVehicleCountZoneEventManager VehiclePassThroughLimitVehicleCountZoneEventManager)
@@ -1452,6 +1490,8 @@ namespace TrafficControlTest.Process
 				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemAdded -= HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemAdded;
 				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemRemoved -= HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemRemoved;
 				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemUpdated -= HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemUpdated;
+				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				VehiclePassThroughLimitVehicleCountZoneEventManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
 			}
 		}
 		private void SubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater(IVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater)
@@ -1526,6 +1566,14 @@ namespace TrafficControlTest.Process
 				mConfigurator.SetValue("MapFileManager/MapManagementSetting", Args.ConfigNewValue);
 				mConfigurator.SetValue("MapManagerUpdater/MapManagementSetting", Args.ConfigNewValue);
 			}
+		}
+		private void HandleEvent_ItemManagerItemAddFailed<T>(object Sender, ItemAddFailedEventArgs<T> Args) where T : IItem
+		{
+			HandleDebugMessage(Args.OccurTime, Sender.GetType().Name, "ItemAddFailed", $"Name: {Args.ItemName}, Info: {Args.Item.ToString()}");
+		}
+		private void HandleEvent_ItemManagerItemRemoveFailed<T>(object Sender, ItemRemoveFailedEventArgs<T> Args) where T : IItem
+		{
+			HandleDebugMessage(Args.OccurTime, Sender.GetType().Name, "ItemRemoveFailed", $"Name: {Args.ItemName}");
 		}
 		private void HandleEvent_ConfiguratorConfigFileLoaded(object Sender, ConfigFileLoadedEventArgs Args)
 		{

@@ -13,6 +13,8 @@ namespace LibraryForVM
 		event EventHandler<ItemCountChangedEventArgs<T>> ItemAdded;
 		event EventHandler<ItemCountChangedEventArgs<T>> ItemRemoved;
 		event EventHandler<ItemUpdatedEventArgs<T>> ItemUpdated;
+		event EventHandler<ItemAddFailedEventArgs<T>> ItemAddFailed;
+		event EventHandler<ItemRemoveFailedEventArgs<T>> ItemRemoveFailed;
 
 		T this[string Name] { get; }
 		int mCount { get; }
@@ -52,6 +54,30 @@ namespace LibraryForVM
 			this.ItemName = ItemName;
 			this.StatusName = StatusName;
 			this.Item = Item;
+		}
+	}
+	public class ItemAddFailedEventArgs<T> : EventArgs where T : IItem
+	{
+		public DateTime OccurTime { get; private set; }
+		public string ItemName { get; private set; }
+		public T Item { get; private set; }
+
+		public ItemAddFailedEventArgs(DateTime OccurTime, string ItemName, T Item) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.ItemName = ItemName;
+			this.Item = Item;
+		}
+	}
+	public class ItemRemoveFailedEventArgs<T> : EventArgs where T : IItem
+	{
+		public DateTime OccurTime { get; private set; }
+		public string ItemName { get; private set; }
+
+		public ItemRemoveFailedEventArgs(DateTime OccurTime, string ItemName) : base()
+		{
+			this.OccurTime = OccurTime;
+			this.ItemName = ItemName;
 		}
 	}
 }

@@ -10,6 +10,8 @@ namespace LibraryForVM
 		public event EventHandler<ItemCountChangedEventArgs<T>> ItemAdded;
 		public event EventHandler<ItemCountChangedEventArgs<T>> ItemRemoved;
 		public event EventHandler<ItemUpdatedEventArgs<T>> ItemUpdated;
+		public event EventHandler<ItemAddFailedEventArgs<T>> ItemAddFailed;
+		public event EventHandler<ItemRemoveFailedEventArgs<T>> ItemRemoveFailed;
 
 		public T this[string Name] { get { return GetItem(Name); } }
 		public int mCount { get { return mItems.Count; } }
@@ -48,6 +50,7 @@ namespace LibraryForVM
 				}
 				else
 				{
+					RaiseEvent_ItemAddFailed(ItemName, Item);
 					result = false;
 				}
 			}
@@ -68,6 +71,7 @@ namespace LibraryForVM
 				}
 				else
 				{
+					RaiseEvent_ItemRemoveFailed(ItemName);
 					result = false;
 				}
 			}
@@ -126,6 +130,28 @@ namespace LibraryForVM
 			else
 			{
 				Task.Run(() => { ItemUpdated?.Invoke(this, new ItemUpdatedEventArgs<T>(DateTime.Now, ItemName, StatusName, Item)); });
+			}
+		}
+		protected virtual void RaiseEvent_ItemAddFailed(string ItemName, T Item, bool Sync = true)
+		{
+			if (Sync)
+			{
+				ItemAddFailed?.Invoke(this, new ItemAddFailedEventArgs<T>(DateTime.Now, ItemName, Item));
+			}
+			else
+			{
+				Task.Run(() => { ItemAddFailed?.Invoke(this, new ItemAddFailedEventArgs<T>(DateTime.Now, ItemName, Item)); });
+			}
+		}
+		protected virtual void RaiseEvent_ItemRemoveFailed(string ItemName, bool Sync = true)
+		{
+			if (Sync)
+			{
+				ItemRemoveFailed?.Invoke(this, new ItemRemoveFailedEventArgs<T>(DateTime.Now, ItemName));
+			}
+			else
+			{
+				Task.Run(() => { ItemRemoveFailed?.Invoke(this, new ItemRemoveFailedEventArgs<T>(DateTime.Now, ItemName)); });
 			}
 		}
 		private void HandleEvent_ItemStatusUpdated(object Sender, StatusUpdatedEventArgs Args)
