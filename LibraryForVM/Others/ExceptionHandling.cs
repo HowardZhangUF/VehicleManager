@@ -35,6 +35,7 @@ namespace LibraryForVM
 				if (!System.IO.Directory.Exists(directoryPath)) System.IO.Directory.CreateDirectory(directoryPath);
 				if (!System.IO.File.Exists(filePath)) System.IO.File.Create(filePath).Close();
 				System.IO.File.AppendAllText(filePath, message);
+				Console.WriteLine(message);
 			}
 		}
 	}

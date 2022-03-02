@@ -15,6 +15,10 @@ namespace LibraryForVM
 		int mMinX { get; }
 		/// <summary>Y 最小值</summary>
 		int mMinY { get; }
+		/// <summary>Y 中心點值</summary>
+		int mCenterX { get; }
+		/// <summary>Y 中心點值</summary>
+		int mCenterY { get; }
 		/// <summary>寬 (X 方向) (MaxX - MinX)</summary>
 		int mWidth { get; }
 		/// <summary>高 (Y 方向) (MaxY - MinY)</summary>

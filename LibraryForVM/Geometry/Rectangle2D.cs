@@ -12,6 +12,8 @@ namespace LibraryForVM
 		public int mMaxY { get { return mMaxPoint.mY; } }
 		public int mMinX { get { return mMinPoint.mX; } }
 		public int mMinY { get { return mMinPoint.mY; } }
+		public int mCenterX { get { return (mMaxPoint.mX + mMinPoint.mX) / 2; } }
+		public int mCenterY { get { return (mMaxPoint.mY + mMinPoint.mY) / 2; } }
 		public int mWidth { get { if (mMaxPoint == null || mMinPoint == null) return 0; else return (mMaxPoint.mX - mMinPoint.mX); } }
 		public int mHeight { get { if (mMaxPoint == null || mMinPoint == null) return 0; else return (mMaxPoint.mY - mMinPoint.mY); } }
 
@@ -37,7 +39,7 @@ namespace LibraryForVM
 		}
 		public override string ToString()
 		{
-			return $"MaxPoint: {mMaxPoint.ToString()} MinPoint: {mMinPoint.ToString()}";
+			return $"{mMaxPoint.ToString()},{mMinPoint.ToString()}";
 		}
 	}
 }
