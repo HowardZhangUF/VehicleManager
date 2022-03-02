@@ -356,6 +356,18 @@
     <Compile Include="UserControl\UcMapInfo.Designer.cs">
       <DependentUpon>UcMapInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\UcMapObject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcMapObject.Designer.cs">
+      <DependentUpon>UcMapObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UcMapObjectTemplate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\UcMapObjectTemplate.Designer.cs">
+      <DependentUpon>UcMapObjectTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UcMission.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -500,6 +512,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcMapInfo.resx">
       <DependentUpon>UcMapInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcMapObject.resx">
+      <DependentUpon>UcMapObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\UcMapObjectTemplate.resx">
+      <DependentUpon>UcMapObjectTemplate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\UcMission.resx">
       <DependentUpon>UcMission.cs</DependentUpon>

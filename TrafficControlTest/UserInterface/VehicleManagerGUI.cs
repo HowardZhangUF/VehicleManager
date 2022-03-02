@@ -93,6 +93,7 @@ namespace TrafficControlTest.UserInterface
 			ucVehicle1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleControlManager());
 			ucMission1.Set(mCore.GetReferenceOfIMissionStateManager());
 			ucAutomaticDoor1.Set(mCore.GetReferenceOfAutomaticDoorInfoManager(), mCore.GetReferenceOfIAutomaticDoorControlManager());
+			ucMapObject1.Set(mCore.GetReferenceOfIChargeStationInfoManager(), mCore.GetReferenceOfAutomaticDoorInfoManager(), mCore.GetReferenceOfILimitVehicleCountZoneInfoManager());
 			ucSetting1.Set(mCore.GetReferenceOfIConfigurator());
 			ucLog1.Set(mCore.GetReferenceOfDatabaseAdapterOfHistoryLog());
 			ucDashboard1.Set(mCore.GetReferenceOfDatabaseAdapterOfHistoryLog());
@@ -301,6 +302,17 @@ namespace TrafficControlTest.UserInterface
 				ExceptionHandling.HandleException(Ex);
 			}
 		}
+		private void btnDisplayMapObject_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				UpdateGui_PnlRightMain_DisplayMapObject();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
+		}
 		private void btnDisplaySetting_Click(object sender, EventArgs e)
 		{
 			try
@@ -372,6 +384,17 @@ namespace TrafficControlTest.UserInterface
 			try
 			{
 				UpdateGui_UcMap_MapFocusVehicle(VehicleName);
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void ucMapObject1_MapFocusRequest(object sender, MapFocusRequestEventArgs e)
+		{
+			try
+			{
+				UpdateGui_UcMap_MapFocusPoint(e.X, e.Y);
 			}
 			catch (Exception Ex)
 			{
@@ -500,6 +523,7 @@ namespace TrafficControlTest.UserInterface
 			btnDisplayVehicle.Text = "  Vehicle";
 			btnDisplayMission.Text = "  Mission";
 			btnDisplayAutomaticDoor.Text = "  AutomaticDoor";
+			btnDisplayMapObject.Text = "  MapObject";
 			btnDisplaySetting.Text = "  Setting";
 			btnDisplayLog.Text = "  Log";
 			btnDisplayDashboard.Text = "  Dashboard";
@@ -512,6 +536,7 @@ namespace TrafficControlTest.UserInterface
 			if (btnDisplayVehicle.BackColor != pnlTop.BackColor) btnDisplayVehicle.BackColor = pnlTop.BackColor;
 			if (btnDisplayMission.BackColor != pnlTop.BackColor) btnDisplayMission.BackColor = pnlTop.BackColor;
 			if (btnDisplayAutomaticDoor.BackColor != pnlTop.BackColor) btnDisplayAutomaticDoor.BackColor = pnlTop.BackColor;
+			if (btnDisplayMapObject.BackColor != pnlTop.BackColor) btnDisplayMapObject.BackColor = pnlTop.BackColor;
 			if (btnDisplaySetting.BackColor != pnlTop.BackColor) btnDisplaySetting.BackColor = pnlTop.BackColor;
 			if (btnDisplayLog.BackColor != pnlTop.BackColor) btnDisplayLog.BackColor = pnlTop.BackColor;
 			if (btnDisplayDashboard.BackColor != pnlTop.BackColor) btnDisplayDashboard.BackColor = pnlTop.BackColor;
@@ -560,6 +585,13 @@ namespace TrafficControlTest.UserInterface
 			ucAutomaticDoor1.BringToFront();
 			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayAutomaticDoor);
 		}
+		private void UpdateGui_PnlRightMain_DisplayMapObject()
+		{
+			pnlTopMarker.Width = btnDisplayMapObject.Width;
+			pnlTopMarker.Left = btnDisplayMapObject.Left;
+			ucMapObject1.BringToFront();
+			UpdateGui_PnlTop_HighlightPnlTopMenuButton(btnDisplayMapObject);
+		}
 		private void UpdateGui_PnlRightMain_DisplaySetting()
 		{
 			pnlTopMarker.Width = btnDisplaySetting.Width;
@@ -599,6 +631,17 @@ namespace TrafficControlTest.UserInterface
 					{
 						UpdateGui_PnlRightMain_DisplayMap();
 					}
+				}
+			});
+		}
+		private void UpdateGui_UcMap_MapFocusPoint(int X, int Y)
+		{
+			ucMap1.InvokeIfNecessary(() =>
+			{
+				ucMap1.FocusPoint(X, Y);
+				if (pnlTopMarker.Left != btnDisplayMap.Left)
+				{
+					UpdateGui_PnlRightMain_DisplayMap();
 				}
 			});
 		}

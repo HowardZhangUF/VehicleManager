@@ -251,6 +251,14 @@ namespace TrafficControlTest.Process
 		{
 			return mAutomaticDoorControlManager;
 		}
+		public IChargeStationInfoManager GetReferenceOfIChargeStationInfoManager()
+		{
+			return mChargeStationInfoManager;
+		}
+		public ILimitVehicleCountZoneInfoManager GetReferenceOfILimitVehicleCountZoneInfoManager()
+		{
+			return mLimitVehicleCountZoneInfoManager;
+		}
 		public DatabaseAdapter GetReferenceOfDatabaseAdapterOfHistoryLog()
 		{
 			return mDatabaseAdapterOfHistoryLog;
