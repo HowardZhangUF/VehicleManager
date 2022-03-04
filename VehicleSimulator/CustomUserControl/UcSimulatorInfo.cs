@@ -89,7 +89,7 @@ namespace VehicleSimulator
 					string targetName = targetString.Substring(0, firstBracketsIndex - 1);
 					string locationString = targetString.Substring(firstBracketsIndex + 1, lastBracketsIndex - firstBracketsIndex - 1);
 					string[] locationSplitString = locationString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-					var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), new Point(int.Parse(locationSplitString[0]), int.Parse(locationSplitString[1])), int.Parse(locationSplitString[2]));
+					var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), targetName);
 					rSimulatorControl.StartMove(targetName, moveRequests);
 				}
 				else

@@ -11,7 +11,7 @@ namespace VehicleSimulator
 		void SetMap(string FilePath);
 
 		List<MoveRequest> Calculate(Point Start, string TargetName);
-		List<MoveRequest> Calculate(Point Start, Point End);
-		List<MoveRequest> Calculate(Point Start, Point End, int EndToward);
+		List<MoveRequest> Calculate(Point Start, Point End, bool IsMoveBackward = false);
+		List<MoveRequest> Calculate(Point Start, Point End, int EndToward, bool IsMoveBackward = false);
 	}
 }
