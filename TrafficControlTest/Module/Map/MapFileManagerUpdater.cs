@@ -12,8 +12,7 @@ namespace TrafficControlTest.Module.Map
 	public class MapFileManagerUpdater : IMapFileManagerUpdater
 	{
 		public bool mIsDownloadingMap { get { return mMapFileNamesOfDownloading.Any(); } }
-
-		private List<string> mMapFileNamesOfDownloading { get; } = new List<string>();
+		public List<string> mMapFileNamesOfDownloading { get; } = new List<string>();
 
 		private IMapFileManager rMapFileManager = null;
 		private IVehicleCommunicator rVehicleCommunicator = null;

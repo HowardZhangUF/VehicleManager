@@ -54,12 +54,14 @@ namespace TrafficControlTest.Module.Map
 		public DateTime OccurTime { get; private set; }
 		public string MapFileFullPath { get; private set; }
 		public ReasonOfLoadMapFail Reason { get; private set; }
+		public string DetailInfo { get; private set; }
 
-		public LoadMapFailedEventArgs(DateTime OccurTime, string MapFileFullPath, ReasonOfLoadMapFail Reason)
+		public LoadMapFailedEventArgs(DateTime OccurTime, string MapFileFullPath, ReasonOfLoadMapFail Reason, string DetailInfo)
 		{
 			this.OccurTime = OccurTime;
 			this.MapFileFullPath = MapFileFullPath;
 			this.Reason = Reason;
+			this.DetailInfo = DetailInfo;
 		}
 	}
 

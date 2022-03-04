@@ -1696,7 +1696,7 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_MapManagerUpdaterLoadMapFailed(object Sender, LoadMapFailedEventArgs Args)
 		{
-			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "LoadMapFailed", $"MapFileFullPath: {Args.MapFileFullPath}, Reason: {Args.Reason.ToString()}");
+			HandleDebugMessage(Args.OccurTime, "MapManagerUpadater", "LoadMapFailed", $"MapFileFullPath: {Args.MapFileFullPath}, Reason: {Args.Reason.ToString()}, DetailInfo: {Args.DetailInfo}");
 		}
 		private void HandleEvent_MapManagerUpdaterSynchronizeMapStarted(object Sender, SynchronizeMapStartedEventArgs Args)
 		{

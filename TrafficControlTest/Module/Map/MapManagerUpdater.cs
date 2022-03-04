@@ -206,15 +206,15 @@ namespace TrafficControlTest.Module.Map
 				Task.Run(() => { LoadMapSuccessed?.Invoke(this, new LoadMapSuccessedEventArgs(DateTime.Now, MapFileFullPath)); });
 			}
 		}
-		protected virtual void RaiseEvent_LoadMapFailed(string MapFileFullPath, ReasonOfLoadMapFail Reason, bool Sync = true)
+		protected virtual void RaiseEvent_LoadMapFailed(string MapFileFullPath, ReasonOfLoadMapFail Reason, string DetailInfo, bool Sync = true)
 		{
 			if (Sync)
 			{
-				LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileFullPath, Reason));
+				LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileFullPath, Reason, DetailInfo));
 			}
 			else
 			{
-				Task.Run(() => { LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileFullPath, Reason)); });
+				Task.Run(() => { LoadMapFailed?.Invoke(this, new LoadMapFailedEventArgs(DateTime.Now, MapFileFullPath, Reason, DetailInfo)); });
 			}
 		}
 		protected virtual void RaiseEvent_SynchronizeMapStarted(string MapFileFullPath, IEnumerable<string> VehicleNames, bool Sync = true)
@@ -258,6 +258,7 @@ namespace TrafficControlTest.Module.Map
 			{
 				bool isLoadMapSuccess = false;
 				ReasonOfLoadMapFail reason = ReasonOfLoadMapFail.None;
+				string detailInfo = string.Empty;
 				DateTime tmpTimestamp = DateTime.Now;
 				string integratedMapFileFullPath = System.IO.Path.Combine(mMapManagementSetting.mMapFileDirectory, mIntegratedMapFileName);
 
@@ -296,8 +297,12 @@ namespace TrafficControlTest.Module.Map
 
 				if (!isLoadMapSuccess)
 				{
-					if (reason == ReasonOfLoadMapFail.None) reason = ReasonOfLoadMapFail.IsDownloadingMapFile;
-					RaiseEvent_LoadMapFailed(integratedMapFileFullPath, reason);
+					if (reason == ReasonOfLoadMapFail.None)
+					{
+						reason = ReasonOfLoadMapFail.IsDownloadingMapFile;
+						detailInfo = string.Join(",", rMapFileManagerUpdater.mMapFileNamesOfDownloading);
+					}
+					RaiseEvent_LoadMapFailed(integratedMapFileFullPath, reason, detailInfo);
 				}
 			}
 			catch (Exception Ex)

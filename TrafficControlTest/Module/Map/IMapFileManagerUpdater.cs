@@ -1,4 +1,5 @@
-﻿using TrafficControlTest.Module.CommunicationVehicle;
+﻿using System.Collections.Generic;
+using TrafficControlTest.Module.CommunicationVehicle;
 using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.Map
@@ -13,6 +14,7 @@ namespace TrafficControlTest.Module.Map
 	public interface IMapFileManagerUpdater
 	{
 		bool mIsDownloadingMap { get; }
+		List<string> mMapFileNamesOfDownloading { get; }
 
 		void Set(IMapFileManager MapFileManager);
 		void Set(IVehicleCommunicator VehicleCommunicator);
