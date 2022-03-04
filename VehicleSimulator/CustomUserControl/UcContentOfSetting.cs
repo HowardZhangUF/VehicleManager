@@ -123,8 +123,14 @@ namespace VehicleSimulator
 			if (!string.IsNullOrEmpty(lblMapFileFolderDirectory.Text) && dgvMapFileList.CurrentRow.Index >= 0)
 			{
 				string mapFilePath = $"{lblMapFileFolderDirectory.Text}\\{dgvMapFileList.CurrentRow.Cells[0].Value.ToString()}";
-				UpdateGui_PbMapPreview_UpdatePicture(mapFilePath);
-				rCore.SetMap(mapFilePath, mMapData);
+				if (File.Exists(mapFilePath))
+				{
+					UpdateGui_PbMapPreview_UpdatePicture(mapFilePath);
+					if (mMapData != null)
+					{
+						rCore.SetMap(mapFilePath, mMapData);
+					}
+				}
 			}
 			else
 			{

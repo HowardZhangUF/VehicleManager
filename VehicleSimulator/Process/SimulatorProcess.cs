@@ -43,9 +43,12 @@ namespace VehicleSimulator
 		}
 		public void SetMap(string MapFilePath, MapData MapData)
 		{
-			mMoveRequestCalculator.SetMap(MapFilePath);
-			mSimulatorInfo.SetMapFilePath(MapFilePath);
-			mSimulatorInfo.SetMapData(MapData);
+			if (System.IO.File.Exists(MapFilePath) && MapData != null)
+			{
+				mMoveRequestCalculator.SetMap(MapFilePath);
+				mSimulatorInfo.SetMapFilePath(MapFilePath);
+				mSimulatorInfo.SetMapData(MapData);
+			}
 		}
 		public ISimulatorInfo GetReferenceOfISimulatorInfo()
 		{

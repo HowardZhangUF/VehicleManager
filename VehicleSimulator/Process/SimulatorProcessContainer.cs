@@ -62,9 +62,12 @@ namespace VehicleSimulator
 		}
 		public void SetMap(string FilePath, MapData MapData)
 		{
-			foreach (SimulatorProcess process in mSimulatorProcessCollection.Values)
+			if (System.IO.File.Exists(FilePath) && MapData != null)
 			{
-				process.SetMap(FilePath, MapData);
+				foreach (SimulatorProcess process in mSimulatorProcessCollection.Values)
+				{
+					process.SetMap(FilePath, MapData);
+				}
 			}
 		}
 
