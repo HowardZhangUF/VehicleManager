@@ -287,7 +287,7 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_Exception();
 
 			UnsubscribeEvent_IConfigurator(mConfigurator);
-			mConfigurator = GenerateIConfigurator(".\\..\\VehicleManagerData\\Application.config");
+			mConfigurator = GenerateIConfigurator(".\\..\\VehicleManagerData\\Application.config", mProjectType);
 			SubscribeEvent_IConfigurator(mConfigurator);
 
 			UnsubscribeEvent_ILogExporter(mLogExporter);

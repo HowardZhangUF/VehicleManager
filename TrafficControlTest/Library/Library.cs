@@ -263,9 +263,9 @@ namespace TrafficControlTest.Library
 		{
 			return new LogMaintainHandler(HistoryLogAdapter, TimeElapseDetector);
 		}
-		public static IConfigurator GenerateIConfigurator(string FileName)
+		public static IConfigurator GenerateIConfigurator(string FileName, ProjectType ProjectType)
 		{
-			return new Configurator(FileName);
+			return new Configurator(FileName, ProjectType);
 		}
 		public static IAccount GenerateIAccount(string Name, string Password, AccountRank Rank)
 		{

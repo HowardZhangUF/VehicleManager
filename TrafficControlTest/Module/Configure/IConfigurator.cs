@@ -20,9 +20,11 @@ namespace TrafficControlTest.Module.Configure
 		Language mLanguage { get; }
 		/// <summary>儲存 Configuration 檔案的名稱，例： .\\Application.config</summary>
 		string mFilePath { get; }
+		/// <summary>專案類型</summary>
+		ProjectType rProjectType { get; }
 
 		/// <summary>設定 Configuration 檔案的名稱</summary>
-		void Set(string FileName);
+		void Set(string FilePath, ProjectType ProjectType);
 		/// <summary>從檔案 (mFileName) 讀取 Configuration 。若檔案不存在則會自行生成檔案。若檔案中有缺少 Configuration 時會自行新增並更新檔案</summary>
 		void Load();
 		/// <summary>輸出 Configuration 至檔案 (mFileName)</summary>

@@ -21,25 +21,28 @@ namespace TrafficControlTest.Module.Configure
 
 		public Language mLanguage { get; private set; } = Language.Zhtw;
 		public string mFilePath { get; private set; } = string.Empty;
+		public ProjectType rProjectType { get; private set; } = ProjectType.Common;
 
 		private readonly Dictionary<string, Configuration> mConfigs = new Dictionary<string, Configuration>();
 
-		public Configurator(string FilePath)
+		public Configurator(string FilePath, ProjectType ProjectType)
 		{
-			Set(FilePath);
+			Set(FilePath, ProjectType);
 		}
-		public void Set(string FileName)
+		public void Set(string FilePath, ProjectType ProjectType)
 		{
-			if (!string.IsNullOrEmpty(FileName))
+			if (!string.IsNullOrEmpty(FilePath))
 			{
-				mFilePath = FileName;
+				mFilePath = FilePath;
 			}
+			rProjectType = ProjectType;
 		}
 		public void Load()
 		{
 			if (!string.IsNullOrEmpty(mFilePath))
 			{
 				GenerateDefaultConfiguration();
+				UpdateConfigurationUsingProjectType();
 				if (!File.Exists(mFilePath))
 				{
 					RaiseEvent_ConfigFileLoaded();
@@ -617,6 +620,24 @@ namespace TrafficControlTest.Module.Configure
 			for (int i = 0; i < defaultConfigs.Count; ++i)
 			{
 				mConfigs.Add(defaultConfigs[i].mFullName, defaultConfigs[i]);
+			}
+		}
+		protected virtual void UpdateConfigurationUsingProjectType()
+		{
+			switch (rProjectType)
+			{
+				case ProjectType.E2029_ThinFlex:
+					mConfigs["MissionDispatcher/DispatchRule"].SetValue("1");
+					mConfigs["MissionDispatcher/IdlePeriodThreshold"].SetValue("5000");
+					mConfigs["VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance"].SetValue("1000");
+					break;
+				case ProjectType.E2113_Unimicron:
+					mConfigs["MapFileManager/MapManagementSetting"].SetValue("{\"mRegionSettings\":{\"0\":{\"mRegionId\":0,\"mRegionName\":\"Region000\",\"mRegionMember\":\"\",\"mCurrentMapName\":\"combine_20220121_VM.map\",\"mCurrentMapRange\":\"\"},\"1\":{\"mRegionId\":1,\"mRegionName\":\"4F-B-RC\",\"mRegionMember\":\"iTS-P-B403,iTS-P-B405\",\"mCurrentMapName\":\"20220119_VM.map\",\"mCurrentMapRange\":\"\"},\"2\":{\"mRegionId\":2,\"mRegionName\":\"4F-B-High-Front\",\"mRegionMember\":\"iTS-P-B401\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"},\"3\":{\"mRegionId\":3,\"mRegionName\":\"4F-B-High-Back\",\"mRegionMember\":\"iTS-P-B402\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"}},\"mMapFileDirectory\":\".\\\\..\\\\VehicleManagerData\\\\Map\"}");
+					mConfigs["MapManagerUpdater/MapManagementSetting"].SetValue("{\"mRegionSettings\":{\"0\":{\"mRegionId\":0,\"mRegionName\":\"Region000\",\"mRegionMember\":\"\",\"mCurrentMapName\":\"combine_20220121_VM.map\",\"mCurrentMapRange\":\"\"},\"1\":{\"mRegionId\":1,\"mRegionName\":\"4F-B-RC\",\"mRegionMember\":\"iTS-P-B403,iTS-P-B405\",\"mCurrentMapName\":\"20220119_VM.map\",\"mCurrentMapRange\":\"\"},\"2\":{\"mRegionId\":2,\"mRegionName\":\"4F-B-High-Front\",\"mRegionMember\":\"iTS-P-B401\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"},\"3\":{\"mRegionId\":3,\"mRegionName\":\"4F-B-High-Back\",\"mRegionMember\":\"iTS-P-B402\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"}},\"mMapFileDirectory\":\".\\\\..\\\\VehicleManagerData\\\\Map\"}");
+					mConfigs["VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater/DistanceThreshold"].SetValue("1300");
+					break;
+				case ProjectType.Common:
+					break;
 			}
 		}
 		protected virtual void RaiseEvent_ConfigFileLoaded(bool Sync = true)
