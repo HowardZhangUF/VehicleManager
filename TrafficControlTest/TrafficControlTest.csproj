@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;E2029</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -136,6 +136,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Library\ProjectType.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicator.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorCommunicatorUpdater.cs" />
     <Compile Include="Module\AutomaticDoor\AutomaticDoorControl.cs" />

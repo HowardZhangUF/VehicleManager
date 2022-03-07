@@ -29,6 +29,7 @@ namespace TrafficControlTest.Process
 		public event EventHandler<UserLogChangedEventArgs> AccessControlUserLogChanged;
 		public event EventHandler<DestructProgressChangedEventArgs> DestructProgressChanged;
 
+		public ProjectType mProjectType { get; private set; } = ProjectType.Common;
 		public bool mIsAnyUserLoggedIn { get { return (mAccessControl != null && !string.IsNullOrEmpty(mAccessControl.mCurrentUser)); } }
 
 		private bool mIsAllSystemStopped
@@ -274,6 +275,8 @@ namespace TrafficControlTest.Process
 
 		private void Constructor()
 		{
+			UpdateProjectTypeUsingCoditionalCompilationSymbol();
+
 			mDatabaseAdapterOfHistoryLog = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\HistoryLog.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mDatabaseAdapterOfCurrentLog = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\CurrentLog.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
 			mDatabaseAdapterOfSystemData = GenerateDatabaseAdapter($"{DatabaseAdapter.mDirectoryNameOfFiles}\\SystemData.db", string.Empty, string.Empty, string.Empty, string.Empty, false);
@@ -646,6 +649,17 @@ namespace TrafficControlTest.Process
 			mDatabaseAdapterOfSystemData = null;
 			mDatabaseAdapterOfCurrentLog = null;
 			mDatabaseAdapterOfHistoryLog = null;
+		}
+		private void UpdateProjectTypeUsingCoditionalCompilationSymbol()
+		{
+			// [[VS.NET]條件式編譯符號(Conditional compilation symbols)](https://dotblogs.com.tw/rainmaker/2013/10/28/125890)
+#if E2029
+			mProjectType = ProjectType.E2029_ThinFlex;
+#elif E2113
+			mProjectType = ProjectType.E2113_Unimicron;
+#else
+			mProjectType = ProjectType.Common;
+#endif
 		}
 		private ISystemWithConfig GetCorrespondingObjectOfISystemWithConfig(string ObjectName)
 		{

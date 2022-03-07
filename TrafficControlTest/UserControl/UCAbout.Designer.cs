@@ -34,10 +34,11 @@
 			this.lblCastecHyperlink = new System.Windows.Forms.Label();
 			this.lblProgramName = new System.Windows.Forms.Label();
 			this.lblProgramVersion = new System.Windows.Forms.Label();
+			this.lblIcons8License = new System.Windows.Forms.Label();
 			this.lblProgramCopyRight = new System.Windows.Forms.Label();
 			this.lblIcons8Hyperlink = new System.Windows.Forms.Label();
-			this.lblIcons8License = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
+			this.lblProgramProjectType = new System.Windows.Forms.Label();
 			this.tableLayoutPanel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbCastecLogo)).BeginInit();
 			this.SuspendLayout();
@@ -47,19 +48,21 @@
 			this.tableLayoutPanel2.ColumnCount = 2;
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 95F));
-			this.tableLayoutPanel2.Controls.Add(this.pbCastecLogo, 1, 8);
-			this.tableLayoutPanel2.Controls.Add(this.lblCastecHyperlink, 1, 9);
+			this.tableLayoutPanel2.Controls.Add(this.pbCastecLogo, 1, 9);
+			this.tableLayoutPanel2.Controls.Add(this.lblCastecHyperlink, 1, 10);
 			this.tableLayoutPanel2.Controls.Add(this.lblProgramName, 1, 1);
 			this.tableLayoutPanel2.Controls.Add(this.lblProgramVersion, 1, 2);
-			this.tableLayoutPanel2.Controls.Add(this.lblIcons8License, 1, 5);
-			this.tableLayoutPanel2.Controls.Add(this.lblProgramCopyRight, 1, 3);
-			this.tableLayoutPanel2.Controls.Add(this.lblIcons8Hyperlink, 1, 6);
+			this.tableLayoutPanel2.Controls.Add(this.lblIcons8License, 1, 6);
+			this.tableLayoutPanel2.Controls.Add(this.lblProgramCopyRight, 1, 4);
+			this.tableLayoutPanel2.Controls.Add(this.lblIcons8Hyperlink, 1, 7);
+			this.tableLayoutPanel2.Controls.Add(this.lblProgramProjectType, 1, 3);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 60);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 10;
+			this.tableLayoutPanel2.RowCount = 11;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
@@ -74,7 +77,7 @@
 			// pbCastecLogo
 			// 
 			this.pbCastecLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbCastecLogo.Image")));
-			this.pbCastecLogo.Location = new System.Drawing.Point(23, 238);
+			this.pbCastecLogo.Location = new System.Drawing.Point(23, 263);
 			this.pbCastecLogo.Name = "pbCastecLogo";
 			this.pbCastecLogo.Size = new System.Drawing.Size(160, 54);
 			this.pbCastecLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -87,9 +90,9 @@
 			this.lblCastecHyperlink.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblCastecHyperlink.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblCastecHyperlink.ForeColor = System.Drawing.Color.DodgerBlue;
-			this.lblCastecHyperlink.Location = new System.Drawing.Point(23, 300);
+			this.lblCastecHyperlink.Location = new System.Drawing.Point(23, 325);
 			this.lblCastecHyperlink.Name = "lblCastecHyperlink";
-			this.lblCastecHyperlink.Size = new System.Drawing.Size(201, 19);
+			this.lblCastecHyperlink.Size = new System.Drawing.Size(158, 15);
 			this.lblCastecHyperlink.TabIndex = 8;
 			this.lblCastecHyperlink.Text = "http://www.castec.com.tw/";
 			// 
@@ -99,7 +102,7 @@
 			this.lblProgramName.Font = new System.Drawing.Font("新細明體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblProgramName.Location = new System.Drawing.Point(23, 35);
 			this.lblProgramName.Name = "lblProgramName";
-			this.lblProgramName.Size = new System.Drawing.Size(180, 24);
+			this.lblProgramName.Size = new System.Drawing.Size(149, 19);
 			this.lblProgramName.TabIndex = 2;
 			this.lblProgramName.Text = "Vehicle Manager";
 			// 
@@ -109,17 +112,27 @@
 			this.lblProgramVersion.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblProgramVersion.Location = new System.Drawing.Point(23, 65);
 			this.lblProgramVersion.Name = "lblProgramVersion";
-			this.lblProgramVersion.Size = new System.Drawing.Size(53, 19);
+			this.lblProgramVersion.Size = new System.Drawing.Size(43, 15);
 			this.lblProgramVersion.TabIndex = 3;
 			this.lblProgramVersion.Text = "v1.0.0";
+			// 
+			// lblIcons8License
+			// 
+			this.lblIcons8License.AutoSize = true;
+			this.lblIcons8License.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblIcons8License.Location = new System.Drawing.Point(23, 175);
+			this.lblIcons8License.Name = "lblIcons8License";
+			this.lblIcons8License.Size = new System.Drawing.Size(104, 15);
+			this.lblIcons8License.TabIndex = 5;
+			this.lblIcons8License.Text = "Icon by icons8";
 			// 
 			// lblProgramCopyRight
 			// 
 			this.lblProgramCopyRight.AutoSize = true;
 			this.lblProgramCopyRight.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblProgramCopyRight.Location = new System.Drawing.Point(23, 90);
+			this.lblProgramCopyRight.Location = new System.Drawing.Point(23, 115);
 			this.lblProgramCopyRight.Name = "lblProgramCopyRight";
-			this.lblProgramCopyRight.Size = new System.Drawing.Size(368, 19);
+			this.lblProgramCopyRight.Size = new System.Drawing.Size(289, 15);
 			this.lblProgramCopyRight.TabIndex = 4;
 			this.lblProgramCopyRight.Text = "Copyright (C) 2019 CASTEC International Corp.";
 			// 
@@ -129,21 +142,11 @@
 			this.lblIcons8Hyperlink.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblIcons8Hyperlink.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.lblIcons8Hyperlink.ForeColor = System.Drawing.Color.DodgerBlue;
-			this.lblIcons8Hyperlink.Location = new System.Drawing.Point(23, 175);
+			this.lblIcons8Hyperlink.Location = new System.Drawing.Point(23, 200);
 			this.lblIcons8Hyperlink.Name = "lblIcons8Hyperlink";
-			this.lblIcons8Hyperlink.Size = new System.Drawing.Size(146, 19);
+			this.lblIcons8Hyperlink.Size = new System.Drawing.Size(114, 15);
 			this.lblIcons8Hyperlink.TabIndex = 6;
 			this.lblIcons8Hyperlink.Text = "https://icons8.com/";
-			// 
-			// lblIcons8License
-			// 
-			this.lblIcons8License.AutoSize = true;
-			this.lblIcons8License.Font = new System.Drawing.Font("新細明體", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.lblIcons8License.Location = new System.Drawing.Point(23, 150);
-			this.lblIcons8License.Name = "lblIcons8License";
-			this.lblIcons8License.Size = new System.Drawing.Size(130, 19);
-			this.lblIcons8License.TabIndex = 5;
-			this.lblIcons8License.Text = "Icon by icons8";
 			// 
 			// label3
 			// 
@@ -156,7 +159,17 @@
 			this.label3.Text = "    About";
 			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// UCAbout
+			// lblProgramProjectType
+			// 
+			this.lblProgramProjectType.AutoSize = true;
+			this.lblProgramProjectType.Font = new System.Drawing.Font("新細明體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.lblProgramProjectType.Location = new System.Drawing.Point(23, 90);
+			this.lblProgramProjectType.Name = "lblProgramProjectType";
+			this.lblProgramProjectType.Size = new System.Drawing.Size(59, 15);
+			this.lblProgramProjectType.TabIndex = 10;
+			this.lblProgramProjectType.Text = "Common";
+			// 
+			// UcAbout
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.AutoScroll = true;
@@ -164,7 +177,7 @@
 			this.Controls.Add(this.tableLayoutPanel2);
 			this.Controls.Add(this.label3);
 			this.ForeColor = System.Drawing.Color.White;
-			this.Name = "UCAbout";
+			this.Name = "UcAbout";
 			this.Size = new System.Drawing.Size(400, 650);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
@@ -184,5 +197,6 @@
 		private System.Windows.Forms.Label lblIcons8Hyperlink;
 		private System.Windows.Forms.Label lblIcons8License;
 		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label lblProgramProjectType;
 	}
 }
