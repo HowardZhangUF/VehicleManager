@@ -27,7 +27,7 @@ namespace TrafficControlTest.Module.Map
 		public void AddMapFile(string SrcVehicleName, string MapFileName, byte[] MapData)
 		{
 			// 每當下載地圖時，更新地圖管理設定(會下載地圖，代表有自走車連線，或是有自走車更新地圖)
-			// 更新後通知其他類別一起將 MapManageSetting 更新???
+			// MapManagementSetting 更新後，在 process 會將所有用到 MapManagementSetting 的類別進行資料同步
 			int regionId = mMapManagementSetting.GetCorrespondingMapRegionId(SrcVehicleName);
 			mMapManagementSetting.mRegionSettings[regionId].SetCurrentMap(MapFileName, string.Empty);
 			RaiseEvent_ConfigUpdated("MapManagementSetting", mMapManagementSetting.ToJsonString());
