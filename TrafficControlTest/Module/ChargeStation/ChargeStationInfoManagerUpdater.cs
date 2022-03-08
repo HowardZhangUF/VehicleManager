@@ -14,7 +14,8 @@ namespace TrafficControlTest.Module.ChargeStation
 		private IChargeStationInfoManager rChargeStationInfoManager = null;
 		private IMapManager rMapManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
-		private int mMaximumDistanceBetweenChargeStationAndVehicle = 1500;
+		private int mChargeStationLocationRangeDistance = -1200;
+		private int mChargeStationLocationRangeWidth = 1000;
 
 		public ChargeStationInfoManagerUpdater(IChargeStationInfoManager ChargeStationInfoManager, IMapManager MapManager, IVehicleInfoManager VehicleInfoManager)
 		{
@@ -46,14 +47,16 @@ namespace TrafficControlTest.Module.ChargeStation
 		}
 		public override string[] GetConfigNameList()
 		{
-			return new string[] { "MaximumDistanceBetweenChargeStationAndVehicle" };
+			return new string[] { "ChargeStationLocationRangeDistance", "ChargeStationLocationRangeWidth" };
 		}
 		public override string GetConfig(string ConfigName)
 		{
 			switch (ConfigName)
 			{
-				case "MaximumDistanceBetweenChargeStationAndVehicle":
-					return mMaximumDistanceBetweenChargeStationAndVehicle.ToString();
+				case "ChargeStationLocationRangeDistance":
+					return mChargeStationLocationRangeDistance.ToString();
+				case "ChargeStationLocationRangeWidth":
+					return mChargeStationLocationRangeWidth.ToString();
 				default:
 					return null;
 			}
@@ -62,8 +65,12 @@ namespace TrafficControlTest.Module.ChargeStation
 		{
 			switch (ConfigName)
 			{
-				case "MaximumDistanceBetweenChargeStationAndVehicle":
-					mMaximumDistanceBetweenChargeStationAndVehicle = int.Parse(NewValue);
+				case "ChargeStationLocationRangeDistance":
+					mChargeStationLocationRangeDistance = int.Parse(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ChargeStationLocationRangeWidth":
+					mChargeStationLocationRangeWidth = int.Parse(NewValue);
 					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
 					break;
 				default:
@@ -125,10 +132,15 @@ namespace TrafficControlTest.Module.ChargeStation
 			{
 				for (int i = 0; i < chargeStationInfos.Count; ++i)
 				{
-					IChargeStationInfo chargeStationInfo = Library.Library.GenerateIChargeStationInfo(chargeStationInfos[i].mName, chargeStationInfos[i].mLocation);
+					int tmpRangeCenterX = (int)(mChargeStationLocationRangeDistance * Math.Cos(chargeStationInfos[i].mLocation.mToward / 180.0f * Math.PI) + chargeStationInfos[i].mLocation.mX);
+					int tmpRangeCenterY = (int)(mChargeStationLocationRangeDistance * Math.Sin(chargeStationInfos[i].mLocation.mToward / 180.0f * Math.PI) + chargeStationInfos[i].mLocation.mY);
+					IRectangle2D chargeStationLocationRange = new Rectangle2D(new Point2D(tmpRangeCenterX + mChargeStationLocationRangeWidth / 2, tmpRangeCenterY + mChargeStationLocationRangeWidth / 2), new Point2D(tmpRangeCenterX - mChargeStationLocationRangeWidth / 2, tmpRangeCenterY - mChargeStationLocationRangeWidth / 2));
+					IChargeStationInfo chargeStationInfo = Library.Library.GenerateIChargeStationInfo(chargeStationInfos[i].mName, chargeStationInfos[i].mLocation, chargeStationLocationRange);
 					rChargeStationInfoManager.Add(chargeStationInfo.mName, chargeStationInfo);
 				}
 			}
+
+			Subtask_UpdateChargeStationInfoIsBeUsing();
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object sender, ItemCountChangedEventArgs<IVehicleInfo> e)
 		{
@@ -154,7 +166,7 @@ namespace TrafficControlTest.Module.ChargeStation
 				IVehicleInfo[] vehicles = rVehicleInfoManager.GetItems().ToArray();
 				for (int i = 0; i < chargeStations.Length; ++i)
 				{
-					if (vehicles.Any(o => (o.mCurrentState == "Charge" || o.mCurrentState == "ChargeIdle") && CalculateDistance(chargeStations[i].mLocation, o.mLocationCoordinate) < mMaximumDistanceBetweenChargeStationAndVehicle))
+					if (vehicles.Any(o => (o.mCurrentState == "Charge" || o.mCurrentState == "ChargeIdle") && GeometryAlgorithm.IsPointInside(o.mLocationCoordinate, chargeStations[i].mLocationRange)))
 					{
 						if (chargeStations[i].mIsBeUsing != true) chargeStations[i].UpdateIsBeUsing(true);
 					}
@@ -164,10 +176,6 @@ namespace TrafficControlTest.Module.ChargeStation
 					}
 				}
 			}
-		}
-		private int CalculateDistance(IPoint2D Point1, IPoint2D Point2)
-		{
-			return (int)Math.Sqrt((Point1.mX - Point2.mX) * (Point1.mX - Point2.mX) + (Point1.mY - Point2.mY) * (Point1.mY - Point2.mY));
 		}
 	}
 }

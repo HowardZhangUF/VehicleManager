@@ -13,18 +13,23 @@ namespace TrafficControlTest.Module.ChargeStation
 
         public string mName { get; private set; } = string.Empty;
         public ITowardPoint2D mLocation { get; private set; } = null;
+		public IRectangle2D mLocationRange { get; private set; } = null;
         public bool mEnable { get; private set; } = true;
         public bool mIsBeUsing { get; private set; } = false;
+		public TimeSpan mIsBeUsingDuration { get { return DateTime.Now.Subtract(mTimestampOfIsBeUsingChanged); } }
         public DateTime mLastUpdated { get; private set; } = DateTime.Now;
 
-        public ChargeStationInfo(string Name, ITowardPoint2D Location)
+		private DateTime mTimestampOfIsBeUsingChanged = DateTime.Now;
+
+        public ChargeStationInfo(string Name, ITowardPoint2D Location, IRectangle2D LocationRange)
         {
-            Set(Name, Location);
+            Set(Name, Location, LocationRange);
         }
-        public void Set(string Name, ITowardPoint2D Location)
+        public void Set(string Name, ITowardPoint2D Location, IRectangle2D LocationRange)
         {
             mName = Name;
             mLocation = Location;
+			mLocationRange = LocationRange;
             mLastUpdated = DateTime.Now;
         }
         public void UpdateEnable(bool Enable)
@@ -41,7 +46,8 @@ namespace TrafficControlTest.Module.ChargeStation
             if (mIsBeUsing != IsBeUsing)
             {
                 mIsBeUsing = IsBeUsing;
-                mLastUpdated = DateTime.Now;
+				mTimestampOfIsBeUsingChanged = DateTime.Now;
+				mLastUpdated = DateTime.Now;
                 RaiseEvent_StatusUpdated("IsBeUsing");
             }
         }

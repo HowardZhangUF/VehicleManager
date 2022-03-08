@@ -276,6 +276,7 @@ namespace TrafficControlTest.UserControl
 			{
 				{"Name", 200 },
 				{"Location", 200 },
+				{"LocationRange", 300 },
 				{"Enable", 100 }, // changeable
 				{"IsBeUsing", 100 }, // changeable
 				{"LastUpdate", 200 }
@@ -329,7 +330,7 @@ namespace TrafficControlTest.UserControl
 		private string[] GetDataArray_IChargeStation(IItem Item)
 		{
 			var tmpItem = Item as IChargeStationInfo;
-			return new string[] { tmpItem.mName, tmpItem.mLocation.ToString(), tmpItem.mEnable.ToString(), tmpItem.mIsBeUsing.ToString(), tmpItem.mLastUpdated.ToString(TimestampFormat) };
+			return new string[] { tmpItem.mName, tmpItem.mLocation.ToString(), tmpItem.mLocationRange.ToString(), tmpItem.mEnable.ToString(), tmpItem.mIsBeUsing.ToString(), tmpItem.mLastUpdated.ToString(TimestampFormat) };
 		}
 		private string[] GetDataArray_IAutomaticDoor(IItem Item)
 		{

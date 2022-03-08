@@ -10,11 +10,13 @@ namespace TrafficControlTest.Module.ChargeStation
     public interface IChargeStationInfo : IItem
     {
         ITowardPoint2D mLocation { get; }
+		IRectangle2D mLocationRange { get; }
         bool mEnable { get; }
         bool mIsBeUsing { get; }
+		TimeSpan mIsBeUsingDuration { get; }
         DateTime mLastUpdated { get; }
 
-        void Set(string Name, ITowardPoint2D Location);
+        void Set(string Name, ITowardPoint2D Location, IRectangle2D LocationRange);
         void UpdateEnable(bool Enable);
         void UpdateIsBeUsing(bool IsBeUsing);
     }

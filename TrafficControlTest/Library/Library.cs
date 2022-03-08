@@ -339,9 +339,9 @@ namespace TrafficControlTest.Library
 		{
 			return new VehiclePassThroughAutomaticDoorEventHandler(VehiclePassThroughAutomaticDoorEventManager, AutomaticDoorControlManager);
 		}
-		public static IChargeStationInfo GenerateIChargeStationInfo(string Name, ITowardPoint2D Location)
+		public static IChargeStationInfo GenerateIChargeStationInfo(string Name, ITowardPoint2D Location, IRectangle2D LocationRange)
         {
-            return new ChargeStationInfo(Name, Location);
+            return new ChargeStationInfo(Name, Location, LocationRange);
         }
         public static IChargeStationInfoManager GenerateIChargeStationInfoManager()
         {
