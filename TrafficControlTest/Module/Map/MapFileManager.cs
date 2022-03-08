@@ -28,8 +28,9 @@ namespace TrafficControlTest.Module.Map
 		{
 			// 每當下載地圖時，更新地圖管理設定(會下載地圖，代表有自走車連線，或是有自走車更新地圖)
 			// MapManagementSetting 更新後，在 process 會將所有用到 MapManagementSetting 的類別進行資料同步
+			IRectangle2D mapRange = GetMapRange(MapData);
 			int regionId = mMapManagementSetting.GetCorrespondingMapRegionId(SrcVehicleName);
-			mMapManagementSetting.mRegionSettings[regionId].SetCurrentMap(MapFileName, string.Empty);
+			mMapManagementSetting.mRegionSettings[regionId].SetCurrentMap(MapFileName, mapRange.ToString());
 			RaiseEvent_ConfigUpdated("MapManagementSetting", mMapManagementSetting.ToJsonString());
 
 			// 儲存地圖
@@ -76,6 +77,32 @@ namespace TrafficControlTest.Module.Map
 			{
 				Task.Run(() => { MapFileAdded?.Invoke(this, new MapFileCountChangedEventArgs(DateTime.Now, MapFileName)); });
 			}
+		}
+
+		private static IRectangle2D GetMapRange(byte[] MapData)
+		{
+			IRectangle2D result = null;
+
+			if (MapData != null)
+			{
+				string mapDataString = System.Text.Encoding.UTF8.GetString(MapData);
+				if (!string.IsNullOrEmpty(mapDataString))
+				{
+					string[] mapDataLines = mapDataString.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+					if (mapDataLines != null && mapDataLines.Length > 0)
+					{
+						MapReader.Reader reader = new MapReader.Reader();
+						reader.Read(mapDataLines);
+						int maxX = reader.MaximumPosition.X;
+						int maxY = reader.MaximumPosition.Y;
+						int minX = reader.MinimumPosition.X;
+						int minY = reader.MinimumPosition.Y;
+						result = new Rectangle2D(new Point2D(maxX, maxY), new Point2D(minX, minY));
+					}
+				}
+			}
+
+			return result;
 		}
 	}
 }
