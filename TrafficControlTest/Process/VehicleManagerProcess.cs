@@ -134,6 +134,7 @@ namespace TrafficControlTest.Process
 			mAutomaticDoorCommunicator.Start();
 			mAutomaticDoorControlHandler.Start();
 			mVehiclePassThroughAutomaticDoorEventManagerUpdater.Start();
+			mChargeStationInfoManagerUpdater.Start();
 			mLimitVehicleCountZoneInfoManagerUpdater.Start();
 			mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.Start();
 		}
@@ -142,6 +143,7 @@ namespace TrafficControlTest.Process
 			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
 			mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.Stop();
 			mLimitVehicleCountZoneInfoManagerUpdater.Stop();
+			mChargeStationInfoManagerUpdater.Stop();
 			mVehiclePassThroughAutomaticDoorEventManagerUpdater.Stop();
 			mAutomaticDoorControlHandler.Stop();
 			mAutomaticDoorCommunicator.Stop();
@@ -506,6 +508,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithLoopTask.Add(mAutomaticDoorCommunicator);
 			mCollectionOfISystemWithLoopTask.Add(mAutomaticDoorControlHandler);
 			mCollectionOfISystemWithLoopTask.Add(mVehiclePassThroughAutomaticDoorEventManagerUpdater);
+			mCollectionOfISystemWithLoopTask.Add(mChargeStationInfoManagerUpdater);
 			mCollectionOfISystemWithLoopTask.Add(mLimitVehicleCountZoneInfoManagerUpdater);
 			mCollectionOfISystemWithLoopTask.Add(mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater);
 		}

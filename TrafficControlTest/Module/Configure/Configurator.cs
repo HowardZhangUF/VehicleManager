@@ -573,6 +573,17 @@ namespace TrafficControlTest.Module.Configure
 				"当车子与自动门的距离 (mm) 大于此数值时关闭自动门"));
 			defaultConfigs.Add(new Configuration(
 				"ChargeStationInfoManagerUpdater",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1000",
+				"100",
+				"60000",
+				"Time period in millisecond of detecting charge station is being used or not",
+				"偵測充電站是否被使用的時間間隔 (ms)",
+				"侦测充电站是否被使用的时间间隔 (ms)"));
+			defaultConfigs.Add(new Configuration(
+				"ChargeStationInfoManagerUpdater",
 				"ChargeStationLocationRangeDistance",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,

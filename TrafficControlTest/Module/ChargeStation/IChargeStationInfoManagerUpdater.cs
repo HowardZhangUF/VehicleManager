@@ -13,7 +13,7 @@ namespace TrafficControlTest.Module.ChargeStation
 	/// - 根據 IMapManager 的 LoadMapSuccessed 事件來新增/移除 IChargeStationInfoManager 的成員
     /// - 使用 IVehicleInfoManager 的 State/Location 資訊來更新 IChargeStationInfoManager 的 IsBeingUsed 屬性
     /// </summary>
-    public interface IChargeStationInfoManagerUpdater : ISystemWithConfig
+    public interface IChargeStationInfoManagerUpdater : ISystemWithLoopTask
     {
         void Set(IChargeStationInfoManager ChargeStationInfoManager);
         void Set(IMapManager MapManager);
