@@ -10,6 +10,6 @@ namespace TrafficControlTest.Module.ChargeStation
     public interface IChargeStationInfoManager : IItemManager<IChargeStationInfo>
     {
         void UpdateEnable(string Name, bool Enable);
-        void UpdateIsBeUsing(string Name, bool IsBeUsing);
+        void UpdateIsBeingUsed(string Name, bool IsBeingUsed);
     }
 }

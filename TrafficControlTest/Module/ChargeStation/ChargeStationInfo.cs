@@ -15,11 +15,11 @@ namespace TrafficControlTest.Module.ChargeStation
         public ITowardPoint2D mLocation { get; private set; } = null;
 		public IRectangle2D mLocationRange { get; private set; } = null;
         public bool mEnable { get; private set; } = true;
-        public bool mIsBeUsing { get; private set; } = false;
-		public TimeSpan mIsBeUsingDuration { get { return DateTime.Now.Subtract(mTimestampOfIsBeUsingChanged); } }
+        public bool mIsBeingUsed { get; private set; } = false;
+		public TimeSpan mIsBeingUsedDuration { get { return DateTime.Now.Subtract(mTimestampOfIsBeingUsedChanged); } }
         public DateTime mLastUpdated { get; private set; } = DateTime.Now;
 
-		private DateTime mTimestampOfIsBeUsingChanged = DateTime.Now;
+		private DateTime mTimestampOfIsBeingUsedChanged = DateTime.Now;
 
         public ChargeStationInfo(string Name, ITowardPoint2D Location, IRectangle2D LocationRange)
         {
@@ -41,19 +41,19 @@ namespace TrafficControlTest.Module.ChargeStation
                 RaiseEvent_StatusUpdated("Enable");
             }
         }
-        public void UpdateIsBeUsing(bool IsBeUsing)
+        public void UpdateIsBeingUsed(bool IsBeingUsed)
         {
-            if (mIsBeUsing != IsBeUsing)
+            if (mIsBeingUsed != IsBeingUsed)
             {
-                mIsBeUsing = IsBeUsing;
-				mTimestampOfIsBeUsingChanged = DateTime.Now;
+                mIsBeingUsed = IsBeingUsed;
+				mTimestampOfIsBeingUsedChanged = DateTime.Now;
 				mLastUpdated = DateTime.Now;
-                RaiseEvent_StatusUpdated("IsBeUsing");
+                RaiseEvent_StatusUpdated("IsBeingUsed");
             }
         }
         public override string ToString()
         {
-            return $"{mName}/Enable:{mEnable.ToString()}/IsBeUsing:{mIsBeUsing.ToString()}";
+            return $"{mName}/Enable:{mEnable.ToString()}/IsBeingUsed:{mIsBeingUsed.ToString()}";
         }
 
         protected virtual void RaiseEvent_StatusUpdated(string StatusName, bool Sync = true)

@@ -19,13 +19,13 @@ namespace TrafficControlTest.Module.ChargeStation
                 }
             }
         }
-        public void UpdateIsBeUsing(string Name, bool IsBeUsing)
+        public void UpdateIsBeingUsed(string Name, bool IsBeingUsed)
         {
             lock (mLock)
             {
                 if (mItems.Keys.Contains(Name))
                 {
-                    mItems[Name].UpdateIsBeUsing(IsBeUsing);
+                    mItems[Name].UpdateIsBeingUsed(IsBeingUsed);
                 }
             }
         }

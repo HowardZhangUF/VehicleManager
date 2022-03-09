@@ -140,25 +140,25 @@ namespace TrafficControlTest.Module.ChargeStation
 				}
 			}
 
-			Subtask_UpdateChargeStationInfoIsBeUsing();
+			Subtask_UpdateChargeStationInfoIsBeingUsed();
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object sender, ItemCountChangedEventArgs<IVehicleInfo> e)
 		{
-			Subtask_UpdateChargeStationInfoIsBeUsing();
+			Subtask_UpdateChargeStationInfoIsBeingUsed();
 		}
 		private void HandleEvent_VehicleInfoManagerItemRemoved(object sender, ItemCountChangedEventArgs<IVehicleInfo> e)
 		{
-			Subtask_UpdateChargeStationInfoIsBeUsing();
+			Subtask_UpdateChargeStationInfoIsBeingUsed();
 		}
 		private void HandleEvent_VehicleInfoManagerItemUpdated(object sender, ItemUpdatedEventArgs<IVehicleInfo> e)
 		{
 			if (e.StatusName.Contains("CurrentState") && (e.Item.mCurrentState == "Charge" || e.Item.mCurrentState == "ChargeIdle" || e.Item.mPreviousState == "Charge" || e.Item.mPreviousState == "ChargeIdle"))
 			{
 				// 當有車進入充電狀態/離開充電狀態時
-				Subtask_UpdateChargeStationInfoIsBeUsing();
+				Subtask_UpdateChargeStationInfoIsBeingUsed();
 			}
 		}
-		private void Subtask_UpdateChargeStationInfoIsBeUsing()
+		private void Subtask_UpdateChargeStationInfoIsBeingUsed()
 		{
 			IChargeStationInfo[] chargeStations = rChargeStationInfoManager.GetItems().ToArray();
 			if (chargeStations != null && chargeStations.Length > 0)
@@ -168,11 +168,11 @@ namespace TrafficControlTest.Module.ChargeStation
 				{
 					if (vehicles.Any(o => (o.mCurrentState == "Charge" || o.mCurrentState == "ChargeIdle") && GeometryAlgorithm.IsPointInside(o.mLocationCoordinate, chargeStations[i].mLocationRange)))
 					{
-						if (chargeStations[i].mIsBeUsing != true) chargeStations[i].UpdateIsBeUsing(true);
+						if (chargeStations[i].mIsBeingUsed != true) chargeStations[i].UpdateIsBeingUsed(true);
 					}
 					else
 					{
-						if (chargeStations[i].mIsBeUsing != false) chargeStations[i].UpdateIsBeUsing(false);
+						if (chargeStations[i].mIsBeingUsed != false) chargeStations[i].UpdateIsBeingUsed(false);
 					}
 				}
 			}

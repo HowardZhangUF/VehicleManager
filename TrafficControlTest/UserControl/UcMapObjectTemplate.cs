@@ -278,7 +278,7 @@ namespace TrafficControlTest.UserControl
 				{"Location", 200 },
 				{"LocationRange", 300 },
 				{"Enable", 100 }, // changeable
-				{"IsBeUsing", 100 }, // changeable
+				{"IsBeingUsed", 100 }, // changeable
 				{"LastUpdate", 200 }
 			};
 		}
@@ -330,7 +330,7 @@ namespace TrafficControlTest.UserControl
 		private string[] GetDataArray_IChargeStation(IItem Item)
 		{
 			var tmpItem = Item as IChargeStationInfo;
-			return new string[] { tmpItem.mName, tmpItem.mLocation.ToString(), tmpItem.mLocationRange.ToString(), tmpItem.mEnable.ToString(), tmpItem.mIsBeUsing.ToString(), tmpItem.mLastUpdated.ToString(TimestampFormat) };
+			return new string[] { tmpItem.mName, tmpItem.mLocation.ToString(), tmpItem.mLocationRange.ToString(), tmpItem.mEnable.ToString(), tmpItem.mIsBeingUsed.ToString(), tmpItem.mLastUpdated.ToString(TimestampFormat) };
 		}
 		private string[] GetDataArray_IAutomaticDoor(IItem Item)
 		{
@@ -369,8 +369,8 @@ namespace TrafficControlTest.UserControl
 			{
 				case "Enable":
 					return tmpItem.mEnable.ToString();
-				case "IsBeUsing":
-					return tmpItem.mIsBeUsing.ToString();
+				case "IsBeingUsed":
+					return tmpItem.mIsBeingUsed.ToString();
 				case "LastUpdate":
 					return tmpItem.mLastUpdated.ToString(TimestampFormat);
 				default:
