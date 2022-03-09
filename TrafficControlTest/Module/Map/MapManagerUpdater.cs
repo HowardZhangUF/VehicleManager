@@ -339,6 +339,9 @@ namespace TrafficControlTest.Module.Map
 					case "ChargingDocking":
 						type = TypeOfMapObjectOfTowardPoint.Charge;
 						break;
+					case "Park":
+						type = TypeOfMapObjectOfTowardPoint.Park;
+						break;
 					default:
 						type = TypeOfMapObjectOfTowardPoint.Normal;
 						break;

@@ -17,6 +17,7 @@ using TrafficControlTest.Module.LimitVehicleCountZone;
 using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.ParkStation;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
 using TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone;
@@ -93,6 +94,8 @@ namespace TrafficControlTest.Process
 		private IVehiclePassThroughLimitVehicleCountZoneEventManager mVehiclePassThroughLimitVehicleCountZoneEventManager = null;
 		private IVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater = null;
 		private IVehiclePassThroughLimitVehicleCountZoneEventHandler mVehiclePassThroughLimitVehicleCountZoneEventHandler = null;
+		private IParkStationInfoManager mParkStationInfoManager = null;
+		private IParkStationInfoManagerUpdater mParkStationInfoManagerUpdater = null;
 
 		public VehicleManagerProcess()
 		{
@@ -137,10 +140,12 @@ namespace TrafficControlTest.Process
 			mChargeStationInfoManagerUpdater.Start();
 			mLimitVehicleCountZoneInfoManagerUpdater.Start();
 			mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.Start();
+			mParkStationInfoManagerUpdater.Start();
 		}
 		public void Stop()
 		{
 			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
+			mParkStationInfoManagerUpdater.Stop();
 			mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.Stop();
 			mLimitVehicleCountZoneInfoManagerUpdater.Stop();
 			mChargeStationInfoManagerUpdater.Stop();
@@ -261,6 +266,10 @@ namespace TrafficControlTest.Process
 		public ILimitVehicleCountZoneInfoManager GetReferenceOfILimitVehicleCountZoneInfoManager()
 		{
 			return mLimitVehicleCountZoneInfoManager;
+		}
+		public IParkStationInfoManager GetReferenceOfIParkStationInfoManager()
+		{
+			return mParkStationInfoManager;
 		}
 		public DatabaseAdapter GetReferenceOfDatabaseAdapterOfHistoryLog()
 		{
@@ -462,6 +471,14 @@ namespace TrafficControlTest.Process
 			mVehiclePassThroughLimitVehicleCountZoneEventHandler = GenerateIVehiclePassThroughLimitVehicleCountZoneEventHandler(mVehiclePassThroughLimitVehicleCountZoneEventManager, mVehicleControlManager);
 			SubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventHandler(mVehiclePassThroughLimitVehicleCountZoneEventHandler);
 
+			UnsubscribeEvent_IParkStationInfoManager(mParkStationInfoManager);
+			mParkStationInfoManager = GenerateIParkStationInfoManager();
+			SubscirbeEvent_IParkStationInfoManager(mParkStationInfoManager);
+
+			UnsubscribeEvent_IParkStationInfoManagerUpdater(mParkStationInfoManagerUpdater);
+			mParkStationInfoManagerUpdater = GenerateIParkStationInfoManagerUpdater(mParkStationInfoManager, mMapManager, mVehicleInfoManager);
+			SubscribeEvent_IParkStationInfoManagerUpdater(mParkStationInfoManagerUpdater);
+
 			UnsubscribeEvent_ILogRecorder(mLogRecorder);
 			mLogRecorder = GenerateILogRecorder(mCurrentLogAdapter, mHistoryLogAdapter, mVehicleInfoManager, mMissionStateManager, mVehicleControlManager, mAutomaticDoorControlManager, mHostCommunicator);
 			SubscribeEvent_ILogRecorder(mLogRecorder);
@@ -493,6 +510,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithConfig.Add(mChargeStationInfoManagerUpdater);
 			mCollectionOfISystemWithConfig.Add(mLimitVehicleCountZoneInfoManagerUpdater);
 			mCollectionOfISystemWithConfig.Add(mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater);
+			mCollectionOfISystemWithConfig.Add(mParkStationInfoManagerUpdater);
 
 			mCollectionOfISystemWithLoopTask.Add(mLogRecorder);
 			mCollectionOfISystemWithLoopTask.Add(mDebugMessageHandler);
@@ -511,6 +529,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithLoopTask.Add(mChargeStationInfoManagerUpdater);
 			mCollectionOfISystemWithLoopTask.Add(mLimitVehicleCountZoneInfoManagerUpdater);
 			mCollectionOfISystemWithLoopTask.Add(mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater);
+			mCollectionOfISystemWithLoopTask.Add(mParkStationInfoManagerUpdater);
 		}
 		private void Destructor()
 		{
@@ -625,6 +644,12 @@ namespace TrafficControlTest.Process
 
 			UnsubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventHandler(mVehiclePassThroughLimitVehicleCountZoneEventHandler);
 			mVehiclePassThroughLimitVehicleCountZoneEventHandler = null;
+
+			UnsubscribeEvent_IParkStationInfoManager(mParkStationInfoManager);
+			mParkStationInfoManager = null;
+
+			UnsubscribeEvent_IParkStationInfoManagerUpdater(mParkStationInfoManagerUpdater);
+			mParkStationInfoManagerUpdater = null;
 
 			UnsubscribeEvent_ILogRecorder(mLogRecorder);
 			mLogRecorder = null;
@@ -1551,6 +1576,42 @@ namespace TrafficControlTest.Process
 				// do nothing
 			}
 		}
+		private void SubscirbeEvent_IParkStationInfoManager(IParkStationInfoManager ParkStationInfoManager)
+		{
+			if (ParkStationInfoManager != null)
+			{
+				ParkStationInfoManager.ItemAdded += HandleEvent_ParkStationInfoManagerItemAdded;
+				ParkStationInfoManager.ItemRemoved += HandleEvent_ParkStationInfoManagerItemRemoved;
+				ParkStationInfoManager.ItemUpdated += HandleEvent_ParkStationInfoManagerItemUpdated;
+				ParkStationInfoManager.ItemAddFailed += HandleEvent_ItemManagerItemAddFailed;
+				ParkStationInfoManager.ItemRemoveFailed += HandleEvent_ItemManagerItemRemoveFailed;
+			}
+		}
+		private void UnsubscribeEvent_IParkStationInfoManager(IParkStationInfoManager ParkStationInfoManager)
+		{
+			if (ParkStationInfoManager != null)
+			{
+				ParkStationInfoManager.ItemAdded -= HandleEvent_ParkStationInfoManagerItemAdded;
+				ParkStationInfoManager.ItemRemoved -= HandleEvent_ParkStationInfoManagerItemRemoved;
+				ParkStationInfoManager.ItemUpdated -= HandleEvent_ParkStationInfoManagerItemUpdated;
+				ParkStationInfoManager.ItemAddFailed -= HandleEvent_ItemManagerItemAddFailed;
+				ParkStationInfoManager.ItemRemoveFailed -= HandleEvent_ItemManagerItemRemoveFailed;
+			}
+		}
+		private void SubscribeEvent_IParkStationInfoManagerUpdater(IParkStationInfoManagerUpdater ParkStationInfoManagerUpdater)
+		{
+			if (ParkStationInfoManagerUpdater != null)
+			{
+				ParkStationInfoManagerUpdater.ConfigUpdated += HandleEvent_ISystemWithConfigConfigUpdated;
+			}
+		}
+		private void UnsubscribeEvent_IParkStationInfoManagerUpdater(IParkStationInfoManagerUpdater ParkStationInfoManagerUpdater)
+		{
+			if (ParkStationInfoManagerUpdater != null)
+			{
+				ParkStationInfoManagerUpdater.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
+			}
+		}
 		protected virtual void RaiseEvent_AccessControlUserLogChanged(DateTime OccurTime, string UserName, AccountRank UserRank, bool IsLogin, bool Sync = true)
 		{
 			if (Sync)
@@ -1913,6 +1974,18 @@ namespace TrafficControlTest.Process
 		private void HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehiclePassThroughLimitVehicleCountZoneEvent> Args)
 		{
 			HandleDebugMessage(Args.OccurTime, "VehiclePassThroughLimitVehicleCountZoneEventManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_ParkStationInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IParkStationInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "ParkStationInfoManager", "ItemAdded", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_ParkStationInfoManagerItemRemoved(object Sender, ItemCountChangedEventArgs<IParkStationInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "ParkStationInfoManager", "ItemRemoved", $"Name: {Args.ItemName}, Info:{Args.Item.ToString()}");
+		}
+		private void HandleEvent_ParkStationInfoManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IParkStationInfo> Args)
+		{
+			HandleDebugMessage(Args.OccurTime, "ParkStationInfoManager", "ItemUpdated", $"Name: {Args.ItemName}, StatusName:{Args.StatusName}, Info:{Args.Item.ToString()}");
 		}
 		private void HandleDebugMessage(string Message)
 		{

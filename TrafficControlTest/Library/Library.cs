@@ -18,6 +18,7 @@ using TrafficControlTest.Module.LimitVehicleCountZone;
 using TrafficControlTest.Module.Log;
 using TrafficControlTest.Module.Map;
 using TrafficControlTest.Module.Mission;
+using TrafficControlTest.Module.ParkStation;
 using TrafficControlTest.Module.Vehicle;
 using TrafficControlTest.Module.VehiclePassThroughAutomaticDoor;
 using TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone;
@@ -378,6 +379,18 @@ namespace TrafficControlTest.Library
 		public static IVehiclePassThroughLimitVehicleCountZoneEventHandler GenerateIVehiclePassThroughLimitVehicleCountZoneEventHandler(IVehiclePassThroughLimitVehicleCountZoneEventManager VehiclePassThroughLimitVehicleCountZoneEventManager, IVehicleControlManager VehicleControlManager)
 		{
 			return new VehiclePassThroughLimitVehicleCountZoneEventHandler(VehiclePassThroughLimitVehicleCountZoneEventManager, VehicleControlManager);
+		}
+		public static IParkStationInfo GenerateIParkStationInfo(string Name, ITowardPoint2D Location, IRectangle2D LocationRange)
+		{
+			return new ParkStationInfo(Name, Location, LocationRange);
+		}
+		public static IParkStationInfoManager GenerateIParkStationInfoManager()
+		{
+			return new ParkStationInfoManager();
+		}
+		public static IParkStationInfoManagerUpdater GenerateIParkStationInfoManagerUpdater(IParkStationInfoManager ParkStationInfoManager, IMapManager MapManager, IVehicleInfoManager VehicleInfoManager)
+		{
+			return new ParkStationInfoManagerUpdater(ParkStationInfoManager, MapManager, VehicleInfoManager);
 		}
 
 		public static ITimeElapseDetector GenerateITimeElapseDetector()

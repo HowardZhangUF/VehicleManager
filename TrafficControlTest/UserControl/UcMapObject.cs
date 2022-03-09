@@ -11,6 +11,7 @@ using LibraryForVM;
 using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.LimitVehicleCountZone;
+using TrafficControlTest.Module.ParkStation;
 
 namespace TrafficControlTest.UserControl
 {
@@ -20,7 +21,8 @@ namespace TrafficControlTest.UserControl
 		{
 			ChargeStation,
 			AutomaticDoor,
-			LimitVehicleCountZone
+			LimitVehicleCountZone,
+			ParkStation
 		}
 
 		public event EventHandler<MapFocusRequestEventArgs> MapFocusRequest;
@@ -33,8 +35,12 @@ namespace TrafficControlTest.UserControl
 		{
 			InitializeComponent();
 		}
-		public void Set(IChargeStationInfoManager ChargeStationInfoManager, IAutomaticDoorInfoManager AutomaticDoorInfoManager, ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager)
+		public void Set(IChargeStationInfoManager ChargeStationInfoManager, IAutomaticDoorInfoManager AutomaticDoorInfoManager, ILimitVehicleCountZoneInfoManager LimitVehicleCountZoneInfoManager, IParkStationInfoManager ParkStationInfoManager)
 		{
+			// 加入 ParkStation
+			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.ParkStation, "ParkStation"));
+			panel2.Controls.Add(GenerateUcMapObject(GetSerial(), TagType.ParkStation, ParkStationInfoManager));
+			UpdateSerial();
 			// 加入 LimitVehicleCountZone
 			panel1.Controls.Add(GenerateButton(GetSerial(), TagType.LimitVehicleCountZone, "LimitVehicleCountZone"));
 			panel2.Controls.Add(GenerateUcMapObject(GetSerial(), TagType.LimitVehicleCountZone, LimitVehicleCountZoneInfoManager));

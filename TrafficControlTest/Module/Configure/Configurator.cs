@@ -637,6 +637,28 @@ namespace TrafficControlTest.Module.Configure
 				"Distance threshold in millimeter of intervening vehicle",
 				"當自走車與限車區的距離 (mm) 小於此數值時才進行干預",
 				"当自走车与限车区的距离 (mm) 小于此数值时才进行干预"));
+			defaultConfigs.Add(new Configuration(
+				"ParkStationInfoManagerUpdater",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1000",
+				"100",
+				"60000",
+				"Time period in millisecond of detecting park station is being used or not",
+				"偵測停車點是否被使用的時間間隔 (ms)",
+				"侦测停车点是否被使用的时间间隔 (ms)"));
+			defaultConfigs.Add(new Configuration(
+				"ParkStationInfoManagerUpdater",
+				"ParkStationLocationRangeWidth",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1600",
+				"100",
+				"100000",
+				"Actual location range width",
+				"停車點實際位置範圍邊長",
+				"停车点实际位置范围边长"));
 
 			mConfigs.Clear();
 			for (int i = 0; i < defaultConfigs.Count; ++i)

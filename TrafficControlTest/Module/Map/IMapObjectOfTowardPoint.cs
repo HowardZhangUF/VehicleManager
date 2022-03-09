@@ -21,6 +21,7 @@ namespace TrafficControlTest.Module.Map
 	public enum TypeOfMapObjectOfTowardPoint
 	{
 		Normal,
-		Charge
+		Charge,
+		Park
 	}
 }

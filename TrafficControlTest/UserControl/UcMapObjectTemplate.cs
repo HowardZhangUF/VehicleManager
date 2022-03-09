@@ -11,6 +11,7 @@ using LibraryForVM;
 using TrafficControlTest.Module.ChargeStation;
 using TrafficControlTest.Module.AutomaticDoor;
 using TrafficControlTest.Module.LimitVehicleCountZone;
+using TrafficControlTest.Module.ParkStation;
 
 namespace TrafficControlTest.UserControl
 {
@@ -265,6 +266,10 @@ namespace TrafficControlTest.UserControl
 			{
 				return GenerateColumnList_ILimitVehicleCountZone();
 			}
+			else if (rItemManager is IParkStationInfoManager)
+			{
+				return GenerateColumnList_IParkStation();
+			}
 			else
 			{
 				throw new Exception("Unknown item!");
@@ -307,6 +312,18 @@ namespace TrafficControlTest.UserControl
 				{"LastUpdate", 200 }
 			};
 		}
+		private Dictionary<string, int> GenerateColumnList_IParkStation()
+		{
+			return new Dictionary<string, int>()
+			{
+				{"Name", 200 },
+				{"Location", 200 },
+				{"LocationRange", 300 },
+				{"Enable", 100 }, // changeable
+				{"IsBeingUsed", 100 }, // changeable
+				{"LastUpdate", 200 }
+			};
+		}
 
 		private string[] GetDataArray(IItem Item)
 		{
@@ -321,6 +338,10 @@ namespace TrafficControlTest.UserControl
 			else if (Item is ILimitVehicleCountZoneInfo)
 			{
 				return GetDataArray_ILimitVehicleCountZone(Item);
+			}
+			else if (Item is IParkStationInfo)
+			{
+				return GetDataArray_IParkStation(Item);
 			}
 			else
 			{
@@ -342,6 +363,11 @@ namespace TrafficControlTest.UserControl
 			var tmpItem = Item as ILimitVehicleCountZoneInfo;
 			return new string[] { tmpItem.mName, tmpItem.mRange.ToString(), tmpItem.mMaxVehicleCount.ToString(), tmpItem.mIsUnioned.ToString(), tmpItem.mUnionId.ToString(), string.Join(",", tmpItem.mCurrentVehicleNameList.Select(o => o.Item1)), tmpItem.mLastUpdated.ToString(TimestampFormat) };
 		}
+		private string[] GetDataArray_IParkStation(IItem Item)
+		{
+			var tmpItem = Item as IParkStationInfo;
+			return new string[] { tmpItem.mName, tmpItem.mLocation.ToString(), tmpItem.mLocationRange.ToString(), tmpItem.mEnable.ToString(), tmpItem.mIsBeingUsed.ToString(), tmpItem.mLastUpdated.ToString(TimestampFormat) };
+		}
 
 		private string GetData(IItem Item, string StatusName)
 		{
@@ -356,6 +382,10 @@ namespace TrafficControlTest.UserControl
 			else if (Item is ILimitVehicleCountZoneInfo)
 			{
 				return GetData_ILimitVehicleCountZone(Item, StatusName);
+			}
+			else if (Item is IParkStationInfo)
+			{
+				return GetData_IParkStation(Item, StatusName);
 			}
 			else
 			{
@@ -405,6 +435,21 @@ namespace TrafficControlTest.UserControl
 					return null;
 			}
 		}
+		private string GetData_IParkStation(IItem Item, string StatusName)
+		{
+			var tmpItem = Item as IParkStationInfo;
+			switch (StatusName)
+			{
+				case "Enable":
+					return tmpItem.mEnable.ToString();
+				case "IsBeingUsed":
+					return tmpItem.mIsBeingUsed.ToString();
+				case "LastUpdate":
+					return tmpItem.mLastUpdated.ToString(TimestampFormat);
+				default:
+					return null;
+			}
+		}
 
 		private void GetLocation(IItem Item, out int X, out int Y)
 		{
@@ -419,6 +464,10 @@ namespace TrafficControlTest.UserControl
 			else if (Item is ILimitVehicleCountZoneInfo)
 			{
 				GetLocation_ILimitVehicleCountZone(Item, out X, out Y);
+			}
+			else if (Item is IParkStationInfo)
+			{
+				GetLocation_IParkStation(Item, out X, out Y);
 			}
 			else
 			{
@@ -442,6 +491,12 @@ namespace TrafficControlTest.UserControl
 			var tmpItem = Item as ILimitVehicleCountZoneInfo;
 			X = tmpItem.mRange.mCenterX;
 			Y = tmpItem.mRange.mCenterY;
+		}
+		private void GetLocation_IParkStation(IItem Item, out int X, out int Y)
+		{
+			var tmpItem = Item as IParkStationInfo;
+			X = tmpItem.mLocation.mX;
+			Y = tmpItem.mLocation.mY;
 		}
 	}
 
