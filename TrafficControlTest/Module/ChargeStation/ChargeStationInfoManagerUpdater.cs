@@ -14,8 +14,8 @@ namespace TrafficControlTest.Module.ChargeStation
 		private IChargeStationInfoManager rChargeStationInfoManager = null;
 		private IMapManager rMapManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
-		private int mChargeStationLocationRangeDistance = -1200;
-		private int mChargeStationLocationRangeWidth = 1000;
+		private int mChargeStationLocationRangeDistance = -900; // 充電站實際位置與充電站站點方向相反，所以此數為負值
+		private int mChargeStationLocationRangeWidth = 1200; // 充電站站點與實際充電位置距離通常是小於 1200 mm ，目前此二參數大概範圍為 (900 - 600 = 300) mm ~ (900 + 600 = 1500) mm
 
 		public ChargeStationInfoManagerUpdater(IChargeStationInfoManager ChargeStationInfoManager, IMapManager MapManager, IVehicleInfoManager VehicleInfoManager)
 		{
