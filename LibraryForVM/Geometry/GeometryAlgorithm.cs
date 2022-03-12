@@ -98,20 +98,21 @@ namespace LibraryForVM
 			 * x = xa + lambda * (xb - xa)
 			 * y = ya + lambda * (yb - ya)
 			 */
+			 // 運算過程中加上轉換成 double 的語法以避免計算溢位
 			IPoint2D result = null;
 			if (Line1Point1 != null && Line1Point2 != null && Line2Point1 != null && Line2Point2 != null)
 			{
-				double delta = (Line1Point2.mX - Line1Point1.mX) * (Line2Point1.mY - Line2Point2.mY) - (Line2Point1.mX - Line2Point2.mX) * (Line1Point2.mY - Line1Point1.mY);
+				double delta = (double)(Line1Point2.mX - Line1Point1.mX) * (double)(Line2Point1.mY - Line2Point2.mY) - (double)(Line2Point1.mX - Line2Point2.mX) * (double)(Line1Point2.mY - Line1Point1.mY);
 				if (delta <= double.Epsilon && delta >= -double.Epsilon) //若 delta 為 0
 				{
 					result = null;
 				}
 				else
 				{
-					double lambda = ((Line2Point1.mX - Line1Point1.mX) * (Line2Point1.mY - Line2Point2.mY) - (Line2Point1.mX - Line2Point2.mX) * (Line2Point1.mY - Line1Point1.mY)) / delta;
+					double lambda = ((double)(Line2Point1.mX - Line1Point1.mX) * (double)(Line2Point1.mY - Line2Point2.mY) - (double)(Line2Point1.mX - Line2Point2.mX) * (double)(Line2Point1.mY - Line1Point1.mY)) / delta;
 					if (0 <= lambda && lambda <= 1)
 					{
-						double micro = ((Line1Point2.mX - Line1Point1.mX) * (Line2Point1.mY - Line1Point1.mY) - (Line2Point1.mX - Line1Point1.mX) * (Line1Point2.mY - Line1Point1.mY)) / delta;
+						double micro = ((double)(Line1Point2.mX - Line1Point1.mX) * (double)(Line2Point1.mY - Line1Point1.mY) - (double)(Line2Point1.mX - Line1Point1.mX) * (double)(Line1Point2.mY - Line1Point1.mY)) / delta;
 						if (0 <= micro && micro <= 1)
 						{
 							int x = Line1Point1.mX + (int)(lambda * (Line1Point2.mX - Line1Point1.mX));
