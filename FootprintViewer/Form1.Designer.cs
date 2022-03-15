@@ -69,7 +69,7 @@
 			// 
 			this.tbTimestamp.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tbTimestamp.Location = new System.Drawing.Point(0, 0);
-			this.tbTimestamp.Maximum = 1000;
+			this.tbTimestamp.Maximum = 3600;
 			this.tbTimestamp.Name = "tbTimestamp";
 			this.tbTimestamp.Size = new System.Drawing.Size(870, 45);
 			this.tbTimestamp.TabIndex = 0;
@@ -278,7 +278,7 @@
 			this.cbStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbStart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbStart.FormattingEnabled = true;
-			this.cbStart.Location = new System.Drawing.Point(113, 165);
+			this.cbStart.Location = new System.Drawing.Point(113, 160);
 			this.cbStart.Name = "cbStart";
 			this.cbStart.Size = new System.Drawing.Size(428, 29);
 			this.cbStart.TabIndex = 10;
@@ -288,7 +288,7 @@
 			this.cbEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbEnd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbEnd.FormattingEnabled = true;
-			this.cbEnd.Location = new System.Drawing.Point(113, 265);
+			this.cbEnd.Location = new System.Drawing.Point(113, 260);
 			this.cbEnd.Name = "cbEnd";
 			this.cbEnd.Size = new System.Drawing.Size(428, 29);
 			this.cbEnd.TabIndex = 11;
