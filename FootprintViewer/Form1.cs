@@ -207,20 +207,15 @@ namespace FootprintViewer
 			mDatabaseAdapter.SetDatabaseParameters(LogFilePath, string.Empty, string.Empty, string.Empty, string.Empty);
 			if (mDatabaseAdapter.Connect() == true)
 			{
-				// 取得自走車表格名字
-				string sqlCmd1 = "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'HistoryVehicleInfoOf%' ORDER BY UPPER(name)";
-				string[] vehicleTableNames = GetVehicleTableNames(mDatabaseAdapter.ExecuteQueryCommand(sqlCmd1));
 				string startTimestamp = $"{StartTimestamp.ToString("yyyy-MM-dd HH:mm:ss")}";
 				string endTimestamp = $"{EndTimestamp.ToString("yyyy-MM-dd HH:mm:ss")}";
-
-				// 取得每一台自走車的歷史資訊
-				for (int i = 0; i < vehicleTableNames.Length; ++i)
+				string sqlCmd3 = $"SELECT RecordTimestamp,ID,State,X,Y,Toward,Target,BatteryValue,LocationScore,Path FROM HistoryVehicleInfo WHERE RecordTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
+				string[] historyVehicleInfoStrings = GetHistoryVehicleInfoStrings(mDatabaseAdapter.ExecuteQueryCommand(sqlCmd3));
+				for (int i = 0; i < historyVehicleInfoStrings.Length; ++i)
 				{
-					string sqlCmd2 = $"SELECT RecordTimestamp,ID,State,X,Y,Toward,Target,BatteryValue,LocationScore,Path FROM {vehicleTableNames[i]} WHERE RecordTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
-					string[] historyVehicleInfoStrings = GetHistoryVehicleInfoStrings(mDatabaseAdapter.ExecuteQueryCommand(sqlCmd2));
-					List<HistoryVehicleInfo> historyVehicleInfos = historyVehicleInfoStrings.Select(o => HistoryVehicleInfo.FromString(o, new string[] { "#" })).ToList();
-					string vehicleName = GetVehicleName(vehicleTableNames[i]);
-					mHistoryVehicleInfos.Add(vehicleName, historyVehicleInfos);
+					HistoryVehicleInfo tmpInfo = HistoryVehicleInfo.FromString(historyVehicleInfoStrings[i], new string[] { "#" });
+					if (!mHistoryVehicleInfos.ContainsKey(tmpInfo.Name)) mHistoryVehicleInfos.Add(tmpInfo.Name, new List<HistoryVehicleInfo>());
+					mHistoryVehicleInfos[tmpInfo.Name].Add(tmpInfo);
 				}
 			}
 		}
