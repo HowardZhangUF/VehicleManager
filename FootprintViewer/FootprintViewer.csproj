@@ -59,6 +59,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Include\iTSLibrary\IniFiles.dll</HintPath>
     </Reference>
+    <Reference Include="MapReader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\MapReader.dll</HintPath>
+    </Reference>
+    <Reference Include="MD5Hash, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\iTSLibrary\MD5Hash.dll</HintPath>
+    </Reference>
     <Reference Include="SharpGL">
       <HintPath>Include\iTSLibrary\SharpGL.dll</HintPath>
     </Reference>
@@ -168,6 +176,10 @@
     <Content Include="Include\iTSLibrary\Image\wf90.png" />
     <Content Include="Include\iTSLibrary\IniFiles.dll" />
     <Content Include="Include\iTSLibrary\IniFiles.pdb" />
+    <Content Include="Include\iTSLibrary\MapReader.dll" />
+    <Content Include="Include\iTSLibrary\MapReader.pdb" />
+    <Content Include="Include\iTSLibrary\MD5Hash.dll" />
+    <Content Include="Include\iTSLibrary\MD5Hash.pdb" />
     <Content Include="Include\iTSLibrary\SharpGL.dll" />
     <Content Include="Include\iTSLibrary\SharpGL.SceneGraph.dll" />
     <Content Include="Include\iTSLibrary\SharpGL.Serialization.dll" />
