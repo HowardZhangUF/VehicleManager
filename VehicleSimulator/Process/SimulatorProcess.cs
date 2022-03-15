@@ -32,7 +32,6 @@ namespace VehicleSimulator
 			mSimulatorInfoReporter.SetConfig("TimePeriod", "100");
 
 			mHostCommunicator.Start();
-			mHostCommunicator.Connect();
 			mSimulatorInfoReporter.Start();
 		}
 		public void Stop()
