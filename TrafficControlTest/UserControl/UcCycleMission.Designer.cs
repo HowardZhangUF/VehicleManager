@@ -38,6 +38,7 @@
 			this.btnStopCycle = new System.Windows.Forms.Button();
 			this.dgvMissionList = new System.Windows.Forms.DataGridView();
 			this.txtMissionListString = new TrafficControlTest.UserControl.TextBoxWithHint();
+			this.btnStopVehicle = new System.Windows.Forms.Button();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -80,9 +81,9 @@
 			this.cbVehicleStateList.Font = new System.Drawing.Font("新細明體", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.cbVehicleStateList.ForeColor = System.Drawing.Color.White;
 			this.cbVehicleStateList.FormattingEnabled = true;
-			this.cbVehicleStateList.Location = new System.Drawing.Point(43, 3);
+			this.cbVehicleStateList.Location = new System.Drawing.Point(43, 5);
 			this.cbVehicleStateList.Name = "cbVehicleStateList";
-			this.cbVehicleStateList.Size = new System.Drawing.Size(314, 35);
+			this.cbVehicleStateList.Size = new System.Drawing.Size(314, 30);
 			this.cbVehicleStateList.TabIndex = 3;
 			this.cbVehicleStateList.SelectedIndexChanged += new System.EventHandler(this.cbVehicleStateList_SelectedIndexChanged);
 			// 
@@ -105,6 +106,7 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.Controls.Add(this.btnStopVehicle, 1, 4);
 			this.tableLayoutPanel1.Controls.Add(this.btnAnalyzeMissionListString, 3, 1);
 			this.tableLayoutPanel1.Controls.Add(this.btnStartCycle, 1, 3);
 			this.tableLayoutPanel1.Controls.Add(this.btnStopCycle, 2, 3);
@@ -113,10 +115,11 @@
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 5;
+			this.tableLayoutPanel1.RowCount = 6;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(400, 550);
@@ -144,11 +147,11 @@
 			this.btnStartCycle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btnStartCycle.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnStartCycle.ForeColor = System.Drawing.Color.White;
-			this.btnStartCycle.Location = new System.Drawing.Point(23, 493);
+			this.btnStartCycle.Location = new System.Drawing.Point(23, 453);
 			this.btnStartCycle.Name = "btnStartCycle";
 			this.btnStartCycle.Size = new System.Drawing.Size(174, 34);
 			this.btnStartCycle.TabIndex = 26;
-			this.btnStartCycle.Text = "Start";
+			this.btnStartCycle.Text = "Start Cycle";
 			this.btnStartCycle.UseVisualStyleBackColor = true;
 			this.btnStartCycle.Click += new System.EventHandler(this.btnStartCycle_Click);
 			// 
@@ -160,11 +163,11 @@
 			this.btnStopCycle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btnStopCycle.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.btnStopCycle.ForeColor = System.Drawing.Color.White;
-			this.btnStopCycle.Location = new System.Drawing.Point(203, 493);
+			this.btnStopCycle.Location = new System.Drawing.Point(203, 453);
 			this.btnStopCycle.Name = "btnStopCycle";
 			this.btnStopCycle.Size = new System.Drawing.Size(174, 34);
 			this.btnStopCycle.TabIndex = 27;
-			this.btnStopCycle.Text = "Stop";
+			this.btnStopCycle.Text = "Stop Cycle";
 			this.btnStopCycle.UseVisualStyleBackColor = true;
 			this.btnStopCycle.Click += new System.EventHandler(this.btnStopCycle_Click);
 			// 
@@ -176,7 +179,7 @@
 			this.dgvMissionList.Location = new System.Drawing.Point(23, 63);
 			this.dgvMissionList.Name = "dgvMissionList";
 			this.dgvMissionList.RowTemplate.Height = 27;
-			this.dgvMissionList.Size = new System.Drawing.Size(354, 424);
+			this.dgvMissionList.Size = new System.Drawing.Size(354, 384);
 			this.dgvMissionList.TabIndex = 28;
 			// 
 			// txtMissionListString
@@ -188,8 +191,24 @@
 			this.txtMissionListString.ForeColor = System.Drawing.Color.White;
 			this.txtMissionListString.Location = new System.Drawing.Point(23, 23);
 			this.txtMissionListString.Name = "txtMissionListString";
-			this.txtMissionListString.Size = new System.Drawing.Size(264, 40);
+			this.txtMissionListString.Size = new System.Drawing.Size(264, 33);
 			this.txtMissionListString.TabIndex = 24;
+			// 
+			// btnStopVehicle
+			// 
+			this.tableLayoutPanel1.SetColumnSpan(this.btnStopVehicle, 3);
+			this.btnStopVehicle.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnStopVehicle.FlatAppearance.BorderColor = System.Drawing.Color.White;
+			this.btnStopVehicle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnStopVehicle.Font = new System.Drawing.Font("新細明體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnStopVehicle.ForeColor = System.Drawing.Color.White;
+			this.btnStopVehicle.Location = new System.Drawing.Point(23, 493);
+			this.btnStopVehicle.Name = "btnStopVehicle";
+			this.btnStopVehicle.Size = new System.Drawing.Size(354, 34);
+			this.btnStopVehicle.TabIndex = 29;
+			this.btnStopVehicle.Text = "Stop Vehicle";
+			this.btnStopVehicle.UseVisualStyleBackColor = true;
+			this.btnStopVehicle.Click += new System.EventHandler(this.btnStopVehicle_Click);
 			// 
 			// UcCycleMission
 			// 
@@ -222,5 +241,6 @@
 		private System.Windows.Forms.Button btnStopCycle;
 		private System.Windows.Forms.DataGridView dgvMissionList;
 		private TextBoxWithHint txtMissionListString;
+		private System.Windows.Forms.Button btnStopVehicle;
 	}
 }

@@ -7,6 +7,7 @@ using TrafficControlTest.Library;
 using TrafficControlTest.Module.CycleMission;
 using TrafficControlTest.Module.Vehicle;
 using LibraryForVM;
+using TrafficControlTest.Module.InterveneCommand;
 
 namespace TrafficControlTest.UserControl
 {
@@ -42,6 +43,7 @@ namespace TrafficControlTest.UserControl
 
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private ICycleMissionGenerator rCycleMissionGenerator = null;
+		private IVehicleControlManager rVehicleControlManager = null;
 		private readonly string[] mSplit1 = new string[] { " - " };
 
 		public UcCycleMission()
@@ -69,10 +71,17 @@ namespace TrafficControlTest.UserControl
 			rCycleMissionGenerator = CycleMissionGenerator;
 			SubscribeEvent_ICycleMissionGenerator(rCycleMissionGenerator);
 		}
-		public void Set(IVehicleInfoManager VehicleInfoManager, ICycleMissionGenerator CycleMissionGenerator)
+		public void Set(IVehicleControlManager VehicleControlManager)
+		{
+			UnsubscribeEvent_IVehicleControlManager(rVehicleControlManager);
+			rVehicleControlManager = VehicleControlManager;
+			SubscribeEvent_IVehicleControlManager(rVehicleControlManager);
+		}
+		public void Set(IVehicleInfoManager VehicleInfoManager, ICycleMissionGenerator CycleMissionGenerator, IVehicleControlManager VehicleControlManager)
 		{
 			Set(VehicleInfoManager);
 			Set(CycleMissionGenerator);
+			Set(VehicleControlManager);
 		}
 
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -107,6 +116,20 @@ namespace TrafficControlTest.UserControl
 				CycleMissionGenerator.CycleMissionAssigned -= HandleEvent_CycleMissionGeneratorCycleMissionAssigned;
 				CycleMissionGenerator.CycleMissionUnassigned -= HandleEvent_CycleMissionGeneratorCycleMissionUnassigned;
 				CycleMissionGenerator.CycleMissionExecutedIndexChanged -= HandleEvent_CycleMissionGeneratorCycleExecutedIndexChanged;
+			}
+		}
+		private void SubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
+				// do nothing
+			}
+		}
+		private void UnsubscribeEvent_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
+				// do nothing
 			}
 		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
@@ -295,6 +318,7 @@ namespace TrafficControlTest.UserControl
 							dgvMissionList.Enabled = false;
 							btnStartCycle.Enabled = false;
 							btnStopCycle.Enabled = true;
+							btnStopVehicle.Enabled = true;
 						});
 					}
 					else
@@ -308,6 +332,7 @@ namespace TrafficControlTest.UserControl
 							dgvMissionList.Enabled = true;
 							btnStartCycle.Enabled = false;
 							btnStopCycle.Enabled = false;
+							btnStopVehicle.Enabled = true;
 						});
 					}
 				}
@@ -322,6 +347,7 @@ namespace TrafficControlTest.UserControl
 						dgvMissionList.Enabled = false;
 						btnStartCycle.Enabled = false;
 						btnStopCycle.Enabled = false;
+						btnStopVehicle.Enabled = false;
 					});
 				}
 			}
@@ -378,6 +404,21 @@ namespace TrafficControlTest.UserControl
 				dgvMissionList.Enabled = true;
 				btnStartCycle.Enabled = true;
 				btnStopCycle.Enabled = false;
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void btnStopVehicle_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (!string.IsNullOrEmpty(CurrentVehicleName))
+				{
+					IVehicleControl control = Library.Library.GenerateIVehicleControl(CurrentVehicleName, Command.Stop, null, "Manual", string.Empty);
+					rVehicleControlManager.Add(control.mName, control);
+				}
 			}
 			catch (Exception Ex)
 			{

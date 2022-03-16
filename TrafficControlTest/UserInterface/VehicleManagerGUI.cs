@@ -101,7 +101,7 @@ namespace TrafficControlTest.UserInterface
 			ucVehicleOverview1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMissionStateManager());
 			ucVehicleManualControl1.Set(mCore.GetReferenceOfIVehicleControlManager(), mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIMapManager());
 			ucVehicleApi1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfIVehicleCommunicator(), mCore.GetReferenceOfIVehicleControlManager(), mCore.GetReferenceOfIMapFileManager(), mCore.GetReferenceOfIMapManager());
-			ucCycleMission1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfCycleMissionGenerator());
+			ucCycleMission1.Set(mCore.GetReferenceOfIVehicleInfoManager(), mCore.GetReferenceOfCycleMissionGenerator(), mCore.GetReferenceOfIVehicleControlManager());
 			ucAbout1.Set("Vehicle Manager", "v1.0.0", mCore.mProjectType, "Copyright (C) 2022 CASTEC International Corp.");
 			ucSimpleLog1.Set(mCore.GetReferenceOfISignificantMessageHandler());
 			ucConsoleLog1.Set(mCore.GetReferenceOfIDebugMessageHandler());
