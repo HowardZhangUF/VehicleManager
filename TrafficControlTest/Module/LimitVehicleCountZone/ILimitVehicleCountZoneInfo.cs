@@ -10,7 +10,7 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 	public interface ILimitVehicleCountZoneInfo : IItem
 	{
 		IRectangle2D mRange { get; }
-		int mMaxVehicleCount { get; }
+		int mMaxVehicleCount { get; } // 當與其他區有聯集關係時，此項目的數值應一樣。例：區域 A 的最大數量為 numberA ，區域 B 的最大數量 numberB ，則聯集區域總和的最大數量 numberTotal = numberA = numberB
 		bool mIsUnioned { get; }
 		int mUnionId { get; }
 		List<Tuple<string, DateTime>> mCurrentVehicleNameList { get; }
