@@ -150,20 +150,34 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 				{
 					for (int j = 0; j < limitVehicleCountZoneInfos.Count; ++j)
 					{
-						// 如果車子路徑線有穿越限車區
-						if (IsVehiclePassThroughLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]))
+						// 如果自走車已經走到限車區內
+						if (IsVehicleInLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]))
 						{
-							// 該限車區為滿的
-							if (IsILimitVehicleCountZoneFull(limitVehicleCountZoneInfos[j]))
+							// 如果自走車不在該區域的允許移動名單內
+							if (!IsVehicleAllowedMoveInLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]))
 							{
-								int distance = GetDistanceBetweenVehicleAndLimitVehicleCountZoneAlongPathLine(vehicleInfos[i], limitVehicleCountZoneInfos[j]);
-								// 車子不是限車區裡面的車，且即將通過限車區
-								// 加上距離大於 0 的條件是為了避免運算溢位的錯誤
-								// 距離等於 0 代表車子在限車區內部
-								if (!IsVehicleAllowedMoveInLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]) && distance >= 0 && distance < mDistanceThreshold)
+								IVehiclePassThroughLimitVehicleCountZoneEvent tmp = Library.Library.GenerateIVehiclePassThroughLimitVehicleCountZoneEvent(vehicleInfos[i], limitVehicleCountZoneInfos[j], 0);
+								currentEvents.Add(tmp);
+							}
+						}
+						// 如果自走車還沒走到限車區內
+						else
+						{
+							// 如果車子路徑線有穿越限車區
+							if (IsVehiclePassThroughLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]))
+							{
+								// 該限車區為滿的
+								if (IsILimitVehicleCountZoneFull(limitVehicleCountZoneInfos[j]))
 								{
-									IVehiclePassThroughLimitVehicleCountZoneEvent tmp = Library.Library.GenerateIVehiclePassThroughLimitVehicleCountZoneEvent(vehicleInfos[i], limitVehicleCountZoneInfos[j], distance);
-									currentEvents.Add(tmp);
+									int distance = GetDistanceBetweenVehicleAndLimitVehicleCountZoneAlongPathLine(vehicleInfos[i], limitVehicleCountZoneInfos[j]);
+									// 車子不是限車區裡面的車，且即將通過限車區
+									// 加上距離大於 0 的條件是為了避免運算溢位的錯誤
+									// 距離等於 0 代表車子在限車區內部
+									if (!IsVehicleAllowedMoveInLimitVehicleCountZone(vehicleInfos[i], limitVehicleCountZoneInfos[j]) && distance >= 0 && distance < mDistanceThreshold)
+									{
+										IVehiclePassThroughLimitVehicleCountZoneEvent tmp = Library.Library.GenerateIVehiclePassThroughLimitVehicleCountZoneEvent(vehicleInfos[i], limitVehicleCountZoneInfos[j], distance);
+										currentEvents.Add(tmp);
+									}
 								}
 							}
 						}
@@ -196,6 +210,11 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 				}
 			}
 		}
+		/// <summary>計算指定 IVehicleInfo 是否在指定 ILimitVehicleCountZoneInfo 區域內</summary>
+		private bool IsVehicleInLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
+		{
+			return LimitVehicleCountZoneInfo.mRange.IsIncludePoint(VehicleInfo.mLocationCoordinate);
+		}
 		/// <summary>計算指定 IVehicleInfo 的路徑是否有穿越指定 ILimitVehicleCountZoneInfo 區域</summary>
 		private bool IsVehiclePassThroughLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
@@ -214,7 +233,7 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 			}
 			return result;
 		}
-		/// <summary>計算指定 IVehicleInfo 在指定 ILimitVehicleCountZoneInfo 內是否是可移動的</summary>
+		/// <summary>計算指定 IVehicleInfo 在指定 ILimitVehicleCountZoneInfo 內是否是可允許移動的</summary>
 		private bool IsVehicleAllowedMoveInLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
 			// LimitVehicleCountZoneInfo 的上限是 n 台車，當區域內的車數量大於 n 時，只有先進來的前 n 台車可以動，反之，會被干預
