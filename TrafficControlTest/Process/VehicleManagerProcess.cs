@@ -113,6 +113,8 @@ namespace TrafficControlTest.Process
 		/// </remarks>
 		public void Start()
 		{
+			HandleDebugMessage("VehicleManagerProcess", $"ProjectType: {mProjectType.ToString()}");
+
 			LoadConfigFileAndUpdateSystemConfig();
 
 			mLogMaintainHandler.BackupCurrentLog();
