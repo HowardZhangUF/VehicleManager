@@ -284,9 +284,9 @@ namespace TrafficControlTest.Library
 		{
 			return new CycleMissionGenerator(VehicleInfoManager, MissionStateManager);
 		}
-		public static ILogExporter GenerateILogExporter()
+		public static ILogExporter GenerateILogExporter(ProjectType ProjectType)
 		{
-			return new LogExporter();
+			return new LogExporter(ProjectType);
 		}
 		public static IAutomaticDoorInfo GenerateIAutomaticDoorInfo(string Name, IRectangle2D Range, string IpPort)
 		{

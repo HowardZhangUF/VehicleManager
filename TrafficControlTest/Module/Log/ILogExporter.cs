@@ -1,6 +1,7 @@
 ﻿using LibraryForVM;
 using System;
 using System.Collections.Generic;
+using TrafficControlTest.Library;
 
 namespace TrafficControlTest.Module.Log
 {
@@ -16,6 +17,7 @@ namespace TrafficControlTest.Module.Log
 
 		bool mIsExporting { get; }
 
+		void Set(ProjectType ProjectType);
 		IEnumerable<string> GetDirectoryPaths();
 		void AddDirectoryPaths(IEnumerable<string> DirectoryPaths);
 		void ClearDirectoryPaths();

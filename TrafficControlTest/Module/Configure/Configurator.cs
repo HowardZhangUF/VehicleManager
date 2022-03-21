@@ -152,6 +152,17 @@ namespace TrafficControlTest.Module.Configure
 				"輸出日誌名稱的日期文字的格式",
 				"输出日志名称的日期文字的格式"));
 			defaultConfigs.Add(new Configuration(
+				"LogExporter",
+				"ExportProjectInfo",
+				ConfigurationType.Bool,
+				ConfigurationLevel.Normal,
+				"True",
+				string.Empty,
+				string.Empty,
+				"Add project information to exported log name",
+				"加入專案資訊至輸出日誌名稱",
+				"加入专案资讯至输出日志名称"));
+			defaultConfigs.Add(new Configuration(
 				"LogRecorder",
 				"TimePeriod",
 				ConfigurationType.Int,

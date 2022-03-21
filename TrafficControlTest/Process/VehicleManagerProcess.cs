@@ -302,7 +302,7 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IConfigurator(mConfigurator);
 
 			UnsubscribeEvent_ILogExporter(mLogExporter);
-			mLogExporter = GenerateILogExporter();
+			mLogExporter = GenerateILogExporter(mProjectType);
 			mLogExporter.AddDirectoryPaths(new List<string> { DatabaseAdapter.mDirectoryNameOfFiles, ".\\..\\VehicleManagerData\\Map", ".\\..\\VehicleManagerData\\Exception", ".\\VMLog" });
 			mLogExporter.AddFilePaths(new List<string> { ".\\..\\VehicleManagerData\\Application.config" });
 			SubscribeEvent_ILogExporter(mLogExporter);

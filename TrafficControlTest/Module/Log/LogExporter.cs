@@ -13,16 +13,35 @@ namespace TrafficControlTest.Module.Log
 
 		public bool mIsExporting { get; private set; }
 
+		private ProjectType rProjectType { get; set; } = ProjectType.Common;
 		private List<string> mDirectoryPaths { get; set; } = new List<string>();
 		private List<string> mFilePaths { get; set; } = new List<string>();
 		private string mBaseDirectory { get; set; } = ".\\..\\VehicleManagerData\\LogExport";
 		private string mExportDirectoryNamePrefix { get; set; } = "CASTEC_Log_VM_";
 		private string mExportDirectoryNameTimeFormat { get; set; } = "yyyyMMdd";
-		private string mExportDirectoryFullPath { get { return $"{mBaseDirectory}\\{mExportDirectoryNamePrefix}{DateTime.Now.ToString(mExportDirectoryNameTimeFormat)}"; } }
-
-		public LogExporter()
+		private bool mExportProjectInfo { get; set; } = true;
+		private string mExportDirectoryFullPath
 		{
+			get
+			{
+				if (mExportProjectInfo)
+				{
+					return $"{mBaseDirectory}\\{mExportDirectoryNamePrefix}{rProjectType.ToString()}_{DateTime.Now.ToString(mExportDirectoryNameTimeFormat)}";
+				}
+				else
+				{
+					return $"{mBaseDirectory}\\{mExportDirectoryNamePrefix}{DateTime.Now.ToString(mExportDirectoryNameTimeFormat)}";
+				}
+			}
+		}
 
+		public LogExporter(ProjectType ProjectType)
+		{
+			Set(ProjectType);
+		}
+		public void Set(ProjectType ProjectType)
+		{
+			rProjectType = ProjectType;
 		}
 		public IEnumerable<string> GetDirectoryPaths()
 		{
@@ -102,7 +121,7 @@ namespace TrafficControlTest.Module.Log
 		}
 		public override string[] GetConfigNameList()
 		{
-			return new string[] { "BaseDirectory", "ExportDirectoryNamePrefix", "ExportDirectoryNameTimeFormat" };
+			return new string[] { "BaseDirectory", "ExportDirectoryNamePrefix", "ExportDirectoryNameTimeFormat", "ExportProjectInfo" };
 		}
 		public override string GetConfig(string ConfigName)
 		{
@@ -114,6 +133,8 @@ namespace TrafficControlTest.Module.Log
 					return mExportDirectoryNamePrefix;
 				case "ExportDirectoryNameTimeFormat":
 					return mExportDirectoryNameTimeFormat;
+				case "ExportProjectInfo":
+					return mExportProjectInfo.ToString();
 				default:
 					return null;
 			}
@@ -132,6 +153,10 @@ namespace TrafficControlTest.Module.Log
 					break;
 				case "ExportDirectoryNameTimeFormat":
 					mExportDirectoryNameTimeFormat = NewValue;
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "ExportProjectInfo":
+					mExportProjectInfo = bool.Parse(NewValue);
 					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
 					break;
 				default:
