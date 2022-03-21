@@ -37,6 +37,7 @@
 			this.dgvMapManagementSetting = new System.Windows.Forms.DataGridView();
 			this.cmenuDgvMapManagementSetting = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.cmenuItemAddRegion = new System.Windows.Forms.ToolStripMenuItem();
+			this.cmenuItemClearCurrentMapName = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.dgvSettings)).BeginInit();
 			this.tlpSettings.SuspendLayout();
 			this.tlpMapManagementSetting.SuspendLayout();
@@ -75,9 +76,9 @@
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label1.Location = new System.Drawing.Point(3, 15);
+			this.label1.Location = new System.Drawing.Point(3, 18);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(243, 30);
+			this.label1.Size = new System.Drawing.Size(193, 24);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "    General Setting";
 			// 
@@ -101,9 +102,9 @@
 			this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.label2.AutoSize = true;
 			this.label2.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label2.Location = new System.Drawing.Point(3, 15);
+			this.label2.Location = new System.Drawing.Point(3, 18);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(369, 30);
+			this.label2.Size = new System.Drawing.Size(293, 24);
 			this.label2.TabIndex = 0;
 			this.label2.Text = "    Map Management Setting";
 			// 
@@ -118,23 +119,34 @@
 			this.dgvMapManagementSetting.Size = new System.Drawing.Size(844, 54);
 			this.dgvMapManagementSetting.TabIndex = 1;
 			this.dgvMapManagementSetting.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMapManagementSetting_CellValueChanged);
+			this.dgvMapManagementSetting.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvMapManagementSetting_MouseDown);
 			// 
 			// cmenuDgvMapManagementSetting
 			// 
 			this.cmenuDgvMapManagementSetting.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.cmenuDgvMapManagementSetting.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmenuItemAddRegion});
+            this.cmenuItemAddRegion,
+            this.cmenuItemClearCurrentMapName});
 			this.cmenuDgvMapManagementSetting.Name = "cmenuDgvMapManagementSetting";
-			this.cmenuDgvMapManagementSetting.Size = new System.Drawing.Size(163, 28);
+			this.cmenuDgvMapManagementSetting.Size = new System.Drawing.Size(216, 70);
 			// 
 			// cmenuItemAddRegion
 			// 
 			this.cmenuItemAddRegion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
 			this.cmenuItemAddRegion.ForeColor = System.Drawing.Color.White;
 			this.cmenuItemAddRegion.Name = "cmenuItemAddRegion";
-			this.cmenuItemAddRegion.Size = new System.Drawing.Size(162, 24);
+			this.cmenuItemAddRegion.Size = new System.Drawing.Size(215, 22);
 			this.cmenuItemAddRegion.Text = "Add Region";
 			this.cmenuItemAddRegion.Click += new System.EventHandler(this.cmenuItemAddRegion_Click);
+			// 
+			// cmenuItemClearCurrentMapName
+			// 
+			this.cmenuItemClearCurrentMapName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+			this.cmenuItemClearCurrentMapName.ForeColor = System.Drawing.Color.White;
+			this.cmenuItemClearCurrentMapName.Name = "cmenuItemClearCurrentMapName";
+			this.cmenuItemClearCurrentMapName.Size = new System.Drawing.Size(215, 22);
+			this.cmenuItemClearCurrentMapName.Text = "Clear Current Map Name";
+			this.cmenuItemClearCurrentMapName.Click += new System.EventHandler(this.cmenuItemClearCurrentMapName_Click);
 			// 
 			// UcSetting
 			// 
@@ -167,5 +179,6 @@
 		private System.Windows.Forms.DataGridView dgvMapManagementSetting;
 		private System.Windows.Forms.ContextMenuStrip cmenuDgvMapManagementSetting;
 		private System.Windows.Forms.ToolStripMenuItem cmenuItemAddRegion;
+		private System.Windows.Forms.ToolStripMenuItem cmenuItemClearCurrentMapName;
 	}
 }

@@ -22,6 +22,8 @@ namespace TrafficControlTest.UserControl
 		public Color TableRowForeColor { get; set; } = Color.White;
 
 		private IConfigurator rConfigurator = null;
+		private int mDgvMapManagementSettingRightClickRowIndex { get; set; } = -1;
+		private int mDgvMapManagementSettingRightClickColIndex { get; set; } = -1;
 
 		public UcSetting()
 		{
@@ -373,6 +375,22 @@ namespace TrafficControlTest.UserControl
 				ExceptionHandling.HandleException(Ex);
 			}
 		}
+		private void dgvMapManagementSetting_MouseDown(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				if (e.Button == MouseButtons.Right)
+				{
+					var hit = dgvMapManagementSetting.HitTest(e.X, e.Y);
+					mDgvMapManagementSettingRightClickRowIndex = hit.RowIndex;
+					mDgvMapManagementSettingRightClickColIndex = hit.ColumnIndex;
+				}
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
+		}
 		private void dgvMapManagementSetting_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
 			try
@@ -410,6 +428,28 @@ namespace TrafficControlTest.UserControl
 				UpdateGui_DgvMapManagementSetting_TlpMapManagementSetting_UpdateHeight();
 				UpdateGui_DgvMapManagementSetting_UpdateRowsBackColor();
 				UpdateGui_DgvMapManagementSetting_ClearSelection();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
+		}
+		private void cmenuItemClearCurrentMapName_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (mDgvMapManagementSettingRightClickRowIndex >= 0 && mDgvMapManagementSettingRightClickRowIndex < dgvMapManagementSetting.RowCount)
+				{
+					if (mDgvMapManagementSettingRightClickColIndex >= 0 && mDgvMapManagementSettingRightClickColIndex < dgvMapManagementSetting.ColumnCount)
+					{
+						string regionName = dgvMapManagementSetting.Rows[mDgvMapManagementSettingRightClickRowIndex].Cells["RegionName"].Value.ToString();
+						if (MessageBox.Show($"Are you sure to clear \"{regionName}\"'s current map name?", "Change map setting confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) == DialogResult.Yes)
+						{
+							dgvMapManagementSetting.Rows[mDgvMapManagementSettingRightClickRowIndex].Cells["CurrentMapName"].Value = string.Empty;
+							dgvMapManagementSetting.Rows[mDgvMapManagementSettingRightClickRowIndex].Cells["CurrentMapRange"].Value = string.Empty;
+						}
+					}
+				}
 			}
 			catch (Exception Ex)
 			{
