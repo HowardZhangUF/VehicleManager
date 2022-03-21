@@ -10,10 +10,11 @@ using TrafficControlTest.Module.Vehicle;
 
 namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 {
-	public class VehiclePassThroughLimitVehicleCountZoneEventHandler : IVehiclePassThroughLimitVehicleCountZoneEventHandler
+	public class VehiclePassThroughLimitVehicleCountZoneEventHandler : SystemWithLoopTask, IVehiclePassThroughLimitVehicleCountZoneEventHandler
 	{
 		private IVehiclePassThroughLimitVehicleCountZoneEventManager rVehiclePassThroughLimitVehicleCountZoneEventManager = null;
 		private IVehicleControlManager rVehicleControlManager = null;
+		private object mLock = new object();
 
 		public VehiclePassThroughLimitVehicleCountZoneEventHandler(IVehiclePassThroughLimitVehicleCountZoneEventManager VehiclePassThroughLimitVehicleCountZoneEventManager, IVehicleControlManager VehicleControlManager)
 		{
@@ -35,6 +36,14 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		{
 			Set(VehiclePassThroughLimitVehicleCountZoneEventManager);
 			Set(VehicleControlManager);
+		}
+		public override string GetSystemInfo()
+		{
+			return $"Even Count: {rVehiclePassThroughLimitVehicleCountZoneEventManager.mCount}";
+		}
+		public override void Task()
+		{
+			Subtask_HandleVehiclePassThroughLimitVehicleCountZoneEvents();
 		}
 
 		private void SubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventManager(IVehiclePassThroughLimitVehicleCountZoneEventManager rVehiclePassThroughLimitVehicleCountZoneEventManager)
@@ -71,16 +80,36 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		}
 		private void HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemAdded(object sender, ItemCountChangedEventArgs<IVehiclePassThroughLimitVehicleCountZoneEvent> e)
 		{
-			HandleVehiclePassThroughLimitVehicleCountZoneEvent(e.Item);
+			lock (mLock)
+			{
+				HandleVehiclePassThroughLimitVehicleCountZoneEvent(e.Item);
+			}
 		}
 		private void HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemRemoved(object sender, ItemCountChangedEventArgs<IVehiclePassThroughLimitVehicleCountZoneEvent> e)
 		{
-			RemoveRelatedVehicleControl(e.Item);
-			UninterveneRelatedVehicle(e.Item);
+			lock (mLock)
+			{
+				RemoveRelatedVehicleControl(e.Item);
+				UninterveneRelatedVehicle(e.Item);
+			}
 		}
 		private void HandleEvent_VehiclePassThroughLimitVehicleCountZoneEventManagerItemUpdated(object sender, ItemUpdatedEventArgs<IVehiclePassThroughLimitVehicleCountZoneEvent> e)
 		{
-			HandleVehiclePassThroughLimitVehicleCountZoneEvent(e.Item);
+			lock (mLock)
+			{
+				HandleVehiclePassThroughLimitVehicleCountZoneEvent(e.Item);
+			}
+		}
+		private void Subtask_HandleVehiclePassThroughLimitVehicleCountZoneEvents()
+		{
+			lock (mLock)
+			{
+				List<IVehiclePassThroughLimitVehicleCountZoneEvent> events = rVehiclePassThroughLimitVehicleCountZoneEventManager.GetItems().ToList();
+				for (int i = 0; i < events.Count; ++i)
+				{
+					HandleVehiclePassThroughLimitVehicleCountZoneEvent(events[i]);
+				}
+			}
 		}
 		private void HandleVehiclePassThroughLimitVehicleCountZoneEvent(IVehiclePassThroughLimitVehicleCountZoneEvent VehiclePassThroughLimitVehicleCountZoneEvent)
 		{

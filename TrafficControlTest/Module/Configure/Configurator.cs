@@ -649,6 +649,17 @@ namespace TrafficControlTest.Module.Configure
 				"當自走車與限車區的距離 (mm) 小於此數值時才進行干預",
 				"当自走车与限车区的距离 (mm) 小于此数值时才进行干预"));
 			defaultConfigs.Add(new Configuration(
+				"VehiclePassThroughLimitVehicleCountZoneEventHandler",
+				"TimePeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"1000",
+				"100",
+				"60000",
+				"Time period in millisecond of handle vehicle pass through limit vehicle count zone event",
+				"處理車子通過限車區事件的時間間隔 (ms)",
+				"处理车子通过限车区事件的时间间隔 (ms)"));
+			defaultConfigs.Add(new Configuration(
 				"ParkStationInfoManagerUpdater",
 				"TimePeriod",
 				ConfigurationType.Int,

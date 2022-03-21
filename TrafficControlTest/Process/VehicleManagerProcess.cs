@@ -142,12 +142,14 @@ namespace TrafficControlTest.Process
 			mChargeStationInfoManagerUpdater.Start();
 			mLimitVehicleCountZoneInfoManagerUpdater.Start();
 			mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.Start();
+			mVehiclePassThroughLimitVehicleCountZoneEventHandler.Start();
 			mParkStationInfoManagerUpdater.Start();
 		}
 		public void Stop()
 		{
 			if (mIsAnyUserLoggedIn) mAccessControl.LogOut();
 			mParkStationInfoManagerUpdater.Stop();
+			mVehiclePassThroughLimitVehicleCountZoneEventHandler.Stop();
 			mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.Stop();
 			mLimitVehicleCountZoneInfoManagerUpdater.Stop();
 			mChargeStationInfoManagerUpdater.Stop();
@@ -512,6 +514,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithConfig.Add(mChargeStationInfoManagerUpdater);
 			mCollectionOfISystemWithConfig.Add(mLimitVehicleCountZoneInfoManagerUpdater);
 			mCollectionOfISystemWithConfig.Add(mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater);
+			mCollectionOfISystemWithConfig.Add(mVehiclePassThroughLimitVehicleCountZoneEventHandler);
 			mCollectionOfISystemWithConfig.Add(mParkStationInfoManagerUpdater);
 
 			mCollectionOfISystemWithLoopTask.Add(mLogRecorder);
@@ -531,6 +534,7 @@ namespace TrafficControlTest.Process
 			mCollectionOfISystemWithLoopTask.Add(mChargeStationInfoManagerUpdater);
 			mCollectionOfISystemWithLoopTask.Add(mLimitVehicleCountZoneInfoManagerUpdater);
 			mCollectionOfISystemWithLoopTask.Add(mVehiclePassThroughLimitVehicleCountZoneEventManagerUpdater);
+			mCollectionOfISystemWithLoopTask.Add(mVehiclePassThroughLimitVehicleCountZoneEventHandler);
 			mCollectionOfISystemWithLoopTask.Add(mParkStationInfoManagerUpdater);
 		}
 		private void Destructor()
@@ -1560,7 +1564,7 @@ namespace TrafficControlTest.Process
 			if (VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater != null)
 			{
 				VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.SystemStatusChanged -= HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
-				VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
 				VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
 			}
 		}
@@ -1568,14 +1572,18 @@ namespace TrafficControlTest.Process
 		{
 			if (VehiclePassThroughLimitVehicleCountZoneEventHandler != null)
 			{
-				// do nothing
+				VehiclePassThroughLimitVehicleCountZoneEventHandler.SystemStatusChanged += HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
+				VehiclePassThroughLimitVehicleCountZoneEventHandler.SystemInfoReported += HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				VehiclePassThroughLimitVehicleCountZoneEventHandler.ConfigUpdated += HandleEvent_ISystemWithConfigConfigUpdated;
 			}
 		}
 		private void UnsubscribeEvent_IVehiclePassThroughLimitVehicleCountZoneEventHandler(IVehiclePassThroughLimitVehicleCountZoneEventHandler VehiclePassThroughLimitVehicleCountZoneEventHandler)
 		{
 			if (VehiclePassThroughLimitVehicleCountZoneEventHandler != null)
 			{
-				// do nothing
+				VehiclePassThroughLimitVehicleCountZoneEventHandler.SystemStatusChanged -= HandleEvent_ISystemWithLoopTaskSystemStatusChanged;
+				VehiclePassThroughLimitVehicleCountZoneEventHandler.SystemInfoReported -= HandleEvent_ISystemWithLoopTaskSystemInfoReported;
+				VehiclePassThroughLimitVehicleCountZoneEventHandler.ConfigUpdated -= HandleEvent_ISystemWithConfigConfigUpdated;
 			}
 		}
 		private void SubscirbeEvent_IParkStationInfoManager(IParkStationInfoManager ParkStationInfoManager)
