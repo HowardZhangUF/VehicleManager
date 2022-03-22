@@ -392,7 +392,7 @@ namespace VehicleSimulator
 			dgv.Rows.Add("X    ", "0", "Target    ", "");
 			dgv.Rows.Add("Y    ", "0", "Score    ", "0.00");
 			dgv.Rows.Add("Head    ", "0", "Battery    ", "0.00");
-			dgv.Rows.Add("TranslateVelocity    ", "800", "RotateVelocity    ", "30");
+			dgv.Rows.Add("TranslateVelocity    ", "800", "RotateVelocity    ", "90");
 			dgv.ClearSelection();
 
 			dgv.Rows[1].Cells[1].ReadOnly = false;

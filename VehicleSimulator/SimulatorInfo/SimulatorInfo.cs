@@ -21,7 +21,7 @@ namespace VehicleSimulator
 		public double mScore { get; private set; } = default(double);
 		public double mBattery { get; private set; } = default(double);
 		public int mTranslateVelocity { get; private set; } = 800;
-		public int mRotateVelocity { get; private set; } = 30;
+		public int mRotateVelocity { get; private set; } = 90;
 		public string mMapFilePath { get; private set; } = string.Empty;
 		public MapData mMapData { get; private set; } = null;
 
