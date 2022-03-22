@@ -135,7 +135,6 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 				{
 					rVehicleControlManager.UpdateExecuteFailedReason(control.mName, FailedReason.PassThroughLimitVehicleCountZoneEventRemoved);
 					rVehicleControlManager.UpdateExecuteState(control.mName, ExecuteState.ExecuteFailed);
-					rVehicleControlManager.Remove(control.mName);
 				}
 				System.Threading.Thread.Sleep(200);
 			}

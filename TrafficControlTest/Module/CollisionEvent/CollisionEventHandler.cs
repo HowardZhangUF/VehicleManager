@@ -135,7 +135,6 @@ namespace TrafficControlTest.Module.CollisionEvent
 				{
 					rVehicleControlManager.UpdateExecuteFailedReason(control.mName, FailedReason.CollisionRemoved);
 					rVehicleControlManager.UpdateExecuteState(control.mName, ExecuteState.ExecuteFailed);
-					rVehicleControlManager.Remove(control.mName);
 				}
 				System.Threading.Thread.Sleep(200);
 			}
