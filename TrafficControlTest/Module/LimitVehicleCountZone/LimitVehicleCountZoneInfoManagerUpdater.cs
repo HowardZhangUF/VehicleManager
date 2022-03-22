@@ -129,7 +129,29 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 				for (int i = 0; i < tmpLimitVehicleCountZoneInfos.Count; ++i)
 				{
 					List<string> tmpVehicleNames = tmpVehicleInfos.Where(o => tmpLimitVehicleCountZoneInfos[i].mRange.IsIncludePoint(o.mLocationCoordinate)).Select(o => o.mName).ToList();
-					rLimitVehicleCountZoneInfoManager.UpdateCurrentVehicleNameList(tmpLimitVehicleCountZoneInfos[i].mName, tmpVehicleNames);
+					List<Tuple<string, DateTime>> result = new List<Tuple<string, DateTime>>();
+					for (int j = 0; j < tmpVehicleNames.Count; ++j)
+					{
+						string vehicleName = tmpVehicleNames[j];
+						DateTime enterTimestamp = DateTime.Now;
+						if (tmpLimitVehicleCountZoneInfos[i].mIsUnioned) // 若該車早已進入聯集區域，則沿用該時間戳
+						{
+							int unionId = tmpLimitVehicleCountZoneInfos[i].mUnionId;
+							List<ILimitVehicleCountZoneInfo> unionedZoneInfos = rLimitVehicleCountZoneInfoManager.GetItems().Where(o => o.mUnionId == unionId).ToList();
+							for (int k = 0; k < unionedZoneInfos.Count; ++k)
+							{
+								if (unionedZoneInfos[k].ContainsVehicle(vehicleName))
+								{
+									if (unionedZoneInfos[k].GetVehicleEnterTimestamp(vehicleName) < enterTimestamp)
+									{
+										enterTimestamp = unionedZoneInfos[k].GetVehicleEnterTimestamp(vehicleName);
+									}
+								}
+							}
+						}
+						result.Add(new Tuple<string, DateTime>(vehicleName, enterTimestamp));
+					}
+					rLimitVehicleCountZoneInfoManager.UpdateCurrentVehicleNameList(tmpLimitVehicleCountZoneInfos[i].mName, result);
 				}
 			}
 		}

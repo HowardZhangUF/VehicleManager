@@ -36,12 +36,12 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 			mUnionId = UnionId;
 			mLastUpdated = DateTime.Now;
 		}
-		public void UpdateCurrentVehicleNameList(List<string> CurrentVehicleNameList)
+		public void UpdateCurrentVehicleNameList(List<Tuple<string, DateTime>> CurrentVehicleNameList)
 		{
 			// 輸入參數 CurrentVehicleNameList 為新名單，類別屬性 mCurrentVehicleNameList 為目前名單
 
 			// 新名單不為 null ，且新名單的內容與目前名單的內容不一樣時
-			if (CurrentVehicleNameList != null && string.Join(",", CurrentVehicleNameList.OrderBy(o => o).ToArray()) != string.Join(",", mCurrentVehicleNameList.Select(o => o.Item1).OrderBy(o => o).ToArray()))
+			if (CurrentVehicleNameList != null && string.Join(",", CurrentVehicleNameList.Select(o => o.Item1).OrderBy(o => o).ToArray()) != string.Join(",", mCurrentVehicleNameList.Select(o => o.Item1).OrderBy(o => o).ToArray()))
 			{
 				mLastVehicleNameList.Clear();
 				mLastVehicleNameList.AddRange(mCurrentVehicleNameList);
@@ -49,9 +49,9 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 				// 若新名單的車不在目前名單裡面，代表有車進入，則加入該車至目前名單
 				for (int i = 0; i < CurrentVehicleNameList.Count; ++i)
 				{
-					if (!mCurrentVehicleNameList.Any(o => o.Item1 == CurrentVehicleNameList[i]))
+					if (!mCurrentVehicleNameList.Any(o => o.Item1 == CurrentVehicleNameList[i].Item1))
 					{
-						mCurrentVehicleNameList.Add(new Tuple<string, DateTime>(CurrentVehicleNameList[i], DateTime.Now));
+						mCurrentVehicleNameList.Add(new Tuple<string, DateTime>(CurrentVehicleNameList[i].Item1, CurrentVehicleNameList[i].Item2));
 					}
 				}
 				// 若目前名單的車不在新名單裡面，代表有車離開，則從目前名單移除該車
@@ -60,7 +60,7 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 				{
 					if (tmpIndex >= mCurrentVehicleNameList.Count) break;
 
-					if (!CurrentVehicleNameList.Contains(mCurrentVehicleNameList[tmpIndex].Item1))
+					if (!CurrentVehicleNameList.Select(o => o.Item1).Contains(mCurrentVehicleNameList[tmpIndex].Item1))
 					{
 						mCurrentVehicleNameList.RemoveAt(tmpIndex);
 					}
@@ -77,6 +77,32 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 				mLastUpdated = DateTime.Now;
 				RaiseEvent_StatusUpdated("CurrentVehicleNameList,LastVehicleNameList,CurrentStatusDuration");
 			}
+		}
+		public bool ContainsVehicle(string VehicleName)
+		{
+			bool result = false;
+			for (int i = 0; i < mCurrentVehicleNameList.Count; ++i)
+			{
+				if (mCurrentVehicleNameList[i].Item1 == VehicleName)
+				{
+					result = true;
+					break;
+				}
+			}
+			return result;
+		}
+		public DateTime GetVehicleEnterTimestamp(string VehicleName)
+		{
+			DateTime result = DateTime.Now.AddYears(10);
+			for (int i = 0; i < mCurrentVehicleNameList.Count; ++i)
+			{
+				if (mCurrentVehicleNameList[i].Item1 == VehicleName)
+				{
+					result = mCurrentVehicleNameList[i].Item2;
+					break;
+				}
+			}
+			return result;
 		}
 		public override string ToString()
 		{

@@ -9,6 +9,6 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 {
 	public interface ILimitVehicleCountZoneInfoManager : IItemManager<ILimitVehicleCountZoneInfo>
 	{
-		void UpdateCurrentVehicleNameList(string Name, List<string> CurrentVehicleNameList);
+		void UpdateCurrentVehicleNameList(string Name, List<Tuple<string, DateTime>> CurrentVehicleNameList);
 	}
 }

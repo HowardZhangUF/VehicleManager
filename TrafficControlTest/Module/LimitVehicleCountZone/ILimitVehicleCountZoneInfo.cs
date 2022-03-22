@@ -19,6 +19,8 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		DateTime mLastUpdated { get; }
 
 		void Set(string Name, IRectangle2D Range, int MaxVehicleCount, bool IsUnioned, int UnionId);
-		void UpdateCurrentVehicleNameList(List<string> CurrentVehicleNameList);
+		void UpdateCurrentVehicleNameList(List<Tuple<string, DateTime>> CurrentVehicleNameList);
+		bool ContainsVehicle(string VehicleName);
+		DateTime GetVehicleEnterTimestamp(string VehicleName);
 	}
 }
