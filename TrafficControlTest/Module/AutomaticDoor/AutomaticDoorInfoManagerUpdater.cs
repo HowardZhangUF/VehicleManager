@@ -96,7 +96,7 @@ namespace TrafficControlTest.Module.AutomaticDoor
 					{
 						ipPort = automaticDoorInfos[i].mParameters.First(o => o.StartsWith("IPPort=")).Replace("IPPort=", string.Empty);
 					}
-					IAutomaticDoorInfo automaticDoorInfo = new AutomaticDoorInfo(automaticDoorInfos[i].mName, automaticDoorInfos[i].mRange, ipPort);
+					IAutomaticDoorInfo automaticDoorInfo = Library.Library.GenerateIAutomaticDoorInfo(automaticDoorInfos[i].mName, automaticDoorInfos[i].mRange, ipPort);
 					rAutomaticDoorInfoManager.Add(automaticDoorInfo.mName, automaticDoorInfo);
 				}
 			}

@@ -108,12 +108,12 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 					// SingleVehicle 區塊沒有額外命名，所以名字採用流水號，允需車數量固定為 1
 					if (unionCollection.ContainsKey(i))
 					{
-						ILimitVehicleCountZoneInfo tmp = new LimitVehicleCountZoneInfo(i.ToString().PadLeft(3, '0'), singleVehicleInfos[i].mRange, 1, true, unionCollection[i]);
+						ILimitVehicleCountZoneInfo tmp = Library.Library.GenerateILimitVehicleCountZoneInfo(i.ToString().PadLeft(3, '0'), singleVehicleInfos[i].mRange, 1, true, unionCollection[i]);
 						rLimitVehicleCountZoneInfoManager.Add(tmp.mName, tmp);
 					}
 					else
 					{
-						ILimitVehicleCountZoneInfo tmp = new LimitVehicleCountZoneInfo(i.ToString().PadLeft(3, '0'), singleVehicleInfos[i].mRange, 1, false, 0);
+						ILimitVehicleCountZoneInfo tmp = Library.Library.GenerateILimitVehicleCountZoneInfo(i.ToString().PadLeft(3, '0'), singleVehicleInfos[i].mRange, 1, false, 0);
 						rLimitVehicleCountZoneInfoManager.Add(tmp.mName, tmp);
 					}
 				}

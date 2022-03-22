@@ -120,6 +120,7 @@ namespace TrafficControlTest.Library
 		}
 		public static ICollisionPair GenerateICollisionPair(IVehicleInfo Vehicle1, IVehicleInfo Vehicle2, IRectangle2D CollisionRegion, ITimePeriod Period, ITimePeriod PassPeriodOfVehicle1WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle2WithCurrentVelocity, ITimePeriod PassPeriodOfVehicle1WithMaximumVeloctiy, ITimePeriod PassPeriodOfVehicle2WithMaximumVeloctiy)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new CollisionPair(Vehicle1, Vehicle2, CollisionRegion, Period, PassPeriodOfVehicle1WithCurrentVelocity, PassPeriodOfVehicle2WithCurrentVelocity, PassPeriodOfVehicle1WithMaximumVeloctiy, PassPeriodOfVehicle2WithMaximumVeloctiy);
 		}
 		public static ITimePeriod GenerateITimePeriod(DateTime Start, DateTime End)
@@ -128,6 +129,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IVehicleInfo GenerateIVehicleInfo(string Name)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new VehicleInfo(Name);
 		}
 		public static IVehicleCommunicator GenerateIVehicleCommunicator()
@@ -152,6 +154,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IVehicleControl GenerateIVehicleControl(string VehicleId, Command Command, string[] Parameters, string CauseId, string CauseDetail)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new VehicleControl(VehicleId, Command, Parameters, CauseId, CauseDetail);
 		}
 		public static IVehicleControlManager GenerateIVehicleControlManager()
@@ -176,6 +179,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IMissionState GenerateIMissionState(IMission Mission)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new MissionState(Mission);
 		}
 		public static IMissionStateManager GenerateIMissionStateManager()
@@ -290,6 +294,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IAutomaticDoorInfo GenerateIAutomaticDoorInfo(string Name, IRectangle2D Range, string IpPort)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new AutomaticDoorInfo(Name, Range, IpPort);
 		}
 		public static IAutomaticDoorInfoManager GenerateIAutomaticDoorInfoManager()
@@ -310,6 +315,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IAutomaticDoorControl GenerateIAutomaticDoorControl(string AutomaticDoorName, AutomaticDoorControlCommand Command, string Cause)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new AutomaticDoorControl(AutomaticDoorName, Command, Cause);
 		}
 		public static IAutomaticDoorControlManager GenerateIAutomaticDoorControlManager()
@@ -326,6 +332,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IVehiclePassThroughAutomaticDoorEvent GenerateIVehiclePassThroughAutomaticDoorEvent(string VehicleName, string AutomaticDoorName, int Distance)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new VehiclePassThroughAutomaticDoorEvent(VehicleName, AutomaticDoorName, Distance);
 		}
 		public static IVehiclePassThroughAutomaticDoorEventManager GenerateIVehiclePassThroughAutomaticDoorEventManager()
@@ -342,6 +349,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IChargeStationInfo GenerateIChargeStationInfo(string Name, ITowardPoint2D Location, IRectangle2D LocationRange)
         {
+			System.Threading.Thread.Sleep(5);
             return new ChargeStationInfo(Name, Location, LocationRange);
         }
         public static IChargeStationInfoManager GenerateIChargeStationInfoManager()
@@ -354,6 +362,7 @@ namespace TrafficControlTest.Library
         }
         public static ILimitVehicleCountZoneInfo GenerateILimitVehicleCountZoneInfo(string Name, IRectangle2D Range, int MaxVehicleCount, bool IsUnioned, int UnionId)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new LimitVehicleCountZoneInfo(Name, Range, MaxVehicleCount, IsUnioned, UnionId);
 		}
 		public static ILimitVehicleCountZoneInfoManager GenerateILimitVehicleCountZoneInfoManager()
@@ -366,6 +375,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IVehiclePassThroughLimitVehicleCountZoneEvent GenerateIVehiclePassThroughLimitVehicleCountZoneEvent(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo, int Distance)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new VehiclePassThroughLimitVehicleCountZoneEvent(VehicleInfo, LimitVehicleCountZoneInfo, Distance);
 		}
 		public static IVehiclePassThroughLimitVehicleCountZoneEventManager GenerateIVehiclePassThroughLimitVehicleCountZoneEventManager()
@@ -382,6 +392,7 @@ namespace TrafficControlTest.Library
 		}
 		public static IParkStationInfo GenerateIParkStationInfo(string Name, ITowardPoint2D Location, IRectangle2D LocationRange)
 		{
+			System.Threading.Thread.Sleep(5);
 			return new ParkStationInfo(Name, Location, LocationRange);
 		}
 		public static IParkStationInfoManager GenerateIParkStationInfoManager()
