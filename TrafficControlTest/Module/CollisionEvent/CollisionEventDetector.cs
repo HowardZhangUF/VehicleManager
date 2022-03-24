@@ -313,37 +313,33 @@ namespace TrafficControlTest.Module.CollisionEvent
 			List<IRectangle2D> tmpOverlapRegions = null;
 			if (PointsA != null && PointsA.Count() > 0 && PointsB != null && PointsB.Count() > 0)
 			{
-				if (TryToBuildTreeOfPoints(PointsB, out KdTree.KdTree<int, string> treeOfPointsB))
+				for (int i = 0; i < PointsA.Count(); ++i)
 				{
-					for (int i = 0; i < PointsA.Count(); ++i)
+					IRectangle2D overlapRegion = GeometryAlgorithm.GetRectangle(PointsA.ElementAt(i).mX, PointsA.ElementAt(i).mY, FrameRadius);
+					if (PointsB.Any(o => overlapRegion.IsIncludePoint(o)))
 					{
-						var neighbourPoints = treeOfPointsB.GetNearestNeighbours(new int[] { PointsA.ElementAt(i).mX, PointsA.ElementAt(i).mY }, NeighbourAmount);
-						if (neighbourPoints.Any((o) => GeometryAlgorithm.GetDistance(PointsA.ElementAt(i), new Point2D(o.Point[0], o.Point[1])) < FrameRadius))
+						if (tmpOverlapRegions == null)
 						{
-							IRectangle2D overlapRegion = GeometryAlgorithm.GetRectangle(PointsA.ElementAt(i).mX, PointsA.ElementAt(i).mY, FrameRadius);
-							if (tmpOverlapRegions == null)
+							tmpOverlapRegions = new List<IRectangle2D>();
+							tmpOverlapRegions.Add(overlapRegion);
+						}
+						else
+						{
+							if (GeometryAlgorithm.IsRectangleOverlap(tmpOverlapRegions.Last(), overlapRegion))
 							{
-								tmpOverlapRegions = new List<IRectangle2D>();
-								tmpOverlapRegions.Add(overlapRegion);
+								tmpOverlapRegions[tmpOverlapRegions.Count - 1] = GeometryAlgorithm.GetCoverRectangle(tmpOverlapRegions.Last(), overlapRegion);
 							}
 							else
 							{
-								if (GeometryAlgorithm.IsRectangleOverlap(tmpOverlapRegions.Last(), overlapRegion))
-								{
-									tmpOverlapRegions[tmpOverlapRegions.Count - 1] = GeometryAlgorithm.GetCoverRectangle(tmpOverlapRegions.Last(), overlapRegion);
-								}
-								else
-								{
-									tmpOverlapRegions.Add(overlapRegion);
-								}
+								tmpOverlapRegions.Add(overlapRegion);
 							}
 						}
 					}
+				}
 
-					if (tmpOverlapRegions != null && tmpOverlapRegions.Count > 0)
-					{
-						OverlapRegions = GeometryAlgorithm.MergeRectangle(tmpOverlapRegions).ToList();
-					}
+				if (tmpOverlapRegions != null && tmpOverlapRegions.Count > 0)
+				{
+					OverlapRegions = GeometryAlgorithm.MergeRectangle(tmpOverlapRegions).ToList();
 				}
 			}
 			return (OverlapRegions != null && OverlapRegions.Count() > 0) ? true : false;
@@ -449,7 +445,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 			EnterPoint = null;
 			ExitPoint = null;
 			EnterDistance = 0;
-			ExitDistance = 0;
+			ExitDistance = int.MaxValue;
 			PassPeriod = null;
 			PassPeriodWithMaximumVelocity = null;
 
