@@ -96,6 +96,12 @@ namespace TrafficControlTest.Module.Mission
                 RaiseEvent_StatusUpdated("FailedReason");
             }
         }
+		public void ClearExecutorId()
+		{
+			mExecutorId = string.Empty;
+			mLastUpdate = DateTime.Now;
+			RaiseEvent_StatusUpdated("ExecutorId");
+		}
 		public string[] ToStringArray()
 		{
 			string[] result = null;

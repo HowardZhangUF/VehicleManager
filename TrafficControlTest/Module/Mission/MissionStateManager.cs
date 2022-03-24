@@ -43,5 +43,15 @@ namespace TrafficControlTest.Module.Mission
                 }
             }
         }
+		public void ClearExecutorId(string MissionId)
+		{
+			lock (mLock)
+			{
+				if (mItems.Keys.Contains(MissionId))
+				{
+					mItems[MissionId].ClearExecutorId();
+				}
+			}
+		}
 	}
 }

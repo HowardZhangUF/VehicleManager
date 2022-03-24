@@ -165,7 +165,7 @@ namespace TrafficControlTest.Module.Mission
 					MissionState.UpdateExecutorId(VehicleId);
 					IVehicleControl tmpGotoControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Goto, MissionState.mMission.mParameters, MissionState.mName, string.Empty);
 					added = rVehicleControlManager.Add(tmpGotoControl.mName, tmpGotoControl);
-					if (!added) MissionState.UpdateExecutorId(string.Empty); // 如果加入任務失敗，則進行復原動作，重新再做一次
+					if (!added) MissionState.ClearExecutorId(); // 如果加入任務失敗，則進行復原動作，重新再做一次
 					break;
 				case MissionType.GotoPoint:
 					// 如果自走車當前在充電站上，則產生一解除充電的指令
@@ -186,7 +186,7 @@ namespace TrafficControlTest.Module.Mission
 						IVehicleControl tmpGotoTowardPointControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.GotoTowardPoint, MissionState.mMission.mParameters, MissionState.mName, string.Empty);
 						added = rVehicleControlManager.Add(tmpGotoTowardPointControl.mName, tmpGotoTowardPointControl);
 					}
-					if (!added) MissionState.UpdateExecutorId(string.Empty); // 如果加入任務失敗，則進行復原動作，重新再做一次
+					if (!added) MissionState.ClearExecutorId(); // 如果加入任務失敗，則進行復原動作，重新再做一次
 					break;
 				case MissionType.Dock:
 					// 如果自走車當前在充電站上，則產生一解除充電的指令
@@ -199,7 +199,7 @@ namespace TrafficControlTest.Module.Mission
 					MissionState.UpdateExecutorId(VehicleId);
 					IVehicleControl tmpChargeControl = Library.Library.GenerateIVehicleControl(VehicleId, Command.Charge, MissionState.mMission.mParameters, MissionState.mName, string.Empty);
 					added = rVehicleControlManager.Add(tmpChargeControl.mName, tmpChargeControl);
-					if (!added) MissionState.UpdateExecutorId(string.Empty); // 如果加入任務失敗，則進行復原動作，重新再做一次
+					if (!added) MissionState.ClearExecutorId(); // 如果加入任務失敗，則進行復原動作，重新再做一次
 					break;
 				case MissionType.Abort:
 					// Abort 所帶的任務識別碼參數，可能會是「客戶自訂的任務識別碼」或是「系統自動產生的任務識別碼」
@@ -214,7 +214,7 @@ namespace TrafficControlTest.Module.Mission
 							MissionState.UpdateExecutorId(abortMissionState.mExecutorId);
 							IVehicleControl tmpAbortControl = Library.Library.GenerateIVehicleControl(abortMissionState.mExecutorId, Command.Abort, null, MissionState.mName, string.Empty);
 							added = rVehicleControlManager.Add(tmpAbortControl.mName, tmpAbortControl);
-							if (!added) MissionState.UpdateExecutorId(string.Empty); // 如果加入任務失敗，則進行復原動作，重新再做一次
+							if (!added) MissionState.ClearExecutorId(); // 如果加入任務失敗，則進行復原動作，重新再做一次
 						}
 						// 如果欲終止的任務尚未執行
 						else
