@@ -57,7 +57,7 @@ namespace TrafficControlTest.Module.Vehicle
 		{
 			get
 			{
-				if (_PathDetail == null) _PathDetail = CalculatePathDetail(mLocationCoordinate, mPath, (mTotalFrameRadius) / 10);
+				if (_PathDetail == null) _PathDetail = CalculatePathDetail(mLocationCoordinate, mPath, (mTotalFrameRadius) / 3);
 				return _PathDetail;
 			}
 		}
@@ -77,7 +77,7 @@ namespace TrafficControlTest.Module.Vehicle
 		{
 			get
 			{
-				if (_EstimatedPathDetail == null) _EstimatedPathDetail = CalculatePathDetail(mLocationCoordinate, mEstimatedPath, (mTotalFrameRadius) / 10);
+				if (_EstimatedPathDetail == null) _EstimatedPathDetail = CalculatePathDetail(mLocationCoordinate, mEstimatedPath, (mTotalFrameRadius) / 3);
 				return _EstimatedPathDetail;
 			}
 		}
