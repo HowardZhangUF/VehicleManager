@@ -122,14 +122,14 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		private void Subtask_CalculateVehicleNameListInLimitVehicleCountZoneInfo()
 		{
 			List<ILimitVehicleCountZoneInfo> tmpLimitVehicleCountZoneInfos = rLimitVehicleCountZoneInfoManager.GetItems().ToList();
-			List<IVehicleInfo> tmpVehicleInfos = rVehicleInfoManager.GetItems().ToList();
-			if (tmpLimitVehicleCountZoneInfos.Count > 0 && tmpVehicleInfos.Count > 0)
+			if (tmpLimitVehicleCountZoneInfos.Count > 0)
 			{
-				// 計算每一個 ILimitVehicleCountZoneInfo 內存在的車的清單
+				List<List<Tuple<string, DateTime>>> newDatas = new List<List<Tuple<string, DateTime>>>();
+				// 計算每一個 ILimitVehicleCountZoneInfo 的 CurrentVehicleNameList 資訊
 				for (int i = 0; i < tmpLimitVehicleCountZoneInfos.Count; ++i)
 				{
-					List<string> tmpVehicleNames = tmpVehicleInfos.Where(o => tmpLimitVehicleCountZoneInfos[i].mRange.IsIncludePoint(o.mLocationCoordinate)).Select(o => o.mName).ToList();
-					List<Tuple<string, DateTime>> result = new List<Tuple<string, DateTime>>();
+					List<Tuple<string, DateTime>> tmpCurrentVehicleNameList = new List<Tuple<string, DateTime>>();
+					List<string> tmpVehicleNames = rVehicleInfoManager.GetItems().Where(o => tmpLimitVehicleCountZoneInfos[i].mRange.IsIncludePoint(o.mLocationCoordinate)).Select(o => o.mName).ToList();
 					for (int j = 0; j < tmpVehicleNames.Count; ++j)
 					{
 						string vehicleName = tmpVehicleNames[j];
@@ -149,9 +149,15 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 								}
 							}
 						}
-						result.Add(new Tuple<string, DateTime>(vehicleName, enterTimestamp));
+						tmpCurrentVehicleNameList.Add(new Tuple<string, DateTime>(vehicleName, enterTimestamp));
 					}
-					rLimitVehicleCountZoneInfoManager.UpdateCurrentVehicleNameList(tmpLimitVehicleCountZoneInfos[i].mName, result);
+					newDatas.Add(tmpCurrentVehicleNameList);
+				}
+
+				// 將所有 ILimitVehicleCountZoneInfo 的資訊都計算完後，再一次更新
+				for (int i = 0; i < tmpLimitVehicleCountZoneInfos.Count; ++i)
+				{
+					rLimitVehicleCountZoneInfoManager.UpdateCurrentVehicleNameList(tmpLimitVehicleCountZoneInfos[i].mName, newDatas[i]);
 				}
 			}
 		}
