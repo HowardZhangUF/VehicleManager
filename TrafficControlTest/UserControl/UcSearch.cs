@@ -38,7 +38,9 @@ namespace TrafficControlTest.UserControl
 			UpdateGui_CbSearchCondition_Initialize();
 			UpdateGui_CbLimit_Initialize();
 			UpdateGui_CbHourFilterStart_Initialize();
+			UpdateGui_CbMinuteFilterStart_Initialize();
 			UpdateGui_CbHourFilterEnd_Initialize();
+			UpdateGui_CbMinuteFilterEnd_Initialize();
 			UpdateGui_DgvSearchResult_Initialize();
 		}
 		public void Set(DatabaseAdapter DatabaseAdapter)
@@ -94,8 +96,10 @@ namespace TrafficControlTest.UserControl
 				case "TimePeriod":
 					int hourStart = int.Parse(cbHourFilterStart.SelectedItem.ToString().Substring(0, 2));
 					int hourEnd = int.Parse(cbHourFilterEnd.SelectedItem.ToString().Substring(0, 2));
-					DateTime DateStart = dtpDateFilterStart.Value.Date.AddHours(hourStart);
-					DateTime DateEnd = dtpDateFilterEnd.Value.Date.AddHours(hourEnd);
+					int minuteStart = int.Parse(cbMinuteFilterStart.SelectedItem.ToString().Substring(0, 2));
+					int minuteEnd = int.Parse(cbMinuteFilterEnd.SelectedItem.ToString().Substring(0, 2));
+					DateTime DateStart = dtpDateFilterStart.Value.Date.AddHours(hourStart).AddMinutes(minuteStart);
+					DateTime DateEnd = dtpDateFilterEnd.Value.Date.AddHours(hourEnd).AddMinutes(minuteEnd);
 					string searchCondition2 = string.Empty;
 					searchCondition2 += $"Keyword: {txtSearch.Text}\n";
 					searchCondition2 += $"Limit: {cbLimit.SelectedItem.ToString()}\n";
@@ -152,9 +156,21 @@ namespace TrafficControlTest.UserControl
 				cbHourFilterStart.Items.Clear();
 				for (int i = 0; i < 24; ++i)
 				{
-					cbHourFilterStart.Items.Add($"{i.ToString().PadLeft(2, '0')}:00");
+					cbHourFilterStart.Items.Add($"{i.ToString().PadLeft(2, '0')}");
 				}
 				cbHourFilterStart.SelectedIndex = 0;
+			});
+		}
+		private void UpdateGui_CbMinuteFilterStart_Initialize()
+		{
+			this.InvokeIfNecessary(() =>
+			{
+				cbMinuteFilterStart.Items.Clear();
+				for (int i = 0; i < 60; ++i)
+				{
+					cbMinuteFilterStart.Items.Add($"{i.ToString().PadLeft(2, '0')}");
+				}
+				cbMinuteFilterStart.SelectedIndex = 0;
 			});
 		}
 		private void UpdateGui_CbHourFilterEnd_Initialize()
@@ -164,9 +180,21 @@ namespace TrafficControlTest.UserControl
 				cbHourFilterEnd.Items.Clear();
 				for (int i = 0; i < 24; ++i)
 				{
-					cbHourFilterEnd.Items.Add($"{i.ToString().PadLeft(2, '0')}:00");
+					cbHourFilterEnd.Items.Add($"{i.ToString().PadLeft(2, '0')}");
 				}
 				cbHourFilterEnd.SelectedIndex = 0;
+			});
+		}
+		private void UpdateGui_CbMinuteFilterEnd_Initialize()
+		{
+			this.InvokeIfNecessary(() =>
+			{
+				cbMinuteFilterEnd.Items.Clear();
+				for (int i = 0; i < 60; ++i)
+				{
+					cbMinuteFilterEnd.Items.Add($"{i.ToString().PadLeft(2, '0')}");
+				}
+				cbMinuteFilterEnd.SelectedIndex = 0;
 			});
 		}
 		private void UpdateGui_DgvSearchResult_AddRow(params string[] RowData)
@@ -298,15 +326,19 @@ namespace TrafficControlTest.UserControl
 				{
 					case "Date":
 						cbHourFilterStart.Visible = false;
+						cbMinuteFilterStart.Visible = false;
 						label1.Visible = false;
 						dtpDateFilterEnd.Visible = false;
 						cbHourFilterEnd.Visible = false;
+						cbMinuteFilterEnd.Visible = false;
 						break;
 					case "TimePeriod":
 						cbHourFilterStart.Visible = true;
+						cbMinuteFilterStart.Visible = true;
 						label1.Visible = true;
 						dtpDateFilterEnd.Visible = true;
 						cbHourFilterEnd.Visible = true;
+						cbMinuteFilterEnd.Visible = true;
 						break;
 					default:
 						break;
