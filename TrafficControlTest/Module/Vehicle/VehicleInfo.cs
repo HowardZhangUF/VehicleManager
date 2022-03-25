@@ -96,6 +96,7 @@ namespace TrafficControlTest.Module.Vehicle
 		public DateTime mTimestampOfBeingAssignedMission { get; private set; } = default(DateTime);
 		public string mCurrentInterveneCommand { get; private set; } = string.Empty;
 		public string mPreviousInterveneCommand { get; private set; } = string.Empty;
+		public string mCurrentInterveneCause { get; private set; } = string.Empty;
 		public bool mIsBeingIntervened { get { return !string.IsNullOrEmpty(mCurrentInterveneCommand); } }
 		public DateTime mTimestampOfBeingIntervened { get; private set; } = default(DateTime);
 		public bool mIsTranslating { get; private set; } = false;
@@ -692,6 +693,21 @@ namespace TrafficControlTest.Module.Vehicle
 				}
 			}
 		}
+		public void UpdateCurrentInterveneCause(string CurrentInterveneCause)
+		{
+			if (TryUpdateCurrentInterveneCause(CurrentInterveneCause))
+			{
+				if (mIsUpdating)
+				{
+					mUpdatedItems.Add("CurrentInterveneCause");
+				}
+				else
+				{
+					mLastUpdated = DateTime.Now;
+					RaiseEvent_StatusUpdated("CurrentInterveneCause");
+				}
+			}
+		}
 		public void UpdateIsTranslating(bool IsTranslating)
 		{
 			if (TryUpdateIsTranslating(IsTranslating))
@@ -733,7 +749,8 @@ namespace TrafficControlTest.Module.Vehicle
 			result += $"{mLocationScore.ToString("F2")}(%)/";
 			result += $"{mBatteryValue.ToString("F2")}(%)/";
 			result += $"{mCurrentMissionId}/";
-			result += $"{mCurrentInterveneCommand}";
+			result += $"{mCurrentInterveneCommand}/";
+			result += $"{mCurrentInterveneCause}";
 			return result;
 		}
 
@@ -1146,6 +1163,16 @@ namespace TrafficControlTest.Module.Vehicle
 				mPreviousInterveneCommand = mCurrentInterveneCommand;
 				mCurrentInterveneCommand = CurrentInterveneCommand ?? string.Empty;
 				if (!string.IsNullOrEmpty(mCurrentInterveneCommand)) mTimestampOfBeingIntervened = DateTime.Now;
+				result = true;
+			}
+			return result;
+		}
+		private bool TryUpdateCurrentInterveneCause(string CurrentInterveneCause)
+		{
+			bool result = false;
+			if (mCurrentInterveneCause != CurrentInterveneCause)
+			{
+				mCurrentInterveneCause = CurrentInterveneCause ?? string.Empty;
 				result = true;
 			}
 			return result;

@@ -66,6 +66,13 @@ namespace TrafficControlTest.Module.Vehicle
 				mItems[Name].UpdateCurrentInterveneCommand(InterveneCommand);
 			}
 		}
+		public void UpdateItemInterveneCause(string Name, string InterveneCause)
+		{
+			if (IsExist(Name))
+			{
+				mItems[Name].UpdateCurrentInterveneCause(InterveneCause);
+			}
+		}
 		public void UpdateItemMapName(string Name, string MapName)
 		{
 			if (IsExist(Name))

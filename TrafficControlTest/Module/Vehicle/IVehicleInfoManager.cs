@@ -26,6 +26,8 @@ namespace TrafficControlTest.Module.Vehicle
 		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void UpdateItemInterveneCommand(string Name, string InterveneCommand);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
+		void UpdateItemInterveneCause(string Name, string InterveneCause);
+		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void UpdateItemMapName(string Name, string MapName);
 		/// <summary>更新指定 Vehicle 的資訊</summary>
 		void UpdateItemMapNameList(string Name, IEnumerable<string> MapNameList);

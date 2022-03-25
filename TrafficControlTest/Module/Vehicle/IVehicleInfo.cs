@@ -142,6 +142,8 @@ namespace TrafficControlTest.Module.Vehicle
 		string mCurrentInterveneCommand { get; }
 		/// <summary>上一個執行的干預指令</summary>
 		string mPreviousInterveneCommand { get; }
+		/// <summary>當前執行的干預指令的原因</summary>
+		string mCurrentInterveneCause { get; }
 		/// <summary>是否正在被干預中</summary>
 		bool mIsBeingIntervened { get; }
 		/// <summary>上次被干預時間</summary>
@@ -199,6 +201,7 @@ namespace TrafficControlTest.Module.Vehicle
 		void UpdateEstimatedPath(IEnumerable<IPoint2D> EstimatedPath);
 		void UpdateCurrentMissionId(string MissionId);
 		void UpdateCurrentInterveneCommand(string InterveneCommand);
+		void UpdateCurrentInterveneCause(string InterveneCause);
 
 		string ToString();
 	}
