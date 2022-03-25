@@ -236,8 +236,16 @@ namespace TrafficControlTest.Module.VehiclePassThroughLimitVehicleCountZone
 		/// <summary>計算指定 IVehicleInfo 在指定 ILimitVehicleCountZoneInfo 內是否是可允許移動的</summary>
 		private bool IsVehicleAllowedMoveInLimitVehicleCountZone(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
 		{
-			// LimitVehicleCountZoneInfo 的上限是 n 台車，當區域內的車數量大於 n 時，只有先進來的前 n 台車可以動，反之，會被干預
-			return GetCurrentVehicleNameList(LimitVehicleCountZoneInfo, rLimitVehicleCountZoneInfoManager).Take(LimitVehicleCountZoneInfo.mMaxVehicleCount).Contains(VehicleInfo.mName);
+			// 如果限車區裡面沒有車，則所有車都允許移動
+			if (LimitVehicleCountZoneInfo.mCurrentVehicleNameList.Count == 0)
+			{
+				return true;
+			}
+			else
+			{
+				// LimitVehicleCountZoneInfo 的上限是 n 台車，當區域內的車數量大於 n 時，只有先進來的前 n 台車可以動，反之，會被干預
+				return GetCurrentVehicleNameList(LimitVehicleCountZoneInfo, rLimitVehicleCountZoneInfoManager).Take(LimitVehicleCountZoneInfo.mMaxVehicleCount).Contains(VehicleInfo.mName);
+			}
 		}
 		/// <summary>計算指定 IVehicleInfo 與指定 ILimitVehicleCountZoneInfo 的距離(沿著路徑線計算)</summary>
 		private int GetDistanceBetweenVehicleAndLimitVehicleCountZoneAlongPathLine(IVehicleInfo VehicleInfo, ILimitVehicleCountZoneInfo LimitVehicleCountZoneInfo)
