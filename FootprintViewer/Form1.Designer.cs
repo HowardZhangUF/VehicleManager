@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.tbTimestamp = new System.Windows.Forms.TrackBar();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpSetting = new System.Windows.Forms.TabPage();
@@ -278,7 +279,7 @@
 			this.cbStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbStart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbStart.FormattingEnabled = true;
-			this.cbStart.Location = new System.Drawing.Point(113, 160);
+			this.cbStart.Location = new System.Drawing.Point(113, 165);
 			this.cbStart.Name = "cbStart";
 			this.cbStart.Size = new System.Drawing.Size(428, 29);
 			this.cbStart.TabIndex = 10;
@@ -288,7 +289,7 @@
 			this.cbEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbEnd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbEnd.FormattingEnabled = true;
-			this.cbEnd.Location = new System.Drawing.Point(113, 260);
+			this.cbEnd.Location = new System.Drawing.Point(113, 265);
 			this.cbEnd.Name = "cbEnd";
 			this.cbEnd.Size = new System.Drawing.Size(428, 29);
 			this.cbEnd.TabIndex = 11;
@@ -387,8 +388,9 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 561);
 			this.Controls.Add(this.tabControl1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Text = "Footprint Viewer";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			((System.ComponentModel.ISupportInitialize)(this.tbTimestamp)).EndInit();
 			this.tabControl1.ResumeLayout(false);

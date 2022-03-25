@@ -38,6 +38,9 @@
   <PropertyGroup>
     <StartupObject>FootprintViewer.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icons8_baby_footprint.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Geometry, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -144,6 +147,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icons8_baby_footprint.ico" />
     <Content Include="Include\iTSLibrary\Geometry.dll" />
     <Content Include="Include\iTSLibrary\Geometry.pdb" />
     <Content Include="Include\iTSLibrary\GLCore.dll" />
