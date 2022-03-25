@@ -1,4 +1,5 @@
 ﻿using TrafficControlTest.Module.CommunicationVehicle;
+using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Mission;
 
 namespace TrafficControlTest.Module.Vehicle
@@ -15,7 +16,8 @@ namespace TrafficControlTest.Module.Vehicle
 	{
 		void Set(IVehicleCommunicator VehicleCommunicator);
 		void Set(IMissionStateManager MissionStateManager);
+		void Set(IVehicleControlManager VehicleControlManager);
 		void Set(IVehicleInfoManager VehicleInfoManager);
-		void Set(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager);
+		void Set(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager);
 	}
 }

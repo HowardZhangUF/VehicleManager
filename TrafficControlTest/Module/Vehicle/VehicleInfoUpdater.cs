@@ -14,11 +14,12 @@ namespace TrafficControlTest.Module.Vehicle
 	{
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IMissionStateManager rMissionStateManager = null;
+		private IVehicleControlManager rVehicleControlManager = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 
-		public VehicleInfoUpdater(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager)
+		public VehicleInfoUpdater(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager)
 		{
-			Set(VehicleCommunicator, MissionStateManager, VehicleInfoManager);
+			Set(VehicleCommunicator, MissionStateManager, VehicleControlManager, VehicleInfoManager);
 		}
 		public void Set(IVehicleCommunicator VehicleCommunicator)
 		{
@@ -32,16 +33,23 @@ namespace TrafficControlTest.Module.Vehicle
 			rMissionStateManager = MissionStateManager;
 			Subscribe_IMissionStateManager(rMissionStateManager);
 		}
+		public void Set(IVehicleControlManager VehicleControlManager)
+		{
+			Unsubscribe_IVehicleControlManager(rVehicleControlManager);
+			rVehicleControlManager = VehicleControlManager;
+			Subscribe_IVehicleControlManager(rVehicleControlManager);
+		}
 		public void Set(IVehicleInfoManager VehicleInfoManager)
 		{
 			UnsubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 			rVehicleInfoManager = VehicleInfoManager;
 			SubscribeEvent_IVehicleInfoManager(rVehicleInfoManager);
 		}
-		public void Set(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleInfoManager VehicleInfoManager)
+		public void Set(IVehicleCommunicator VehicleCommunicator, IMissionStateManager MissionStateManager, IVehicleControlManager VehicleControlManager, IVehicleInfoManager VehicleInfoManager)
 		{
 			Set(VehicleCommunicator);
 			Set(MissionStateManager);
+			Set(VehicleControlManager);
 			Set(VehicleInfoManager);
 		}
 
@@ -75,6 +83,20 @@ namespace TrafficControlTest.Module.Vehicle
 			if (MissionStateManager != null)
 			{
 				MissionStateManager.ItemUpdated -= HandleEvent_MissionStateManagerItemUpdated;
+			}
+		}
+		private void Subscribe_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
+				VehicleControlManager.ItemUpdated += HandleEvent_VehicleControlManagerItemUpdated;
+			}
+		}
+		private void Unsubscribe_IVehicleControlManager(IVehicleControlManager VehicleControlManager)
+		{
+			if (VehicleControlManager != null)
+			{
+				VehicleControlManager.ItemUpdated -= HandleEvent_VehicleControlManagerItemUpdated;
 			}
 		}
 		private void SubscribeEvent_IVehicleInfoManager(IVehicleInfoManager VehicleInfoManager)
@@ -173,6 +195,20 @@ namespace TrafficControlTest.Module.Vehicle
 				}
 			}
 		}
+		private void HandleEvent_VehicleControlManagerItemUpdated(object Sender, ItemUpdatedEventArgs<IVehicleControl> Args)
+		{
+			if (Args.StatusName.Contains("ExecuteState"))
+			{
+				if (Args.Item.mCommand == Command.PauseMoving && Args.Item.mExecuteState == ExecuteState.ExecuteSuccessed)
+				{
+					rVehicleInfoManager.UpdateItemInterveneCause(Args.Item.mVehicleId, Args.Item.mCauseId);
+				}
+				if (Args.Item.mCommand == Command.ResumeMoving && Args.Item.mExecuteState == ExecuteState.ExecuteSuccessed)
+				{
+					rVehicleInfoManager.UpdateItemInterveneCause(Args.Item.mVehicleId, string.Empty);
+				}
+			}
+		}
 		private void HandleEvent_VehicleInfoManagerItemAdded(object Sender, ItemCountChangedEventArgs<IVehicleInfo> Args)
 		{
 			// 當有車連線時，向其發送「取得當前地圖清單」的請求
@@ -188,6 +224,7 @@ namespace TrafficControlTest.Module.Vehicle
 					if (!Args.Item.mPathString.Contains(movingBuffer))
 					{
 						Args.Item.UpdateCurrentInterveneCommand(string.Empty);
+						Args.Item.UpdateCurrentInterveneCause(string.Empty);
 					}
 				}
 
@@ -196,6 +233,7 @@ namespace TrafficControlTest.Module.Vehicle
 					if (Args.Item.mCurrentState != "Pause")
 					{
 						Args.Item.UpdateCurrentInterveneCommand(string.Empty);
+						Args.Item.UpdateCurrentInterveneCause(string.Empty);
 					}
 				}
 			}

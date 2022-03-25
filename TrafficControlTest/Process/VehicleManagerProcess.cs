@@ -380,7 +380,7 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IMissionStateManager(mMissionStateManager);
 
 			UnsubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
-			mVehicleInfoUpdater = GenerateIVehicleInfoUpdater(mVehicleCommunicator, mMissionStateManager, mVehicleInfoManager);
+			mVehicleInfoUpdater = GenerateIVehicleInfoUpdater(mVehicleCommunicator, mMissionStateManager, mVehicleControlManager, mVehicleInfoManager);
 			SubscribeEvent_IVehicleInfoUpdater(mVehicleInfoUpdater);
 
 			UnsubscribeEvent_IHostCommunicator(mHostCommunicator);
