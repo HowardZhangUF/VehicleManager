@@ -57,6 +57,7 @@ namespace VehicleSimulator
 				result.Y = ISimulatorInfo.mY;
 				result.Toward = ISimulatorInfo.mToward;
 				result.GoalName = ISimulatorInfo.mTarget;
+				result.Velocity = ISimulatorInfo.mTranslateVelocity;
 				result.MapMatch = ISimulatorInfo.mScore;
 				result.Battery = ISimulatorInfo.mBattery;
 				result.AlarmMessage = string.Empty;
