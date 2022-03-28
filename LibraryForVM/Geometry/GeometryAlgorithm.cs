@@ -259,6 +259,13 @@ namespace LibraryForVM
 			else
 				return false;
 		}
+		/// <summary>判斷指定點集合中是否有任意點在指定矩形內。在矩形邊上也算是在矩形內</summary>
+		public static bool IsAnyPointInside(IEnumerable<IPoint2D> Points, IRectangle2D Rectangle)
+		{
+			bool result = false;
+			result = Points.Any(o => Rectangle.IsIncludePoint(o));
+			return result;
+		}
 		/// <summary>判斷指定點是否在指定矩形內。在矩形邊上也算是在矩形內</summary>
 		public static bool IsPointInside(IPoint2D Point, IRectangle2D Rectangle)
 		{
