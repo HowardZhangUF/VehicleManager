@@ -105,24 +105,41 @@ namespace TrafficControlTest.Module.CollisionEvent
 		}
 		private void HandleCollisionPair(ICollisionPair CollisionPair)
 		{
-			// sample function, undone.
-			if (CollisionPair != null && IsProcessNecessary(CollisionPair))
+			if (CollisionPair != null)
 			{
-				IVehicleControl vehicleControl = CalculateIVehicleControlOf(CollisionPair);
-				if (vehicleControl != null)
+				// 如果兩車都尚未被暫停
+				if (!IsVehicleBeenPaused(CollisionPair.mVehicle1) && !IsVehicleBeenPaused(CollisionPair.mVehicle2))
 				{
-					if (IsVehicleAlreadyExecutedIVehicleControl(vehicleControl.mVehicleId, vehicleControl) || IsIVehicleControlAlreadyExistedInManager(vehicleControl))
+					// 如果事件即將發生
+					if (IsEventAboutToHappen(CollisionPair))
 					{
-						// do nothing
-					}
-					else // 若 IVehicleControl 尚未被 VehicleId 執行且該 IVehicleControl 不存在於 Manager 中
-					{
-						rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+						IVehicleControl vehicleControl = CalculateIVehicleControl(CollisionPair);
+						if (vehicleControl != null)
+						{
+							if (!IsAlreadyExist(vehicleControl, rVehicleControlManager))
+							{
+								rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+							}
+						}
 					}
 				}
-				else
+				// 下方目的：會車框有時候會移動，原本被暫停的車應該恢復動作，等到再次靠近會車框的時候再做暫停
+				// 如果已經干預某台車了
+				else if ((IsVehicleBeenPaused(CollisionPair.mVehicle1) && IsVehicleInterveneBy(CollisionPair.mVehicle1, CollisionPair.mName)) || (IsVehicleBeenPaused(CollisionPair.mVehicle2) && IsVehicleInterveneBy(CollisionPair.mVehicle2, CollisionPair.mName)))
 				{
-					// do nothing
+					// 確認是不是遠離會車框，如果是，則讓該車恢復動作
+					if (IsEventFarToHappen(CollisionPair, 4000))
+					{
+						string pausedVehicleId = IsVehicleBeenPaused(CollisionPair.mVehicle1) ? CollisionPair.mVehicle1.mName : CollisionPair.mVehicle2.mName;
+						IVehicleControl vehicleControl = GenerateIVehicleControl(pausedVehicleId, Command.ResumeMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/HandleCollisionPair1");
+						if (vehicleControl != null)
+						{
+							if (!IsAlreadyExist(vehicleControl, rVehicleControlManager))
+							{
+								rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -148,75 +165,120 @@ namespace TrafficControlTest.Module.CollisionEvent
 		{
 			if (VehicleInfo != null)
 			{
-				// 如果「自走車已經被干預」或「有干預正在送給該自走車」
-				if (IsVehicleBeenIntervened(VehicleInfo) || rVehicleControlManager.GetItems().Any(o => o.mVehicleId == VehicleInfo.mName && o.mCommand == Command.PauseMoving && o.mCauseId == CauseId && o.mSendState == SendState.Sending))
+				// 如果「自走車已經被干預且是因為此 Collision 」或「有干預正在送給該自走車」
+				if ((IsVehicleBeenPaused(VehicleInfo) && IsVehicleInterveneBy(VehicleInfo, CauseId)) || rVehicleControlManager.GetItems().Any(o => o.mVehicleId == VehicleInfo.mName && o.mCommand == Command.PauseMoving && o.mCauseId == CauseId && o.mSendState == SendState.Sending))
 				{
-					IVehicleControl vehicleControl = Library.Library.GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, CauseId, CauseDetail);
+					IVehicleControl vehicleControl = Library.Library.GenerateIVehicleControl(VehicleInfo.mName, Command.ResumeMoving, null, CauseId, CauseDetail + "/UninterveneVehicle1");
 					rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
 				}
 			}
 		}
-		private bool IsProcessNecessary(ICollisionPair CollisionPair)
+
+		private static bool IsVehicleBeenPaused(IVehicleInfo VehicleInfo)
+		{
+			return VehicleInfo.mCurrentState == "Pause";
+		}
+		private static bool IsVehicleInterveneBy(IVehicleInfo VehicleInfo, string CauseId)
+		{
+			return VehicleInfo.mCurrentInterveneCause == CauseId;
+		}
+		private static bool IsEventAboutToHappen(ICollisionPair CollisionPair, float TimeThreshold = 3500.0f)
 		{
 			bool result = false;
 			if (CollisionPair != null)
 			{
-				// 若兩車皆未執行干預
-				if (!IsVehicleBeenIntervened(CollisionPair.mVehicle1) && !IsVehicleBeenIntervened(CollisionPair.mVehicle2))
+				// 若較晚進入 Collision Region 的 Vehicle 即將進入 Collision Region
+				if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
 				{
-					// 判斷哪台車會較晚進入 Collision Region
-					if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
+					if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart).TotalMilliseconds > -1 * TimeThreshold)
 					{
-						// 若較晚進入 Collision Region 的 Vehicle 即將進入 Collision Region
-						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart).TotalMilliseconds > -3500.0f)
-						{
-							result = true;
-						}
+						result = true;
 					}
-					else
+				}
+				else
+				{
+					if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart).TotalMilliseconds > -1 * TimeThreshold)
 					{
-						// 若較晚進入 Collision Region 的 Vehicle 即將進入 Collision Region
-						if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart).TotalMilliseconds > -3500.0f)
-						{
-							result = true;
-						}
+						result = true;
 					}
 				}
 			}
 			return result;
 		}
-		private IVehicleControl CalculateIVehicleControlOf(ICollisionPair CollisionPair)
+		private static bool IsEventFarToHappen(ICollisionPair CollisionPair, float TimeThreshold = 3500.0f)
+		{
+			bool result = false;
+			if (CollisionPair != null)
+			{
+				// 若較晚進入 Collision Region 的 Vehicle 即將進入 Collision Region
+				if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
+				{
+					if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart).TotalMilliseconds < -1 * TimeThreshold)
+					{
+						result = true;
+					}
+				}
+				else
+				{
+					if (DateTime.Now.Subtract(CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart).TotalMilliseconds < -1 * TimeThreshold)
+					{
+						result = true;
+					}
+				}
+			}
+			return result;
+		}
+		private static IVehicleControl CalculateIVehicleControl(ICollisionPair CollisionPair)
 		{
 			IVehicleControl result = null;
 			if (CollisionPair != null)
 			{
-				// 若兩車皆未執行干預
-				if (!IsVehicleBeenIntervened(CollisionPair.mVehicle1) && !IsVehicleBeenIntervened(CollisionPair.mVehicle2))
+				// 如果兩車都已經在會車框裡面了
+				if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart <= DateTime.Now && CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart <= DateTime.Now)
+				{
+					// 如果兩車的終點不同，讓較晚出來的車執行暫停
+					if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mEnd != CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mEnd)
+					{
+						if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mEnd < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mEnd)
+						{
+							result = GenerateIVehicleControl(CollisionPair.mVehicle2.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/CalculateIVehicleControl1");
+						}
+						else
+						{
+							result = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/CalculateIVehicleControl2");
+						}
+					}
+					// 如果兩車的終點相同，讓路徑線長度較長的車執行暫停
+					else
+					{
+						if (GeometryAlgorithm.GetDistance(CollisionPair.mVehicle1.mPath) < GeometryAlgorithm.GetDistance(CollisionPair.mVehicle2.mPath))
+						{
+							result = GenerateIVehicleControl(CollisionPair.mVehicle2.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/CalculateIVehicleControl3");
+						}
+						else
+						{
+							result = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/CalculateIVehicleControl4");
+						}
+					}
+				}
+				else
 				{
 					// 對較晚進入 Collision Region 的 Vehicle 執行暫停動作
 					if (CollisionPair.mPassPeriodOfVehicle1WithCurrentVelocity.mStart < CollisionPair.mPassPeriodOfVehicle2WithCurrentVelocity.mStart)
 					{
-						result = GenerateIVehicleControl(CollisionPair.mVehicle2.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString());
+						result = GenerateIVehicleControl(CollisionPair.mVehicle2.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/CalculateIVehicleControl5");
 					}
 					else
 					{
-						result = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString());
+						result = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.PauseMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/CalculateIVehicleControl6");
 					}
 				}
 			}
 			return result;
 		}
-		private bool IsVehicleBeenIntervened(IVehicleInfo VehicleInfo) // 判斷自走車是否已經被干預
+		private static bool IsAlreadyExist(IVehicleControl VehicleControl, IVehicleControlManager VehicleControlManager)
 		{
-			return (VehicleInfo.mCurrentState == "Pause" || !string.IsNullOrEmpty(VehicleInfo.mCurrentInterveneCommand));
-		}
-		private bool IsVehicleAlreadyExecutedIVehicleControl(string VehicleId, IVehicleControl VehicleControl)
-		{
-			return rVehicleInfoManager.GetItem(VehicleId).mCurrentInterveneCommand.StartsWith(VehicleControl.mCommand.ToString());
-		}
-		private bool IsIVehicleControlAlreadyExistedInManager(IVehicleControl VehicleControl)
-		{
-			return rVehicleControlManager.GetItems().Any(o => o.mVehicleId == VehicleControl.mVehicleId && o.mCommand == VehicleControl.mCommand && o.mParametersString == VehicleControl.mParametersString && o.mCauseId == VehicleControl.mCauseId);
+			return VehicleControlManager.GetItems().Any(o => o.mVehicleId == VehicleControl.mVehicleId && o.mCommand == VehicleControl.mCommand && o.mParametersString == VehicleControl.mParametersString && o.mCauseId == VehicleControl.mCauseId);
 		}
 	}
 }
