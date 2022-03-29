@@ -61,7 +61,6 @@ namespace FootprintViewer
 				{
 					ofd.Title = "Choose Map File";
 					ofd.Filter = "All Files (*.*)|*.*";
-					ofd.InitialDirectory = Application.StartupPath;
 					ofd.Multiselect = false;
 					if (ofd.ShowDialog() == DialogResult.OK)
 					{
@@ -82,7 +81,6 @@ namespace FootprintViewer
 				{
 					ofd.Title = "Choose Log File";
 					ofd.Filter = "All Files (*.*)|*.*";
-					ofd.InitialDirectory = Application.StartupPath;
 					ofd.Multiselect = false;
 					if (ofd.ShowDialog() == DialogResult.OK)
 					{
@@ -119,6 +117,8 @@ namespace FootprintViewer
 				RecordLogMessage(rtxtLog, tmp);
 
 				InitializeFootprintData(mapFile, logFile, startTimestamp, endTimestamp);
+
+				tbTimestamp.Value = tbTimestamp.Maximum / 10;
 			}
 			catch (Exception ex)
 			{
@@ -248,7 +248,7 @@ namespace FootprintViewer
 			ReadMapData(MapFilePath);
 			ReadLogData(LogFilePath, StartTimestamp, EndTimestamp);
 			
-			foreach (var pair in mHistoryVehicleInfos)
+			foreach (var pair in mHistoryVehicleInfos.OrderBy(o => o.Key))
 			{
 				RegisterVehicleIconId(pair.Key);
 				AddVehicleInfoDataRow(pair.Key);
@@ -290,9 +290,9 @@ namespace FootprintViewer
 
 			foreach (var a in mHistoryVehicleInfos)
 			{
-				for (int i = 0; i < a.Value.Count; ++i)
+				for (int i = a.Value.Count - 1; i >= 0; i--)
 				{
-					if (a.Value[i].Timestamp > mCurrentTimestamp)
+					if (a.Value[i].Timestamp <= mCurrentTimestamp)
 					{
 						PrintVehicleIcon(a.Key, a.Value[i]);
 						UpdateVehicleInfoDataRow(a.Key, a.Value[i]);
