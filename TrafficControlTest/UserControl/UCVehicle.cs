@@ -161,30 +161,32 @@ namespace TrafficControlTest.UserControl
 			dgv.Columns[0].Width = 180;
 			dgv.Columns.Add("State", "State");
 			dgv.Columns[1].Width = 140;
+			dgv.Columns.Add("OriState", "OriState");
+			dgv.Columns[2].Width = 140;
 			dgv.Columns.Add("Location", "Location");
-			dgv.Columns[2].Width = 170;
-			dgv.Columns.Add("Target", "Target");
 			dgv.Columns[3].Width = 170;
+			dgv.Columns.Add("Target", "Target");
+			dgv.Columns[4].Width = 170;
 			dgv.Columns.Add("Battery", "Battery");
-			dgv.Columns[4].Width = 80;
+			dgv.Columns[5].Width = 80;
 			dgv.Columns.Add("LocationScore", "LocationScore");
-			dgv.Columns[5].Width = 120;
+			dgv.Columns[6].Width = 120;
             dgv.Columns.Add("MissionID", "MissionID");
-            dgv.Columns[6].Width = 210;
+            dgv.Columns[7].Width = 210;
 			dgv.Columns.Add("InterveneCommand", "InterveneCommand");
-			dgv.Columns[7].Width = 210;
+			dgv.Columns[8].Width = 210;
 			dgv.Columns.Add("InterveneCause", "InterveneCause");
-			dgv.Columns[8].Width = 200;
+			dgv.Columns[9].Width = 200;
 			dgv.Columns.Add("ErrorMessage", "ErrorMessage");
-            dgv.Columns[9].Width = 140;
+            dgv.Columns[10].Width = 140;
             dgv.Columns.Add("MapName", "MapName");
-			dgv.Columns[10].Width = 240;
+			dgv.Columns[11].Width = 240;
 			dgv.Columns.Add("IpPort", "IPPort");
-			dgv.Columns[11].Width = 180;
+			dgv.Columns[12].Width = 180;
 			dgv.Columns.Add("LastUpdate", "LastUpdate");
-			dgv.Columns[12].Width = 190;
+			dgv.Columns[13].Width = 190;
 			dgv.Columns.Add("FillColumn", "");
-			dgv.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+			dgv.Columns[14].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
 			foreach (DataGridViewColumn column in dgv.Columns)
 			{
@@ -201,7 +203,7 @@ namespace TrafficControlTest.UserControl
 				{
 					if (dgvVehicleInfo.RowCount == 0)
 					{
-						dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mCurrentInterveneCommand, Item.mCurrentInterveneCause, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+						dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, Item.mCurrentOriState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mCurrentInterveneCommand, Item.mCurrentInterveneCause, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
 					}
 					else
 					{
@@ -217,11 +219,11 @@ namespace TrafficControlTest.UserControl
 
 						if (newItemRowIndex != -1)
 						{
-							dgvVehicleInfo.Rows.Insert(newItemRowIndex, new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mCurrentInterveneCommand, Item.mCurrentInterveneCause, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+							dgvVehicleInfo.Rows.Insert(newItemRowIndex, new string[] { Item.mName, Item.mCurrentState, Item.mCurrentOriState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mCurrentInterveneCommand, Item.mCurrentInterveneCause, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
 						}
 						else
 						{
-							dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mCurrentInterveneCommand, Item.mCurrentInterveneCause, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
+							dgvVehicleInfo.Rows.Add(new string[] { Item.mName, Item.mCurrentState, Item.mCurrentOriState, $"({Item.mLocationCoordinate.mX},{Item.mLocationCoordinate.mY},{(int)Item.mLocationToward})", Item.mCurrentTarget, Item.mBatteryValue.ToString("F2") + " %", Item.mLocationScore.ToString("F2") + " %", Item.mCurrentMissionId, Item.mCurrentInterveneCommand, Item.mCurrentInterveneCause, Item.mErrorMessage, Item.mCurrentMapName, Item.mIpPort, Item.mLastUpdated.ToString(Library.Library.TIME_FORMAT) });
 						}
 					}
 				}
@@ -269,6 +271,10 @@ namespace TrafficControlTest.UserControl
 						if (StateName.Contains("CurrentState"))
 						{
 							dgvVehicleInfo.Rows[rowIndex].Cells["State"].Value = Item.mCurrentState;
+						}
+						if (StateName.Contains("CurrentOriState"))
+						{
+							dgvVehicleInfo.Rows[rowIndex].Cells["OriState"].Value = Item.mCurrentOriState;
 						}
 						if (StateName.Contains("LocationCoordinate") || StateName.Contains("LocationToward"))
 						{
