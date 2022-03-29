@@ -42,6 +42,7 @@ namespace FootprintViewer
 		{
 			try
 			{
+				InitializeDgvVehicleInfo();
 				InitializeTimeComboBox(cbStart);
 				InitializeTimeComboBox(cbEnd);
 
@@ -140,6 +141,67 @@ namespace FootprintViewer
 			}
 		}
 
+		private void InitializeDgvVehicleInfo()
+		{
+			DataGridView dgv = dgvVehicleInfo;
+
+			dgv.SelectionChanged += ((sender, e) => dgv.ClearSelection());
+
+			dgv.RowHeadersVisible = false;
+			dgv.AllowUserToAddRows = false;
+			dgv.AllowUserToResizeRows = false;
+			dgv.AllowUserToResizeColumns = false;
+			dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+			dgv.MultiSelect = false;
+			dgv.BackgroundColor = Color.FromArgb(53, 53, 53);
+			dgv.GridColor = Color.FromArgb(86, 86, 86);
+			dgv.BorderStyle = BorderStyle.None;
+
+			dgv.EnableHeadersVisualStyles = false;
+			dgv.ColumnHeadersDefaultCellStyle.Font = new Font(dgv.ColumnHeadersDefaultCellStyle.Font.FontFamily, 12, FontStyle.Bold);
+			dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 122, 204);
+			dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+			dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+			dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+			dgv.ColumnHeadersHeight = 30;
+
+			dgv.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+			dgv.DefaultCellStyle.Font = new Font(dgv.DefaultCellStyle.Font.FontFamily, 12, FontStyle.Regular);
+			dgv.DefaultCellStyle.BackColor = Color.FromArgb(31, 31, 31);
+			dgv.DefaultCellStyle.ForeColor = Color.White;
+			dgv.RowTemplate.Height = 30;
+
+			dgv.Columns.Add("Timestamp", "Timestamp");
+			dgv.Columns[0].Width = 200;
+			dgv.Columns.Add("Name", "Name");
+			dgv.Columns[1].Width = 180;
+			dgv.Columns.Add("State", "State");
+			dgv.Columns[2].Width = 140;
+			dgv.Columns.Add("X", "X");
+			dgv.Columns[3].Width = 100;
+			dgv.Columns.Add("Y", "Y");
+			dgv.Columns[4].Width = 100;
+			dgv.Columns.Add("Toward", "Toward");
+			dgv.Columns[5].Width = 100;
+			dgv.Columns.Add("Target", "Target");
+			dgv.Columns[6].Width = 200;
+			dgv.Columns.Add("Battery", "Battery");
+			dgv.Columns[7].Width = 80;
+			dgv.Columns.Add("Score", "Score");
+			dgv.Columns[8].Width = 80;
+			dgv.Columns.Add("PathPointCount", "PathPointCount");
+			dgv.Columns[9].Width = 140;
+			dgv.Columns.Add("FillColumn", "");
+			dgv.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+			foreach (DataGridViewColumn column in dgv.Columns)
+			{
+				column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+				column.SortMode = DataGridViewColumnSortMode.NotSortable;
+				column.ReadOnly = true;
+			}
+		}
 		private void InitializeTimeComboBox(ComboBox ComboBox)
 		{
 			ComboBox.Items.Clear();
@@ -179,6 +241,7 @@ namespace FootprintViewer
 			foreach (var pair in mHistoryVehicleInfos)
 			{
 				EraseVehicleIcon(pair.Key);
+				RemoveVehicleInfoDataRow(pair.Key);
 			}
 			mHistoryVehicleInfos.Clear();
 
@@ -188,6 +251,7 @@ namespace FootprintViewer
 			foreach (var pair in mHistoryVehicleInfos)
 			{
 				RegisterVehicleIconId(pair.Key);
+				AddVehicleInfoDataRow(pair.Key);
 			}
 
 			RefreshGui();
@@ -231,6 +295,7 @@ namespace FootprintViewer
 					if (a.Value[i].Timestamp > mCurrentTimestamp)
 					{
 						PrintVehicleIcon(a.Key, a.Value[i]);
+						UpdateVehicleInfoDataRow(a.Key, a.Value[i]);
 						break;
 					}
 				}
@@ -285,6 +350,41 @@ namespace FootprintViewer
 				mIconIdsOfVehicle.Remove(VehicleName);
 				mIconIdsOfVehiclePath.Remove(VehicleName);
 				mIconIdsOfVehicleLaser.Remove(VehicleName);
+			}
+		}
+		private void AddVehicleInfoDataRow(string VehicleName)
+		{
+			dgvVehicleInfo.Rows.Add();
+			dgvVehicleInfo.Rows[dgvVehicleInfo.RowCount - 1].Cells["Name"].Value = VehicleName;
+		}
+		private void UpdateVehicleInfoDataRow(string VehicleName, HistoryVehicleInfo HistoryVehicleInfo)
+		{
+			for (int i = 0; i < dgvVehicleInfo.Rows.Count; ++i)
+			{
+				if (dgvVehicleInfo.Rows[i].Cells["Name"].Value.ToString() == VehicleName)
+				{
+					dgvVehicleInfo.Rows[i].Cells["Timestamp"].Value = HistoryVehicleInfo.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff");
+					dgvVehicleInfo.Rows[i].Cells["Name"].Value = HistoryVehicleInfo.Name;
+					dgvVehicleInfo.Rows[i].Cells["State"].Value = HistoryVehicleInfo.State;
+					dgvVehicleInfo.Rows[i].Cells["X"].Value = HistoryVehicleInfo.X;
+					dgvVehicleInfo.Rows[i].Cells["Y"].Value = HistoryVehicleInfo.Y;
+					dgvVehicleInfo.Rows[i].Cells["Toward"].Value = HistoryVehicleInfo.Toward;
+					dgvVehicleInfo.Rows[i].Cells["Target"].Value = HistoryVehicleInfo.Target;
+					dgvVehicleInfo.Rows[i].Cells["Battery"].Value = HistoryVehicleInfo.Battery;
+					dgvVehicleInfo.Rows[i].Cells["Score"].Value = HistoryVehicleInfo.Score;
+					dgvVehicleInfo.Rows[i].Cells["PathPointCount"].Value = HistoryVehicleInfo.Path2.Count;
+				}
+			}
+		}
+		private void RemoveVehicleInfoDataRow(string VehicleName)
+		{
+			for (int i = 0; i < dgvVehicleInfo.Rows.Count; ++i)
+			{
+				if (dgvVehicleInfo.Rows[i].Cells["Name"].Value != null && dgvVehicleInfo.Rows[i].Cells["Name"].Value.ToString() == VehicleName)
+				{
+					dgvVehicleInfo.Rows.RemoveAt(i);
+					break;
+				}
 			}
 		}
 
@@ -352,8 +452,8 @@ namespace FootprintViewer
 		{
 			get
 			{
-				Console.WriteLine(Path);
 				List<IPair> result = new List<IPair>();
+				result.Add(new Pair(X, Y));
 				if (!string.IsNullOrEmpty(Path))
 				{
 					string[] tmp = Path.Split(new string[] { "(", ")", "," }, StringSplitOptions.RemoveEmptyEntries);
