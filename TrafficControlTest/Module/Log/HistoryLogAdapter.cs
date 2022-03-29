@@ -179,6 +179,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += "IPPort TEXT, ";
 			tmp += "MissionID TEXT, ";
 			tmp += "InterveneCommand TEXT, ";
+			tmp += "InterveneCause TEXT, ";
 			tmp += "MapName TEXT, ";
 			tmp += "LastUpdateTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
@@ -259,7 +260,7 @@ namespace TrafficControlTest.Module.Log
 		private void HistoryVehicleInfoDataAdd(DateTime Timestamp, IVehicleInfo VehicleInfo)
 		{
 			string tmp = string.Empty;
-			tmp += $"INSERT INTO '{mTableNameOfHistoryVehicleInfo}' (RecordTimestamp, ID, State, OriState, X, Y, Toward, Target, Velocity, LocationScore, BatteryValue, AlarmMessage, Path, IPPort, MissionID, InterveneCommand, MapName, LastUpdateTimestamp) VALUES (";
+			tmp += $"INSERT INTO '{mTableNameOfHistoryVehicleInfo}' (RecordTimestamp, ID, State, OriState, X, Y, Toward, Target, Velocity, LocationScore, BatteryValue, AlarmMessage, Path, IPPort, MissionID, InterveneCommand, InterveneCause, MapName, LastUpdateTimestamp) VALUES (";
 			tmp += $"'{Timestamp.ToString(Library.Library.TIME_FORMAT)}', ";
 			tmp += $"'{VehicleInfo.mName}', ";
 			tmp += $"'{VehicleInfo.mCurrentState}', ";
@@ -276,6 +277,7 @@ namespace TrafficControlTest.Module.Log
 			tmp += $"'{VehicleInfo.mIpPort}', ";
 			tmp += $"'{VehicleInfo.mCurrentMissionId}', ";
 			tmp += $"'{VehicleInfo.mCurrentInterveneCommand}', ";
+			tmp += $"'{VehicleInfo.mCurrentInterveneCause}', ";
 			tmp += $"'{VehicleInfo.mCurrentMapName}', ";
 			tmp += $"'{VehicleInfo.mLastUpdated.ToString(Library.Library.TIME_FORMAT)}')";
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);

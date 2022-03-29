@@ -141,6 +141,34 @@ namespace TrafficControlTest.Module.CollisionEvent
 						}
 					}
 				}
+				// 如果兩車都被暫停，且時間長達 60 秒
+				else if (IsVehicleBeenPaused(CollisionPair.mVehicle1) && CollisionPair.mVehicle1.mCurrentStateDuration.Seconds > 60 && IsVehicleBeenPaused(CollisionPair.mVehicle2) && CollisionPair.mVehicle2.mCurrentStateDuration.Seconds > 60)
+				{
+					// 判斷為會車卡住
+					// 將因 Collision 而暫停的車恢復動作，讓其重新計算會車處理
+					if (IsVehicleInterveneBy(CollisionPair.mVehicle1, CollisionPair.mName))
+					{
+						IVehicleControl vehicleControl = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.ResumeMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/HandleCollisionPair2");
+						if (vehicleControl != null)
+						{
+							if (!IsAlreadyExist(vehicleControl, rVehicleControlManager))
+							{
+								rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+							}
+						}
+					}
+					if (IsVehicleInterveneBy(CollisionPair.mVehicle2, CollisionPair.mName))
+					{
+						IVehicleControl vehicleControl = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.ResumeMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/HandleCollisionPair3");
+						if (vehicleControl != null)
+						{
+							if (!IsAlreadyExist(vehicleControl, rVehicleControlManager))
+							{
+								rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+							}
+						}
+					}
+				}
 			}
 		}
 		private void RemoveRelatedVehicleControl(ICollisionPair CollisionPair)
