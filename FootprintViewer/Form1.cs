@@ -202,8 +202,10 @@ namespace FootprintViewer
 			dgv.Columns[8].Width = 80;
 			dgv.Columns.Add("PathPointCount", "PathPointCount");
 			dgv.Columns[9].Width = 140;
+			dgv.Columns.Add("Path", "Path");
+			dgv.Columns[10].Width = 200;
 			dgv.Columns.Add("FillColumn", "");
-			dgv.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+			dgv.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
 			foreach (DataGridViewColumn column in dgv.Columns)
 			{
@@ -336,10 +338,14 @@ namespace FootprintViewer
 				}
 				if (HistoryVehicleInfo != null && !string.IsNullOrEmpty(HistoryVehicleInfo.Path))
 				{
+					// 繪製路徑線時要記得繪製自走車到第一個路徑點的線段
+					List<IPair> path = new List<IPair>();
+					path.Add(new Pair(HistoryVehicleInfo.X, HistoryVehicleInfo.Y));
+					path.AddRange(HistoryVehicleInfo.Path2);
 					GLCMD.CMD.SaftyEditMultiGeometry<IPair>(mIconIdsOfVehiclePath[VehicleName], true, (line) =>
 					{
 						line.Clear();
-						line.AddRangeIfNotNull(HistoryVehicleInfo.Path2);
+						line.AddRangeIfNotNull(path);
 					});
 				}
 				if (HistoryVehicleInfo != null && !string.IsNullOrEmpty(HistoryVehicleInfo.Laser))
@@ -383,6 +389,7 @@ namespace FootprintViewer
 					dgvVehicleInfo.Rows[i].Cells["Battery"].Value = HistoryVehicleInfo.Battery;
 					dgvVehicleInfo.Rows[i].Cells["Score"].Value = HistoryVehicleInfo.Score;
 					dgvVehicleInfo.Rows[i].Cells["PathPointCount"].Value = HistoryVehicleInfo.Path2.Count;
+					dgvVehicleInfo.Rows[i].Cells["Path"].Value = HistoryVehicleInfo.Path;
 				}
 			}
 		}
@@ -463,7 +470,6 @@ namespace FootprintViewer
 			get
 			{
 				List<IPair> result = new List<IPair>();
-				result.Add(new Pair(X, Y));
 				if (!string.IsNullOrEmpty(Path))
 				{
 					string[] tmp = Path.Split(new string[] { "(", ")", "," }, StringSplitOptions.RemoveEmptyEntries);
