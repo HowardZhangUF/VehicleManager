@@ -589,7 +589,7 @@ namespace TrafficControlTest.Module.Vehicle
 		}
 		public void UpdateRotationVelocity(double RotationVelocity)
 		{
-			if (TryUpdateTranslationVelocity(RotationVelocity))
+			if (TryUpdateRotationVelocity(RotationVelocity))
 			{
 				if (mIsUpdating)
 				{
