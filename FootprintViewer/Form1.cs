@@ -118,7 +118,17 @@ namespace FootprintViewer
 
 				InitializeFootprintData(mapFile, logFile, startTimestamp, endTimestamp);
 
-				tbTimestamp.Value = tbTimestamp.Maximum / 10;
+				if (mHistoryVehicleInfos.Count > 0)
+				{
+					tbTimestamp.Value = tbTimestamp.Maximum / 10;
+					RecordLogMessage(rtxtLog, "Load Successed!");
+					MessageBox.Show("Load Successed!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				else
+				{
+					RecordLogMessage(rtxtLog, "Load Failed! No Log Data!");
+					MessageBox.Show("Load Failed! No Log Data!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
 			}
 			catch (Exception ex)
 			{
