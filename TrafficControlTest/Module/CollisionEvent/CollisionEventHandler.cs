@@ -123,26 +123,8 @@ namespace TrafficControlTest.Module.CollisionEvent
 						}
 					}
 				}
-				// 下方目的：會車框有時候會移動，原本被暫停的車應該恢復動作，等到再次靠近會車框的時候再做暫停
-				// 如果已經干預某台車了
-				else if ((IsVehicleBeenPaused(CollisionPair.mVehicle1) && IsVehicleInterveneBy(CollisionPair.mVehicle1, CollisionPair.mName)) || (IsVehicleBeenPaused(CollisionPair.mVehicle2) && IsVehicleInterveneBy(CollisionPair.mVehicle2, CollisionPair.mName)))
-				{
-					// 確認是不是遠離會車框，如果是，則讓該車恢復動作
-					if (IsEventFarToHappen(CollisionPair, 4000))
-					{
-						string pausedVehicleId = IsVehicleBeenPaused(CollisionPair.mVehicle1) ? CollisionPair.mVehicle1.mName : CollisionPair.mVehicle2.mName;
-						IVehicleControl vehicleControl = GenerateIVehicleControl(pausedVehicleId, Command.ResumeMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/HandleCollisionPair1");
-						if (vehicleControl != null)
-						{
-							if (!IsAlreadyExist(vehicleControl, rVehicleControlManager))
-							{
-								rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
-							}
-						}
-					}
-				}
 				// 如果兩車都被暫停，且時間長達 60 秒
-				else if (IsVehicleBeenPaused(CollisionPair.mVehicle1) && CollisionPair.mVehicle1.mCurrentStateDuration.Seconds > 60 && IsVehicleBeenPaused(CollisionPair.mVehicle2) && CollisionPair.mVehicle2.mCurrentStateDuration.Seconds > 60)
+				else if (IsVehicleBeenPaused(CollisionPair.mVehicle1) && CollisionPair.mVehicle1.mCurrentStateDuration.TotalSeconds > 60 && IsVehicleBeenPaused(CollisionPair.mVehicle2) && CollisionPair.mVehicle2.mCurrentStateDuration.TotalSeconds > 60)
 				{
 					// 判斷為會車卡住
 					// 將因 Collision 而暫停的車恢復動作，讓其重新計算會車處理
@@ -159,7 +141,25 @@ namespace TrafficControlTest.Module.CollisionEvent
 					}
 					if (IsVehicleInterveneBy(CollisionPair.mVehicle2, CollisionPair.mName))
 					{
-						IVehicleControl vehicleControl = GenerateIVehicleControl(CollisionPair.mVehicle1.mName, Command.ResumeMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/HandleCollisionPair3");
+						IVehicleControl vehicleControl = GenerateIVehicleControl(CollisionPair.mVehicle2.mName, Command.ResumeMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/HandleCollisionPair3");
+						if (vehicleControl != null)
+						{
+							if (!IsAlreadyExist(vehicleControl, rVehicleControlManager))
+							{
+								rVehicleControlManager.Add(vehicleControl.mName, vehicleControl);
+							}
+						}
+					}
+				}
+				// 下方目的：會車框有時候會移動，原本被暫停的車應該恢復動作，等到再次靠近會車框的時候再做暫停
+				// 如果已經干預某台車了
+				else if ((IsVehicleBeenPaused(CollisionPair.mVehicle1) && IsVehicleInterveneBy(CollisionPair.mVehicle1, CollisionPair.mName)) || (IsVehicleBeenPaused(CollisionPair.mVehicle2) && IsVehicleInterveneBy(CollisionPair.mVehicle2, CollisionPair.mName)))
+				{
+					// 確認是不是遠離會車框，如果是，則讓該車恢復動作
+					if (IsEventFarToHappen(CollisionPair, 4000))
+					{
+						string pausedVehicleId = IsVehicleBeenPaused(CollisionPair.mVehicle1) ? CollisionPair.mVehicle1.mName : CollisionPair.mVehicle2.mName;
+						IVehicleControl vehicleControl = GenerateIVehicleControl(pausedVehicleId, Command.ResumeMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/HandleCollisionPair1");
 						if (vehicleControl != null)
 						{
 							if (!IsAlreadyExist(vehicleControl, rVehicleControlManager))
