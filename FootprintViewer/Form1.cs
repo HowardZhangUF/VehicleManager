@@ -26,6 +26,8 @@ namespace FootprintViewer
 		private Dictionary<string, int> mIconIdsOfVehicle = new Dictionary<string, int>();
 		private Dictionary<string, int> mIconIdsOfVehiclePath = new Dictionary<string, int>();
 		private Dictionary<string, int> mIconIdsOfVehicleLaser = new Dictionary<string, int>();
+		private int mDgvVehicleInfoRightClickRowIndex { get; set; } = -1;
+		private int mDgvVehicleInfoRightClickColIndex { get; set; } = -1;
 
 		public Form1()
 		{
@@ -128,6 +130,56 @@ namespace FootprintViewer
 				{
 					RecordLogMessage(rtxtLog, "Load Failed! No Log Data!");
 					MessageBox.Show("Load Failed! No Log Data!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+			catch (Exception ex)
+			{
+				RecordLogMessage(rtxtLog, ex.ToString());
+			}
+		}
+		private void dgvVehicleInfo_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				if (e.Button == MouseButtons.Left)
+				{
+					var hit = dgvVehicleInfo.HitTest(e.X, e.Y);
+					if (hit.RowIndex > -1 && hit.ColumnIndex > -1)
+					{
+						int x = int.Parse(dgvVehicleInfo.Rows[hit.RowIndex].Cells["X"].Value.ToString());
+						int y = int.Parse(dgvVehicleInfo.Rows[hit.RowIndex].Cells["Y"].Value.ToString());
+						gluiCtrl1.Focus(x, y);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				RecordLogMessage(rtxtLog, ex.ToString());
+			}
+		}
+		private void dgvVehicleInfo_MouseDown(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				if (e.Button == MouseButtons.Right)
+				{
+					var hit = dgvVehicleInfo.HitTest(e.X, e.Y);
+					mDgvVehicleInfoRightClickRowIndex = hit.RowIndex;
+					mDgvVehicleInfoRightClickColIndex = hit.ColumnIndex;
+				}
+			}
+			catch (Exception ex)
+			{
+				RecordLogMessage(rtxtLog, ex.ToString());
+			}
+		}
+		private void menuItemCopyText_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (mDgvVehicleInfoRightClickRowIndex >= 0 && mDgvVehicleInfoRightClickRowIndex < dgvVehicleInfo.RowCount && mDgvVehicleInfoRightClickColIndex >= 0 && mDgvVehicleInfoRightClickColIndex < dgvVehicleInfo.ColumnCount && !string.IsNullOrEmpty(dgvVehicleInfo.Rows[mDgvVehicleInfoRightClickRowIndex].Cells[mDgvVehicleInfoRightClickColIndex].Value.ToString()))
+				{
+					Clipboard.SetText(dgvVehicleInfo.Rows[mDgvVehicleInfoRightClickRowIndex].Cells[mDgvVehicleInfoRightClickColIndex].Value.ToString());
 				}
 			}
 			catch (Exception ex)
