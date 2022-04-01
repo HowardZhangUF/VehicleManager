@@ -55,10 +55,16 @@
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
 			this.dgvVehicleInfo = new System.Windows.Forms.DataGridView();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.lblCurrentTimestamp = new System.Windows.Forms.Label();
 			this.cmenuDgvVehicleInfo = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.menuItemCopyText = new System.Windows.Forms.ToolStripMenuItem();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.lblCurrentTimestamp = new System.Windows.Forms.Label();
+			this.tpLog = new System.Windows.Forms.TabPage();
+			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+			this.btnLoadLogTable = new System.Windows.Forms.Button();
+			this.cbLogTableName = new System.Windows.Forms.ComboBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.dgvLogTable = new System.Windows.Forms.DataGridView();
 			((System.ComponentModel.ISupportInitialize)(this.tbTimestamp)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tpSetting.SuspendLayout();
@@ -70,8 +76,11 @@
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvVehicleInfo)).BeginInit();
-			this.panel1.SuspendLayout();
 			this.cmenuDgvVehicleInfo.SuspendLayout();
+			this.panel1.SuspendLayout();
+			this.tpLog.SuspendLayout();
+			this.tableLayoutPanel3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgvLogTable)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tbTimestamp
@@ -89,6 +98,7 @@
 			// 
 			this.tabControl1.Controls.Add(this.tpSetting);
 			this.tabControl1.Controls.Add(this.tpFootprint);
+			this.tabControl1.Controls.Add(this.tpLog);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -383,6 +393,20 @@
 			this.dgvVehicleInfo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgvVehicleInfo_MouseDoubleClick);
 			this.dgvVehicleInfo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvVehicleInfo_MouseDown);
 			// 
+			// cmenuDgvVehicleInfo
+			// 
+			this.cmenuDgvVehicleInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemCopyText});
+			this.cmenuDgvVehicleInfo.Name = "cmenuDgvVehicleInfo";
+			this.cmenuDgvVehicleInfo.Size = new System.Drawing.Size(132, 26);
+			// 
+			// menuItemCopyText
+			// 
+			this.menuItemCopyText.Name = "menuItemCopyText";
+			this.menuItemCopyText.Size = new System.Drawing.Size(131, 22);
+			this.menuItemCopyText.Text = "Copy Text";
+			this.menuItemCopyText.Click += new System.EventHandler(this.menuItemCopyText_Click);
+			// 
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.tbTimestamp);
@@ -403,19 +427,81 @@
 			this.lblCurrentTimestamp.TabIndex = 1;
 			this.lblCurrentTimestamp.Text = "1911/1/1 00:00:00";
 			// 
-			// cmenuDgvVehicleInfo
+			// tpLog
 			// 
-			this.cmenuDgvVehicleInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuItemCopyText});
-			this.cmenuDgvVehicleInfo.Name = "cmenuDgvVehicleInfo";
-			this.cmenuDgvVehicleInfo.Size = new System.Drawing.Size(132, 26);
+			this.tpLog.Controls.Add(this.tableLayoutPanel3);
+			this.tpLog.Location = new System.Drawing.Point(4, 36);
+			this.tpLog.Name = "tpLog";
+			this.tpLog.Padding = new System.Windows.Forms.Padding(3);
+			this.tpLog.Size = new System.Drawing.Size(876, 521);
+			this.tpLog.TabIndex = 2;
+			this.tpLog.Text = "Log";
+			this.tpLog.UseVisualStyleBackColor = true;
 			// 
-			// menuItemCopyText
+			// tableLayoutPanel3
 			// 
-			this.menuItemCopyText.Name = "menuItemCopyText";
-			this.menuItemCopyText.Size = new System.Drawing.Size(131, 22);
-			this.menuItemCopyText.Text = "Copy Text";
-			this.menuItemCopyText.Click += new System.EventHandler(this.menuItemCopyText_Click);
+			this.tableLayoutPanel3.ColumnCount = 4;
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel3.Controls.Add(this.btnLoadLogTable, 2, 0);
+			this.tableLayoutPanel3.Controls.Add(this.cbLogTableName, 1, 0);
+			this.tableLayoutPanel3.Controls.Add(this.label7, 0, 0);
+			this.tableLayoutPanel3.Controls.Add(this.dgvLogTable, 0, 1);
+			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+			this.tableLayoutPanel3.RowCount = 2;
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(870, 515);
+			this.tableLayoutPanel3.TabIndex = 0;
+			// 
+			// btnLoadLogTable
+			// 
+			this.btnLoadLogTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btnLoadLogTable.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.btnLoadLogTable.Location = new System.Drawing.Point(513, 3);
+			this.btnLoadLogTable.Name = "btnLoadLogTable";
+			this.btnLoadLogTable.Size = new System.Drawing.Size(94, 44);
+			this.btnLoadLogTable.TabIndex = 15;
+			this.btnLoadLogTable.Text = "Load";
+			this.btnLoadLogTable.UseVisualStyleBackColor = true;
+			this.btnLoadLogTable.Click += new System.EventHandler(this.btnLoadLogTable_Click);
+			// 
+			// cbLogTableName
+			// 
+			this.cbLogTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbLogTableName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbLogTableName.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.cbLogTableName.FormattingEnabled = true;
+			this.cbLogTableName.Location = new System.Drawing.Point(113, 10);
+			this.cbLogTableName.Name = "cbLogTableName";
+			this.cbLogTableName.Size = new System.Drawing.Size(394, 29);
+			this.cbLogTableName.TabIndex = 11;
+			// 
+			// label7
+			// 
+			this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.label7.Location = new System.Drawing.Point(3, 14);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(55, 21);
+			this.label7.TabIndex = 3;
+			this.label7.Text = "Table";
+			// 
+			// dgvLogTable
+			// 
+			this.dgvLogTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.tableLayoutPanel3.SetColumnSpan(this.dgvLogTable, 4);
+			this.dgvLogTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dgvLogTable.Location = new System.Drawing.Point(3, 53);
+			this.dgvLogTable.Name = "dgvLogTable";
+			this.dgvLogTable.RowTemplate.Height = 24;
+			this.dgvLogTable.Size = new System.Drawing.Size(864, 459);
+			this.dgvLogTable.TabIndex = 16;
 			// 
 			// Form1
 			// 
@@ -439,9 +525,13 @@
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvVehicleInfo)).EndInit();
+			this.cmenuDgvVehicleInfo.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
-			this.cmenuDgvVehicleInfo.ResumeLayout(false);
+			this.tpLog.ResumeLayout(false);
+			this.tableLayoutPanel3.ResumeLayout(false);
+			this.tableLayoutPanel3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgvLogTable)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -477,6 +567,12 @@
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.ContextMenuStrip cmenuDgvVehicleInfo;
 		private System.Windows.Forms.ToolStripMenuItem menuItemCopyText;
+		private System.Windows.Forms.TabPage tpLog;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+		private System.Windows.Forms.Button btnLoadLogTable;
+		private System.Windows.Forms.ComboBox cbLogTableName;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.DataGridView dgvLogTable;
 	}
 }
 

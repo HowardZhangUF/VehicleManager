@@ -28,6 +28,15 @@ namespace FootprintViewer
 		private Dictionary<string, int> mIconIdsOfVehicleLaser = new Dictionary<string, int>();
 		private int mDgvVehicleInfoRightClickRowIndex { get; set; } = -1;
 		private int mDgvVehicleInfoRightClickColIndex { get; set; } = -1;
+		private Dictionary<string, string> mTimestampKeywordTable = new Dictionary<string, string>()
+		{
+			{ "GeneralLog", "Timestamp" },
+			{ "HistoryAutomaticDoorControlInfo", "ReceiveTimestamp" },
+			{ "HistoryHostCommunicationInfo", "ReceiveTimestamp" },
+			{ "HistoryMissionInfo", "ReceiveTimestamp" },
+			{ "HistoryVehicleControlInfo", "ReceiveTimestamp" },
+			{ "HistoryVehicleInfo", "RecordTimestamp" }
+		};
 
 		public Form1()
 		{
@@ -47,6 +56,8 @@ namespace FootprintViewer
 				InitializeDgvVehicleInfo();
 				InitializeTimeComboBox(cbStart);
 				InitializeTimeComboBox(cbEnd);
+				InitializeCbLogTableName();
+				InitializeDgvLogTable();
 
 				//ReadData("D:\\做完就刪\\20220102 2F Wifi 訊號測試\\CASTEC_Log_VM_20220105\\Database\\Event.db", DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-6));
 			}
@@ -202,6 +213,39 @@ namespace FootprintViewer
 				RecordLogMessage(rtxtLog, ex.ToString());
 			}
 		}
+		private void btnLoadLogTable_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (cbLogTableName.SelectedIndex > -1)
+				{
+					string logFile = txtLogFile.Text;
+					string logTableName = cbLogTableName.Text;
+					DateTime startTimestamp = dtpStart.Value.Date;
+					DateTime endTimestamp = dtpEnd.Value.Date;
+					startTimestamp = startTimestamp.AddHours(int.Parse(cbStart.SelectedItem.ToString().Substring(0, 2)));
+					endTimestamp = endTimestamp.AddHours(int.Parse(cbEnd.SelectedItem.ToString().Substring(0, 2)));
+
+					string tmp = string.Empty;
+					tmp += $"[Load Log Table]";
+					tmp += $" ";
+					tmp += $"LogFile:{logFile}";
+					tmp += $" ";
+					tmp += $"LogTableName: {logTableName}";
+					tmp += $" ";
+					tmp += $"Start:{startTimestamp.ToString("yyyy/MM/dd HH:mm:ss")}";
+					tmp += $" ";
+					tmp += $"End:{endTimestamp.ToString("yyyy/MM/dd HH:mm:ss")}";
+					RecordLogMessage(rtxtLog, tmp);
+
+					ReadLogData(logFile, logTableName, startTimestamp, endTimestamp);
+				}
+			}
+			catch (Exception ex)
+			{
+				RecordLogMessage(rtxtLog, ex.ToString());
+			}
+		}
 
 		private void InitializeDgvVehicleInfo()
 		{
@@ -320,6 +364,38 @@ namespace FootprintViewer
 
 			RefreshGui();
 		}
+		private void InitializeCbLogTableName()
+		{
+			cbLogTableName.SelectedIndex = -1;
+			cbLogTableName.Items.Clear();
+			cbLogTableName.Items.AddRange(mTimestampKeywordTable.Keys.ToArray());
+		}
+		private void InitializeDgvLogTable()
+		{
+			DataGridView dgv = dgvLogTable;
+
+			dgv.RowHeadersVisible = false;
+			dgv.AllowUserToAddRows = false;
+			dgv.AllowUserToResizeRows = false;
+
+			foreach (DataGridViewColumn column in dgv.Columns)
+			{
+				column.DefaultCellStyle.Format = column.HeaderText.Contains("Timestamp") ? "yyyy/MM/dd HH:mm:ss.fff" : string.Empty;
+				column.SortMode = DataGridViewColumnSortMode.NotSortable;
+				column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+			}
+		}
+		private void UpdateDgvLogTable()
+		{
+			DataGridView dgv = dgvLogTable;
+
+			foreach (DataGridViewColumn column in dgv.Columns)
+			{
+				column.DefaultCellStyle.Format = column.HeaderText.Contains("Timestamp") ? "yyyy/MM/dd HH:mm:ss.fff" : string.Empty;
+				column.SortMode = DataGridViewColumnSortMode.NotSortable;
+				column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+			}
+		}
 		private void ReadMapData(string MapFilePath)
 		{
 			// 地圖介面讀取地圖
@@ -344,6 +420,26 @@ namespace FootprintViewer
 					HistoryVehicleInfo tmpInfo = HistoryVehicleInfo.FromString(historyVehicleInfoStrings[i], new string[] { "#" });
 					if (!mHistoryVehicleInfos.ContainsKey(tmpInfo.Name)) mHistoryVehicleInfos.Add(tmpInfo.Name, new List<HistoryVehicleInfo>());
 					mHistoryVehicleInfos[tmpInfo.Name].Add(tmpInfo);
+				}
+			}
+		}
+		private void ReadLogData(string LogFilePath, string TableName, DateTime StartTimestamp, DateTime EndTimestamp)
+		{
+			if (!File.Exists(LogFilePath)) return;
+
+			// Database 設定與連線
+			mDatabaseAdapter.SetDatabaseParameters(LogFilePath, string.Empty, string.Empty, string.Empty, string.Empty);
+			if (mDatabaseAdapter.Connect() == true)
+			{
+				string startTimestamp = $"{StartTimestamp.ToString("yyyy-MM-dd HH:mm:ss")}";
+				string endTimestamp = $"{EndTimestamp.ToString("yyyy-MM-dd HH:mm:ss")}";
+				string sqlCmd = $"SELECT * FROM {TableName} WHERE {mTimestampKeywordTable[TableName]} BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
+				DataSet dataSet = mDatabaseAdapter.ExecuteQueryCommand(sqlCmd);
+				if (dataSet != null && dataSet.Tables != null && dataSet.Tables.Count > 0)
+				{
+					DataTable dataTable = dataSet.Tables[0];
+					dgvLogTable.DataSource = dataTable;
+					UpdateDgvLogTable();
 				}
 			}
 		}
