@@ -444,12 +444,12 @@ namespace TrafficControlTest.UserInterface
 				switch (Rank)
 				{
 					case AccountRank.Software:
-					case AccountRank.Service:
 						btnDisplayVehicleManualControl.Visible = true;
 						btnDisplayVehicleApi.Visible = true;
 						btnDisplayCycleMission.Visible = true;
 						btnDisplayMapInfo.Visible = true;
 						btnDisplaySetting.Visible = true;
+						btnDisplayLog.Visible = true;
 						btnDisplayDashboard.Visible = true;
 						btnDisplaySystemStatus.Visible = true;
 						btnDisplayConsoleLog.Visible = true;
@@ -462,6 +462,27 @@ namespace TrafficControlTest.UserInterface
 						ucAutomaticDoor1.SetAutomaticDoorControlVisible(true);
 						ucSetting1.Visible = true;
 						ucLog1.Set(true, true, true, true, true);
+						ucDashboard1.Visible = true;
+						ucSystemStatus1.Visible = true;
+						ucConsoleLog1.Visible = true;
+						UpdateGui_InitializeMenuState();
+						break;
+					case AccountRank.Service:
+						btnDisplayVehicleManualControl.Visible = true;
+						btnDisplayVehicleApi.Visible = true;
+						btnDisplayCycleMission.Visible = true;
+						btnDisplayMapInfo.Visible = true;
+						btnDisplaySetting.Visible = true;
+						btnDisplaySystemStatus.Visible = true;
+						btnDisplayConsoleLog.Visible = true;
+						ucVehicleManualControl1.Visible = true;
+						ucVehicleApi1.Visible = true;
+						ucCycleMission1.Visible = true;
+						ucVehicle1.SetVehicleControlVisible(true);
+						ucMission1.EnableManualControl(true);
+						ucAutomaticDoor1.EnableManualControl(true);
+						ucAutomaticDoor1.SetAutomaticDoorControlVisible(true);
+						ucSetting1.Visible = true;
 						ucDashboard1.Visible = true;
 						ucSystemStatus1.Visible = true;
 						ucConsoleLog1.Visible = true;
@@ -482,6 +503,7 @@ namespace TrafficControlTest.UserInterface
 						btnDisplayCycleMission.Visible = false;
 						btnDisplayMapInfo.Visible = false;
 						btnDisplaySetting.Visible = false;
+						btnDisplayLog.Visible = false;
 						btnDisplayDashboard.Visible = false;
 						btnDisplaySystemStatus.Visible = false;
 						btnDisplayConsoleLog.Visible = false;
@@ -493,7 +515,7 @@ namespace TrafficControlTest.UserInterface
 						ucAutomaticDoor1.EnableManualControl(false);
 						ucAutomaticDoor1.SetAutomaticDoorControlVisible(false);
 						ucSetting1.Visible = false;
-						ucLog1.Set(false, false, false, true, true);
+						ucLog1.Set(false, false, false, false, false);
 						ucDashboard1.Visible = false;
 						ucSystemStatus1.Visible = false;
 						ucConsoleLog1.Visible = false;
