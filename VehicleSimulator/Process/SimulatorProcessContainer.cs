@@ -19,8 +19,8 @@ namespace VehicleSimulator
 			if (!mSimulatorProcessCollection.ContainsKey(SimulatorName))
 			{
 				mSimulatorProcessCollection.Add(SimulatorName, new SimulatorProcess(SimulatorName));
-				mSimulatorProcessCollection[SimulatorName].Start();
 				RaiseEvent_SimulatorAdded(SimulatorName, mSimulatorProcessCollection[SimulatorName]);
+				mSimulatorProcessCollection[SimulatorName].Start();
 				successed = true;
 			}
 			return successed;

@@ -91,17 +91,6 @@ namespace VehicleSimulator
 				pbMapPreview.Image = GenerateMapImage(pbMapPreview.Width, pbMapPreview.Height, mMapData);
 			}
 		}
-		private void lblMapFileFolderDirectory_TextChanged(object sender, EventArgs e)
-		{
-			if (Directory.Exists(lblMapFileFolderDirectory.Text))
-			{
-				UpdateGui_DgvMapFileList_UpdateMapFileList(lblMapFileFolderDirectory.Text);
-			}
-			else
-			{
-				UpdateGui_DgvMapFileList_UpdateMapFileList(string.Empty);
-			}
-		}
 		private void btnSelectMapFileFolderDirectory_Click(object sender, EventArgs e)
 		{
 			using (var fbd = new FolderBrowserDialog())
@@ -115,6 +104,10 @@ namespace VehicleSimulator
 				if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
 				{
 					lblMapFileFolderDirectory.Text = fbd.SelectedPath;
+					if (Directory.Exists(lblMapFileFolderDirectory.Text))
+					{
+						UpdateGui_DgvMapFileList_UpdateMapFileList(lblMapFileFolderDirectory.Text);
+					}
 				}
 			}
 		}

@@ -7,17 +7,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using LibraryForVM;
 
 namespace VehicleSimulator
 {
 	public partial class UcContentOfConsole : UserControl
 	{
+		public int mMaxRowCount { get; set; } = 200;
+
 		public UcContentOfConsole()
 		{
 			InitializeComponent();
 			UpdateGui_InitializeDgvConsole();
 		}
+		public void AddLog(string Timestamp, string Log)
+		{
+			UpdateGui_AddRow(Timestamp, Log);
+			UpdateGui_AdjustRowCount(mMaxRowCount);
+		}
+		public void ClearLog()
+		{
+			UpdateGui_ClearRow();
+		}
 
+		private void menuItemClearDgvConsole_Click(object sender, EventArgs e)
+		{
+			UpdateGui_ClearRow();
+		}
 		private void UpdateGui_InitializeDgvConsole()
 		{
 			DataGridView dgv = dgvConsole;
@@ -59,6 +75,43 @@ namespace VehicleSimulator
 				column.SortMode = DataGridViewColumnSortMode.NotSortable;
 				column.ReadOnly = true;
 			}
+		}
+		private void UpdateGui_AddRow(params string[] RowData)
+		{
+			dgvConsole.InvokeIfNecessary(() =>
+			{
+				dgvConsole.Rows.Add(RowData);
+			});
+		}
+		private void UpdateGui_RemoveRow(int RowIndex)
+		{
+			dgvConsole.InvokeIfNecessary(() =>
+			{
+				if (RowIndex < dgvConsole.Rows.Count)
+				{
+					dgvConsole.Rows.RemoveAt(RowIndex);
+				}
+			});
+		}
+		private void UpdateGui_ClearRow()
+		{
+			dgvConsole.InvokeIfNecessary(() =>
+			{
+				if (dgvConsole.Rows.Count > 0)
+				{
+					dgvConsole.Rows.Clear();
+				}
+			});
+		}
+		private void UpdateGui_AdjustRowCount(int Maximum)
+		{
+			dgvConsole.InvokeIfNecessary(() =>
+			{
+				if (dgvConsole.Rows.Count > Maximum)
+				{
+					dgvConsole.Rows.RemoveAt(0);
+				}
+			});
 		}
 	}
 }

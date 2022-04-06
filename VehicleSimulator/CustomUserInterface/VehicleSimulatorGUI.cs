@@ -162,7 +162,7 @@ namespace VehicleSimulator
 		}
 		private void HandleEvent_SimulatorProcessDebugMessage(object sender, DebugMessageEventArgs e)
 		{
-			//
+			ucContentOfConsole1.AddLog(e.OccurTime, $"[{e.Category}] [{e.SubCategory}] {e.Message}");
 		}
 	}
 }
