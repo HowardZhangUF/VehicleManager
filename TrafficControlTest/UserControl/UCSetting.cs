@@ -228,7 +228,11 @@ namespace TrafficControlTest.UserControl
 			{
 				DataGridView dgv = dgvMapManagementSetting;
 
-				dgv.SelectionChanged += ((sender, e) => { if (dgv.CurrentCell.ColumnIndex != dgv.Columns["RegionName"].Index && dgv.CurrentCell.ColumnIndex != dgv.Columns["RegionMember"].Index) dgv.ClearSelection(); });
+				dgv.SelectionChanged += ((sender, e) =>
+				{
+					if (dgv.CurrentCell.ColumnIndex != dgv.Columns["RegionName"].Index && dgv.CurrentCell.ColumnIndex != dgv.Columns["RegionMember"].Index) dgv.ClearSelection();
+					if (dgv.CurrentCell.RowIndex == 0) dgv.ClearSelection();
+				});
 
 				dgv.RowHeadersVisible = false;
 				dgv.AllowUserToAddRows = false;
@@ -264,7 +268,7 @@ namespace TrafficControlTest.UserControl
 				dgv.Columns[3].Width = 240;
 				dgv.Columns.Add("CurrentMapRange", "CurrentMapRange");
 				dgv.Columns[4].Width = 360;
-				
+
 				foreach (DataGridViewColumn column in dgv.Columns)
 				{
 					column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
