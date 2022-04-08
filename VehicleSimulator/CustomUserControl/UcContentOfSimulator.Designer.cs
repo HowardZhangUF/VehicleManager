@@ -30,7 +30,11 @@
 			this.btnRemoveSimulator = new System.Windows.Forms.Button();
 			this.btnAddSimulator = new System.Windows.Forms.Button();
 			this.pnlContent = new System.Windows.Forms.Panel();
+			this.numStartIndexOfName = new System.Windows.Forms.NumericUpDown();
+			this.panel1 = new System.Windows.Forms.Panel();
 			this.pnlSubMenu.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numStartIndexOfName)).BeginInit();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pnlMenu
@@ -46,6 +50,7 @@
 			// pnlSubMenu
 			// 
 			this.pnlSubMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
+			this.pnlSubMenu.Controls.Add(this.panel1);
 			this.pnlSubMenu.Controls.Add(this.btnRemoveSimulator);
 			this.pnlSubMenu.Controls.Add(this.btnAddSimulator);
 			this.pnlSubMenu.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -89,6 +94,43 @@
 			this.pnlContent.Size = new System.Drawing.Size(470, 420);
 			this.pnlContent.TabIndex = 0;
 			// 
+			// numStartIndexOfName
+			// 
+			this.numStartIndexOfName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
+			this.numStartIndexOfName.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.numStartIndexOfName.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.numStartIndexOfName.ForeColor = System.Drawing.Color.White;
+			this.numStartIndexOfName.Location = new System.Drawing.Point(0, 3);
+			this.numStartIndexOfName.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+			this.numStartIndexOfName.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numStartIndexOfName.Name = "numStartIndexOfName";
+			this.numStartIndexOfName.Size = new System.Drawing.Size(59, 27);
+			this.numStartIndexOfName.TabIndex = 2;
+			this.numStartIndexOfName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.numStartIndexOfName.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numStartIndexOfName.ValueChanged += new System.EventHandler(this.numStartIndexOfName_ValueChanged);
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.numStartIndexOfName);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
+			this.panel1.Location = new System.Drawing.Point(191, 0);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(59, 30);
+			this.panel1.TabIndex = 3;
+			// 
 			// UcContentOfSimulator
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -100,6 +142,8 @@
 			this.Name = "UcContentOfSimulator";
 			this.Size = new System.Drawing.Size(720, 420);
 			this.pnlSubMenu.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.numStartIndexOfName)).EndInit();
+			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -110,5 +154,7 @@
 		private System.Windows.Forms.Button btnAddSimulator;
 		private System.Windows.Forms.Button btnRemoveSimulator;
 		private System.Windows.Forms.Panel pnlContent;
+		private System.Windows.Forms.NumericUpDown numStartIndexOfName;
+		private System.Windows.Forms.Panel panel1;
 	}
 }

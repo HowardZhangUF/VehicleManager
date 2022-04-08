@@ -16,6 +16,7 @@ namespace VehicleSimulator
 		private Dictionary<string, UcSimulatorShortcut> mSimulatorShortcutCollection = new Dictionary<string, UcSimulatorShortcut>();
 		private Dictionary<string, UcSimulatorInfo> mSimulatorInfoCollection = new Dictionary<string, UcSimulatorInfo>();
 		private string mCurrentDisplayedSimulatorName = string.Empty;
+		private int mStartIndexOfName = 1;
 
 		public UcContentOfSimulator()
 		{
@@ -33,7 +34,7 @@ namespace VehicleSimulator
 
 		private void btnAddSimulator_Click(object sender, EventArgs e)
 		{
-			int i = 1;
+			int i = mStartIndexOfName;
 			string prefix = "Simulator";
 			while (true)
 			{
@@ -68,6 +69,10 @@ namespace VehicleSimulator
 					UpdateGui_ChangeDisplaySimulator(string.Empty);
 				}
 			}
+		}
+		private void numStartIndexOfName_ValueChanged(object sender, EventArgs e)
+		{
+			mStartIndexOfName = (int)numStartIndexOfName.Value;
 		}
 		private void SubscribeEvent_SimulatorProcessContainer(SimulatorProcessContainer SimulatorProcessContainer)
 		{
