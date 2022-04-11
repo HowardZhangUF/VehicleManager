@@ -51,6 +51,7 @@
 			this.cbEnd = new System.Windows.Forms.ComboBox();
 			this.btnSelectMapFile = new System.Windows.Forms.Button();
 			this.btnLoadSetting = new System.Windows.Forms.Button();
+			this.btnRecovery = new System.Windows.Forms.Button();
 			this.tpFootprint = new System.Windows.Forms.TabPage();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.gluiCtrl1 = new GLUI.GLUICtrl();
@@ -167,6 +168,7 @@
 			this.tableLayoutPanel2.Controls.Add(this.cbEnd, 1, 5);
 			this.tableLayoutPanel2.Controls.Add(this.btnSelectMapFile, 2, 0);
 			this.tableLayoutPanel2.Controls.Add(this.btnLoadSetting, 0, 6);
+			this.tableLayoutPanel2.Controls.Add(this.btnRecovery, 2, 6);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel2.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
@@ -334,6 +336,17 @@
 			this.btnLoadSetting.Text = "Load";
 			this.btnLoadSetting.UseVisualStyleBackColor = true;
 			this.btnLoadSetting.Click += new System.EventHandler(this.btnLoadSetting_Click);
+			// 
+			// btnRecovery
+			// 
+			this.btnRecovery.Location = new System.Drawing.Point(547, 303);
+			this.btnRecovery.Name = "btnRecovery";
+			this.btnRecovery.Size = new System.Drawing.Size(44, 44);
+			this.btnRecovery.TabIndex = 15;
+			this.btnRecovery.Text = "Re";
+			this.btnRecovery.UseVisualStyleBackColor = true;
+			this.btnRecovery.Visible = false;
+			this.btnRecovery.Click += new System.EventHandler(this.btnRecovery_Click);
 			// 
 			// tpFootprint
 			// 
@@ -573,6 +586,7 @@
 		private System.Windows.Forms.ComboBox cbLogTableName;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.DataGridView dgvLogTable;
+		private System.Windows.Forms.Button btnRecovery;
 	}
 }
 

@@ -246,6 +246,69 @@ namespace FootprintViewer
 				RecordLogMessage(rtxtLog, ex.ToString());
 			}
 		}
+		private void btnRecovery_Click(object sender, EventArgs e)
+		{
+			// Exception 裡面會記錄執行失敗的 Sql Command ，此方法可以將那些 Sql Command 撈出來並重新執行
+			// 但若是因為 Table Format 錯誤而導致的，則必須先手動調整 Database 的 Table Format 後，再執行此方法
+			try
+			{
+				string databaseFilePath = string.Empty;
+				using (var ofd = new OpenFileDialog())
+				{
+					ofd.Title = "Choose Database File";
+					ofd.Filter = "All Files (*.*)|*.*";
+					ofd.Multiselect = false;
+					if (ofd.ShowDialog() == DialogResult.OK)
+					{
+						databaseFilePath = ofd.FileName;
+					}
+				}
+
+				List<string> exceptionFilePaths = new List<string>();
+				using (var ofd = new OpenFileDialog())
+				{
+					ofd.Title = "Choose Exception Files";
+					ofd.Filter = "All Files (*.*)|*.*";
+					ofd.Multiselect = true;
+					if (ofd.ShowDialog() == DialogResult.OK)
+					{
+						exceptionFilePaths = ofd.FileNames.ToList();
+					}
+				}
+
+				foreach (string exceptionFilePath in exceptionFilePaths)
+				{
+					List<string> cmds = new List<string>();
+					string[] lines = File.ReadAllLines(exceptionFilePath);
+					for (int i = 0; i < lines.Length; ++i)
+					{
+						if (lines[i].StartsWith("- [Cmd] - "))
+						{
+							cmds.Add(lines[i].Replace("- [Cmd] - ", string.Empty));
+						}
+						else if (lines[i].StartsWith("INSERT INTO "))
+						{
+							cmds.Add(lines[i]);
+						}
+						else if (lines[i].StartsWith("UPDATE "))
+						{
+							cmds.Add(lines[i]);
+						}
+					}
+
+					mDatabaseAdapter.SetDatabaseParameters(databaseFilePath, string.Empty, string.Empty, string.Empty, string.Empty);
+					if (mDatabaseAdapter.Connect() == true)
+					{
+						mDatabaseAdapter.ExecuteNonQueryCommands(cmds);
+						RecordLogMessage(rtxtLog, "Recovery Done!");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				RecordLogMessage(rtxtLog, ex.ToString());
+			}
+		}
 
 		private void InitializeDgvVehicleInfo()
 		{
@@ -280,28 +343,30 @@ namespace FootprintViewer
 
 			dgv.Columns.Add("Timestamp", "Timestamp");
 			dgv.Columns[0].Width = 200;
+			dgv.Columns.Add("LastUpdate", "LastUpdate");
+			dgv.Columns[1].Width = 200;
 			dgv.Columns.Add("Name", "Name");
-			dgv.Columns[1].Width = 180;
+			dgv.Columns[2].Width = 180;
 			dgv.Columns.Add("State", "State");
-			dgv.Columns[2].Width = 140;
+			dgv.Columns[3].Width = 140;
 			dgv.Columns.Add("X", "X");
-			dgv.Columns[3].Width = 100;
-			dgv.Columns.Add("Y", "Y");
 			dgv.Columns[4].Width = 100;
-			dgv.Columns.Add("Toward", "Toward");
+			dgv.Columns.Add("Y", "Y");
 			dgv.Columns[5].Width = 100;
+			dgv.Columns.Add("Toward", "Toward");
+			dgv.Columns[6].Width = 100;
 			dgv.Columns.Add("Target", "Target");
-			dgv.Columns[6].Width = 200;
+			dgv.Columns[7].Width = 200;
 			dgv.Columns.Add("Battery", "Battery");
-			dgv.Columns[7].Width = 80;
-			dgv.Columns.Add("Score", "Score");
 			dgv.Columns[8].Width = 80;
+			dgv.Columns.Add("Score", "Score");
+			dgv.Columns[9].Width = 80;
 			dgv.Columns.Add("PathPointCount", "PathPointCount");
-			dgv.Columns[9].Width = 140;
+			dgv.Columns[10].Width = 140;
 			dgv.Columns.Add("Path", "Path");
-			dgv.Columns[10].Width = 200;
+			dgv.Columns[11].Width = 200;
 			dgv.Columns.Add("FillColumn", "");
-			dgv.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+			dgv.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
 			foreach (DataGridViewColumn column in dgv.Columns)
 			{
@@ -413,7 +478,7 @@ namespace FootprintViewer
 			{
 				string startTimestamp = $"{StartTimestamp.ToString("yyyy-MM-dd HH:mm:ss")}";
 				string endTimestamp = $"{EndTimestamp.ToString("yyyy-MM-dd HH:mm:ss")}";
-				string sqlCmd3 = $"SELECT RecordTimestamp,ID,State,X,Y,Toward,Target,BatteryValue,LocationScore,Path FROM HistoryVehicleInfo WHERE RecordTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
+				string sqlCmd3 = $"SELECT RecordTimestamp,LastUpdateTimestamp,ID,State,X,Y,Toward,Target,BatteryValue,LocationScore,Path FROM HistoryVehicleInfo WHERE RecordTimestamp BETWEEN '{startTimestamp}' AND '{endTimestamp}'";
 				string[] historyVehicleInfoStrings = GetHistoryVehicleInfoStrings(mDatabaseAdapter.ExecuteQueryCommand(sqlCmd3));
 				for (int i = 0; i < historyVehicleInfoStrings.Length; ++i)
 				{
@@ -528,6 +593,7 @@ namespace FootprintViewer
 				if (dgvVehicleInfo.Rows[i].Cells["Name"].Value.ToString() == VehicleName)
 				{
 					dgvVehicleInfo.Rows[i].Cells["Timestamp"].Value = HistoryVehicleInfo.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff");
+					dgvVehicleInfo.Rows[i].Cells["LastUpdate"].Value = HistoryVehicleInfo.LastUpdate.ToString("yyyy-MM-dd HH:mm:ss.fff");
 					dgvVehicleInfo.Rows[i].Cells["Name"].Value = HistoryVehicleInfo.Name;
 					dgvVehicleInfo.Rows[i].Cells["State"].Value = HistoryVehicleInfo.State;
 					dgvVehicleInfo.Rows[i].Cells["X"].Value = HistoryVehicleInfo.X;
@@ -604,6 +670,7 @@ namespace FootprintViewer
 	public class HistoryVehicleInfo
 	{
 		public DateTime Timestamp { get; private set; } = DateTime.MinValue;
+		public DateTime LastUpdate { get; private set; } = DateTime.MinValue;
 		public string Name { get; private set; } = string.Empty;
 		public string State { get; private set; } = string.Empty;
 		public int X { get; private set; } = 0;
@@ -631,13 +698,14 @@ namespace FootprintViewer
 		}
 		public string Laser { get; private set; } = string.Empty;
 
-		public HistoryVehicleInfo(DateTime Timestamp, string Name, string State, int X, int Y, int Toward, string Target, int Battery, int Score, string Path, string Laser)
+		public HistoryVehicleInfo(DateTime Timestamp, DateTime LastUpdate, string Name, string State, int X, int Y, int Toward, string Target, int Battery, int Score, string Path, string Laser)
 		{
-			Set(Timestamp, Name, State, X, Y, Toward, Target, Battery, Score, Path, Laser);
+			Set(Timestamp, LastUpdate, Name, State, X, Y, Toward, Target, Battery, Score, Path, Laser);
 		}
-		public void Set(DateTime Timestamp, string Name, string State, int X, int Y, int Toward, string Target, int Battery, int Score, string Path, string Laser)
+		public void Set(DateTime Timestamp, DateTime LastUpdate, string Name, string State, int X, int Y, int Toward, string Target, int Battery, int Score, string Path, string Laser)
 		{
 			this.Timestamp = Timestamp;
+			this.LastUpdate = LastUpdate;
 			this.Name = Name;
 			this.State = State;
 			this.X = X;
@@ -656,7 +724,7 @@ namespace FootprintViewer
 		public static HistoryVehicleInfo FromString(string String, string[] Seperator)
 		{
 			string[] data = String.Split(Seperator, StringSplitOptions.None);
-			return new HistoryVehicleInfo(DateTime.Parse(data[0]), data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), (int)double.Parse(data[5]), data[6], (int)double.Parse(data[7]), (int)double.Parse(data[8]), data[9], string.Empty);
+			return new HistoryVehicleInfo(DateTime.Parse(data[0]), DateTime.Parse(data[1]), data[2], data[3], int.Parse(data[4]), int.Parse(data[5]), (int)double.Parse(data[6]), data[7], (int)double.Parse(data[8]), (int)double.Parse(data[9]), data[10], string.Empty);
 		}
 	}
 }
