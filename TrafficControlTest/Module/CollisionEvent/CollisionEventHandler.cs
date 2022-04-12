@@ -158,7 +158,7 @@ namespace TrafficControlTest.Module.CollisionEvent
 					// 確認是不是遠離會車框，如果是，則讓該車恢復動作
 					if (IsEventFarToHappen(CollisionPair, 4000))
 					{
-						string pausedVehicleId = IsVehicleBeenPaused(CollisionPair.mVehicle1) ? CollisionPair.mVehicle1.mName : CollisionPair.mVehicle2.mName;
+						string pausedVehicleId = (IsVehicleBeenPaused(CollisionPair.mVehicle1) && IsVehicleInterveneBy(CollisionPair.mVehicle1, CollisionPair.mName)) ? CollisionPair.mVehicle1.mName : CollisionPair.mVehicle2.mName;
 						IVehicleControl vehicleControl = GenerateIVehicleControl(pausedVehicleId, Command.ResumeMoving, null, CollisionPair.mName, CollisionPair.ToString() + "/HandleCollisionPair1");
 						if (vehicleControl != null)
 						{
