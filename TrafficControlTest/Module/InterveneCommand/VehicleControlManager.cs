@@ -11,7 +11,7 @@ namespace TrafficControlTest.Module.InterveneCommand
 		}
 		public bool IsExistByCauseId(string CauseId)
 		{
-			return mItems.Values.Any(o => o.mCauseId == CauseId);
+			return mItems.Values.ToArray().Any(o => o.mCauseId == CauseId);
 		}
 		public IVehicleControl GetItemByCauseId(string CauseId)
 		{
