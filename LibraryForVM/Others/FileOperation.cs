@@ -153,5 +153,18 @@ namespace LibraryForVM
 				}
 			}
 		}
+		public static void JeffHandleFile(string srcdir, string dstdir)
+		{
+			if (!Directory.Exists(dstdir))
+			{
+				Directory.CreateDirectory(dstdir);
+			}
+
+			List<string> fullcmds = new List<string>();
+			fullcmds.Add($@"XCOPY {srcdir}\Map {dstdir}\Map /E/H/C/I/Y");//複製目錄
+			fullcmds.Add($@"echo F|Xcopy {srcdir}\Database\HistoryLog.db {dstdir} /Y");//複製檔案
+			foreach (var fullcmd in fullcmds)
+				ShellCommandExecutor.ExecuteInBackground(fullcmd);
+		}
 	}
 }

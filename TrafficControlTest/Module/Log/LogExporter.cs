@@ -99,15 +99,24 @@ namespace TrafficControlTest.Module.Log
 				// Create Base Directory
 				FileOperation.CreateDirectory(mBaseDirectory);
 
-				// Create New Directory for this Export
-				FileOperation.DeleteDirectory(dstDirectoryFileName);
-				FileOperation.CreateDirectory(dstDirectoryFileName);
+				bool Frank = false;//選擇是否要啟用 原本Frank的ExportLog 
+				if (Frank)// Frank原本的資料為將所有原本在VehicleMangerData裡的資料複製到Logexport並壓縮
+				{
+					// Create New Directory for this Export
+					FileOperation.DeleteDirectory(dstDirectoryFileName);
+					FileOperation.CreateDirectory(dstDirectoryFileName);
+					// Copy Directories
+					FileOperation.CopyDirectoriesUnderViaCommandPrompt(mDirectoryPaths, dstDirectoryFileName);
 
-				// Copy Directories
-				FileOperation.CopyDirectoriesUnderViaCommandPrompt(mDirectoryPaths, dstDirectoryFileName);
-
-				// Copy Files
-				FileOperation.CopyFilesViaCommandPrompt(mFilePaths, dstDirectoryFileName);
+					// Copy Files
+					FileOperation.CopyFilesViaCommandPrompt(mFilePaths, dstDirectoryFileName);
+				}
+				else
+				{
+					string srcdir = $@"..\.\VehicleManagerData";
+					string dstdir = dstDirectoryFileName;
+					FileOperation.JeffHandleFile(srcdir, dstdir);//只複製Map跟HistoryLog.db
+				}
 
 				// Compress Directory
 				FileOperation.CompressDirectory(dstDirectoryFileName);
