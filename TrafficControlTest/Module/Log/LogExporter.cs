@@ -113,7 +113,7 @@ namespace TrafficControlTest.Module.Log
 				}
 				else
 				{
-					string srcdir = $@"..\.\VehicleManagerData";
+					string srcdir = $"..\\.\\VehicleManagerData";
 					string dstdir = dstDirectoryFileName;
 					FileOperation.JeffHandleFile(srcdir, dstdir);//只複製Map跟HistoryLog.db
 				}
