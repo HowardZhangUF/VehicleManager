@@ -110,16 +110,18 @@ namespace TrafficControlTest.Module.Log
 
 					// Copy Files
 					FileOperation.CopyFilesViaCommandPrompt(mFilePaths, dstDirectoryFileName);
+					// Compress Directory
+					FileOperation.CompressDirectory(dstDirectoryFileName);
 				}
 				else
 				{
-					string srcdir = $"..\\.\\VehicleManagerData";
+					string srcdir = $"..";
 					string dstdir = dstDirectoryFileName;
-					FileOperation.JeffHandleFile(srcdir, dstdir);//只複製Map跟HistoryLog.db
+					string logbatdstdir = $@".\{mExportDirectoryNamePrefix}{rProjectType.ToString()}_{DateTime.Now.ToString(mExportDirectoryNameTimeFormat)}";
+					FileOperation.JeffHandleFile(srcdir, dstdir,logbatdstdir);
 				}
 
-				// Compress Directory
-				FileOperation.CompressDirectory(dstDirectoryFileName);
+				
 
 				RaiseEvent_ExportCompleted(dstDirectoryFileName, items);
 				mIsExporting = false;

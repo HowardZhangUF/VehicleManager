@@ -255,6 +255,7 @@ namespace TrafficControlTest.Module.Log
 		private void HistoryGeneralLogDataDeleteBefore(DateTime DateTime)
 		{
 			string tmp = $"DELETE FROM {mTableNameOfGeneralLog} WHERE Timestamp < '{DateTime.ToString(Library.Library.TIME_FORMAT)}'";
+			Console.WriteLine($"現在執行的SQL:{tmp}");
 			rDatabaseAdapter.EnqueueNonQueryCommand(tmp);
 		}
 		private void HistoryVehicleInfoDataAdd(DateTime Timestamp, IVehicleInfo VehicleInfo)

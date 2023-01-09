@@ -30,6 +30,7 @@ namespace LibraryForVM
 		}
 		public static void ExecuteInCommadPrompt(string shellCommand) // 使用此方法執行"會"跳出 Command Prompt 視窗
 		{
+			string result = string.Empty;
 			using (System.Diagnostics.Process process = new System.Diagnostics.Process())
 			{
 				process.StartInfo = new ProcessStartInfo();

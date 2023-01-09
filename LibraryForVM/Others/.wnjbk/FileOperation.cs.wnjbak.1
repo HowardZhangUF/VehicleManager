@@ -49,7 +49,7 @@ namespace LibraryForVM
 			if (File.Exists(SrcFilePath))
 			{
 				string fullCmd = $"COPY \"{SrcFilePath}\" \"{DstDirectoryPath}\"";
-				ShellCommandExecutor.ExecuteInCommadPrompt(fullCmd);
+				ShellCommandExecutor.ExecuteInBackground(fullCmd);
 			}
 		}
 		public static void CopyFilesViaCommandPrompt(IEnumerable<string> SrcFilePaths, string DstDirectoryPath)
@@ -153,21 +153,61 @@ namespace LibraryForVM
 				}
 			}
 		}
-		public static void JeffHandleFile(string srcdir, string dstdir)
+		/// <summary>將該資料夾清空</summary>
+		public static void CleanDirectory(string Dstdir)
+        {
+			try
+			{
+				var entryPaths = Directory.EnumerateFileSystemEntries(Dstdir);
+				foreach (string entryPath in entryPaths)
+				{
+					if (File.Exists(entryPath))
+					{
+						File.Delete(entryPath);
+					}
+					else if (Directory.Exists(entryPath))
+					{
+						Directory.Delete(entryPath, true);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ExceptionHandling.HandleException(ex);
+			}
+		}
+		public static void JeffHandleFile(string srcdir, string dstdir,string logbatdstdir)
 		{
+            
 			if (!Directory.Exists(dstdir))
 			{
 				Directory.CreateDirectory(dstdir);
 			}
+			string logbatch = $@".\..\VehicleManagerData\LogExport.\LogExport.bat";
+			string LogExportPath= $@".\..\VehicleManagerData\LogExport";
 			string pathOf7z = "C:\\Program Files\\7-Zip\\7z.exe";
-			List<string> fullcmds = new List<string>();
-			fullcmds.Add($"Xcopy {srcdir}\\Map {dstdir}\\Map /E/H/C/I/Y");//複製目錄
-			fullcmds.Add($"\"{pathOf7z}\" a  {dstdir}\\HistoryLog.7z {srcdir}\\Database\\HistoryLog.db");//壓縮檔案
-			//fullcmds.Add($"\"{pathOf7z}\" a  {srcdir}\\Database\\HistoryLog.7z {srcdir}\\Database\\HistoryLog.db ");//解壓縮檔案
-			//fullcmds.Add($@"move {srcdir}\Database\\HistoryLog.7z {dstdir}");
-			//fullcmds.Add($@"echo F|Xcopy {srcdir}\Database\HistoryLog.db {dstdir} /Y");//複製檔案
-			foreach (var fullcmd in fullcmds)
-				ShellCommandExecutor.ExecuteInCommadPrompt(fullcmd);               
+			
+			if (!File.Exists(logbatch))
+			{
+				CleanDirectory(LogExportPath);
+				using (StreamWriter sw = new StreamWriter(logbatch,append:true))  
+				{
+					// Add some text to the file.
+					sw.WriteLine($@"robocopy {srcdir}\Map {logbatdstdir}\Map /MIR");//複製目錄(鏡像)
+					sw.WriteLine($@"robocopy {srcdir}\Database {logbatdstdir} HistoryLog.db /W:10");//複製HistoryLog檔案																									
+					sw.WriteLine($"\"{pathOf7z}\" a {logbatdstdir}.7z {logbatdstdir} -p27635744 -mhe -mx=1");//壓縮資料夾並加密碼 且為最快速壓縮
+					sw.WriteLine($@"del %0");
+				}
+				
+				
+			}
+
+			
+			//List<string> fullcmds = new List<string>();
+			//fullcmds.Add($@"Xcopy {srcdir}\Map {dstdir}\Map /E/H/C/I/Y");//複製目錄
+			//fullcmds.Add($"\"{pathOf7z}\" a  {dstdir}\\HistoryLog.7z {srcdir}\\Database\\HistoryLog.db ");//解壓縮檔案
+			//foreach (var fullcmd in fullcmds)
+			//	ShellCommandExecutor.ExecuteInCommadPrompt(fullcmd);               
 		}
 	}
 }
