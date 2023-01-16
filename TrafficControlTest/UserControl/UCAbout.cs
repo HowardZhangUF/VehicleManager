@@ -28,5 +28,10 @@ namespace TrafficControlTest.UserControl
 				lblProgramCopyRight.Text = CopyRight;
 			});
 		}
-	}
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+    }
 }

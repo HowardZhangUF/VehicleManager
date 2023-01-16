@@ -254,5 +254,10 @@ namespace TrafficControlTest.UserControl
 		{
 			Control.InvokeIfNecessary(() => { if (Control.BackColor != Color) Control.BackColor = Color; });
 		}
-	}
+
+        private void lblConnection_Click(object sender, EventArgs e)
+        {
+			
+        }
+    }
 }

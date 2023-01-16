@@ -20,6 +20,7 @@ namespace TrafficControlTest.Module.LimitVehicleCountZone
 		public List<Tuple<string, DateTime>> mLastVehicleNameList { get; private set; } = new List<Tuple<string, DateTime>>();
 		public TimeSpan mCurrentStatusDuration { get { return DateTime.Now.Subtract(mTimestampOfStatusChanged); } }
 		public DateTime mLastUpdated { get; private set; } = DateTime.Now;
+		public Dictionary<string, string> mLetgo { get; set; } = new Dictionary<string, string>();
 
 		private DateTime mTimestampOfStatusChanged = DateTime.Now;
 

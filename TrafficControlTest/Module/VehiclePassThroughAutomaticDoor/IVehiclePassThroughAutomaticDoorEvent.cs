@@ -11,7 +11,8 @@ namespace TrafficControlTest.Module.VehiclePassThroughAutomaticDoor
 	{
 		WillPass,
 		Passing,
-		Passed
+		Passed,
+		WillLetgo
 	}
 
 	public interface IVehiclePassThroughAutomaticDoorEvent : IItem

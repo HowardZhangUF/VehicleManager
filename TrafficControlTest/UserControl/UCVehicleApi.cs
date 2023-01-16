@@ -537,5 +537,10 @@ namespace TrafficControlTest.UserControl
 				ExceptionHandling.HandleException(Ex);
 			}
 		}
-	}
+
+        private void txtCoordinate1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

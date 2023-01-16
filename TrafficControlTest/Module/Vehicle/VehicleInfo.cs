@@ -128,7 +128,7 @@ namespace TrafficControlTest.Module.Vehicle
 
 		private List<string> mUpdatedItems = new List<string>();
 		private bool mIsUpdating = false;
-
+		public Dictionary<string, string> mLetgo { get; set; } = new Dictionary<string, string>(); 
 		public VehicleInfo(string Name)
 		{
 			Set(Name);

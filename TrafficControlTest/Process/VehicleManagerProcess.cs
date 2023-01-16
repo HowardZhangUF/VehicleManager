@@ -1,4 +1,5 @@
-﻿using LibraryForVM;
+﻿#define E2113
+using LibraryForVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -336,7 +337,7 @@ namespace TrafficControlTest.Process
 			SubscribeEvent_IVehicleInfoManager(mVehicleInfoManager);
 
 			UnsubscribeEvent_IMapFileManager(mMapFileManager);
-			mMapFileManager = GenerateIMapFileManager();
+			mMapFileManager = GenerateIMapFileManager(mConfigurator);
 			SubscribeEvent_IMapFileManager(mMapFileManager);
 
 			UnsubscribeEvent_IMapManager(mMapManager);
@@ -1730,6 +1731,13 @@ namespace TrafficControlTest.Process
 		}
 		private void HandleEvent_VehicleCommunicatorRemoteConnectStateChagned(object Sender, ConnectStateChangedEventArgs Args)
 		{
+			//若斷線 將車輛保留原狀時間(s)
+			if (Args.IsConnected == false)
+            {
+				int DisconnectedDelay = Int32.Parse(mConfigurator.GetValue("HostCommunicator/DisconnectedPeriod"))*1000;
+				System.Threading.Thread.Sleep(DisconnectedDelay);
+			}
+				
 			HandleDebugMessage(Args.OccurTime, "VehicleCommunicator", "RemoteConnectStateChanged", $"IPPort: {Args.IpPort}, IsConnected: {Args.IsConnected.ToString()}");
 		}
 		private void HandleEvent_VehicleCommunicatorSentData(object Sender, SentDataEventArgs Args)

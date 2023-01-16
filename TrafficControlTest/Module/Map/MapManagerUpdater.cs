@@ -26,6 +26,7 @@ namespace TrafficControlTest.Module.Map
 		private IVehicleCommunicator rVehicleCommunicator = null;
 		private IVehicleInfoManager rVehicleInfoManager = null;
 		private bool mAutoLoadMap = false;
+		private bool mRegion000Activate = false;
 		private string mIntegratedMapFileName { get; set; } = "Integrated.map";
 		private MapManagementSetting mMapManagementSetting { get; set; } = null;
 		private object mLockOfLoadingMap = new object();
@@ -100,6 +101,8 @@ namespace TrafficControlTest.Module.Map
 					return mIntegratedMapFileName;
 				case "MapManagementSetting":
 					return mMapManagementSetting == null ? string.Empty : mMapManagementSetting.ToJsonString();
+				case "Region000Activate":
+					return mRegion000Activate.ToString();
 				default:
 					return null;
 			}
@@ -118,6 +121,10 @@ namespace TrafficControlTest.Module.Map
 					break;
 				case "MapManagementSetting":
 					mMapManagementSetting = MapManagementSetting.FromJsonString(NewValue);
+					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
+					break;
+				case "Region000Activate":
+					mRegion000Activate = bool.Parse(NewValue);
 					RaiseEvent_ConfigUpdated(ConfigName, NewValue);
 					break;
 				default:

@@ -8,8 +8,7 @@ namespace LibraryForVM
 		public event EventHandler<DateTimeChangedEventArgs> MonthChanged;
 		public event EventHandler<DateTimeChangedEventArgs> DayChanged;
 		public event EventHandler<DateTimeChangedEventArgs> HourChanged;
-		public event EventHandler<DateTimeChangedEventArgs> MinuteChanged;
-
+		public event EventHandler<DateTimeChangedEventArgs> MinuteChanged;		
 		private DateTime mLastTimestamp { get; set; } = DateTime.Now;
 		private DateTime mCurrentTimestamp { get; set; } = DateTime.Now;
 

@@ -301,6 +301,34 @@ namespace TrafficControlTest.UserControl
 				dgvMapManagementSetting.Rows.Add(num.ToString(), $"Region{num.ToString().PadLeft(3, '0')}", string.Empty, string.Empty, string.Empty);
 			});
 		}
+		private void UpdateGui_DgvManagementSetting_DeleteRow()
+        {
+			dgvMapManagementSetting.InvokeIfNecessary(() =>
+			{
+				if(mDgvMapManagementSettingRightClickRowIndex>0)
+                {
+					string regionName = dgvMapManagementSetting.Rows[mDgvMapManagementSettingRightClickRowIndex].Cells["RegionName"].Value.ToString();
+					if (MessageBox.Show($"Are you sure to delete \"{regionName}\"", "Change map setting confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) == DialogResult.Yes)
+					{
+						dgvMapManagementSetting.Rows.Remove(dgvMapManagementSetting.Rows[mDgvMapManagementSettingRightClickRowIndex]);
+					}
+				}
+			});
+		}
+		private void UpdateGui_DgvManagementSetting_InsertRow()
+        {
+			dgvMapManagementSetting.InvokeIfNecessary(() =>
+			{
+				if(mDgvMapManagementSettingRightClickRowIndex>=0)
+                {
+					int num = mDgvMapManagementSettingRightClickRowIndex + 1;
+					dgvMapManagementSetting.Rows.Insert(num, num.ToString(), $"Region{num.ToString().PadLeft(3, '0')}", string.Empty, string.Empty, string.Empty);
+					for (var i = num + 1; i < dgvMapManagementSetting.Rows.Count; i++)
+						dgvMapManagementSetting.Rows[i].Cells["RegionId"].Value = i;
+				}
+				
+			});
+		}
 		private void UpdateGui_DgvMapManagementSetting_RowsClear()
 		{
 			dgvMapManagementSetting.InvokeIfNecessary(() =>
@@ -395,22 +423,27 @@ namespace TrafficControlTest.UserControl
 				ExceptionHandling.HandleException(Ex);
 			}
 		}
-		private void dgvMapManagementSetting_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		private void dgvMapManagementSetting_ValueChanged(object sender, EventArgs e)
 		{
 			try
 			{
+				
 				List<MapRegionSetting> settings = ConvertDataGridViewRowsToMapRegionSettings(dgvMapManagementSetting).OrderBy(o => o.mRegionId).ToList();
+
+					
+
 				if (settings != null && settings.Count > 0)
 				{
 					settings = settings.OrderBy(o => o.mRegionId).ToList();
 					// 先讀取舊的值
 					MapManagementSetting tmpMapManagementSetting = MapManagementSetting.FromJsonString(rConfigurator.GetValue("MapFileManager/MapManagementSetting"));
-
 					// 再將值更新
 					tmpMapManagementSetting.mRegionSettings.Clear();
 					for (int i = 0; i < settings.Count; ++i)
 					{
-						tmpMapManagementSetting.mRegionSettings.Add(settings[i].mRegionId, settings[i]);
+						
+						settings[i].mRegionId=i;
+						tmpMapManagementSetting.mRegionSettings.Add(i, settings[i]);
 					}
 					string newValue = tmpMapManagementSetting.ToJsonString();
 
@@ -424,6 +457,7 @@ namespace TrafficControlTest.UserControl
 				ExceptionHandling.HandleException(Ex);
 			}
 		}
+
 		private void cmenuItemAddRegion_Click(object sender, EventArgs e)
 		{
 			try
@@ -460,6 +494,7 @@ namespace TrafficControlTest.UserControl
 				ExceptionHandling.HandleException(Ex);
 			}
 		}
+
 		private static List<MapRegionSetting> ConvertDataGridViewRowsToMapRegionSettings(DataGridView Dgv)
 		{
 			List<MapRegionSetting> result = new List<MapRegionSetting>();
@@ -485,5 +520,51 @@ namespace TrafficControlTest.UserControl
 				return new List<string[]>();
 			}
 		}
-	}
+
+        private void dgvMapManagementSetting_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void UcSetting_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmenuItemDeleteRegion_Click(object sender, EventArgs e)
+        {
+			try
+			{
+				UpdateGui_DgvManagementSetting_DeleteRow();
+				UpdateGui_DgvMapManagementSetting_UpdateRowsBackColor();
+				UpdateGui_DgvMapManagementSetting_ClearSelection();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
+
+
+		}
+
+        private void cmenuItemInsertRegion_Click(object sender, EventArgs e)
+        {
+			try
+			{
+				UpdateGui_DgvManagementSetting_InsertRow();
+				UpdateGui_DgvMapManagementSetting_TlpMapManagementSetting_UpdateHeight();
+				UpdateGui_DgvMapManagementSetting_UpdateRowsBackColor();
+				UpdateGui_DgvMapManagementSetting_ClearSelection();
+			}
+			catch (Exception Ex)
+			{
+				ExceptionHandling.HandleException(Ex);
+			}
+		}
+
+        private void dgvSettings_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+    }
 }

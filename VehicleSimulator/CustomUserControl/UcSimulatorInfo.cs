@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using LibraryForVM;
-
+using System.Collections.Generic;
 namespace VehicleSimulator
 {
 	public partial class UcSimulatorInfo : UserControl
@@ -508,5 +508,73 @@ namespace VehicleSimulator
 				}
 			}
 		}
-	}
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void cbMoveTarget_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+			
+
+		}
+		/// <summary>將 目標點的名字 與其座標分開</summary>
+		private static Dictionary<string,string>SeperateGoalAndPoint(ComboBox.ObjectCollection GoalList)
+        {
+			Dictionary<String, String>  GoalPoint = new Dictionary<string, string>();
+			foreach(var goalitem in GoalList)
+            {
+				String[] GoalItem = goalitem.ToString().Split(' '); //ex: G1 (5,3,90)
+				GoalPoint[GoalItem[0]] = GoalItem[1];// GoalPoint["G1"]="(5,3,90)"
+            }
+			return GoalPoint;
+        }
+
+        private void btnSimulatorSetAndMove_Click(object sender, EventArgs e)
+        {
+			if(rSimulatorControl!=null)
+            {
+				if(SetAndMoveTextBox!=null)
+                {
+					char[] separator = { '(', ')' };
+					String[] input = SetAndMoveTextBox.Text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+					Dictionary<String, String> Start= SeperateGoalAndPoint(cbGoalList.Items);
+					Dictionary<String, String> End = SeperateGoalAndPoint(cbMoveTarget.Items);
+					if(input.All(o => Start.ContainsKey(o)))
+                    {
+						
+						char[] locationseperator = { '(', ')',','};
+						String[] locationSplitString = Start[input[0]].Split(locationseperator, StringSplitOptions.RemoveEmptyEntries);
+
+						rSimulatorInfo.SetLocation(int.Parse(locationSplitString[0]), int.Parse(locationSplitString[1]), int.Parse(locationSplitString[2]));
+						
+						if(input.Length>1)//先暫時 寫兩點
+                        {
+							var moveRequests = rMoveRequestCalculator.Calculate(new Point(rSimulatorInfo.mX, rSimulatorInfo.mY), input[1]);
+							rSimulatorControl.StartMove(input[1], moveRequests);
+
+						}
+
+
+					}
+
+
+
+				}
+				
+			}
+        }
+
+        private void txtHostIpPort_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

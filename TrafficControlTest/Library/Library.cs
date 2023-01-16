@@ -252,9 +252,9 @@ namespace TrafficControlTest.Library
 		{
 			return new MissionUpdater(VehicleInfoManager, MissionStateManager, VehicleControlManager);
 		}
-		public static IMapFileManager GenerateIMapFileManager()
+		public static IMapFileManager GenerateIMapFileManager(IConfigurator Configurator)
 		{
-			return new MapFileManager();
+			return new MapFileManager(Configurator);
 		}
 		public static IMapManager GenerateIMapManager()
 		{

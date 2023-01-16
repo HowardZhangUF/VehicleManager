@@ -3,17 +3,20 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TrafficControlTest.Module.Configure;
 
 namespace TrafficControlTest.Module.Map
 {
 	public class MapFileManager : SystemWithConfig, IMapFileManager
 	{
+		public IConfigurator rConfigurator;
 		public event EventHandler<MapFileCountChangedEventArgs> MapFileAdded;
 
 		private MapManagementSetting mMapManagementSetting { get; set; } = null;
 
-		public MapFileManager()
+		public MapFileManager(IConfigurator Configurator)
 		{
+			rConfigurator = Configurator;
 		}
 		public string[] GetLocalMapFileFullPathList()
 		{
@@ -30,6 +33,10 @@ namespace TrafficControlTest.Module.Map
 			// MapManagementSetting 更新後，在 process 會將所有用到 MapManagementSetting 的類別進行資料同步
 			IRectangle2D mapRange = GetMapRange(MapData);
 			int regionId = mMapManagementSetting.GetCorrespondingMapRegionId(SrcVehicleName);
+			//若000啟動設定為false時將不會更新地圖(預設為false)
+			if (regionId == 0 && !bool.Parse(rConfigurator.GetValue("MapManagerUpdater/Region000Activate")))
+				return;
+				
 			mMapManagementSetting.mRegionSettings[regionId].SetCurrentMap(MapFileName, mapRange.ToString());
 			RaiseEvent_ConfigUpdated("MapManagementSetting", mMapManagementSetting.ToJsonString());
 

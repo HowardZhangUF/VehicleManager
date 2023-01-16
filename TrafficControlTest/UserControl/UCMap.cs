@@ -77,6 +77,8 @@ namespace TrafficControlTest.UserControl
 		/// <summary>把圖像從地圖中移除</summary>
 		public void EraseIcon(IVehicleInfo VehicleInfo)
 		{
+            Console.WriteLine($"車子{VehicleInfo.mName}被移除");
+
 			if (VehicleInfo != null && !string.IsNullOrEmpty(VehicleInfo.mName))
 			{
 				GLCMD.CMD.DeleteAGV(mIconIdsOfVehicle[VehicleInfo.mName]);
@@ -228,5 +230,10 @@ namespace TrafficControlTest.UserControl
 			}
 			return result;
 		}
-	}
+
+        private void gluiCtrl1_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

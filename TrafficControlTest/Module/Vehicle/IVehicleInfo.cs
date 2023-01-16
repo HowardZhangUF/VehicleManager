@@ -119,6 +119,7 @@ namespace TrafficControlTest.Module.Vehicle
 		string mPathString { get; }
 		/// <summary>雷射資料</summary>
 		IList<IPoint2D> mLaserData { get; }
+		Dictionary<string,string> mLetgo { get; set; }
 		#endregion
 
 		#region 自定義動態屬性

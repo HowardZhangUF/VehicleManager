@@ -77,10 +77,8 @@ namespace TrafficControlTest.Module.Configure
 				{
 					result.Add(config.ToString());
 				}
-
 				string directoryPath = Path.GetDirectoryName(mFilePath);
 				if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
-
 				File.WriteAllLines(mFilePath, result);
 				RaiseEvent_ConfigFileSaved();
 			}
@@ -175,26 +173,26 @@ namespace TrafficControlTest.Module.Configure
 				"记录自走车历史记录的时间间隔 (ms)"));
 			defaultConfigs.Add(new Configuration(
 				"LogMaintainHandler",
-				"DayOfMonthOfBackupCurrentLog",
+				"DayOfWeekOfBackupCurrentLog",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
-				"5",
 				"1",
-				"31",
-				"Day of month of backing up current log",
-				"備份當前 Log 的日期",
-				"备份当前 Log 的日期"));
+				"0",
+				"6",
+				"Day of week of backing up current log. (0 means Sunday)",
+				"備份當前 Log 的星期(0為星期天)",
+				"备份当前 Log 的星期(0为星期天)"));
 			defaultConfigs.Add(new Configuration(
 				"LogMaintainHandler",
-				"DayOfMonthOfDeleteOldLog",
+				"DayOfWeekOfDeleteOldLog",
 				ConfigurationType.Int,
 				ConfigurationLevel.Normal,
-				"15",
 				"1",
-				"31",
-				"Day of month of deleting back log.",
-				"刪除舊 Log 的日期",
-				"删除旧 Log 的日期"));
+				"0",
+				"6",
+				"Day of week of deleting back log. (0 means Sunday)",
+				"刪除舊 Log 的星期(0為星期天)",
+				"删除旧 Log 的星期(0为星期天)"));
 			defaultConfigs.Add(new Configuration(
 				"DebugMessageHandler",
 				"TimePeriod",
@@ -406,7 +404,18 @@ namespace TrafficControlTest.Module.Configure
 				"Time period in millisecond of checking queue and handling received message with host",
 				"確認佇列並處理與上位系統傳送/接受訊息的時間間隔 (ms)",
 				"确认伫列并处理与上位系统传送/接受讯息的时间间隔 (ms)"));
-            defaultConfigs.Add(new Configuration(
+			defaultConfigs.Add(new Configuration(
+				"HostCommunicator",
+				"DisconnectedPeriod",
+				ConfigurationType.Int,
+				ConfigurationLevel.Normal,
+				"600",
+				"0",
+				"1800",
+				"After the network is disconnected, the retention time of the car.",
+				"網路斷線後,車子保留時間(s)",
+				"网路断线后,车子保留时间(s)"));
+			defaultConfigs.Add(new Configuration(
                 "HostMessageAnalyzer",
                 "FilterDuplicateMissionWhenReceivedCommand",
                 ConfigurationType.Bool,
@@ -483,6 +492,17 @@ namespace TrafficControlTest.Module.Configure
 				"Auto load map when vehicle's current map was changed",
 				"當自走車當前使用地圖改變時，自身重新讀取地圖",
 				"当自走车当前使用地图改变时，自身重新读取地图"));
+			defaultConfigs.Add(new Configuration(
+				"MapManagerUpdater",
+				"Region000Activate",
+				ConfigurationType.Bool,
+				ConfigurationLevel.Normal,
+				"False",
+				string.Empty,
+				string.Empty,
+				"Auto activate region 000(In order to save map for not setting region cars)",
+				"是否啟用Region000功能(為沒分區的車子保存地圖)",
+				"是否启用Region000功能(为没分区的车子保存地图)"));
 			defaultConfigs.Add(new Configuration(
 				"MapManagerUpdater",
 				"IntegratedMapFileName",
@@ -682,6 +702,7 @@ namespace TrafficControlTest.Module.Configure
 				"停車點實際位置範圍邊長",
 				"停车点实际位置范围边长"));
 
+
 			mConfigs.Clear();
 			for (int i = 0; i < defaultConfigs.Count; ++i)
 			{
@@ -698,8 +719,20 @@ namespace TrafficControlTest.Module.Configure
 					mConfigs["VehiclePassThroughAutomaticDoorEventManagerUpdater/CloseDoorDistance"].SetValue("1000");
 					break;
 				case ProjectType.E2113_Unimicron:
-					mConfigs["MapFileManager/MapManagementSetting"].SetValue("{\"mRegionSettings\":{\"0\":{\"mRegionId\":0,\"mRegionName\":\"Region000\",\"mRegionMember\":\"\",\"mCurrentMapName\":\"combine_20220121_VM.map\",\"mCurrentMapRange\":\"\"},\"1\":{\"mRegionId\":1,\"mRegionName\":\"4F-B-RC\",\"mRegionMember\":\"iTS-P-B403,iTS-P-B405\",\"mCurrentMapName\":\"20220119_VM.map\",\"mCurrentMapRange\":\"\"},\"2\":{\"mRegionId\":2,\"mRegionName\":\"4F-B-High-Front\",\"mRegionMember\":\"iTS-P-B401\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"},\"3\":{\"mRegionId\":3,\"mRegionName\":\"4F-B-High-Back\",\"mRegionMember\":\"iTS-P-B402\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"}},\"mMapFileDirectory\":\".\\\\..\\\\VehicleManagerData\\\\Map\"}");
-					mConfigs["MapManagerUpdater/MapManagementSetting"].SetValue("{\"mRegionSettings\":{\"0\":{\"mRegionId\":0,\"mRegionName\":\"Region000\",\"mRegionMember\":\"\",\"mCurrentMapName\":\"combine_20220121_VM.map\",\"mCurrentMapRange\":\"\"},\"1\":{\"mRegionId\":1,\"mRegionName\":\"4F-B-RC\",\"mRegionMember\":\"iTS-P-B403,iTS-P-B405\",\"mCurrentMapName\":\"20220119_VM.map\",\"mCurrentMapRange\":\"\"},\"2\":{\"mRegionId\":2,\"mRegionName\":\"4F-B-High-Front\",\"mRegionMember\":\"iTS-P-B401\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"},\"3\":{\"mRegionId\":3,\"mRegionName\":\"4F-B-High-Back\",\"mRegionMember\":\"iTS-P-B402\",\"mCurrentMapName\":\"\",\"mCurrentMapRange\":\"\"}},\"mMapFileDirectory\":\".\\\\..\\\\VehicleManagerData\\\\Map\"}");
+					mConfigs["LogRecorder/TimePeriod"].SetValue("500");
+					mConfigs["DebugMessageHandler/TimePeriod"].SetValue("500");
+					mConfigs["SignificantMessageHandler/TimePeriod"].SetValue("500");
+					mConfigs["TimeElapseDetector/TimePeriod"].SetValue("500");
+					mConfigs["VehicleCommunicator/TimePeriod"].SetValue("500");
+					mConfigs["CollisionEventDetector/TimePeriod"].SetValue("500");
+					mConfigs["VehicleControlHandler/TimePeriod"].SetValue("500");
+					mConfigs["VehicleControlUpdater/TimePeriod"].SetValue("500");
+					mConfigs["VehicleControlUpdater/ToleranceOfXOfArrivedTarget"].SetValue("500");
+					mConfigs["VehicleControlUpdater/ToleranceOfYOfArrivedTarget"].SetValue("500");
+
+					mConfigs["HostCommunicator/LocalPort"].SetValue("1025");
+					mConfigs["HostCommunicator/TimePeriod"].SetValue("500");
+					mConfigs["MissionDispatcher/TimePeriod"].SetValue("500");
 					mConfigs["VehiclePassThroughLimitVehicleCountZoneEventManagerUpdater/DistanceThreshold"].SetValue("1300");
 					break;
 				case ProjectType.Common:

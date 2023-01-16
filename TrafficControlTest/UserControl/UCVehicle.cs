@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using TrafficControlTest.Library;
 using TrafficControlTest.Module.InterveneCommand;
 using TrafficControlTest.Module.Vehicle;
+using System.Collections.Generic;
+
 
 namespace TrafficControlTest.UserControl
 {
@@ -448,5 +450,74 @@ namespace TrafficControlTest.UserControl
                 }
             });
         }
-    }
+
+        private async void checkAllIdleVehicleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+			while(true)
+            {
+				await System.Threading.Tasks.Task.Delay(1);
+				Dictionary<string, int[]> Region = new Dictionary<string, int[]>();
+				seperate(Region, dgvVehicleInfo);
+				if (Region.All(o => o.Value[1] == o.Value[0]))
+				{
+					await System.Threading.Tasks.Task.Delay(1000 * 5);
+					Region.Clear();
+					seperate(Region, dgvVehicleInfo);
+					if (Region.All(o => o.Value[1] == o.Value[0]))
+					{
+						System.Media.SystemSounds.Beep.Play();
+						MessageBox.Show("所有車皆為idle狀態,可關掉VM ");
+						break;
+					}
+				}
+			}				
+        }
+
+        private async void checkVMRestartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+			while (true)
+			{
+				await System.Threading.Tasks.Task.Delay(1);
+				Dictionary<string, int[]> Region = new Dictionary<string, int[]>();
+				seperate(Region, dgvVehicleInfo);
+				if (Region.All(o => o.Value[1] >= o.Value[0] - 1))
+				{
+					await System.Threading.Tasks.Task.Delay(1000*5);
+					Region.Clear();
+					seperate(Region, dgvVehicleInfo);
+					if (Region.All(o => o.Value[1] >= o.Value[0] - 1))
+					{
+						System.Media.SystemSounds.Beep.Play();
+						MessageBox.Show("每區只有一輛車不為idle狀態,可關掉VM");
+						break;
+					}
+				}
+			}			                
+		}
+
+		/// <summary> Region結構:string("MapName"),int[](totalCarCount,idleCarCount)</summary>
+		private static void seperate(Dictionary<string, int[]> Region, DataGridView cars)
+		{
+			for(var i=0;i<cars.RowCount;i++)
+            {
+				string map = cars.Rows[i].Cells["MapName"].Value.ToString();
+				string state = cars.Rows[i].Cells["State"].Value.ToString();
+				if (!Region.ContainsKey(map))
+                {
+					if (state == "Idle" || state=="ChargeIdle")
+						Region.Add(map, new int[] { 1, 1 });
+					else
+						Region.Add(map, new int[] { 1, 0 });
+				}
+				else
+                {
+					Region[map][0] += 1;
+					if (state == "Idle" || state == "ChargeIdle")
+						Region[map][1] += 1;
+				}
+			}
+			
+		}
+
+	}
 }

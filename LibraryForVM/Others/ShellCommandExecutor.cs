@@ -22,6 +22,7 @@ namespace LibraryForVM
 				process.StartInfo.RedirectStandardError = true;
 				process.StartInfo.RedirectStandardOutput = true;
 				process.Start();
+				process.StandardOutput.ReadToEnd();//加入此行可以避免大檔案時卡住
 				process.WaitForExit(); // 會等 process 執行完才繼續往下
 				result = process.ExitCode == 0 ? process.StandardOutput.ReadToEnd() : $"{process.ExitCode.ToString()} : {process.StandardError.ReadToEnd()}";
 			}
@@ -29,6 +30,7 @@ namespace LibraryForVM
 		}
 		public static void ExecuteInCommadPrompt(string shellCommand) // 使用此方法執行"會"跳出 Command Prompt 視窗
 		{
+			string result = string.Empty;
 			using (System.Diagnostics.Process process = new System.Diagnostics.Process())
 			{
 				process.StartInfo = new ProcessStartInfo();
@@ -38,5 +40,10 @@ namespace LibraryForVM
 				process.WaitForExit(); // 會等 process 執行完才繼續往下
 			}
 		}
-	}
+
+        private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

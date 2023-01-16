@@ -95,8 +95,9 @@ namespace VehicleSimulator
 		{
 			using (var fbd = new FolderBrowserDialog())
 			{
+				fbd.RootFolder = Environment.SpecialFolder.MyComputer;//windows 11 需要多加這行
 				if (!string.IsNullOrEmpty(lblMapFileFolderDirectory.Text) && Directory.Exists(lblMapFileFolderDirectory.Text))
-				{
+				{					
 					fbd.SelectedPath = lblMapFileFolderDirectory.Text;
 				}
 				DialogResult result = fbd.ShowDialog();
