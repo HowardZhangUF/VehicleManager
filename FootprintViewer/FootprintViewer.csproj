@@ -198,16 +198,8 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>IF EXIST "$(ProjectDir)bin\Debug\Image" RD /Q /S "$(ProjectDir)bin\Debug\Image"
-IF EXIST "$(ProjectDir)bin\Debug\Style.ini" DEL "$(ProjectDir)bin\Debug\Style.ini"
-IF EXIST "$(ProjectDir)bin\Debug\x64" RD /Q /S "$(ProjectDir)bin\Debug\x64"
-IF EXIST "$(ProjectDir)bin\Debug\x86" RD /Q /S "$(ProjectDir)bin\Debug\x86"
-
-XCOPY "$(ProjectDir)Include\iTSLibrary\Image" "$(ProjectDir)bin\Debug\Image" /I /S /E
-XCOPY "$(ProjectDir)Include\iTSLibrary\Style.ini" "$(ProjectDir)bin\Debug\Style.ini"*
-XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x64" "$(ProjectDir)bin\Debug\x64"  /I /S /E
-XCOPY "$(SolutionDir)LibraryForVM.Database\bin\Debug\x86" "$(ProjectDir)bin\Debug\x86"  /I /S /E
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
